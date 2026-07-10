@@ -1,0 +1,12 @@
+f4a67103d4113dc9c477fd5dcb52f846fbe9cb07
+
+# Source: https://github.com/w3c/webref/tree/f4a67103d4113dc9c477fd5dcb52f846fbe9cb07/ed
+# Branch at vendor time: curated
+# Vendored: 2026-05-29 (HTML elements, events, IDL)
+# Vendored: 2026-05-30 (CSS — added css/*.json: 120 files, 885 properties, 59 atrules, 677 values)
+# Vendored: 2026-05-30 (full IDL — expanded idlparsed/ from 23 to 330 files: every spec
+#   in @webref/curated/ed/idlparsed/. Covers hr-time/Performance, webgl, fetch,
+#   service-worker, web-animations, canvas, file-api, intersection-observer, etc.)
+# Vendored: 2026-07-01 (SVG elements — added elements/{SVG2,svg-animations,svg-paths}.json:
+#   tag-name -> interface pairs for the SVG element catalog, same pinned commit. Needed for
+#   dom-core's structural element-interface closure to cover SVGXxxElement, not just HTML.)
