@@ -1,0 +1,140 @@
+# Curated allowlist of DOM event types to generate handler keys for.
+#
+# webref's events.json contains ~700 entries spanning ~115 event interfaces — many of them are
+# spec-specific (Bluetooth, WebXR, USB, MIDI, ServiceWorker fetch lifecycle, etc.). Generating all
+# of them would yield a huge facade hierarchy whose corresponding IDL we'd then have to vendor too.
+#
+# Instead, we curate the DOM events real ascent applications use and let the generator emit only
+# those — plus enough IDL to resolve each event interface and its ancestor chain. Add lines here
+# (the dom event 'type' string) when you need a new handler in the typed event DSL.
+#
+# Lines starting with '#' are comments. Blank lines are ignored. The match is exact on the event
+# 'type' field — if multiple events.json entries share a type (different specs/targets), they all
+# come through and the generator de-duplicates by (type, interface).
+
+# --- mouse / pointer ---
+click
+dblclick
+auxclick
+contextmenu
+mousedown
+mouseup
+mousemove
+mouseenter
+mouseleave
+mouseover
+mouseout
+pointerdown
+pointerup
+pointermove
+pointerenter
+pointerleave
+pointerover
+pointerout
+pointercancel
+gotpointercapture
+lostpointercapture
+
+# --- wheel / drag / scroll ---
+wheel
+scroll
+dragstart
+dragend
+drag
+dragenter
+dragleave
+dragover
+drop
+
+# --- keyboard / input / composition ---
+keydown
+keyup
+keypress
+input
+beforeinput
+change
+compositionstart
+compositionupdate
+compositionend
+
+# --- focus ---
+focus
+blur
+focusin
+focusout
+
+# --- form ---
+submit
+reset
+invalid
+formdata
+
+# --- touch ---
+touchstart
+touchend
+touchmove
+touchcancel
+
+# --- ui / window ---
+load
+unload
+beforeunload
+resize
+error
+abort
+hashchange
+popstate
+pageshow
+pagehide
+
+# --- media ---
+canplay
+canplaythrough
+durationchange
+ended
+loadeddata
+loadedmetadata
+loadstart
+pause
+play
+playing
+progress
+ratechange
+seeked
+seeking
+stalled
+suspend
+timeupdate
+volumechange
+waiting
+
+# --- animation / transition ---
+animationstart
+animationend
+animationiteration
+animationcancel
+transitionstart
+transitionend
+transitionrun
+transitioncancel
+
+# --- toggle / disclosure ---
+toggle
+beforetoggle
+
+# --- selection / clipboard ---
+select
+selectionchange
+selectstart
+copy
+cut
+paste
+
+# --- visibility ---
+visibilitychange
+fullscreenchange
+fullscreenerror
+
+# --- message / channel ---
+message
+messageerror

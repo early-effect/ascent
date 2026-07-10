@@ -1,0 +1,546 @@
+{
+  "spec": {
+    "title": "WebMCP",
+    "url": "https://webmachinelearning.github.io/webmcp/"
+  },
+  "idlparsed": {
+    "jsNames": {
+      "constructors": {},
+      "functions": {
+        "Window": [
+          "ModelContext",
+          "ModelContextClient"
+        ]
+      }
+    },
+    "idlNames": {
+      "ModelContext": {
+        "fragment": "[Exposed=Window, SecureContext]\ninterface ModelContext : EventTarget {\n  undefined registerTool(ModelContextTool tool, optional ModelContextRegisterToolOptions options = {});\n\n  attribute EventHandler ontoolchange;\n};",
+        "type": "interface",
+        "name": "ModelContext",
+        "inheritance": "EventTarget",
+        "members": [
+          {
+            "type": "operation",
+            "name": "registerTool",
+            "idlType": {
+              "type": "return-type",
+              "extAttrs": [],
+              "generic": "",
+              "nullable": false,
+              "union": false,
+              "idlType": "undefined"
+            },
+            "arguments": [
+              {
+                "type": "argument",
+                "name": "tool",
+                "extAttrs": [],
+                "idlType": {
+                  "type": "argument-type",
+                  "extAttrs": [],
+                  "generic": "",
+                  "nullable": false,
+                  "union": false,
+                  "idlType": "ModelContextTool"
+                },
+                "default": null,
+                "optional": false,
+                "variadic": false
+              },
+              {
+                "type": "argument",
+                "name": "options",
+                "extAttrs": [],
+                "idlType": {
+                  "type": "argument-type",
+                  "extAttrs": [],
+                  "generic": "",
+                  "nullable": false,
+                  "union": false,
+                  "idlType": "ModelContextRegisterToolOptions"
+                },
+                "default": {
+                  "type": "dictionary"
+                },
+                "optional": true,
+                "variadic": false
+              }
+            ],
+            "extAttrs": [],
+            "special": "",
+            "href": "https://webmachinelearning.github.io/webmcp/#dom-modelcontext-registertool"
+          },
+          {
+            "type": "attribute",
+            "name": "ontoolchange",
+            "idlType": {
+              "type": "attribute-type",
+              "extAttrs": [],
+              "generic": "",
+              "nullable": false,
+              "union": false,
+              "idlType": "EventHandler"
+            },
+            "extAttrs": [],
+            "special": "",
+            "readonly": false,
+            "href": "https://webmachinelearning.github.io/webmcp/#dom-modelcontext-ontoolchange"
+          }
+        ],
+        "extAttrs": [
+          {
+            "type": "extended-attribute",
+            "name": "Exposed",
+            "rhs": {
+              "type": "identifier",
+              "value": "Window"
+            },
+            "arguments": []
+          },
+          {
+            "type": "extended-attribute",
+            "name": "SecureContext",
+            "rhs": null,
+            "arguments": []
+          }
+        ],
+        "partial": false,
+        "href": "https://webmachinelearning.github.io/webmcp/#modelcontext"
+      },
+      "ModelContextTool": {
+        "fragment": "dictionary ModelContextTool {\n  required DOMString name;\n  // Because `title` is for display in possibly native UIs, this must be a `USVString`.\n  // See https://w3ctag.github.io/design-principles/#idl-string-types.\n  USVString title;\n  required DOMString description;\n  object inputSchema;\n  required ToolExecuteCallback execute;\n  ToolAnnotations annotations;\n};",
+        "type": "dictionary",
+        "name": "ModelContextTool",
+        "inheritance": null,
+        "members": [
+          {
+            "type": "field",
+            "name": "name",
+            "extAttrs": [],
+            "idlType": {
+              "type": "dictionary-type",
+              "extAttrs": [],
+              "generic": "",
+              "nullable": false,
+              "union": false,
+              "idlType": "DOMString"
+            },
+            "default": null,
+            "required": true,
+            "href": "https://webmachinelearning.github.io/webmcp/#dom-modelcontexttool-name"
+          },
+          {
+            "type": "field",
+            "name": "title",
+            "extAttrs": [],
+            "idlType": {
+              "type": "dictionary-type",
+              "extAttrs": [],
+              "generic": "",
+              "nullable": false,
+              "union": false,
+              "idlType": "USVString"
+            },
+            "default": null,
+            "required": false,
+            "href": "https://webmachinelearning.github.io/webmcp/#dom-modelcontexttool-title"
+          },
+          {
+            "type": "field",
+            "name": "description",
+            "extAttrs": [],
+            "idlType": {
+              "type": "dictionary-type",
+              "extAttrs": [],
+              "generic": "",
+              "nullable": false,
+              "union": false,
+              "idlType": "DOMString"
+            },
+            "default": null,
+            "required": true,
+            "href": "https://webmachinelearning.github.io/webmcp/#dom-modelcontexttool-description"
+          },
+          {
+            "type": "field",
+            "name": "inputSchema",
+            "extAttrs": [],
+            "idlType": {
+              "type": "dictionary-type",
+              "extAttrs": [],
+              "generic": "",
+              "nullable": false,
+              "union": false,
+              "idlType": "object"
+            },
+            "default": null,
+            "required": false,
+            "href": "https://webmachinelearning.github.io/webmcp/#dom-modelcontexttool-inputschema"
+          },
+          {
+            "type": "field",
+            "name": "execute",
+            "extAttrs": [],
+            "idlType": {
+              "type": "dictionary-type",
+              "extAttrs": [],
+              "generic": "",
+              "nullable": false,
+              "union": false,
+              "idlType": "ToolExecuteCallback"
+            },
+            "default": null,
+            "required": true,
+            "href": "https://webmachinelearning.github.io/webmcp/#dom-modelcontexttool-execute"
+          },
+          {
+            "type": "field",
+            "name": "annotations",
+            "extAttrs": [],
+            "idlType": {
+              "type": "dictionary-type",
+              "extAttrs": [],
+              "generic": "",
+              "nullable": false,
+              "union": false,
+              "idlType": "ToolAnnotations"
+            },
+            "default": null,
+            "required": false,
+            "href": "https://webmachinelearning.github.io/webmcp/#dom-modelcontexttool-annotations"
+          }
+        ],
+        "extAttrs": [],
+        "partial": false,
+        "href": "https://webmachinelearning.github.io/webmcp/#dictdef-modelcontexttool"
+      },
+      "ToolAnnotations": {
+        "fragment": "dictionary ToolAnnotations {\n  boolean readOnlyHint = false;\n  boolean untrustedContentHint = false;\n};",
+        "type": "dictionary",
+        "name": "ToolAnnotations",
+        "inheritance": null,
+        "members": [
+          {
+            "type": "field",
+            "name": "readOnlyHint",
+            "extAttrs": [],
+            "idlType": {
+              "type": "dictionary-type",
+              "extAttrs": [],
+              "generic": "",
+              "nullable": false,
+              "union": false,
+              "idlType": "boolean"
+            },
+            "default": {
+              "type": "boolean",
+              "value": false
+            },
+            "required": false,
+            "href": "https://webmachinelearning.github.io/webmcp/#dom-toolannotations-readonlyhint"
+          },
+          {
+            "type": "field",
+            "name": "untrustedContentHint",
+            "extAttrs": [],
+            "idlType": {
+              "type": "dictionary-type",
+              "extAttrs": [],
+              "generic": "",
+              "nullable": false,
+              "union": false,
+              "idlType": "boolean"
+            },
+            "default": {
+              "type": "boolean",
+              "value": false
+            },
+            "required": false,
+            "href": "https://webmachinelearning.github.io/webmcp/#dom-toolannotations-untrustedcontenthint"
+          }
+        ],
+        "extAttrs": [],
+        "partial": false,
+        "href": "https://webmachinelearning.github.io/webmcp/#dictdef-toolannotations"
+      },
+      "ToolExecuteCallback": {
+        "fragment": "callback ToolExecuteCallback = Promise<any> (object input, ModelContextClient client);",
+        "type": "callback",
+        "name": "ToolExecuteCallback",
+        "idlType": {
+          "type": "return-type",
+          "extAttrs": [],
+          "generic": "Promise",
+          "nullable": false,
+          "union": false,
+          "idlType": [
+            {
+              "type": "return-type",
+              "extAttrs": [],
+              "generic": "",
+              "nullable": false,
+              "union": false,
+              "idlType": "any"
+            }
+          ]
+        },
+        "arguments": [
+          {
+            "type": "argument",
+            "name": "input",
+            "extAttrs": [],
+            "idlType": {
+              "type": "argument-type",
+              "extAttrs": [],
+              "generic": "",
+              "nullable": false,
+              "union": false,
+              "idlType": "object"
+            },
+            "default": null,
+            "optional": false,
+            "variadic": false
+          },
+          {
+            "type": "argument",
+            "name": "client",
+            "extAttrs": [],
+            "idlType": {
+              "type": "argument-type",
+              "extAttrs": [],
+              "generic": "",
+              "nullable": false,
+              "union": false,
+              "idlType": "ModelContextClient"
+            },
+            "default": null,
+            "optional": false,
+            "variadic": false
+          }
+        ],
+        "extAttrs": [],
+        "href": "https://webmachinelearning.github.io/webmcp/#callbackdef-toolexecutecallback"
+      },
+      "ModelContextRegisterToolOptions": {
+        "fragment": "dictionary ModelContextRegisterToolOptions {\n  AbortSignal signal;\n  sequence<USVString> exposedTo;\n};",
+        "type": "dictionary",
+        "name": "ModelContextRegisterToolOptions",
+        "inheritance": null,
+        "members": [
+          {
+            "type": "field",
+            "name": "signal",
+            "extAttrs": [],
+            "idlType": {
+              "type": "dictionary-type",
+              "extAttrs": [],
+              "generic": "",
+              "nullable": false,
+              "union": false,
+              "idlType": "AbortSignal"
+            },
+            "default": null,
+            "required": false,
+            "href": "https://webmachinelearning.github.io/webmcp/#dom-modelcontextregistertooloptions-signal"
+          },
+          {
+            "type": "field",
+            "name": "exposedTo",
+            "extAttrs": [],
+            "idlType": {
+              "type": "dictionary-type",
+              "extAttrs": [],
+              "generic": "sequence",
+              "nullable": false,
+              "union": false,
+              "idlType": [
+                {
+                  "type": "dictionary-type",
+                  "extAttrs": [],
+                  "generic": "",
+                  "nullable": false,
+                  "union": false,
+                  "idlType": "USVString"
+                }
+              ]
+            },
+            "default": null,
+            "required": false,
+            "href": "https://webmachinelearning.github.io/webmcp/#dom-modelcontextregistertooloptions-exposedto"
+          }
+        ],
+        "extAttrs": [],
+        "partial": false,
+        "href": "https://webmachinelearning.github.io/webmcp/#dictdef-modelcontextregistertooloptions"
+      },
+      "ModelContextClient": {
+        "fragment": "[Exposed=Window, SecureContext]\ninterface ModelContextClient {\n  Promise<any> requestUserInteraction(UserInteractionCallback callback);\n};",
+        "type": "interface",
+        "name": "ModelContextClient",
+        "inheritance": null,
+        "members": [
+          {
+            "type": "operation",
+            "name": "requestUserInteraction",
+            "idlType": {
+              "type": "return-type",
+              "extAttrs": [],
+              "generic": "Promise",
+              "nullable": false,
+              "union": false,
+              "idlType": [
+                {
+                  "type": "return-type",
+                  "extAttrs": [],
+                  "generic": "",
+                  "nullable": false,
+                  "union": false,
+                  "idlType": "any"
+                }
+              ]
+            },
+            "arguments": [
+              {
+                "type": "argument",
+                "name": "callback",
+                "extAttrs": [],
+                "idlType": {
+                  "type": "argument-type",
+                  "extAttrs": [],
+                  "generic": "",
+                  "nullable": false,
+                  "union": false,
+                  "idlType": "UserInteractionCallback"
+                },
+                "default": null,
+                "optional": false,
+                "variadic": false
+              }
+            ],
+            "extAttrs": [],
+            "special": "",
+            "href": "https://webmachinelearning.github.io/webmcp/#dom-modelcontextclient-requestuserinteraction"
+          }
+        ],
+        "extAttrs": [
+          {
+            "type": "extended-attribute",
+            "name": "Exposed",
+            "rhs": {
+              "type": "identifier",
+              "value": "Window"
+            },
+            "arguments": []
+          },
+          {
+            "type": "extended-attribute",
+            "name": "SecureContext",
+            "rhs": null,
+            "arguments": []
+          }
+        ],
+        "partial": false,
+        "href": "https://webmachinelearning.github.io/webmcp/#modelcontextclient"
+      },
+      "UserInteractionCallback": {
+        "fragment": "callback UserInteractionCallback = Promise<any> ();",
+        "type": "callback",
+        "name": "UserInteractionCallback",
+        "idlType": {
+          "type": "return-type",
+          "extAttrs": [],
+          "generic": "Promise",
+          "nullable": false,
+          "union": false,
+          "idlType": [
+            {
+              "type": "return-type",
+              "extAttrs": [],
+              "generic": "",
+              "nullable": false,
+              "union": false,
+              "idlType": "any"
+            }
+          ]
+        },
+        "arguments": [],
+        "extAttrs": [],
+        "href": "https://webmachinelearning.github.io/webmcp/#callbackdef-userinteractioncallback"
+      }
+    },
+    "idlExtendedNames": {
+      "Navigator": [
+        {
+          "fragment": "partial interface Navigator {\n  [SecureContext] readonly attribute ModelContext modelContext;\n};",
+          "type": "interface",
+          "name": "Navigator",
+          "inheritance": null,
+          "members": [
+            {
+              "type": "attribute",
+              "name": "modelContext",
+              "idlType": {
+                "type": "attribute-type",
+                "extAttrs": [],
+                "generic": "",
+                "nullable": false,
+                "union": false,
+                "idlType": "ModelContext"
+              },
+              "extAttrs": [
+                {
+                  "type": "extended-attribute",
+                  "name": "SecureContext",
+                  "rhs": null,
+                  "arguments": []
+                }
+              ],
+              "special": "",
+              "readonly": true,
+              "href": "https://webmachinelearning.github.io/webmcp/#dom-navigator-modelcontext"
+            }
+          ],
+          "extAttrs": [],
+          "partial": true
+        }
+      ]
+    },
+    "globals": {},
+    "exposed": {
+      "Window": [
+        "ModelContext",
+        "ModelContextClient"
+      ]
+    },
+    "dependencies": {
+      "Navigator": [
+        "ModelContext"
+      ],
+      "ModelContext": [
+        "EventTarget",
+        "ModelContextTool",
+        "ModelContextRegisterToolOptions",
+        "EventHandler"
+      ],
+      "ModelContextTool": [
+        "ToolExecuteCallback",
+        "ToolAnnotations"
+      ],
+      "ToolAnnotations": [],
+      "ModelContextRegisterToolOptions": [
+        "AbortSignal"
+      ],
+      "ModelContextClient": [
+        "UserInteractionCallback"
+      ]
+    },
+    "externalDependencies": [
+      "Navigator",
+      "EventTarget",
+      "EventHandler",
+      "AbortSignal"
+    ],
+    "hasObsoleteIdl": false
+  }
+}

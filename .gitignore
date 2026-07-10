@@ -35,7 +35,6 @@ metals.sbt
 .mcp.json
 .claude/
 
-data/
 node_modules/
 
 CLAUDE.md

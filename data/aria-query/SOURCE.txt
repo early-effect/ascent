@@ -1,0 +1,14 @@
+v5.3.2
+
+# Source: https://github.com/A11yance/aria-query/tree/v5.3.2/src
+# Vendored: 2026-05-30
+# Files: ariaPropsMap.js domMap.js elementRoleMap.js roleElementMap.js rolesMap.js
+#
+# These are the source-style aria-query files (Flow-typed JS containing structured
+# array/object literals). The framework's `aria-gen` parser reads them with fastparse to
+# produce typed Scala bindings under `dom-types/.../generated/AriaAttrs.scala` (and
+# eventually AriaRoles.scala).
+#
+# aria-query is the de-facto authoritative machine-readable ARIA dataset — used by
+# eslint-plugin-jsx-a11y, axe-core, React, etc. — and is itself derived from the W3C
+# WAI-ARIA spec. Bumping the pinned version = re-vendor + regenerate + review the diff.
