@@ -1,0 +1,26 @@
+name: Scala Steward
+
+# Scala Steward opens PRs bumping sbt/Scala dependencies — the job Dependabot's maven
+# ecosystem can't do for an sbt build. Runs weekly (and on demand via workflow_dispatch).
+on:
+  schedule:
+    - cron: '0 6 * * 1'   # Mondays 06:00 UTC
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  scala-steward:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Run Scala Steward
+        uses: scala-steward-org/scala-steward-action@ff09222640622d474d0d9f93c04aefedd125b187 # v2.92.0
+        with:
+          # Uses the default GITHUB_TOKEN. Note: PRs it opens won't themselves trigger CI
+          # (a GITHUB_TOKEN-created PR can't start another workflow); re-run checks manually,
+          # or supply a PAT/GitHub App token here to have scala.yml run on Steward's PRs.
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          author-name: Russ White
+          author-email: 356303+russwyte@users.noreply.github.com
