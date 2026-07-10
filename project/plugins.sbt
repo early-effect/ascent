@@ -1,11 +1,11 @@
 // projectMatrix is built into sbt 2.x (sbt-projectmatrix was in-sourced and archived), so no
 // plugin is needed for `projectMatrix`/`jvmPlatform`/`jsPlatform`/`nativePlatform`.
-addSbtPlugin("org.scala-js"     % "sbt-scalajs"       % "1.22.0")
-addSbtPlugin("org.scala-native" % "sbt-scala-native"  % "0.5.12")
-addSbtPlugin("org.scalameta"    % "sbt-scalafmt"      % "2.6.1")
-addSbtPlugin("ch.epfl.scala"    % "sbt-scalafix"      % "0.14.7")
-addSbtPlugin("com.github.sbt"   % "sbt-dynver"        % "5.1.1")
-addSbtPlugin("com.github.sbt"   % "sbt-pgp"           % "2.3.1")
+addSbtPlugin("org.scala-js"     % "sbt-scalajs"      % "1.22.0")
+addSbtPlugin("org.scala-native" % "sbt-scala-native" % "0.5.12")
+addSbtPlugin("org.scalameta"    % "sbt-scalafmt"     % "2.6.1")
+addSbtPlugin("ch.epfl.scala"    % "sbt-scalafix"     % "0.14.7")
+addSbtPlugin("com.github.sbt"   % "sbt-dynver"       % "5.1.1")
+addSbtPlugin("com.github.sbt"   % "sbt-pgp"          % "2.3.1")
 //addSbtPlugin("org.xerial.sbt"   % "sbt-sonatype"      % "3.12.2")
 
 // jsdom-backed JS test environment for the dom-facade and js modules' Test scope.

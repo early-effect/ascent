@@ -324,23 +324,24 @@ object DefBuilderSpec extends ZIOSpecDefault:
               name = "X",
               inheritance = None,
               attributes = Nil,
-              operations = List(
-                Webref.IdlOperation(
-                  "fillRect",
-                  "undefined",
-                  List(
-                    Webref.IdlParam("x", "unrestricted double", false),
-                    Webref.IdlParam("y", "unrestricted double", false),
-                    Webref.IdlParam("w", "unrestricted double", false),
-                    Webref.IdlParam("h", "unrestricted double", false),
+              operations =
+                List(
+                  Webref.IdlOperation(
+                    "fillRect",
+                    "undefined",
+                    List(
+                      Webref.IdlParam("x", "unrestricted double", false),
+                      Webref.IdlParam("y", "unrestricted double", false),
+                      Webref.IdlParam("w", "unrestricted double", false),
+                      Webref.IdlParam("h", "unrestricted double", false),
+                    ),
+                  ),
+                  Webref.IdlOperation(
+                    "getContext",
+                    "RenderingContext",
+                    List(Webref.IdlParam("contextId", "DOMString", false)),
                   ),
                 ),
-                Webref.IdlOperation(
-                  "getContext",
-                  "RenderingContext",
-                  List(Webref.IdlParam("contextId", "DOMString", false)),
-                ),
-              ),
             )
           )
         )

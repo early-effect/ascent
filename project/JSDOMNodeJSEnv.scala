@@ -11,44 +11,39 @@ package org.scalajs.jsenv.jsdomnodejs
 
 import scala.util.control.NonFatal
 
-import java.io._
+import java.io.*
 import java.nio.charset.StandardCharsets
 import java.nio.file.{Files, Path, StandardCopyOption}
 import java.net.URI
 
 import com.google.common.jimfs.Jimfs
 
-import org.scalajs.jsenv._
-import org.scalajs.jsenv.nodejs._
+import org.scalajs.jsenv.*
+import org.scalajs.jsenv.nodejs.*
 import org.scalajs.jsenv.JSUtils.escapeJS
 
-class JSDOMNodeJSEnv(config: JSDOMNodeJSEnv.Config) extends JSEnv {
+class JSDOMNodeJSEnv(config: JSDOMNodeJSEnv.Config) extends JSEnv:
 
   def this() = this(JSDOMNodeJSEnv.Config())
 
   val name: String = "Node.js with JSDOM"
 
-  def start(input: Seq[Input], runConfig: RunConfig): JSRun = {
+  def start(input: Seq[Input], runConfig: RunConfig): JSRun =
     JSDOMNodeJSEnv.validator.validate(runConfig)
     val scripts = validateInput(input)
-    try {
-      internalStart(codeWithJSDOMContext(scripts), runConfig)
-    } catch {
+    try internalStart(codeWithJSDOMContext(scripts), runConfig)
+    catch
       case NonFatal(t) =>
         JSRun.failed(t)
-    }
-  }
 
-  def startWithCom(input: Seq[Input], runConfig: RunConfig,
-      onMessage: String => Unit): JSComRun = {
+  def startWithCom(input: Seq[Input], runConfig: RunConfig, onMessage: String => Unit): JSComRun =
     JSDOMNodeJSEnv.validator.validate(runConfig)
     val scripts = validateInput(input)
     ComRun.start(runConfig, onMessage) { comLoader =>
       internalStart(comLoader :: codeWithJSDOMContext(scripts), runConfig)
     }
-  }
 
-  private def validateInput(input: Seq[Input]): List[Path] = {
+  private def validateInput(input: Seq[Input]): List[Path] =
     input.map {
       case Input.Script(script) =>
         script
@@ -56,25 +51,24 @@ class JSDOMNodeJSEnv(config: JSDOMNodeJSEnv.Config) extends JSEnv {
       case _ =>
         throw new UnsupportedInputException(input)
     }.toList
-  }
 
-  private def internalStart(files: List[Path], runConfig: RunConfig): JSRun = {
-    val command = config.executable :: config.args
-    val externalConfig = ExternalJSRun.Config()
+  private def internalStart(files: List[Path], runConfig: RunConfig): JSRun =
+    val command        = config.executable :: config.args
+    val externalConfig = ExternalJSRun
+      .Config()
       .withEnv(env)
       .withRunConfig(runConfig)
     ExternalJSRun.start(command, externalConfig)(JSDOMNodeJSEnv.write(files))
-  }
 
   private def env: Map[String, String] =
     Map("NODE_MODULE_CONTEXTS" -> "0") ++ config.env
 
-  private def codeWithJSDOMContext(scripts: List[Path]): List[Path] = {
-    val scriptsURIs = scripts.map(JSDOMNodeJSEnv.materialize(_))
+  private def codeWithJSDOMContext(scripts: List[Path]): List[Path] =
+    val scriptsURIs            = scripts.map(JSDOMNodeJSEnv.materialize(_))
     val scriptsURIsAsJSStrings =
       scriptsURIs.map(uri => "\"" + escapeJS(uri.toASCIIString) + "\"")
     val scriptsURIsJSArray = scriptsURIsAsJSStrings.mkString("[", ", ", "]")
-    val jsDOMCode = {
+    val jsDOMCode          =
       s"""
          |(function () {
          |  var jsdom = require("jsdom");
@@ -131,23 +125,22 @@ class JSDOMNodeJSEnv(config: JSDOMNodeJSEnv.Config) extends JSEnv {
          |  }
          |})();
          |""".stripMargin
-    }
-    List(Files.write(
-        Jimfs.newFileSystem().getPath("codeWithJSDOMContext.js"),
-        jsDOMCode.getBytes(StandardCharsets.UTF_8)))
-  }
-}
+    List(
+      Files.write(Jimfs.newFileSystem().getPath("codeWithJSDOMContext.js"), jsDOMCode.getBytes(StandardCharsets.UTF_8))
+    )
+  end codeWithJSDOMContext
+end JSDOMNodeJSEnv
 
-object JSDOMNodeJSEnv {
+object JSDOMNodeJSEnv:
   private lazy val validator = ExternalJSRun.supports(RunConfig.Validator())
 
   // Copied from NodeJSEnv.scala upstream
-  private def write(files: List[Path])(out: OutputStream): Unit = {
+  private def write(files: List[Path])(out: OutputStream): Unit =
     val p = new PrintStream(out, false, "UTF8")
-    try {
-      def writeRunScript(path: Path): Unit = {
-        try {
-          val f = path.toFile
+    try
+      def writeRunScript(path: Path): Unit =
+        try
+          val f      = path.toFile
           val pathJS = "\"" + escapeJS(f.getAbsolutePath) + "\""
           p.println(s"""
             require('vm').runInThisContext(
@@ -155,9 +148,9 @@ object JSDOMNodeJSEnv {
               { filename: $pathJS, displayErrors: true }
             );
           """)
-        } catch {
+        catch
           case _: UnsupportedOperationException =>
-            val code = new String(Files.readAllBytes(path), StandardCharsets.UTF_8)
+            val code   = new String(Files.readAllBytes(path), StandardCharsets.UTF_8)
             val codeJS = "\"" + escapeJS(code) + "\""
             val pathJS = "\"" + escapeJS(path.toString) + "\""
             p.println(s"""
@@ -166,22 +159,18 @@ object JSDOMNodeJSEnv {
                 { filename: $pathJS, displayErrors: true }
               );
             """)
-        }
-      }
 
-      for (file <- files)
-        writeRunScript(file)
-    } finally {
-      p.close()
-    }
-  }
+      for file <- files do writeRunScript(file)
+    finally p.close()
+    end try
+  end write
 
   // tmpSuffixRE and tmpFile copied from HTMLRunnerBuilder.scala in Scala.js
 
   private val tmpSuffixRE = """[a-zA-Z0-9-_.]*$""".r
 
-  private def tmpFile(path: String, in: InputStream): URI = {
-    try {
+  private def tmpFile(path: String, in: InputStream): URI =
+    try
       /* - createTempFile requires a prefix of at least 3 chars
        * - we use a safe part of the path as suffix so the extension stays (some
        *   browsers need that) and there is a clue which file it came from.
@@ -192,32 +181,25 @@ object JSDOMNodeJSEnv {
       f.deleteOnExit()
       Files.copy(in, f.toPath(), StandardCopyOption.REPLACE_EXISTING)
       f.toURI()
-    } finally {
-      in.close()
-    }
-  }
+    finally in.close()
 
-  private def materialize(path: Path): URI = {
-    try {
-      path.toFile.toURI
-    } catch {
+  private def materialize(path: Path): URI =
+    try path.toFile.toURI
+    catch
       case _: UnsupportedOperationException =>
         tmpFile(path.toString, Files.newInputStream(path))
-    }
-  }
 
   final class Config private (
       val executable: String,
       val args: List[String],
-      val env: Map[String, String]
-  ) {
-    private def this() = {
+      val env: Map[String, String],
+  ):
+    private def this() =
       this(
-          executable = "node",
-          args = Nil,
-          env = Map.empty
+        executable = "node",
+        args = Nil,
+        env = Map.empty,
       )
-    }
 
     def withExecutable(executable: String): Config =
       copy(executable = executable)
@@ -231,21 +213,20 @@ object JSDOMNodeJSEnv {
     private def copy(
         executable: String = executable,
         args: List[String] = args,
-        env: Map[String, String] = env
-    ): Config = {
+        env: Map[String, String] = env,
+    ): Config =
       new Config(executable, args, env)
-    }
-  }
+  end Config
 
-  object Config {
+  object Config:
     /** Returns a default configuration for a [[JSDOMNodeJSEnv]].
-     *
-     *  The defaults are:
-     *
-     *  - `executable`: `"node"`
-     *  - `args`: `Nil`
-     *  - `env`: `Map.empty`
-     */
+      *
+      * The defaults are:
+      *
+      *   - `executable`: `"node"`
+      *   - `args`: `Nil`
+      *   - `env`: `Map.empty`
+      */
     def apply(): Config = new Config()
-  }
-}
+  end Config
+end JSDOMNodeJSEnv
