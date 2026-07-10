@@ -11,7 +11,7 @@ versionScheme        := Some("early-semver")
 
 homepage := Some(url("https://github.com/early-effect/ascent"))
 licenses := Seq("Apache-2.0" -> url("http://www.apache.org/licenses/LICENSE-2.0.txt"))
-scmInfo := Some(
+scmInfo  := Some(
   ScmInfo(
     url("https://github.com/early-effect/ascent"),
     "scm:git@github.com:early-effect/ascent.git",
@@ -105,7 +105,7 @@ lazy val root = (project in file("."))
       html.projectRefs ++ datastar.projectRefs ++ datastarJs.projectRefs ++
       datastarHttp.projectRefs ++ datastarExample.projectRefs ++ datastarExampleServer.projectRefs ++
       hybridChat.projectRefs ++ hybridChatServer.projectRefs ++
-      todoConduit.projectRefs)*
+      todoConduit.projectRefs) *
   )
   .settings(
     name           := "ascent",
@@ -131,14 +131,14 @@ lazy val domgen = (projectMatrix in file("domgen"))
     publish / skip := true,
     scalacOptions ++= commonScalacOptions,
     libraryDependencies ++= Seq(
-      "dev.zio"       %% "zio-json"         % "0.9.2",
-      "com.lihaoyi"   %% "fastparse"        % "3.1.1",
+      "dev.zio"     %% "zio-json"  % "0.9.2",
+      "com.lihaoyi" %% "fastparse" % "3.1.1",
       // Format generated output through the project's own .scalafmt.conf, so `domgen/run` emits
       // already-formatted files and formatting rules live in exactly one place. Scalameta ships
       // scalafmt for Scala 2.13; use it from this Scala 3 build via CrossVersion. scalafmt-dynamic
       // loads the real formatter in its own classloader, so its 2.13 transitives don't belong on our
       // classpath — exclude scala-collection-compat_2.13, which clashes with the _3 already present.
-      ("org.scalameta" %% "scalafmt-dynamic" % "3.11.1")
+      ("org.scalameta" %% "scalafmt-dynamic" % "3.11.2")
         .cross(CrossVersion.for3Use2_13)
         .exclude("org.scala-lang.modules", "scala-collection-compat_2.13"),
     ),
