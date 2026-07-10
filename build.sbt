@@ -1,9 +1,46 @@
 val scala3Version = "3.8.4"
 val zioVersion    = "2.1.26"
 
-scalaVersion := scala3Version
-organization := "io.github.russwyte"
-version      := "0.1.0-SNAPSHOT"
+// sbt 2.x scopes bare build.sbt settings to ThisBuild, so these apply build-wide to every module.
+scalaVersion         := scala3Version
+organization         := "rocks.earlyeffect"
+organizationName     := "Early Effect"
+organizationHomepage := Some(url("https://www.earlyeffect.rocks"))
+versionScheme        := Some("early-semver")
+// No hardcoded version — sbt-dynver derives it from the git tag (v0.1.0 -> 0.1.0).
+
+homepage := Some(url("https://github.com/early-effect/ascent"))
+licenses := Seq("Apache-2.0" -> url("http://www.apache.org/licenses/LICENSE-2.0.txt"))
+scmInfo := Some(
+  ScmInfo(
+    url("https://github.com/early-effect/ascent"),
+    "scm:git@github.com:early-effect/ascent.git",
+  )
+)
+developers := List(
+  Developer(
+    "russwyte",
+    "Russ White",
+    "356303+russwyte@users.noreply.github.com",
+    url("https://github.com/russwyte"),
+  )
+)
+
+// Publishing targets the Sonatype Central Portal, which is built into sbt 2.x (no sbt-sonatype).
+// Snapshots go to Central's snapshot repo; releases stage locally and are promoted by `sonaRelease`.
+publishTo := {
+  val centralSnapshots = "https://central.sonatype.com/repository/maven-snapshots/"
+  if (isSnapshot.value) Some("central-snapshots" at centralSnapshots)
+  else localStaging.value
+}
+publishMavenStyle    := true
+pomIncludeRepository := { _ => false }
+
+// CI-only publishing: the signing key hex comes from the PGP_KEY_HEX env var (a shared early-effect
+// org secret), so the key can be rotated in one place. There is no real key in this file — the
+// MISSING_KEY_HEX sentinel keeps the build loadable for local compile/test but makes signing fail
+// loudly if anyone tries to publish off-CI.
+usePgpKeyHex(sys.env.getOrElse("PGP_KEY_HEX", "MISSING_KEY_HEX"))
 
 // sbt 2.x defaults eviction to a strict scheme. The Native toolchain (sbt-scala-native 0.5.12)
 // forces test-interface 0.5.12, while zio-test-sbt's Native build still pins 0.5.10 — both are

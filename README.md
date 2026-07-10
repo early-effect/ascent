@@ -1,5 +1,9 @@
 # ascent
 
+[![Scala CI](https://github.com/early-effect/ascent/actions/workflows/scala.yml/badge.svg)](https://github.com/early-effect/ascent/actions/workflows/scala.yml)
+[![Maven Central](https://img.shields.io/maven-central/v/rocks.earlyeffect/ascent-core_3?logo=apachemaven)](https://central.sonatype.com/artifact/rocks.earlyeffect/ascent-core_3)
+[![License: Apache 2.0](https://img.shields.io/badge/License-Apache_2.0-blue.svg)](LICENSE)
+
 A reactive UI library for **Scala 3** that renders directly to the DOM — no virtual DOM, no
 diffing. ascent builds a pure UI tree once, then surgically patches the exact node, attribute, or
 child-list behind each reactive boundary. The reactive substrate is **ZIO**, so effects, typed
@@ -149,6 +153,21 @@ files import only `ascent.*`.
 
 ---
 
+## Installation
+
+ascent is published to Maven Central under the `rocks.earlyeffect` group. It's cross-built for
+**JVM, Scala.js, and Scala Native**, so use `%%%` (which picks the right platform artifact) in a
+`sbt-crossproject` / Scala.js / Native build:
+
+```scala
+libraryDependencies += "rocks.earlyeffect" %%% "ascent-core" % "<version>"  // Squawk + UI AST + DSL (all platforms)
+libraryDependencies += "rocks.earlyeffect" %%% "ascent-js"   % "<version>"  // browser mount engine (Scala.js)
+libraryDependencies += "rocks.earlyeffect" %%% "ascent-css"  % "<version>"  // typed CSS-in-Scala (all platforms)
+```
+
+Other modules follow the same `ascent-<module>` naming (e.g. `ascent-html`, `ascent-conduit`,
+`ascent-datastar`) — see the module table below. On a plain JVM-only build use `%%` instead of `%%%`.
+
 ## Run the example
 
 `example/` holds one self-contained app per subdirectory (more coming). The first,
@@ -203,3 +222,7 @@ ascent is built with Scala 3 and cross-compiled to **JVM, Scala.js, and Scala Na
 
 Runtime dependencies are kept deliberately small: `core` needs only ZIO and the zero-dep
 `dom-types`; conduit is opt-in.
+
+## License
+
+ascent is licensed under the [Apache License 2.0](LICENSE).
