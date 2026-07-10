@@ -1,0 +1,170 @@
+{
+  "spec": {
+    "title": "HTML Standard",
+    "url": "https://html.spec.whatwg.org/multipage/"
+  },
+  "idlparsed": {
+    "idlNames": {
+      "HTMLInputElement": {
+        "type": "interface",
+        "name": "HTMLInputElement",
+        "inheritance": "HTMLElement",
+        "members": [
+          { "type": "constructor", "name": null, "idlType": null },
+          { "type": "attribute", "name": "type", "idlType": { "type": "attribute-type", "nullable": false, "union": false, "idlType": "DOMString" }, "extAttrs": [ { "type": "extended-attribute", "name": "Reflect" } ] },
+          { "type": "attribute", "name": "value", "idlType": { "type": "attribute-type", "nullable": false, "union": false, "idlType": "DOMString" } },
+          { "type": "attribute", "name": "required", "idlType": { "type": "attribute-type", "nullable": false, "union": false, "idlType": "boolean" }, "extAttrs": [ { "type": "extended-attribute", "name": "CEReactions" } ] },
+          { "type": "attribute", "name": "checked", "idlType": { "type": "attribute-type", "nullable": false, "union": false, "idlType": "boolean" } },
+          { "type": "operation", "name": "select", "idlType": { "type": "return-type", "idlType": "undefined" } }
+        ]
+      },
+      "HTMLElement": {
+        "type": "interface",
+        "name": "HTMLElement",
+        "inheritance": "Element",
+        "members": [
+          { "type": "attribute", "name": "title", "idlType": { "type": "attribute-type", "nullable": false, "union": false, "idlType": "DOMString" } },
+          { "type": "attribute", "name": "hidden", "idlType": { "type": "attribute-type", "nullable": false, "union": false, "idlType": "boolean" } }
+        ]
+      },
+      "Element": {
+        "type": "interface",
+        "name": "Element",
+        "inheritance": "Node",
+        "members": [
+          { "type": "attribute", "name": "id", "idlType": { "type": "attribute-type", "nullable": false, "union": false, "idlType": "DOMString" } },
+          { "type": "attribute", "name": "className", "idlType": { "type": "attribute-type", "nullable": false, "union": false, "idlType": "DOMString" } }
+        ]
+      },
+      "Node": {
+        "type": "interface",
+        "name": "Node",
+        "inheritance": "EventTarget",
+        "members": []
+      },
+      "HTMLOrSVGOrMathMLElement": {
+        "type": "interface mixin",
+        "name": "HTMLOrSVGOrMathMLElement",
+        "inheritance": null,
+        "members": [
+          { "type": "attribute", "name": "autofocus",       "idlType": { "type": "attribute-type", "nullable": false, "union": false, "idlType": "boolean" } },
+          { "type": "attribute", "name": "contentEditable", "idlType": { "type": "attribute-type", "nullable": false, "union": false, "idlType": "DOMString" } },
+          { "type": "attribute", "name": "nonce",           "idlType": { "type": "attribute-type", "nullable": false, "union": false, "idlType": "DOMString" } },
+          { "type": "operation", "name": "focus", "idlType": { "type": "return-type", "idlType": "undefined" }, "arguments": [] },
+          { "type": "operation", "name": "blur",  "idlType": { "type": "return-type", "idlType": "undefined" }, "arguments": [] }
+        ]
+      },
+      "HTMLCanvasElement": {
+        "type": "interface",
+        "name": "HTMLCanvasElement",
+        "inheritance": "HTMLElement",
+        "members": [
+          { "type": "attribute", "name": "width",  "idlType": { "type": "attribute-type", "idlType": "unsigned long" } },
+          { "type": "attribute", "name": "height", "idlType": { "type": "attribute-type", "idlType": "unsigned long" } },
+          {
+            "type": "operation",
+            "name": "getContext",
+            "idlType": { "type": "return-type", "nullable": true, "idlType": "RenderingContext" },
+            "arguments": [
+              { "type": "argument", "name": "contextId", "idlType": { "type": "argument-type", "idlType": "DOMString" }, "optional": false }
+            ]
+          }
+        ]
+      },
+      "CanvasRenderingContext2D": {
+        "type": "interface",
+        "name": "CanvasRenderingContext2D",
+        "inheritance": null,
+        "members": [
+          { "type": "attribute", "name": "lineWidth", "idlType": { "type": "attribute-type", "idlType": "unrestricted double" } },
+          {
+            "type": "operation",
+            "name": "fillRect",
+            "idlType": { "type": "return-type", "idlType": "undefined" },
+            "arguments": [
+              { "type": "argument", "name": "x", "idlType": { "type": "argument-type", "idlType": "unrestricted double" } },
+              { "type": "argument", "name": "y", "idlType": { "type": "argument-type", "idlType": "unrestricted double" } },
+              { "type": "argument", "name": "w", "idlType": { "type": "argument-type", "idlType": "unrestricted double" } },
+              { "type": "argument", "name": "h", "idlType": { "type": "argument-type", "idlType": "unrestricted double" } }
+            ]
+          }
+        ]
+      },
+      "FrameRequestCallback": {
+        "type": "callback",
+        "name": "FrameRequestCallback",
+        "idlType": { "type": "return-type", "idlType": "undefined" },
+        "arguments": [
+          { "type": "argument", "name": "time", "idlType": { "type": "argument-type", "idlType": "double" } }
+        ]
+      },
+      "EventListener": {
+        "type": "callback interface",
+        "name": "EventListener",
+        "inheritance": null,
+        "members": [
+          {
+            "type": "operation",
+            "name": "handleEvent",
+            "idlType": { "type": "return-type", "idlType": "undefined" },
+            "arguments": [
+              { "type": "argument", "name": "event", "idlType": { "type": "argument-type", "idlType": "Event" } }
+            ]
+          }
+        ]
+      },
+      "Window": {
+        "type": "interface",
+        "name": "Window",
+        "inheritance": null,
+        "members": [
+          {
+            "type": "operation",
+            "name": "requestAnimationFrame",
+            "idlType": { "type": "return-type", "idlType": "unsigned long" },
+            "arguments": [
+              { "type": "argument", "name": "callback", "idlType": { "type": "argument-type", "idlType": "FrameRequestCallback" } }
+            ]
+          }
+        ]
+      },
+      "AddEventListenerOptions": {
+        "type": "dictionary",
+        "name": "AddEventListenerOptions",
+        "inheritance": "EventListenerOptions",
+        "members": [
+          { "type": "field", "name": "passive",  "idlType": { "type": "dictionary-type", "idlType": "boolean" }, "required": false },
+          { "type": "field", "name": "once",     "idlType": { "type": "dictionary-type", "idlType": "boolean" }, "required": false },
+          { "type": "field", "name": "signal",   "idlType": { "type": "dictionary-type", "idlType": "AbortSignal" }, "required": false }
+        ]
+      },
+      "EventListenerOptions": {
+        "type": "dictionary",
+        "name": "EventListenerOptions",
+        "inheritance": null,
+        "members": [
+          { "type": "field", "name": "capture",  "idlType": { "type": "dictionary-type", "idlType": "boolean" }, "required": false }
+        ]
+      },
+      "ShadowRootMode": {
+        "type": "enum",
+        "name": "ShadowRootMode",
+        "values": [
+          { "type": "enum-value", "value": "open" },
+          { "type": "enum-value", "value": "closed" }
+        ]
+      }
+    },
+    "idlExtendedNames": {
+      "HTMLElement": [
+        {
+          "fragment": "HTMLElement includes HTMLOrSVGOrMathMLElement;",
+          "type": "includes",
+          "extAttrs": [],
+          "target": "HTMLElement",
+          "includes": "HTMLOrSVGOrMathMLElement"
+        }
+      ]
+    }
+  }
+}

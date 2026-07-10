@@ -1,0 +1,17 @@
+{
+  "name": "ascent",
+  "version": "1.0.0",
+  "description": "This is a normal sbt project. You can compile code with `sbt compile`, run it with `sbt run`, and `sbt console` will start a Scala 3 REPL.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "Apache-2.0",
+  "type": "commonjs",
+  "devDependencies": {
+    "canvas": "^3.2.3",
+    "jsdom": "^29.1.1"
+  }
+}

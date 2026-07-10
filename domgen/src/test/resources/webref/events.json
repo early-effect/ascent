@@ -1,0 +1,45 @@
+[
+  {
+    "href": "https://w3c.github.io/pointerevents/#dfn-click",
+    "type": "click",
+    "targets": [
+      {
+        "target": "Element",
+        "bubbles": true
+      }
+    ],
+    "interface": "PointerEvent"
+  },
+  {
+    "href": "https://html.spec.whatwg.org/multipage/indices.html#event-input",
+    "type": "input",
+    "targets": [
+      {
+        "target": "Element",
+        "bubbles": true
+      }
+    ],
+    "interface": "InputEvent"
+  },
+  {
+    "href": "https://w3c.github.io/uievents/#event-type-keydown",
+    "type": "keydown",
+    "targets": [
+      {
+        "target": "Element",
+        "bubbles": true
+      }
+    ],
+    "interface": "KeyboardEvent"
+  },
+  {
+    "href": "https://dom.spec.whatwg.org/#eventdef-abortsignal-abort",
+    "type": "abort",
+    "targets": [
+      {
+        "target": "AbortSignal"
+      }
+    ],
+    "interface": "Event"
+  }
+]

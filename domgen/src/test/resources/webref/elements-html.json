@@ -1,0 +1,28 @@
+{
+  "spec": {
+    "title": "HTML Standard",
+    "url": "https://html.spec.whatwg.org/multipage/"
+  },
+  "elements": [
+    {
+      "name": "div",
+      "href": "https://html.spec.whatwg.org/multipage/grouping-content.html#the-div-element",
+      "interface": "HTMLDivElement"
+    },
+    {
+      "name": "input",
+      "href": "https://html.spec.whatwg.org/multipage/input.html#the-input-element",
+      "interface": "HTMLInputElement"
+    },
+    {
+      "name": "br",
+      "href": "https://html.spec.whatwg.org/multipage/text-level-semantics.html#the-br-element",
+      "interface": "HTMLBRElement"
+    },
+    {
+      "name": "span",
+      "href": "https://html.spec.whatwg.org/multipage/text-level-semantics.html#the-span-element",
+      "interface": "HTMLSpanElement"
+    }
+  ]
+}

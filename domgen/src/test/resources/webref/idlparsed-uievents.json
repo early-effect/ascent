@@ -1,0 +1,60 @@
+{
+  "spec": {
+    "title": "UI Events",
+    "url": "https://w3c.github.io/uievents/"
+  },
+  "idlparsed": {
+    "idlNames": {
+      "Event": {
+        "type": "interface",
+        "name": "Event",
+        "inheritance": null,
+        "members": [
+          { "type": "attribute", "name": "type", "idlType": { "type": "attribute-type", "nullable": false, "union": false, "idlType": "DOMString" } },
+          { "type": "attribute", "name": "bubbles", "idlType": { "type": "attribute-type", "nullable": false, "union": false, "idlType": "boolean" } }
+        ]
+      },
+      "UIEvent": {
+        "type": "interface",
+        "name": "UIEvent",
+        "inheritance": "Event",
+        "members": [
+          { "type": "attribute", "name": "detail", "idlType": { "type": "attribute-type", "nullable": false, "union": false, "idlType": "long" } }
+        ]
+      },
+      "MouseEvent": {
+        "type": "interface",
+        "name": "MouseEvent",
+        "inheritance": "UIEvent",
+        "members": [
+          { "type": "attribute", "name": "clientX", "idlType": { "type": "attribute-type", "nullable": false, "union": false, "idlType": "double" } },
+          { "type": "attribute", "name": "clientY", "idlType": { "type": "attribute-type", "nullable": false, "union": false, "idlType": "double" } }
+        ]
+      },
+      "KeyboardEvent": {
+        "type": "interface",
+        "name": "KeyboardEvent",
+        "inheritance": "UIEvent",
+        "members": [
+          { "type": "attribute", "name": "key", "idlType": { "type": "attribute-type", "nullable": false, "union": false, "idlType": "DOMString" } }
+        ]
+      },
+      "PointerEvent": {
+        "type": "interface",
+        "name": "PointerEvent",
+        "inheritance": "MouseEvent",
+        "members": [
+          { "type": "attribute", "name": "pointerId", "idlType": { "type": "attribute-type", "nullable": false, "union": false, "idlType": "long" } }
+        ]
+      },
+      "InputEvent": {
+        "type": "interface",
+        "name": "InputEvent",
+        "inheritance": "UIEvent",
+        "members": [
+          { "type": "attribute", "name": "data", "idlType": { "type": "attribute-type", "nullable": true, "union": false, "idlType": "DOMString" } }
+        ]
+      }
+    }
+  }
+}
