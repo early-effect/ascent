@@ -1,11 +1,8 @@
 version: 2
+# Note: this is an sbt (build.sbt) project. Dependabot's "maven" ecosystem only reads pom.xml /
+# Gradle, so it can't parse our sbt build — enabling it just fails every run with
+# "/pom.xml not found". Scala/sbt dependency bumps are handled by Scala Steward instead.
 updates:
-  - package-ecosystem: "maven"
-    directory: "/"
-    schedule:
-      interval: "weekly"
-    open-pull-requests-limit: 10
-
   - package-ecosystem: "github-actions"
     directory: "/"
     schedule:
