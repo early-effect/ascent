@@ -4,10 +4,11 @@
 [![Maven Central](https://img.shields.io/maven-central/v/rocks.earlyeffect/ascent-core_3?logo=apachemaven)](https://central.sonatype.com/artifact/rocks.earlyeffect/ascent-core_3)
 [![License: Apache 2.0](https://img.shields.io/badge/License-Apache_2.0-blue.svg)](LICENSE)
 
-A reactive UI library for **Scala 3** that renders directly to the DOM — no virtual DOM, no
-diffing. ascent builds a pure UI tree once, then surgically patches the exact node, attribute, or
-child-list behind each reactive boundary. The reactive substrate is **ZIO**, so effects, typed
-errors, and resource lifetimes are first-class rather than bolted on.
+**Effect-native** reactive UI for **Scala 3**. ascent renders straight to the DOM — no virtual DOM,
+no diffing — building a pure UI tree once, then surgically patching the exact node, attribute, or
+child-list behind each reactive boundary. The substrate is **ZIO**, so effects, typed errors, and
+resource-safe lifecycles are first-class rather than bolted on: you build your UI the way you build
+the rest of your ZIO app.
 
 > **Status: early / pre-1.0.** Published under [early-semver](https://www.scala-sbt.org/1.x/docs/Publishing.html#Version+scheme)
 > (`versionScheme := "early-semver"`) — the API can change between minor versions until `1.0`. See [Status](#status).
