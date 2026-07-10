@@ -9,7 +9,8 @@ diffing. ascent builds a pure UI tree once, then surgically patches the exact no
 child-list behind each reactive boundary. The reactive substrate is **ZIO**, so effects, typed
 errors, and resource lifetimes are first-class rather than bolted on.
 
-> Status: early, evolving (`0.1.0-SNAPSHOT`). The API is settling but not yet frozen.
+> **Status: early / pre-1.0.** Published under [early-semver](https://www.scala-sbt.org/1.x/docs/Publishing.html#Version+scheme)
+> (`versionScheme := "early-semver"`) — the API can change between minor versions until `1.0`. See [Status](#status).
 
 ```scala
 import ascent.*
@@ -167,6 +168,24 @@ libraryDependencies += "rocks.earlyeffect" %%% "ascent-css"  % "<version>"  // t
 
 Other modules follow the same `ascent-<module>` naming (e.g. `ascent-html`, `ascent-conduit`,
 `ascent-datastar`) — see the module table below. On a plain JVM-only build use `%%` instead of `%%%`.
+
+## Status
+
+ascent is early and evolving. It's well-tested (1000+ zio-test cases across JVM/JS/Native, leaning
+on negative and pathological cases) and used to build real apps, but pre-1.0 the API is not frozen —
+expect breaking changes between minor versions (that's what the `early-semver` scheme signals).
+
+A few things to know before adopting:
+
+- **Some modules are low-level plumbing.** `ascent-dom-core`, `ascent-mount-engine`, and
+  `ascent-dom-facade` are engine internals that other modules depend on transitively — they're
+  published so consumers resolve, not because you'll typically depend on them directly. Most apps
+  use `ascent-core` + `ascent-js` (+ `ascent-css`, and `ascent-conduit` for state).
+- **Docs are a work in progress.** Full documentation is coming — authored as runnable, tested
+  examples and rendered with ascent itself, via the forthcoming
+  [specular](https://github.com/early-effect) tests-as-docs generator (a docs page is a Scala
+  `Spec` that both asserts in CI and SSR-renders through ascent, so examples can't drift). For now,
+  the [example app](#run-the-example) and the module table below are the best starting points.
 
 ## Run the example
 
