@@ -157,5 +157,18 @@ object HtmlRenderSpec extends ZIOSpecDefault:
         stripIds(html) == """<section id="a&quot;b" data-ascent-server-region="a&quot;b"></section>"""
       )
     },
+    test("renderPretty indents element children (Serialize.pretty)") {
+      val ui = el(
+        "div",
+        children = Vector(
+          el("h1", children = Vector(UI.Text("Hello"))),
+          el("p", children = Vector(UI.Text("world"))),
+        ),
+      )
+      for html <- Html.renderPretty(ui)
+      yield assertTrue(
+        stripIds(html) == "<div>\n  <h1>Hello</h1>\n  <p>world</p>\n</div>"
+      )
+    },
   )
 end HtmlRenderSpec

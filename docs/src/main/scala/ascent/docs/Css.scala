@@ -8,13 +8,6 @@ import zio.test.*
 /** CSS-in-Scala: Styles, CssClass, style sink. */
 object Css extends DocSpec:
 
-  object Card
-      extends CssClass(
-        S.padding.px(16),
-        S.display.flex,
-        Selector(":hover", S.color("cyan")),
-      )
-
   def doc = page("CSS")(
     md"""
 `ascent-css` is typed CSS-in-Scala: property objects, classes, and at-rules. Authoring is
@@ -27,9 +20,22 @@ Use `S.padding.px(8)`, `S.display.flex`, and nested `Selector`s. Extend `CssClas
 object as an element arg; `E.div(Card, "hello")`.
 """,
       example {
+        object Card
+            extends CssClass(
+              S.padding.px(16),
+              S.display.flex,
+              Selector(":hover", S.color("cyan")),
+            )
+
         E.div(Card, "hello")
       }.assert(ui => assertTrue(ui != null)),
       exampleValue {
+        object Card
+            extends CssClass(
+              S.padding.px(16),
+              S.display.flex,
+            )
+
         Card.className.nonEmpty
       }.assert(ok => assertTrue(ok)),
     ),

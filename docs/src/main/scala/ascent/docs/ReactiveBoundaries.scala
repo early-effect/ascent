@@ -9,7 +9,9 @@ import zio.test.*
 /** when, forEach, forEachSignal, scoped. */
 object ReactiveBoundaries extends DocSpec:
 
-  final case class Row(id: String, n: Int) derives Eq
+  // Object-level: Specular's example macros cannot splice a local case class (field refs escape the quote).
+  // The md fence below repeats the type so the page still shows the full shape.
+  private case class Row(id: String, n: Int) derives Eq
 
   def doc = page("Reactive boundaries")(
     md"""
@@ -46,7 +48,11 @@ function is identity; the render fn builds from a snapshot value.
       md"""
 Like `forEach`, but each row holds a persistent `Squawk[A]` fed new values; rows never rebuild;
 only boundaries bound to changed fields repaint. Prefer this when row UIs are heavy or hold
-local state.
+local state. `Eq[A]` gates the per-row dedup (`derives Eq` on the row type).
+
+```scala
+case class Row(id: String, n: Int) derives Eq
+```
 """,
       exampleIO {
         for items <- sq(Seq(Row("1", 1), Row("2", 2)))

@@ -132,9 +132,11 @@ val ascentMavenExclusions = Seq(
 def specularLib(artifact: String) =
   ("rocks.earlyeffect" %% artifact % specularVersion).excludeAll(ascentMavenExclusions*)
 
-/** Prefer local ascent over any Maven copy that still slips through exclusions. */
+/** Prefer local ascent over any Maven copy that still slips through specularLib exclusions.
+  * Do not use excludeDependencies here: it also strips local dependsOn modules (conduit, datastar-http)
+  * from the docs classpath.
+  */
 val docsDogfoodSettings = Def.settings(
-  excludeDependencies ++= ascentMavenExclusions,
   libraryDependencySchemes ++= Seq(
     "rocks.earlyeffect" %% "ascent-core"          % "always",
     "rocks.earlyeffect" %% "ascent-css"           % "always",

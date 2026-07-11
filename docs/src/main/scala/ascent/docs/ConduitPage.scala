@@ -10,6 +10,8 @@ import zio.test.*
 /** Optional conduit bridge: Ctx, squawk paths, dispatch. */
 object ConduitPage extends DocSpec:
 
+  // Object-level so `derives Optics` typechecks (local classes inside Specular example macros do not).
+  // The same definitions are repeated in the md fence below so the page still shows the full shape.
   case class Model(draft: String, count: Int) derives Optics
 
   enum Action extends _root_.conduit.Action:
@@ -29,6 +31,20 @@ For application state, ascent ships an **optional** bridge to
 [conduit](https://github.com/russwyte/conduit). Views never see conduit directly: they receive a
 `Ctx[M]` and speak two verbs; `ctx.squawk(_.path)` and `ctx(action)`. Put the model and handlers
 in one file; view files import only `ascent.*`.
+
+```scala
+case class Model(draft: String, count: Int) derives Optics
+
+enum Action extends conduit.Action:
+  case SetDraft(text: String)
+  case Inc
+
+val M = Optics[Model]
+val handler: ActionHandler[Model, Model, Nothing] =
+  handle[Model, Model, Nothing](M):
+    case Action.SetDraft(t) => focus(_.draft)(updated(t))
+    case Action.Inc         => focus(_.count)(update(_ + 1))
+```
 """,
     section("Ctx verbs")(
       md"""
