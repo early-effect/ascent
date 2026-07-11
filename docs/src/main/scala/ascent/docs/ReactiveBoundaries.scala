@@ -23,8 +23,7 @@ already-populated later siblings.
 fresh on each true-transition so per-render local state stays correct.
 """,
       exampleIO {
-        for
-          open <- sq(true)
+        for open <- sq(true)
         yield E.div(
           E.button(Events.onClick(_ => open.update(!_)), "toggle"),
           when(open)(E.p("visible")),
@@ -39,7 +38,7 @@ function is identity; the render fn builds from a snapshot value.
       exampleIO {
         for items <- sq(Seq("a", "b", "c"))
         yield E.ul(
-          forEach(items)(identity)(s => E.li(s)),
+          forEach(items)(identity)(s => E.li(s))
         )
       }.interactive.assert(_ => assertTrue(true)),
     ),
@@ -54,7 +53,7 @@ local state.
         yield E.ul(
           forEachSignal(items)(_.id) { (id, _, signal) =>
             E.li(id, ": ", signal.map(_.n.toString))
-          },
+          }
         )
       }.assert(_ => assertTrue(true)),
     ),

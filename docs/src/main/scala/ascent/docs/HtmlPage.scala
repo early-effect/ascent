@@ -34,7 +34,7 @@ the same `IdMode`.
 """,
       exampleZIO {
         for
-          n  <- sq(3)
+          n    <- sq(3)
           html <- Html.render(E.span(n.map(_.toString)))
         yield html
       }.assert(html => assertTrue(html.contains("3"))),

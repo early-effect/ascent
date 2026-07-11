@@ -25,14 +25,14 @@ server fills it with `AscentDatastar.patchRegion("messages", ui)`.
           serverRegion("messages"),
           E.input(A.placeholder("type…")),
         )
-      }.assert(_ => assertTrue(true)),
+      }.assert(_ => assertTrue(true))
     ),
     section("Server patchRegion")(
       md"""
 `patchRegion` targets `#id` with inner mode by default; the same id the client mounted.
 """,
       exampleZIO {
-        val list = E.ul(E.li("hello"), E.li("world"))
+        val list                                            = E.ul(E.li("hello"), E.li("world"))
         val handler0: Handler[Datastar, Nothing, Any, Unit] = Handler.fromZIO {
           AscentDatastar.patchRegion("messages", list)
         }

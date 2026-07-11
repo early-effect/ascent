@@ -28,7 +28,7 @@ published so consumers resolve transitively.
             E.tr(E.td(E.code("ascent-datastar-http")), E.td("zio-http datastar server bridge")),
           ),
         )
-      }.assert(_ => assertTrue(true)),
+      }.assert(_ => assertTrue(true))
     ),
     section("Internals (transitive)")(
       md"""

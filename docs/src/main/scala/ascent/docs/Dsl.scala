@@ -48,7 +48,7 @@ the dispatch stack (`preventDefault`, drag-and-drop).
     section("ARIA")(
       example {
         E.button(Aria.ariaLabel("Close"), Aria.role("button"), "×")
-      }.assert(_ => assertTrue(true)),
+      }.assert(_ => assertTrue(true))
     ),
   )
 end Dsl

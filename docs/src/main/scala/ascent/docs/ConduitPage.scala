@@ -38,7 +38,7 @@ are available.
 """,
       exampleZIO {
         for
-          c   <- Conduit(Model("", 0))(handler)
+          c <- Conduit(Model("", 0))(handler)
           ctx = c.ctx
           _   <- ctx(Action.SetDraft("hi"))
           _   <- c.run()
@@ -49,14 +49,14 @@ are available.
     section("View shape")(
       exampleIO {
         for
-          c   <- Conduit(Model("", 0))(handler)
+          c <- Conduit(Model("", 0))(handler)
           ctx = c.ctx
           draft <- ctx.squawk(_.draft)
         yield E.input(
           A.value(draft),
           Events.onInput(e => ctx(Action.SetDraft(e.targetValue.getOrElse("")))),
         )
-      }.assert(_ => assertTrue(true)),
+      }.assert(_ => assertTrue(true))
     ),
     section("Element-scoped subscriptions")(
       md"""

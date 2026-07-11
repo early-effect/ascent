@@ -42,7 +42,13 @@ See [Datastar HTTP](datastar-http.html) for SSE routes and [Hybrid regions](hybr
 for `serverRegion` + `patchRegion`.
 """,
       example {
-        E.p("Client apps depend on ", E.code("ascent-datastar-js"), "; servers on ", E.code("ascent-datastar-http"), ".")
+        E.p(
+          "Client apps depend on ",
+          E.code("ascent-datastar-js"),
+          "; servers on ",
+          E.code("ascent-datastar-http"),
+          ".",
+        )
       }.assert(_ => assertTrue(true)),
     ),
   )

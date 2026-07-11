@@ -8,11 +8,12 @@ import zio.test.*
 /** CSS-in-Scala: Styles, CssClass, style sink. */
 object Css extends DocSpec:
 
-  object Card extends CssClass(
-    S.padding.px(16),
-    S.display.flex,
-    Selector(":hover", S.color("cyan")),
-  )
+  object Card
+      extends CssClass(
+        S.padding.px(16),
+        S.display.flex,
+        Selector(":hover", S.color("cyan")),
+      )
 
   def doc = page("CSS")(
     md"""

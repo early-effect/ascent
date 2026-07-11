@@ -14,15 +14,15 @@ object DocServers:
 
   /** Counter SSE + increment (mirrors example/datastar-app-server).
     *
-    * The `Server` layer is provided around the whole effect so the bind stays up until `use` finishes
-    * (install alone must not close the server).
+    * The `Server` layer is provided around the whole effect so the bind stays up until `use` finishes (install alone
+    * must not close the server).
     */
   def withCounter[R, E, A](use: String => ZIO[R, E, A]): ZIO[R & Scope, E | Throwable, A] =
     (for
       count <- Ref.make(0)
       pulse <- Hub.unbounded[Unit]
       state = State(count, pulse)
-      port  <- Server.install(counterRoutes(state))
+      port   <- Server.install(counterRoutes(state))
       result <- use(s"http://localhost:$port")
     yield result).provideSomeLayer[R & Scope](Server.defaultWith(_.port(0)))
 
