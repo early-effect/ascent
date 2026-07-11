@@ -182,11 +182,12 @@ A few things to know before adopting:
   `ascent-dom-facade` are engine internals that other modules depend on transitively — they're
   published so consumers resolve, not because you'll typically depend on them directly. Most apps
   use `ascent-core` + `ascent-js` (+ `ascent-css`, and `ascent-conduit` for state).
-- **Docs are a work in progress.** Full documentation is coming — authored as runnable, tested
-  examples and rendered with ascent itself, via the forthcoming
-  [specular](https://github.com/early-effect) tests-as-docs generator (a docs page is a Scala
-  `Spec` that both asserts in CI and SSR-renders through ascent, so examples can't drift). For now,
-  the [example app](#run-the-example) and the module table below are the best starting points.
+- **Docs are Specular DocSpecs.** Pages under `docs/` assert under zio-test and SSR-render via
+  [specular](https://github.com/early-effect/specular). Locally: `sbt docs/test` and
+  `sbt docs/specularSite` (output in `target/site`). On `v*` tags (and Docs workflow_dispatch),
+  CI deploys to [early-effect.github.io/ascent](https://early-effect.github.io/ascent/).
+  Until the first Pages deploy, use the local site or the [example apps](#run-the-example) and
+  the module table below.
 
 ## Run the example
 
