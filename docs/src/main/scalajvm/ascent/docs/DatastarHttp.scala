@@ -1,11 +1,11 @@
 package ascent.docs
 
-import ascent.*
 import ascent.datastar.http.AscentDatastar
 import specular.{DocSpec, exampleZIO, md, page, section}
 import zio.*
-import zio.http.{Body, Client, Handler, Request, Status}
-import zio.http.datastar.{Datastar, events}
+import zio.http.*
+import zio.http.datastar.*
+import zio.json.JsonEncoder
 import zio.test.*
 
 /** Server bridge: AscentDatastar over zio-http, with a Scope-bound test server. */
@@ -42,11 +42,36 @@ End-to-end against an in-process server (ephemeral port, scoped to the example):
 succeeds while the server is live, then the Scope closes and the port is released.
 """,
       exampleZIO {
-        DocServers
-          .withCounter { base =>
-            Client.batched(Request.post(s"$base/increment", Body.empty)).map(_.status)
-          }
-          .provideSomeLayer(Client.default)
+        case class State(count: Ref[Int], pulse: Hub[Unit])
+
+        def pushCount(state: State): ZIO[Datastar, Nothing, Unit] =
+          state.count.get.flatMap(c => AscentDatastar.patchSignal("count", c)(using JsonEncoder.int))
+
+        def routes(state: State): Routes[Any, Nothing] =
+          Routes(
+            Method.GET / "sse" -> events {
+              handler { (_: Request) =>
+                for
+                  _      <- pushCount(state)
+                  stream <- state.pulse.subscribe.map(zio.stream.ZStream.fromQueue(_))
+                  _      <- stream.mapZIO(_ => pushCount(state)).runDrain
+                yield ()
+              }
+            },
+            Method.POST / "increment" -> handler { (_: Request) =>
+              (state.count.update(_ + 1) *> state.pulse.publish(()).unit).as(Response.ok)
+            },
+          ).sandbox
+
+        (for
+          count <- Ref.make(0)
+          pulse <- Hub.unbounded[Unit]
+          state = State(count, pulse)
+          port <- Server.install(routes(state))
+          base = s"http://localhost:$port"
+          st <- Client.batched(Request.post(s"$base/increment", Body.empty)).map(_.status)
+        yield st)
+          .provideSomeLayer(Server.defaultWith(_.port(0)) ++ Client.default)
           .orDie
       }.assert(st => assertTrue(st == Status.Ok)),
     ),

@@ -2,6 +2,7 @@ package ascent.html
 
 import ascent.ast.{IdMode, UI}
 import ascent.css.{StyleRegistry, StyleSink}
+import ascent.domcore.Serialize
 import ascent.domcore.generated.{Element, HTMLInputElement, HTMLSelectElement, HTMLTextAreaElement, Node}
 import ascent.js.{InMemoryDomOps, Mount}
 import zio.*
@@ -28,12 +29,24 @@ object Html:
   final case class Page(html: String, css: String)
 
   /** Render `ui` to an HTML string snapshot. Requires the environment `R` only because [[UI.Scoped]] builders may need
-    * it; a fully-static `UI[Any]` renders as a plain `UIO[String]`.
+    * it; a fully-static `UI[Any]` renders as a plain `UIO[String]`. Compact `innerHTML` (no incidental whitespace) —
+    * the form morph/patch consume.
     */
   def render[R](ui: UI[R], idMode: IdMode = IdMode.HashWithRegistry): URIO[R, String] =
     // A per-render registry over the noop sink: SSR gathers CSS from its snapshot (see renderPage), not by
     // injecting <style> during the build. Fresh per call, so nothing leaks between renders.
-    StyleRegistry.make(StyleSink.noop).flatMap(mountToString(ui, idMode, _))
+    StyleRegistry.make(StyleSink.noop).flatMap(mountThen(ui, idMode, _)(_.innerHTML.asInstanceOf[String]))
+
+  /** Indented, human-readable snapshot via [[Serialize.pretty]]. For docs and debugging only — newlines would become
+    * text nodes if fed back through morph/patch. Prefer [[render]] for production SSR.
+    */
+  def renderPretty[R](ui: UI[R], idMode: IdMode = IdMode.HashWithRegistry): URIO[R, String] =
+    StyleRegistry
+      .make(StyleSink.noop)
+      .flatMap(mountThen(ui, idMode, _) { root =>
+        val kids = root.children
+        (0 until kids.length).map(i => Serialize.pretty(kids.item(i))).mkString("\n")
+      })
 
   /** Render `ui` plus the CSS its tree references. Returns both so a server can inline a `<style>` or serve the CSS
     * separately. Fully isolated per render: the CSS is exactly the styles THIS `ui` touched — a concurrent render of a
@@ -42,23 +55,36 @@ object Html:
   def renderPage[R](ui: UI[R], idMode: IdMode = IdMode.HashWithRegistry): URIO[R, Page] =
     for
       registry <- StyleRegistry.make(StyleSink.noop)
-      html     <- mountToString(ui, idMode, registry)
+      html     <- mountThen(ui, idMode, registry)(_.innerHTML.asInstanceOf[String])
       blocks   <- registry.snapshot
     yield Page(html, blocks.map(_._2).mkString("\n"))
 
-  /** Mount `ui` into a throwaway in-memory tree against `registry`, reflect form state, and serialize `root.innerHTML`.
+  /** Like [[renderPage]], but the HTML field is [[renderPretty]] output. */
+  def renderPagePretty[R](ui: UI[R], idMode: IdMode = IdMode.HashWithRegistry): URIO[R, Page] =
+    for
+      registry <- StyleRegistry.make(StyleSink.noop)
+      html     <- mountThen(ui, idMode, registry) { root =>
+        val kids = root.children
+        (0 until kids.length).map(i => Serialize.pretty(kids.item(i))).mkString("\n")
+      }
+      blocks <- registry.snapshot
+    yield Page(html, blocks.map(_._2).mkString("\n"))
+
+  /** Mount `ui` into a throwaway in-memory tree against `registry`, reflect form state, then `serialize` the root.
     */
-  private def mountToString[R](ui: UI[R], idMode: IdMode, registry: StyleRegistry): URIO[R, String] =
+  private def mountThen[R, A](ui: UI[R], idMode: IdMode, registry: StyleRegistry)(
+      serialize: Element => A
+  ): URIO[R, A] =
     val (doc, ops0)                      = InMemoryDomOps.make()
     given DomOps: ascent.js.DomOps[Node] = ops0
-    // A disposable root to mount into; we serialize its children (root.innerHTML), so the root wrapper
-    // itself never appears in the output — just `ui`'s own markup.
+    // A disposable root to mount into; we serialize its children, so the root wrapper itself never appears
+    // in the output — just `ui`'s own markup.
     val root: Node = doc.createElement("div", "")
     for
       _ <- Mount.mount(ui, root, idMode).provideSomeLayer[R](ZLayer.succeed(registry))
       _ <- ZIO.succeed(reflectFormState(root))
-    yield root.asInstanceOf[Element].innerHTML.asInstanceOf[String]
-  end mountToString
+    yield serialize(root.asInstanceOf[Element])
+  end mountThen
 
   /** Reflect live form-control properties into content attributes across the mounted tree, so the serialized markup
     * carries current form state for the datastar morph (which diffs attributes). `value` → `value` attr on

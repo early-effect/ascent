@@ -734,7 +734,7 @@ object Mount:
       cleanup: Subscriptions,
   )(using runtime: Runtime[R], ops: DomOps[N]): UIO[Unit] =
     for
-      token <- ZIO.succeed {
+      listenerToken <- ZIO.succeed {
         ops.addListener(
           el,
           event,
@@ -746,7 +746,7 @@ object Mount:
             },
         )
       }
-      sub <- Subscription.make(ZIO.succeed(ops.removeListener(el, event, token)))
+      sub <- Subscription.make(ZIO.succeed(ops.removeListener(el, event, listenerToken)))
       _   <- cleanup.add(sub)
     yield ()
 

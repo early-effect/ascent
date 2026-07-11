@@ -221,6 +221,7 @@ toggling one item doesn't rebuild the others — that's the surgical patching.
 ```bash
 sbt test                       # full cross-platform suite (JVM / JS / Native)
 sbt todoConduitJS/fastLinkJS   # link the example without a browser
+./scripts/install-git-hooks    # once per clone: pre-commit runs scalafmtCheckAll
 ```
 
 ascent is built with Scala 3 and cross-compiled to **JVM, Scala.js, and Scala Native** via
