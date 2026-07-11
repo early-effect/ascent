@@ -18,7 +18,7 @@ permissions:
   contents: read
 
 env:
-  JAVA_OPTS: -Dfile.encoding=UTF-8
+  JAVA_OPTS: -Dfile.encoding=UTF-8 -Dsbt.experimental_execution_log=true
 
 jobs:
   build:
@@ -114,6 +114,51 @@ jobs:
           else
             sbt -v "scalafmtCheckAll; testFull"
           fi
+
+      # Summarize sbt 2 action-cache hits from the experimental execution log.
+      - name: Summarize sbt cache hits
+        if: always()
+        shell: bash
+        run: |
+          log_dir=target/global-logging
+          if [ ! -d "$log_dir" ]; then
+            echo "No execution log at $log_dir"
+            exit 0
+          fi
+          echo "Execution log files:"
+          find "$log_dir" -type f | head -50
+          hits=$(grep -R --include='*.json' -c '"cacheHit": true' "$log_dir" 2>/dev/null | awk -F: '{s+=$2} END {print s+0}')
+          misses=$(grep -R --include='*.json' -c '"cacheHit": false' "$log_dir" 2>/dev/null | awk -F: '{s+=$2} END {print s+0}')
+          echo "cacheHit true:  $hits"
+          echo "cacheHit false: $misses"
+          echo "--- sample misses (first 20) ---"
+          grep -R --include='*.json' -l '"cacheHit": false' "$log_dir" 2>/dev/null | head -20 | while read -r f; do
+            echo "== $f =="
+            # Prefer a short digest + str snippet when present
+            python3 - "$f" <<'PY' || true
+import json, sys
+p = sys.argv[1]
+try:
+    d = json.load(open(p))
+except Exception as e:
+    print(e)
+    sys.exit(0)
+inp = d.get("input") or {}
+print("digest:", inp.get("digest"))
+s = inp.get("str") or ""
+print("str:", s[:300].replace("\n", " "))
+print("outputs:", len(d.get("outputs") or []))
+PY
+          done
+
+      - name: Upload sbt execution log
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        with:
+          name: sbt-execution-log
+          path: target/global-logging
+          if-no-files-found: warn
+          retention-days: 7
 
       # Persist even when the job fails; otherwise a red PR never warms the next push.
       - name: Save sbt action cache
