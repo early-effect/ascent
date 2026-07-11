@@ -97,6 +97,21 @@ val jsdomTestEnv = Def.settings(
   Test / jsEnv := Def.uncached(new org.scalajs.jsenv.jsdomnodejs.JSDOMNodeJSEnv())
 )
 
+val specularVersion = "0.3.0"
+
+/** Specular pulls published ascent jars; docs depend on local modules instead, so exclude the transitive ones. */
+def specularLib(artifact: String) =
+  ("rocks.earlyeffect" %% artifact % specularVersion)
+    .excludeAll(
+      ExclusionRule("rocks.earlyeffect", "ascent-core_3"),
+      ExclusionRule("rocks.earlyeffect", "ascent-core_sjs1_3"),
+      ExclusionRule("rocks.earlyeffect", "ascent-css_3"),
+      ExclusionRule("rocks.earlyeffect", "ascent-css_sjs1_3"),
+      ExclusionRule("rocks.earlyeffect", "ascent-html_3"),
+      ExclusionRule("rocks.earlyeffect", "ascent-html_sjs1_3"),
+      ExclusionRule("rocks.earlyeffect", "ascent-js_sjs1_3"),
+    )
+
 lazy val root = (project in file("."))
   .aggregate(
     (domTypes.projectRefs ++ core.projectRefs ++ domFacade.projectRefs ++ domCore.projectRefs ++
@@ -105,7 +120,7 @@ lazy val root = (project in file("."))
       html.projectRefs ++ datastar.projectRefs ++ datastarJs.projectRefs ++
       datastarHttp.projectRefs ++ datastarExample.projectRefs ++ datastarExampleServer.projectRefs ++
       hybridChat.projectRefs ++ hybridChatServer.projectRefs ++
-      todoConduit.projectRefs) *
+      todoConduit.projectRefs ++ docs.projectRefs) *
   )
   .settings(
     name           := "ascent",
@@ -431,3 +446,65 @@ lazy val hybridChatServer = (projectMatrix in file("example/hybrid-chat-server")
     libraryDependencies += "com.aayushatharva.brotli4j" % "brotli4j" % "1.23.0",
   )
   .jvmPlatform(scalaVersions = scalaVersions)
+
+// --- ascent-docs : Specular DocSpecs + static site (JVM) and interactive client (JS) ---
+lazy val docs: ProjectMatrix = (projectMatrix in file("docs"))
+  .dependsOn(core, css, conduitBridge, html, datastar)
+  .settings(
+    name           := "ascent-docs",
+    publish / skip := true,
+    scalacOptions ++= commonScalacOptions,
+    description    := "Effect-native reactive UI for Scala 3; docs site",
+  )
+  .jvmPlatform(
+    scalaVersions,
+    Nil,
+    (p: Project) =>
+      p.dependsOn(datastarHttp.jvm(scala3Version))
+        .enablePlugins(SpecularPlugin)
+        .settings(
+          libraryDependencies ++= Seq(
+            specularLib("specular-core"),
+            specularLib("specular-zio-test"),
+            specularLib("specular-site"),
+            "rocks.earlyeffect" %% "early-effect-docs-theme" % specularVersion,
+            "dev.zio"           %% "zio-test"                % zioVersion,
+            "dev.zio"           %% "zio-test-sbt"            % zioVersion,
+          ),
+          zioTestSettings,
+          Compile / mainClass     := Some("ascent.docs.ServeSite"),
+          run / mainClass         := Some("ascent.docs.ServeSite"),
+          specularBuildMain       := "ascent.docs.BuildSite",
+          specularSiteDirectory   := (ThisBuild / baseDirectory).value / "target" / "site",
+          // Link the JS client and write a marker path BuildSite copies into assets/client.js.
+          specularJsLink := Def.uncached {
+            (LocalProject("docsJS") / Compile / fastLinkJS).value
+            val outDir = (LocalProject("docsJS") / Compile / fastLinkJSOutput).value
+            val mainJs = outDir / "main.js"
+            if !mainJs.exists then
+              sys.error(
+                s"Expected $mainJs after fastLinkJS; directory contains: " +
+                  Option(outDir.list).toSeq.flatten.mkString(", ")
+              )
+            val marker = (ThisBuild / baseDirectory).value / "target" / "specular-client-js.path"
+            IO.write(marker, mainJs.getAbsolutePath)
+            ()
+          },
+        ),
+  )
+  .jsPlatform(
+    scalaVersions,
+    Nil,
+    (p: Project) =>
+      p.dependsOn(js.js(scala3Version))
+        .settings(
+          javaTimePolyfill,
+          libraryDependencies ++= Seq(
+            specularLib("specular-core"),
+            "dev.zio" %% "zio-test" % zioVersion,
+          ),
+          scalaJSUseMainModuleInitializer := true,
+          scalaJSLinkerConfig ~= (_.withModuleKind(ModuleKind.ESModule)),
+          Compile / mainClass := Some("ascent.docs.ClientMain"),
+        ),
+  )
