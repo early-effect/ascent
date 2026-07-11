@@ -1,6 +1,7 @@
 # ascent
 
 [![Scala CI](https://github.com/early-effect/ascent/actions/workflows/scala.yml/badge.svg)](https://github.com/early-effect/ascent/actions/workflows/scala.yml)
+[![Docs](https://img.shields.io/badge/docs-earlyeffect.rocks-blue)](https://www.earlyeffect.rocks/ascent/)
 [![Maven Central](https://img.shields.io/maven-central/v/rocks.earlyeffect/ascent-core_3?logo=apachemaven)](https://central.sonatype.com/artifact/rocks.earlyeffect/ascent-core_3)
 [![License: Apache 2.0](https://img.shields.io/badge/License-Apache_2.0-blue.svg)](LICENSE)
 
@@ -183,11 +184,10 @@ A few things to know before adopting:
   published so consumers resolve, not because you'll typically depend on them directly. Most apps
   use `ascent-core` + `ascent-js` (+ `ascent-css`, and `ascent-conduit` for state).
 - **Docs are Specular DocSpecs.** Pages under `docs/` assert under zio-test and SSR-render via
-  [specular](https://github.com/early-effect/specular). Locally: `sbt docs/test` and
-  `sbt docs/specularSite` (output in `target/site`). On `v*` tags (and Docs workflow_dispatch),
-  CI deploys to [early-effect.github.io/ascent](https://early-effect.github.io/ascent/).
-  Until the first Pages deploy, use the local site or the [example apps](#run-the-example) and
-  the module table below.
+  [specular](https://github.com/early-effect/specular). Browse the site at
+  [earlyeffect.rocks/ascent](https://www.earlyeffect.rocks/ascent/). Locally: `sbt docs/test` and
+  `sbt docs/specularSite` (output in `target/site`). CI deploys on `v*` tags and Docs
+  `workflow_dispatch`.
 
 ## Run the example
 
