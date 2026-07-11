@@ -107,16 +107,21 @@ jobs:
       - name: Install Scala Native build dependencies
         run: sudo apt-get install -y clang libstdc++-12-dev libgc-dev libunwind-dev
 
+      # Pin version so dynver's per-commit SHA (`0.0.0+1-<sha>`) does not land in
+      # exported jar names on the compile classpath (those names are hashed into
+      # CompileInputs2 digests and poison ~/.cache/sbt across pushes).
+      # `set version` overrides dynver for the session; release.yml keeps dynver as-is.
       - name: Build and test
         shell: bash
         run: |
+          pin='set ThisBuild / version := "0.0.0-CI"'
           if [ "${{ steps.opts.outputs.clean }}" = "true" ]; then
-            sbt -v "cleanFull; scalafmtCheckAll; testFull"
+            sbt -v "$pin; cleanFull; scalafmtCheckAll; testFull"
           else
-            sbt -v "scalafmtCheckAll; testFull"
+            sbt -v "$pin; scalafmtCheckAll; testFull"
           fi
 
-      # Summarize sbt 2 action-cache hits from the experimental execution log.
+      # Summarize sbt 2 action-cache hits from the experimental execution log (NDJSON .log).
       - name: Summarize sbt cache hits
         if: always()
         shell: bash
@@ -128,15 +133,56 @@ jobs:
           fi
           echo "Execution log files:"
           find "$log_dir" -type f | head -50
-          hits=$(grep -R --include='*.json' -c '"cacheHit": true' "$log_dir" 2>/dev/null | awk -F: '{s+=$2} END {print s+0}')
-          misses=$(grep -R --include='*.json' -c '"cacheHit": false' "$log_dir" 2>/dev/null | awk -F: '{s+=$2} END {print s+0}')
-          echo "cacheHit true:  $hits"
-          echo "cacheHit false: $misses"
-          echo "--- sample misses (first 20) ---"
-          grep -R --include='*.json' -l '"cacheHit": false' "$log_dir" 2>/dev/null | head -20 | while read -r f; do
-            echo "== $f =="
-            python3 -c 'import json,sys; d=json.load(open(sys.argv[1])); inp=d.get("input") or {}; print("digest:", inp.get("digest")); s=inp.get("str") or ""; print("str:", s[:300].replace("\n"," ")); print("outputs:", len(d.get("outputs") or []))' "$f" || true
-          done
+          python3 - <<'PY'
+          import json, pathlib, collections
+          root = pathlib.Path("target/global-logging")
+          hits = misses = 0
+          by_kind = collections.Counter()
+          compile_hits = compile_misses = 0
+          miss_samples = []
+          for path in root.rglob("*"):
+              if not path.is_file():
+                  continue
+              raw = path.read_text(errors="replace")
+              dec = json.JSONDecoder()
+              i = 0
+              while i < len(raw):
+                  while i < len(raw) and raw[i].isspace():
+                      i += 1
+                  if i >= len(raw):
+                      break
+                  try:
+                      obj, end = dec.raw_decode(raw, i)
+                  except json.JSONDecodeError:
+                      break
+                  i = end
+                  if not isinstance(obj, dict) or "cacheHit" not in obj:
+                      continue
+                  s = ((obj.get("input") or {}).get("str") or "")
+                  kind = s.split("(", 1)[0].strip() if s else "?"
+                  if obj["cacheHit"]:
+                      hits += 1
+                      by_kind[f"hit:{kind}"] += 1
+                      if "CompileInputs2" in s:
+                          compile_hits += 1
+                  else:
+                      misses += 1
+                      by_kind[f"miss:{kind}"] += 1
+                      if "CompileInputs2" in s:
+                          compile_misses += 1
+                          if len(miss_samples) < 8:
+                              miss_samples.append(s[:240].replace("\n", " "))
+          print(f"cacheHit true:  {hits}")
+          print(f"cacheHit false: {misses}")
+          print(f"CompileInputs2 hits={compile_hits} misses={compile_misses}")
+          print("--- top kinds ---")
+          for k, n in by_kind.most_common(20):
+              print(f"  {n:5d}  {k}")
+          if miss_samples:
+              print("--- sample CompileInputs2 misses ---")
+              for s in miss_samples:
+                  print(s)
+          PY
 
       - name: Upload sbt execution log
         if: always()
