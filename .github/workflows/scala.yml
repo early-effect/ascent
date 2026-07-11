@@ -116,9 +116,9 @@ jobs:
         run: |
           pin='set ThisBuild / version := "0.0.0-CI"'
           if [ "${{ steps.opts.outputs.clean }}" = "true" ]; then
-            sbt -v "$pin; cleanFull; scalafmtCheckAll; testFull"
+            sbt -v "$pin; cleanFull; scalafmtCheckAll; compile; testFull"
           else
-            sbt -v "$pin; scalafmtCheckAll; testFull"
+            sbt -v "$pin; scalafmtCheckAll; compile; testFull"
           fi
 
       # Summarize sbt 2 action-cache hits from the experimental execution log (NDJSON .log).

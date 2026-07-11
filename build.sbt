@@ -59,11 +59,6 @@ Global / concurrentRestrictions ++= Seq(
   Tags.limit(Tags.Compile, 4),
 )
 
-// CI opt-in wipe (PR label `clean` / commit `[clean]` / workflow_dispatch). Same as root `clean`
-// today; named so the workflow command reads as an intentional full cache bust.
-addCommandAlias("cleanFull", "clean")
-addCommandAlias("testFull", "test")
-
 // java.time polyfills for Scala.js / Native (ZIO uses java.time.Instant under the hood; the JVM
 // provides it natively, but the JS and Native targets need scala-java-time + tzdb to link). In
 // sbt 2.x plain `%%` appends the project's platform suffix automatically (e.g. `_sjs1`, the role
