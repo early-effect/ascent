@@ -59,6 +59,11 @@ Global / concurrentRestrictions ++= Seq(
   Tags.limit(Tags.Compile, 4),
 )
 
+// CI opt-in wipe (PR label `clean` / commit `[clean]` / workflow_dispatch). Same as root `clean`
+// today; named so the workflow command reads as an intentional full cache bust.
+addCommandAlias("cleanFull", "clean")
+addCommandAlias("testFull", "test")
+
 // java.time polyfills for Scala.js / Native (ZIO uses java.time.Instant under the hood; the JVM
 // provides it natively, but the JS and Native targets need scala-java-time + tzdb to link). In
 // sbt 2.x plain `%%` appends the project's platform suffix automatically (e.g. `_sjs1`, the role
@@ -99,18 +104,51 @@ val jsdomTestEnv = Def.settings(
 
 val specularVersion = "0.3.0"
 
-/** Specular pulls published ascent jars; docs depend on local modules instead, so exclude the transitive ones. */
+/** Published Specular jars depend on Maven Central ascent 0.1.0; the docs module dependsOn local
+  * ascent instead. Strip every ascent-* transitive so coursier does not see two versions under
+  * early-semver (CI dynver is often `0.0.0+…` / `0.1.0+N`, which conflicts with `0.1.0`). */
+val ascentMavenExclusions = Seq(
+  ExclusionRule("rocks.earlyeffect", "ascent-core_3"),
+  ExclusionRule("rocks.earlyeffect", "ascent-core_sjs1_3"),
+  ExclusionRule("rocks.earlyeffect", "ascent-css_3"),
+  ExclusionRule("rocks.earlyeffect", "ascent-css_sjs1_3"),
+  ExclusionRule("rocks.earlyeffect", "ascent-html_3"),
+  ExclusionRule("rocks.earlyeffect", "ascent-html_sjs1_3"),
+  ExclusionRule("rocks.earlyeffect", "ascent-js_sjs1_3"),
+  ExclusionRule("rocks.earlyeffect", "ascent-mount-engine_3"),
+  ExclusionRule("rocks.earlyeffect", "ascent-mount-engine_sjs1_3"),
+  ExclusionRule("rocks.earlyeffect", "ascent-dom-types_3"),
+  ExclusionRule("rocks.earlyeffect", "ascent-dom-types_sjs1_3"),
+  ExclusionRule("rocks.earlyeffect", "ascent-dom-core_3"),
+  ExclusionRule("rocks.earlyeffect", "ascent-dom-core_sjs1_3"),
+  ExclusionRule("rocks.earlyeffect", "ascent-dom-facade_sjs1_3"),
+  ExclusionRule("rocks.earlyeffect", "ascent-conduit_3"),
+  ExclusionRule("rocks.earlyeffect", "ascent-conduit_sjs1_3"),
+  ExclusionRule("rocks.earlyeffect", "ascent-datastar_3"),
+  ExclusionRule("rocks.earlyeffect", "ascent-datastar_sjs1_3"),
+  ExclusionRule("rocks.earlyeffect", "ascent-datastar-http_3"),
+)
+
 def specularLib(artifact: String) =
-  ("rocks.earlyeffect" %% artifact % specularVersion)
-    .excludeAll(
-      ExclusionRule("rocks.earlyeffect", "ascent-core_3"),
-      ExclusionRule("rocks.earlyeffect", "ascent-core_sjs1_3"),
-      ExclusionRule("rocks.earlyeffect", "ascent-css_3"),
-      ExclusionRule("rocks.earlyeffect", "ascent-css_sjs1_3"),
-      ExclusionRule("rocks.earlyeffect", "ascent-html_3"),
-      ExclusionRule("rocks.earlyeffect", "ascent-html_sjs1_3"),
-      ExclusionRule("rocks.earlyeffect", "ascent-js_sjs1_3"),
-    )
+  ("rocks.earlyeffect" %% artifact % specularVersion).excludeAll(ascentMavenExclusions*)
+
+/** Prefer local ascent over any Maven copy that still slips through exclusions. */
+val docsDogfoodSettings = Def.settings(
+  excludeDependencies ++= ascentMavenExclusions,
+  libraryDependencySchemes ++= Seq(
+    "rocks.earlyeffect" %% "ascent-core"          % "always",
+    "rocks.earlyeffect" %% "ascent-css"           % "always",
+    "rocks.earlyeffect" %% "ascent-html"          % "always",
+    "rocks.earlyeffect" %% "ascent-js"            % "always",
+    "rocks.earlyeffect" %% "ascent-mount-engine"  % "always",
+    "rocks.earlyeffect" %% "ascent-dom-types"     % "always",
+    "rocks.earlyeffect" %% "ascent-dom-core"      % "always",
+    "rocks.earlyeffect" %% "ascent-dom-facade"    % "always",
+    "rocks.earlyeffect" %% "ascent-conduit"       % "always",
+    "rocks.earlyeffect" %% "ascent-datastar"      % "always",
+    "rocks.earlyeffect" %% "ascent-datastar-http" % "always",
+  ),
+)
 
 lazy val root = (project in file("."))
   .aggregate(
@@ -463,13 +501,14 @@ lazy val docs: ProjectMatrix = (projectMatrix in file("docs"))
       p.dependsOn(datastarHttp.jvm(scala3Version))
         .enablePlugins(SpecularPlugin)
         .settings(
+          docsDogfoodSettings,
           libraryDependencies ++= Seq(
             specularLib("specular-core"),
             specularLib("specular-zio-test"),
             specularLib("specular-site"),
-            "rocks.earlyeffect" %% "early-effect-docs-theme" % specularVersion,
-            "dev.zio"           %% "zio-test"                % zioVersion,
-            "dev.zio"           %% "zio-test-sbt"            % zioVersion,
+            specularLib("early-effect-docs-theme"),
+            "dev.zio" %% "zio-test"     % zioVersion,
+            "dev.zio" %% "zio-test-sbt" % zioVersion,
           ),
           zioTestSettings,
           Compile / mainClass     := Some("ascent.docs.ServeSite"),
@@ -498,6 +537,7 @@ lazy val docs: ProjectMatrix = (projectMatrix in file("docs"))
     (p: Project) =>
       p.dependsOn(js.js(scala3Version))
         .settings(
+          docsDogfoodSettings,
           javaTimePolyfill,
           libraryDependencies ++= Seq(
             specularLib("specular-core"),
