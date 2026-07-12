@@ -10,16 +10,16 @@ on:
   workflow_dispatch:
     inputs:
       clean:
-        description: Run cleanFull before tests (wipe build + action caches)
+        description: Run cleanFull before tests
         type: boolean
         default: false
 
 permissions:
   contents: read
-  actions: write
+  actions: write # setup-sbt disk-cache (sbt 2 ~/.cache/sbt)
 
 env:
-  JAVA_OPTS: -Dfile.encoding=UTF-8 -Dsbt.experimental_execution_log=true
+  JAVA_OPTS: -Dfile.encoding=UTF-8
 
 jobs:
   build:
@@ -30,7 +30,7 @@ jobs:
         with:
           fetch-depth: 0 # tags for sbt-dynver-ci (`<last-tag>-ci` between releases)
 
-      # Default keeps sbt 2 action cache warm. Opt into a full wipe with:
+      # Default keeps sbt 2 action cache warm via setup-sbt disk-cache. Opt into cleanFull with:
       #   - PR label `clean`
       #   - push commit message containing `[clean]`
       #   - workflow_dispatch input `clean=true`
@@ -58,9 +58,9 @@ jobs:
           esac
           echo "clean=$want_clean" >> "$GITHUB_OUTPUT"
           if [ "$want_clean" = "true" ]; then
-            echo "Will run cleanFull before tests (skip action-cache restore)"
+            echo "Will run cleanFull before tests"
           else
-            echo "Skipping cleanFull (incremental build + sbt action cache)"
+            echo "Incremental build (setup-sbt disk-cache for ~/.cache/sbt)"
           fi
 
       - name: Set up JDK
@@ -68,27 +68,12 @@ jobs:
         with:
           distribution: temurin
           java-version: '25'
-          # Coursier / ivy / ~/.sbt dependency caches only, not sbt 2 task outputs.
           cache: sbt
 
       - name: Set up sbt
         uses: sbt/setup-sbt@66fb4376e81982c7d92a4074170846fff88e2e30 # v1.5.0
-        with:
-          # Explicit ~/.cache/sbt restore/save below (survives failed jobs).
-          # setup-sbt's built-in disk-cache only saves on job success.
-          disk-cache: false
-
-      # sbt 2 action cache (Bazel-style task caching). Lives at ~/.cache/sbt on Linux.
-      - name: Restore sbt action cache
-        if: steps.opts.outputs.clean != 'true'
-        id: sbt-action-cache
-        uses: actions/cache/restore@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6.1.0
-        with:
-          path: ~/.cache/sbt
-          key: ${{ runner.os }}-sbt-action-${{ hashFiles('**/build.sbt', '**/project/*.sbt', '**/project/build.properties') }}-${{ github.sha }}
-          restore-keys: |
-            ${{ runner.os }}-sbt-action-${{ hashFiles('**/build.sbt', '**/project/*.sbt', '**/project/build.properties') }}-
-            ${{ runner.os }}-sbt-action-
+        # disk-cache (default): persists sbt 2 action cache at ~/.cache/sbt across successful jobs.
+        # Stable versions from sbt-dynver-ci keep CompileInputs2 digests cacheable between pushes.
 
       - name: Set up Node
         uses: actions/setup-node@48b55a011bda9f5d6aeb4c2d9c7362e8dae4041e # v6.4.0
@@ -109,8 +94,8 @@ jobs:
       - name: Install Scala Native build dependencies
         run: sudo apt-get install -y clang libstdc++-12-dev libgc-dev libunwind-dev
 
-      # Version comes from sbt-dynver-ci (`<last-tag>-ci` between tags), so jar names
-      # stay stable across pushes and CompileInputs2 digests can hit ~/.cache/sbt.
+      # Version from sbt-dynver-ci (`<last-tag>-ci` between tags) keeps jar names stable so
+      # sbt 2 action-cache digests can hit across pushes.
       - name: Build and test
         shell: bash
         run: |
@@ -119,86 +104,6 @@ jobs:
           else
             sbt -v "scalafmtCheckAll; compile; testFull"
           fi
-
-      # Summarize sbt 2 action-cache hits from the experimental execution log (NDJSON .log).
-      - name: Summarize sbt cache hits
-        if: always()
-        shell: bash
-        run: |
-          log_dir=target/global-logging
-          if [ ! -d "$log_dir" ]; then
-            echo "No execution log at $log_dir"
-            exit 0
-          fi
-          echo "Execution log files:"
-          find "$log_dir" -type f | head -50
-          python3 - <<'PY'
-          import json, pathlib, collections
-          root = pathlib.Path("target/global-logging")
-          hits = misses = 0
-          by_kind = collections.Counter()
-          compile_hits = compile_misses = 0
-          miss_samples = []
-          for path in root.rglob("*"):
-              if not path.is_file():
-                  continue
-              raw = path.read_text(errors="replace")
-              dec = json.JSONDecoder()
-              i = 0
-              while i < len(raw):
-                  while i < len(raw) and raw[i].isspace():
-                      i += 1
-                  if i >= len(raw):
-                      break
-                  try:
-                      obj, end = dec.raw_decode(raw, i)
-                  except json.JSONDecodeError:
-                      break
-                  i = end
-                  if not isinstance(obj, dict) or "cacheHit" not in obj:
-                      continue
-                  s = ((obj.get("input") or {}).get("str") or "")
-                  kind = s.split("(", 1)[0].strip() if s else "?"
-                  if obj["cacheHit"]:
-                      hits += 1
-                      by_kind[f"hit:{kind}"] += 1
-                      if "CompileInputs2" in s:
-                          compile_hits += 1
-                  else:
-                      misses += 1
-                      by_kind[f"miss:{kind}"] += 1
-                      if "CompileInputs2" in s:
-                          compile_misses += 1
-                          if len(miss_samples) < 8:
-                              miss_samples.append(s[:240].replace("\n", " "))
-          print(f"cacheHit true:  {hits}")
-          print(f"cacheHit false: {misses}")
-          print(f"CompileInputs2 hits={compile_hits} misses={compile_misses}")
-          print("--- top kinds ---")
-          for k, n in by_kind.most_common(20):
-              print(f"  {n:5d}  {k}")
-          if miss_samples:
-              print("--- sample CompileInputs2 misses ---")
-              for s in miss_samples:
-                  print(s)
-          PY
-
-      - name: Upload sbt execution log
-        if: always()
-        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
-        with:
-          name: sbt-execution-log
-          path: target/global-logging
-          if-no-files-found: warn
-          retention-days: 7
-
-      # Persist even when the job fails; otherwise a red PR never warms the next push.
-      - name: Save sbt action cache
-        if: always() && steps.sbt-action-cache.outputs.cache-hit != 'true'
-        uses: actions/cache/save@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6.1.0
-        with:
-          path: ~/.cache/sbt
-          key: ${{ runner.os }}-sbt-action-${{ hashFiles('**/build.sbt', '**/project/*.sbt', '**/project/build.properties') }}-${{ github.sha }}
 
   dependency-submission:
     runs-on: ubuntu-latest
@@ -218,8 +123,6 @@ jobs:
 
       - name: Set up sbt
         uses: sbt/setup-sbt@66fb4376e81982c7d92a4074170846fff88e2e30 # v1.5.0
-        with:
-          disk-cache: false
 
       - name: Submit dependency graph
         uses: scalacenter/sbt-dependency-submission@d84eef4c09e633bcf5f113bcad7fd5e9af1baee9 # v3.2.3
