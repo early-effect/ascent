@@ -63,39 +63,6 @@ jobs:
             echo "Skipping cleanFull (incremental build + sbt action cache)"
           fi
 
-      # Default keeps sbt 2 action cache warm. Opt into a full wipe with:
-      #   - PR label `clean`
-      #   - push commit message containing `[clean]`
-      #   - workflow_dispatch input `clean=true`
-      - name: Decide whether to cleanFull
-        id: opts
-        shell: bash
-        run: |
-          want_clean=false
-          case "${{ github.event_name }}" in
-            workflow_dispatch)
-              if [ "${{ inputs.clean }}" = "true" ]; then want_clean=true; fi
-              ;;
-            pull_request)
-              labels='${{ join(github.event.pull_request.labels.*.name, ',') }}'
-              IFS=',' read -ra parts <<< "$labels"
-              for label in "${parts[@]}"; do
-                if [ "$label" = "clean" ]; then want_clean=true; fi
-              done
-              ;;
-            push)
-              if git log -1 --pretty=%B | grep -qE '(^|[[:space:]])\[clean\]([[:space:]]|$)'; then
-                want_clean=true
-              fi
-              ;;
-          esac
-          echo "clean=$want_clean" >> "$GITHUB_OUTPUT"
-          if [ "$want_clean" = "true" ]; then
-            echo "Will run cleanFull before tests (skip action-cache restore)"
-          else
-            echo "Skipping cleanFull (incremental build + sbt action cache)"
-          fi
-
       - name: Set up JDK
         uses: actions/setup-java@0f481fcb613427c0f801b606911222b5b6f3083a # v5.5.0
         with:
