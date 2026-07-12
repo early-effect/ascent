@@ -27,6 +27,8 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
+        with:
+          fetch-depth: 0 # tags for sbt-dynver-ci (`<last-tag>-ci` between releases)
 
       # Default keeps sbt 2 action cache warm. Opt into a full wipe with:
       #   - PR label `clean`
@@ -107,18 +109,15 @@ jobs:
       - name: Install Scala Native build dependencies
         run: sudo apt-get install -y clang libstdc++-12-dev libgc-dev libunwind-dev
 
-      # Pin version so dynver's per-commit SHA (`0.0.0+1-<sha>`) does not land in
-      # exported jar names on the compile classpath (those names are hashed into
-      # CompileInputs2 digests and poison ~/.cache/sbt across pushes).
-      # `set version` overrides dynver for the session; release.yml keeps dynver as-is.
+      # Version comes from sbt-dynver-ci (`<last-tag>-ci` between tags), so jar names
+      # stay stable across pushes and CompileInputs2 digests can hit ~/.cache/sbt.
       - name: Build and test
         shell: bash
         run: |
-          pin='set ThisBuild / version := "0.0.0-CI"'
           if [ "${{ steps.opts.outputs.clean }}" = "true" ]; then
-            sbt -v "$pin; cleanFull; scalafmtCheckAll; compile; testFull"
+            sbt -v "cleanFull; scalafmtCheckAll; compile; testFull"
           else
-            sbt -v "$pin; scalafmtCheckAll; compile; testFull"
+            sbt -v "scalafmtCheckAll; compile; testFull"
           fi
 
       # Summarize sbt 2 action-cache hits from the experimental execution log (NDJSON .log).

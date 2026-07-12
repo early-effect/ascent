@@ -7,7 +7,7 @@ organization         := "rocks.earlyeffect"
 organizationName     := "Early Effect"
 organizationHomepage := Some(url("https://www.earlyeffect.rocks"))
 versionScheme        := Some("early-semver")
-// No hardcoded version — sbt-dynver derives it from the git tag (v0.1.0 -> 0.1.0).
+// No hardcoded version — sbt-dynver-ci: clean tag -> 0.1.0, else <last-tag>-ci (cache-stable).
 
 homepage := Some(url("https://github.com/early-effect/ascent"))
 licenses := Seq("Apache-2.0" -> url("http://www.apache.org/licenses/LICENSE-2.0.txt"))
@@ -101,7 +101,7 @@ val specularVersion = "0.3.0"
 
 /** Published Specular jars depend on Maven Central ascent 0.1.0; the docs module dependsOn local
   * ascent instead. Strip every ascent-* transitive so coursier does not see two versions under
-  * early-semver (CI dynver is often `0.0.0+…` / `0.1.0+N`, which conflicts with `0.1.0`). */
+  * early-semver (CI dynver-ci is often `0.1.0-ci`, which conflicts with a published `0.1.0`). */
 val ascentMavenExclusions = Seq(
   ExclusionRule("rocks.earlyeffect", "ascent-core_3"),
   ExclusionRule("rocks.earlyeffect", "ascent-core_sjs1_3"),
