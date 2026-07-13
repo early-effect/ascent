@@ -6,7 +6,7 @@ addSbtPlugin("org.scalameta"     % "sbt-scalafmt"     % "2.6.1")
 addSbtPlugin("ch.epfl.scala"     % "sbt-scalafix"     % "0.14.7")
 addSbtPlugin("rocks.earlyeffect" % "sbt-dynver-ci"    % "0.1.0")
 addSbtPlugin("com.github.sbt"    % "sbt-pgp"          % "2.3.1")
-addSbtPlugin("rocks.earlyeffect" % "sbt-specular"     % "0.3.0")
+addSbtPlugin("rocks.earlyeffect" % "sbt-specular"     % "0.4.0")
 //addSbtPlugin("org.xerial.sbt"   % "sbt-sonatype"      % "3.12.2")
 
 // jsdom-backed JS test environment for the dom-facade and js modules' Test scope.
