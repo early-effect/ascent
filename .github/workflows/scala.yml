@@ -71,7 +71,7 @@ jobs:
           cache: sbt
 
       - name: Set up sbt
-        uses: sbt/setup-sbt@66fb4376e81982c7d92a4074170846fff88e2e30 # v1.5.0
+        uses: sbt/setup-sbt@9d56cf12e9b58d219605e1d8bfe69a8395fedde0 # v1.5.1
         # disk-cache (default): persists sbt 2 action cache at ~/.cache/sbt across successful jobs.
         # Stable versions from sbt-dynver-ci keep CompileInputs2 digests cacheable between pushes.
 
@@ -122,7 +122,7 @@ jobs:
           cache: sbt
 
       - name: Set up sbt
-        uses: sbt/setup-sbt@66fb4376e81982c7d92a4074170846fff88e2e30 # v1.5.0
+        uses: sbt/setup-sbt@9d56cf12e9b58d219605e1d8bfe69a8395fedde0 # v1.5.1
 
       - name: Submit dependency graph
         uses: scalacenter/sbt-dependency-submission@d84eef4c09e633bcf5f113bcad7fd5e9af1baee9 # v3.2.3
