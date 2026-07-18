@@ -1,3 +1,5 @@
+import scala.collection.immutable.ListMap
+
 val scala3Version = "3.8.4"
 val zioVersion    = "2.1.26"
 
@@ -24,6 +26,64 @@ developers := List(
     "356303+russwyte@users.noreply.github.com",
     url("https://github.com/russwyte"),
   )
+)
+
+// zipx CI: Aggregate verify + Central publish + Specular Pages. Same-name caps replace built-ins.
+zipxJavaVersion      := "25"
+zipxTestTask         := "testFull"
+zipxWorkflowDispatch := true
+
+/** Node (jsdom/canvas) + Scala Native apt deps for the Aggregate test job. */
+val ascentCiSetup: StepContext => List[Step] = _ =>
+  List(
+    Step(
+      name = Some("Set up Node"),
+      uses = Some("actions/setup-node@48b55a011bda9f5d6aeb4c2d9c7362e8dae4041e"), // v6.4.0
+      `with` = ListMap("node-version" -> "24", "cache" -> "npm"),
+    ),
+    Step(
+      name = Some("Install canvas build dependencies"),
+      run = Some(
+        "sudo apt-get update && sudo apt-get install -y libcairo2-dev libpango1.0-dev libjpeg-dev libgif-dev librsvg2-dev"
+      ),
+    ),
+    Step(
+      name = Some("Install Node dependencies (jsdom, canvas)"),
+      run = Some("npm ci"),
+    ),
+    Step(
+      name = Some("Install Scala Native build dependencies"),
+      run = Some("sudo apt-get install -y clang libstdc++-12-dev libgc-dev libunwind-dev"),
+    ),
+  )
+
+zipxCapabilities ++= Seq(
+  Capability.once("fmt", "scalafmtCheckAll; zipxWorkflowCheck"),
+  Capability.once(
+    name = "test",
+    command = "testFull",
+    needsCapabilities = List("fmt"),
+    extraSteps = ascentCiSetup,
+    env = Map("JAVA_OPTS" -> EnvValue.plain("-Dfile.encoding=UTF-8")),
+  ),
+  ZipxCentral.release,
+  ZipxDocs.pages(),
+  Capability.once(
+    name = "dependency-submission",
+    // zipx Once jobs always emit an sbt step. Run the action in extraSteps *before* that step: an earlier
+    // `sbt about` would start a server without GITHUB_TOKEN, and the action's later sbt client would reuse it
+    // (snapshot generates, submit then fails with "Missing environment variable GITHUB_TOKEN").
+    command = "about",
+    needsCapabilities = List("test"),
+    permissions = Map("contents" -> "write"),
+    extraSteps = _ =>
+      List(
+        Step(
+          name = Some("Submit dependency graph"),
+          uses = Some("scalacenter/sbt-dependency-submission@d84eef4c09e633bcf5f113bcad7fd5e9af1baee9"), // v3.2.3
+        )
+      ),
+  ),
 )
 
 // Publishing targets the Sonatype Central Portal, which is built into sbt 2.x (no sbt-sonatype).
@@ -97,7 +157,7 @@ val jsdomTestEnv = Def.settings(
   Test / jsEnv := Def.uncached(new org.scalajs.jsenv.jsdomnodejs.JSDOMNodeJSEnv())
 )
 
-val specularVersion = "0.3.0"
+val specularVersion = "0.5.1"
 
 /** Published Specular jars depend on Maven Central ascent 0.1.0; the docs module dependsOn local
   * ascent instead. Strip every ascent-* transitive so coursier does not see two versions under

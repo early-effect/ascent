@@ -6,8 +6,12 @@ addSbtPlugin("org.scalameta"     % "sbt-scalafmt"     % "2.6.1")
 addSbtPlugin("ch.epfl.scala"     % "sbt-scalafix"     % "0.14.7")
 addSbtPlugin("rocks.earlyeffect" % "sbt-dynver-ci"    % "0.1.0")
 addSbtPlugin("com.github.sbt"    % "sbt-pgp"          % "2.3.1")
-addSbtPlugin("rocks.earlyeffect" % "sbt-specular"     % "0.3.0")
+addSbtPlugin("rocks.earlyeffect" % "sbt-specular"     % "0.5.1")
+addSbtPlugin("rocks.earlyeffect" % "zipx-sbt"         % "0.0.3")
 //addSbtPlugin("org.xerial.sbt"   % "sbt-sonatype"      % "3.12.2")
+
+// zipx bundles sbt-remote-cache; compiler-interface is on both sbt-2.x and zinc-1.x schemes.
+libraryDependencySchemes += "org.scala-sbt" % "compiler-interface" % "always"
 
 // jsdom-backed JS test environment for the dom-facade and js modules' Test scope.
 // `scalajs-env-jsdom-nodejs` has no Scala 3 / sbt-2 artifact, so we vendor its single source
