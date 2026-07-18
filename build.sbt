@@ -70,11 +70,13 @@ zipxCapabilities ++= Seq(
   ZipxDocs.pages(),
   Capability.once(
     name = "dependency-submission",
-    // zipx Once jobs always emit an sbt step; `about` is cheap. The action does the real work in postSteps.
+    // zipx Once jobs always emit an sbt step. Run the action in extraSteps *before* that step: an earlier
+    // `sbt about` would start a server without GITHUB_TOKEN, and the action's later sbt client would reuse it
+    // (snapshot generates, submit then fails with "Missing environment variable GITHUB_TOKEN").
     command = "about",
     needsCapabilities = List("test"),
     permissions = Map("contents" -> "write"),
-    postSteps = _ =>
+    extraSteps = _ =>
       List(
         Step(
           name = Some("Submit dependency graph"),
