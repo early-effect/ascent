@@ -248,7 +248,7 @@ lazy val domgen = (projectMatrix in file("domgen"))
       // scalafmt for Scala 2.13; use it from this Scala 3 build via CrossVersion. scalafmt-dynamic
       // loads the real formatter in its own classloader, so its 2.13 transitives don't belong on our
       // classpath — exclude scala-collection-compat_2.13, which clashes with the _3 already present.
-      ("org.scalameta" %% "scalafmt-dynamic" % "3.11.2")
+      ("org.scalameta" %% "scalafmt-dynamic" % "3.11.4")
         .cross(CrossVersion.for3Use2_13)
         .exclude("org.scala-lang.modules", "scala-collection-compat_2.13"),
     ),
