@@ -572,6 +572,7 @@ lazy val docs: ProjectMatrix = (projectMatrix in file("docs"))
           Compile / mainClass     := Some("ascent.docs.ServeSite"),
           run / mainClass         := Some("ascent.docs.ServeSite"),
           specularBuildMain       := "ascent.docs.BuildSite",
+          specularMetaProject     := Some(LocalProject("root")),
           specularSiteDirectory   := (ThisBuild / baseDirectory).value / "target" / "site",
           // Link the JS client and write a marker path BuildSite copies into assets/client.js.
           specularJsLink := Def.uncached {
