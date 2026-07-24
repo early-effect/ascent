@@ -6,7 +6,7 @@ addSbtPlugin("org.scalameta"     % "sbt-scalafmt"     % "2.6.1")
 addSbtPlugin("ch.epfl.scala"     % "sbt-scalafix"     % "0.14.7")
 addSbtPlugin("rocks.earlyeffect" % "sbt-dynver-ci"    % "0.1.0")
 addSbtPlugin("com.github.sbt"    % "sbt-pgp"          % "2.3.1")
-addSbtPlugin("rocks.earlyeffect" % "sbt-specular"     % "0.6.2")
+addSbtPlugin("rocks.earlyeffect" % "sbt-specular"     % "0.7.1")
 addSbtPlugin("rocks.earlyeffect" % "sbt-zipx"         % "0.0.10")
 //addSbtPlugin("org.xerial.sbt"   % "sbt-sonatype"      % "3.12.2")
 
