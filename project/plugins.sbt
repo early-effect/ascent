@@ -2,7 +2,7 @@
 // plugin is needed for `projectMatrix`/`jvmPlatform`/`jsPlatform`/`nativePlatform`.
 addSbtPlugin("org.scala-js"      % "sbt-scalajs"      % "1.22.0")
 addSbtPlugin("org.scala-native"  % "sbt-scala-native" % "0.5.12")
-addSbtPlugin("org.scalameta"     % "sbt-scalafmt"     % "2.6.1")
+addSbtPlugin("org.scalameta"     % "sbt-scalafmt"     % "2.6.2")
 addSbtPlugin("ch.epfl.scala"     % "sbt-scalafix"     % "0.14.7")
 addSbtPlugin("rocks.earlyeffect" % "sbt-dynver-ci"    % "0.1.0")
 addSbtPlugin("com.github.sbt"    % "sbt-pgp"          % "2.3.1")
