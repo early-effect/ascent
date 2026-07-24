@@ -158,7 +158,7 @@ val jsdomTestEnv = Def.settings(
   Test / jsEnv := Def.uncached(new org.scalajs.jsenv.jsdomnodejs.JSDOMNodeJSEnv())
 )
 
-val specularVersion = "0.6.2"
+val specularVersion = "0.7.1"
 
 /** Published Specular jars depend on Maven Central ascent 0.1.0; the docs module dependsOn local
   * ascent instead. Strip every ascent-* transitive so coursier does not see two versions under
