@@ -32,6 +32,7 @@ developers := List(
 zipxJavaVersion      := "25"
 zipxTestTask         := "testFull"
 zipxWorkflowDispatch := true
+zipxScalaSteward     := true
 
 /** Node (jsdom/canvas) + Scala Native apt deps for the Aggregate test job. */
 val ascentCiSetup: StepContext => List[Step] = _ =>
@@ -157,7 +158,7 @@ val jsdomTestEnv = Def.settings(
   Test / jsEnv := Def.uncached(new org.scalajs.jsenv.jsdomnodejs.JSDOMNodeJSEnv())
 )
 
-val specularVersion = "0.5.1"
+val specularVersion = "0.6.2"
 
 /** Published Specular jars depend on Maven Central ascent 0.1.0; the docs module dependsOn local
   * ascent instead. Strip every ascent-* transitive so coursier does not see two versions under
