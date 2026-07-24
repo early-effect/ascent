@@ -51,7 +51,7 @@ jobs:
         with:
           distribution: temurin
           java-version: "25"
-      - uses: sbt/setup-sbt@9d56cf12e9b58d219605e1d8bfe69a8395fedde0
+      - uses: sbt/setup-sbt@6444f4c8111de4b9059c3975def104b03cfaa5f0
         with:
           disk-cache: "false"
       - name: Cache sbt
@@ -95,7 +95,7 @@ jobs:
         with:
           distribution: temurin
           java-version: "25"
-      - uses: sbt/setup-sbt@9d56cf12e9b58d219605e1d8bfe69a8395fedde0
+      - uses: sbt/setup-sbt@6444f4c8111de4b9059c3975def104b03cfaa5f0
         with:
           disk-cache: "false"
       - name: Cache sbt
@@ -131,7 +131,7 @@ jobs:
         with:
           distribution: temurin
           java-version: "25"
-      - uses: sbt/setup-sbt@9d56cf12e9b58d219605e1d8bfe69a8395fedde0
+      - uses: sbt/setup-sbt@6444f4c8111de4b9059c3975def104b03cfaa5f0
         with:
           disk-cache: "false"
       - name: Cache sbt
@@ -169,7 +169,7 @@ jobs:
         with:
           distribution: temurin
           java-version: "25"
-      - uses: sbt/setup-sbt@9d56cf12e9b58d219605e1d8bfe69a8395fedde0
+      - uses: sbt/setup-sbt@6444f4c8111de4b9059c3975def104b03cfaa5f0
         with:
           disk-cache: "false"
       - name: Cache sbt
