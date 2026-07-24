@@ -32,6 +32,7 @@ developers := List(
 zipxJavaVersion      := "25"
 zipxTestTask         := "testFull"
 zipxWorkflowDispatch := true
+zipxScalaSteward     := true
 
 /** Node (jsdom/canvas) + Scala Native apt deps for the Aggregate test job. */
 val ascentCiSetup: StepContext => List[Step] = _ =>
@@ -157,7 +158,7 @@ val jsdomTestEnv = Def.settings(
   Test / jsEnv := Def.uncached(new org.scalajs.jsenv.jsdomnodejs.JSDOMNodeJSEnv())
 )
 
-val specularVersion = "0.5.1"
+val specularVersion = "0.7.1"
 
 /** Published Specular jars depend on Maven Central ascent 0.1.0; the docs module dependsOn local
   * ascent instead. Strip every ascent-* transitive so coursier does not see two versions under
@@ -248,7 +249,7 @@ lazy val domgen = (projectMatrix in file("domgen"))
       // scalafmt for Scala 2.13; use it from this Scala 3 build via CrossVersion. scalafmt-dynamic
       // loads the real formatter in its own classloader, so its 2.13 transitives don't belong on our
       // classpath — exclude scala-collection-compat_2.13, which clashes with the _3 already present.
-      ("org.scalameta" %% "scalafmt-dynamic" % "3.11.2")
+      ("org.scalameta" %% "scalafmt-dynamic" % "3.11.4")
         .cross(CrossVersion.for3Use2_13)
         .exclude("org.scala-lang.modules", "scala-collection-compat_2.13"),
     ),
@@ -571,6 +572,7 @@ lazy val docs: ProjectMatrix = (projectMatrix in file("docs"))
           Compile / mainClass     := Some("ascent.docs.ServeSite"),
           run / mainClass         := Some("ascent.docs.ServeSite"),
           specularBuildMain       := "ascent.docs.BuildSite",
+          specularMetaProject     := Some(LocalProject("root")),
           specularSiteDirectory   := (ThisBuild / baseDirectory).value / "target" / "site",
           // Link the JS client and write a marker path BuildSite copies into assets/client.js.
           specularJsLink := Def.uncached {
