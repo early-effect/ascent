@@ -62,11 +62,11 @@ jobs:
             ~/.cache/sbt
             ~/.cache/coursier
             target
-          key: ubuntu-latest-jdk25-sbt-0.3.0-ci-${{ github.run_id }}-test
+          key: ubuntu-latest-jdk25-sbt-0.3.1-ci-${{ github.run_id }}-test
           restore-keys: |
-            ubuntu-latest-jdk25-sbt-0.3.0-ci-${{ github.run_id }}-
-            ubuntu-latest-jdk25-sbt-0.3.0-ci-
-            ubuntu-latest-jdk25-sbt-0.3.0-
+            ubuntu-latest-jdk25-sbt-0.3.1-ci-${{ github.run_id }}-
+            ubuntu-latest-jdk25-sbt-0.3.1-ci-
+            ubuntu-latest-jdk25-sbt-0.3.1-
             ubuntu-latest-jdk25-sbt-
       - name: test
         run: sbt 'testJVM'
@@ -96,11 +96,11 @@ jobs:
             ~/.cache/sbt
             ~/.cache/coursier
             target
-          key: ubuntu-latest-jdk25-sbt-0.3.0-ci-${{ github.run_id }}-fmt
+          key: ubuntu-latest-jdk25-sbt-0.3.1-ci-${{ github.run_id }}-fmt
           restore-keys: |
-            ubuntu-latest-jdk25-sbt-0.3.0-ci-${{ github.run_id }}-
-            ubuntu-latest-jdk25-sbt-0.3.0-ci-
-            ubuntu-latest-jdk25-sbt-0.3.0-
+            ubuntu-latest-jdk25-sbt-0.3.1-ci-${{ github.run_id }}-
+            ubuntu-latest-jdk25-sbt-0.3.1-ci-
+            ubuntu-latest-jdk25-sbt-0.3.1-
             ubuntu-latest-jdk25-sbt-
       - name: fmt
         run: sbt 'scalafmtCheckAll; zipxWorkflowCheck'
@@ -133,11 +133,11 @@ jobs:
             ~/.cache/sbt
             ~/.cache/coursier
             target
-          key: ubuntu-latest-jdk25-sbt-0.3.0-ci-${{ github.run_id }}-test-js
+          key: ubuntu-latest-jdk25-sbt-0.3.1-ci-${{ github.run_id }}-test-js
           restore-keys: |
-            ubuntu-latest-jdk25-sbt-0.3.0-ci-${{ github.run_id }}-
-            ubuntu-latest-jdk25-sbt-0.3.0-ci-
-            ubuntu-latest-jdk25-sbt-0.3.0-
+            ubuntu-latest-jdk25-sbt-0.3.1-ci-${{ github.run_id }}-
+            ubuntu-latest-jdk25-sbt-0.3.1-ci-
+            ubuntu-latest-jdk25-sbt-0.3.1-
             ubuntu-latest-jdk25-sbt-
       - name: Set up Node
         uses: actions/setup-node@48b55a011bda9f5d6aeb4c2d9c7362e8dae4041e
@@ -179,11 +179,11 @@ jobs:
             ~/.cache/sbt
             ~/.cache/coursier
             target
-          key: ubuntu-latest-jdk25-sbt-0.3.0-ci-${{ github.run_id }}-test-native
+          key: ubuntu-latest-jdk25-sbt-0.3.1-ci-${{ github.run_id }}-test-native
           restore-keys: |
-            ubuntu-latest-jdk25-sbt-0.3.0-ci-${{ github.run_id }}-
-            ubuntu-latest-jdk25-sbt-0.3.0-ci-
-            ubuntu-latest-jdk25-sbt-0.3.0-
+            ubuntu-latest-jdk25-sbt-0.3.1-ci-${{ github.run_id }}-
+            ubuntu-latest-jdk25-sbt-0.3.1-ci-
+            ubuntu-latest-jdk25-sbt-0.3.1-
             ubuntu-latest-jdk25-sbt-
       - name: Install Scala Native build dependencies
         run: sudo apt-get update && sudo apt-get install -y clang libstdc++-12-dev libgc-dev libunwind-dev
@@ -220,11 +220,11 @@ jobs:
             ~/.cache/sbt
             ~/.cache/coursier
             target
-          key: ubuntu-latest-jdk25-sbt-0.3.0-ci-${{ github.run_id }}-dependency-submission
+          key: ubuntu-latest-jdk25-sbt-0.3.1-ci-${{ github.run_id }}-dependency-submission
           restore-keys: |
-            ubuntu-latest-jdk25-sbt-0.3.0-ci-${{ github.run_id }}-
-            ubuntu-latest-jdk25-sbt-0.3.0-ci-
-            ubuntu-latest-jdk25-sbt-0.3.0-
+            ubuntu-latest-jdk25-sbt-0.3.1-ci-${{ github.run_id }}-
+            ubuntu-latest-jdk25-sbt-0.3.1-ci-
+            ubuntu-latest-jdk25-sbt-0.3.1-
             ubuntu-latest-jdk25-sbt-
       - name: Submit dependency graph
         uses: scalacenter/sbt-dependency-submission@d84eef4c09e633bcf5f113bcad7fd5e9af1baee9
@@ -259,11 +259,11 @@ jobs:
             ~/.cache/sbt
             ~/.cache/coursier
             target
-          key: ubuntu-latest-jdk25-sbt-0.3.0-ci-${{ github.run_id }}-publish
+          key: ubuntu-latest-jdk25-sbt-0.3.1-ci-${{ github.run_id }}-publish
           restore-keys: |
-            ubuntu-latest-jdk25-sbt-0.3.0-ci-${{ github.run_id }}-
-            ubuntu-latest-jdk25-sbt-0.3.0-ci-
-            ubuntu-latest-jdk25-sbt-0.3.0-
+            ubuntu-latest-jdk25-sbt-0.3.1-ci-${{ github.run_id }}-
+            ubuntu-latest-jdk25-sbt-0.3.1-ci-
+            ubuntu-latest-jdk25-sbt-0.3.1-
             ubuntu-latest-jdk25-sbt-
       - name: Import signing key
         run: |
