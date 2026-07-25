@@ -58,7 +58,7 @@ object Mount:
       assigner <- IdAssigner.make(idMode)
       // Top-level slot: insertion point is "append" because there's nothing after it in `parent`.
       rootSlot <- Slot.make[N]
-      _        <- renderInto(ui, parent, rootSlot, () => ZIO.succeed(None), cleanup, assigner, styles)
+      _        <- renderInto(ui, parent, rootSlot, () => ZIO.succeed(None), cleanup, assigner, styles, DomOps.HtmlNs)
     yield cleanup
 
   /** Mount `ui` as the document `<body>`, replacing the placeholder body the HTML shipped with.
@@ -92,6 +92,7 @@ object Mount:
       cleanup: Subscriptions,
       assigner: IdAssigner,
       styles: StyleRegistry,
+      parentNs: String,
   )(using runtime: Runtime[R], ops: DomOps[N]): UIO[Unit] =
     ui match
       case UI.Empty =>
@@ -110,13 +111,17 @@ object Mount:
         // child into its own slot. The Fragment's own slot tracks the union of children's
         // nodes. Build LAST-CHILD-FIRST so each child's insertion point can resolve via
         // its later siblings' already-rendered first nodes.
-        buildChildren(children, parent, insertionPoint, cleanup, assigner, styles).flatMap { childSlots =>
+        buildChildren(children, parent, insertionPoint, cleanup, assigner, styles, parentNs).flatMap { childSlots =>
           ZIO.foreach(childSlots)(_.nodes).flatMap(blocks => slot.setNodes(blocks.flatten.toVector))
         }
 
       case UI.Element(tag, attrs, children) =>
+        val ns      = DomOps.namespaceFor(parentNs, tag)
+        val childNs = DomOps.childrenNamespace(ns, tag)
         for
-          el <- ZIO.succeed(ops.createElement(tag))
+          el <- ZIO.succeed(
+            if ns == DomOps.HtmlNs then ops.createElement(tag) else ops.createElementNS(ns, tag)
+          )
           // `data-ascent` makes the DOM queryable by AST id.
           id <- assigner.assign(ui)
           _  <- ZIO.succeed(ops.setAttribute(el, "data-ascent", AstId.renderAttr(id)))
@@ -146,7 +151,7 @@ object Mount:
           // etc.) work correctly.
           _ <- ZIO.foreachDiscard(attrs)(applyAttr(el, _, cleanup, styles))
           // `el` is fresh, so children's insertion-point fallback is "append".
-          _     <- buildChildren(children, el, () => ZIO.succeed(None), cleanup, assigner, styles)
+          _     <- buildChildren(children, el, () => ZIO.succeed(None), cleanup, assigner, styles, childNs)
           where <- insertionPoint()
           _     <- insertOne(parent, el, where)
           _     <- slot.setNodes(Vector(el))
@@ -155,6 +160,7 @@ object Mount:
           // OnMountScoped likewise fires post-insertion, each in its own lifetime-scoped Scope registered into cleanup.
           _ <- ZIO.foreachDiscard(attrs.collect { case Attr.OnMountScoped(h) => h })(fireOnMountScoped(el, _, cleanup))
         yield ()
+        end for
 
       case UI.ReactiveText(src) =>
         for
@@ -169,20 +175,22 @@ object Mount:
         yield ()
 
       case UI.ReactiveChild(src) =>
-        mountDynamic(parent, slot, insertionPoint, cleanup, assigner, styles, src)(identity)
+        mountDynamic(parent, slot, insertionPoint, cleanup, assigner, styles, parentNs, src)(identity)
 
       case UI.When(cond, body) =>
         // A reactive boolean conditional. When true, render the body thunk; when false,
         // render Empty (= no DOM). Same machinery as ReactiveChild.
-        mountDynamic(parent, slot, insertionPoint, cleanup, assigner, styles, cond)(b => if b then body() else UI.Empty)
+        mountDynamic(parent, slot, insertionPoint, cleanup, assigner, styles, parentNs, cond)(b =>
+          if b then body() else UI.Empty
+        )
 
       case fe: UI.ForEach[a, R] @unchecked =>
         // Erased type args are unprovable at runtime, but the scrutinee is `UI[R]` and
         // `ForEach[a, R'] <: UI[R]` forces `R <: R'`, so providing the mount's `R` is sound.
-        mountForEach(parent, slot, insertionPoint, cleanup, assigner, styles, fe)
+        mountForEach(parent, slot, insertionPoint, cleanup, assigner, styles, parentNs, fe)
 
       case fe: UI.ForEachSignal[a, R] @unchecked =>
-        mountForEachSignal(parent, slot, insertionPoint, cleanup, assigner, styles, fe)
+        mountForEachSignal(parent, slot, insertionPoint, cleanup, assigner, styles, parentNs, fe)
 
       case UI.Scoped(build) =>
         // Open a fresh ZIO Scope, run the builder in it, then register the scope's close into
@@ -196,7 +204,7 @@ object Mount:
           ui    <- build.provideEnvironment(runtime.environment.add[Scope](scope))
           sub   <- Subscription.make(scope.close(Exit.unit))
           _     <- cleanup.add(sub)
-          _     <- renderInto(ui, parent, slot, insertionPoint, cleanup, assigner, styles)
+          _     <- renderInto(ui, parent, slot, insertionPoint, cleanup, assigner, styles, parentNs)
         yield ()
 
       case UI.ServerRegion(id, tag) =>
@@ -237,6 +245,7 @@ object Mount:
       cleanup: Subscriptions,
       assigner: IdAssigner,
       styles: StyleRegistry,
+      parentNs: String,
   )(using runtime: Runtime[R], ops: DomOps[N]): UIO[Vector[Slot[N]]] =
     ZIO.foreach(children.indices.toVector)(_ => Slot.make[N]).flatMap { slots =>
       def insertionAfter(i: Int): UIO[Option[N]] =
@@ -253,7 +262,16 @@ object Mount:
       def buildAt(i: Int): UIO[Unit] =
         if i < 0 then ZIO.unit
         else
-          renderInto(children(i), parent, slots(i), () => insertionAfter(i), cleanup, assigner, styles) *> buildAt(
+          renderInto(
+            children(i),
+            parent,
+            slots(i),
+            () => insertionAfter(i),
+            cleanup,
+            assigner,
+            styles,
+            parentNs,
+          ) *> buildAt(
             i - 1
           )
 
@@ -278,6 +296,7 @@ object Mount:
       outerCleanup: Subscriptions,
       assigner: IdAssigner,
       styles: StyleRegistry,
+      parentNs: String,
       src: ascent.squawk.Squawk[A],
   )(f: A => UI[R])(using runtime: Runtime[R], ops: DomOps[N]): UIO[Unit] =
     Ref.make[Subscriptions](null).flatMap { activeRef =>
@@ -291,7 +310,7 @@ object Mount:
           // 3. Build new content into a fresh child cleanup. The renderInto call will
           //    populate the slot with the new node set.
           childCleanup <- Subscriptions.make
-          _            <- renderInto(f(a), parent, slot, insertionPoint, childCleanup, assigner, styles)
+          _            <- renderInto(f(a), parent, slot, insertionPoint, childCleanup, assigner, styles, parentNs)
           _            <- activeRef.set(childCleanup)
         yield ()
 
@@ -322,6 +341,7 @@ object Mount:
       outerCleanup: Subscriptions,
       assigner: IdAssigner,
       styles: StyleRegistry,
+      parentNs: String,
       fe: UI.ForEach[A, R],
   )(using runtime: Runtime[R], ops: DomOps[N]): UIO[Unit] =
     Ref.make(scala.collection.immutable.ListMap.empty[String, ItemEntry[N]]).flatMap { entriesRef =>
@@ -342,8 +362,17 @@ object Mount:
           // 2. Walk target order. For each key:
           //    - existing key: move its current DOM range to the right position
           //    - new key: build a fresh slot+cleanup, render into it
-          rebuilt <- buildReconciledList(parent, outerInsertionPoint, remaining, deduped, fe, assigner, styles)
-          _       <- entriesRef.set(rebuilt)
+          rebuilt <- buildReconciledList(
+            parent,
+            outerInsertionPoint,
+            remaining,
+            deduped,
+            fe,
+            assigner,
+            styles,
+            parentNs,
+          )
+          _ <- entriesRef.set(rebuilt)
           // 3. Refresh the outer slot's owned-nodes view (union of all per-item nodes).
           allNodes <- ZIO.foreach(rebuilt.values.toList)(_.slot.nodes).map(_.flatten.toVector)
           _        <- outerSlot.setNodes(allNodes)
@@ -373,6 +402,7 @@ object Mount:
       fe: UI.ForEach[A, R],
       assigner: IdAssigner,
       styles: StyleRegistry,
+      parentNs: String,
   )(using runtime: Runtime[R], ops: DomOps[N]): UIO[scala.collection.immutable.ListMap[String, ItemEntry[N]]] =
     val resultBuilder = scala.collection.immutable.ListMap.newBuilder[String, ItemEntry[N]]
     val targetVec     = target.toVector
@@ -408,7 +438,8 @@ object Mount:
             val (_, item, entry, isNew) = plan(i)
             val insertion               = () => insertionAfter(i)
             val placeOrBuild            =
-              if isNew then renderInto(fe.render(item), parent, entry.slot, insertion, entry.cleanup, assigner, styles)
+              if isNew then
+                renderInto(fe.render(item), parent, entry.slot, insertion, entry.cleanup, assigner, styles, parentNs)
               else moveExistingTo(parent, entry, insertion)
             placeOrBuild *> stepAt(i - 1)
 
@@ -437,6 +468,7 @@ object Mount:
       outerCleanup: Subscriptions,
       assigner: IdAssigner,
       styles: StyleRegistry,
+      parentNs: String,
       fe: UI.ForEachSignal[A, R],
   )(using runtime: Runtime[R], ops: DomOps[N]): UIO[Unit] =
     given ascent.squawk.Eq[A] = fe.eq
@@ -463,7 +495,16 @@ object Mount:
               case None        => ZIO.unit
           }
           // 3. Place/build into target order.
-          rebuilt  <- buildReconciledSignalList(parent, outerInsertionPoint, remaining, deduped, fe, assigner, styles)
+          rebuilt <- buildReconciledSignalList(
+            parent,
+            outerInsertionPoint,
+            remaining,
+            deduped,
+            fe,
+            assigner,
+            styles,
+            parentNs,
+          )
           _        <- entriesRef.set(rebuilt)
           allNodes <- ZIO.foreach(rebuilt.values.toList)(_.slot.nodes).map(_.flatten.toVector)
           _        <- outerSlot.setNodes(allNodes)
@@ -494,6 +535,7 @@ object Mount:
       fe: UI.ForEachSignal[A, R],
       assigner: IdAssigner,
       styles: StyleRegistry,
+      parentNs: String,
   )(using
       runtime: Runtime[R],
       ops: DomOps[N],
@@ -539,6 +581,7 @@ object Mount:
                   entry.cleanup,
                   assigner,
                   styles,
+                  parentNs,
                 )
               else moveExistingTo(parent, signalToItemEntry(entry), insertion)
             placeOrBuild *> stepAt(i - 1)

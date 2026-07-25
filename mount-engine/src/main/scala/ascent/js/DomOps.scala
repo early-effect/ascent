@@ -27,8 +27,17 @@ trait DomOps[N]:
 
   // --- creation (Document-level) ---
 
-  /** Create an element node for `tag` (e.g. `"div"`). */
+  /** Create an HTML-namespace element for `tag` (e.g. `"div"`). */
   def createElement(tag: String): N
+
+  /** Create an element in `namespace` (see [[DomOps.HtmlNs]], [[DomOps.SvgNs]], [[DomOps.MathNs]]).
+    *
+    * Default forwards to [[createElement]] — enough for the in-memory backend, where namespace is not observed. The JS
+    * backend overrides this with `document.createElementNS` so SVG/MathML trees actually render.
+    */
+  def createElementNS(namespace: String, tag: String): N =
+    val _ = namespace
+    createElement(tag)
 
   /** Create a text node with the given initial data. */
   def createText(data: String): N
@@ -121,6 +130,30 @@ end DomOps
 
 object DomOps:
   def apply[N](using ops: DomOps[N]): DomOps[N] = ops
+
+  /** HTML namespace — default for [[createElement]] and for children of `foreignObject`. */
+  val HtmlNs: String = "http://www.w3.org/1999/xhtml"
+
+  /** SVG namespace — used when Mount sees an `svg` tag or a descendant of one. */
+  val SvgNs: String = "http://www.w3.org/2000/svg"
+
+  /** MathML namespace — used when Mount sees a `math` tag or a descendant of one. */
+  val MathNs: String = "http://www.w3.org/1998/Math/MathML"
+
+  /** Namespace for a newly created element given its parent's child-namespace and the element's tag. */
+  def namespaceFor(parentNs: String, tag: String): String =
+    val t = tag.toLowerCase
+    if t == "svg" then SvgNs
+    else if t == "math" then MathNs
+    else if parentNs == SvgNs || parentNs == MathNs then parentNs
+    else HtmlNs
+
+  /** Namespace for *children* of an element that was created in `elementNs` with `tag`.
+    *
+    * `foreignObject` is an SVG element whose children switch back to HTML.
+    */
+  def childrenNamespace(elementNs: String, tag: String): String =
+    if tag.toLowerCase == "foreignobject" then HtmlNs else elementNs
 
   /** An opaque handle to a registered listener, returned by [[DomOps.addListener]] and consumed by
     * [[DomOps.removeListener]]. Backends carry whatever they need to detach exactly that registration (the JS backend
