@@ -69,9 +69,10 @@ val ascentNativeCiSetup: StepContext => List[Step] = _ =>
 
 zipxCapabilities ++= Seq(
   Capability.once("fmt", "scalafmtCheckAll; zipxWorkflowCheck"),
-  // Platform jobs run in parallel after fmt. Commands are aliases defined after the matrices below.
+  // Platform jobs run in parallel after fmt. `test` replaces the Aggregate builtin (same-name);
+  // `test-js` / `test-native` are extras. Aliases are defined after the matrices below.
   Capability.once(
-    name = "test-jvm",
+    name = "test",
     command = "testJVM",
     needsCapabilities = List("fmt"),
     env = ascentJavaOpts,
@@ -90,12 +91,6 @@ zipxCapabilities ++= Seq(
     extraSteps = ascentNativeCiSetup,
     env = ascentJavaOpts,
   ),
-  // Replaces the Aggregate builtin `test` so required-check name stays stable; waits on all platforms.
-  Capability.once(
-    name = "test",
-    command = "about",
-    needsCapabilities = List("test-jvm", "test-js", "test-native"),
-  ),
   ZipxCentral.release,
   ZipxDocs.pages(),
   Capability.once(
@@ -104,7 +99,7 @@ zipxCapabilities ++= Seq(
     // `sbt about` would start a server without GITHUB_TOKEN, and the action's later sbt client would reuse it
     // (snapshot generates, submit then fails with "Missing environment variable GITHUB_TOKEN").
     command = "about",
-    needsCapabilities = List("test"),
+    needsCapabilities = List("test", "test-js", "test-native"),
     permissions = Map("contents" -> "write"),
     extraSteps = _ =>
       List(
@@ -626,7 +621,7 @@ lazy val docs: ProjectMatrix = (projectMatrix in file("docs"))
         ),
   )
 
-// Platform-scoped test aliases for zipx CI (full cross-platform `testFull` is too slow as one job).
+// Platform-scoped test aliases for zipx CI (sbt 2: `test` == testQuick; prefer that over `testFull`).
 lazy val ascentMatrices: Seq[ProjectMatrix] = Seq(
   domTypes,
   core,
