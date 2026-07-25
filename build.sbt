@@ -28,14 +28,16 @@ developers := List(
   )
 )
 
-// zipx CI: Aggregate verify + Central publish + Specular Pages. Same-name caps replace built-ins.
+// zipx CI: parallel platform Verify + Central publish + Specular Pages. Same-name caps replace built-ins.
 zipxJavaVersion      := "25"
-zipxTestTask         := "testFull"
+zipxTestTask         := "test"
 zipxWorkflowDispatch := true
 zipxScalaSteward     := true
 
-/** Node (jsdom/canvas) + Scala Native apt deps for the Aggregate test job. */
-val ascentCiSetup: StepContext => List[Step] = _ =>
+val ascentJavaOpts = Map("JAVA_OPTS" -> EnvValue.plain("-Dfile.encoding=UTF-8"))
+
+/** jsdom/canvas toolchain for the JS Verify job only. */
+val ascentJsCiSetup: StepContext => List[Step] = _ =>
   List(
     Step(
       name = Some("Set up Node"),
@@ -52,20 +54,47 @@ val ascentCiSetup: StepContext => List[Step] = _ =>
       name = Some("Install Node dependencies (jsdom, canvas)"),
       run = Some("npm ci"),
     ),
+  )
+
+/** Clang / libgc for the Native Verify job only. */
+val ascentNativeCiSetup: StepContext => List[Step] = _ =>
+  List(
     Step(
       name = Some("Install Scala Native build dependencies"),
-      run = Some("sudo apt-get install -y clang libstdc++-12-dev libgc-dev libunwind-dev"),
+      run = Some(
+        "sudo apt-get update && sudo apt-get install -y clang libstdc++-12-dev libgc-dev libunwind-dev"
+      ),
     ),
   )
 
 zipxCapabilities ++= Seq(
   Capability.once("fmt", "scalafmtCheckAll; zipxWorkflowCheck"),
+  // Platform jobs run in parallel after fmt. Commands are aliases defined after the matrices below.
+  Capability.once(
+    name = "test-jvm",
+    command = "testJVM",
+    needsCapabilities = List("fmt"),
+    env = ascentJavaOpts,
+  ),
+  Capability.once(
+    name = "test-js",
+    command = "testJS",
+    needsCapabilities = List("fmt"),
+    extraSteps = ascentJsCiSetup,
+    env = ascentJavaOpts,
+  ),
+  Capability.once(
+    name = "test-native",
+    command = "testNative",
+    needsCapabilities = List("fmt"),
+    extraSteps = ascentNativeCiSetup,
+    env = ascentJavaOpts,
+  ),
+  // Replaces the Aggregate builtin `test` so required-check name stays stable; waits on all platforms.
   Capability.once(
     name = "test",
-    command = "testFull",
-    needsCapabilities = List("fmt"),
-    extraSteps = ascentCiSetup,
-    env = Map("JAVA_OPTS" -> EnvValue.plain("-Dfile.encoding=UTF-8")),
+    command = "about",
+    needsCapabilities = List("test-jvm", "test-js", "test-native"),
   ),
   ZipxCentral.release,
   ZipxDocs.pages(),
@@ -596,3 +625,37 @@ lazy val docs: ProjectMatrix = (projectMatrix in file("docs"))
           Compile / mainClass := Some("ascent.docs.ClientMain"),
         ),
   )
+
+// Platform-scoped test aliases for zipx CI (sbt 2: `test` == testQuick; prefer that over `testFull`).
+lazy val ascentMatrices: Seq[ProjectMatrix] = Seq(
+  domTypes,
+  core,
+  domFacade,
+  domCore,
+  mountEngine,
+  js,
+  domgen,
+  css,
+  conduitBridge,
+  html,
+  datastar,
+  datastarJs,
+  datastarHttp,
+  datastarExample,
+  datastarExampleServer,
+  hybridChat,
+  hybridChatServer,
+  todoConduit,
+  docs,
+)
+
+def ascentPlatformTestCommand(find: ProjectMatrix => ProjectFinder): String =
+  ascentMatrices
+    .flatMap(m => find(m).get.map(p => s"${p.id}/test"))
+    .distinct
+    .sorted
+    .mkString("; ")
+
+addCommandAlias("testJVM", ascentPlatformTestCommand(_.jvm))
+addCommandAlias("testJS", ascentPlatformTestCommand(_.js))
+addCommandAlias("testNative", ascentPlatformTestCommand(_.native))
