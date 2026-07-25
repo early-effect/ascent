@@ -182,7 +182,7 @@ val jsdomTestEnv = Def.settings(
   Test / jsEnv := Def.uncached(new org.scalajs.jsenv.jsdomnodejs.JSDOMNodeJSEnv())
 )
 
-val specularVersion = "0.7.2"
+val specularVersion = "0.9.0"
 
 def specularLib(artifact: String) = "rocks.earlyeffect" %% artifact % specularVersion
 
