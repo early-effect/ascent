@@ -626,7 +626,7 @@ lazy val docs: ProjectMatrix = (projectMatrix in file("docs"))
         ),
   )
 
-// Platform-scoped test aliases for zipx CI (sbt 2: `test` == testQuick; prefer that over `testFull`).
+// Platform-scoped test aliases for zipx CI (full cross-platform `testFull` is too slow as one job).
 lazy val ascentMatrices: Seq[ProjectMatrix] = Seq(
   domTypes,
   core,
