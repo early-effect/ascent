@@ -158,54 +158,43 @@ val jsdomTestEnv = Def.settings(
   Test / jsEnv := Def.uncached(new org.scalajs.jsenv.jsdomnodejs.JSDOMNodeJSEnv())
 )
 
-val specularVersion = "0.7.1"
+val specularVersion = "0.7.2"
 
-/** Published Specular jars depend on Maven Central ascent 0.1.0; the docs module dependsOn local
-  * ascent instead. Strip every ascent-* transitive so coursier does not see two versions under
-  * early-semver (CI dynver-ci is often `0.1.0-ci`, which conflicts with a published `0.1.0`). */
-val ascentMavenExclusions = Seq(
-  ExclusionRule("rocks.earlyeffect", "ascent-core_3"),
-  ExclusionRule("rocks.earlyeffect", "ascent-core_sjs1_3"),
-  ExclusionRule("rocks.earlyeffect", "ascent-css_3"),
-  ExclusionRule("rocks.earlyeffect", "ascent-css_sjs1_3"),
-  ExclusionRule("rocks.earlyeffect", "ascent-html_3"),
-  ExclusionRule("rocks.earlyeffect", "ascent-html_sjs1_3"),
-  ExclusionRule("rocks.earlyeffect", "ascent-js_sjs1_3"),
-  ExclusionRule("rocks.earlyeffect", "ascent-mount-engine_3"),
-  ExclusionRule("rocks.earlyeffect", "ascent-mount-engine_sjs1_3"),
-  ExclusionRule("rocks.earlyeffect", "ascent-dom-types_3"),
-  ExclusionRule("rocks.earlyeffect", "ascent-dom-types_sjs1_3"),
-  ExclusionRule("rocks.earlyeffect", "ascent-dom-core_3"),
-  ExclusionRule("rocks.earlyeffect", "ascent-dom-core_sjs1_3"),
-  ExclusionRule("rocks.earlyeffect", "ascent-dom-facade_sjs1_3"),
-  ExclusionRule("rocks.earlyeffect", "ascent-conduit_3"),
-  ExclusionRule("rocks.earlyeffect", "ascent-conduit_sjs1_3"),
-  ExclusionRule("rocks.earlyeffect", "ascent-datastar_3"),
-  ExclusionRule("rocks.earlyeffect", "ascent-datastar_sjs1_3"),
-  ExclusionRule("rocks.earlyeffect", "ascent-datastar-http_3"),
+def specularLib(artifact: String) = "rocks.earlyeffect" %% artifact % specularVersion
+
+/** Every published `ascent-*` artifact name (see [[docsDogfoodSettings]]). */
+val ascentModules = Seq(
+  "ascent-core",
+  "ascent-css",
+  "ascent-html",
+  "ascent-js",
+  "ascent-mount-engine",
+  "ascent-dom-types",
+  "ascent-dom-core",
+  "ascent-dom-facade",
+  "ascent-conduit",
+  "ascent-datastar",
+  "ascent-datastar-http",
 )
 
-def specularLib(artifact: String) =
-  ("rocks.earlyeffect" %% artifact % specularVersion).excludeAll(ascentMavenExclusions*)
-
-/** Prefer local ascent over any Maven copy that still slips through specularLib exclusions.
-  * Do not use excludeDependencies here: it also strips local dependsOn modules (conduit, datastar-http)
-  * from the docs classpath.
+/** Published Specular jars depend on the Maven Central `ascent-*` release, but the docs modules
+  * `dependsOn` local ascent, so coursier sees two versions of every ascent artifact. Under
+  * `early-semver` that is a hard conflict (local `0.3.0-ci` vs a published `0.1.0`), so mark them
+  * `always` and let the local `dependsOn` win.
+  *
+  * Both the JVM (`_3`) and Scala.js (`_sjs1_3`) coordinates need an entry — `docsJS` resolves the
+  * latter, and a scheme keyed on one does not cover the other.
+  *
+  * Do not use `excludeDependencies` here — it also strips the local `dependsOn` modules (conduit,
+  * datastar-http) from the docs classpath.
   */
 val docsDogfoodSettings = Def.settings(
-  libraryDependencySchemes ++= Seq(
-    "rocks.earlyeffect" %% "ascent-core"          % "always",
-    "rocks.earlyeffect" %% "ascent-css"           % "always",
-    "rocks.earlyeffect" %% "ascent-html"          % "always",
-    "rocks.earlyeffect" %% "ascent-js"            % "always",
-    "rocks.earlyeffect" %% "ascent-mount-engine"  % "always",
-    "rocks.earlyeffect" %% "ascent-dom-types"     % "always",
-    "rocks.earlyeffect" %% "ascent-dom-core"      % "always",
-    "rocks.earlyeffect" %% "ascent-dom-facade"    % "always",
-    "rocks.earlyeffect" %% "ascent-conduit"       % "always",
-    "rocks.earlyeffect" %% "ascent-datastar"      % "always",
-    "rocks.earlyeffect" %% "ascent-datastar-http" % "always",
-  ),
+  libraryDependencySchemes ++= ascentModules.flatMap { m =>
+    Seq(
+      "rocks.earlyeffect" % s"${m}_3"       % "always",
+      "rocks.earlyeffect" % s"${m}_sjs1_3"  % "always",
+    )
+  },
 )
 
 lazy val root = (project in file("."))

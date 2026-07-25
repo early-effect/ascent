@@ -31,7 +31,7 @@ object BuildSite extends ZIOAppDefault:
           ProjectMeta(
             name = "ascent",
             organization = "rocks.earlyeffect",
-            version = "0.1.0-SNAPSHOT",
+            version = "0.3.0",
             scalaVersion = "3.8.4",
             title = Some("ascent"),
             description = Some(
@@ -41,9 +41,9 @@ object BuildSite extends ZIOAppDefault:
           )
         )
       )
-    val version = meta.map(_.version).getOrElse("0.1.0-SNAPSHOT")
-    val org     = meta.map(_.organization).getOrElse("rocks.earlyeffect")
-    val model   = SiteModel(
+    val version   = meta.map(_.version).getOrElse("0.3.0")
+    val org       = meta.map(_.organization).getOrElse("rocks.earlyeffect")
+    val unbranded = SiteModel(
       title = "ascent",
       basePath = base,
       pages = Vector(
@@ -63,8 +63,6 @@ object BuildSite extends ZIOAppDefault:
       clientScript = Some("assets/client.js"),
       meta = meta,
       description = meta.flatMap(_.description),
-      logo = Some(EarlyEffectTheme.logoHref),
-      logoLink = Some("https://www.earlyeffect.rocks/"),
       summaryMarkdown = Some(
         s"""**ascent** is effect-native reactive UI for **Scala 3**. It renders straight to the DOM:
 no virtual DOM, no diffing. The UI is a pure tree built once; the engine surgically patches the
@@ -93,6 +91,7 @@ Docs pages are Specular `DocSpec`s: the same source asserts under zio-test and S
         ),
       ),
     )
+    val model = EarlyEffectTheme.brand(unbranded)
     ZIO
       .serviceWithZIO[SiteBuilder](_.buildSite(model, out))
       .flatMap { result =>
@@ -100,17 +99,7 @@ Docs pages are Specular `DocSpec`s: the same source asserts under zio-test and S
           copyClientBundle(out) *>
           Console.printLine(s"Wrote ${result.pages.mkString(", ")}")
       }
-      .provide(
-        MarkdownRenderer.live,
-        ExampleRunner.live,
-        HtmlSsr.live,
-        SiteWriter.live,
-        NavBuilder.live,
-        EarlyEffectTheme.live,
-        PageTemplate.live,
-        LandingTemplate.live,
-        SiteBuilder.live,
-      )
+      .provideLayer(EarlyEffectTheme.layers)
   end run
 
   private def copyClientBundle(out: Path): Task[Unit] =
