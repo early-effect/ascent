@@ -68,19 +68,8 @@ jobs:
             ubuntu-latest-jdk25-sbt-0.3.0-ci-
             ubuntu-latest-jdk25-sbt-0.3.0-
             ubuntu-latest-jdk25-sbt-
-      - name: Set up Node
-        uses: actions/setup-node@48b55a011bda9f5d6aeb4c2d9c7362e8dae4041e
-        with:
-          node-version: "24"
-          cache: npm
-      - name: Install canvas build dependencies
-        run: sudo apt-get update && sudo apt-get install -y libcairo2-dev libpango1.0-dev libjpeg-dev libgif-dev librsvg2-dev
-      - name: Install Node dependencies (jsdom, canvas)
-        run: npm ci
-      - name: Install Scala Native build dependencies
-        run: sudo apt-get install -y clang libstdc++-12-dev libgc-dev libunwind-dev
       - name: test
-        run: sbt 'testFull'
+        run: sbt 'testJVM'
   fmt:
     name: fmt
     runs-on: ubuntu-latest
@@ -115,11 +104,98 @@ jobs:
             ubuntu-latest-jdk25-sbt-
       - name: fmt
         run: sbt 'scalafmtCheckAll; zipxWorkflowCheck'
+  test-js:
+    name: test-js
+    runs-on: ubuntu-latest
+    needs:
+      - fmt
+      - verify-gate
+    if: "!cancelled() && !startsWith(github.ref, 'refs/tags/') && github.event_name != 'workflow_dispatch' && ((needs.verify-gate.result != 'success') || (needs.verify-gate.outputs.run == 'true'))"
+    env:
+      JAVA_OPTS: -Dfile.encoding=UTF-8
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          fetch-depth: "0"
+      - name: Setup JDK 25
+        uses: actions/setup-java@03ad4de0992f5dab5e18fcb136590ce7c4a0ac95 # v5.6.0
+        with:
+          distribution: temurin
+          java-version: "25"
+      - uses: sbt/setup-sbt@6444f4c8111de4b9059c3975def104b03cfaa5f0 # v1.5.2
+        with:
+          disk-cache: "false"
+      - name: Cache sbt
+        uses: actions/cache@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6.1.0
+        with:
+          path: |
+            ~/.sbt
+            ~/.cache/sbt
+            ~/.cache/coursier
+            target
+          key: ubuntu-latest-jdk25-sbt-0.3.0-ci-${{ github.run_id }}-test-js
+          restore-keys: |
+            ubuntu-latest-jdk25-sbt-0.3.0-ci-${{ github.run_id }}-
+            ubuntu-latest-jdk25-sbt-0.3.0-ci-
+            ubuntu-latest-jdk25-sbt-0.3.0-
+            ubuntu-latest-jdk25-sbt-
+      - name: Set up Node
+        uses: actions/setup-node@48b55a011bda9f5d6aeb4c2d9c7362e8dae4041e
+        with:
+          node-version: "24"
+          cache: npm
+      - name: Install canvas build dependencies
+        run: sudo apt-get update && sudo apt-get install -y libcairo2-dev libpango1.0-dev libjpeg-dev libgif-dev librsvg2-dev
+      - name: Install Node dependencies (jsdom, canvas)
+        run: npm ci
+      - name: test-js
+        run: sbt 'testJS'
+  test-native:
+    name: test-native
+    runs-on: ubuntu-latest
+    needs:
+      - fmt
+      - verify-gate
+    if: "!cancelled() && !startsWith(github.ref, 'refs/tags/') && github.event_name != 'workflow_dispatch' && ((needs.verify-gate.result != 'success') || (needs.verify-gate.outputs.run == 'true'))"
+    env:
+      JAVA_OPTS: -Dfile.encoding=UTF-8
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          fetch-depth: "0"
+      - name: Setup JDK 25
+        uses: actions/setup-java@03ad4de0992f5dab5e18fcb136590ce7c4a0ac95 # v5.6.0
+        with:
+          distribution: temurin
+          java-version: "25"
+      - uses: sbt/setup-sbt@6444f4c8111de4b9059c3975def104b03cfaa5f0 # v1.5.2
+        with:
+          disk-cache: "false"
+      - name: Cache sbt
+        uses: actions/cache@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6.1.0
+        with:
+          path: |
+            ~/.sbt
+            ~/.cache/sbt
+            ~/.cache/coursier
+            target
+          key: ubuntu-latest-jdk25-sbt-0.3.0-ci-${{ github.run_id }}-test-native
+          restore-keys: |
+            ubuntu-latest-jdk25-sbt-0.3.0-ci-${{ github.run_id }}-
+            ubuntu-latest-jdk25-sbt-0.3.0-ci-
+            ubuntu-latest-jdk25-sbt-0.3.0-
+            ubuntu-latest-jdk25-sbt-
+      - name: Install Scala Native build dependencies
+        run: sudo apt-get update && sudo apt-get install -y clang libstdc++-12-dev libgc-dev libunwind-dev
+      - name: test-native
+        run: sbt 'testNative'
   dependency-submission:
     name: dependency-submission
     runs-on: ubuntu-latest
     needs:
       - test
+      - test-js
+      - test-native
       - verify-gate
     if: "!cancelled() && !startsWith(github.ref, 'refs/tags/') && github.event_name != 'workflow_dispatch' && ((needs.verify-gate.result != 'success') || (needs.verify-gate.outputs.run == 'true'))"
     permissions:
