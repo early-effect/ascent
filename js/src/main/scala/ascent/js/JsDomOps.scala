@@ -22,7 +22,14 @@ object JsDomOps extends DomOps[dom.Node]:
 
   private def doc: dom.Document = dom.document
 
-  def createElement(tag: String): dom.Node  = doc.createElement(tag)
+  def createElement(tag: String): dom.Node = doc.createElement(tag)
+
+  /** SVG/MathML must use `createElementNS` — HTML-namespace `<svg>`/`<g>`/`<text>` do not paint (unknown HTML;
+    * descendant text flattens). Mount threads the parent namespace and calls this for non-HTML tags.
+    */
+  override def createElementNS(namespace: String, tag: String): dom.Node =
+    doc.createElementNS(namespace, tag)
+
   def createText(data: String): dom.Node    = doc.createTextNode(data)
   def createComment(data: String): dom.Node = doc.createComment(data)
 
