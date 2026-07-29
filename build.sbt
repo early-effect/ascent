@@ -587,6 +587,14 @@ lazy val docs: ProjectMatrix = (projectMatrix in file("docs"))
           specularBuildMain       := "ascent.docs.BuildSite",
           specularMetaProject     := Some(LocalProject("root")),
           specularSiteDirectory   := (ThisBuild / baseDirectory).value / "target" / "site",
+          // Docs-only (workflow_dispatch) builds are dynver `-ci`; don't advertise that as a Central coord.
+          // Empty string → Specular uses build version (clean v* tags).
+          specularDisplayVersion := {
+            val v = (ThisBuild / version).value
+            if v.endsWith("-ci") || v.endsWith("-SNAPSHOT") then
+              previousStableVersion.value.getOrElse("<version>")
+            else ""
+          },
           // Link the JS client and write a marker path BuildSite copies into assets/client.js.
           specularJsLink := Def.uncached {
             (LocalProject("docsJS") / Compile / fastLinkJS).value
