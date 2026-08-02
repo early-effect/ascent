@@ -255,7 +255,7 @@ lazy val domgen = (projectMatrix in file("domgen"))
     publish / skip := true,
     scalacOptions ++= commonScalacOptions,
     libraryDependencies ++= Seq(
-      "dev.zio"     %% "zio-json"  % "0.9.2",
+      "dev.zio"     %% "zio-json"  % "0.10.0",
       "com.lihaoyi" %% "fastparse" % "3.1.1",
       // Format generated output through the project's own .scalafmt.conf, so `domgen/run` emits
       // already-formatted files and formatting rules live in exactly one place. Scalameta ships
@@ -430,7 +430,7 @@ lazy val datastar = (projectMatrix in file("datastar"))
   .settings(
     name := "ascent-datastar",
     scalacOptions ++= commonScalacOptions,
-    libraryDependencies += "dev.zio" %% "zio-json" % "0.9.2",
+    libraryDependencies += "dev.zio" %% "zio-json" % "0.10.0",
     zioTestSettings,
   )
   .jvmPlatform(scalaVersions = scalaVersions)
