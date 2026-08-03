@@ -133,6 +133,11 @@ usePgpKeyHex(sys.env.getOrElse("PGP_KEY_HEX", "MISSING_KEY_HEX"))
 libraryDependencySchemes +=
   "org.scala-native" % "test-interface_native0.5_3" % "early-semver"
 
+// zio-schema-json 1.8.5 still pins zio-json 0.9.1 while we resolve 0.10.0. Under early-semver a
+// 0.9 -> 0.10 bump reads as breaking, so sbt 2.x's strict eviction check fails the build. The codec
+// API in play is unchanged across the bump, so force 0.10.0 rather than hold zio-json back.
+libraryDependencySchemes += "dev.zio" %% "zio-json" % "always"
+
 val scalaVersions = Seq(scala3Version)
 
 // Cap peak memory during a full cross-build. The Scala Native link phase (LLVM optimize/codegen) is
