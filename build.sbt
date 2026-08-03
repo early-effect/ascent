@@ -133,6 +133,11 @@ usePgpKeyHex(sys.env.getOrElse("PGP_KEY_HEX", "MISSING_KEY_HEX"))
 libraryDependencySchemes +=
   "org.scala-native" % "test-interface_native0.5_3" % "early-semver"
 
+// zio-schema-json 1.8.5 still pins zio-json 0.9.1 while we resolve 0.10.0. Under early-semver a
+// 0.9 -> 0.10 bump reads as breaking, so sbt 2.x's strict eviction check fails the build. The codec
+// API in play is unchanged across the bump, so force 0.10.0 rather than hold zio-json back.
+libraryDependencySchemes += "dev.zio" %% "zio-json" % "always"
+
 val scalaVersions = Seq(scala3Version)
 
 // Cap peak memory during a full cross-build. The Scala Native link phase (LLVM optimize/codegen) is
@@ -255,14 +260,14 @@ lazy val domgen = (projectMatrix in file("domgen"))
     publish / skip := true,
     scalacOptions ++= commonScalacOptions,
     libraryDependencies ++= Seq(
-      "dev.zio"     %% "zio-json"  % "0.9.2",
+      "dev.zio"     %% "zio-json"  % "0.10.0",
       "com.lihaoyi" %% "fastparse" % "3.1.1",
       // Format generated output through the project's own .scalafmt.conf, so `domgen/run` emits
       // already-formatted files and formatting rules live in exactly one place. Scalameta ships
       // scalafmt for Scala 2.13; use it from this Scala 3 build via CrossVersion. scalafmt-dynamic
       // loads the real formatter in its own classloader, so its 2.13 transitives don't belong on our
       // classpath — exclude scala-collection-compat_2.13, which clashes with the _3 already present.
-      ("org.scalameta" %% "scalafmt-dynamic" % "3.11.4")
+      ("org.scalameta" %% "scalafmt-dynamic" % "3.11.5")
         .cross(CrossVersion.for3Use2_13)
         .exclude("org.scala-lang.modules", "scala-collection-compat_2.13"),
     ),
@@ -430,7 +435,7 @@ lazy val datastar = (projectMatrix in file("datastar"))
   .settings(
     name := "ascent-datastar",
     scalacOptions ++= commonScalacOptions,
-    libraryDependencies += "dev.zio" %% "zio-json" % "0.9.2",
+    libraryDependencies += "dev.zio" %% "zio-json" % "0.10.0",
     zioTestSettings,
   )
   .jvmPlatform(scalaVersions = scalaVersions)

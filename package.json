@@ -12,6 +12,6 @@
   "type": "commonjs",
   "devDependencies": {
     "canvas": "^3.2.3",
-    "jsdom": "^29.1.1"
+    "jsdom": "^30.0.0"
   }
 }
