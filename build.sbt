@@ -1,4 +1,7 @@
 import scala.collection.immutable.ListMap
+// sbt has its own `Exec` (a queued command), so the two wildcards collide. An explicit named
+// import outranks both, and this is the one we mean: the shell AST's simple command.
+import zipx.shell.Exec
 
 val scala3Version = "3.8.4"
 val zioVersion    = "2.1.26"
@@ -29,85 +32,111 @@ developers := List(
 )
 
 // zipx CI: parallel platform Verify + Central publish + Specular Pages. Same-name caps replace built-ins.
-zipxJavaVersion      := "25"
+zipxJavaVersion      := JdkVersion("25")
 zipxTestTask         := "test"
 zipxWorkflowDispatch := true
 zipxScalaSteward     := true
 
 val ascentJavaOpts = Map("JAVA_OPTS" -> EnvValue.plain("-Dfile.encoding=UTF-8"))
 
-/** jsdom/canvas toolchain for the JS Verify job only. */
-val ascentJsCiSetup: StepContext => List[Step] = _ =>
-  List(
-    Step(
-      name = Some("Set up Node"),
-      uses = Some("actions/setup-node@48b55a011bda9f5d6aeb4c2d9c7362e8dae4041e"), // v6.4.0
-      `with` = ListMap("node-version" -> "24", "cache" -> "npm"),
-    ),
-    Step(
-      name = Some("Install canvas build dependencies"),
-      run = Some(
-        "sudo apt-get update && sudo apt-get install -y libcairo2-dev libpango1.0-dev libjpeg-dev libgif-dev librsvg2-dev"
-      ),
-    ),
-    Step(
-      name = Some("Install Node dependencies (jsdom, canvas)"),
-      run = Some("npm ci"),
-    ),
+// Shared capability names as vals, so a reference to one is checked rather than spelled twice.
+val Fmt        = CapabilityName("fmt")
+val TestJs     = CapabilityName("test-js")
+val TestNative = CapabilityName("test-native")
+
+/** `apt-get update && apt-get install -y <packages>` as a shell AST rather than a string: the `&&`
+  * and the argv are the model's business, so a dropped `-y` or a mistyped program is a compile error.
+  *
+  * Takes already-typed Words rather than Strings, so each package name goes through Word.lit at its
+  * call site and is validated at compile time (no runtime unwrap of a litMake Either).
+  */
+def aptInstall(packages: Word*): Script =
+  Script(
+    Exec("sudo", Word.lit("apt-get"), Word.lit("update")) &&
+      Exec.of(
+        "sudo",
+        List(Word.lit("apt-get"), Word.lit("install"), Word.lit("-y")) ++ packages.toList,
+      )
   )
+
+/** jsdom/canvas toolchain for the JS Verify job only. */
+val ascentJsCiSetup: Steps = Steps.built("ascent-js-ci")(
+  // Step.uses is inline, so an unpinned or malformed ref is a compile error naming it.
+  Step
+    .uses("actions/setup-node@820762786026740c76f36085b0efc47a31fe5020") // v7.0.0
+    .named("Set up Node")
+    .withInputs(ListMap("node-version" -> "24", "cache" -> "npm")),
+  Step
+    .run(
+      aptInstall(
+        Word.lit("libcairo2-dev"),
+        Word.lit("libpango1.0-dev"),
+        Word.lit("libjpeg-dev"),
+        Word.lit("libgif-dev"),
+        Word.lit("librsvg2-dev"),
+      )
+    )
+    .named("Install canvas build dependencies"),
+  Step.run(Script(Exec("npm", Word.lit("ci")))).named("Install Node dependencies (jsdom, canvas)"),
+)
 
 /** Clang / libgc for the Native Verify job only. */
-val ascentNativeCiSetup: StepContext => List[Step] = _ =>
-  List(
-    Step(
-      name = Some("Install Scala Native build dependencies"),
-      run = Some(
-        "sudo apt-get update && sudo apt-get install -y clang libstdc++-12-dev libgc-dev libunwind-dev"
-      ),
-    ),
-  )
+val ascentNativeCiSetup: Steps = Steps.built("ascent-native-ci")(
+  Step
+    .run(
+      aptInstall(
+        Word.lit("clang"),
+        Word.lit("libstdc++-12-dev"),
+        Word.lit("libgc-dev"),
+        Word.lit("libunwind-dev"),
+      )
+    )
+    .named("Install Scala Native build dependencies")
+)
+
+val ascentDependencySubmission: Steps = Steps.built("ascent-dependency-submission")(
+  Step
+    .uses("scalacenter/sbt-dependency-submission@d84eef4c09e633bcf5f113bcad7fd5e9af1baee9") // v3.2.3
+    .named("Submit dependency graph")
+)
 
 zipxCapabilities ++= Seq(
-  Capability.once("fmt", "scalafmtCheckAll; zipxWorkflowCheck"),
+  // Compound, so a literal SbtCommand rather than a spliced task key.
+  Capability.once(Fmt, SbtCommand("scalafmtCheckAll; zipxWorkflowCheck")),
   // Platform jobs run in parallel after fmt. `test` replaces the Aggregate builtin (same-name);
-  // `test-js` / `test-native` are extras. Aliases are defined after the matrices below.
+  // `test-js` / `test-native` are extras. Aliases are defined after the matrices below, and are
+  // command aliases rather than task keys, so they stay literal SbtCommands.
   Capability.once(
-    name = "test",
-    command = "testJVM",
-    needsCapabilities = List("fmt"),
+    name = Capability.TestName,
+    command = SbtCommand("testJVM"),
+    needsCapabilities = List(Fmt),
     env = ascentJavaOpts,
   ),
   Capability.once(
-    name = "test-js",
-    command = "testJS",
-    needsCapabilities = List("fmt"),
+    name = TestJs,
+    command = SbtCommand("testJS"),
+    needsCapabilities = List(Fmt),
     extraSteps = ascentJsCiSetup,
     env = ascentJavaOpts,
   ),
   Capability.once(
-    name = "test-native",
-    command = "testNative",
-    needsCapabilities = List("fmt"),
+    name = TestNative,
+    command = SbtCommand("testNative"),
+    needsCapabilities = List(Fmt),
     extraSteps = ascentNativeCiSetup,
     env = ascentJavaOpts,
   ),
   ZipxCentral.release,
   ZipxDocs.pages(),
   Capability.once(
-    name = "dependency-submission",
+    name = CapabilityName("dependency-submission"),
     // zipx Once jobs always emit an sbt step. Run the action in extraSteps *before* that step: an earlier
     // `sbt about` would start a server without GITHUB_TOKEN, and the action's later sbt client would reuse it
     // (snapshot generates, submit then fails with "Missing environment variable GITHUB_TOKEN").
-    command = "about",
-    needsCapabilities = List("test", "test-js", "test-native"),
+    command = SbtCommand("about"),
+    needsCapabilities = List(Capability.TestName, TestJs, TestNative),
     permissions = Map("contents" -> "write"),
-    extraSteps = _ =>
-      List(
-        Step(
-          name = Some("Submit dependency graph"),
-          uses = Some("scalacenter/sbt-dependency-submission@d84eef4c09e633bcf5f113bcad7fd5e9af1baee9"), // v3.2.3
-        )
-      ),
+    extraSteps = ascentDependencySubmission,
   ),
 )
 
