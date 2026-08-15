@@ -1,9 +1,12 @@
 package example.chat
 
 import ascent.datastar.http.AscentDatastar
+import ascent.preview.{Preview, PreviewConfig}
 import zio.*
 import zio.http.*
 import zio.http.datastar.*
+
+import java.nio.file.Path as JPath
 
 /** The hybrid-chat backend. It owns the message list and drives the client's `serverRegion("messages")` — "the chat
   * interaction itself, server-side" — while the rest of the UI is normal client ascent.
@@ -13,6 +16,8 @@ import zio.http.datastar.*
   *     [[AscentDatastar.patchRegion]]; the typing indicator rides the signal channel.
   *   - `POST /chat/send` reads the client's `{username, message}` signals and appends a message.
   *   - `POST /chat/typing` marks the user typing (auto-cleared after a few seconds).
+  *   - [[Preview.routes]] are composed in so the spliced client (`example/hybrid-chat/target/preview`) is same-origin
+  *     on `:8080`.
   */
 object ChatServer extends ZIOAppDefault:
 
@@ -30,7 +35,7 @@ object ChatServer extends ZIOAppDefault:
       _ <- AscentDatastar.patchSignal("typing", label)
     yield ()
 
-  private def routes(room: ChatRoom): Routes[Any, Nothing] =
+  def apiRoutes(room: ChatRoom): Routes[Any, Nothing] =
     Routes(
       Method.GET / "chat" / "sse" -> events {
         handler { (req: Request) =>
@@ -62,6 +67,17 @@ object ChatServer extends ZIOAppDefault:
       },
     ).sandbox
 
+  /** Preview (static + SSE reload) composed with the chat API. */
+  def routes(room: ChatRoom, previewRoot: JPath, port: Int = 8080): Routes[Any, Response] =
+    Preview.routes(PreviewConfig(root = previewRoot, port = port)) ++ apiRoutes(room)
+
+  def resolvePreviewRoot(args: Chunk[String]): JPath =
+    args.headOption
+      .map(JPath.of(_))
+      .getOrElse(JPath.of("example/hybrid-chat/target/preview"))
+      .toAbsolutePath
+      .normalize
+
   private val compression =
     Server.Config.ResponseCompressionConfig(
       contentThreshold = 0,
@@ -73,10 +89,12 @@ object ChatServer extends ZIOAppDefault:
 
   def run =
     for
+      args <- getArgs
+      root = resolvePreviewRoot(args)
       room <- ChatRoom.make
-      _    <- ZIO.logInfo("hybrid-chat server on http://localhost:8080 (run Vite for the client)")
+      _    <- ZIO.logInfo(s"hybrid-chat on http://localhost:8080 serving $root")
       _    <- Server
-        .serve(routes(room))
+        .serve(routes(room, root))
         .provide(Server.defaultWith(_.port(8080).copy(responseCompression = Some(compression))))
     yield ()
 end ChatServer

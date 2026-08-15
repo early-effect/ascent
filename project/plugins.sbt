@@ -8,6 +8,9 @@ addSbtPlugin("rocks.earlyeffect" % "sbt-dynver-ci"    % "0.2.2")
 addSbtPlugin("com.github.sbt"    % "sbt-pgp"          % "2.3.1")
 addSbtPlugin("rocks.earlyeffect" % "sbt-specular"     % "0.12.0")
 addSbtPlugin("rocks.earlyeffect" % "sbt-zipx"         % "0.3.3")
+addSbtPlugin("rocks.earlyeffect" % "sbt-splice"       % "0.0.1")
+addSbtPlugin("com.jamesward"     % "sbt-reload"       % "0.0.7")
+addSbtPlugin("rocks.earlyeffect" % "sbt-chekhov"      % "0.0.4")
 //addSbtPlugin("org.xerial.sbt"   % "sbt-sonatype"      % "3.12.2")
 
 // jsdom-backed JS test environment for the dom-facade and js modules' Test scope.

@@ -15,6 +15,7 @@ object Main extends ZIOAppDefault:
       c  <- todo.TodoApp.make()
       ui <- todo.App.component(c.ctx)
       _  <- AscentApp.mountBody(ui)
+      _  <- ZIO.succeed(DevReload.install())
       // Run the dispatch loop inline (no forkDaemon — a completed forking fiber lets daemons be reaped,
       // stalling the loop). Blocks for the page's lifetime since no Done is ever dispatched.
       _ <- c.run(false)

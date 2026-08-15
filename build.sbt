@@ -1,8 +1,3 @@
-import scala.collection.immutable.ListMap
-// sbt has its own `Exec` (a queued command), so the two wildcards collide. An explicit named
-// import outranks both, and this is the one we mean: the shell AST's simple command.
-import zipx.shell.Exec
-
 val scala3Version = "3.8.4"
 val zioVersion    = "2.1.26"
 
@@ -31,114 +26,7 @@ developers := List(
   )
 )
 
-// zipx CI: parallel platform Verify + Central publish + Specular Pages. Same-name caps replace built-ins.
-zipxJavaVersion      := JdkVersion("25")
-zipxTestTask         := "test"
-zipxWorkflowDispatch := true
-zipxScalaSteward     := true
-
-val ascentJavaOpts = Map("JAVA_OPTS" -> EnvValue.plain("-Dfile.encoding=UTF-8"))
-
-// Shared capability names as vals, so a reference to one is checked rather than spelled twice.
-val Fmt        = CapabilityName("fmt")
-val TestJs     = CapabilityName("test-js")
-val TestNative = CapabilityName("test-native")
-
-/** `apt-get update && apt-get install -y <packages>` as a shell AST rather than a string: the `&&`
-  * and the argv are the model's business, so a dropped `-y` or a mistyped program is a compile error.
-  *
-  * Takes already-typed Words rather than Strings, so each package name goes through Word.lit at its
-  * call site and is validated at compile time (no runtime unwrap of a litMake Either).
-  */
-def aptInstall(packages: Word*): Script =
-  Script(
-    Exec("sudo", Word.lit("apt-get"), Word.lit("update")) &&
-      Exec.of(
-        "sudo",
-        List(Word.lit("apt-get"), Word.lit("install"), Word.lit("-y")) ++ packages.toList,
-      )
-  )
-
-/** jsdom/canvas toolchain for the JS Verify job only. */
-val ascentJsCiSetup: Steps = Steps.built("ascent-js-ci")(
-  // Step.uses is inline, so an unpinned or malformed ref is a compile error naming it.
-  Step
-    .uses("actions/setup-node@820762786026740c76f36085b0efc47a31fe5020") // v7.0.0
-    .named("Set up Node")
-    .withInputs(ListMap("node-version" -> "24", "cache" -> "npm")),
-  Step
-    .run(
-      aptInstall(
-        Word.lit("libcairo2-dev"),
-        Word.lit("libpango1.0-dev"),
-        Word.lit("libjpeg-dev"),
-        Word.lit("libgif-dev"),
-        Word.lit("librsvg2-dev"),
-      )
-    )
-    .named("Install canvas build dependencies"),
-  Step.run(Script(Exec("npm", Word.lit("ci")))).named("Install Node dependencies (jsdom, canvas)"),
-)
-
-/** Clang / libgc for the Native Verify job only. */
-val ascentNativeCiSetup: Steps = Steps.built("ascent-native-ci")(
-  Step
-    .run(
-      aptInstall(
-        Word.lit("clang"),
-        Word.lit("libstdc++-12-dev"),
-        Word.lit("libgc-dev"),
-        Word.lit("libunwind-dev"),
-      )
-    )
-    .named("Install Scala Native build dependencies")
-)
-
-val ascentDependencySubmission: Steps = Steps.built("ascent-dependency-submission")(
-  Step
-    .uses("scalacenter/sbt-dependency-submission@d84eef4c09e633bcf5f113bcad7fd5e9af1baee9") // v3.2.3
-    .named("Submit dependency graph")
-)
-
-zipxCapabilities ++= Seq(
-  // Compound, so a literal SbtCommand rather than a spliced task key.
-  Capability.once(Fmt, SbtCommand("scalafmtCheckAll; zipxWorkflowCheck")),
-  // Platform jobs run in parallel after fmt. `test` replaces the Aggregate builtin (same-name);
-  // `test-js` / `test-native` are extras. Aliases are defined after the matrices below, and are
-  // command aliases rather than task keys, so they stay literal SbtCommands.
-  Capability.once(
-    name = Capability.TestName,
-    command = SbtCommand("testJVM"),
-    needsCapabilities = List(Fmt),
-    env = ascentJavaOpts,
-  ),
-  Capability.once(
-    name = TestJs,
-    command = SbtCommand("testJS"),
-    needsCapabilities = List(Fmt),
-    extraSteps = ascentJsCiSetup,
-    env = ascentJavaOpts,
-  ),
-  Capability.once(
-    name = TestNative,
-    command = SbtCommand("testNative"),
-    needsCapabilities = List(Fmt),
-    extraSteps = ascentNativeCiSetup,
-    env = ascentJavaOpts,
-  ),
-  ZipxCentral.release,
-  ZipxDocs.pages(),
-  Capability.once(
-    name = CapabilityName("dependency-submission"),
-    // zipx Once jobs always emit an sbt step. Run the action in extraSteps *before* that step: an earlier
-    // `sbt about` would start a server without GITHUB_TOKEN, and the action's later sbt client would reuse it
-    // (snapshot generates, submit then fails with "Missing environment variable GITHUB_TOKEN").
-    command = SbtCommand("about"),
-    needsCapabilities = List(Capability.TestName, TestJs, TestNative),
-    permissions = Map("contents" -> "write"),
-    extraSteps = ascentDependencySubmission,
-  ),
-)
+// GitHub Actions CI is project/AscentZipx.scala (zipx capabilities).
 
 // Publishing targets the Sonatype Central Portal, which is built into sbt 2.x (no sbt-sonatype).
 // Snapshots go to Central's snapshot repo; releases stage locally and are promoted by `sonaRelease`.
@@ -216,6 +104,26 @@ val jsdomTestEnv = Def.settings(
   Test / jsEnv := Def.uncached(new org.scalajs.jsenv.jsdomnodejs.JSDOMNodeJSEnv())
 )
 
+lazy val previewStage = taskKey[File](
+  "Stage index.html + spliceFast JS + a reload stamp into <example>/target/preview"
+)
+
+/** Matrix rows live under `.sbt/matrix/<id>` (`baseDirectory`) with `target` under `target/out/...`. Stage into the
+  * example directory (`sourceDirectory`'s parent) so `preview/run` and the JVM servers can find the tree.
+  */
+def examplePreviewSettings: Seq[Setting[?]] = Seq(
+  spliceFastOutput := Def.uncached(sourceDirectory.value.getParentFile / "target" / "preview" / "fast.js"),
+  previewStage     := Def.uncached {
+    val js          = spliceFast.value
+    val dest        = js.getParentFile
+    val exampleRoot = sourceDirectory.value.getParentFile
+    IO.createDirectory(dest / "assets")
+    IO.copyFile(exampleRoot / "index.html", dest / "index.html")
+    IO.write(dest / "assets" / "dev-stamp", System.currentTimeMillis.toString)
+    dest
+  },
+)
+
 val specularVersion = "0.12.0"
 
 def specularLib(artifact: String) = "rocks.earlyeffect" %% artifact % specularVersion
@@ -233,29 +141,30 @@ val ascentModules = Seq(
   "ascent-conduit",
   "ascent-datastar",
   "ascent-datastar-http",
+  "ascent-preview",
 )
 
-/** Published Specular jars depend on the Maven Central `ascent-*` release, but the docs modules
-  * `dependsOn` local ascent, so coursier sees two versions of every ascent artifact. Under
-  * `early-semver` that is a hard conflict (local `0.3.0-ci` vs a published `0.1.0`), so mark them
-  * `always` and let the local `dependsOn` win.
+/** Published Specular jars depend on the Maven Central `ascent-*` release, but the docs modules `dependsOn` local
+  * ascent, so coursier sees two versions of every ascent artifact. Under `early-semver` that is a hard conflict (local
+  * `0.3.0-ci` vs a published `0.1.0`), so mark them `always` and let the local `dependsOn` win.
   *
-  * Both the JVM (`_3`) and Scala.js (`_sjs1_3`) coordinates need an entry — `docsJS` resolves the
-  * latter, and a scheme keyed on one does not cover the other.
+  * Both the JVM (`_3`) and Scala.js (`_sjs1_3`) coordinates need an entry — `docsJS` resolves the latter, and a scheme
+  * keyed on one does not cover the other.
   *
-  * Do not use `excludeDependencies` here — it also strips the local `dependsOn` modules (conduit,
-  * datastar-http) from the docs classpath.
+  * Do not use `excludeDependencies` here — it also strips the local `dependsOn` modules (conduit, datastar-http) from
+  * the docs classpath.
   */
 val docsDogfoodSettings = Def.settings(
   libraryDependencySchemes ++= ascentModules.flatMap { m =>
     Seq(
-      "rocks.earlyeffect" % s"${m}_3"       % "always",
-      "rocks.earlyeffect" % s"${m}_sjs1_3"  % "always",
+      "rocks.earlyeffect" % s"${m}_3"      % "always",
+      "rocks.earlyeffect" % s"${m}_sjs1_3" % "always",
     )
-  },
+  }
 )
 
 lazy val root = (project in file("."))
+  .disablePlugins(chekhov.sbt.ChekhovPlugin)
   .aggregate(
     (domTypes.projectRefs ++ core.projectRefs ++ domFacade.projectRefs ++ domCore.projectRefs ++
       mountEngine.projectRefs ++ js.projectRefs ++
@@ -263,7 +172,7 @@ lazy val root = (project in file("."))
       html.projectRefs ++ datastar.projectRefs ++ datastarJs.projectRefs ++
       datastarHttp.projectRefs ++ datastarExample.projectRefs ++ datastarExampleServer.projectRefs ++
       hybridChat.projectRefs ++ hybridChatServer.projectRefs ++
-      todoConduit.projectRefs ++ docs.projectRefs) *
+      todoConduit.projectRefs ++ docs.projectRefs ++ preview.projectRefs) *
   )
   .settings(
     name           := "ascent",
@@ -273,6 +182,7 @@ lazy val root = (project in file("."))
 
 // --- ascent-dom-types : generated element/attr/event defs + codecs (zero deps, jvm/js/native) ---
 lazy val domTypes = (projectMatrix in file("dom-types"))
+  .disablePlugins(chekhov.sbt.ChekhovPlugin)
   .settings(
     name := "ascent-dom-types",
     scalacOptions ++= commonScalacOptions,
@@ -284,6 +194,7 @@ lazy val domTypes = (projectMatrix in file("dom-types"))
 
 // --- ascent-domgen : pure-Scala generator, JVM tooling only (never a runtime dep) ---
 lazy val domgen = (projectMatrix in file("domgen"))
+  .disablePlugins(chekhov.sbt.ChekhovPlugin)
   .settings(
     name           := "ascent-domgen",
     publish / skip := true,
@@ -311,6 +222,7 @@ lazy val domgen = (projectMatrix in file("domgen"))
 
 // --- ascent-core : Squawk + AST + DSL. ZIO-based; depends on dom-types + zio; jvm/js/native ---
 lazy val core = (projectMatrix in file("core"))
+  .disablePlugins(chekhov.sbt.ChekhovPlugin)
   .dependsOn(domTypes)
   .settings(
     name := "ascent-core",
@@ -327,6 +239,7 @@ lazy val core = (projectMatrix in file("core"))
 //   Depends on dom-types so EnumAccessors.scala's additive typed-enum extensions can reference the
 //   real Scala 3 enums generated there (Enums.scala) — see Renderer.enumAccessors/enumTypes.
 lazy val domFacade = (projectMatrix in file("dom-facade"))
+  .disablePlugins(chekhov.sbt.ChekhovPlugin)
   .dependsOn(domTypes)
   .settings(
     name := "ascent-dom-facade",
@@ -351,6 +264,7 @@ lazy val domFacade = (projectMatrix in file("dom-facade"))
 //   row, via jsPlatform's `configure: Project => Project` overload (domFacade.js(scalaVersion)
 //   resolves the concrete js-row Project) — not a matrix-wide `dependsOn`.
 lazy val domCore = (projectMatrix in file("dom-core"))
+  .disablePlugins(chekhov.sbt.ChekhovPlugin)
   .dependsOn(core, css)
   .settings(
     name := "ascent-dom-core",
@@ -372,6 +286,7 @@ lazy val domCore = (projectMatrix in file("dom-core"))
 //   (StyleSink). The JS-only rich-event path and browser <style> injection stay OUT of here — a
 //   caller supplies an `EventCodec[E]` and a `StyleSink` per platform. jvm/js/native.
 lazy val mountEngine = (projectMatrix in file("mount-engine"))
+  .disablePlugins(chekhov.sbt.ChekhovPlugin)
   .dependsOn(core, domCore, css)
   .settings(
     name := "ascent-mount-engine",
@@ -386,6 +301,7 @@ lazy val mountEngine = (projectMatrix in file("mount-engine"))
 //   Depends on `css` so DomStyleSink can implement StyleSink. CssClass is js-runnable from
 //   here, but authoring stays in `css` so JVM/Native users can write stylesheets too.
 lazy val js = (projectMatrix in file("js"))
+  .disablePlugins(chekhov.sbt.ChekhovPlugin)
   .dependsOn(core, domFacade, css, mountEngine)
   .settings(
     name := "ascent-js",
@@ -404,6 +320,7 @@ lazy val js = (projectMatrix in file("js"))
 //   typically lets 3.8.3 consume it). Stays a separate sub-module so users who don't want
 //   conduit (or its ZIO transitive that core already needs) don't pull anything extra.
 lazy val conduitBridge = (projectMatrix in file("conduit"))
+  .disablePlugins(chekhov.sbt.ChekhovPlugin)
   .dependsOn(core)
   .settings(
     name := "ascent-conduit",
@@ -427,6 +344,7 @@ lazy val conduitBridge = (projectMatrix in file("conduit"))
 // domgen build-tool dependency; 3.1.1 also publishes real js/native artifacts, so this is a
 // deliberate widening of scope, not a new library the team doesn't already have idioms for.
 lazy val css = (projectMatrix in file("css"))
+  .disablePlugins(chekhov.sbt.ChekhovPlugin)
   .dependsOn(core)
   .settings(
     name := "ascent-css",
@@ -444,6 +362,7 @@ lazy val css = (projectMatrix in file("css"))
 //   `root.innerHTML`. So server output is produced by the exact same reconciler the browser uses —
 //   the two can't drift. Depends on mount-engine (which brings core + dom-core + css). jvm/js/native.
 lazy val html = (projectMatrix in file("html"))
+  .disablePlugins(chekhov.sbt.ChekhovPlugin)
   .dependsOn(core, css, mountEngine)
   .settings(
     name := "ascent-html",
@@ -460,6 +379,7 @@ lazy val html = (projectMatrix in file("html"))
 //   incoming patches). Adds zio-json (NOT otherwise a runtime dep — only domgen uses it). dependsOn
 //   core for Squawk. jvm/js/native; if zio-json's native artifact is unavailable, drop nativePlatform.
 lazy val datastar = (projectMatrix in file("datastar"))
+  .disablePlugins(chekhov.sbt.ChekhovPlugin)
   .dependsOn(core)
   .settings(
     name := "ascent-datastar",
@@ -477,6 +397,7 @@ lazy val datastar = (projectMatrix in file("datastar"))
 //   back via fetch. JS only — it's the one piece that touches the live DOM facade. dependsOn datastar
 //   (protocol + store) + js (Mount/Cleanup machinery) + domFacade (EventSource/fetch).
 lazy val datastarJs = (projectMatrix in file("datastar-js"))
+  .disablePlugins(chekhov.sbt.ChekhovPlugin)
   .dependsOn(datastar, js, domFacade)
   .settings(
     name := "ascent-datastar-js",
@@ -494,6 +415,7 @@ lazy val datastarJs = (projectMatrix in file("datastar-js"))
 //   Pin the SDK to 3.11.0 — the newest version published on Maven Central (latest zio-http is 3.11.3
 //   but the SDK lags). The real-server integration tests use zio-http's own Server/Client.
 lazy val datastarHttp = (projectMatrix in file("datastar-http"))
+  .disablePlugins(chekhov.sbt.ChekhovPlugin)
   .dependsOn(html, datastar)
   .settings(
     name := "ascent-datastar-http",
@@ -503,12 +425,26 @@ lazy val datastarHttp = (projectMatrix in file("datastar-http"))
   )
   .jvmPlatform(scalaVersions = scalaVersions)
 
-// --- ascent example: todo-conduit — TodoMVC over conduit, bundled by Vite (js only) ---
+// --- ascent-preview : static file server + SSE tab reload (JVM). No Specular, no markdown. ---
+lazy val preview = (projectMatrix in file("preview"))
+  .disablePlugins(chekhov.sbt.ChekhovPlugin)
+  .settings(
+    name := "ascent-preview",
+    scalacOptions ++= commonScalacOptions,
+    libraryDependencies += "dev.zio" %% "zio-http" % "3.11.3",
+    zioTestSettings,
+    Compile / mainClass := Some("ascent.preview.PreviewMain"),
+    run / mainClass     := Some("ascent.preview.PreviewMain"),
+  )
+  .jvmPlatform(scalaVersions = scalaVersions)
+
+// --- ascent example: todo-conduit — TodoMVC over conduit (js only) ---
 //   Lives under `example/<name>/`; more examples will sit alongside it. Depends on `js`
 //   (binding engine), `css` (CSS-in-Scala authoring + DomStyleSink), and `conduitBridge`
 //   (which transitively brings in conduit itself for app state). The examples are the
 //   proving ground that all the optional layers compose without rough edges.
 lazy val todoConduit = (projectMatrix in file("example/todo-conduit"))
+  .disablePlugins(chekhov.sbt.ChekhovPlugin)
   .dependsOn(js, css, conduitBridge)
   .settings(
     name           := "ascent-todo-conduit",
@@ -517,22 +453,23 @@ lazy val todoConduit = (projectMatrix in file("example/todo-conduit"))
     scalacOptions ++= commonScalacOptions,
     scalaJSUseMainModuleInitializer := true,
     scalaJSLinkerConfig ~= (_.withModuleKind(ModuleKind.ESModule)),
+    examplePreviewSettings,
   )
   .jsPlatform(scalaVersions = scalaVersions)
 
 // --- ascent example: datastar-app — server-driven counter proving the full datastar loop ---
 //   The CLIENT (js, pure ascent): a SignalStore fed by the datastar SSE stream drives ascent's own
-//   reactive AST; a button POSTs an action back. Bundled by Vite like todo-conduit.
+//   reactive AST; a button POSTs an action back.
 lazy val datastarExample = (projectMatrix in file("example/datastar-app"))
+  .disablePlugins(chekhov.sbt.ChekhovPlugin)
   .dependsOn(datastarJs, css)
   .settings(
     name           := "ascent-datastar-example",
     publish / skip := true,
     test / skip    := true,
     scalacOptions ++= commonScalacOptions,
+    examplePreviewSettings,
   )
-  // Vite bundles ES modules; emit ESModule output (the link honors this — verified the bundle has no
-  // NoModule IIFE wrapper and esbuild parses it as ESM).
   .jsPlatform(
     scalaVersions = scalaVersions,
     Seq(
@@ -543,9 +480,10 @@ lazy val datastarExample = (projectMatrix in file("example/datastar-app"))
 
 // --- ascent example: datastar-app SERVER — the zio-http backend (JVM). Holds the count, serves the
 //   datastar SSE stream + the increment action via the ascent-datastar-http wrapper, with zio-http's
-//   built-in brotli compression. Run with `sbt datastarExampleServer/run` alongside Vite. ---
+//   built-in brotli compression, and composes ascent-preview so the spliced client is same-origin. ---
 lazy val datastarExampleServer = (projectMatrix in file("example/datastar-app-server"))
-  .dependsOn(datastarHttp)
+  .disablePlugins(chekhov.sbt.ChekhovPlugin)
+  .dependsOn(datastarHttp, preview)
   .settings(
     name           := "ascent-datastar-example-server",
     publish / skip := true,
@@ -562,12 +500,14 @@ lazy val datastarExampleServer = (projectMatrix in file("example/datastar-app-se
 //   (js) declares the region + UI; the SERVER renders message rows via ascent-html and pushes them
 //   with `patchRegion`. Proves the hybrid: client-owned reactivity + server-owned region, together. ---
 lazy val hybridChat = (projectMatrix in file("example/hybrid-chat"))
+  .disablePlugins(chekhov.sbt.ChekhovPlugin)
   .dependsOn(datastarJs, css)
   .settings(
     name           := "ascent-hybrid-chat",
     publish / skip := true,
     test / skip    := true,
     scalacOptions ++= commonScalacOptions,
+    examplePreviewSettings,
   )
   .jsPlatform(
     scalaVersions = scalaVersions,
@@ -580,7 +520,8 @@ lazy val hybridChat = (projectMatrix in file("example/hybrid-chat"))
 // The hybrid-chat SERVER (JVM): ChatRoom state + SSE routes; renders message rows via ascent-html and
 // pushes them into the client's `serverRegion("messages")` with `AscentDatastar.patchRegion`.
 lazy val hybridChatServer = (projectMatrix in file("example/hybrid-chat-server"))
-  .dependsOn(datastarHttp)
+  .disablePlugins(chekhov.sbt.ChekhovPlugin)
+  .dependsOn(datastarHttp, preview)
   .settings(
     name           := "ascent-hybrid-chat-server",
     publish / skip := true,
@@ -592,18 +533,19 @@ lazy val hybridChatServer = (projectMatrix in file("example/hybrid-chat-server")
 
 // --- ascent-docs : Specular DocSpecs + static site (JVM) and interactive client (JS) ---
 lazy val docs: ProjectMatrix = (projectMatrix in file("docs"))
+  .disablePlugins(chekhov.sbt.ChekhovPlugin)
   .dependsOn(core, css, conduitBridge, html, datastar)
   .settings(
     name           := "ascent-docs",
     publish / skip := true,
     scalacOptions ++= commonScalacOptions,
-    description    := "Effect-native reactive UI for Scala 3; docs site",
+    description := "Effect-native reactive UI for Scala 3; docs site",
   )
   .jvmPlatform(
     scalaVersions,
     Nil,
     (p: Project) =>
-      p.dependsOn(datastarHttp.jvm(scala3Version))
+      p.dependsOn(datastarHttp.jvm(scala3Version), preview.jvm(scala3Version))
         .enablePlugins(SpecularPlugin)
         .settings(
           docsDogfoodSettings,
@@ -616,29 +558,38 @@ lazy val docs: ProjectMatrix = (projectMatrix in file("docs"))
             "dev.zio" %% "zio-test-sbt" % zioVersion,
           ),
           zioTestSettings,
-          Compile / mainClass     := Some("ascent.docs.ServeSite"),
-          run / mainClass         := Some("ascent.docs.ServeSite"),
-          specularBuildMain       := "ascent.docs.BuildSite",
-          specularMetaProject     := Some(LocalProject("root")),
-          specularSiteDirectory   := (ThisBuild / baseDirectory).value / "target" / "site",
+          Compile / mainClass  := Some("ascent.docs.ServeSite"),
+          run / mainClass      := Some("ascent.docs.ServeSite"),
+          Test / mainClass     := Some("ascent.docs.ServeSite"),
+          Test / runReloadArgs := {
+            val siteDir = (ThisBuild / baseDirectory).value / "target" / "site"
+            Seq("8765", siteDir.getAbsolutePath)
+          },
+          Test / runReload      := Def.uncached((Test / runReload).dependsOn(specularSite).value),
+          specularBuildMain     := "ascent.docs.BuildSite",
+          specularMetaProject   := Some(LocalProject("root")),
+          specularSiteDirectory := (ThisBuild / baseDirectory).value / "target" / "site",
           // Docs-only (workflow_dispatch) builds are dynver `-ci`; don't advertise that as a Central coord.
           // Empty string → Specular uses build version (clean v* tags).
           specularDisplayVersion := {
             val v = (ThisBuild / version).value
-            if v.endsWith("-ci") || v.endsWith("-SNAPSHOT") then
+            if (v.endsWith("-ci") || v.endsWith("-SNAPSHOT")) then {
               previousStableVersion.value.getOrElse("<version>")
-            else ""
+            }
+            else {
+              ""
+            }
           },
           // Link the JS client and write a marker path BuildSite copies into assets/client.js.
           specularJsLink := Def.uncached {
             (LocalProject("docsJS") / Compile / fastLinkJS).value
             val outDir = (LocalProject("docsJS") / Compile / fastLinkJSOutput).value
             val mainJs = outDir / "main.js"
-            if !mainJs.exists then
-              sys.error(
-                s"Expected $mainJs after fastLinkJS; directory contains: " +
-                  Option(outDir.list).toSeq.flatten.mkString(", ")
-              )
+            if (!mainJs.exists) then
+            sys.error(
+              s"Expected $mainJs after fastLinkJS; directory contains: " +
+                Option(outDir.list).toSeq.flatten.mkString(", ")
+            )
             val marker = (ThisBuild / baseDirectory).value / "target" / "specular-client-js.path"
             IO.write(marker, mainJs.getAbsolutePath)
             ()
@@ -678,6 +629,7 @@ lazy val ascentMatrices: Seq[ProjectMatrix] = Seq(
   datastar,
   datastarJs,
   datastarHttp,
+  preview,
   datastarExample,
   datastarExampleServer,
   hybridChat,
@@ -696,3 +648,36 @@ def ascentPlatformTestCommand(find: ProjectMatrix => ProjectFinder): String =
 addCommandAlias("testJVM", ascentPlatformTestCommand(_.jvm))
 addCommandAlias("testJS", ascentPlatformTestCommand(_.js))
 addCommandAlias("testNative", ascentPlatformTestCommand(_.native))
+
+val chekhovVersion = "0.0.4"
+
+lazy val e2eStage = taskKey[Unit]("Stage example preview trees for Chekhov e2e")
+
+// Browser suites. Not aggregated so library `testFull` stays browser-free.
+lazy val e2e = (project in file("e2e"))
+  .dependsOn(
+    preview.jvm(scala3Version),
+    datastarExampleServer.jvm(scala3Version),
+    hybridChatServer.jvm(scala3Version),
+  )
+  .settings(
+    name           := "ascent-e2e",
+    publish / skip := true,
+    scalacOptions ++= commonScalacOptions,
+    libraryDependencies ++= Seq(
+      "dev.zio"           %% "zio-test"         % zioVersion     % Test,
+      "dev.zio"           %% "zio-test-sbt"     % zioVersion     % Test,
+      "rocks.earlyeffect" %% "chekhov-zio-test" % chekhovVersion % Test,
+      "rocks.earlyeffect" %% "chekhov-driver"   % chekhovVersion % Test,
+    ),
+    chekhovBrowsers := Seq(chekhov.ChekhovBrowser.Firefox),
+    e2eStage        := Def.uncached {
+      (LocalProject("todoConduitJS") / previewStage).value
+      (LocalProject("datastarExampleJS") / previewStage).value
+      (LocalProject("hybridChatJS") / previewStage).value
+      ()
+    },
+    Test / javaOptions += s"-Dascent.repoRoot=${(ThisBuild / baseDirectory).value.getAbsolutePath}",
+    // CompileAnalysis has no JsonFormat; sbt 2 caches task outputs unless we opt out.
+    Test / compile := Def.uncached((Test / compile).dependsOn(e2eStage).value),
+  )

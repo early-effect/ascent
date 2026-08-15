@@ -24,6 +24,7 @@ object ClientMain extends ZIOAppDefault:
       _ <- ZIO.foreachDiscard(examples.toList) { case (id, body) =>
         mountExample(id, body)
       }
+      _ <- ZIO.succeed(DevReload.install())
       _ <- ZIO.never
     yield ()
   end run

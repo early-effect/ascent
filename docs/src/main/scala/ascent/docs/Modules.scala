@@ -22,6 +22,7 @@ published so consumers resolve transitively.
 | `ascent-datastar` | Datastar protocol + SignalStore |
 | `ascent-datastar-js` | Browser datastar runtime |
 | `ascent-datastar-http` | zio-http datastar server bridge |
+| `ascent-preview` | Local static serve + SSE tab reload |
 
 ## Internals (transitive)
 
@@ -30,7 +31,7 @@ internals. Depend on them only if you are extending the platform; ordinary apps 
 transitively.
 
 - `domgen`: JVM generator; never a runtime dep
-- `example/*`: Vite apps (todo-conduit, datastar-app, hybrid-chat)
+- `example/*`: splice + preview apps (todo-conduit, datastar-app, hybrid-chat)
 """
   )
 end Modules

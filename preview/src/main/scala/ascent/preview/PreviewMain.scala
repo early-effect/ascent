@@ -1,12 +1,11 @@
-package ascent.docs
+package ascent.preview
 
-import ascent.preview.{Preview, PreviewConfig}
 import zio.*
 
 import java.nio.file.Paths
 
-/** Preview server entry: `ServeSite <port> <siteRoot>`. */
-object ServeSite extends ZIOAppDefault:
+/** CLI: `PreviewMain <port> <siteRoot>`. Used by sbt-reload (`runReloadArgs`) and ad-hoc example serving. */
+object PreviewMain extends ZIOAppDefault:
 
   def run =
     for
@@ -18,4 +17,4 @@ object ServeSite extends ZIOAppDefault:
         .getOrElse(Paths.get("target/site").toAbsolutePath)
       _ <- Preview.serveForever(PreviewConfig(root = root, port = port))
     yield ()
-end ServeSite
+end PreviewMain

@@ -65,7 +65,7 @@ object Main extends ZIOAppDefault:
             Card,
             E.h1("ascent ⇄ datastar"),
             E.p("The server owns the count. ascent renders it."),
-            E.div(Count, count.map(_.toString)),
+            E.div(Count, A.id("count"), count.map(_.toString)),
             E.button(
               Button,
               "increment",
@@ -81,6 +81,7 @@ object Main extends ZIOAppDefault:
       store <- SignalStore.make()
       ui    <- view(store)
       _     <- AscentApp.mountBody(ui)
+      _     <- ZIO.succeed(DevReload.install())
       // Keep the app fiber alive for the page's lifetime.
       _ <- ZIO.never
     yield ()
