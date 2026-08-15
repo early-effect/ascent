@@ -1,8 +1,16 @@
 import scala.collection.immutable.ListMap
 
+import org.scalafmt.sbt.ScalafmtPlugin.autoImport.scalafmtCheckAll
+
 import sbt.AutoPlugin
+import sbt.Keys.testFull
+import sbt.LocalProject
+import sbt.Test
+import sbt./
 import zipx.sbt.ZipxPlugin
 import zipx.sbt.ZipxPlugin.autoImport.*
+
+import chekhov.sbt.ChekhovPlugin.autoImport.chekhovInstall
 
 /** Ascent's zipx CI: platform Verify, e2e, Central, Pages. Lives here so `build.sbt` does not import zipx's `Exec`
   * (which collides with sbt's own `Exec`).
@@ -16,6 +24,10 @@ object AscentZipx extends AutoPlugin:
   private val Fmt        = CapabilityName("fmt")
   private val TestJs     = CapabilityName("test-js")
   private val TestNative = CapabilityName("test-native")
+
+  /** `addCommandAlias` names (`testJVM` / `testJS` / `testNative`) are not task keys. */
+  private def alias(name: String): SbtCommand =
+    SbtCommand.raw(name).fold(msg => sys.error(s"zipx: $msg"), identity)
 
   /** `apt-get update && apt-get install -y <packages>` as a shell AST rather than a string. */
   private def aptInstall(packages: Word*): Script =
@@ -67,7 +79,6 @@ object AscentZipx extends AutoPlugin:
 
   override def buildSettings: Seq[sbt.Setting[?]] = Seq(
     zipxJavaVersion      := JdkVersion("25"),
-    zipxTestTask         := "test",
     zipxWorkflowDispatch := true,
     zipxScalaSteward     := true,
     zipxEnv              := Map(
@@ -75,23 +86,23 @@ object AscentZipx extends AutoPlugin:
         EnvValue.typed(Expr.github("workspace") ++ Expr.lit("/target/ms-playwright"))
     ),
     zipxCapabilities ++= Seq(
-      Capability.once(Fmt, SbtCommand("scalafmtCheckAll; zipxWorkflowCheck")),
+      Capability.once(Fmt, zipxTasks.session(scalafmtCheckAll, zipxWorkflowCheck)),
       Capability.once(
         name = Capability.TestName,
-        command = SbtCommand("testJVM"),
+        command = alias("testJVM"),
         needsCapabilities = List(Fmt),
         env = javaOpts,
       ),
       Capability.once(
         name = TestJs,
-        command = SbtCommand("testJS"),
+        command = alias("testJS"),
         needsCapabilities = List(Fmt),
         extraSteps = jsCiSetup,
         env = javaOpts,
       ),
       Capability.once(
         name = TestNative,
-        command = SbtCommand("testNative"),
+        command = alias("testNative"),
         needsCapabilities = List(Fmt),
         extraSteps = nativeCiSetup,
         env = javaOpts,
@@ -99,7 +110,10 @@ object AscentZipx extends AutoPlugin:
       Capability
         .once(
           name = CapabilityName("e2e"),
-          command = SbtCommand("e2e/chekhovInstall; e2e/testFull"),
+          command = zipxTasks.session(
+            LocalProject("e2e") / chekhovInstall,
+            LocalProject("e2e") / Test / testFull,
+          ),
           needsCapabilities = List(Fmt),
         )
         .withNodeVersion(NodeVersion("24")),
@@ -110,7 +124,7 @@ object AscentZipx extends AutoPlugin:
         // zipx Once jobs always emit an sbt step. Run the action in extraSteps *before* that step: an earlier
         // `sbt about` would start a server without GITHUB_TOKEN, and the action's later sbt client would reuse it
         // (snapshot generates, submit then fails with "Missing environment variable GITHUB_TOKEN").
-        command = SbtCommand("about"),
+        command = alias("about"),
         needsCapabilities = List(Capability.TestName, TestJs, TestNative),
         permissions = Map("contents" -> "write"),
         extraSteps = dependencySubmission,

@@ -51,54 +51,16 @@ jobs:
         with:
           fetch-depth: "0"
           fetch-tags: "true"
-      - name: Setup JDK 25
-        uses: actions/setup-java@b6effb05e454b25005698d916606bdc6ffcbf961 # v5.7.0
+      - name: zipx sbt setup
+        uses: ./.github/actions/zipx-sbt-setup
         with:
-          distribution: temurin
           java-version: "25"
-      - uses: sbt/setup-sbt@5ed7fa239084076151f66fa1dc45d4363b2dfee5 # v1.5.7
-        with:
-          disk-cache: "false"
-      - name: Resolve cache epoch
-        id: cache-epoch
-        run: |
-          set -euo pipefail
-          tag_match='v*'
-          if git remote get-url origin >/dev/null 2>&1; then
-            remote_count=$(git ls-remote --tags --refs origin "$tag_match" 2>/dev/null | wc -l | tr -d ' ')
-            local_count=$(git tag -l "$tag_match" | wc -l | tr -d ' ')
-            if [ "$remote_count" -gt 0 ] && [ "$local_count" -lt "$remote_count" ]; then
-              echo "::warning title=zipx cache epoch::Local tags ($local_count) fewer than origin ($remote_count). Epoch may be stale; checkout must use fetch-depth: 0 and fetch-tags: true."
-            fi
-          fi
-          if [[ "${GITHUB_REF:-}" == refs/tags/v* ]]; then
-            release="${GITHUB_REF#refs/tags/v}"
-            epoch="$release"
-          elif tag=$(git describe --tags --abbrev=0 --match "$tag_match" 2>/dev/null); then
-            release="${tag#v}"
-            epoch="${release}-ci"
-          else
-            echo "::warning title=zipx cache epoch::No tags matching '$tag_match' found; using epoch 0.0.0."
-            release="0.0.0"
-            epoch="0.0.0"
-          fi
-          echo "epoch=$epoch" >> "$GITHUB_OUTPUT"
-          echo "release=$release" >> "$GITHUB_OUTPUT"
-
-      - name: Cache sbt
-        uses: actions/cache@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6.1.0
-        with:
-          path: |
-            ~/.sbt
-            ~/.cache/sbt
-            ~/.cache/coursier
-            target
-          key: ubuntu-latest-jdk25-sbt-${{ steps.cache-epoch.outputs.epoch }}-${{ github.run_id }}-cache-rehydrate
-          restore-keys: |
-            ubuntu-latest-jdk25-sbt-${{ steps.cache-epoch.outputs.epoch }}-${{ github.run_id }}-
-            ubuntu-latest-jdk25-sbt-${{ steps.cache-epoch.outputs.epoch }}-
-            ubuntu-latest-jdk25-sbt-${{ steps.cache-epoch.outputs.release }}-
-            ubuntu-latest-jdk25-sbt-
+          runner-os: ubuntu-latest
+          cache-key-suffix: cache-rehydrate
+          node-version: ""
+          sbt-disk-cache: "false"
+          local-cache: "true"
+          cache-epoch: ""
       - name: cache-rehydrate
         run: sbt 'compile'
   test:
@@ -116,54 +78,16 @@ jobs:
         with:
           fetch-depth: "0"
           fetch-tags: "true"
-      - name: Setup JDK 25
-        uses: actions/setup-java@b6effb05e454b25005698d916606bdc6ffcbf961 # v5.7.0
+      - name: zipx sbt setup
+        uses: ./.github/actions/zipx-sbt-setup
         with:
-          distribution: temurin
           java-version: "25"
-      - uses: sbt/setup-sbt@5ed7fa239084076151f66fa1dc45d4363b2dfee5 # v1.5.7
-        with:
-          disk-cache: "false"
-      - name: Resolve cache epoch
-        id: cache-epoch
-        run: |
-          set -euo pipefail
-          tag_match='v*'
-          if git remote get-url origin >/dev/null 2>&1; then
-            remote_count=$(git ls-remote --tags --refs origin "$tag_match" 2>/dev/null | wc -l | tr -d ' ')
-            local_count=$(git tag -l "$tag_match" | wc -l | tr -d ' ')
-            if [ "$remote_count" -gt 0 ] && [ "$local_count" -lt "$remote_count" ]; then
-              echo "::warning title=zipx cache epoch::Local tags ($local_count) fewer than origin ($remote_count). Epoch may be stale; checkout must use fetch-depth: 0 and fetch-tags: true."
-            fi
-          fi
-          if [[ "${GITHUB_REF:-}" == refs/tags/v* ]]; then
-            release="${GITHUB_REF#refs/tags/v}"
-            epoch="$release"
-          elif tag=$(git describe --tags --abbrev=0 --match "$tag_match" 2>/dev/null); then
-            release="${tag#v}"
-            epoch="${release}-ci"
-          else
-            echo "::warning title=zipx cache epoch::No tags matching '$tag_match' found; using epoch 0.0.0."
-            release="0.0.0"
-            epoch="0.0.0"
-          fi
-          echo "epoch=$epoch" >> "$GITHUB_OUTPUT"
-          echo "release=$release" >> "$GITHUB_OUTPUT"
-
-      - name: Cache sbt
-        uses: actions/cache@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6.1.0
-        with:
-          path: |
-            ~/.sbt
-            ~/.cache/sbt
-            ~/.cache/coursier
-            target
-          key: ubuntu-latest-jdk25-sbt-${{ steps.cache-epoch.outputs.epoch }}-${{ github.run_id }}-test
-          restore-keys: |
-            ubuntu-latest-jdk25-sbt-${{ steps.cache-epoch.outputs.epoch }}-${{ github.run_id }}-
-            ubuntu-latest-jdk25-sbt-${{ steps.cache-epoch.outputs.epoch }}-
-            ubuntu-latest-jdk25-sbt-${{ steps.cache-epoch.outputs.release }}-
-            ubuntu-latest-jdk25-sbt-
+          runner-os: ubuntu-latest
+          cache-key-suffix: test
+          node-version: ""
+          sbt-disk-cache: "false"
+          local-cache: "true"
+          cache-epoch: ""
       - name: test
         run: |
           if [ "$ZIPX_VERIFY_CLEAN_FULL" = "true" ]; then
@@ -186,54 +110,16 @@ jobs:
         with:
           fetch-depth: "0"
           fetch-tags: "true"
-      - name: Setup JDK 25
-        uses: actions/setup-java@b6effb05e454b25005698d916606bdc6ffcbf961 # v5.7.0
+      - name: zipx sbt setup
+        uses: ./.github/actions/zipx-sbt-setup
         with:
-          distribution: temurin
           java-version: "25"
-      - uses: sbt/setup-sbt@5ed7fa239084076151f66fa1dc45d4363b2dfee5 # v1.5.7
-        with:
-          disk-cache: "false"
-      - name: Resolve cache epoch
-        id: cache-epoch
-        run: |
-          set -euo pipefail
-          tag_match='v*'
-          if git remote get-url origin >/dev/null 2>&1; then
-            remote_count=$(git ls-remote --tags --refs origin "$tag_match" 2>/dev/null | wc -l | tr -d ' ')
-            local_count=$(git tag -l "$tag_match" | wc -l | tr -d ' ')
-            if [ "$remote_count" -gt 0 ] && [ "$local_count" -lt "$remote_count" ]; then
-              echo "::warning title=zipx cache epoch::Local tags ($local_count) fewer than origin ($remote_count). Epoch may be stale; checkout must use fetch-depth: 0 and fetch-tags: true."
-            fi
-          fi
-          if [[ "${GITHUB_REF:-}" == refs/tags/v* ]]; then
-            release="${GITHUB_REF#refs/tags/v}"
-            epoch="$release"
-          elif tag=$(git describe --tags --abbrev=0 --match "$tag_match" 2>/dev/null); then
-            release="${tag#v}"
-            epoch="${release}-ci"
-          else
-            echo "::warning title=zipx cache epoch::No tags matching '$tag_match' found; using epoch 0.0.0."
-            release="0.0.0"
-            epoch="0.0.0"
-          fi
-          echo "epoch=$epoch" >> "$GITHUB_OUTPUT"
-          echo "release=$release" >> "$GITHUB_OUTPUT"
-
-      - name: Cache sbt
-        uses: actions/cache@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6.1.0
-        with:
-          path: |
-            ~/.sbt
-            ~/.cache/sbt
-            ~/.cache/coursier
-            target
-          key: ubuntu-latest-jdk25-sbt-${{ steps.cache-epoch.outputs.epoch }}-${{ github.run_id }}-fmt
-          restore-keys: |
-            ubuntu-latest-jdk25-sbt-${{ steps.cache-epoch.outputs.epoch }}-${{ github.run_id }}-
-            ubuntu-latest-jdk25-sbt-${{ steps.cache-epoch.outputs.epoch }}-
-            ubuntu-latest-jdk25-sbt-${{ steps.cache-epoch.outputs.release }}-
-            ubuntu-latest-jdk25-sbt-
+          runner-os: ubuntu-latest
+          cache-key-suffix: fmt
+          node-version: ""
+          sbt-disk-cache: "false"
+          local-cache: "true"
+          cache-epoch: ""
       - name: fmt
         run: |
           if [ "$ZIPX_VERIFY_CLEAN_FULL" = "true" ]; then
@@ -258,54 +144,16 @@ jobs:
         with:
           fetch-depth: "0"
           fetch-tags: "true"
-      - name: Setup JDK 25
-        uses: actions/setup-java@b6effb05e454b25005698d916606bdc6ffcbf961 # v5.7.0
+      - name: zipx sbt setup
+        uses: ./.github/actions/zipx-sbt-setup
         with:
-          distribution: temurin
           java-version: "25"
-      - uses: sbt/setup-sbt@5ed7fa239084076151f66fa1dc45d4363b2dfee5 # v1.5.7
-        with:
-          disk-cache: "false"
-      - name: Resolve cache epoch
-        id: cache-epoch
-        run: |
-          set -euo pipefail
-          tag_match='v*'
-          if git remote get-url origin >/dev/null 2>&1; then
-            remote_count=$(git ls-remote --tags --refs origin "$tag_match" 2>/dev/null | wc -l | tr -d ' ')
-            local_count=$(git tag -l "$tag_match" | wc -l | tr -d ' ')
-            if [ "$remote_count" -gt 0 ] && [ "$local_count" -lt "$remote_count" ]; then
-              echo "::warning title=zipx cache epoch::Local tags ($local_count) fewer than origin ($remote_count). Epoch may be stale; checkout must use fetch-depth: 0 and fetch-tags: true."
-            fi
-          fi
-          if [[ "${GITHUB_REF:-}" == refs/tags/v* ]]; then
-            release="${GITHUB_REF#refs/tags/v}"
-            epoch="$release"
-          elif tag=$(git describe --tags --abbrev=0 --match "$tag_match" 2>/dev/null); then
-            release="${tag#v}"
-            epoch="${release}-ci"
-          else
-            echo "::warning title=zipx cache epoch::No tags matching '$tag_match' found; using epoch 0.0.0."
-            release="0.0.0"
-            epoch="0.0.0"
-          fi
-          echo "epoch=$epoch" >> "$GITHUB_OUTPUT"
-          echo "release=$release" >> "$GITHUB_OUTPUT"
-
-      - name: Cache sbt
-        uses: actions/cache@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6.1.0
-        with:
-          path: |
-            ~/.sbt
-            ~/.cache/sbt
-            ~/.cache/coursier
-            target
-          key: ubuntu-latest-jdk25-sbt-${{ steps.cache-epoch.outputs.epoch }}-${{ github.run_id }}-test-js
-          restore-keys: |
-            ubuntu-latest-jdk25-sbt-${{ steps.cache-epoch.outputs.epoch }}-${{ github.run_id }}-
-            ubuntu-latest-jdk25-sbt-${{ steps.cache-epoch.outputs.epoch }}-
-            ubuntu-latest-jdk25-sbt-${{ steps.cache-epoch.outputs.release }}-
-            ubuntu-latest-jdk25-sbt-
+          runner-os: ubuntu-latest
+          cache-key-suffix: test-js
+          node-version: ""
+          sbt-disk-cache: "false"
+          local-cache: "true"
+          cache-epoch: ""
       - name: Set up Node
         uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
         with:
@@ -339,54 +187,16 @@ jobs:
         with:
           fetch-depth: "0"
           fetch-tags: "true"
-      - name: Setup JDK 25
-        uses: actions/setup-java@b6effb05e454b25005698d916606bdc6ffcbf961 # v5.7.0
+      - name: zipx sbt setup
+        uses: ./.github/actions/zipx-sbt-setup
         with:
-          distribution: temurin
           java-version: "25"
-      - uses: sbt/setup-sbt@5ed7fa239084076151f66fa1dc45d4363b2dfee5 # v1.5.7
-        with:
-          disk-cache: "false"
-      - name: Resolve cache epoch
-        id: cache-epoch
-        run: |
-          set -euo pipefail
-          tag_match='v*'
-          if git remote get-url origin >/dev/null 2>&1; then
-            remote_count=$(git ls-remote --tags --refs origin "$tag_match" 2>/dev/null | wc -l | tr -d ' ')
-            local_count=$(git tag -l "$tag_match" | wc -l | tr -d ' ')
-            if [ "$remote_count" -gt 0 ] && [ "$local_count" -lt "$remote_count" ]; then
-              echo "::warning title=zipx cache epoch::Local tags ($local_count) fewer than origin ($remote_count). Epoch may be stale; checkout must use fetch-depth: 0 and fetch-tags: true."
-            fi
-          fi
-          if [[ "${GITHUB_REF:-}" == refs/tags/v* ]]; then
-            release="${GITHUB_REF#refs/tags/v}"
-            epoch="$release"
-          elif tag=$(git describe --tags --abbrev=0 --match "$tag_match" 2>/dev/null); then
-            release="${tag#v}"
-            epoch="${release}-ci"
-          else
-            echo "::warning title=zipx cache epoch::No tags matching '$tag_match' found; using epoch 0.0.0."
-            release="0.0.0"
-            epoch="0.0.0"
-          fi
-          echo "epoch=$epoch" >> "$GITHUB_OUTPUT"
-          echo "release=$release" >> "$GITHUB_OUTPUT"
-
-      - name: Cache sbt
-        uses: actions/cache@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6.1.0
-        with:
-          path: |
-            ~/.sbt
-            ~/.cache/sbt
-            ~/.cache/coursier
-            target
-          key: ubuntu-latest-jdk25-sbt-${{ steps.cache-epoch.outputs.epoch }}-${{ github.run_id }}-test-native
-          restore-keys: |
-            ubuntu-latest-jdk25-sbt-${{ steps.cache-epoch.outputs.epoch }}-${{ github.run_id }}-
-            ubuntu-latest-jdk25-sbt-${{ steps.cache-epoch.outputs.epoch }}-
-            ubuntu-latest-jdk25-sbt-${{ steps.cache-epoch.outputs.release }}-
-            ubuntu-latest-jdk25-sbt-
+          runner-os: ubuntu-latest
+          cache-key-suffix: test-native
+          node-version: ""
+          sbt-disk-cache: "false"
+          local-cache: "true"
+          cache-epoch: ""
       - name: Install Scala Native build dependencies
         run: sudo apt-get update && sudo apt-get install -y clang libstdc++-12-dev libgc-dev libunwind-dev
       - name: test-native
@@ -412,64 +222,22 @@ jobs:
         with:
           fetch-depth: "0"
           fetch-tags: "true"
-      - name: Setup JDK 25
-        uses: actions/setup-java@b6effb05e454b25005698d916606bdc6ffcbf961 # v5.7.0
+      - name: zipx sbt setup
+        uses: ./.github/actions/zipx-sbt-setup
         with:
-          distribution: temurin
           java-version: "25"
-      - uses: sbt/setup-sbt@5ed7fa239084076151f66fa1dc45d4363b2dfee5 # v1.5.7
-        with:
-          disk-cache: "false"
-      - name: Setup Node 24
-        uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
-        with:
+          runner-os: ubuntu-latest
+          cache-key-suffix: e2e
           node-version: "24"
-      - name: Resolve cache epoch
-        id: cache-epoch
-        run: |
-          set -euo pipefail
-          tag_match='v*'
-          if git remote get-url origin >/dev/null 2>&1; then
-            remote_count=$(git ls-remote --tags --refs origin "$tag_match" 2>/dev/null | wc -l | tr -d ' ')
-            local_count=$(git tag -l "$tag_match" | wc -l | tr -d ' ')
-            if [ "$remote_count" -gt 0 ] && [ "$local_count" -lt "$remote_count" ]; then
-              echo "::warning title=zipx cache epoch::Local tags ($local_count) fewer than origin ($remote_count). Epoch may be stale; checkout must use fetch-depth: 0 and fetch-tags: true."
-            fi
-          fi
-          if [[ "${GITHUB_REF:-}" == refs/tags/v* ]]; then
-            release="${GITHUB_REF#refs/tags/v}"
-            epoch="$release"
-          elif tag=$(git describe --tags --abbrev=0 --match "$tag_match" 2>/dev/null); then
-            release="${tag#v}"
-            epoch="${release}-ci"
-          else
-            echo "::warning title=zipx cache epoch::No tags matching '$tag_match' found; using epoch 0.0.0."
-            release="0.0.0"
-            epoch="0.0.0"
-          fi
-          echo "epoch=$epoch" >> "$GITHUB_OUTPUT"
-          echo "release=$release" >> "$GITHUB_OUTPUT"
-
-      - name: Cache sbt
-        uses: actions/cache@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6.1.0
-        with:
-          path: |
-            ~/.sbt
-            ~/.cache/sbt
-            ~/.cache/coursier
-            target
-          key: ubuntu-latest-jdk25-sbt-${{ steps.cache-epoch.outputs.epoch }}-${{ github.run_id }}-e2e
-          restore-keys: |
-            ubuntu-latest-jdk25-sbt-${{ steps.cache-epoch.outputs.epoch }}-${{ github.run_id }}-
-            ubuntu-latest-jdk25-sbt-${{ steps.cache-epoch.outputs.epoch }}-
-            ubuntu-latest-jdk25-sbt-${{ steps.cache-epoch.outputs.release }}-
-            ubuntu-latest-jdk25-sbt-
+          sbt-disk-cache: "false"
+          local-cache: "true"
+          cache-epoch: ""
       - name: e2e
         run: |
           if [ "$ZIPX_VERIFY_CLEAN_FULL" = "true" ]; then
-            sbt 'cleanFull; e2e/chekhovInstall; e2e/testFull'
+            sbt 'cleanFull; e2e/chekhovInstall; e2e/Test/testFull'
           else
-            sbt 'e2e/chekhovInstall; e2e/testFull'
+            sbt 'e2e/chekhovInstall; e2e/Test/testFull'
           fi
         env:
           ZIPX_VERIFY_CLEAN_FULL: ${{ github.event_name == 'pull_request' && contains(github.event.pull_request.labels.*.name, 'clean') }}
@@ -491,54 +259,16 @@ jobs:
         with:
           fetch-depth: "0"
           fetch-tags: "true"
-      - name: Setup JDK 25
-        uses: actions/setup-java@b6effb05e454b25005698d916606bdc6ffcbf961 # v5.7.0
+      - name: zipx sbt setup
+        uses: ./.github/actions/zipx-sbt-setup
         with:
-          distribution: temurin
           java-version: "25"
-      - uses: sbt/setup-sbt@5ed7fa239084076151f66fa1dc45d4363b2dfee5 # v1.5.7
-        with:
-          disk-cache: "false"
-      - name: Resolve cache epoch
-        id: cache-epoch
-        run: |
-          set -euo pipefail
-          tag_match='v*'
-          if git remote get-url origin >/dev/null 2>&1; then
-            remote_count=$(git ls-remote --tags --refs origin "$tag_match" 2>/dev/null | wc -l | tr -d ' ')
-            local_count=$(git tag -l "$tag_match" | wc -l | tr -d ' ')
-            if [ "$remote_count" -gt 0 ] && [ "$local_count" -lt "$remote_count" ]; then
-              echo "::warning title=zipx cache epoch::Local tags ($local_count) fewer than origin ($remote_count). Epoch may be stale; checkout must use fetch-depth: 0 and fetch-tags: true."
-            fi
-          fi
-          if [[ "${GITHUB_REF:-}" == refs/tags/v* ]]; then
-            release="${GITHUB_REF#refs/tags/v}"
-            epoch="$release"
-          elif tag=$(git describe --tags --abbrev=0 --match "$tag_match" 2>/dev/null); then
-            release="${tag#v}"
-            epoch="${release}-ci"
-          else
-            echo "::warning title=zipx cache epoch::No tags matching '$tag_match' found; using epoch 0.0.0."
-            release="0.0.0"
-            epoch="0.0.0"
-          fi
-          echo "epoch=$epoch" >> "$GITHUB_OUTPUT"
-          echo "release=$release" >> "$GITHUB_OUTPUT"
-
-      - name: Cache sbt
-        uses: actions/cache@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6.1.0
-        with:
-          path: |
-            ~/.sbt
-            ~/.cache/sbt
-            ~/.cache/coursier
-            target
-          key: ubuntu-latest-jdk25-sbt-${{ steps.cache-epoch.outputs.epoch }}-${{ github.run_id }}-dependency-submission
-          restore-keys: |
-            ubuntu-latest-jdk25-sbt-${{ steps.cache-epoch.outputs.epoch }}-${{ github.run_id }}-
-            ubuntu-latest-jdk25-sbt-${{ steps.cache-epoch.outputs.epoch }}-
-            ubuntu-latest-jdk25-sbt-${{ steps.cache-epoch.outputs.release }}-
-            ubuntu-latest-jdk25-sbt-
+          runner-os: ubuntu-latest
+          cache-key-suffix: dependency-submission
+          node-version: ""
+          sbt-disk-cache: "false"
+          local-cache: "true"
+          cache-epoch: ""
       - name: Submit dependency graph
         uses: scalacenter/sbt-dependency-submission@d84eef4c09e633bcf5f113bcad7fd5e9af1baee9
       - name: dependency-submission
@@ -565,54 +295,16 @@ jobs:
         with:
           fetch-depth: "0"
           fetch-tags: "true"
-      - name: Setup JDK 25
-        uses: actions/setup-java@b6effb05e454b25005698d916606bdc6ffcbf961 # v5.7.0
+      - name: zipx sbt setup
+        uses: ./.github/actions/zipx-sbt-setup
         with:
-          distribution: temurin
           java-version: "25"
-      - uses: sbt/setup-sbt@5ed7fa239084076151f66fa1dc45d4363b2dfee5 # v1.5.7
-        with:
-          disk-cache: "false"
-      - name: Resolve cache epoch
-        id: cache-epoch
-        run: |
-          set -euo pipefail
-          tag_match='v*'
-          if git remote get-url origin >/dev/null 2>&1; then
-            remote_count=$(git ls-remote --tags --refs origin "$tag_match" 2>/dev/null | wc -l | tr -d ' ')
-            local_count=$(git tag -l "$tag_match" | wc -l | tr -d ' ')
-            if [ "$remote_count" -gt 0 ] && [ "$local_count" -lt "$remote_count" ]; then
-              echo "::warning title=zipx cache epoch::Local tags ($local_count) fewer than origin ($remote_count). Epoch may be stale; checkout must use fetch-depth: 0 and fetch-tags: true."
-            fi
-          fi
-          if [[ "${GITHUB_REF:-}" == refs/tags/v* ]]; then
-            release="${GITHUB_REF#refs/tags/v}"
-            epoch="$release"
-          elif tag=$(git describe --tags --abbrev=0 --match "$tag_match" 2>/dev/null); then
-            release="${tag#v}"
-            epoch="${release}-ci"
-          else
-            echo "::warning title=zipx cache epoch::No tags matching '$tag_match' found; using epoch 0.0.0."
-            release="0.0.0"
-            epoch="0.0.0"
-          fi
-          echo "epoch=$epoch" >> "$GITHUB_OUTPUT"
-          echo "release=$release" >> "$GITHUB_OUTPUT"
-
-      - name: Cache sbt
-        uses: actions/cache@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6.1.0
-        with:
-          path: |
-            ~/.sbt
-            ~/.cache/sbt
-            ~/.cache/coursier
-            target
-          key: ubuntu-latest-jdk25-sbt-${{ steps.cache-epoch.outputs.epoch }}-${{ github.run_id }}-publish
-          restore-keys: |
-            ubuntu-latest-jdk25-sbt-${{ steps.cache-epoch.outputs.epoch }}-${{ github.run_id }}-
-            ubuntu-latest-jdk25-sbt-${{ steps.cache-epoch.outputs.epoch }}-
-            ubuntu-latest-jdk25-sbt-${{ steps.cache-epoch.outputs.release }}-
-            ubuntu-latest-jdk25-sbt-
+          runner-os: ubuntu-latest
+          cache-key-suffix: publish
+          node-version: ""
+          sbt-disk-cache: "false"
+          local-cache: "true"
+          cache-epoch: ""
       - name: Import signing key
         run: |
           mkdir -p ~/.gnupg && chmod 700 ~/.gnupg
@@ -623,7 +315,7 @@ jobs:
         env:
           PGP_SECRET: ${{ secrets.PGP_SECRET }}
       - name: publish
-        run: sbt 'publishSigned; sonaRelease'
+        run: sbt 'domTypes/publishSigned; domTypesJS/publishSigned; domTypesNative/publishSigned; preview/publishSigned; core/publishSigned; coreJS/publishSigned; coreNative/publishSigned; domFacadeJS/publishSigned; conduitBridge/publishSigned; conduitBridgeJS/publishSigned; conduitBridgeNative/publishSigned; css/publishSigned; cssJS/publishSigned; cssNative/publishSigned; datastar/publishSigned; datastarJS/publishSigned; datastarNative/publishSigned; domCore/publishSigned; domCoreJS/publishSigned; domCoreNative/publishSigned; mountEngine/publishSigned; mountEngineJS/publishSigned; mountEngineNative/publishSigned; html/publishSigned; htmlJS/publishSigned; htmlNative/publishSigned; jsJS/publishSigned; datastarHttp/publishSigned; datastarJsJS/publishSigned; sonaRelease'
   docs:
     name: docs
     if: (startsWith(github.ref, 'refs/tags/v')) || (github.event_name == 'workflow_dispatch')
