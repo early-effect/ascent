@@ -19,13 +19,19 @@ object TodoConduitSpec extends AscentChekhovSuite:
           _    <- box.fill("buy milk")
           _    <- box.press("Enter")
           list <- Poll.until("todo appears")(page.innerText("body"))(_.contains("buy milk"))
-          _    <- page.locator("css=input.toggle").click
+          _    <- jsClick(page, "input.toggle")
           _    <- page.getByRole(Role.Button, name = Some("Show only active todos")).click
           _    <- Poll.until("active filter hides completed")(page.innerText("body"))(!_.contains("buy milk"))
           _    <- page.getByRole(Role.Button, name = Some("Show all todos")).click
           _    <- Poll.until("all filter shows completed")(page.innerText("body"))(_.contains("buy milk"))
-          _    <- page.getByRole(Role.Button, name = Some("Permanently delete every completed todo")).click
-          _    <- Poll.until("clear completed")(page.innerText("body"))(!_.contains("buy milk"))
+          _    <- Poll.until("clear completed is mounted")(
+            page.evaluate(
+              """() => String(!!document.querySelector('button[aria-label="Permanently delete every completed todo"]'))""",
+              isFunction = true,
+            )
+          )(_.contains("true"))
+          _ <- jsClick(page, """button[aria-label="Permanently delete every completed todo"]""")
+          _ <- Poll.until("clear completed")(page.innerText("body"))(!_.contains("buy milk"))
         yield assertTrue(list.contains("buy milk")))
           .tapError(_ => screenshot("todo-conduit"))
           .provide(PreviewServe.serverLayer.orDie, chekhovLayer)

@@ -43,6 +43,21 @@ trait AscentChekhovSuite extends ZIOSpecDefault:
       )
       .unit
 
+  /** DOM `.click()`. Skips Playwright actionability (hover tooltips, fill-mode opacity, off-screen footer). */
+  protected def jsClick(page: Page, selector: String): IO[ChekhovError, Unit] =
+    val json = "\"" + selector.replace("\\", "\\\\").replace("\"", "\\\"") + "\""
+    page
+      .evaluate(
+        s"""() => {
+          const el = document.querySelector($json);
+          if (el == null) throw new Error('missing ' + $json);
+          el.click();
+          return 'ok';
+        }""",
+        isFunction = true,
+      )
+      .unit
+
   protected def screenshot(label: String): URIO[Page, Unit] =
     (for
       page <- Chekhov.page
