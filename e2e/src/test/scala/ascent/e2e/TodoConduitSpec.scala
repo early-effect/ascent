@@ -14,11 +14,12 @@ object TodoConduitSpec extends AscentChekhovSuite:
           base <- PreviewServe.install(Preview.routes(PreviewConfig(Repo.preview("todo-conduit"))))
           page <- Chekhov.page
           _    <- page.goto(base.value + "/")
+          _    <- settle(page)
           box = page.getByPlaceholder("What needs to be done? (press / to focus)")
           _    <- box.fill("buy milk")
           _    <- box.press("Enter")
           list <- Poll.until("todo appears")(page.innerText("body"))(_.contains("buy milk"))
-          _    <- page.getByRole(Role.Checkbox).click
+          _    <- page.locator("css=input.toggle").click
           _    <- page.getByRole(Role.Button, name = Some("Show only active todos")).click
           _    <- Poll.until("active filter hides completed")(page.innerText("body"))(!_.contains("buy milk"))
           _    <- page.getByRole(Role.Button, name = Some("Show all todos")).click

@@ -28,6 +28,21 @@ trait AscentChekhovSuite extends ZIOSpecDefault:
   protected def chekhovLayer: ZLayer[Any, ChekhovError, ChekhovSuite.Env] =
     ZLayer.succeed(chekhovConfig) >>> ChekhovSuite.fullStack
 
+  /** Kill CSS motion so Playwright click is not blocked by fill-mode fade-ins or the looping title glow. */
+  protected def settle(page: Page): IO[ChekhovError, Unit] =
+    page
+      .evaluate(
+        """() => {
+          const s = document.createElement('style');
+          s.setAttribute('data-ascent-e2e', 'no-motion');
+          s.textContent = '*, *::before, *::after { animation: none !important; transition: none !important; }';
+          document.documentElement.appendChild(s);
+          return document.fonts ? document.fonts.ready.then(() => 'ok') : 'ok';
+        }""",
+        isFunction = true,
+      )
+      .unit
+
   protected def screenshot(label: String): URIO[Page, Unit] =
     (for
       page <- Chekhov.page
