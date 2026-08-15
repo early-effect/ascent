@@ -13,26 +13,23 @@ Two pieces:
   send/typing actions.
 - **[`example/hybrid-chat-server`](../hybrid-chat-server/)** (JVM) — the zio-http backend. Owns the
   `ChatRoom` state; renders message rows via [`ascent-html`](../../html/) and pushes them into the
-  client's region with [`AscentDatastar.patchRegion`](../../datastar-http/).
+  client's region with [`AscentDatastar.patchRegion`](../../datastar-http/). Preview routes are
+  composed in so the spliced client is same-origin on `:8080`.
 
 The same `MessageView` is authored in the typed ascent DSL on the server — the server is "an ascent
 client" for that region.
 
 ## Run it
 
-Start the backend (JVM) and the Vite-served client in two terminals:
+Two terminals. `sbt run` cwd is the repo root, so the server looks for
+`example/hybrid-chat/target/preview` (override with a path argument).
 
 ```bash
-sbt hybridChatServer/run                 # zio-http on :8080 (SSE + send/typing routes, brotli)
-
-cd example/hybrid-chat
-npm install                              # first time only
-npm run dev                              # links hybridChatJS via sbt, opens http://localhost:5173
+sbt ~hybridChatJS/previewStage           # splice + stamp; relink on change
+sbt hybridChatServer/run                 # static + SSE reload + API on :8080
 ```
 
-Vite proxies `/chat/sse`, `/chat/send`, `/chat/typing` to `:8080`, keeping client and server
-same-origin. After editing a client `.scala`, relink with `sbt hybridChatJS/fastLinkJS` before
-reloading.
+Open http://localhost:8080. After editing a client `.scala`, the watch restages and the tab reloads.
 
 ## What to notice
 

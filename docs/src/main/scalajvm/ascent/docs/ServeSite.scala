@@ -1,6 +1,6 @@
 package ascent.docs
 
-import specular.site.SiteServer
+import ascent.preview.{Preview, PreviewConfig}
 import zio.*
 
 import java.nio.file.Paths
@@ -16,6 +16,6 @@ object ServeSite extends ZIOAppDefault:
         .lift(1)
         .map(Paths.get(_))
         .getOrElse(Paths.get("target/site").toAbsolutePath)
-      _ <- SiteServer.serveForever(root, port)
+      _ <- Preview.serveForever(PreviewConfig(root = root, port = port))
     yield ()
 end ServeSite

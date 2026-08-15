@@ -1,7 +1,6 @@
 package ascent.docs
 
 import earlyeffect.docs.EarlyEffectTheme
-import specular.*
 import specular.site.*
 import zio.*
 
@@ -97,6 +96,7 @@ Docs pages are Specular `DocSpec`s: the same source asserts under zio-test and S
       .flatMap { result =>
         EarlyEffectTheme.writeLogo(out) *>
           copyClientBundle(out) *>
+          writeDevStamp(out) *>
           Console.printLine(s"Wrote ${result.pages.mkString(", ")}")
       }
       .provideLayer(EarlyEffectTheme.layers)
@@ -113,6 +113,14 @@ Docs pages are Specular `DocSpec`s: the same source asserts under zio-test and S
       }
       Files.createDirectories(dest.getParent)
       Files.copy(src, dest, StandardCopyOption.REPLACE_EXISTING)
+      ()
+    }
+
+  private def writeDevStamp(out: Path): Task[Unit] =
+    ZIO.attempt {
+      val stamp = out.resolve("assets/dev-stamp")
+      Files.createDirectories(stamp.getParent)
+      Files.writeString(stamp, java.lang.Long.toString(java.lang.System.currentTimeMillis))
       ()
     }
 

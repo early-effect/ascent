@@ -14,7 +14,17 @@ package ascent
 // `AscentApp` is the browser mount entry point (`AscentApp.mount`/`mountBody`) — it supplies the JS `DomOps`
 // capability + `DomStyleSink` to the cross-platform `Mount` engine (in ascent-mount-engine), so app code needn't
 // name either. `ServerRegionRegistry`/`Diagnostics` are re-exported from mount-engine (same `ascent.js` package).
-export ascent.js.{AscentApp, Canvas, TypedEvents, DomStyleSink, Lifecycle, Dom, ServerRegionRegistry, Diagnostics}
+export ascent.js.{
+  AscentApp,
+  Canvas,
+  TypedEvents,
+  DomStyleSink,
+  Lifecycle,
+  Dom,
+  ServerRegionRegistry,
+  Diagnostics,
+  DevReload,
+}
 
 // The `EventTarget.addCssClass/removeCssClass` extensions (typed imperative class toggling from event handlers). They
 // are top-level in `package ascent.js`, so re-export by name into the open `package ascent` for `import ascent.*`.

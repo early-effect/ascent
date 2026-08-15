@@ -1,9 +1,12 @@
 package example.server
 
 import ascent.datastar.http.AscentDatastar
+import ascent.preview.{Preview, PreviewConfig}
 import zio.*
 import zio.http.*
 import zio.http.datastar.*
+
+import java.nio.file.Path as JPath
 
 /** The zio-http backend for the datastar counter example — "the server is an ascent client."
   *
@@ -11,14 +14,22 @@ import zio.http.datastar.*
   *   - `GET /sse` opens a datastar SSE stream: it pushes the current count immediately, then a fresh `patch-signals` on
   *     every subsequent change (the chat-example pattern);
   *   - `POST /increment` reads nothing from the body — it just bumps the count and pulses the hub;
-  *   - response compression (brotli/gzip) is enabled via zio-http's own `Server.Config`.
+  *   - response compression (brotli/gzip) is enabled via zio-http's own `Server.Config`;
+  *   - [[Preview.routes]] are composed in so the spliced client (`example/datastar-app/target/preview`) is same-origin
+  *     on `:8080`.
   *
-  * The client (a pure-ascent Scala.js app, served by Vite in dev) turns each pushed signal into a `Squawk` and lets
-  * ascent's Mount engine repaint — no datastar.js.
+  * The client (a pure-ascent Scala.js app) turns each pushed signal into a `Squawk` and lets ascent's Mount engine
+  * repaint — no datastar.js.
   */
 object CounterServer extends ZIOAppDefault:
 
   final case class State(count: Ref[Int], pulse: Hub[Unit])
+
+  def makeState: UIO[State] =
+    for
+      count <- Ref.make(0)
+      pulse <- Hub.unbounded[Unit]
+    yield State(count, pulse)
 
   private def bump(state: State): UIO[Unit] =
     state.count.update(_ + 1) *> state.pulse.publish(()).unit
@@ -27,7 +38,7 @@ object CounterServer extends ZIOAppDefault:
   private def pushCount(state: State): ZIO[Datastar, Nothing, Unit] =
     state.count.get.flatMap(c => AscentDatastar.patchSignal("count", c))
 
-  private def routes(state: State): Routes[Any, Nothing] =
+  def apiRoutes(state: State): Routes[Any, Nothing] =
     Routes(
       // Open the SSE stream: initial value, then one push per change. `events { handler { ... } }`
       // wraps a handler whose body requires `Datastar` (+ Scope, which `events` supplies) into an
@@ -47,6 +58,17 @@ object CounterServer extends ZIOAppDefault:
       },
     ).sandbox
 
+  /** Preview (static + SSE reload) composed with the counter API. */
+  def routes(state: State, previewRoot: JPath, port: Int = 8080): Routes[Any, Response] =
+    Preview.routes(PreviewConfig(root = previewRoot, port = port)) ++ apiRoutes(state)
+
+  def resolvePreviewRoot(args: Chunk[String]): JPath =
+    args.headOption
+      .map(JPath.of(_))
+      .getOrElse(JPath.of("example/datastar-app/target/preview"))
+      .toAbsolutePath
+      .normalize
+
   private val compression =
     Server.Config.ResponseCompressionConfig(
       contentThreshold = 0,
@@ -59,12 +81,12 @@ object CounterServer extends ZIOAppDefault:
 
   def run =
     for
-      count <- Ref.make(0)
-      pulse <- Hub.unbounded[Unit]
-      state = State(count, pulse)
-      _ <- ZIO.logInfo("datastar counter server on http://localhost:8080 (run Vite for the client)")
-      _ <- Server
-        .serve(routes(state))
+      args <- getArgs
+      root = resolvePreviewRoot(args)
+      state <- makeState
+      _     <- ZIO.logInfo(s"datastar counter on http://localhost:8080 serving $root")
+      _     <- Server
+        .serve(routes(state, root))
         .provide(Server.defaultWith(_.port(8080).copy(responseCompression = Some(compression))))
     yield ()
 end CounterServer

@@ -192,24 +192,27 @@ A few things to know before adopting:
 ## Run the example
 
 `example/` holds one self-contained app per subdirectory (more coming). The first,
-`todo-conduit`, is a synthwave-glass [TodoMVC](https://todomvc.com/) over conduit, served by
-Vite. The app is Scala.js, so it has to be linked by sbt — the
-`@scala-js/vite-plugin-scalajs` plugin runs the sbt link step for you and rewires the
-`scalajs:main.js` import to its output:
+`todo-conduit`, is a synthwave-glass [TodoMVC](https://todomvc.com/) over conduit. Two
+terminals: splice the Scala.js client into `target/preview`, then serve it with
+`ascent-preview` (static files plus an SSE reload when the stamp file changes).
 
 ```bash
-cd example/todo-conduit
-npm install                    # first time only
-npm run dev                    # invokes `sbt todoConduitJS/fastLinkJS`, then opens http://localhost:5173
+sbt ~todoConduitJS/previewStage
+# other terminal:
+sbt "preview/run -- 8765 $(pwd)/example/todo-conduit/target/preview"
+# open http://localhost:8765
 ```
 
-`npm run dev` triggers `sbt todoConduitJS/fastLinkJS` on demand — so the first load (and the first
-load after a `.scala` edit) waits on sbt to relink. You can also run the link step directly, e.g.
-to build the JS without a browser, or to pre-warm sbt before serving:
+`previewStage` runs `spliceFast`, copies `index.html`, and writes `assets/dev-stamp`. After a
+`.scala` edit, the watch relinks and rewrites the stamp; the tab reloads. Docs use the same
+loop: `sbt ~docs/Test/runReload`.
+
+Datastar and hybrid examples compose preview routes into the JVM server so the client and API
+share `:8080`:
 
 ```bash
-sbt todoConduitJS/fastLinkJS      # one-shot link
-sbt "~todoConduitJS/fastLinkJS"   # watch mode: relink on every change
+sbt ~datastarExampleJS/previewStage
+sbt datastarExampleServer/run          # http://localhost:8080
 ```
 
 Try the TodoMVC: add todos, toggle and edit them (double-click a row), switch the All / Active /
@@ -219,8 +222,9 @@ toggling one item doesn't rebuild the others — that's the surgical patching.
 ## Build & test
 
 ```bash
-sbt test                       # full cross-platform suite (JVM / JS / Native)
-sbt todoConduitJS/fastLinkJS   # link the example without a browser
+sbt testJVM                    # JVM suites (use testFull per module on sbt 2)
+sbt todoConduitJS/previewStage # splice + stage the example without a browser
+sbt e2e/chekhovInstall && sbt e2e/testFull   # Firefox suites against splice+preview
 ./scripts/install-git-hooks    # once per clone: pre-commit runs scalafmtCheckAll
 ```
 
@@ -239,8 +243,9 @@ ascent is built with Scala 3 and cross-compiled to **JVM, Scala.js, and Scala Na
 | `datastar`      | [datastar](https://data-star.dev/) protocol core + `SignalStore` ([readme](datastar/README.md)) |
 | `datastar-js`   | Browser datastar runtime: SSE → Squawk / DOM, action dispatch ([readme](datastar-js/README.md)) |
 | `datastar-http` | Server wrapper over `zio-http-datastar-sdk` ([readme](datastar-http/README.md)) |
+| `preview`       | Static file server + SSE reload (`ascent-preview`)                |
 | `domgen`        | JVM-only generator that emits the typed catalogs from W3C webref ([readme](domgen/README.md)) |
-| `example/*`     | One self-contained app per subdir (e.g. `todo-conduit`)           |
+| `example/*`     | One self-contained splice+preview app per subdir (e.g. `todo-conduit`)        |
 
 Runtime dependencies are kept deliberately small: `core` needs only ZIO and the zero-dep
 `dom-types`; conduit is opt-in.

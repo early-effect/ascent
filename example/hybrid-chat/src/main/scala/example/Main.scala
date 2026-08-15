@@ -132,6 +132,7 @@ object Main extends ZIOAppDefault:
       store <- SignalStore.make()
       ui    <- view(store)
       _     <- AscentApp.mountBody(ui)
+      _     <- ZIO.succeed(DevReload.install())
       _     <- ZIO.never
     yield ()
 end Main
