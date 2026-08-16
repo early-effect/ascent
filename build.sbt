@@ -124,7 +124,7 @@ def examplePreviewSettings: Seq[Setting[?]] = Seq(
   },
 )
 
-val specularVersion = "0.12.0"
+val specularVersion = "0.12.1"
 
 def specularLib(artifact: String) = "rocks.earlyeffect" %% artifact % specularVersion
 
