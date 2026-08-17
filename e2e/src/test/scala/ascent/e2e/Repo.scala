@@ -5,6 +5,8 @@ import zio.http.*
 
 import java.nio.file.{Files, Path, Paths}
 
+import scala.util.Using
+
 final case class PreviewUrl(value: String):
   def /(p: String): String =
     val path = p.stripPrefix("/")
@@ -24,6 +26,22 @@ object Repo:
 
   def fastJs(exampleDir: String): Path =
     preview(exampleDir).resolve("fast.js")
+
+  /** Copy a staged preview so one spec's `dev-stamp` rewrite cannot reload another spec's tab. */
+  def copyPreview(exampleDir: String): Task[Path] =
+    ZIO.attempt {
+      val src  = preview(exampleDir)
+      val dest = Files.createTempDirectory(s"ascent-e2e-$exampleDir-")
+      Using.resource(Files.walk(src)) { walk =>
+        walk.forEach { from =>
+          val to = dest.resolve(src.relativize(from))
+          if Files.isDirectory(from) then Files.createDirectories(to)
+          else Files.copy(from, to)
+        }
+      }
+      dest
+    }
+end Repo
 
 object PreviewServe:
   val serverLayer: ZLayer[Any, Throwable, Server] =

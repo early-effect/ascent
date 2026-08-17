@@ -20,9 +20,9 @@ object TodoConduitSpec extends AscentChekhovSuite:
           _    <- box.press("Enter")
           list <- Poll.until("todo appears")(page.innerText("body"))(_.contains("buy milk"))
           _    <- jsClick(page, "input.toggle")
-          _    <- page.getByRole(Role.Button, name = Some("Show only active todos")).click
+          _    <- jsClick(page, """button[aria-label="Show only active todos"]""")
           _    <- Poll.until("active filter hides completed")(page.innerText("body"))(!_.contains("buy milk"))
-          _    <- page.getByRole(Role.Button, name = Some("Show all todos")).click
+          _    <- jsClick(page, """button[aria-label="Show all todos"]""")
           _    <- Poll.until("all filter shows completed")(page.innerText("body"))(_.contains("buy milk"))
           _    <- Poll.until("clear completed is mounted")(
             page.evaluate(

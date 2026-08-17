@@ -13,9 +13,9 @@ object PreviewReloadSpec extends AscentChekhovSuite:
   def spec =
     suite("preview reload")(
       test("stamp rewrite reloads the tab; silent subscribe does not") {
-        val root  = Repo.preview("todo-conduit")
-        val stamp = root.resolve("assets/dev-stamp")
         (for
+          root <- Repo.copyPreview("todo-conduit")
+          stamp = root.resolve("assets/dev-stamp")
           base <- PreviewServe.install(Preview.routes(PreviewConfig(root)))
           page <- Chekhov.page
           _    <- page.goto(base.value + "/")
