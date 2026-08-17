@@ -7,8 +7,8 @@ import sbt.Keys.testFull
 import sbt.LocalProject
 import sbt.Test
 import sbt./
-import zipx.sbt.ZipxPlugin
-import zipx.sbt.ZipxPlugin.autoImport.*
+import zipx.plugin.ZipxPlugin
+import zipx.plugin.ZipxPlugin.autoImport.*
 
 import chekhov.sbt.ChekhovPlugin.autoImport.chekhovInstall
 
@@ -39,24 +39,29 @@ object AscentZipx extends AutoPlugin:
         )
     )
 
-  private val jsCiSetup: Steps = Steps.built("ascent-js-ci")(
-    Step
-      .uses("actions/setup-node@820762786026740c76f36085b0efc47a31fe5020") // v7.0.0
-      .named("Set up Node")
-      .withInputs(ListMap("node-version" -> "24", "cache" -> "npm")),
-    Step
-      .run(
-        aptInstall(
-          Word.lit("libcairo2-dev"),
-          Word.lit("libpango1.0-dev"),
-          Word.lit("libjpeg-dev"),
-          Word.lit("libgif-dev"),
-          Word.lit("librsvg2-dev"),
+  /** Pins come from generate-time `StepContext.actions` (jar defaults plus catalog `Action` rows). `zipxActions.value`
+    * is still Defaults at setting evaluation, so extra catalog pins are not visible there.
+    */
+  private val jsCiSetup: Steps = Steps.buildingWith("ascent-js-ci") { ctx =>
+    List(
+      Step
+        .usesRef(ctx.actions.setupNode)
+        .named("Set up Node")
+        .withInputs(ListMap("node-version" -> "24", "cache" -> "npm")),
+      Step
+        .run(
+          aptInstall(
+            Word.lit("libcairo2-dev"),
+            Word.lit("libpango1.0-dev"),
+            Word.lit("libjpeg-dev"),
+            Word.lit("libgif-dev"),
+            Word.lit("librsvg2-dev"),
+          )
         )
-      )
-      .named("Install canvas build dependencies"),
-    Step.run(Script(Exec("npm", Word.lit("ci")))).named("Install Node dependencies (jsdom, canvas)"),
-  )
+        .named("Install canvas build dependencies"),
+      Step.run(Script(Exec("npm", Word.lit("ci")))).named("Install Node dependencies (jsdom, canvas)"),
+    )
+  }
 
   private val nativeCiSetup: Steps = Steps.built("ascent-native-ci")(
     Step
@@ -71,16 +76,21 @@ object AscentZipx extends AutoPlugin:
       .named("Install Scala Native build dependencies")
   )
 
-  private val dependencySubmission: Steps = Steps.built("ascent-dependency-submission")(
-    Step
-      .uses("scalacenter/sbt-dependency-submission@d84eef4c09e633bcf5f113bcad7fd5e9af1baee9") // v3.2.3
-      .named("Submit dependency graph")
-  )
+  private val dependencySubmission: Steps = Steps.buildingWith("ascent-dependency-submission") { ctx =>
+    List(
+      Step
+        .usesRef(
+          ctx.actions
+            .extraByPrefix("scalacenter/sbt-dependency-submission")
+            .getOrElse(sys.error("zipx: catalog Action scalacenter/sbt-dependency-submission is missing"))
+        )
+        .named("Submit dependency graph")
+    )
+  }
 
   override def buildSettings: Seq[sbt.Setting[?]] = Seq(
     zipxJavaVersion      := JdkVersion("25"),
     zipxWorkflowDispatch := true,
-    zipxScalaSteward     := true,
     zipxEnv              := Map(
       "PLAYWRIGHT_BROWSERS_PATH" ->
         EnvValue.typed(Expr.github("workspace") ++ Expr.lit("/target/ms-playwright"))
