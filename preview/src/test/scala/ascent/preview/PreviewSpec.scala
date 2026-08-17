@@ -142,7 +142,7 @@ object PreviewSpec extends ZIOSpecDefault:
         TestAspect.withLiveClock @@
         TestAspect.timeout(10.seconds)
     ),
-  ) @@ TestAspect.withLiveClock
+  ) @@ TestAspect.withLiveClock @@ TestAspect.sequential
 
   private def tempSite(files: (String, String)*): Task[Path] =
     ZIO.attempt {
