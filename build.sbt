@@ -1,8 +1,8 @@
-val scala3Version = "3.8.4"
-val zioVersion    = "2.1.26"
+MyVersions.settings
+
+val scala3Version: String = MyVersions.scala
 
 // sbt 2.x scopes bare build.sbt settings to ThisBuild, so these apply build-wide to every module.
-scalaVersion         := scala3Version
 organization         := "rocks.earlyeffect"
 organizationName     := "Early Effect"
 organizationHomepage := Some(url("https://www.earlyeffect.rocks"))
@@ -70,12 +70,7 @@ Global / concurrentRestrictions ++= Seq(
 // provides it natively, but the JS and Native targets need scala-java-time + tzdb to link). In
 // sbt 2.x plain `%%` appends the project's platform suffix automatically (e.g. `_sjs1`, the role
 // the old `%%%` operator played), so this works uniformly across all three platforms.
-val javaTimePolyfill = Def.settings(
-  libraryDependencies ++= Seq(
-    "io.github.cquiroz" %% "scala-java-time"      % "2.7.0",
-    "io.github.cquiroz" %% "scala-java-time-tzdb" % "2.7.0",
-  )
-)
+val javaTimePolyfill = MyVersions.javaTime
 
 val commonScalacOptions = Seq(
   "-deprecation",
@@ -84,15 +79,9 @@ val commonScalacOptions = Seq(
   "-language:implicitConversions",
 )
 
-// zio-test deps, shared by every module. Defined as a Def.settings block (not a bare Seq) so the
-// per-project platform suffix that `%%` appends in sbt 2.x is resolved at each module's scope.
+// zio-test deps, shared by every module. `library()` resolves `%%` at each module's platform.
 // The ZTestFramework registers itself automatically via zio-test-sbt, so no testFrameworks wiring.
-val zioTestSettings = Def.settings(
-  libraryDependencies ++= Seq(
-    "dev.zio" %% "zio-test"     % zioVersion % Test,
-    "dev.zio" %% "zio-test-sbt" % zioVersion % Test,
-  )
-)
+val zioTestSettings = MyVersions.zioTests
 
 // jsdom-backed test environment for JS modules that need a real DOM (dom-facade engine
 // facade tests, ascent-js mount/binding tests). The dependency itself comes from
@@ -124,11 +113,6 @@ def examplePreviewSettings: Seq[Setting[?]] = Seq(
   },
 )
 
-val specularVersion = "0.12.0"
-
-def specularLib(artifact: String) = "rocks.earlyeffect" %% artifact % specularVersion
-
-/** Every published `ascent-*` artifact name (see [[docsDogfoodSettings]]). */
 val ascentModules = Seq(
   "ascent-core",
   "ascent-css",
@@ -199,18 +183,12 @@ lazy val domgen = (projectMatrix in file("domgen"))
     name           := "ascent-domgen",
     publish / skip := true,
     scalacOptions ++= commonScalacOptions,
-    libraryDependencies ++= Seq(
-      "dev.zio"     %% "zio-json"  % "0.10.0",
-      "com.lihaoyi" %% "fastparse" % "3.1.1",
-      // Format generated output through the project's own .scalafmt.conf, so `domgen/run` emits
-      // already-formatted files and formatting rules live in exactly one place. Scalameta ships
-      // scalafmt for Scala 2.13; use it from this Scala 3 build via CrossVersion. scalafmt-dynamic
-      // loads the real formatter in its own classloader, so its 2.13 transitives don't belong on our
-      // classpath — exclude scala-collection-compat_2.13, which clashes with the _3 already present.
-      ("org.scalameta" %% "scalafmt-dynamic" % "3.11.5")
-        .cross(CrossVersion.for3Use2_13)
-        .exclude("org.scala-lang.modules", "scala-collection-compat_2.13"),
-    ),
+    MyVersions.domgenLib,
+    // Format generated output through the project's own .scalafmt.conf, so `domgen/run` emits
+    // already-formatted files and formatting rules live in exactly one place. Scalameta ships
+    // scalafmt for Scala 2.13; use it from this Scala 3 build via CrossVersion. Catalog excludes
+    // live on the row; for3Use2_13 is not a zipx Cross, so it stays at the use site.
+    libraryDependencies += MyVersions.moduleID(MyVersions.scalafmtDynamic).cross(CrossVersion.for3Use2_13),
     zioTestSettings,
     // sbt 2.x forks `run` with workingDirectory = baseDirectory.value (Defaults.forkOptionsTask),
     // which for this subproject is domgen/ — but Main.scala's vendored-data paths (data/webref/...)
@@ -227,7 +205,7 @@ lazy val core = (projectMatrix in file("core"))
   .settings(
     name := "ascent-core",
     scalacOptions ++= commonScalacOptions,
-    libraryDependencies += "dev.zio" %% "zio" % zioVersion,
+    MyVersions.zioLib,
     zioTestSettings,
   )
   .jvmPlatform(scalaVersions = scalaVersions)
@@ -325,7 +303,7 @@ lazy val conduitBridge = (projectMatrix in file("conduit"))
   .settings(
     name := "ascent-conduit",
     scalacOptions ++= commonScalacOptions,
-    libraryDependencies += "io.github.russwyte" %% "conduit" % "0.0.6",
+    MyVersions.conduitLib,
     zioTestSettings,
   )
   .jvmPlatform(scalaVersions = scalaVersions)
@@ -349,7 +327,7 @@ lazy val css = (projectMatrix in file("css"))
   .settings(
     name := "ascent-css",
     scalacOptions ++= commonScalacOptions,
-    libraryDependencies += "com.lihaoyi" %% "fastparse" % "3.1.1",
+    MyVersions.cssLib,
     zioTestSettings,
   )
   .jvmPlatform(scalaVersions = scalaVersions)
@@ -384,7 +362,7 @@ lazy val datastar = (projectMatrix in file("datastar"))
   .settings(
     name := "ascent-datastar",
     scalacOptions ++= commonScalacOptions,
-    libraryDependencies += "dev.zio" %% "zio-json" % "0.10.0",
+    MyVersions.datastarLib,
     zioTestSettings,
   )
   .jvmPlatform(scalaVersions = scalaVersions)
@@ -420,7 +398,7 @@ lazy val datastarHttp = (projectMatrix in file("datastar-http"))
   .settings(
     name := "ascent-datastar-http",
     scalacOptions ++= commonScalacOptions,
-    libraryDependencies += "dev.zio" %% "zio-http-datastar-sdk" % "3.11.3",
+    MyVersions.datastarHttpLib,
     zioTestSettings,
   )
   .jvmPlatform(scalaVersions = scalaVersions)
@@ -431,7 +409,7 @@ lazy val preview = (projectMatrix in file("preview"))
   .settings(
     name := "ascent-preview",
     scalacOptions ++= commonScalacOptions,
-    libraryDependencies += "dev.zio" %% "zio-http" % "3.11.3",
+    MyVersions.previewLib,
     zioTestSettings,
     Compile / mainClass := Some("ascent.preview.PreviewMain"),
     run / mainClass     := Some("ascent.preview.PreviewMain"),
@@ -491,7 +469,7 @@ lazy val datastarExampleServer = (projectMatrix in file("example/datastar-app-se
     scalacOptions ++= commonScalacOptions,
     // Netty's brotli compression needs the brotli4j native lib on the classpath (zio-http doesn't
     // bundle it). Without it, enabling brotli throws ClassNotFoundException at request time.
-    libraryDependencies += "com.aayushatharva.brotli4j" % "brotli4j" % "1.23.0",
+    MyVersions.brotli,
   )
   .jvmPlatform(scalaVersions = scalaVersions)
 
@@ -527,7 +505,7 @@ lazy val hybridChatServer = (projectMatrix in file("example/hybrid-chat-server")
     publish / skip := true,
     test / skip    := true,
     scalacOptions ++= commonScalacOptions,
-    libraryDependencies += "com.aayushatharva.brotli4j" % "brotli4j" % "1.23.0",
+    MyVersions.brotli,
   )
   .jvmPlatform(scalaVersions = scalaVersions)
 
@@ -549,14 +527,9 @@ lazy val docs: ProjectMatrix = (projectMatrix in file("docs"))
         .enablePlugins(SpecularPlugin)
         .settings(
           docsDogfoodSettings,
-          libraryDependencies ++= Seq(
-            specularLib("specular-core"),
-            specularLib("specular-zio-test"),
-            specularLib("specular-site"),
-            specularLib("early-effect-docs-theme"),
-            "dev.zio" %% "zio-test"     % zioVersion,
-            "dev.zio" %% "zio-test-sbt" % zioVersion,
-          ),
+          MyVersions.docsJvm,
+          // specular-site (via the theme) still declares zio-json 0.9.x
+          dependencyOverrides += MyVersions.moduleID(MyVersions.zioJson),
           zioTestSettings,
           Compile / mainClass  := Some("ascent.docs.ServeSite"),
           run / mainClass      := Some("ascent.docs.ServeSite"),
@@ -604,10 +577,7 @@ lazy val docs: ProjectMatrix = (projectMatrix in file("docs"))
         .settings(
           docsDogfoodSettings,
           javaTimePolyfill,
-          libraryDependencies ++= Seq(
-            specularLib("specular-core"),
-            "dev.zio" %% "zio-test" % zioVersion,
-          ),
+          MyVersions.docsJs,
           scalaJSUseMainModuleInitializer := true,
           scalaJSLinkerConfig ~= (_.withModuleKind(ModuleKind.ESModule)),
           Compile / mainClass := Some("ascent.docs.ClientMain"),
@@ -649,8 +619,6 @@ addCommandAlias("testJVM", ascentPlatformTestCommand(_.jvm))
 addCommandAlias("testJS", ascentPlatformTestCommand(_.js))
 addCommandAlias("testNative", ascentPlatformTestCommand(_.native))
 
-val chekhovVersion = "0.0.4"
-
 lazy val e2eStage = taskKey[Unit]("Stage example preview trees for Chekhov e2e")
 
 // Browser suites. Not aggregated so library `testFull` stays browser-free.
@@ -664,12 +632,8 @@ lazy val e2e = (project in file("e2e"))
     name           := "ascent-e2e",
     publish / skip := true,
     scalacOptions ++= commonScalacOptions,
-    libraryDependencies ++= Seq(
-      "dev.zio"           %% "zio-test"         % zioVersion     % Test,
-      "dev.zio"           %% "zio-test-sbt"     % zioVersion     % Test,
-      "rocks.earlyeffect" %% "chekhov-zio-test" % chekhovVersion % Test,
-      "rocks.earlyeffect" %% "chekhov-driver"   % chekhovVersion % Test,
-    ),
+    zioTestSettings,
+    MyVersions.e2eTests,
     chekhovBrowsers := Seq(chekhov.ChekhovBrowser.Firefox),
     e2eStage        := Def.uncached {
       (LocalProject("todoConduitJS") / previewStage).value

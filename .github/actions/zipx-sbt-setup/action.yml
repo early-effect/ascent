@@ -35,7 +35,7 @@ runs:
       with:
         distribution: temurin
         java-version: ${{ inputs.java-version }}
-    - uses: sbt/setup-sbt@5ed7fa239084076151f66fa1dc45d4363b2dfee5 # v1.5.7
+    - uses: sbt/setup-sbt@8feba82adc7f01ddcf8165b86f778bdb5b82cebc # v1.5.7
       with:
         disk-cache: ${{ inputs.sbt-disk-cache }}
     - name: Setup Node
