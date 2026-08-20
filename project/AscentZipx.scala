@@ -1,7 +1,5 @@
 import scala.collection.immutable.ListMap
 
-import org.scalafmt.sbt.ScalafmtPlugin.autoImport.scalafmtCheckAll
-
 import sbt.AutoPlugin
 import sbt.Keys.testFull
 import sbt.LocalProject
@@ -21,7 +19,6 @@ object AscentZipx extends AutoPlugin:
 
   private val javaOpts = Map("JAVA_OPTS" -> EnvValue.plain("-Dfile.encoding=UTF-8"))
 
-  private val Fmt        = CapabilityName("fmt")
   private val TestJs     = CapabilityName("test-js")
   private val TestNative = CapabilityName("test-native")
 
@@ -96,24 +93,20 @@ object AscentZipx extends AutoPlugin:
         EnvValue.typed(Expr.github("workspace") ++ Expr.lit("/target/ms-playwright"))
     ),
     zipxCapabilities ++= Seq(
-      Capability.once(Fmt, zipxTasks.session(scalafmtCheckAll, zipxWorkflowCheck)),
       Capability.once(
         name = Capability.TestName,
         command = alias("testJVM"),
-        needsCapabilities = List(Fmt),
         env = javaOpts,
       ),
       Capability.once(
         name = TestJs,
         command = alias("testJS"),
-        needsCapabilities = List(Fmt),
         extraSteps = jsCiSetup,
         env = javaOpts,
       ),
       Capability.once(
         name = TestNative,
         command = alias("testNative"),
-        needsCapabilities = List(Fmt),
         extraSteps = nativeCiSetup,
         env = javaOpts,
       ),
@@ -124,7 +117,6 @@ object AscentZipx extends AutoPlugin:
             LocalProject("e2e") / chekhovInstall,
             LocalProject("e2e") / Test / testFull,
           ),
-          needsCapabilities = List(Fmt),
         )
         .withNodeVersion(NodeVersion("24")),
       ZipxCentral.release,
