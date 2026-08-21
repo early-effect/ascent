@@ -27,7 +27,7 @@ composed in so the spliced client is same-origin on `:8080`.
 | `ChatServer.scala` | `ZIOAppDefault`: wires preview + API routes, configures brotli/gzip compression, serves on `:8080`. |
 
 ```bash
-sbt ~hybridChatJS/previewStage
+sbt ~hybridChatJS/ascentPreview
 sbt hybridChatServer/run
 ```
 

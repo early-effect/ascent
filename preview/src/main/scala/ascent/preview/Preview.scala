@@ -14,8 +14,8 @@ import scala.jdk.CollectionConverters.*
   * change.
   *
   * [[routes]] is the testable surface (no sockets). [[serveForever]] is the process-lifetime wrapper used by
-  * [[PreviewMain]] and sbt-reload. SSE is checked before the trailing static handler so `/__ascent/reload` is never
-  * mistaken for a file.
+  * [[PreviewMain]] and sbt-ascent-preview. SSE is checked before the trailing static handler so `/__ascent/reload` is
+  * never mistaken for a file.
   */
 object Preview:
 
@@ -42,16 +42,43 @@ object Preview:
     if config.cors then base @@ Middleware.cors else base
   end routes
 
-  /** Block forever serving `config.root` on `config.port`. */
+  /** Block forever serving `config.root` on `config.port`. Opens the URL after bind when [[PreviewConfig.openBrowser]].
+    */
   def serveForever(config: PreviewConfig): UIO[Nothing] =
     val dir = config.root.toAbsolutePath.normalize.toFile
-    val url = s"http://localhost:${config.port}/"
-    Console.printLine(s"Serving ${dir.getAbsolutePath}").orDie *>
-      Console.printLine(s"Open $url").orDie *>
-      Server
-        .serve(routes(config))
-        .provide(Server.defaultWith(_.port(config.port)))
-        .orDie
+    Server
+      .install(routes(config))
+      .flatMap { bound =>
+        val url = s"http://localhost:$bound/"
+        Console.printLine(s"Serving ${dir.getAbsolutePath}") *>
+          Console.printLine(s"Open $url") *>
+          ZIO.when(config.openBrowser)(openBrowser(url)) *>
+          ZIO.never
+      }
+      .provide(Server.defaultWith(_.port(config.port)))
+      .orDie
+  end serveForever
+
+  /** `open` on macOS, `xdg-open` elsewhere, `rundll32` on Windows. Not executed in tests; command only. */
+  private[preview] def browseCommand(osName: String, url: String): Seq[String] =
+    val os = osName.toLowerCase(java.util.Locale.ROOT)
+    if os.contains("mac") then Seq("open", url)
+    else if os.contains("win") then Seq("rundll32", "url.dll,FileProtocolHandler", url)
+    else Seq("xdg-open", url)
+
+  private def openBrowser(url: String): UIO[Unit] =
+    val cmd = browseCommand(sys.props.getOrElse("os.name", ""), url)
+    ZIO
+      .attemptBlocking {
+        val pb = new ProcessBuilder(cmd*)
+        pb.redirectOutput(ProcessBuilder.Redirect.DISCARD)
+        pb.redirectError(ProcessBuilder.Redirect.DISCARD)
+        pb.start()
+        ()
+      }
+      .tapError(e => Console.printLineError(s"Could not open $url: ${e.getMessage}"))
+      .ignore
+  end openBrowser
 
   /** True when `candidate` is `root` or a descendant (canonical paths, not string prefix). */
   private[preview] def isUnderRoot(root: File, candidate: File): Boolean =

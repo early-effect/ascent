@@ -128,6 +128,45 @@ object PreviewSpec extends ZIOSpecDefault:
         yield assertTrue(evs.headOption.exists(_.data == "reload"))
       },
     ),
+    suite("browse command")(
+      test("macOS uses open") {
+        assertTrue(Preview.browseCommand("Mac OS X", "http://localhost:8765/") == Seq("open", "http://localhost:8765/"))
+      },
+      test("Windows uses rundll32") {
+        assertTrue(
+          Preview.browseCommand("Windows 11", "http://localhost:8765/") ==
+            Seq("rundll32", "url.dll,FileProtocolHandler", "http://localhost:8765/")
+        )
+      },
+      test("Linux uses xdg-open") {
+        assertTrue(
+          Preview.browseCommand("Linux", "http://localhost:8765/") == Seq("xdg-open", "http://localhost:8765/")
+        )
+      },
+    ),
+    suite("CLI args")(
+      test("defaults port and root") {
+        val c = PreviewMain.configFromArgs(Chunk.empty)
+        assertTrue(c.port == 8765, !c.openBrowser, c.root.endsWith("target/site"))
+      },
+      test("--open is independent of position") {
+        val a    = PreviewMain.configFromArgs(Chunk("--open", "9000", "/tmp/site"))
+        val b    = PreviewMain.configFromArgs(Chunk("9000", "/tmp/site", "--open"))
+        val root = Path.of("/tmp/site")
+        assertTrue(
+          a.openBrowser,
+          b.openBrowser,
+          a.port == 9000,
+          b.port == 9000,
+          a.root == root,
+          b.root == root,
+        )
+      },
+      test("omitted --open leaves the browser closed") {
+        val c = PreviewMain.configFromArgs(Chunk("8765", "/tmp/site"))
+        assertTrue(!c.openBrowser, c.port == 8765)
+      },
+    ),
     suite("live server")(
       test("Client can fetch a page from an installed server") {
         for

@@ -20,7 +20,7 @@ object Repo:
     val dir = root.resolve("example").resolve(exampleDir).resolve("target").resolve("preview")
     require(
       Files.isDirectory(dir),
-      s"missing staged preview at $dir (e2eStage should have run previewStage)",
+      s"missing staged preview at $dir (e2eStage should have run ascentPreviewStage)",
     )
     dir
 

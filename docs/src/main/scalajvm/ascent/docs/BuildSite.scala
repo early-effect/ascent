@@ -57,6 +57,7 @@ object BuildSite extends ZIOAppDefault:
         DatastarPage.doc,
         DatastarHttp.doc,
         Hybrid.doc,
+        PreviewPage.doc,
         Modules.doc,
       ),
       clientScript = Some("assets/client.js"),
@@ -82,11 +83,18 @@ Docs pages are Specular `DocSpec`s: the same source asserts under zio-test and S
         CodeSnippet(
           "Optional modules",
           s"""libraryDependencies ++= Seq(
-  "$org" %%% "ascent-conduit"      % "$version", // Ctx[M] state bridge
-  "$org" %%  "ascent-html"         % "$version", // SSR
+  "$org" %%% "ascent-conduit"       % "$version", // Ctx[M] state bridge
+  "$org" %%  "ascent-html"          % "$version", // SSR
   "$org" %%  "ascent-datastar-http" % "$version", // server datastar
-  "$org" %%% "ascent-datastar-js"  % "$version", // browser datastar
+  "$org" %%% "ascent-datastar-js"   % "$version", // browser datastar
+  "$org" %%  "ascent-preview"       % "$version", // local static + SSE reload
 )""",
+        ),
+        CodeSnippet(
+          "Local preview plugin",
+          s"""addSbtPlugin("rocks.earlyeffect" % "sbt-ascent-preview" % "$version")
+// enablePlugins(AscentPreviewPlugin) on the module; then:
+// sbt ~todoJS/ascentPreview   or   sbt ~docs/ascentPreview""",
         ),
       ),
     )
