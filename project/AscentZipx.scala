@@ -73,18 +73,6 @@ object AscentZipx extends AutoPlugin:
       .named("Install Scala Native build dependencies")
   )
 
-  private val dependencySubmission: Steps = Steps.buildingWith("ascent-dependency-submission") { ctx =>
-    List(
-      Step
-        .usesRef(
-          ctx.actions
-            .extraByPrefix("scalacenter/sbt-dependency-submission")
-            .getOrElse(sys.error("zipx: catalog Action scalacenter/sbt-dependency-submission is missing"))
-        )
-        .named("Submit dependency graph")
-    )
-  }
-
   override def buildSettings: Seq[sbt.Setting[?]] = Seq(
     zipxJavaVersion      := JdkVersion("25"),
     zipxWorkflowDispatch := true,
@@ -121,16 +109,6 @@ object AscentZipx extends AutoPlugin:
         .withNodeVersion(NodeVersion("24")),
       ZipxCentral.release,
       ZipxDocs.pages(),
-      Capability.once(
-        name = CapabilityName("dependency-submission"),
-        // zipx Once jobs always emit an sbt step. Run the action in extraSteps *before* that step: an earlier
-        // `sbt about` would start a server without GITHUB_TOKEN, and the action's later sbt client would reuse it
-        // (snapshot generates, submit then fails with "Missing environment variable GITHUB_TOKEN").
-        command = alias("about"),
-        needsCapabilities = List(Capability.TestName, TestJs, TestNative),
-        permissions = Map("contents" -> "write"),
-        extraSteps = dependencySubmission,
-      ),
     ),
   )
 end AscentZipx

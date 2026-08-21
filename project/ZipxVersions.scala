@@ -3,8 +3,7 @@ import zipx.*
 /** Typed catalog: every library and plugin this build may use. `zipxDepUpdate` rewrites constructors here.
   *
   * sbt-zipx is not a row: generate emits it from the loaded plugin (`zipxSelfPlugins`). sbt-pgp is not a row: zipx
-  * already brings it in. Action pins stay on jar defaults except the extra step zipx does not emit
-  * (`scalacenter/sbt-dependency-submission`).
+  * already brings it in. Action pins stay on jar defaults.
   *
   * Parent `Lib` vals used only for `.mod` are catalog rows; they are not `library()`-selected when another selected
   * module already pulls them (specular-core / specular-site via the docs theme).
@@ -47,12 +46,6 @@ object MyVersions extends ZipxVersions:
   val sbtSplice      = Plugin("rocks.earlyeffect", "sbt-splice", "0.1.0")
   val sbtReload      = Plugin("com.jamesward", "sbt-reload", "0.0.7")
   val sbtChekhov     = Plugin("rocks.earlyeffect", "sbt-chekhov", "0.0.4")
-
-  val dependencySubmission = Action(
-    "scalacenter/sbt-dependency-submission",
-    "v3.2.3",
-    sha = "d84eef4c09e633bcf5f113bcad7fd5e9af1baee9",
-  )
 
   def zioTests        = library(zioTest.test, zioTestSbt.test)
   def zioLib          = library(zio)
