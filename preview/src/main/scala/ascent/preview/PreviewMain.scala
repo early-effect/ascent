@@ -4,17 +4,20 @@ import zio.*
 
 import java.nio.file.Paths
 
-/** CLI: `PreviewMain <port> <siteRoot>`. Used by sbt-reload (`runReloadArgs`) and ad-hoc example serving. */
+/** CLI: `PreviewMain <port> <siteRoot> [--open]`. Forked by sbt-ascent-preview; also `preview/run` for ad-hoc serving.
+  */
 object PreviewMain extends ZIOAppDefault:
 
   def run =
     for
       args <- getArgs
-      port = args.headOption.map(_.toInt).getOrElse(8765)
-      root = args
-        .lift(1)
-        .map(Paths.get(_))
-        .getOrElse(Paths.get("target/site").toAbsolutePath)
-      _ <- Preview.serveForever(PreviewConfig(root = root, port = port))
+      _    <- Preview.serveForever(configFromArgs(args))
     yield ()
+
+  private[preview] def configFromArgs(args: Chunk[String]): PreviewConfig =
+    val open       = args.contains("--open")
+    val positional = args.filterNot(_ == "--open")
+    val port       = positional.headOption.map(_.toInt).getOrElse(8765)
+    val root       = positional.lift(1).map(Paths.get(_)).getOrElse(Paths.get("target/site").toAbsolutePath)
+    PreviewConfig(root = root, port = port, openBrowser = open)
 end PreviewMain

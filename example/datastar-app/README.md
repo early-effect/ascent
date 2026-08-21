@@ -27,7 +27,7 @@ Two terminals. `sbt run` cwd is the repo root, so the server looks for
 `example/datastar-app/target/preview` (override with a path argument).
 
 ```bash
-sbt ~datastarExampleJS/previewStage      # splice + stamp; relink on change
+sbt ~datastarExampleJS/ascentPreview     # splice + stamp; relink on change
 sbt datastarExampleServer/run            # static + SSE reload + API on :8080
 ```
 

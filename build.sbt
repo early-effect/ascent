@@ -1,3 +1,7 @@
+import ascent.preview.sbt.AscentPreviewPlugin
+import ascent.preview.sbt.AscentPreviewPlugin.autoImport.*
+import ascent.preview.sbt.AscentPreviewPort
+
 MyVersions.settings
 
 val scala3Version: String = MyVersions.scala
@@ -93,24 +97,11 @@ val jsdomTestEnv = Def.settings(
   Test / jsEnv := Def.uncached(new org.scalajs.jsenv.jsdomnodejs.JSDOMNodeJSEnv())
 )
 
-lazy val previewStage = taskKey[File](
-  "Stage index.html + spliceFast JS + a reload stamp into <example>/target/preview"
-)
-
-/** Matrix rows live under `.sbt/matrix/<id>` (`baseDirectory`) with `target` under `target/out/...`. Stage into the
-  * example directory (`sourceDirectory`'s parent) so `preview/run` and the JVM servers can find the tree.
-  */
-def examplePreviewSettings: Seq[Setting[?]] = Seq(
-  spliceFastOutput := Def.uncached(sourceDirectory.value.getParentFile / "target" / "preview" / "fast.js"),
-  previewStage     := Def.uncached {
-    val js          = spliceFast.value
-    val dest        = js.getParentFile
-    val exampleRoot = sourceDirectory.value.getParentFile
-    IO.createDirectory(dest / "assets")
-    IO.copyFile(exampleRoot / "index.html", dest / "index.html")
-    IO.write(dest / "assets" / "dev-stamp", System.currentTimeMillis.toString)
-    dest
-  },
+/** JS examples: stage into `<example>/target/preview` and fork the local `preview` module's PreviewMain. */
+def examplePreviewSettings(autoServe: Boolean): Seq[Setting[?]] = Seq(
+  spliceFastOutput       := Def.uncached(ascentPreviewRoot.value / "fast.js"),
+  ascentPreviewAutoServe := autoServe,
+  ascentPreviewClasspath := Def.uncached((LocalProject("preview") / Compile / fullClasspath).value),
 )
 
 val ascentModules = Seq(
@@ -156,7 +147,8 @@ lazy val root = (project in file("."))
       html.projectRefs ++ datastar.projectRefs ++ datastarJs.projectRefs ++
       datastarHttp.projectRefs ++ datastarExample.projectRefs ++ datastarExampleServer.projectRefs ++
       hybridChat.projectRefs ++ hybridChatServer.projectRefs ++
-      todoConduit.projectRefs ++ docs.projectRefs ++ preview.projectRefs) *
+      todoConduit.projectRefs ++ docs.projectRefs ++ preview.projectRefs :+
+      LocalProject("sbtAscentPreview")) *
   )
   .settings(
     name           := "ascent",
@@ -416,6 +408,19 @@ lazy val preview = (projectMatrix in file("preview"))
   )
   .jvmPlatform(scalaVersions = scalaVersions)
 
+// --- sbt-ascent-preview : enablePlugins(AscentPreviewPlugin) then `sbt ~<module>/ascentPreview`. ---
+// Same source as project/AscentPreviewPlugin.scala (this repo cannot addSbtPlugin itself).
+lazy val sbtAscentPreview = (project in file("sbt-ascent-preview"))
+  .enablePlugins(SbtPlugin)
+  .disablePlugins(chekhov.sbt.ChekhovPlugin)
+  .settings(
+    name := "sbt-ascent-preview",
+    scalacOptions ++= commonScalacOptions,
+    Compile / unmanagedSources += (ThisBuild / baseDirectory).value / "project" / "AscentPreviewPlugin.scala",
+    Compile / unmanagedSources += (ThisBuild / baseDirectory).value / "project" / "AscentPreviewPort.scala",
+    MyVersions.sbtPreviewLib,
+  )
+
 // --- ascent example: todo-conduit — TodoMVC over conduit (js only) ---
 //   Lives under `example/<name>/`; more examples will sit alongside it. Depends on `js`
 //   (binding engine), `css` (CSS-in-Scala authoring + DomStyleSink), and `conduitBridge`
@@ -431,9 +436,12 @@ lazy val todoConduit = (projectMatrix in file("example/todo-conduit"))
     scalacOptions ++= commonScalacOptions,
     scalaJSUseMainModuleInitializer := true,
     scalaJSLinkerConfig ~= (_.withModuleKind(ModuleKind.ESModule)),
-    examplePreviewSettings,
   )
-  .jsPlatform(scalaVersions = scalaVersions)
+  .jsPlatform(
+    scalaVersions,
+    Nil,
+    (p: Project) => p.enablePlugins(AscentPreviewPlugin).settings(examplePreviewSettings(autoServe = true)),
+  )
 
 // --- ascent example: datastar-app — server-driven counter proving the full datastar loop ---
 //   The CLIENT (js, pure ascent): a SignalStore fed by the datastar SSE stream drives ascent's own
@@ -446,14 +454,17 @@ lazy val datastarExample = (projectMatrix in file("example/datastar-app"))
     publish / skip := true,
     test / skip    := true,
     scalacOptions ++= commonScalacOptions,
-    examplePreviewSettings,
   )
   .jsPlatform(
-    scalaVersions = scalaVersions,
-    Seq(
-      scalaJSUseMainModuleInitializer := true,
-      scalaJSLinkerConfig ~= (_.withModuleKind(ModuleKind.ESModule)),
-    ),
+    scalaVersions,
+    Nil,
+    (p: Project) =>
+      p.enablePlugins(AscentPreviewPlugin)
+        .settings(
+          scalaJSUseMainModuleInitializer := true,
+          scalaJSLinkerConfig ~= (_.withModuleKind(ModuleKind.ESModule)),
+        )
+        .settings(examplePreviewSettings(autoServe = false)),
   )
 
 // --- ascent example: datastar-app SERVER — the zio-http backend (JVM). Holds the count, serves the
@@ -485,14 +496,17 @@ lazy val hybridChat = (projectMatrix in file("example/hybrid-chat"))
     publish / skip := true,
     test / skip    := true,
     scalacOptions ++= commonScalacOptions,
-    examplePreviewSettings,
   )
   .jsPlatform(
-    scalaVersions = scalaVersions,
-    Seq(
-      scalaJSUseMainModuleInitializer := true,
-      scalaJSLinkerConfig ~= (_.withModuleKind(ModuleKind.ESModule)),
-    ),
+    scalaVersions,
+    Nil,
+    (p: Project) =>
+      p.enablePlugins(AscentPreviewPlugin)
+        .settings(
+          scalaJSUseMainModuleInitializer := true,
+          scalaJSLinkerConfig ~= (_.withModuleKind(ModuleKind.ESModule)),
+        )
+        .settings(examplePreviewSettings(autoServe = false)),
   )
 
 // The hybrid-chat SERVER (JVM): ChatRoom state + SSE routes; renders message rows via ascent-html and
@@ -524,24 +538,26 @@ lazy val docs: ProjectMatrix = (projectMatrix in file("docs"))
     Nil,
     (p: Project) =>
       p.dependsOn(datastarHttp.jvm(scala3Version), preview.jvm(scala3Version))
-        .enablePlugins(SpecularPlugin)
+        .enablePlugins(SpecularPlugin, AscentPreviewPlugin)
         .settings(
           docsDogfoodSettings,
           MyVersions.docsJvm,
           // specular-site (via the theme) still declares zio-json 0.9.x
           dependencyOverrides += MyVersions.moduleID(MyVersions.zioJson),
           zioTestSettings,
-          Compile / mainClass  := Some("ascent.docs.ServeSite"),
-          run / mainClass      := Some("ascent.docs.ServeSite"),
-          Test / mainClass     := Some("ascent.docs.ServeSite"),
-          Test / runReloadArgs := {
-            val siteDir = (ThisBuild / baseDirectory).value / "target" / "site"
-            Seq("8765", siteDir.getAbsolutePath)
-          },
-          Test / runReload      := Def.uncached((Test / runReload).dependsOn(specularSite).value),
-          specularBuildMain     := "ascent.docs.BuildSite",
-          specularMetaProject   := Some(LocalProject("root")),
-          specularSiteDirectory := (ThisBuild / baseDirectory).value / "target" / "site",
+          Compile / mainClass             := Some("ascent.docs.ServeSite"),
+          run / mainClass                 := Some("ascent.docs.ServeSite"),
+          Compile / discoveredMainClasses := Seq("ascent.docs.ServeSite"),
+          Test / mainClass                := Some("ascent.docs.BuildSite"),
+          Test / discoveredMainClasses    := Seq("ascent.docs.BuildSite"),
+          specularBuildMain               := "ascent.docs.BuildSite",
+          specularMetaProject             := Some(LocalProject("root")),
+          specularSiteDirectory           := (ThisBuild / baseDirectory).value / "target" / "site",
+          ascentPreviewRoot               := specularSiteDirectory.value,
+          ascentPreviewAutoOpen           := true,
+          ascentPreviewPort               := AscentPreviewPort.auto,
+          // Published sbt-specular 0.12.1 has specularSite only (this repo's specularJsLink is already fastLinkJS).
+          ascentPreviewRebuild := Def.uncached(specularSite.value),
           // Docs-only (workflow_dispatch) builds are dynver `-ci`; don't advertise that as a Central coord.
           // Empty string → Specular uses build version (clean v* tags).
           specularDisplayVersion := {
@@ -636,9 +652,9 @@ lazy val e2e = (project in file("e2e"))
     MyVersions.e2eTests,
     chekhovBrowsers := Seq(chekhov.ChekhovBrowser.Firefox),
     e2eStage        := Def.uncached {
-      (LocalProject("todoConduitJS") / previewStage).value
-      (LocalProject("datastarExampleJS") / previewStage).value
-      (LocalProject("hybridChatJS") / previewStage).value
+      (LocalProject("todoConduitJS") / ascentPreviewStage).value
+      (LocalProject("datastarExampleJS") / ascentPreviewStage).value
+      (LocalProject("hybridChatJS") / ascentPreviewStage).value
       ()
     },
     Test / javaOptions += s"-Dascent.repoRoot=${(ThisBuild / baseDirectory).value.getAbsolutePath}",

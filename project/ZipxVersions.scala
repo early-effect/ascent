@@ -36,6 +36,7 @@ object MyVersions extends ZipxVersions:
 
   val chekhovZioTest = Lib("rocks.earlyeffect", "chekhov-zio-test", "0.0.4")
   val chekhovDriver  = chekhovZioTest.mod("chekhov-driver")
+  val neotype        = Lib("io.github.kitlangton", "neotype", "0.7.0")
 
   val scalajs        = Plugin("org.scala-js", "sbt-scalajs", "1.22.0")
   val scalaNative    = Plugin("org.scala-native", "sbt-scala-native", "0.5.12")
@@ -66,4 +67,5 @@ object MyVersions extends ZipxVersions:
   def docsJvm         = library(specularZioTest, specularTheme)
   def docsJs          = library(specular, zioTest)
   def e2eTests        = library(chekhovZioTest.test, chekhovDriver.test)
+  def sbtPreviewLib   = library(neotype)
 end MyVersions

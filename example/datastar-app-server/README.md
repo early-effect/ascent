@@ -15,7 +15,7 @@ composes [`ascent-preview`](../../preview/) so the spliced client is same-origin
 ## Run it
 
 ```bash
-sbt ~datastarExampleJS/previewStage      # splice the client
+sbt ~datastarExampleJS/ascentPreview     # splice the client
 sbt datastarExampleServer/run            # preview + API on :8080
 ```
 

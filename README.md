@@ -171,6 +171,26 @@ libraryDependencies += "rocks.earlyeffect" %%% "ascent-css"  % "<version>"  // t
 Other modules follow the same `ascent-<module>` naming (e.g. `ascent-html`, `ascent-conduit`,
 `ascent-datastar`) — see the module table below. On a plain JVM-only build use `%%` instead of `%%%`.
 
+## Local preview (`ascent-preview`)
+
+`ascent-preview` is a **published JVM library** (static files + SSE tab reload). Sibling projects
+(Specular docs, Preactile, any splice+preview app) should depend on it rather than rolling a file
+server. The command is the same everywhere:
+
+```bash
+sbt ~todoConduitJS/ascentPreview   # example app → http://localhost:8765
+sbt ~docs/ascentPreview            # this repo's docs site (auto port; URL printed in the terminal)
+```
+
+`~` watches sources. Preview **does not restart**: the rebuild rewrites `assets/dev-stamp` and the
+tab reloads over `/__ascent/reload`. One-shot (no watch): drop the `~`.
+
+Do **not** `sbt ~docs/Test/runReload` (that kills the Preview JVM on every compile).
+
+When a JVM app already composes `Preview.routes` (datastar / hybrid), keep that server up and watch
+the JS module with `ascentPreviewAutoServe := false`. Recipes: [preview/README.md](preview/README.md)
+and the [Preview](https://www.earlyeffect.rocks/ascent/preview.html) docs page.
+
 ## Status
 
 ascent is early and evolving. It's well-tested (1000+ zio-test cases across JVM/JS/Native, leaning
@@ -185,33 +205,28 @@ A few things to know before adopting:
   use `ascent-core` + `ascent-js` (+ `ascent-css`, and `ascent-conduit` for state).
 - **Docs are Specular DocSpecs.** Pages under `docs/` assert under zio-test and SSR-render via
   [specular](https://github.com/early-effect/specular). Browse the site at
-  [earlyeffect.rocks/ascent](https://www.earlyeffect.rocks/ascent/). Locally: `sbt docs/test` and
-  `sbt docs/specularSite` (output in `target/site`). CI deploys on `v*` tags and Docs
-  `workflow_dispatch`.
+  [earlyeffect.rocks/ascent](https://www.earlyeffect.rocks/ascent/). Locally: `sbt ~docs/ascentPreview`
+  (output in `target/site`). CI deploys on `v*` tags and Docs `workflow_dispatch`.
 
 ## Run the example
 
 `example/` holds one self-contained app per subdirectory (more coming). The first,
-`todo-conduit`, is a synthwave-glass [TodoMVC](https://todomvc.com/) over conduit. Two
-terminals: splice the Scala.js client into `target/preview`, then serve it with
-`ascent-preview` (static files plus an SSE reload when the stamp file changes).
+`todo-conduit`, is a synthwave-glass [TodoMVC](https://todomvc.com/) over conduit:
 
 ```bash
-sbt ~todoConduitJS/previewStage
-# other terminal:
-sbt "preview/run -- 8765 $(pwd)/example/todo-conduit/target/preview"
+sbt ~todoConduitJS/ascentPreview
 # open http://localhost:8765
 ```
 
-`previewStage` runs `spliceFast`, copies `index.html`, and writes `assets/dev-stamp`. After a
-`.scala` edit, the watch relinks and rewrites the stamp; the tab reloads. Docs use the same
-loop: `sbt ~docs/Test/runReload`.
+`ascentPreview` stages `index.html` + spliceFast JS + `assets/dev-stamp`, then starts
+`ascent-preview`. After a `.scala` edit, the watch restages and the tab reloads. Docs use the
+same command: `sbt ~docs/ascentPreview`.
 
 Datastar and hybrid examples compose preview routes into the JVM server so the client and API
 share `:8080`:
 
 ```bash
-sbt ~datastarExampleJS/previewStage
+sbt ~datastarExampleJS/ascentPreview   # stage only (API server already serves the tree)
 sbt datastarExampleServer/run          # http://localhost:8080
 ```
 
@@ -223,7 +238,7 @@ toggling one item doesn't rebuild the others — that's the surgical patching.
 
 ```bash
 sbt testJVM                    # JVM suites (use testFull per module on sbt 2)
-sbt todoConduitJS/previewStage # splice + stage the example without a browser
+sbt todoConduitJS/ascentPreviewStage # splice + stage the example without a browser
 sbt e2e/chekhovInstall && sbt e2e/testFull   # Firefox suites against splice+preview
 ./scripts/install-git-hooks    # once per clone: pre-commit runs scalafmtCheckAll
 ```
@@ -243,7 +258,8 @@ ascent is built with Scala 3 and cross-compiled to **JVM, Scala.js, and Scala Na
 | `datastar`      | [datastar](https://data-star.dev/) protocol core + `SignalStore` ([readme](datastar/README.md)) |
 | `datastar-js`   | Browser datastar runtime: SSE → Squawk / DOM, action dispatch ([readme](datastar-js/README.md)) |
 | `datastar-http` | Server wrapper over `zio-http-datastar-sdk` ([readme](datastar-http/README.md)) |
-| `preview`       | Static file server + SSE reload (`ascent-preview`)                |
+| `preview`       | Static file server + SSE reload (`ascent-preview`) ([readme](preview/README.md)) |
+| `sbt-ascent-preview` | `enablePlugins(AscentPreviewPlugin)` then `sbt ~<module>/ascentPreview` |
 | `domgen`        | JVM-only generator that emits the typed catalogs from W3C webref ([readme](domgen/README.md)) |
 | `example/*`     | One self-contained splice+preview app per subdir (e.g. `todo-conduit`)        |
 

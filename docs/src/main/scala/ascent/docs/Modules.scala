@@ -22,7 +22,8 @@ published so consumers resolve transitively.
 | `ascent-datastar` | Datastar protocol + SignalStore |
 | `ascent-datastar-js` | Browser datastar runtime |
 | `ascent-datastar-http` | zio-http datastar server bridge |
-| `ascent-preview` | Local static serve + SSE tab reload |
+| `ascent-preview` | Local static serve + SSE tab reload. See [Preview](preview.html). |
+| `sbt-ascent-preview` | `enablePlugins(AscentPreviewPlugin)` then `sbt ~<module>/ascentPreview` |
 
 ## Internals (transitive)
 
