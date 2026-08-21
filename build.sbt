@@ -286,9 +286,8 @@ lazy val js = (projectMatrix in file("js"))
 //   value tracks that slice of the conduit model; updates flow through Squawk's dedup so
 //   only real changes hit the DOM. Cross-built jvm/js/native to match conduit and core.
 //
-//   Depends on the published conduit (which uses Scala 3.6.3 but TASTy forward-compat
-//   typically lets 3.8.3 consume it). Stays a separate sub-module so users who don't want
-//   conduit (or its ZIO transitive that core already needs) don't pull anything extra.
+//   Depends on published conduit (rocks.earlyeffect). Stays a separate sub-module so users who don't
+//   want conduit (or its ZIO transitive that core already needs) don't pull anything extra.
 lazy val conduitBridge = (projectMatrix in file("conduit"))
   .disablePlugins(chekhov.sbt.ChekhovPlugin)
   .dependsOn(core)
@@ -556,18 +555,12 @@ lazy val docs: ProjectMatrix = (projectMatrix in file("docs"))
           ascentPreviewRoot               := specularSiteDirectory.value,
           ascentPreviewAutoOpen           := true,
           ascentPreviewPort               := AscentPreviewPort.auto,
-          // Published sbt-specular 0.12.1 has specularSite only (this repo's specularJsLink is already fastLinkJS).
-          ascentPreviewRebuild := Def.uncached(specularSite.value),
-          // Docs-only (workflow_dispatch) builds are dynver `-ci`; don't advertise that as a Central coord.
-          // Empty string → Specular uses build version (clean v* tags).
+          ascentPreviewRebuild            := Def.uncached(specularSiteDev.value),
+          // Dynver `-ci` / SNAPSHOT: show the previous stable tag in install snippets.
           specularDisplayVersion := {
-            val v = (ThisBuild / version).value
-            if (v.endsWith("-ci") || v.endsWith("-SNAPSHOT")) then {
-              previousStableVersion.value.getOrElse("<version>")
-            }
-            else {
-              ""
-            }
+            val fallback = previousStableVersion.value.getOrElse("<version>")
+            (v: String) =>
+              if v.endsWith("-ci") || v.endsWith("-SNAPSHOT") then fallback else v
           },
           // Link the JS client and write a marker path BuildSite copies into assets/client.js.
           specularJsLink := Def.uncached {
@@ -583,6 +576,7 @@ lazy val docs: ProjectMatrix = (projectMatrix in file("docs"))
             IO.write(marker, mainJs.getAbsolutePath)
             ()
           },
+          specularJsLinkDev := Def.uncached(specularJsLink.value),
         ),
   )
   .jsPlatform(

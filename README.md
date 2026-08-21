@@ -121,7 +121,7 @@ combinators are pure and lazy, so the DSL stays clean. Changes are deduped by a 
 boundary registers a paired teardown; nothing leaks when a subtree unmounts.
 
 For application state, ascent ships an **optional** bridge to
-[conduit](https://github.com/russwyte/conduit), a ZIO-based unidirectional, lens-keyed immutable
+[conduit](https://github.com/early-effect/conduit), a ZIO-based unidirectional, lens-keyed immutable
 store. Because both sides are ZIO, the bridge composes natively — and views never see conduit at
 all. A view receives a `Ctx[M]` handle and speaks two verbs: read a reactive slice, dispatch an
 action.

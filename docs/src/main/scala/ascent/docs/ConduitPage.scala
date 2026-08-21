@@ -28,7 +28,7 @@ object ConduitPage extends DocSpec:
   def doc = page("Conduit")(
     md"""
 For application state, ascent ships an **optional** bridge to
-[conduit](https://github.com/russwyte/conduit). Views never see conduit directly: they receive a
+[conduit](https://github.com/early-effect/conduit). Views never see conduit directly: they receive a
 `Ctx[M]` and speak two verbs; `ctx.squawk(_.path)` and `ctx(action)`. Put the model and handlers
 in one file; view files import only `ascent.*`.
 

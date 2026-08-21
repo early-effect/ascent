@@ -32,8 +32,7 @@ addSbtPlugin("rocks.earlyeffect" % "sbt-ascent-preview" % "<version>")
 
 Then `enablePlugins(AscentPreviewPlugin)` on the module you type. Specular docs modules will get
 that by default once sbt-specular requires this plugin; until then, enable it on `docs` and set
-`ascentPreviewRoot` to the site directory and `ascentPreviewRebuild` to `specularSite` (or
-`specularSiteDev` when your sbt-specular has it).
+`ascentPreviewRoot` to the site directory and `ascentPreviewRebuild` to `specularSiteDev`.
 """
     ),
     section("Scala.js app")(
@@ -65,7 +64,7 @@ an example `target/preview`.
 .enablePlugins(SpecularPlugin, AscentPreviewPlugin)
 .settings(
   ascentPreviewRoot     := specularSiteDirectory.value,
-  ascentPreviewRebuild  := specularSite.value, // specularSiteDev when the plugin has it
+  ascentPreviewRebuild  := specularSiteDev.value,
   ascentPreviewAutoOpen := true,               // open the tab once Preview binds
   ascentPreviewPort     := AscentPreviewPort("auto"), // first free port >= 8700
 )
