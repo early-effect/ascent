@@ -1,5 +1,6 @@
 package ascent.e2e
 
+import ascent.chekhov.PageHandles
 import chekhov.*
 import example.chat.{ChatRoom, ChatServer}
 import zio.*
@@ -15,8 +16,10 @@ object HybridChatSpec extends AscentChekhovSuite:
           base <- PreviewServe.install(ChatServer.routes(room, Repo.preview("hybrid-chat")))
           page <- Chekhov.page
           _    <- page.goto(base.value + "/")
-          _    <- page.getByPlaceholder("Your name").fill("Ada")
-          _    <- page.getByPlaceholder("Type a message and press Enter").fill("hello from e2e")
+          _    <- PageHandles.getByPlaceholder(page, "Your name", ascent.HtmlTag.input).fill("Ada")
+          _    <- PageHandles
+            .getByPlaceholder(page, "Type a message and press Enter", ascent.HtmlTag.input)
+            .fill("hello from e2e")
           _    <- page.getByRole(Role.Button, name = Some("Send")).click
           body <- Poll.until("message appears")(page.innerText("#messages"))(_.contains("hello from e2e"))
         yield assertTrue(body.contains("hello from e2e"), body.contains("Ada")))
