@@ -88,6 +88,7 @@ Docs pages are Specular `DocSpec`s: the same source asserts under zio-test and S
   "$org" %%  "ascent-datastar-http" % "$version", // server datastar
   "$org" %%% "ascent-datastar-js"   % "$version", // browser datastar
   "$org" %%  "ascent-preview"       % "$version", // local static + SSE reload
+  "$org" %%% "ascent-chekhov"       % "$version" % Test, // typed Chekhov locators
 )""",
         ),
         CodeSnippet(

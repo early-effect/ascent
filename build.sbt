@@ -1,6 +1,8 @@
 import ascent.preview.sbt.AscentPreviewPlugin
 import ascent.preview.sbt.AscentPreviewPlugin.autoImport.*
 import ascent.preview.sbt.AscentPreviewPort
+import chekhov.ChekhovBrowser
+import chekhov.jsenv.ChekhovJSEnv
 
 MyVersions.settings
 
@@ -117,6 +119,7 @@ val ascentModules = Seq(
   "ascent-datastar",
   "ascent-datastar-http",
   "ascent-preview",
+  "ascent-chekhov",
 )
 
 /** Published Specular jars depend on the Maven Central `ascent-*` release, but the docs modules `dependsOn` local
@@ -147,7 +150,8 @@ lazy val root = (project in file("."))
       html.projectRefs ++ datastar.projectRefs ++ datastarJs.projectRefs ++
       datastarHttp.projectRefs ++ datastarExample.projectRefs ++ datastarExampleServer.projectRefs ++
       hybridChat.projectRefs ++ hybridChatServer.projectRefs ++
-      todoConduit.projectRefs ++ docs.projectRefs ++ preview.projectRefs :+
+      todoConduit.projectRefs ++ docs.projectRefs ++ preview.projectRefs ++
+      ascentChekhov.projectRefs :+
       LocalProject("sbtAscentPreview")) *
   )
   .settings(
@@ -625,18 +629,55 @@ def ascentPlatformTestCommand(find: ProjectMatrix => ProjectFinder): String =
     .sorted
     .mkString("; ")
 
-addCommandAlias("testJVM", ascentPlatformTestCommand(_.jvm))
+// ascentChekhov is not in ascentMatrices: its JS row is ChekhovJSEnv (not jsdom) and must
+// stay off testJS. The JVM row is browser-free selector tests and joins testJVM here.
+addCommandAlias("testJVM", ascentPlatformTestCommand(_.jvm) + "; ascentChekhov/test")
 addCommandAlias("testJS", ascentPlatformTestCommand(_.js))
 addCommandAlias("testNative", ascentPlatformTestCommand(_.native))
 
 lazy val e2eStage = taskKey[Unit]("Stage example preview trees for Chekhov e2e")
 
 // Browser suites. Not aggregated so library `testFull` stays browser-free.
+// --- ascent-chekhov : typed Chekhov locators over the HTML lattice (jvm + js). ---
+//   Shared sources are the TagHandle typeclass + handle algebra (no live DOM, no Chekhov
+//   imports). The JVM row interprets handles as Playwright selector strings via chekhov-core.
+//   The JS row mounts a UI into chekhov-dom's iframe withRoot and talks to live ascent.dom
+//   nodes. Not in ascentMatrices: JS tests need ChekhovJSEnv (see testJVM / e2e capability).
+lazy val ascentChekhov = (projectMatrix in file("chekhov"))
+  .disablePlugins(chekhov.sbt.ChekhovPlugin)
+  .dependsOn(core)
+  .settings(
+    name := "ascent-chekhov",
+    scalacOptions ++= commonScalacOptions,
+    zioTestSettings,
+  )
+  .jvmPlatform(
+    scalaVersions,
+    Nil,
+    (p: Project) => p.settings(MyVersions.chekhovCoreLib),
+  )
+  .jsPlatform(
+    scalaVersions,
+    Nil,
+    (p: Project) =>
+      p.dependsOn(js.js(scala3Version))
+        .settings(
+          MyVersions.chekhovDomLib,
+          scalaJSLinkerConfig ~= (_.withModuleKind(ModuleKind.ESModule)),
+          // Do not enable ChekhovPlugin here: it sets Test / fork := true, which is a JVM
+          // suite setting. JSEnv is constructed directly (same Firefox pin as e2e).
+          Test / jsEnv := Def.uncached(
+            ChekhovJSEnv(browser = ChekhovBrowser.Firefox, headless = true, keepOpen = false)
+          ),
+        ),
+  )
+
 lazy val e2e = (project in file("e2e"))
   .dependsOn(
     preview.jvm(scala3Version),
     datastarExampleServer.jvm(scala3Version),
     hybridChatServer.jvm(scala3Version),
+    ascentChekhov.jvm(scala3Version),
   )
   .settings(
     name           := "ascent-e2e",
