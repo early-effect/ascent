@@ -104,6 +104,7 @@ object AscentZipx extends AutoPlugin:
           command = zipxTasks.session(
             LocalProject("e2e") / chekhovInstall,
             LocalProject("e2e") / Test / testFull,
+            LocalProject("ascentChekhovJS") / Test / testFull,
           ),
         )
         .withNodeVersion(NodeVersion("24")),

@@ -23,6 +23,7 @@ published so consumers resolve transitively.
 | `ascent-datastar-js` | Browser datastar runtime |
 | `ascent-datastar-http` | zio-http datastar server bridge |
 | `ascent-preview` | Local static serve + SSE tab reload. See [Preview](preview.html). |
+| `ascent-chekhov` | Typed Chekhov locators: JSEnv live handles + JVM `Page` selectors |
 | `sbt-ascent-preview` | `enablePlugins(AscentPreviewPlugin)` then `sbt ~<module>/ascentPreview` |
 
 ## Internals (transitive)

@@ -240,7 +240,30 @@ toggling one item doesn't rebuild the others — that's the surgical patching.
 sbt testJVM                    # JVM suites (use testFull per module on sbt 2)
 sbt todoConduitJS/ascentPreviewStage # splice + stage the example without a browser
 sbt e2e/chekhovInstall && sbt e2e/testFull   # Firefox suites against splice+preview
+sbt "e2e/chekhovInstall; ascentChekhovJS/testFull"  # JSEnv typed handles (ascent-chekhov)
 ./scripts/install-git-hooks    # once per clone: pre-commit runs scalafmtCheckAll
+```
+
+Component tests (JSEnv) mount a `UI` and talk to nodes as `InputHandle` / `ButtonHandle`:
+
+```scala
+import ascent.*, ascent.dsl.*, ascent.chekhov.AscentChekhov.withMounted
+
+withMounted(ui) { root =>
+  root.button("inc").click *>
+    root.getByTestId("count").innerText.map(t => assertTrue(t == "1"))
+}
+```
+
+JVM `ChekhovSuite` uses the same lattice as tagged Playwright selectors (`HtmlTag.input` keeps `fill` off a button). Chekhov's `Page.getByPlaceholder(text)` already exists, so the typed call is on `PageHandles` (not an overloaded `page.getByPlaceholder`):
+
+```scala
+import ascent.HtmlTag
+import ascent.chekhov.PageHandles
+
+PageHandles.getByPlaceholder(page, "Your name", HtmlTag.input).fill("Ada")
+PageHandles.getByTestId(page, "inc", HtmlTag.button).click
+page.button("inc").click
 ```
 
 ascent is built with Scala 3 and cross-compiled to **JVM, Scala.js, and Scala Native** via
@@ -259,6 +282,7 @@ ascent is built with Scala 3 and cross-compiled to **JVM, Scala.js, and Scala Na
 | `datastar-js`   | Browser datastar runtime: SSE → Squawk / DOM, action dispatch ([readme](datastar-js/README.md)) |
 | `datastar-http` | Server wrapper over `zio-http-datastar-sdk` ([readme](datastar-http/README.md)) |
 | `preview`       | Static file server + SSE reload (`ascent-preview`) ([readme](preview/README.md)) |
+| `chekhov`       | Typed Chekhov locators (`ascent-chekhov`): JSEnv live handles + JVM `Page` selectors |
 | `sbt-ascent-preview` | `enablePlugins(AscentPreviewPlugin)` then `sbt ~<module>/ascentPreview` |
 | `domgen`        | JVM-only generator that emits the typed catalogs from W3C webref ([readme](domgen/README.md)) |
 | `example/*`     | One self-contained splice+preview app per subdir (e.g. `todo-conduit`)        |
