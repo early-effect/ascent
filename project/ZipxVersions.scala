@@ -37,7 +37,7 @@ object MyVersions extends ZipxVersions:
   val chekhovDriver  = chekhovZioTest.mod("chekhov-driver")
   val chekhovCore    = chekhovZioTest.mod("chekhov-core")
   val chekhovDom     = chekhovZioTest.mod("chekhov-dom")
-  val neotype        = Lib("io.github.kitlangton", "neotype", "0.7.0")
+  val neotype        = Lib("io.github.kitlangton", "neotype", "0.7.1")
 
   val scalajs        = Plugin("org.scala-js", "sbt-scalajs", "1.22.0")
   val scalaNative    = Plugin("org.scala-native", "sbt-scala-native", "0.5.12")
