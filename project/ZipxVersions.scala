@@ -15,7 +15,7 @@ object MyVersions extends ZipxVersions:
   val zio                = Lib("dev.zio", "zio", "2.1.26")
   val zioTest            = zio.mod("zio-test")
   val zioTestSbt         = zio.mod("zio-test-sbt")
-  val zioJson            = Lib("dev.zio", "zio-json", "0.10.0")
+  val zioJson            = Lib("dev.zio", "zio-json", "1.0.0")
   val zioHttp            = Lib("dev.zio", "zio-http", "3.11.4")
   val zioHttpDatastarSdk = zioHttp.mod("zio-http-datastar-sdk")
 
@@ -46,7 +46,7 @@ object MyVersions extends ZipxVersions:
   val dynverCi       = Plugin("rocks.earlyeffect", "sbt-dynver-ci", "0.2.3")
   val specularPlugin = Plugin("rocks.earlyeffect", "sbt-specular", "0.14.1")
   val sbtSplice      = Plugin("rocks.earlyeffect", "sbt-splice", "0.1.0")
-  val sbtReload      = Plugin("com.jamesward", "sbt-reload", "0.0.7")
+  val sbtReload      = Plugin("com.jamesward", "sbt-reload", "0.0.8")
   val sbtChekhov     = Plugin("rocks.earlyeffect", "sbt-chekhov", "0.0.5")
 
   def zioTests        = library(zioTest.test, zioTestSbt.test)
