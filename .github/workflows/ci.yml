@@ -352,6 +352,8 @@ jobs:
           echo "$PGP_SECRET" | base64 --decode | gpg --batch --import
         env:
           PGP_SECRET: ${{ secrets.PGP_SECRET }}
+      - name: cleanFull
+        run: sbt 'cleanFull'
       - name: publish
         run: sbt 'domTypes/publishSigned; domTypesJS/publishSigned; domTypesNative/publishSigned; preview/publishSigned; sbtAscentPreview/publishSigned; core/publishSigned; coreJS/publishSigned; coreNative/publishSigned; domFacadeJS/publishSigned; ascentChekhov/publishSigned; conduitBridge/publishSigned; conduitBridgeJS/publishSigned; conduitBridgeNative/publishSigned; css/publishSigned; cssJS/publishSigned; cssNative/publishSigned; datastar/publishSigned; datastarJS/publishSigned; datastarNative/publishSigned; domCore/publishSigned; domCoreJS/publishSigned; domCoreNative/publishSigned; mountEngine/publishSigned; mountEngineJS/publishSigned; mountEngineNative/publishSigned; html/publishSigned; htmlJS/publishSigned; htmlNative/publishSigned; jsJS/publishSigned; ascentChekhovJS/publishSigned; datastarHttp/publishSigned; datastarJsJS/publishSigned; sonaRelease'
   docs:

@@ -73,6 +73,21 @@ object AscentZipx extends AutoPlugin:
       .named("Install Scala Native build dependencies")
   )
 
+  // Tag publish restores zipx's LocalDir `target` cache; cleanFull so doc is not incremental against stale TASTy.
+  // withExtraSteps replaces the pack extras (it does not append), so keep GPG import and add this after it.
+  private val publishCleanFull: Steps = Steps.built("publish-cleanFull")(
+    Step
+      .run(Script(Exec("sbt", Word.squote("cleanFull"))))
+      .named("cleanFull")
+  )
+
+  private val publishRelease: Capability =
+    val release = ZipxCentral.release
+    val extras  = release.extraSteps match
+      case s: Steps => s
+      case f        => Steps("release-extra")(f)
+    release.withExtraSteps(extras ++ publishCleanFull)
+
   override def buildSettings: Seq[sbt.Setting[?]] = Seq(
     zipxJavaVersion      := JdkVersion("25"),
     zipxWorkflowDispatch := true,
@@ -108,7 +123,7 @@ object AscentZipx extends AutoPlugin:
           ),
         )
         .withNodeVersion(NodeVersion("24")),
-      ZipxCentral.release,
+      publishRelease,
       ZipxDocs.pages(),
     ),
   )
