@@ -46,7 +46,7 @@ object MyVersions extends ZipxVersions:
   val dynverCi       = Plugin("rocks.earlyeffect", "sbt-dynver-ci", "0.2.3")
   val specularPlugin = Plugin("rocks.earlyeffect", "sbt-specular", "0.14.1")
   val sbtSplice      = Plugin("rocks.earlyeffect", "sbt-splice", "0.1.0")
-  val sbtReload      = Plugin("com.jamesward", "sbt-reload", "0.0.7")
+  val sbtReload      = Plugin("com.jamesward", "sbt-reload", "0.0.8")
   val sbtChekhov     = Plugin("rocks.earlyeffect", "sbt-chekhov", "0.0.5")
 
   def zioTests        = library(zioTest.test, zioTestSbt.test)
