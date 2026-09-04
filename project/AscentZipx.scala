@@ -1,21 +1,14 @@
 import scala.collection.immutable.ListMap
 
-import sbt.AutoPlugin
+import sbt.*
 import sbt.Keys.testFull
-import sbt.LocalProject
-import sbt.Test
-import sbt./
-import zipx.plugin.ZipxPlugin
-import zipx.plugin.ZipxPlugin.autoImport.*
+import zipx.plugin.ZipxPlugin.autoImport.{Exec as _, *}
+import zipx.shell.Exec as ZipxExec
 
 import chekhov.sbt.ChekhovPlugin.autoImport.chekhovInstall
 
-/** Ascent's zipx CI: platform Verify, e2e, Central, Pages. Lives here so `build.sbt` does not import zipx's `Exec`
-  * (which collides with sbt's own `Exec`).
-  */
-object AscentZipx extends AutoPlugin:
-  override def trigger  = allRequirements
-  override def requires = ZipxPlugin
+/** Ascent's zipx CI: platform Verify, e2e, Central, Pages. */
+object AscentZipx:
 
   private val javaOpts = Map("JAVA_OPTS" -> EnvValue.plain("-Dfile.encoding=UTF-8"))
 
@@ -29,8 +22,8 @@ object AscentZipx extends AutoPlugin:
   /** `apt-get update && apt-get install -y <packages>` as a shell AST rather than a string. */
   private def aptInstall(packages: Word*): Script =
     Script(
-      Exec("sudo", Word.lit("apt-get"), Word.lit("update")) &&
-        Exec.of(
+      ZipxExec("sudo", Word.lit("apt-get"), Word.lit("update")) &&
+        ZipxExec.of(
           "sudo",
           List(Word.lit("apt-get"), Word.lit("install"), Word.lit("-y")) ++ packages.toList,
         )
@@ -56,7 +49,7 @@ object AscentZipx extends AutoPlugin:
           )
         )
         .named("Install canvas build dependencies"),
-      Step.run(Script(Exec("npm", Word.lit("ci")))).named("Install Node dependencies (jsdom, canvas)"),
+      Step.run(Script(ZipxExec("npm", Word.lit("ci")))).named("Install Node dependencies (jsdom, canvas)"),
     )
   }
 
@@ -77,7 +70,7 @@ object AscentZipx extends AutoPlugin:
   // withExtraSteps replaces the pack extras (it does not append), so keep GPG import and add this after it.
   private val publishCleanFull: Steps = Steps.built("publish-cleanFull")(
     Step
-      .run(Script(Exec("sbt", Word.squote("cleanFull"))))
+      .run(Script(ZipxExec("sbt", Word.squote("cleanFull"))))
       .named("cleanFull")
   )
 
@@ -88,7 +81,7 @@ object AscentZipx extends AutoPlugin:
       case f        => Steps("release-extra")(f)
     release.withExtraSteps(extras ++ publishCleanFull)
 
-  override def buildSettings: Seq[sbt.Setting[?]] = Seq(
+  def settings: Seq[Setting[?]] = Seq(
     zipxJavaVersion      := JdkVersion("25"),
     zipxWorkflowDispatch := true,
     zipxEnv              := Map(

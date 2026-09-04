@@ -5,6 +5,7 @@ import chekhov.ChekhovBrowser
 import chekhov.jsenv.ChekhovJSEnv
 
 MyVersions.settings
+AscentZipx.settings
 
 ThisBuild / scalaVersion := (MyVersions.scala: String)
 
@@ -33,8 +34,6 @@ developers := List(
     url("https://github.com/russwyte"),
   )
 )
-
-// GitHub Actions CI is project/AscentZipx.scala (zipx capabilities).
 
 // Publishing targets the Sonatype Central Portal, which is built into sbt 2.x (no sbt-sonatype).
 // Snapshots go to Central's snapshot repo; releases stage locally and are promoted by `sonaRelease`.
@@ -441,6 +440,9 @@ lazy val sbtAscentPreview = (project in file("sbt-ascent-preview"))
   .disablePlugins(chekhov.sbt.ChekhovPlugin)
   .settings(
     name := "sbt-ascent-preview",
+    // sbt 2.0.x Eval is Scala 3.8.4 (TASTy 28.8). ThisBuild is 3.9.0 for libraries; a 28.9
+    // plugin jar is unreadable (#80). Leave this pin when sbt itself moves: TASTy is backward compatible.
+    scalaVersion := "3.8.4",
     scalacOptions ++= commonScalacOptions,
     Compile / unmanagedSources += (ThisBuild / baseDirectory).value / "project" / "AscentPreviewPlugin.scala",
     Compile / unmanagedSources += (ThisBuild / baseDirectory).value / "project" / "AscentPreviewPort.scala",
