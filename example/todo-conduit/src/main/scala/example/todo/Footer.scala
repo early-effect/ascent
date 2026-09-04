@@ -21,7 +21,7 @@ object Footer:
         background(Color.rgba(10, 4, 24, 0.4)),
       )
 
-  /** The `<ul>` of filter buttons (All / Active / Completed). */
+  /** The `<ul>` of filter links (All / Active / Completed). */
   object Filters
       extends CssClass(
         display.flex,
@@ -30,7 +30,7 @@ object Footer:
         listStyle.none,
         Selector(Sel.descendant(Elem.li), margin(0, 4.px)),
         Selector(
-          Sel.descendant(Elem.button),
+          Sel.descendant(Elem.a),
           background(Color.transparent),
           border(Border.solid(1.px, Color.transparent)),
           color(Theme.onInkDim),
@@ -40,6 +40,7 @@ object Footer:
           fontSize.px(12),
           textTransform.uppercase,
           letterSpacing.px(1),
+          textDecoration.none,
           transition(
             Transition.list(
               Transition(color, Time.s(0.2)),
@@ -52,7 +53,7 @@ object Footer:
         ),
       )
 
-  /** Applied alongside a [[Filters]] button when its filter is active. */
+  /** Applied alongside a [[Filters]] link when its filter is active. */
   object FilterSelected
       extends CssClass(
         color(Theme.accent),
@@ -76,10 +77,8 @@ object Footer:
         Selector(PseudoClass.hover, color(Theme.danger), textDecoration.underline),
       )
 
-  def component(ctx: Ctx[TodoApp.Model]) =
-    for
-      todos  <- ctx.squawk(_.todos)
-      filter <- ctx.squawk(_.filter)
+  def component(ctx: Ctx[TodoApp.Model], filter: Squawk[TodoApp.Filter]) =
+    for todos <- ctx.squawk(_.todos)
     yield
       val activeCount   = todos.map(_.values.count(!_.completed))
       val remainingText = activeCount.map(n => s"$n item${if n == 1 then "" else "s"} left")
@@ -99,9 +98,9 @@ object Footer:
           Filters,
           Aria.role("group"),
           Aria.ariaLabel("Filter todos"),
-          filterButton(ctx, filter, TodoApp.Filter.All, "All", "Show all todos"),
-          filterButton(ctx, filter, TodoApp.Filter.Active, "Active", "Show only active todos"),
-          filterButton(ctx, filter, TodoApp.Filter.Completed, "Completed", "Show only completed todos"),
+          filterLink(filter, TodoApp.Filter.All, "All", "Show all todos"),
+          filterLink(filter, TodoApp.Filter.Active, "Active", "Show only active todos"),
+          filterLink(filter, TodoApp.Filter.Completed, "Completed", "Show only completed todos"),
         ),
         when(anyCompleted) {
           E.button(
@@ -115,26 +114,23 @@ object Footer:
         },
       )
 
-  /** One filter button. `aria-pressed` conveys selection to screen readers, not just colour. */
-  private def filterButton(
-      ctx: Ctx[TodoApp.Model],
+  /** One filter link. Hash change updates the History Squawk; `aria-current` marks the selected filter. */
+  private def filterLink(
       currentFilter: Squawk[TodoApp.Filter],
       thisFilter: TodoApp.Filter,
       label: String,
       tooltipText: String,
   ) =
     val classes = currentFilter.map(f => if f == thisFilter then Set[CssClass](FilterSelected) else Set.empty[CssClass])
-    val pressed = currentFilter.map(_ == thisFilter)
+    val current = currentFilter.map(f => if f == thisFilter then "page" else "false")
     E.li(
-      E.button(
+      E.a(
         classes,
-        Aria.ariaPressed(pressed),
-        A.typ("button"),
-        // tooltipText overrides aria-label so SRs hear the description, not just the terse label.
+        A.href(TodoApp.Filter.toHash(thisFilter)),
+        Aria.ariaCurrent(current),
         Tooltip(tooltipText, Tooltip.Position.Top),
-        Ev.onClick(_ => ctx(TodoApp.Action.SetFilter(thisFilter))),
         label,
       )
     )
-  end filterButton
+  end filterLink
 end Footer

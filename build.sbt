@@ -452,7 +452,7 @@ lazy val sbtAscentPreview = (project in file("sbt-ascent-preview"))
 //   proving ground that all the optional layers compose without rough edges.
 lazy val todoConduit = (projectMatrix in file("example/todo-conduit"))
   .disablePlugins(chekhov.sbt.ChekhovPlugin)
-  .dependsOn(js, css, conduitBridge)
+  .dependsOn(js, css, conduitBridge, history)
   .settings(
     name           := "ascent-todo-conduit",
     publish / skip := true,
@@ -550,7 +550,7 @@ lazy val hybridChatServer = (projectMatrix in file("example/hybrid-chat-server")
 // --- ascent-docs : Specular DocSpecs + static site (JVM) and interactive client (JS) ---
 lazy val docs: ProjectMatrix = (projectMatrix in file("docs"))
   .disablePlugins(chekhov.sbt.ChekhovPlugin)
-  .dependsOn(core, css, conduitBridge, html, datastar)
+  .dependsOn(core, css, conduitBridge, html, datastar, history)
   .settings(
     name           := "ascent-docs",
     publish / skip := true,

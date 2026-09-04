@@ -18,6 +18,7 @@ published so consumers resolve transitively.
 | `ascent-js` | Browser mount / binding |
 | `ascent-css` | Typed CSS-in-Scala |
 | `ascent-conduit` | Optional conduit `Ctx[M]` |
+| `ascent-history` | Optional URL session as a Squawk (`History` / `Location`) |
 | `ascent-html` | SSR string renderer |
 | `ascent-datastar` | Datastar protocol + SignalStore |
 | `ascent-datastar-js` | Browser datastar runtime |

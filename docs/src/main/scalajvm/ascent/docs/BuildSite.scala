@@ -52,6 +52,7 @@ object BuildSite extends ZIOAppDefault:
         ReactiveBoundaries.doc,
         Css.doc,
         ConduitPage.doc,
+        HistoryPage.doc,
         Mounting.doc,
         HtmlPage.doc,
         DatastarPage.doc,
@@ -84,6 +85,7 @@ Docs pages are Specular `DocSpec`s: the same source asserts under zio-test and S
           "Optional modules",
           s"""libraryDependencies ++= Seq(
   "$org" %%% "ascent-conduit"       % "$version", // Ctx[M] state bridge
+  "$org" %%% "ascent-history"       % "$version", // Location as a Squawk
   "$org" %%  "ascent-html"          % "$version", // SSR
   "$org" %%  "ascent-datastar-http" % "$version", // server datastar
   "$org" %%% "ascent-datastar-js"   % "$version", // browser datastar

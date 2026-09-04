@@ -15,6 +15,7 @@ object ClientMain extends ZIOAppDefault:
       ReactiveBoundaries.doc,
       Css.doc,
       ConduitPage.doc,
+      HistoryPage.doc,
       Mounting.doc,
       HtmlPage.doc,
       DatastarPage.doc,

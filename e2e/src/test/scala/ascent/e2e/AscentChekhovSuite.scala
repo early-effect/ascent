@@ -57,6 +57,7 @@ trait AscentChekhovSuite extends ZIOSpecDefault:
         isFunction = true,
       )
       .unit
+  end jsClick
 
   protected def screenshot(label: String): URIO[Page, Unit] =
     (for

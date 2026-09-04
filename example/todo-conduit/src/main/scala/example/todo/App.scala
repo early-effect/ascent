@@ -245,11 +245,12 @@ object App:
         GlobalRule.atRule("supports-no-backdrop-filter", noBackdropFilterFallback),
       )
 
-  def component(ctx: Ctx[TodoApp.Model]) =
+  def component(ctx: Ctx[TodoApp.Model], hist: History) =
+    val filter = hist.location.map(loc => TodoApp.Filter.fromHash(loc.hash))
     for
       header <- Header.component(ctx)
-      list   <- TodoList.component(ctx)
-      footer <- Footer.component(ctx)
+      list   <- TodoList.component(ctx, filter)
+      footer <- Footer.component(ctx, filter)
       todos  <- ctx.squawk(_.todos)
       hasTodos = todos.map(_.nonEmpty)
     yield E.body(
@@ -277,4 +278,6 @@ object App:
         ),
       ),
     )
+    end for
+  end component
 end App
