@@ -31,7 +31,7 @@ object BuildSite extends ZIOAppDefault:
             name = "ascent",
             organization = "rocks.earlyeffect",
             version = "0.3.0",
-            scalaVersion = "3.8.4",
+            scalaVersion = "3.9.0",
             title = Some("ascent"),
             description = Some(
               "Effect-native reactive UI for Scala 3; direct DOM, Squawk boundaries, ZIO throughout."

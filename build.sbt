@@ -6,6 +6,8 @@ import chekhov.jsenv.ChekhovJSEnv
 
 MyVersions.settings
 
+ThisBuild / scalaVersion := (MyVersions.scala: String)
+
 val scala3Version: String = MyVersions.scala
 
 // sbt 2.x scopes bare build.sbt settings to ThisBuild, so these apply build-wide to every module.

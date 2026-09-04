@@ -10,7 +10,7 @@ import zipx.*
   */
 object MyVersions extends ZipxVersions:
   val sbt: SbtVersion     = SbtVersion("2.0.7")
-  val scala: ScalaVersion = ScalaVersion("3.8.4")
+  val scala: ScalaVersion = ScalaVersion("3.9.0")
 
   val zio                = Lib("dev.zio", "zio", "2.1.26")
   val zioTest            = zio.mod("zio-test")
