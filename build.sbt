@@ -1,8 +1,12 @@
+import scala.collection.immutable.ListMap
+
 import ascent.preview.sbt.AscentPreviewPlugin
 import ascent.preview.sbt.AscentPreviewPlugin.autoImport.*
 import ascent.preview.sbt.AscentPreviewPort
 import chekhov.ChekhovBrowser
 import chekhov.jsenv.ChekhovJSEnv
+import chekhov.sbt.ChekhovPlugin.autoImport.chekhovInstall
+import zipx.shell.Exec as ZipxExec
 
 MyVersions.settings
 
@@ -33,8 +37,6 @@ developers := List(
     url("https://github.com/russwyte"),
   )
 )
-
-// GitHub Actions CI is project/AscentZipx.scala (zipx capabilities).
 
 // Publishing targets the Sonatype Central Portal, which is built into sbt 2.x (no sbt-sonatype).
 // Snapshots go to Central's snapshot repo; releases stage locally and are promoted by `sonaRelease`.
@@ -661,6 +663,117 @@ def ascentPlatformTestCommand(find: ProjectMatrix => ProjectFinder): String =
 addCommandAlias("testJVM", ascentPlatformTestCommand(_.jvm) + "; ascentChekhov/test")
 addCommandAlias("testJS", ascentPlatformTestCommand(_.js))
 addCommandAlias("testNative", ascentPlatformTestCommand(_.native))
+
+// zipx CI: JVM / JS / Native Verify, e2e, Central, Pages. ZipxPlugin re-exports shell Exec, which
+// collides with sbt.Exec; use ZipxExec until zipx picks a name (early-effect/zipx#155).
+val zipxJavaOpts = Map("JAVA_OPTS" -> EnvValue.plain("-Dfile.encoding=UTF-8"))
+
+val zipxTestJs     = CapabilityName("test-js")
+val zipxTestNative = CapabilityName("test-native")
+
+/** `addCommandAlias` names (`testJVM` / `testJS` / `testNative`) are not task keys. */
+def zipxAlias(name: String): SbtCommand =
+  SbtCommand.raw(name).fold(msg => sys.error(s"zipx: $msg"), identity)
+
+/** `apt-get update && apt-get install -y <packages>` as a shell AST rather than a string. */
+def zipxAptInstall(packages: Word*): Script =
+  Script(
+    ZipxExec("sudo", Word.lit("apt-get"), Word.lit("update")) &&
+      ZipxExec.of(
+        "sudo",
+        List(Word.lit("apt-get"), Word.lit("install"), Word.lit("-y")) ++ packages.toList,
+      )
+  )
+
+/** Pins come from generate-time `StepContext.actions` (jar defaults plus catalog `Action` rows). `zipxActions.value`
+  * is still Defaults at setting evaluation, so extra catalog pins are not visible there.
+  */
+val zipxJsCiSetup: Steps = Steps.buildingWith("ascent-js-ci") { ctx =>
+  List(
+    Step
+      .usesRef(ctx.actions.setupNode)
+      .named("Set up Node")
+      .withInputs(ListMap("node-version" -> "24", "cache" -> "npm")),
+    Step
+      .run(
+        zipxAptInstall(
+          Word.lit("libcairo2-dev"),
+          Word.lit("libpango1.0-dev"),
+          Word.lit("libjpeg-dev"),
+          Word.lit("libgif-dev"),
+          Word.lit("librsvg2-dev"),
+        )
+      )
+      .named("Install canvas build dependencies"),
+    Step.run(Script(ZipxExec("npm", Word.lit("ci")))).named("Install Node dependencies (jsdom, canvas)"),
+  )
+}
+
+val zipxNativeCiSetup: Steps = Steps.built("ascent-native-ci")(
+  Step
+    .run(
+      zipxAptInstall(
+        Word.lit("clang"),
+        Word.lit("libstdc++-12-dev"),
+        Word.lit("libgc-dev"),
+        Word.lit("libunwind-dev"),
+      )
+    )
+    .named("Install Scala Native build dependencies")
+)
+
+// Tag publish restores zipx's LocalDir `target` cache; cleanFull so doc is not incremental against stale TASTy.
+// withExtraSteps replaces the pack extras (it does not append), so keep GPG import and add this after it.
+val zipxPublishCleanFull: Steps = Steps.built("publish-cleanFull")(
+  Step
+    .run(Script(ZipxExec("sbt", Word.squote("cleanFull"))))
+    .named("cleanFull")
+)
+
+val zipxPublishRelease: Capability =
+  val release = ZipxCentral.release
+  val extras  = release.extraSteps match
+    case s: Steps => s
+    case f        => Steps("release-extra")(f)
+  release.withExtraSteps(extras ++ zipxPublishCleanFull)
+
+zipxJavaVersion      := JdkVersion("25")
+zipxWorkflowDispatch := true
+zipxEnv              := Map(
+  "PLAYWRIGHT_BROWSERS_PATH" ->
+    EnvValue.typed(Expr.github("workspace") ++ Expr.lit("/target/ms-playwright"))
+)
+zipxCapabilities ++= Seq(
+  Capability.once(
+    name = Capability.TestName,
+    command = zipxAlias("testJVM"),
+    env = zipxJavaOpts,
+  ),
+  Capability.once(
+    name = zipxTestJs,
+    command = zipxAlias("testJS"),
+    extraSteps = zipxJsCiSetup,
+    env = zipxJavaOpts,
+  ),
+  Capability.once(
+    name = zipxTestNative,
+    command = zipxAlias("testNative"),
+    extraSteps = zipxNativeCiSetup,
+    env = zipxJavaOpts,
+  ),
+  Capability
+    .once(
+      name = CapabilityName("e2e"),
+      command = zipxTasks.session(
+        LocalProject("e2e") / chekhovInstall,
+        LocalProject("e2e") / Test / testFull,
+        LocalProject("ascentChekhovJS") / Test / testFull,
+      ),
+    )
+    .withNodeVersion(NodeVersion("24")),
+  zipxPublishRelease,
+  ZipxDocs.pages(),
+)
 
 lazy val e2eStage = taskKey[Unit]("Stage example preview trees for Chekhov e2e")
 
