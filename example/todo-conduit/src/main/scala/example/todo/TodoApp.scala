@@ -11,25 +11,39 @@ object TodoApp:
   /** A single todo. `id` is a stable key so the row reconciler can reuse DOM nodes across reorders. */
   case class Todo(id: String, text: String, completed: Boolean, editing: Boolean = false) derives Optics
 
-  /** Filter selections in the footer. */
+  /** Filter selections in the footer. Lives in the URL hash (`#/`, `#/active`, `#/completed`), not the model. */
   enum Filter derives CanEqual:
     case All, Active, Completed
+
+  object Filter:
+    def toHash(f: Filter): String = f match
+      case All       => "#/"
+      case Active    => "#/active"
+      case Completed => "#/completed"
+
+    /** `hash` is stored without `#` ([[ascent.history.Location.hash]]). Unknown values are All. */
+    def fromHash(hash: String): Filter =
+      val h = if hash.startsWith("#") then hash.substring(1) else hash
+      h match
+        case "/active" | "active"       => Active
+        case "/completed" | "completed" => Completed
+        case _                          => All
+  end Filter
 
   /** Whole app state. The `todos` map lets a row subscribe to just its entry; `order` keeps display deterministic. */
   case class Model(
       todos: Map[String, Todo] = Map.empty,
       order: Vector[String] = Vector.empty,
       draft: String = "",
-      filter: Filter = Filter.All,
       nextId: Long = 1L,
   ) derives Optics
 
   // --- Derived selectors ---
 
   /** Visible todos in display order, applying the current filter. */
-  def visible(m: Model): Vector[Todo] =
+  def visible(m: Model, filter: Filter): Vector[Todo] =
     val all = m.order.flatMap(m.todos.get)
-    m.filter match
+    filter match
       case Filter.All       => all
       case Filter.Active    => all.filterNot(_.completed)
       case Filter.Completed => all.filter(_.completed)
@@ -52,7 +66,6 @@ object TodoApp:
     case ToggleAll
     case DeleteTodo(id: String)
     case ClearCompleted
-    case SetFilter(f: Filter)
     case StartEditing(id: String)
     case CommitEdit(id: String, text: String)
     case CancelEditing(id: String)
@@ -105,9 +118,6 @@ object TodoApp:
           val keep = m.todos.filterNot { case (_, t) => t.completed }
           m.copy(todos = keep, order = m.order.filter(keep.contains))
         }
-
-      case Action.SetFilter(f) =>
-        focus(_.filter)(updated(f))
 
       case Action.StartEditing(id) =>
         update { m =>

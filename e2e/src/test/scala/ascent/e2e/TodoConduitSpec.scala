@@ -20,11 +20,16 @@ object TodoConduitSpec extends AscentChekhovSuite:
           _    <- box.press("Enter")
           list <- Poll.until("todo appears")(page.innerText("body"))(_.contains("buy milk"))
           _    <- jsClick(page, "input.toggle")
-          _    <- jsClick(page, """button[aria-label="Show only active todos"]""")
+          _    <- jsClick(page, """a[href="#/active"]""")
           _    <- Poll.until("active filter hides completed")(page.innerText("body"))(!_.contains("buy milk"))
-          _    <- jsClick(page, """button[aria-label="Show all todos"]""")
-          _    <- Poll.until("all filter shows completed")(page.innerText("body"))(_.contains("buy milk"))
-          _    <- Poll.until("clear completed is mounted")(
+          _    <- Poll.until("hash is active")(
+            page.evaluate("""() => location.hash""", isFunction = true)
+          )(_.contains("active"))
+          _ <- page.evaluate("""() => { history.back(); return location.hash; }""", isFunction = true)
+          _ <- Poll.until("Back restores all filter")(page.innerText("body"))(_.contains("buy milk"))
+          _ <- jsClick(page, """a[href="#/"]""")
+          _ <- Poll.until("all filter shows completed")(page.innerText("body"))(_.contains("buy milk"))
+          _ <- Poll.until("clear completed is mounted")(
             page.evaluate(
               """() => String(!!document.querySelector('button[aria-label="Permanently delete every completed todo"]'))""",
               isFunction = true,

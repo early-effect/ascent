@@ -31,7 +31,7 @@ object BuildSite extends ZIOAppDefault:
             name = "ascent",
             organization = "rocks.earlyeffect",
             version = "0.3.0",
-            scalaVersion = "3.8.4",
+            scalaVersion = "3.9.0",
             title = Some("ascent"),
             description = Some(
               "Effect-native reactive UI for Scala 3; direct DOM, Squawk boundaries, ZIO throughout."
@@ -52,6 +52,7 @@ object BuildSite extends ZIOAppDefault:
         ReactiveBoundaries.doc,
         Css.doc,
         ConduitPage.doc,
+        HistoryPage.doc,
         Mounting.doc,
         HtmlPage.doc,
         DatastarPage.doc,
@@ -84,6 +85,7 @@ Docs pages are Specular `DocSpec`s: the same source asserts under zio-test and S
           "Optional modules",
           s"""libraryDependencies ++= Seq(
   "$org" %%% "ascent-conduit"       % "$version", // Ctx[M] state bridge
+  "$org" %%% "ascent-history"       % "$version", // Location as a Squawk
   "$org" %%  "ascent-html"          % "$version", // SSR
   "$org" %%  "ascent-datastar-http" % "$version", // server datastar
   "$org" %%% "ascent-datastar-js"   % "$version", // browser datastar

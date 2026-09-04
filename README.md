@@ -277,6 +277,7 @@ ascent is built with Scala 3 and cross-compiled to **JVM, Scala.js, and Scala Na
 | `js`            | The DOM mount/binding engine, typed events, canvas helper         |
 | `css`           | CSS-in-Scala authoring (typed properties, classes, at-rules)      |
 | `conduit`       | Optional bridge to the conduit state store (`Ctx[M]`)             |
+| `history`       | Optional URL session as a Squawk (`History` / `Location`)         |
 | `html`          | UI → HTML string renderer — standalone SSR ([readme](html/README.md)) |
 | `datastar`      | [datastar](https://data-star.dev/) protocol core + `SignalStore` ([readme](datastar/README.md)) |
 | `datastar-js`   | Browser datastar runtime: SSE → Squawk / DOM, action dispatch ([readme](datastar-js/README.md)) |

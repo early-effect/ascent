@@ -6,6 +6,8 @@ import chekhov.jsenv.ChekhovJSEnv
 
 MyVersions.settings
 
+ThisBuild / scalaVersion := (MyVersions.scala: String)
+
 val scala3Version: String = MyVersions.scala
 
 // sbt 2.x scopes bare build.sbt settings to ThisBuild, so these apply build-wide to every module.
@@ -116,6 +118,7 @@ val ascentModules = Seq(
   "ascent-dom-core",
   "ascent-dom-facade",
   "ascent-conduit",
+  "ascent-history",
   "ascent-datastar",
   "ascent-datastar-http",
   "ascent-preview",
@@ -146,7 +149,7 @@ lazy val root = (project in file("."))
   .aggregate(
     (domTypes.projectRefs ++ core.projectRefs ++ domFacade.projectRefs ++ domCore.projectRefs ++
       mountEngine.projectRefs ++ js.projectRefs ++
-      domgen.projectRefs ++ css.projectRefs ++ conduitBridge.projectRefs ++
+      domgen.projectRefs ++ css.projectRefs ++ conduitBridge.projectRefs ++ history.projectRefs ++
       html.projectRefs ++ datastar.projectRefs ++ datastarJs.projectRefs ++
       datastarHttp.projectRefs ++ datastarExample.projectRefs ++ datastarExampleServer.projectRefs ++
       hybridChat.projectRefs ++ hybridChatServer.projectRefs ++
@@ -284,6 +287,26 @@ lazy val js = (projectMatrix in file("js"))
     jsdomTestEnv,
   )
   .jsPlatform(scalaVersions = scalaVersions)
+
+// --- ascent-history : OPTIONAL URL session bound to Squawk. Location is path+query+hash; History is
+//   push/replace/back/forward over a swappable backend (memory everywhere, window.history on JS).
+//   Not a router: no matching, layouts, or loaders. Cross-built jvm/js/native so tests and SSR can
+//   seed a memory session; the JS row also depends on dom-facade for the browser backend.
+lazy val history = (projectMatrix in file("history"))
+  .disablePlugins(chekhov.sbt.ChekhovPlugin)
+  .dependsOn(core)
+  .settings(
+    name := "ascent-history",
+    scalacOptions ++= commonScalacOptions,
+    zioTestSettings,
+  )
+  .jvmPlatform(scalaVersions = scalaVersions)
+  .jsPlatform(
+    scalaVersions,
+    Nil,
+    (p: Project) => p.dependsOn(domFacade.js(scala3Version)).settings(jsdomTestEnv),
+  )
+  .nativePlatform(scalaVersions = scalaVersions)
 
 // --- ascent-conduit : OPTIONAL bridge between conduit's lens-keyed listener model and
 //   ascent's Squawk reactive primitive. `c.squawk(lens)` returns a `UIO[Squawk[S]]` whose
@@ -431,7 +454,7 @@ lazy val sbtAscentPreview = (project in file("sbt-ascent-preview"))
 //   proving ground that all the optional layers compose without rough edges.
 lazy val todoConduit = (projectMatrix in file("example/todo-conduit"))
   .disablePlugins(chekhov.sbt.ChekhovPlugin)
-  .dependsOn(js, css, conduitBridge)
+  .dependsOn(js, css, conduitBridge, history)
   .settings(
     name           := "ascent-todo-conduit",
     publish / skip := true,
@@ -529,7 +552,7 @@ lazy val hybridChatServer = (projectMatrix in file("example/hybrid-chat-server")
 // --- ascent-docs : Specular DocSpecs + static site (JVM) and interactive client (JS) ---
 lazy val docs: ProjectMatrix = (projectMatrix in file("docs"))
   .disablePlugins(chekhov.sbt.ChekhovPlugin)
-  .dependsOn(core, css, conduitBridge, html, datastar)
+  .dependsOn(core, css, conduitBridge, html, datastar, history)
   .settings(
     name           := "ascent-docs",
     publish / skip := true,
@@ -609,6 +632,7 @@ lazy val ascentMatrices: Seq[ProjectMatrix] = Seq(
   domgen,
   css,
   conduitBridge,
+  history,
   html,
   datastar,
   datastarJs,

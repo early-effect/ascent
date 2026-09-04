@@ -32,4 +32,5 @@ export ascent.js.{addCssClass, removeCssClass}
 
 /** `Ev` — the typed-event factory, e.g. `Ev.onClick(e => ...)`. Same object as [[TypedEvents]]. */
 type Ev = TypedEvents.type
-val Ev: Ev = TypedEvents
+// Inferred: Scala 3.9.0 JVM backend crashes on `val Ev: Ev = TypedEvents` after `export` (scala/scala3#26983).
+val Ev = TypedEvents

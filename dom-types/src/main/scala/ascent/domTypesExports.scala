@@ -16,12 +16,13 @@ export ascent.domtypes.{Elements, Attrs, AriaAttrs, Events, AttrValue, AttrKey, 
 
 /** `E` — the HTML element catalog, e.g. `E.div`, `E.input`. Same object as [[Elements]]. */
 type E = Elements.type
-val E: E = Elements
+// Inferred: Scala 3.9.0 JVM backend crashes on `val E: E = Elements` after `export` (scala/scala3#26983).
+val E = Elements
 
 /** `A` — the HTML attribute catalog, e.g. `A.className`, `A.`type``. Same object as [[Attrs]]. */
 type A = Attrs.type
-val A: A = Attrs
+val A = Attrs
 
 /** `Aria` — the ARIA attribute catalog, e.g. `Aria.role`, `Aria.ariaLabel`. Same as [[AriaAttrs]]. */
 type Aria = AriaAttrs.type
-val Aria: Aria = AriaAttrs
+val Aria = AriaAttrs

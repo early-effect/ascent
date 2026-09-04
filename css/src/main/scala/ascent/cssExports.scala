@@ -125,4 +125,5 @@ export ascent.css.StylesFoundation.{
   * property names (`color(...)`), import the catalog directly: `import ascent.css.Styles.*`.
   */
 type S = Styles.type
-val S: S = Styles
+// Inferred: Scala 3.9.0 JVM backend crashes on `val S: S = Styles` after `export` (scala/scala3#26983).
+val S = Styles

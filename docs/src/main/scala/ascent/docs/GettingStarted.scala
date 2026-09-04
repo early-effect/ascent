@@ -59,7 +59,8 @@ libraryDependencies += "rocks.earlyeffect" %%% "ascent-js"   % "<version>"  // b
 libraryDependencies += "rocks.earlyeffect" %%% "ascent-css"  % "<version>"  // optional
 ```
 
-Most apps take `ascent-core` + `ascent-js`, then add `ascent-css` and `ascent-conduit` as needed.
+Most apps take `ascent-core` + `ascent-js`, then add `ascent-css`, `ascent-conduit`, and
+`ascent-history` as needed.
 See [Modules](modules.html) for the full table.
 """,
       example {

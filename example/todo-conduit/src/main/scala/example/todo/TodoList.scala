@@ -49,12 +49,12 @@ object TodoList:
         listStyle.none,
       )
 
-  def component(ctx: Ctx[TodoApp.Model]) =
+  def component(ctx: Ctx[TodoApp.Model], filter: Squawk[TodoApp.Filter]) =
     for
       modelSquawk <- ctx.model
-      visible = modelSquawk.map(TodoApp.visible(_).toSeq)
-      // Reorder is only meaningful on the All filter — a filtered subset is ambiguous.
-      reorderable = modelSquawk.map(_.filter == TodoApp.Filter.All)
+      visible = Squawk.zipWith(modelSquawk, filter)((m, f) => TodoApp.visible(m, f).toSeq)
+      // Reorder is only meaningful on the All filter; a filtered subset is ambiguous.
+      reorderable = filter.map(_ == TodoApp.Filter.All)
     yield E.section(
       Section,
       Aria.role("main"),
