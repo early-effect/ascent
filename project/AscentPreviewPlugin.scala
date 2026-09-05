@@ -29,11 +29,15 @@ object AscentPreviewPlugin extends AutoPlugin:
       settingKey[Boolean]("When false, ascentPreview is a no-op (Specular/docs opt-out)")
     val ascentPreviewAutoServe =
       settingKey[Boolean](
-        "When true, ascentPreview starts PreviewMain. False when a JVM app already serves Preview.routes"
+        "When true, ascentPreview starts ascentPreviewMain. False when a JVM app already calls Preview.serve"
+      )
+    val ascentPreviewMain =
+      settingKey[String](
+        "Fully-qualified main class forked by ascentPreviewServe (default ascent.preview.PreviewMain)"
       )
     val ascentPreviewAutoOpen =
       settingKey[Boolean](
-        "When true, open the preview URL in a browser once PreviewMain binds (not on ~ rebuilds)"
+        "When true, open the preview URL in a browser once the preview process binds (not on ~ rebuilds)"
       )
     val ascentPreviewRoot =
       settingKey[File]("Directory Preview serves (JS default: <sources' parent>/target/preview)")
@@ -45,18 +49,18 @@ object AscentPreviewPlugin extends AutoPlugin:
       settingKey[File]("index.html copied by ascentPreviewStage")
     val ascentPreviewLibVersion =
       settingKey[String](
-        "If non-empty, add rocks.earlyeffect:ascent-preview_3 at this version to Compile for PreviewMain"
+        "If non-empty, add rocks.earlyeffect:ascent-preview_3 at this version to Compile (for PreviewMain)"
       )
     val ascentPreviewBundle =
       taskKey[File]("JS file to stage (default: this project's spliceFast, if defined)")
     val ascentPreviewClasspath =
-      taskKey[Classpath]("JVM classpath that contains ascent.preview.PreviewMain")
+      taskKey[Classpath]("JVM classpath that contains ascentPreviewMain (default ascent.preview.PreviewMain)")
     val ascentPreviewStage =
       taskKey[File]("Link/copy JS, copy index.html, write assets/dev-stamp into ascentPreviewRoot")
     val ascentPreviewRebuild =
       taskKey[Unit]("Update the served tree and stamp; this is what ~ascentPreview re-runs")
     val ascentPreviewServe =
-      taskKey[Unit]("Start PreviewMain in the background if it is not already running for this project")
+      taskKey[Unit]("Start ascentPreviewMain in the background if it is not already running for this project")
     val ascentPreview =
       taskKey[Unit]("Rebuild, then start Preview once. Watch with sbt ~<module>/ascentPreview")
   end autoImport
@@ -73,6 +77,7 @@ object AscentPreviewPlugin extends AutoPlugin:
   override def projectSettings: Seq[Setting[?]] = Seq(
     ascentPreviewEnable     := true,
     ascentPreviewAutoServe  := true,
+    ascentPreviewMain       := "ascent.preview.PreviewMain",
     ascentPreviewAutoOpen   := false,
     ascentPreviewPort       := AscentPreviewPort(8765),
     ascentPreviewLibVersion := "",
@@ -172,6 +177,7 @@ object AscentPreviewPlugin extends AutoPlugin:
     val requested = ascentPreviewPort.value
     val cp        = ascentPreviewClasspath.value
     val autoOpen  = ascentPreviewAutoOpen.value
+    val main      = ascentPreviewMain.value
     val base      = baseDirectory.value
     val already   = service.jobs.exists(job => isPreviewJob(job.spawningTask, rs.scope))
     if already then log.info(s"ascentPreviewServe: already running ${root.getAbsolutePath}")
@@ -185,7 +191,7 @@ object AscentPreviewPlugin extends AutoPlugin:
       val args = Seq(
         "-cp",
         jars,
-        "ascent.preview.PreviewMain",
+        main,
         port.toString,
         root.getAbsolutePath,
       ) ++ (if autoOpen then Seq("--open") else Nil)
@@ -196,7 +202,7 @@ object AscentPreviewPlugin extends AutoPlugin:
           .withRunJVMOptions(jdk24PlusRunOptions.toVector)
           .withWorkingDirectory(workingDir)
         val code = Fork.java(opts, args)
-        if code != 0 then sys.error(s"PreviewMain exited $code")
+        if code != 0 then sys.error(s"$main exited $code")
       }
       ()
     end if

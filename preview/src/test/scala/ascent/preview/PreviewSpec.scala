@@ -181,7 +181,129 @@ object PreviewSpec extends ZIOSpecDefault:
         TestAspect.withLiveClock @@
         TestAspect.timeout(10.seconds)
     ),
+    suite("serve")(
+      test("extra routes are reachable and static still serves") {
+        for
+          tmp   <- tempSite("index.html" -> "<html>home</html>")
+          fiber <- ZIO.scoped(Preview.serve(PreviewConfig(tmp), extraRoutes = ping)).fork
+          port  <- ZIO.serviceWithZIO[Server](_.port)
+          pingR <- getUntilOk(s"http://127.0.0.1:$port/api/ping")
+          pingB <- pingR.body.asString
+          homeR <- ZClient.batched(Request.get(url"http://127.0.0.1:$port/"))
+          homeB <- homeR.body.asString
+          _     <- fiber.interrupt
+        yield assertTrue(pingR.status.isSuccess, pingB == "pong", homeB.contains("home"))
+      },
+      test("interrupting serve runs sidecar finalizer") {
+        for
+          tmp   <- tempSite("index.html" -> "<html/>")
+          flag  <- Ref.make(false)
+          fiber <- ZIO
+            .scoped(Preview.serve(PreviewConfig(tmp), sidecar = ZIO.addFinalizer(flag.set(true))))
+            .fork
+          port <- ZIO.serviceWithZIO[Server](_.port)
+          _    <- getUntilOk(s"http://127.0.0.1:$port/")
+          _    <- fiber.interrupt
+          v    <- flag.get
+        yield assertTrue(v)
+      },
+      test("sidecar and extra routes run together") {
+        for
+          tmp   <- tempSite("index.html" -> "<html/>")
+          flag  <- Ref.make(false)
+          fiber <- ZIO
+            .scoped(
+              Preview.serve(
+                PreviewConfig(tmp),
+                sidecar = ZIO.addFinalizer(flag.set(true)),
+                extraRoutes = ping,
+              )
+            )
+            .fork
+          port  <- ZIO.serviceWithZIO[Server](_.port)
+          pingR <- getUntilOk(s"http://127.0.0.1:$port/api/ping")
+          body  <- pingR.body.asString
+          _     <- fiber.interrupt
+          v     <- flag.get
+        yield assertTrue(pingR.status.isSuccess, body == "pong", v)
+      },
+      test("CORS header is present on extra routes when enabled") {
+        for
+          tmp   <- tempSite("index.html" -> "<html/>")
+          fiber <- ZIO.scoped(Preview.serve(PreviewConfig(tmp, cors = true), extraRoutes = ping)).fork
+          port  <- ZIO.serviceWithZIO[Server](_.port)
+          _     <- getUntilOk(s"http://127.0.0.1:$port/api/ping")
+          resp  <- ZClient.batched(
+            Request.get(url"http://127.0.0.1:$port/api/ping").addHeader(Header.Origin("http", "example.com", None))
+          )
+          _ <- fiber.interrupt
+        yield assertTrue(resp.headers.get(Header.AccessControlAllowOrigin).isDefined)
+      },
+      test("restartSidecarOnStamp re-runs sidecar when stamp bytes change") {
+        for
+          tmp   <- tempSite("index.html" -> "<html/>")
+          count <- Ref.make(0)
+          fiber <- ZIO
+            .scoped(
+              Preview.serve(
+                PreviewConfig(tmp),
+                sidecar = count.update(_ + 1),
+                extraRoutes = ping,
+                restartSidecarOnStamp = true,
+              )
+            )
+            .fork
+          port <- ZIO.serviceWithZIO[Server](_.port)
+          _    <- getUntilOk(s"http://127.0.0.1:$port/api/ping")
+          _    <- count.get.repeatUntil(_ >= 1)
+          stamp = tmp.resolve("assets/dev-stamp")
+          _ <- ZIO.attempt {
+            Files.createDirectories(stamp.getParent)
+            Files.writeString(stamp, "1", StandardCharsets.UTF_8)
+          }
+          _     <- ZIO.sleep(150.millis)
+          _     <- ZIO.attempt(Files.writeString(stamp, "2", StandardCharsets.UTF_8))
+          n     <- count.get.repeatUntil(_ >= 2).timeoutFail(RuntimeException("sidecar did not restart"))(3.seconds)
+          pingR <- getUntilOk(s"http://127.0.0.1:$port/api/ping")
+          _     <- fiber.interrupt
+        yield assertTrue(n >= 2, pingR.status.isSuccess)
+      },
+    ).provide(Server.defaultWith(_.onAnyOpenPort), Client.default) @@
+      TestAspect.withLiveClock @@
+      TestAspect.timeout(15.seconds),
+    test("sidecar failure fails serve and unbinds when Server is provided with serve") {
+      for
+        tmp  <- tempSite("index.html" -> "<html/>")
+        port <- ZIO.attempt {
+          val ss = java.net.ServerSocket(0)
+          val p  = ss.getLocalPort
+          ss.close()
+          p
+        }
+        exit <- Preview
+          .serve(PreviewConfig(tmp, port = port), sidecar = ZIO.fail(RuntimeException("sidecar")))
+          .provideSome[Scope](Server.defaultWith(_.port(port)))
+          .exit
+        free <- ZIO.attempt {
+          val ss = java.net.ServerSocket(port)
+          ss.close()
+          true
+        }
+      yield assertTrue(exit.isFailure, free)
+    } @@ TestAspect.timeout(10.seconds),
   ) @@ TestAspect.withLiveClock @@ TestAspect.sequential
+
+  private val ping: Routes[Any, Response] =
+    Routes(Method.GET / "api" / "ping" -> handler { (_: Request) => ZIO.succeed(Response.text("pong")) })
+
+  private def getUntilOk(url: String): ZIO[Client, Throwable, Response] =
+    ZClient
+      .batched(Request.get(url))
+      .flatMap { resp =>
+        if resp.status.isSuccess then ZIO.succeed(resp)
+        else ZIO.fail(RuntimeException(s"${resp.status} $url"))
+      }
+      .retry(Schedule.spaced(50.millis) && Schedule.recurs(80))
 
   private def tempSite(files: (String, String)*): Task[Path] =
     ZIO.attempt {

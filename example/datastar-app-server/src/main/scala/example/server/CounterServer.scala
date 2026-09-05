@@ -15,8 +15,8 @@ import java.nio.file.Path as JPath
   *     every subsequent change (the chat-example pattern);
   *   - `POST /increment` reads nothing from the body — it just bumps the count and pulses the hub;
   *   - response compression (brotli/gzip) is enabled via zio-http's own `Server.Config`;
-  *   - [[Preview.routes]] are composed in so the spliced client (`example/datastar-app/target/preview`) is same-origin
-  *     on `:8080`.
+  *   - [[Preview.serve]] takes the API as `extraRoutes` so the spliced client (`example/datastar-app/target/preview`)
+  *     is same-origin on `:8080`.
   *
   * The client (a pure-ascent Scala.js app) turns each pushed signal into a `Squawk` and lets ascent's Mount engine
   * repaint — no datastar.js.
@@ -58,9 +58,10 @@ object CounterServer extends ZIOAppDefault:
       },
     ).sandbox
 
-  /** Preview (static + SSE reload) composed with the counter API. */
+  /** Preview (static + SSE reload) composed with the counter API. Extra routes first so `/sse` wins the trailing GET.
+    */
   def routes(state: State, previewRoot: JPath, port: Int = 8080): Routes[Any, Response] =
-    Preview.routes(PreviewConfig(root = previewRoot, port = port)) ++ apiRoutes(state)
+    apiRoutes(state) ++ Preview.routes(PreviewConfig(root = previewRoot, port = port))
 
   def resolvePreviewRoot(args: Chunk[String]): JPath =
     args.headOption
@@ -85,8 +86,10 @@ object CounterServer extends ZIOAppDefault:
       root = resolvePreviewRoot(args)
       state <- makeState
       _     <- ZIO.logInfo(s"datastar counter on http://localhost:8080 serving $root")
-      _     <- Server
-        .serve(routes(state, root))
-        .provide(Server.defaultWith(_.port(8080).copy(responseCompression = Some(compression))))
+      _     <- Preview
+        .serve(PreviewConfig(root = root, port = 8080), extraRoutes = apiRoutes(state))
+        .provideSome[Scope](
+          Server.defaultWith(_.port(8080).copy(responseCompression = Some(compression)))
+        )
     yield ()
 end CounterServer

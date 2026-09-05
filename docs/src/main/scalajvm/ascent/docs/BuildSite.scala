@@ -97,7 +97,7 @@ Docs pages are Specular `DocSpec`s: the same source asserts under zio-test and S
           "Local preview plugin",
           s"""addSbtPlugin("rocks.earlyeffect" % "sbt-ascent-preview" % "$version")
 // enablePlugins(AscentPreviewPlugin) on the module; then:
-// sbt ~todoJS/ascentPreview   or   sbt ~docs/ascentPreview""",
+// sbt ~todoConduitJS/ascentPreview   or   sbt ~docs/ascentPreview""",
         ),
       ),
     )

@@ -6,7 +6,7 @@ import java.nio.file.Path
   *
   * `stamp` and `reloadPath` are relative to [[root]]. CORS is off by default so same-origin example servers stay
   * strict; split-origin consumers opt in. [[openBrowser]] is for PreviewMain / `ascentPreviewAutoOpen`, not
-  * `Preview.routes`.
+  * `Preview.routes` / `Preview.serve`.
   */
 final case class PreviewConfig(
     root: Path,

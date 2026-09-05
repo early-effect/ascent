@@ -187,8 +187,8 @@ tab reloads over `/__ascent/reload`. One-shot (no watch): drop the `~`.
 
 Do **not** `sbt ~docs/Test/runReload` (that kills the Preview JVM on every compile).
 
-When a JVM app already composes `Preview.routes` (datastar / hybrid), keep that server up and watch
-the JS module with `ascentPreviewAutoServe := false`. Recipes: [preview/README.md](preview/README.md)
+When a JVM app calls `Preview.serve` with extra routes (datastar / hybrid), keep that server up and
+watch the JS module with `ascentPreviewAutoServe := false`. Recipes: [preview/README.md](preview/README.md)
 and the [Preview](https://www.earlyeffect.rocks/ascent/preview.html) docs page.
 
 ## Status
@@ -222,7 +222,7 @@ sbt ~todoConduitJS/ascentPreview
 `ascent-preview`. After a `.scala` edit, the watch restages and the tab reloads. Docs use the
 same command: `sbt ~docs/ascentPreview`.
 
-Datastar and hybrid examples compose preview routes into the JVM server so the client and API
+Datastar and hybrid examples call `Preview.serve` with extra API routes so the client and API
 share `:8080`:
 
 ```bash
@@ -282,7 +282,7 @@ ascent is built with Scala 3 and cross-compiled to **JVM, Scala.js, and Scala Na
 | `datastar`      | [datastar](https://data-star.dev/) protocol core + `SignalStore` ([readme](datastar/README.md)) |
 | `datastar-js`   | Browser datastar runtime: SSE → Squawk / DOM, action dispatch ([readme](datastar-js/README.md)) |
 | `datastar-http` | Server wrapper over `zio-http-datastar-sdk` ([readme](datastar-http/README.md)) |
-| `preview`       | Static file server + SSE reload (`ascent-preview`) ([readme](preview/README.md)) |
+| `preview`       | Static file server + SSE reload; optional extra routes / sidecar (`ascent-preview`) ([readme](preview/README.md)) |
 | `chekhov`       | Typed Chekhov locators (`ascent-chekhov`): JSEnv live handles + JVM `Page` selectors |
 | `sbt-ascent-preview` | `enablePlugins(AscentPreviewPlugin)` then `sbt ~<module>/ascentPreview` |
 | `domgen`        | JVM-only generator that emits the typed catalogs from W3C webref ([readme](domgen/README.md)) |

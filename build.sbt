@@ -51,12 +51,6 @@ pomIncludeRepository := { _ => false }
 // loudly if anyone tries to publish off-CI.
 usePgpKeyHex(sys.env.getOrElse("PGP_KEY_HEX", "MISSING_KEY_HEX"))
 
-// sbt 2.x defaults eviction to a strict scheme. The Native toolchain (sbt-scala-native 0.5.12)
-// forces test-interface 0.5.12, while zio-test-sbt's Native build still pins 0.5.10 — both are
-// 0.5.x and binary-compatible, so tell sbt to judge scala-native's libs by early-semver.
-libraryDependencySchemes +=
-  "org.scala-native" % "test-interface_native0.5_3" % "early-semver"
-
 // zio-schema-json 1.8.5 still pins zio-json 0.9.1 while we resolve 0.10.0. Under early-semver a
 // 0.9 -> 0.10 bump reads as breaking, so sbt 2.x's strict eviction check fails the build. The codec
 // API in play is unchanged across the bump, so force 0.10.0 rather than hold zio-json back.
@@ -77,7 +71,9 @@ Global / concurrentRestrictions ++= Seq(
 // provides it natively, but the JS and Native targets need scala-java-time + tzdb to link). In
 // sbt 2.x plain `%%` appends the project's platform suffix automatically (e.g. `_sjs1`, the role
 // the old `%%%` operator played), so this works uniformly across all three platforms.
-val javaTimePolyfill = MyVersions.javaTime
+val javaTimePolyfill    = MyVersions.javaTime
+val nativeTestInterface = MyVersions.nativeTestInterface
+val nativeJavaTime      = MyVersions.nativeJavaTime
 
 val commonScalacOptions = Seq(
   "-deprecation",
@@ -172,7 +168,7 @@ lazy val domTypes = (projectMatrix in file("dom-types"))
   )
   .jvmPlatform(scalaVersions = scalaVersions)
   .jsPlatform(scalaVersions = scalaVersions)
-  .nativePlatform(scalaVersions = scalaVersions)
+  .nativePlatform(scalaVersions = scalaVersions, nativeTestInterface)
 
 // --- ascent-domgen : pure-Scala generator, JVM tooling only (never a runtime dep) ---
 lazy val domgen = (projectMatrix in file("domgen"))
@@ -209,7 +205,7 @@ lazy val core = (projectMatrix in file("core"))
   .jvmPlatform(scalaVersions = scalaVersions)
   // ZIO references java.time on its JS and Native targets - polyfill it via scala-java-time.
   .jsPlatform(scalaVersions = scalaVersions, javaTimePolyfill)
-  .nativePlatform(scalaVersions = scalaVersions, javaTimePolyfill)
+  .nativePlatform(scalaVersions = scalaVersions, nativeJavaTime)
 
 // --- ascent-dom-facade : our @js.native DOM facade (js only, no scalajs-dom) ---
 //   Depends on dom-types so EnumAccessors.scala's additive typed-enum extensions can reference the
@@ -253,7 +249,7 @@ lazy val domCore = (projectMatrix in file("dom-core"))
     Nil,
     (p: Project) => p.dependsOn(domFacade.js(scala3Version)).settings(jsdomTestEnv),
   )
-  .nativePlatform(scalaVersions = scalaVersions)
+  .nativePlatform(scalaVersions = scalaVersions, nativeTestInterface)
 
 // --- ascent-mount-engine : the cross-platform Mount/Slot/Cleanup binding engine ---
 //   The single UI-AST → DOM walker, rewritten against dom-core's platform-neutral structural
@@ -271,7 +267,7 @@ lazy val mountEngine = (projectMatrix in file("mount-engine"))
   )
   .jvmPlatform(scalaVersions = scalaVersions)
   .jsPlatform(scalaVersions = scalaVersions, jsdomTestEnv)
-  .nativePlatform(scalaVersions = scalaVersions)
+  .nativePlatform(scalaVersions = scalaVersions, nativeTestInterface)
 
 // --- ascent-js : DOM mount/binding engine + typed event DSL + DomStyleSink (js only) ---
 //   Depends on `css` so DomStyleSink can implement StyleSink. CssClass is js-runnable from
@@ -305,7 +301,7 @@ lazy val history = (projectMatrix in file("history"))
     Nil,
     (p: Project) => p.dependsOn(domFacade.js(scala3Version)).settings(jsdomTestEnv),
   )
-  .nativePlatform(scalaVersions = scalaVersions)
+  .nativePlatform(scalaVersions = scalaVersions, nativeTestInterface)
 
 // --- ascent-conduit : OPTIONAL bridge between conduit's lens-keyed listener model and
 //   ascent's Squawk reactive primitive. `c.squawk(lens)` returns a `UIO[Squawk[S]]` whose
@@ -325,7 +321,7 @@ lazy val conduitBridge = (projectMatrix in file("conduit"))
   )
   .jvmPlatform(scalaVersions = scalaVersions)
   .jsPlatform(scalaVersions = scalaVersions, javaTimePolyfill)
-  .nativePlatform(scalaVersions = scalaVersions, javaTimePolyfill)
+  .nativePlatform(scalaVersions = scalaVersions, nativeJavaTime)
 
 // --- ascent-css : CSS-in-Scala. Platform-neutral value layer (Declaration, Selector, Styles
 //   property objects) + an abstract CssClass that injects via a StyleSink instance. The JS-only
@@ -349,7 +345,7 @@ lazy val css = (projectMatrix in file("css"))
   )
   .jvmPlatform(scalaVersions = scalaVersions)
   .jsPlatform(scalaVersions = scalaVersions, jsdomTestEnv)
-  .nativePlatform(scalaVersions = scalaVersions)
+  .nativePlatform(scalaVersions = scalaVersions, nativeTestInterface)
 
 // --- ascent-html : UI AST -> HTML string renderer for SSR. NO separate walker any more — it MOUNTS
 //   the `UI` into a disposable in-memory dom-core Document (via mount-engine's ONE Mount engine +
@@ -366,7 +362,7 @@ lazy val html = (projectMatrix in file("html"))
   )
   .jvmPlatform(scalaVersions = scalaVersions)
   .jsPlatform(scalaVersions = scalaVersions, javaTimePolyfill)
-  .nativePlatform(scalaVersions = scalaVersions, javaTimePolyfill)
+  .nativePlatform(scalaVersions = scalaVersions, nativeJavaTime)
 
 // --- ascent-datastar : the datastar PROTOCOL core. DOM-free and platform-neutral so the routing /
 //   decoding / merge logic is JVM-unit-testable: the decoded wire model (SignalPatch / ElementPatch),
@@ -384,7 +380,7 @@ lazy val datastar = (projectMatrix in file("datastar"))
   )
   .jvmPlatform(scalaVersions = scalaVersions)
   .jsPlatform(scalaVersions = scalaVersions, javaTimePolyfill)
-  .nativePlatform(scalaVersions = scalaVersions, javaTimePolyfill)
+  .nativePlatform(scalaVersions = scalaVersions, nativeJavaTime)
 
 // --- ascent-datastar-js : the CLIENT RUNTIME. "ascent implements the datastar interface": opens an
 //   EventSource, routes incoming patch-signals into Squawk Sources (Source.set -> ascent boundaries
@@ -407,8 +403,8 @@ lazy val datastarJs = (projectMatrix in file("datastar-js"))
 //   granular patch-elements (selector + mode) or patch-signals through the SDK's
 //   ServerSentEventGenerator, and re-export the SDK's events{} / readSignals so datastar users keep
 //   their idiom while authoring views in ascent's typed DSL. JVM only (the SDK + zio-http are JVM).
-//   Pin the SDK to 3.11.0 — the newest version published on Maven Central (latest zio-http is 3.11.3
-//   but the SDK lags). The real-server integration tests use zio-http's own Server/Client.
+//   zio-http-datastar-sdk version is the catalog row in ZipxVersions. Real-server integration tests
+//   use zio-http's own Server/Client.
 lazy val datastarHttp = (projectMatrix in file("datastar-http"))
   .disablePlugins(chekhov.sbt.ChekhovPlugin)
   .dependsOn(html, datastar)

@@ -9,9 +9,10 @@ object PreviewPage extends DocSpec:
     md"""
 `ascent-preview` is a **published JVM library**: path-jailed static files plus an SSE endpoint that
 fires when **`assets/dev-stamp` contents** change. The tab reloads. The Preview process does not.
+`Preview.serve` is that process; extra routes and/or a sidecar effect can share its `Scope`.
 
-That is the whole contract. HTML and JS may churn on disk; rewrite the stamp to poke the browser.
-Never watch a task that kills the server (`~runReload`, `~preview/run`).
+HTML and JS may churn on disk; rewrite the stamp to poke the browser. Never watch a task that
+kills the server (`~runReload`, `~preview/run`).
 
 The command to remember is **`sbt ~<module>/ascentPreview`**. `~` is sbt's file watch on a task
 that keeps Preview up. One-shot (start once, no watch): `sbt <module>/ascentPreview`.
@@ -30,15 +31,15 @@ Plugin (the command):
 addSbtPlugin("rocks.earlyeffect" % "sbt-ascent-preview" % "<version>")
 ```
 
-Then `enablePlugins(AscentPreviewPlugin)` on the module you type. Specular docs modules will get
-that by default once sbt-specular requires this plugin; until then, enable it on `docs` and set
-`ascentPreviewRoot` to the site directory and `ascentPreviewRebuild` to `specularSiteDev`.
+Then `enablePlugins(AscentPreviewPlugin)` on the module you type. `sbt-specular` already requires
+this plugin, so a docs module that enables `SpecularPlugin` gets Preview; set `ascentPreviewRoot`
+to the site directory and `ascentPreviewRebuild` to `specularSiteDev`.
 """
     ),
     section("Scala.js app")(
       md"""
 ```scala
-lazy val todo = (project in file("example/todo"))
+lazy val todoConduit = (project in file("example/todo-conduit"))
   .enablePlugins(ScalaJSPlugin, AscentPreviewPlugin)
   .settings(
     // JS projects have no PreviewMain on Compile. Point at a JVM ascent-preview classpath:
@@ -47,7 +48,7 @@ lazy val todo = (project in file("example/todo"))
 ```
 
 ```bash
-sbt ~todoJS/ascentPreview
+sbt ~todoConduitJS/ascentPreview
 # open http://localhost:8765
 ```
 
@@ -79,18 +80,42 @@ sbt ~docs/ascentPreview
 `ascentPreview`.
 """
     ),
-    section("Compose into zio-http")(
+    section("Sidecar and extra routes")(
       md"""
-When a JVM app already serves the staged tree (datastar / hybrid examples), do not start a second
-PreviewMain. Set `ascentPreviewAutoServe := false` on the JS module and keep the API server up:
+`Preview.serve` is the scoped wrapper. `PreviewMain` is that wrapper with empty sidecar and empty
+extra routes. Supply neither, one, or both:
 
 ```scala
-Preview.routes(PreviewConfig(root = previewRoot, port = 8080)) ++ apiRoutes
+// extra HTTP only (datastar / hybrid)
+Preview.serve(config, extraRoutes = apiRoutes(state))
+  .provideSome[Scope](Server.defaultWith(_.port(config.port)))
+
+// background lifetime only
+Preview.serve(config, sidecar = spawnAgent)
+  .provideSome[Scope](Server.defaultWith(_.port(config.port)))
+
+// routes that need a resource: acquire first, same Scope
+clients <- LiveClients.grok(log)
+_       <- Preview.serve(config, extraRoutes = apiRoutes(clients))
+             .provideSome[Scope](Server.defaultWith(_.port(config.port)))
 ```
+
+Callers provide `Server` (`PreviewMain` uses `Server.defaultWith(_.port(config.port))`; examples add
+compression). Sidecar and HTTP run beside each other in the caller's `Scope`. Interrupt closes HTTP,
+then sidecar finalizers (child process, Hub, runtime). Extra routes are composed in front of the
+static trailing GET so `/sse` wins over a file lookup.
+
+`restartSidecarOnStamp = true` reruns the sidecar when `assets/dev-stamp` changes. HTTP stays up;
+extra routes are not reinstalled. Default off (process-lifetime sidecar).
+
+A custom wrapper main is still a `ZIOAppDefault` that calls `Preview.serve`. Point
+`ascentPreviewMain` at it if `~ascentPreview` should fork that main instead of `PreviewMain`.
+
+Datastar / hybrid still use two commands when the API lives in a JVM module:
 
 ```bash
 sbt ~datastarExampleJS/ascentPreview   # stage + stamp only
-sbt datastarExampleServer/run          # Preview.routes + API on :8080
+sbt datastarExampleServer/run          # Preview.serve + API on :8080
 ```
 
 The server process stays up. Only the files under `target/preview` change.

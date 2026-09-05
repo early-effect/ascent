@@ -1,3 +1,6 @@
+import sbt.{Def, Setting}
+import sbt.Keys.{dependencyOverrides, libraryDependencySchemes}
+import sbt.librarymanagement.syntax.*
 import zipx.*
 
 /** Typed catalog: every library and plugin this build may use. `zipxDepUpdate` rewrites constructors here.
@@ -49,9 +52,19 @@ object MyVersions extends ZipxVersions:
   val sbtReload      = Plugin("com.jamesward", "sbt-reload", "0.0.8")
   val sbtChekhov     = Plugin("rocks.earlyeffect", "sbt-chekhov", "0.0.5")
 
-  def zioTests        = library(zioTest.test, zioTestSbt.test)
-  def zioLib          = library(zio)
-  def javaTime        = library(scalaJavaTime, scalaJavaTimeTzdb)
+  def zioTests = library(zioTest.test, zioTestSbt.test)
+  def zioLib   = library(zio)
+  def javaTime = library(scalaJavaTime, scalaJavaTimeTzdb)
+
+  // Workaround until the next ZIO release: zio-test-sbt 2.1.26 still pins 0.5.10, which swallows
+  // Native test output. Alias the sbt-scala-native version onto the Native Maven coordinate.
+  def nativeTestInterface: Seq[Setting[?]] =
+    val testInterface = "org.scala-native" % "test-interface_native0.5_3" % (scalaNative.version: String)
+    Seq(
+      libraryDependencySchemes += "org.scala-native" % "test-interface_native0.5_3" % "early-semver",
+      dependencyOverrides += Def.uncached(testInterface),
+    )
+  def nativeJavaTime  = javaTime ++ nativeTestInterface
   def cssLib          = library(fastparse)
   def conduitLib      = library(conduit)
   def datastarLib     = library(zioJson)

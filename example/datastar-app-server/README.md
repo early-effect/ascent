@@ -3,7 +3,8 @@
 The JVM backend for the [`datastar-app`](../datastar-app/) counter example. It holds the count and
 serves the datastar SSE stream + the increment action through
 [`ascent-datastar-http`](../../datastar-http/), with zio-http's built-in brotli compression, and
-composes [`ascent-preview`](../../preview/) so the spliced client is same-origin on `:8080`.
+calls [`Preview.serve`](../../preview/) with those API routes so the spliced client is same-origin
+on `:8080`.
 
 ## Routes
 
@@ -16,7 +17,7 @@ composes [`ascent-preview`](../../preview/) so the spliced client is same-origin
 
 ```bash
 sbt ~datastarExampleJS/ascentPreview     # splice the client
-sbt datastarExampleServer/run            # preview + API on :8080
+sbt datastarExampleServer/run            # Preview.serve + API on :8080
 ```
 
 See the [client README](../datastar-app/README.md) for the full walkthrough.

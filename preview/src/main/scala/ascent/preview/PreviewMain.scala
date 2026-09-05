@@ -1,6 +1,7 @@
 package ascent.preview
 
 import zio.*
+import zio.http.*
 
 import java.nio.file.Paths
 
@@ -11,7 +12,10 @@ object PreviewMain extends ZIOAppDefault:
   def run =
     for
       args <- getArgs
-      _    <- Preview.serveForever(configFromArgs(args))
+      config = configFromArgs(args)
+      _ <- Preview
+        .serve(config)
+        .provideSome[Scope](Server.defaultWith(_.port(config.port)))
     yield ()
 
   private[preview] def configFromArgs(args: Chunk[String]): PreviewConfig =

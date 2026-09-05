@@ -6,8 +6,7 @@ client": render an ascent `UI` subtree to HTML via [`ascent-html`](../html/) and
 SDK's `ServerSentEventGenerator` as a granular `patch-elements`, or push typed `patch-signals`.
 
 > JVM only (the SDK + zio-http are JVM). Depends on `html` and `datastar`, plus
-> `zio-http-datastar-sdk` (pinned to `3.11.0` — the newest version on Maven Central; latest zio-http
-> is `3.11.3` but the SDK lags).
+> `zio-http-datastar-sdk` (version in [`ZipxVersions`](../project/ZipxVersions.scala)).
 
 You author views **once** in ascent's typed DSL + CSS-in-Scala; the SDK owns the SSE transport, signal
 reading, and (via zio-http) compression. A datastar user keeps the SDK's `events { }` /
