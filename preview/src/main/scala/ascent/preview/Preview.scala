@@ -13,16 +13,51 @@ import scala.jdk.CollectionConverters.*
 /** Serves a static directory with a path jail, plus an SSE reload endpoint that fires when a stamp file's **contents**
   * change.
   *
-  * [[routes]] is the testable surface (no sockets). [[serveForever]] is the process-lifetime wrapper used by
-  * [[PreviewMain]] and sbt-ascent-preview. SSE is checked before the trailing static handler so `/__ascent/reload` is
-  * never mistaken for a file.
+  * [[routes]] is the testable surface (no sockets). [[serve]] is the scoped process wrapper used by [[PreviewMain]] and
+  * sbt-ascent-preview: extra routes are composed in front of the static trailing GET so `/__ascent/reload` is never
+  * mistaken for a file, and an optional sidecar effect runs beside the HTTP server in the caller's `Scope`.
   */
 object Preview:
 
   /** Build routes for `config` without starting a server. */
   def routes(config: PreviewConfig): Routes[Any, Response] =
+    withCors(config, staticAndReload(config))
+
+  /** Serve `config.root` until interruption.
+    *
+    * Sidecar and HTTP run beside each other (`zipPar`) in the caller's `Scope`. A sidecar that returns still keeps its
+    * finalizers registered until that scope closes; a never-ending sidecar is interrupted with the server. Sidecar
+    * failure interrupts HTTP.
+    *
+    * Extra routes are installed as `extraRoutes ++` static/reload so concrete paths (`/sse`, `/__beard/events`) win
+    * over the static `GET / trailing` handler. CORS, when enabled, wraps the combined app.
+    *
+    * If extra routes close over a resource, acquire it in this same `Scope` **before** calling [[serve]] so bind cannot
+    * race the resource. Do not also pass that resource as `sidecar` (zipPar would race).
+    *
+    * `restartSidecarOnStamp` (default false) reruns the sidecar in a child scope each time stamp bytes change. HTTP
+    * stays up; extra routes are not reinstalled. Use it for a worker you want reset on `~` rebuild, not for a resource
+    * the installed routes close over.
+    *
+    * Provide `Server` at the call site (`PreviewMain` uses `Server.defaultWith(_.port(config.port))`; examples add
+    * compression). [[Server.install]] returns the bound port for logging and [[PreviewConfig.openBrowser]].
+    */
+  def serve(
+      config: PreviewConfig,
+      sidecar: ZIO[Scope, Throwable, Any] = ZIO.unit,
+      extraRoutes: Routes[Any, Response] = Routes.empty,
+      restartSidecarOnStamp: Boolean = false,
+  ): ZIO[Scope & Server, Throwable, Nothing] =
+    val app  = withCors(config, extraRoutes ++ staticAndReload(config))
+    val side =
+      if restartSidecarOnStamp then restartSidecar(config, sidecar)
+      else sidecar
+    side.zipParRight(installAndHang(config, app))
+  end serve
+
+  private def staticAndReload(config: PreviewConfig): Routes[Any, Response] =
     val docRoot = config.root.toAbsolutePath.normalize.toFile
-    val base    = Routes(
+    Routes(
       Method.GET / trailing ->
         Handler
           .identity[Request]
@@ -39,25 +74,39 @@ object Preview:
             case _                                      => Handler.notFound
           }
     )
-    if config.cors then base @@ Middleware.cors else base
-  end routes
+  end staticAndReload
 
-  /** Block forever serving `config.root` on `config.port`. Opens the URL after bind when [[PreviewConfig.openBrowser]].
-    */
-  def serveForever(config: PreviewConfig): UIO[Nothing] =
+  private def withCors(config: PreviewConfig, app: Routes[Any, Response]): Routes[Any, Response] =
+    if config.cors then app @@ Middleware.cors else app
+
+  private def installAndHang(config: PreviewConfig, app: Routes[Any, Response]): ZIO[Server, Throwable, Nothing] =
     val dir = config.root.toAbsolutePath.normalize.toFile
-    Server
-      .install(routes(config))
-      .flatMap { bound =>
-        val url = s"http://localhost:$bound/"
-        Console.printLine(s"Serving ${dir.getAbsolutePath}") *>
-          Console.printLine(s"Open $url") *>
-          ZIO.when(config.openBrowser)(openBrowser(url)) *>
-          ZIO.never
+    Server.install(app).flatMap { bound =>
+      val url = s"http://localhost:$bound/"
+      Console.printLine(s"Serving ${dir.getAbsolutePath}") *>
+        Console.printLine(s"Open $url") *>
+        ZIO.when(config.openBrowser)(openBrowser(url)) *>
+        ZIO.never
+    }
+
+  /** Child-scope sidecar, interrupted and re-acquired on each stamp change. */
+  private def restartSidecar(
+      config: PreviewConfig,
+      sidecar: ZIO[Scope, Throwable, Any],
+  ): ZIO[Scope, Throwable, Nothing] =
+    val stamp = config.root.resolve(config.stamp)
+    ZIO.scoped {
+      sidecar.forkScoped.flatMap { fiber =>
+        val failed =
+          fiber.await.flatMap {
+            case Exit.Success(_)                    => ZIO.never
+            case Exit.Failure(c) if c.isInterrupted => ZIO.never
+            case Exit.Failure(c)                    => ZIO.failCause(c)
+          }
+        failed.raceFirst(stampEvents(stamp).take(1).runDrain)
       }
-      .provide(Server.defaultWith(_.port(config.port)))
-      .orDie
-  end serveForever
+    }.forever
+  end restartSidecar
 
   /** `open` on macOS, `xdg-open` elsewhere, `rundll32` on Windows. Not executed in tests; command only. */
   private[preview] def browseCommand(osName: String, url: String): Seq[String] =

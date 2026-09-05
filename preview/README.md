@@ -39,8 +39,12 @@ calls it.
 | Port | `8765`, or `"auto"` (first free `>= 8700`) |
 | CORS | off |
 
-`Preview.routes(PreviewConfig(...))` composes into a zio-http app (datastar / hybrid). Then set
-`ascentPreviewAutoServe := false` on the JS module so you do not start a second PreviewMain.
+`Preview.serve(config, extraRoutes = api, sidecar = effect)` is the scoped wrapper: extra HTTP and/or
+a sidecar effect in the same `Scope` as the preview server. Callers provide `Server`. `PreviewMain`
+is that wrapper empty. `restartSidecarOnStamp = true` reruns the sidecar when the stamp changes
+(HTTP stays up). Datastar / hybrid call `serve` with `extraRoutes` and set
+`ascentPreviewAutoServe := false` on the JS module so you do not start a second process.
+`ascentPreviewMain` (default `PreviewMain`) is the class `ascentPreviewServe` forks.
 
 `ascentPreviewAutoOpen := true` on a module opens the preview URL once PreviewMain binds. Default
 off. Watch rebuilds do not open another tab.

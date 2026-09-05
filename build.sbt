@@ -407,8 +407,8 @@ lazy val datastarJs = (projectMatrix in file("datastar-js"))
 //   granular patch-elements (selector + mode) or patch-signals through the SDK's
 //   ServerSentEventGenerator, and re-export the SDK's events{} / readSignals so datastar users keep
 //   their idiom while authoring views in ascent's typed DSL. JVM only (the SDK + zio-http are JVM).
-//   Pin the SDK to 3.11.0 — the newest version published on Maven Central (latest zio-http is 3.11.3
-//   but the SDK lags). The real-server integration tests use zio-http's own Server/Client.
+//   zio-http-datastar-sdk version is the catalog row in ZipxVersions. Real-server integration tests
+//   use zio-http's own Server/Client.
 lazy val datastarHttp = (projectMatrix in file("datastar-http"))
   .disablePlugins(chekhov.sbt.ChekhovPlugin)
   .dependsOn(html, datastar)

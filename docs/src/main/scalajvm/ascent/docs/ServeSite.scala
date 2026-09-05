@@ -2,6 +2,7 @@ package ascent.docs
 
 import ascent.preview.{Preview, PreviewConfig}
 import zio.*
+import zio.http.*
 
 import java.nio.file.Paths
 
@@ -16,6 +17,8 @@ object ServeSite extends ZIOAppDefault:
         .lift(1)
         .map(Paths.get(_))
         .getOrElse(Paths.get("target/site").toAbsolutePath)
-      _ <- Preview.serveForever(PreviewConfig(root = root, port = port))
+      _ <- Preview
+        .serve(PreviewConfig(root = root, port = port))
+        .provideSome[Scope](Server.defaultWith(_.port(port)))
     yield ()
 end ServeSite

@@ -11,7 +11,7 @@ Two pieces:
   opens the stream inside a `scoped` boundary; a button calls `Action.post(store, "/increment")`.
 - **[`example/datastar-app-server`](../datastar-app-server/)** (JVM) — the zio-http backend. Holds the
   count, serves the SSE stream + the increment action via [`ascent-datastar-http`](../../datastar-http/),
-  with zio-http brotli compression, and composes [`ascent-preview`](../../preview/) so the spliced
+  with zio-http brotli compression, and calls [`Preview.serve`](../../preview/) so the spliced
   client is same-origin on `:8080`.
 
 ## Routes
@@ -28,7 +28,7 @@ Two terminals. `sbt run` cwd is the repo root, so the server looks for
 
 ```bash
 sbt ~datastarExampleJS/ascentPreview     # splice + stamp; relink on change
-sbt datastarExampleServer/run            # static + SSE reload + API on :8080
+sbt datastarExampleServer/run            # Preview.serve + API on :8080
 ```
 
 Open http://localhost:8080. After editing a client `.scala`, the watch restages and the tab

@@ -23,7 +23,7 @@ published so consumers resolve transitively.
 | `ascent-datastar` | Datastar protocol + SignalStore |
 | `ascent-datastar-js` | Browser datastar runtime |
 | `ascent-datastar-http` | zio-http datastar server bridge |
-| `ascent-preview` | Local static serve + SSE tab reload. See [Preview](preview.html). |
+| `ascent-preview` | Local static serve + SSE reload; optional extra routes / sidecar. See [Preview](preview.html). |
 | `ascent-chekhov` | Typed Chekhov locators: JSEnv live handles + JVM `Page` selectors |
 | `sbt-ascent-preview` | `enablePlugins(AscentPreviewPlugin)` then `sbt ~<module>/ascentPreview` |
 

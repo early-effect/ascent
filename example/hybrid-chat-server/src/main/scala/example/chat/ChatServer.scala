@@ -16,8 +16,8 @@ import java.nio.file.Path as JPath
   *     [[AscentDatastar.patchRegion]]; the typing indicator rides the signal channel.
   *   - `POST /chat/send` reads the client's `{username, message}` signals and appends a message.
   *   - `POST /chat/typing` marks the user typing (auto-cleared after a few seconds).
-  *   - [[Preview.routes]] are composed in so the spliced client (`example/hybrid-chat/target/preview`) is same-origin
-  *     on `:8080`.
+  *   - [[Preview.serve]] takes the API as `extraRoutes` so the spliced client (`example/hybrid-chat/target/preview`) is
+  *     same-origin on `:8080`.
   */
 object ChatServer extends ZIOAppDefault:
 
@@ -67,9 +67,10 @@ object ChatServer extends ZIOAppDefault:
       },
     ).sandbox
 
-  /** Preview (static + SSE reload) composed with the chat API. */
+  /** Preview (static + SSE reload) composed with the chat API. Extra routes first so `/chat/sse` wins the trailing GET.
+    */
   def routes(room: ChatRoom, previewRoot: JPath, port: Int = 8080): Routes[Any, Response] =
-    Preview.routes(PreviewConfig(root = previewRoot, port = port)) ++ apiRoutes(room)
+    apiRoutes(room) ++ Preview.routes(PreviewConfig(root = previewRoot, port = port))
 
   def resolvePreviewRoot(args: Chunk[String]): JPath =
     args.headOption
@@ -93,8 +94,10 @@ object ChatServer extends ZIOAppDefault:
       root = resolvePreviewRoot(args)
       room <- ChatRoom.make
       _    <- ZIO.logInfo(s"hybrid-chat on http://localhost:8080 serving $root")
-      _    <- Server
-        .serve(routes(room, root))
-        .provide(Server.defaultWith(_.port(8080).copy(responseCompression = Some(compression))))
+      _    <- Preview
+        .serve(PreviewConfig(root = root, port = 8080), extraRoutes = apiRoutes(room))
+        .provideSome[Scope](
+          Server.defaultWith(_.port(8080).copy(responseCompression = Some(compression)))
+        )
     yield ()
 end ChatServer
