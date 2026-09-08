@@ -312,9 +312,9 @@ jobs:
       - name: e2e
         run: |
           if [ "$ZIPX_VERIFY_CLEAN_FULL" = "true" ]; then
-            sbt 'cleanFull; e2e/chekhovInstall; e2e/Test/testFull; ascentChekhovJS/Test/testFull'
+            sbt 'cleanFull; e2e/chekhovInstall; e2e/Test/testFull; chekhovJs/Test/testFull'
           else
-            sbt 'e2e/chekhovInstall; e2e/Test/testFull; ascentChekhovJS/Test/testFull'
+            sbt 'e2e/chekhovInstall; e2e/Test/testFull; chekhovJs/Test/testFull'
           fi
         env:
           ZIPX_VERIFY_CLEAN_FULL: ${{ github.event_name == 'pull_request' && contains(github.event.pull_request.labels.*.name, 'clean') }}
