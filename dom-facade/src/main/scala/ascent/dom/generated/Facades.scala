@@ -24,7 +24,7 @@ class DeviceOrientationEvent extends Event:
 @js.native
 @JSGlobal
 object DeviceOrientationEvent extends js.Object:
-  def requestPermission(absolute: Boolean = js.native): scala.scalajs.js.Any = js.native
+  def requestPermission(absolute: Boolean = js.native): scala.scalajs.js.Promise[String] = js.native
 
 @js.native
 @JSGlobal
@@ -43,7 +43,7 @@ class Event extends js.Object:
   def composed: Boolean                                                                              = js.native
   def isTrusted: Boolean                                                                             = js.native
   def timeStamp: Double                                                                              = js.native
-  def composedPath(): scala.scalajs.js.Any                                                           = js.native
+  def composedPath(): scala.scalajs.js.Array[EventTarget]                                            = js.native
   def stopPropagation(): Unit                                                                        = js.native
   def stopImmediatePropagation(): Unit                                                               = js.native
   def preventDefault(): Unit                                                                         = js.native
@@ -62,8 +62,8 @@ object Event extends js.Object:
 @JSGlobal
 class ClipboardChangeEvent extends Event:
   def this(@unused `type`: String, @unused eventInitDict: ClipboardChangeEventInit = js.native) = this()
-  def types: scala.scalajs.js.Any    = js.native
-  def changeId: scala.scalajs.js.Any = js.native
+  def types: scala.scalajs.js.Array[String] = js.native
+  def changeId: scala.scalajs.js.Any        = js.native
 
 @js.native
 @JSGlobal
@@ -107,7 +107,7 @@ class PeriodicSyncEvent extends ExtendableEvent:
 @JSGlobal
 class ExtendableEvent extends Event:
   def this(@unused `type`: String, @unused eventInitDict: ExtendableEventInit = js.native) = this()
-  def waitUntil(f: scala.scalajs.js.Any): Unit = js.native
+  def waitUntil(f: scala.scalajs.js.Promise[scala.scalajs.js.Any]): Unit = js.native
 
 @js.native
 @JSGlobal
@@ -152,14 +152,14 @@ class MIDIMessageEvent extends Event:
 @JSGlobal
 class BluetoothAdvertisingEvent extends Event:
   def this(@unused `type`: String, @unused init: BluetoothAdvertisingEventInit) = this()
-  def device: BluetoothDevice                        = js.native
-  def uuids: scala.scalajs.js.Any                    = js.native
-  def name: String                                   = js.native
-  def appearance: Int                                = js.native
-  def txPower: scala.scalajs.js.Any                  = js.native
-  def rssi: scala.scalajs.js.Any                     = js.native
-  def manufacturerData: BluetoothManufacturerDataMap = js.native
-  def serviceData: BluetoothServiceDataMap           = js.native
+  def device: BluetoothDevice                             = js.native
+  def uuids: scala.scalajs.js.Array[scala.scalajs.js.Any] = js.native
+  def name: String                                        = js.native
+  def appearance: Int                                     = js.native
+  def txPower: scala.scalajs.js.Any                       = js.native
+  def rssi: scala.scalajs.js.Any                          = js.native
+  def manufacturerData: BluetoothManufacturerDataMap      = js.native
+  def serviceData: BluetoothServiceDataMap                = js.native
 end BluetoothAdvertisingEvent
 
 @js.native
@@ -197,10 +197,10 @@ end UIEvent
 @JSGlobal
 class RTCTrackEvent extends Event:
   def this(@unused `type`: String, @unused eventInitDict: RTCTrackEventInit) = this()
-  def receiver: RTCRtpReceiver       = js.native
-  def track: MediaStreamTrack        = js.native
-  def streams: scala.scalajs.js.Any  = js.native
-  def transceiver: RTCRtpTransceiver = js.native
+  def receiver: RTCRtpReceiver                     = js.native
+  def track: MediaStreamTrack                      = js.native
+  def streams: scala.scalajs.js.Array[MediaStream] = js.native
+  def transceiver: RTCRtpTransceiver               = js.native
 
 @js.native
 @JSGlobal
@@ -250,11 +250,11 @@ class CloseEvent extends Event:
 @JSGlobal
 class InputEvent extends UIEvent:
   def this(@unused `type`: String, @unused eventInitDict: InputEventInit = js.native) = this()
-  def dataTransfer: DataTransfer              = js.native
-  def data: String                            = js.native
-  def isComposing: Boolean                    = js.native
-  def inputType: String                       = js.native
-  def getTargetRanges(): scala.scalajs.js.Any = js.native
+  def dataTransfer: DataTransfer                             = js.native
+  def data: String                                           = js.native
+  def isComposing: Boolean                                   = js.native
+  def inputType: String                                      = js.native
+  def getTargetRanges(): scala.scalajs.js.Array[StaticRange] = js.native
 
 @js.native
 @JSGlobal
@@ -267,11 +267,11 @@ class SnapEvent extends Event:
 @JSGlobal
 class MessageEvent extends Event:
   def this(@unused `type`: String, @unused eventInitDict: MessageEventInit = js.native) = this()
-  def data: scala.scalajs.js.Any   = js.native
-  def origin: String               = js.native
-  def lastEventId: String          = js.native
-  def source: scala.scalajs.js.Any = js.native
-  def ports: scala.scalajs.js.Any  = js.native
+  def data: scala.scalajs.js.Any                 = js.native
+  def origin: String                             = js.native
+  def lastEventId: String                        = js.native
+  def source: scala.scalajs.js.Any               = js.native
+  def ports: scala.scalajs.js.Array[MessagePort] = js.native
   def initMessageEvent(
       `type`: String,
       bubbles: Boolean = js.native,
@@ -280,7 +280,7 @@ class MessageEvent extends Event:
       origin: String = js.native,
       lastEventId: String = js.native,
       source: scala.scalajs.js.Any = js.native,
-      ports: scala.scalajs.js.Any = js.native,
+      ports: scala.scalajs.js.Array[MessagePort] = js.native,
   ): Unit = js.native
 end MessageEvent
 
@@ -303,7 +303,7 @@ class SFrameTransformErrorEvent extends Event:
 @JSGlobal
 class CanMakePaymentEvent extends ExtendableEvent:
   def this(@unused `type`: String) = this()
-  def respondWith(canMakePaymentResponse: scala.scalajs.js.Any): Unit = js.native
+  def respondWith(canMakePaymentResponse: scala.scalajs.js.Promise[Boolean]): Unit = js.native
 
 @js.native
 @JSGlobal
@@ -386,21 +386,21 @@ end CustomEvent
 @JSGlobal
 class AutofillEvent extends Event:
   def this(@unused `type`: String, @unused eventInitDict: AutofillEventInit = js.native) = this()
-  def autofillValues: scala.scalajs.js.Any     = js.native
-  def refill: scala.scalajs.js.Function0[Unit] = js.native
+  def autofillValues: scala.scalajs.js.Array[scala.scalajs.js.Any]       = js.native
+  def refill: scala.scalajs.js.Function0[scala.scalajs.js.Promise[Unit]] = js.native
 
 @js.native
 @JSGlobal
 class TextFormatUpdateEvent extends Event:
   def this(@unused `type`: String, @unused options: TextFormatUpdateEventInit = js.native) = this()
-  def getTextFormats(): scala.scalajs.js.Any = js.native
+  def getTextFormats(): scala.scalajs.js.Array[TextFormat] = js.native
 
 @js.native
 @JSGlobal
 class CookieChangeEvent extends Event:
   def this(@unused `type`: String, @unused eventInitDict: CookieChangeEventInit = js.native) = this()
-  def changed: scala.scalajs.js.Any = js.native
-  def deleted: scala.scalajs.js.Any = js.native
+  def changed: scala.scalajs.js.Array[CookieListItem] = js.native
+  def deleted: scala.scalajs.js.Array[CookieListItem] = js.native
 
 @js.native
 @JSGlobal
@@ -413,7 +413,7 @@ class PaymentMethodChangeEvent extends PaymentRequestUpdateEvent:
 @JSGlobal
 class PaymentRequestUpdateEvent extends Event:
   def this(@unused `type`: String, @unused eventInitDict: PaymentRequestUpdateEventInit = js.native) = this()
-  def updateWith(detailsPromise: scala.scalajs.js.Any): Unit = js.native
+  def updateWith(detailsPromise: scala.scalajs.js.Promise[PaymentDetailsUpdate]): Unit = js.native
 
 @js.native
 @JSGlobal
@@ -464,7 +464,7 @@ object KeyboardEvent extends js.Object:
 @JSGlobal
 class BackgroundFetchUpdateUIEvent extends BackgroundFetchEvent:
   def this(@unused `type`: String, @unused init: BackgroundFetchEventInit) = this()
-  def updateUI(options: BackgroundFetchUIOptions = js.native): scala.scalajs.js.Any = js.native
+  def updateUI(options: BackgroundFetchUIOptions = js.native): scala.scalajs.js.Promise[Unit] = js.native
 
 @js.native
 @JSGlobal
@@ -530,13 +530,13 @@ class SpeechRecognitionEvent extends Event:
 @JSGlobal
 class FetchEvent extends ExtendableEvent:
   def this(@unused `type`: String, @unused eventInitDict: FetchEventInit) = this()
-  def request: Request                           = js.native
-  def preloadResponse: scala.scalajs.js.Any      = js.native
-  def clientId: String                           = js.native
-  def resultingClientId: String                  = js.native
-  def replacesClientId: String                   = js.native
-  def handled: scala.scalajs.js.Any              = js.native
-  def respondWith(r: scala.scalajs.js.Any): Unit = js.native
+  def request: Request                                                = js.native
+  def preloadResponse: scala.scalajs.js.Promise[scala.scalajs.js.Any] = js.native
+  def clientId: String                                                = js.native
+  def resultingClientId: String                                       = js.native
+  def replacesClientId: String                                        = js.native
+  def handled: scala.scalajs.js.Promise[Unit]                         = js.native
+  def respondWith(r: scala.scalajs.js.Promise[Response]): Unit        = js.native
 end FetchEvent
 
 @js.native
@@ -641,14 +641,14 @@ class MediaKeyMessageEvent extends Event:
 @JSGlobal
 class InstallEvent extends ExtendableEvent:
   def this(@unused `type`: String, @unused eventInitDict: ExtendableEventInit = js.native) = this()
-  def addRoutes(rules: scala.scalajs.js.Any): scala.scalajs.js.Any = js.native
+  def addRoutes(rules: scala.scalajs.js.Any): scala.scalajs.js.Promise[Unit] = js.native
 
 @js.native
 @JSGlobal
 class ExtendableCookieChangeEvent extends ExtendableEvent:
   def this(@unused `type`: String, @unused eventInitDict: ExtendableCookieChangeEventInit = js.native) = this()
-  def changed: scala.scalajs.js.Any = js.native
-  def deleted: scala.scalajs.js.Any = js.native
+  def changed: scala.scalajs.js.Array[CookieListItem] = js.native
+  def deleted: scala.scalajs.js.Array[CookieListItem] = js.native
 
 @js.native
 @JSGlobal
@@ -668,11 +668,11 @@ class XRLayerEvent extends Event:
 @JSGlobal
 class ExtendableMessageEvent extends ExtendableEvent:
   def this(@unused `type`: String, @unused eventInitDict: ExtendableMessageEventInit = js.native) = this()
-  def data: scala.scalajs.js.Any   = js.native
-  def origin: String               = js.native
-  def lastEventId: String          = js.native
-  def source: scala.scalajs.js.Any = js.native
-  def ports: scala.scalajs.js.Any  = js.native
+  def data: scala.scalajs.js.Any                 = js.native
+  def origin: String                             = js.native
+  def lastEventId: String                        = js.native
+  def source: scala.scalajs.js.Any               = js.native
+  def ports: scala.scalajs.js.Array[MessagePort] = js.native
 
 @js.native
 @JSGlobal
@@ -737,7 +737,7 @@ class FocusEvent extends UIEvent:
 @JSGlobal
 class FontFaceSetLoadEvent extends Event:
   def this(@unused `type`: String, @unused eventInitDict: FontFaceSetLoadEventInit = js.native) = this()
-  def fontfaces: scala.scalajs.js.Any = js.native
+  def fontfaces: scala.scalajs.js.Array[FontFace] = js.native
 
 @js.native
 @JSGlobal
@@ -817,7 +817,7 @@ class DeviceMotionEvent extends Event:
 @js.native
 @JSGlobal
 object DeviceMotionEvent extends js.Object:
-  def requestPermission(): scala.scalajs.js.Any = js.native
+  def requestPermission(): scala.scalajs.js.Promise[String] = js.native
 
 @js.native
 @JSGlobal
@@ -899,20 +899,24 @@ object WheelEvent extends js.Object:
 @JSGlobal
 class PaymentRequestEvent extends ExtendableEvent:
   def this(@unused `type`: String, @unused eventInitDict: PaymentRequestEventInit = js.native) = this()
-  def topOrigin: String                             = js.native
-  def paymentRequestOrigin: String                  = js.native
-  def paymentRequestId: String                      = js.native
-  def methodData: scala.scalajs.js.Any              = js.native
-  def total: scala.scalajs.js.Any                   = js.native
-  def modifiers: scala.scalajs.js.Any               = js.native
-  def paymentOptions: scala.scalajs.js.Any          = js.native
-  def shippingOptions: scala.scalajs.js.Any         = js.native
-  def openWindow(url: String): scala.scalajs.js.Any = js.native
-  def changePaymentMethod(methodName: String, methodDetails: scala.scalajs.js.Any = js.native): scala.scalajs.js.Any =
-    js.native
-  def changeShippingAddress(shippingAddress: AddressInit = js.native): scala.scalajs.js.Any = js.native
-  def changeShippingOption(shippingOption: String): scala.scalajs.js.Any                    = js.native
-  def respondWith(handlerResponsePromise: scala.scalajs.js.Any): Unit                       = js.native
+  def topOrigin: String                                               = js.native
+  def paymentRequestOrigin: String                                    = js.native
+  def paymentRequestId: String                                        = js.native
+  def methodData: scala.scalajs.js.Array[PaymentMethodData]           = js.native
+  def total: scala.scalajs.js.Any                                     = js.native
+  def modifiers: scala.scalajs.js.Array[PaymentDetailsModifier]       = js.native
+  def paymentOptions: scala.scalajs.js.Any                            = js.native
+  def shippingOptions: scala.scalajs.js.Array[PaymentShippingOption]  = js.native
+  def openWindow(url: String): scala.scalajs.js.Promise[WindowClient] = js.native
+  def changePaymentMethod(
+      methodName: String,
+      methodDetails: scala.scalajs.js.Any = js.native,
+  ): scala.scalajs.js.Promise[PaymentRequestDetailsUpdate] = js.native
+  def changeShippingAddress(
+      shippingAddress: AddressInit = js.native
+  ): scala.scalajs.js.Promise[PaymentRequestDetailsUpdate]                                                = js.native
+  def changeShippingOption(shippingOption: String): scala.scalajs.js.Promise[PaymentRequestDetailsUpdate] = js.native
+  def respondWith(handlerResponsePromise: scala.scalajs.js.Promise[PaymentHandlerResponse]): Unit         = js.native
 end PaymentRequestEvent
 
 @js.native
@@ -946,7 +950,7 @@ class BeforeUnloadEvent extends Event
 @JSGlobal
 class BeforeInstallPromptEvent extends Event:
   def this(@unused `type`: String, @unused eventInitDict: EventInit = js.native) = this()
-  def prompt(): scala.scalajs.js.Any = js.native
+  def prompt(): scala.scalajs.js.Promise[PromptResponseObject] = js.native
 
 @js.native
 @JSGlobal
@@ -984,21 +988,21 @@ class PortalActivateEvent extends Event:
 @JSGlobal
 class PointerEvent extends MouseEvent:
   def this(@unused `type`: String, @unused eventInitDict: PointerEventInit = js.native) = this()
-  def pointerId: Int                             = js.native
-  def width: Double                              = js.native
-  def height: Double                             = js.native
-  def pressure: Double                           = js.native
-  def tangentialPressure: Double                 = js.native
-  def tiltX: Int                                 = js.native
-  def tiltY: Int                                 = js.native
-  def twist: Int                                 = js.native
-  def altitudeAngle: Double                      = js.native
-  def azimuthAngle: Double                       = js.native
-  def pointerType: String                        = js.native
-  def isPrimary: Boolean                         = js.native
-  def persistentDeviceId: Int                    = js.native
-  def getCoalescedEvents(): scala.scalajs.js.Any = js.native
-  def getPredictedEvents(): scala.scalajs.js.Any = js.native
+  def pointerId: Int                                             = js.native
+  def width: Double                                              = js.native
+  def height: Double                                             = js.native
+  def pressure: Double                                           = js.native
+  def tangentialPressure: Double                                 = js.native
+  def tiltX: Int                                                 = js.native
+  def tiltY: Int                                                 = js.native
+  def twist: Int                                                 = js.native
+  def altitudeAngle: Double                                      = js.native
+  def azimuthAngle: Double                                       = js.native
+  def pointerType: String                                        = js.native
+  def isPrimary: Boolean                                         = js.native
+  def persistentDeviceId: Int                                    = js.native
+  def getCoalescedEvents(): scala.scalajs.js.Array[PointerEvent] = js.native
+  def getPredictedEvents(): scala.scalajs.js.Array[PointerEvent] = js.native
 end PointerEvent
 
 @js.native
@@ -1019,9 +1023,9 @@ class HashChangeEvent extends Event:
 @JSGlobal
 class XRInputSourcesChangeEvent extends Event:
   def this(@unused `type`: String, @unused eventInitDict: XRInputSourcesChangeEventInit) = this()
-  def session: XRSession            = js.native
-  def added: scala.scalajs.js.Any   = js.native
-  def removed: scala.scalajs.js.Any = js.native
+  def session: XRSession                             = js.native
+  def added: scala.scalajs.js.Array[XRInputSource]   = js.native
+  def removed: scala.scalajs.js.Array[XRInputSource] = js.native
 
 @js.native
 @JSGlobal
@@ -1060,8 +1064,8 @@ class MediaEncryptedEvent extends Event:
 @JSGlobal
 class DeviceChangeEvent extends Event:
   def this(@unused `type`: String, @unused eventInitDict: DeviceChangeEventInit = js.native) = this()
-  def devices: scala.scalajs.js.Any             = js.native
-  def userInsertedDevices: scala.scalajs.js.Any = js.native
+  def devices: scala.scalajs.js.Array[MediaDeviceInfo]             = js.native
+  def userInsertedDevices: scala.scalajs.js.Array[MediaDeviceInfo] = js.native
 
 @js.native
 @JSGlobal

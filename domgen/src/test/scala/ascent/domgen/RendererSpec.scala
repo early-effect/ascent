@@ -195,6 +195,8 @@ object RendererSpec extends ZIOSpecDefault:
           src.contains("val NONE: Int = js.native"),
         )
       },
+    ),
+    suite("dom-facade: Interfaces.scala")(
       test("static operations emit on the companion, not the instance") {
         val defs = List(
           InterfaceDef(

@@ -87,6 +87,7 @@ object Generator:
         input.idl,
         skipNames = input.idl.interfaces.keySet -- structuralClosure,
         typeOf = (idlType, idl) => DefBuilder.structuralType(idlType, structuralClosure, idl),
+        jsNative = false,
       )
     yield GeneratorOutput(
       Map(

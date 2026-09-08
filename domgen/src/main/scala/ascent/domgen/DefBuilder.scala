@@ -187,13 +187,16 @@ object DefBuilder:
       // both landing on PlatformOpaque must not render as "PlatformOpaque | PlatformOpaque").
       idlType.split(" \\| ").toList.map(m => structuralType(m, inScope, idl)).distinct.mkString(" | ")
     else if idlType.startsWith("sequence<") && idlType.endsWith(">") then
-      // A single-argument sequence<T>, surfaced by Webref.simpleIdlType with that literal shape
-      // (e.g. "sequence<DOMString>" for Element.getAttributeNames' real WebIDL return type).
-      // Resolves to a real List[T] — List is available on jvm/js/native with no scalajs
-      // dependency — rather than collapsing to PlatformOpaque; the element type recurses
-      // through this SAME mapper.
       val elem = idlType.stripPrefix("sequence<").stripSuffix(">")
       s"List[${structuralType(elem, inScope, idl)}]"
+    else if (idlType.startsWith("FrozenArray<") || idlType.startsWith("ObservableArray<")) && idlType.endsWith(">") then
+      val prefix = if idlType.startsWith("FrozenArray<") then "FrozenArray" else "ObservableArray"
+      val elem   = idlType.stripPrefix(prefix + "<").stripSuffix(">")
+      s"List[${structuralType(elem, inScope, idl)}]"
+    else if idlType.startsWith("record<") && idlType.endsWith(">") then
+      val args = idlType.stripPrefix("record<").stripSuffix(">").split(", ", 2)
+      if args.length == 2 then s"Map[String, ${structuralType(args(1), inScope, idl)}]"
+      else "ascent.domcore.PlatformOpaque"
     else
       idlType match
         case "DOMString" | "USVString" | "ByteString" | "CSSOMString"                                   => "String"
@@ -240,6 +243,7 @@ object DefBuilder:
       idl: Webref.Idl,
       skipNames: Set[String],
       typeOf: (String, Webref.Idl) => String = scalaFacadeType,
+      jsNative: Boolean = true,
   ): List[InterfaceDef] =
     val emittedNames: Set[String] =
       idl.interfaces.collect {
@@ -269,8 +273,9 @@ object DefBuilder:
         // signatures ARE legal in Scala 3 — a parent's `stroke(Path2D)` plus a child's
         // `stroke()` is fine (they're different methods). We only drop a child operation
         // if a parent already declares the exact same signature.
-        val inheritedAttrNames  = collectInheritedAttrNames(name, idl)
-        val inheritedMethodSigs = collectInheritedMethodSigs(name, idl, typeOf)
+        val inheritedAttrNames  = collectInheritedAttrNames(name, idl, typeOf, jsNative)
+        val inheritedMethodSigs = collectInheritedMethodSigs(name, idl, typeOf, jsNative)
+        val inheritedMixins     = collectInheritedMixins(name, idl, typeOf, jsNative)
         val ownAttrs            = ownAttributesOf(name, idl)
           .filterNot((scalaAttrName, _, _, _, _) => inheritedAttrNames.contains(scalaAttrName))
           .map { (scalaAttrName, idlType, ro, reflected, htmlAttrName) =>
@@ -286,7 +291,11 @@ object DefBuilder:
         val ownAttrsDedup = scala.collection.mutable.LinkedHashMap.empty[String, FacadeMember]
         ownAttrs.foreach(m => ownAttrsDedup(m.name) = m)
 
-        val ownMethods = ownMethodsOf(name, idl, typeOf)
+        val (collAttrs, collMethods, collMixins) =
+          if jsNative then collectionExtras(iface, idl, typeOf) else (Nil, Nil, Nil)
+        collAttrs.filterNot(a => inheritedAttrNames.contains(a.name)).foreach(m => ownAttrsDedup(m.name) = m)
+
+        val ownMethods = (ownMethodsOf(name, idl, typeOf) ++ collMethods)
           .filterNot(m => inheritedMethodSigs.contains((m.scalaName, m.params.map(_.scalaType))))
         // Dedup by (name, paramTypes) so overloads survive (e.g. `stroke()` vs
         // `stroke(Path2D)`).
@@ -304,6 +313,7 @@ object DefBuilder:
             constants = constantsOf(iface, idl, typeOf),
             staticMethods = staticMethodsOf(iface, idl, typeOf),
             staticAttributes = staticAttributesOf(iface, idl, typeOf),
+            jsMixins = collMixins.filterNot(inheritedMixins.contains),
           )
         )
     }
@@ -313,13 +323,19 @@ object DefBuilder:
     * of those ancestors. [[interfaceDefs]] uses this to drop child redeclarations that would force an `override`
     * keyword on a `var`/`def`.
     */
-  private def collectInheritedAttrNames(interface: String, idl: Webref.Idl): Set[String] =
+  private def collectInheritedAttrNames(
+      interface: String,
+      idl: Webref.Idl,
+      typeOf: (String, Webref.Idl) => String,
+      jsNative: Boolean,
+  ): Set[String] =
     val acc                                            = scala.collection.mutable.Set.empty[String]
     def walk(name: String, visited: Set[String]): Unit =
       if visited.contains(name) then ()
       else
         idl.interfaces.get(name).foreach { iface =>
           ownAttributesOf(name, idl).foreach((scalaAttrName, _, _, _, _) => acc += scalaAttrName)
+          if jsNative then collectionExtras(iface, idl, typeOf)._1.foreach(a => acc += a.name)
           iface.inheritance.foreach(p => walk(p, visited + name))
         }
     idl.interfaces.get(interface).flatMap(_.inheritance).foreach(p => walk(p, Set.empty))
@@ -334,6 +350,7 @@ object DefBuilder:
       interface: String,
       idl: Webref.Idl,
       typeOf: (String, Webref.Idl) => String,
+      jsNative: Boolean,
   ): Set[(String, List[String])] =
     val acc                                            = scala.collection.mutable.Set.empty[(String, List[String])]
     def walk(name: String, visited: Set[String]): Unit =
@@ -341,11 +358,33 @@ object DefBuilder:
       else
         idl.interfaces.get(name).foreach { iface =>
           ownMethodsOf(name, idl, typeOf).foreach(m => acc += ((m.scalaName, m.params.map(_.scalaType))))
+          if jsNative then
+            collectionExtras(iface, idl, typeOf)._2.foreach(m => acc += ((m.scalaName, m.params.map(_.scalaType))))
           iface.inheritance.foreach(p => walk(p, visited + name))
         }
     idl.interfaces.get(interface).flatMap(_.inheritance).foreach(p => walk(p, Set.empty))
     acc.toSet
   end collectInheritedMethodSigs
+
+  private def collectInheritedMixins(
+      interface: String,
+      idl: Webref.Idl,
+      typeOf: (String, Webref.Idl) => String,
+      jsNative: Boolean,
+  ): Set[String] =
+    if !jsNative then Set.empty
+    else
+      val acc                                            = scala.collection.mutable.Set.empty[String]
+      def walk(name: String, visited: Set[String]): Unit =
+        if visited.contains(name) then ()
+        else
+          idl.interfaces.get(name).foreach { iface =>
+            acc ++= collectionExtras(iface, idl, typeOf)._3
+            iface.inheritance.foreach(p => walk(p, visited + name))
+          }
+      idl.interfaces.get(interface).flatMap(_.inheritance).foreach(p => walk(p, Set.empty))
+      acc.toSet
+  end collectInheritedMixins
 
   /** Own attributes for an interface (excluding inheritance) PLUS attributes from any mixin it includes. Mixin attrs
     * are folded in here because mixins aren't emitted as their own classes — their members must appear on every
@@ -377,14 +416,15 @@ object DefBuilder:
     val mixinNames = idl.includes.filter(_.target == interface).map(_.mixin)
     val ownIface   = idl.interfaces.get(interface).toList.flatMap(_.operations)
     val mixinIface = mixinNames.flatMap(m => idl.interfaces.get(m).toList.flatMap(_.operations))
-    (ownIface ++ mixinIface).map(o =>
+    (ownIface ++ mixinIface).map { o =>
       MethodDef(
         scalaName = scalaName(o.name),
         domName = o.name,
         returnType = typeOf(o.returnType, idl),
         params = o.params.map(p => ParamDef(scalaName(p.name), typeOf(p.idlType, idl), p.optional)),
+        bracketAccess = o.special == "getter" && o.name == "apply" || o.special == "setter" && o.name == "update",
       )
-    )
+    }
   end ownMethodsOf
 
   /** Own constructors only. Mixins and ancestors are not constructible under the child's name. */
@@ -424,6 +464,80 @@ object DefBuilder:
       typeOf: (String, Webref.Idl) => String,
   ): List[FacadeMember] =
     iface.staticAttributes.map(a => FacadeMember(scalaName(a.name), typeOf(a.idlType, idl), a.readonly))
+
+  /** maplike/setlike become methods + `size`; iterable/maplike/setlike bind `@@iterator` as `jsIterator`;
+    * async_iterable binds `@@asyncIterator`.
+    */
+  private def collectionExtras(
+      iface: Webref.IdlInterface,
+      idl: Webref.Idl,
+      typeOf: (String, Webref.Idl) => String,
+  ): (List[FacadeMember], List[MethodDef], List[String]) =
+    def ty(s: String)                                                 = typeOf(s, idl)
+    def meth(name: String, ret: String, params: List[ParamDef] = Nil) =
+      MethodDef(name, name, ret, params)
+    val size                            = FacadeMember("size", "Int", readonly = true)
+    val attrs                           = List.newBuilder[FacadeMember]
+    val methods                         = List.newBuilder[MethodDef]
+    def addIterable(elem: String): Unit =
+      // Native subclasses cannot inherit a non-native `js.Iterable` mixin (they would have to
+      // re-implement `jsIterator`). Bind `@@iterator` as a native method instead.
+      methods += MethodDef(
+        scalaName = "jsIterator",
+        domName = "jsIterator",
+        returnType = s"scala.scalajs.js.Iterator[$elem]",
+        params = Nil,
+        jsSymbol = Some("iterator"),
+      )
+    iface.maplike.foreach { ml =>
+      val k = ty(ml.keyType)
+      val v = ty(ml.valueType)
+      attrs += size
+      methods += meth("get", s"scala.scalajs.js.UndefOr[$v]", List(ParamDef("key", k)))
+      methods += meth("has", "Boolean", List(ParamDef("key", k)))
+      methods += meth("keys", s"scala.scalajs.js.Iterator[$k]")
+      methods += meth("values", s"scala.scalajs.js.Iterator[$v]")
+      methods += meth("entries", s"scala.scalajs.js.Iterator[scala.scalajs.js.Tuple2[$k, $v]]")
+      methods += meth("forEach", "Unit", List(ParamDef("callback", s"scala.scalajs.js.Function2[$v, $k, Unit]")))
+      if !ml.readonly then
+        methods += meth("set", "Unit", List(ParamDef("key", k), ParamDef("value", v)))
+        methods += meth("delete", "Boolean", List(ParamDef("key", k)))
+        methods += meth("clear", "Unit")
+      addIterable(s"js.Tuple2[$k, $v]")
+    }
+    iface.setlike.foreach { sl =>
+      val v = ty(sl.valueType)
+      attrs += size
+      methods += meth("has", "Boolean", List(ParamDef("value", v)))
+      methods += meth("keys", s"scala.scalajs.js.Iterator[$v]")
+      methods += meth("values", s"scala.scalajs.js.Iterator[$v]")
+      methods += meth("entries", s"scala.scalajs.js.Iterator[scala.scalajs.js.Tuple2[$v, $v]]")
+      methods += meth("forEach", "Unit", List(ParamDef("callback", s"scala.scalajs.js.Function1[$v, Unit]")))
+      if !sl.readonly then
+        methods += meth("add", "Unit", List(ParamDef("value", v)))
+        methods += meth("delete", "Boolean", List(ParamDef("value", v)))
+        methods += meth("clear", "Unit")
+      addIterable(v)
+    }
+    iface.iterable.foreach { it =>
+      val elem = it.keyType match
+        case Some(k) => s"js.Tuple2[${ty(k)}, ${ty(it.valueType)}]"
+        case None    => ty(it.valueType)
+      addIterable(elem)
+    }
+    iface.asyncIterable.foreach { it =>
+      val v      = ty(it.valueType)
+      val params = it.iteratorParams.map(p => ParamDef(scalaName(p.name), ty(p.idlType), p.optional))
+      methods += MethodDef(
+        scalaName = "jsAsyncIterator",
+        domName = "jsAsyncIterator",
+        returnType = s"scala.scalajs.js.Iterator[scala.scalajs.js.Promise[$v]]",
+        params = params,
+        jsSymbol = Some("asyncIterator"),
+      )
+    }
+    (attrs.result(), methods.result(), Nil)
+  end collectionExtras
 
   // --- dictionaries + enums ---
 
@@ -630,11 +744,13 @@ object DefBuilder:
     *   - primitives map to their canonical Scala equivalents
     *   - `undefined` → `Unit` (return type for void operations)
     *   - `DOMString` / `USVString` / `ByteString` / `CSSOMString` → `String`
+    *   - `sequence<T>` / `FrozenArray<T>` / `ObservableArray<T>` → `js.Array[T]`; `Promise<T>` → `js.Promise[T]`;
+    *     `record<K, V>` → `js.Dictionary[V]`
     *   - callback typedefs (e.g. `FrameRequestCallback`, `EventListener`) → typed `js.Function1[..., R]` reflecting the
     *     callback's actual shape — looked up via the `Idl.callbacks` registry
     *   - any other named type that we know is an interface → self-reference (`EventTarget`, `Blob`, etc.) — emitted in
     *     the same `Interfaces.scala` so the symbol resolves
-    *   - everything else (unions, sequences, generics, unknown names) → `js.Any`
+    *   - everything else (unions, unknown names) → `js.Any`
     *
     * The legacy no-arg overload exists for callers that don't yet thread an [[Idl]] through (event facades, attribute
     * tests). It treats every name as opaque.
@@ -663,16 +779,12 @@ object DefBuilder:
           case 3 => s"scala.scalajs.js.Function3[${args(0)}, ${args(1)}, ${args(2)}, $ret]"
           case _ => "scala.scalajs.js.Function" // bigger arities are rare in callback shapes
       case scala.None =>
-        // Resolution order beyond callbacks:
-        //   1. interface in idl.interfaces (Interfaces.scala / Facades.scala)
-        //   2. dictionary in idl.dictionaries (Dictionaries.scala)
-        //   3. enum in idl.enums — but enums are stringly-typed, so the Scala type is
-        //      `String`; the call site references the literal via `MyEnum.foo`.
-        //   4. otherwise primitives / fall-through to `js.Any`.
-        if idl.interfaces.contains(idlType) then idlType
-        else if idl.dictionaries.exists(_.name == idlType) then idlType
-        else if idl.enums.exists(_.name == idlType) then "String"
-        else baseScalaType(idlType)
+        genericFacadeType(idlType, t => scalaFacadeType(t, idl)).getOrElse {
+          if idl.interfaces.contains(idlType) then idlType
+          else if idl.dictionaries.exists(_.name == idlType) then idlType
+          else if idl.enums.exists(_.name == idlType) then "String"
+          else baseScalaType(idlType)
+        }
 
   private def baseScalaType(idlType: String): String = idlType match
     case "boolean"                                                                                  => "Boolean"
@@ -688,6 +800,23 @@ object DefBuilder:
     case "DOMTimeStamp"                           => "Double"
     case "any" | "object"                         => "scala.scalajs.js.Any"
     case _                                        => "scala.scalajs.js.Any"
+
+  private def genericFacadeType(idlType: String, rec: String => String): Option[String] =
+    def inner(prefix: String) = idlType.stripPrefix(prefix + "<").stripSuffix(">")
+    if idlType.startsWith("sequence<") && idlType.endsWith(">") then
+      Some(s"scala.scalajs.js.Array[${rec(inner("sequence"))}]")
+    else if idlType.startsWith("Promise<") && idlType.endsWith(">") then
+      Some(s"scala.scalajs.js.Promise[${rec(inner("Promise"))}]")
+    else if idlType.startsWith("FrozenArray<") && idlType.endsWith(">") then
+      Some(s"scala.scalajs.js.Array[${rec(inner("FrozenArray"))}]")
+    else if idlType.startsWith("ObservableArray<") && idlType.endsWith(">") then
+      Some(s"scala.scalajs.js.Array[${rec(inner("ObservableArray"))}]")
+    else if idlType.startsWith("record<") && idlType.endsWith(">") then
+      val args = inner("record").split(", ", 2)
+      if args.length == 2 then Some(s"scala.scalajs.js.Dictionary[${rec(args(1))}]") else None
+    else None
+    end if
+  end genericFacadeType
 
   // --- name mangling ---
 

@@ -223,24 +223,24 @@ trait Element extends Node:
   def ariaColIndexText_=(value: String): Unit
   def ariaColSpan: String
   def ariaColSpan_=(value: String): Unit
-  def ariaControlsElements: ascent.domcore.PlatformOpaque
-  def ariaControlsElements_=(value: ascent.domcore.PlatformOpaque): Unit
+  def ariaControlsElements: List[Element]
+  def ariaControlsElements_=(value: List[Element]): Unit
   def ariaCurrent: String
   def ariaCurrent_=(value: String): Unit
-  def ariaDescribedByElements: ascent.domcore.PlatformOpaque
-  def ariaDescribedByElements_=(value: ascent.domcore.PlatformOpaque): Unit
+  def ariaDescribedByElements: List[Element]
+  def ariaDescribedByElements_=(value: List[Element]): Unit
   def ariaDescription: String
   def ariaDescription_=(value: String): Unit
-  def ariaDetailsElements: ascent.domcore.PlatformOpaque
-  def ariaDetailsElements_=(value: ascent.domcore.PlatformOpaque): Unit
+  def ariaDetailsElements: List[Element]
+  def ariaDetailsElements_=(value: List[Element]): Unit
   def ariaDisabled: String
   def ariaDisabled_=(value: String): Unit
-  def ariaErrorMessageElements: ascent.domcore.PlatformOpaque
-  def ariaErrorMessageElements_=(value: ascent.domcore.PlatformOpaque): Unit
+  def ariaErrorMessageElements: List[Element]
+  def ariaErrorMessageElements_=(value: List[Element]): Unit
   def ariaExpanded: String
   def ariaExpanded_=(value: String): Unit
-  def ariaFlowToElements: ascent.domcore.PlatformOpaque
-  def ariaFlowToElements_=(value: ascent.domcore.PlatformOpaque): Unit
+  def ariaFlowToElements: List[Element]
+  def ariaFlowToElements_=(value: List[Element]): Unit
   def ariaHasPopup: String
   def ariaHasPopup_=(value: String): Unit
   def ariaHidden: String
@@ -251,8 +251,8 @@ trait Element extends Node:
   def ariaKeyShortcuts_=(value: String): Unit
   def ariaLabel: String
   def ariaLabel_=(value: String): Unit
-  def ariaLabelledByElements: ascent.domcore.PlatformOpaque
-  def ariaLabelledByElements_=(value: ascent.domcore.PlatformOpaque): Unit
+  def ariaLabelledByElements: List[Element]
+  def ariaLabelledByElements_=(value: List[Element]): Unit
   def ariaLevel: String
   def ariaLevel_=(value: String): Unit
   def ariaLive: String
@@ -265,8 +265,8 @@ trait Element extends Node:
   def ariaMultiSelectable_=(value: String): Unit
   def ariaOrientation: String
   def ariaOrientation_=(value: String): Unit
-  def ariaOwnsElements: ascent.domcore.PlatformOpaque
-  def ariaOwnsElements_=(value: ascent.domcore.PlatformOpaque): Unit
+  def ariaOwnsElements: List[Element]
+  def ariaOwnsElements_=(value: List[Element]): Unit
   def ariaPlaceholder: String
   def ariaPlaceholder_=(value: String): Unit
   def ariaPosInSet: String
@@ -311,7 +311,9 @@ trait Element extends Node:
   ): Node
   def pseudo(`type`: String): ascent.domcore.PlatformOpaque
   def computedStyleMap(): ascent.domcore.PlatformOpaque
-  def startViewTransition(callbackOptions: () => Unit | ascent.domcore.PlatformOpaque): ascent.domcore.PlatformOpaque
+  def startViewTransition(
+      callbackOptions: () => ascent.domcore.PlatformOpaque | ascent.domcore.PlatformOpaque
+  ): ascent.domcore.PlatformOpaque
   def getClientRects(): ascent.domcore.PlatformOpaque
   def getBoundingClientRect(): ascent.domcore.PlatformOpaque
   def checkVisibility(options: ascent.domcore.PlatformOpaque): Boolean
@@ -1596,6 +1598,8 @@ trait HTMLFormElement extends HTMLElement:
   def relList: DOMTokenList
   def elements: ascent.domcore.PlatformOpaque
   def length: Int
+  def apply(index: Int): Element
+  def apply(name: String): ascent.domcore.PlatformOpaque | Element
   def submit(): Unit
   def requestSubmit(submitter: HTMLElement): Unit
   def reset(): Unit
@@ -2002,6 +2006,7 @@ trait HTMLSelectElement extends HTMLElement:
   def namedItem(name: String): HTMLOptionElement
   def add(element: HTMLOptionElement | HTMLOptGroupElement, before: HTMLElement | Int): Unit
   def remove(index: Int): Unit
+  def update(index: Int, option: HTMLOptionElement): Unit
   def checkValidity(): Boolean
   def reportValidity(): Boolean
   def setCustomValidity(error: String): Unit
@@ -2011,7 +2016,7 @@ end HTMLSelectElement
 trait HTMLInputElement extends HTMLElement:
   def webkitdirectory: Boolean
   def webkitdirectory_=(value: Boolean): Unit
-  def webkitEntries: ascent.domcore.PlatformOpaque
+  def webkitEntries: List[ascent.domcore.PlatformOpaque]
   def capture: String
   def capture_=(value: String): Unit
   def accept: String
@@ -2635,8 +2640,8 @@ trait Document extends Node:
   def timeline: ascent.domcore.PlatformOpaque
   def fonts: ascent.domcore.PlatformOpaque
   def styleSheets: ascent.domcore.PlatformOpaque
-  def adoptedStyleSheets: ascent.domcore.PlatformOpaque
-  def adoptedStyleSheets_=(value: ascent.domcore.PlatformOpaque): Unit
+  def adoptedStyleSheets: List[ascent.domcore.PlatformOpaque]
+  def adoptedStyleSheets_=(value: List[ascent.domcore.PlatformOpaque]): Unit
   def customElementRegistry: ascent.domcore.PlatformOpaque
   def fullscreenElement: Element
   def activeElement: Element
@@ -2856,7 +2861,9 @@ trait Document extends Node:
   def ontouchcancel_=(value: ascent.domcore.PlatformOpaque): Unit
   def onbeforexrselect: ascent.domcore.PlatformOpaque
   def onbeforexrselect_=(value: ascent.domcore.PlatformOpaque): Unit
-  def startViewTransition(callbackOptions: () => Unit | ascent.domcore.PlatformOpaque): ascent.domcore.PlatformOpaque
+  def startViewTransition(
+      callbackOptions: () => ascent.domcore.PlatformOpaque | ascent.domcore.PlatformOpaque
+  ): ascent.domcore.PlatformOpaque
   def elementFromPoint(x: Double, y: Double): Element
   def elementsFromPoint(x: Double, y: Double): List[Element]
   def caretPositionFromPoint(
@@ -2889,6 +2896,7 @@ trait Document extends Node:
   def measureElement(element: Element): ascent.domcore.PlatformOpaque
   def measureText(text: String, styleMap: ascent.domcore.PlatformOpaque): ascent.domcore.PlatformOpaque
   def exitFullscreen(): ascent.domcore.PlatformOpaque
+  def apply(name: String): ascent.domcore.PlatformOpaque
   def getElementsByName(elementName: String): NodeList
   def open(unused1: String, unused2: String): Document
   def open(url: String, name: String, features: String): ascent.domcore.PlatformOpaque
