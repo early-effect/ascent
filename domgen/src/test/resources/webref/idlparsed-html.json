@@ -90,6 +90,23 @@
           }
         ]
       },
+      "CSSStyleValue": {
+        "type": "interface",
+        "name": "CSSStyleValue",
+        "inheritance": null,
+        "members": [
+          {
+            "type": "operation",
+            "name": "parse",
+            "special": "static",
+            "idlType": { "type": "return-type", "idlType": "CSSStyleValue" },
+            "arguments": [
+              { "type": "argument", "name": "property", "idlType": { "type": "argument-type", "idlType": "DOMString" }, "optional": false },
+              { "type": "argument", "name": "cssText", "idlType": { "type": "argument-type", "idlType": "DOMString" }, "optional": false }
+            ]
+          }
+        ]
+      },
       "FrameRequestCallback": {
         "type": "callback",
         "name": "FrameRequestCallback",

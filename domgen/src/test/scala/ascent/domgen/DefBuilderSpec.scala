@@ -456,6 +456,17 @@ object DefBuilderSpec extends ZIOSpecDefault:
             facades("MouseEvent").parent == Some("UIEvent"),
             facades("MouseEvent").members.map(_.name).toSet == Set("clientX", "clientY"),
             facades("Event").parent == None,
+            facades("Event").constants.map(_.name).toSet == Set(
+              "NONE",
+              "CAPTURING_PHASE",
+              "AT_TARGET",
+              "BUBBLING_PHASE",
+            ),
+            facades("Event").constructors == List(
+              ConstructorDef(
+                List(ParamDef("type", "String"), ParamDef("eventInitDict", "EventInit", optional = true))
+              )
+            ),
           )
       },
       test(
@@ -766,21 +777,20 @@ object DefBuilderSpec extends ZIOSpecDefault:
         )
         assertTrue(DefBuilder.structuralType("Cb", Set.empty, idl) == "(String | Boolean) => Unit")
       },
-      test("a sequence<T> idlType string resolves to a REAL List[T], the element type resolved independently") {
-        val idl = Webref.Idl(Map.empty)
-        assertTrue(DefBuilder.structuralType("sequence<DOMString>", Set.empty, idl) == "List[String]")
-      },
-      test("a sequence<T> whose element type is an in-scope interface resolves to List[<that trait>]") {
-        val idl     = Webref.Idl(Map.empty)
-        val inScope = Set("Node")
-        assertTrue(DefBuilder.structuralType("sequence<Node>", inScope, idl) == "List[Node]")
-      },
-      test("a sequence<T> whose element type is unmodeled resolves to List[PlatformOpaque], not PlatformOpaque alone") {
+      test("sequence / FrozenArray / ObservableArray all resolve to List[T], the element mapped independently") {
         val idl = Webref.Idl(Map.empty)
         assertTrue(
+          DefBuilder.structuralType("sequence<DOMString>", Set.empty, idl) == "List[String]",
+          DefBuilder.structuralType("FrozenArray<DOMString>", Set.empty, idl) == "List[String]",
+          DefBuilder.structuralType("ObservableArray<DOMString>", Set.empty, idl) == "List[String]",
+          DefBuilder.structuralType("sequence<Node>", Set("Node"), idl) == "List[Node]",
           DefBuilder.structuralType("sequence<SomeUnknownIface>", Set.empty, idl)
-            == "List[ascent.domcore.PlatformOpaque]"
+            == "List[ascent.domcore.PlatformOpaque]",
         )
+      },
+      test("record<K, V> resolves to Map[String, V]") {
+        val idl = Webref.Idl(Map.empty)
+        assertTrue(DefBuilder.structuralType("record<DOMString, long>", Set.empty, idl) == "Map[String, Int]")
       },
     ),
   )

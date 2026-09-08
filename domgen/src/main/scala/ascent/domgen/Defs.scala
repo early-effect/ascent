@@ -71,6 +71,10 @@ final case class FacadeDef(
     parent: Option[String],
     members: List[FacadeMember],
     methods: List[MethodDef] = Nil,
+    constructors: List[ConstructorDef] = Nil,
+    constants: List[FacadeMember] = Nil,
+    staticMethods: List[MethodDef] = Nil,
+    staticAttributes: List[FacadeMember] = Nil,
 )
 
 /** A method parameter on a generated [[MethodDef]].
@@ -83,16 +87,24 @@ final case class ParamDef(name: String, scalaType: String, optional: Boolean = f
 
 /** A generated `@js.native def`: name + parameter list + Scala return type.
   *
-  * Surface is intentionally narrow — Strings, primitives, generated facade types, and `js.Any` for anything we can't
-  * yet resolve (unions, sequences, generics, dictionaries). Future steps add typed return shapes for dictionaries /
-  * enums.
+  * `bracketAccess` / `jsSymbol` select the Scala.js interop annotation the renderer emits. Unnamed IDL getters/setters
+  * bind as `obj[i]` (`@JSBracketAccess apply`/`update`); `async_iterable` as `@@asyncIterator`
+  * (`@JSName(js.Symbol.asyncIterator)`). Unnamed deleters emit as a `delete` method (Scala.js has no delete-operator
+  * annotation).
   */
 final case class MethodDef(
     scalaName: String,
     domName: String,
     returnType: String,
     params: List[ParamDef],
+    bracketAccess: Boolean = false,
+    jsSymbol: Option[String] = None,
 )
+
+/** One WebIDL constructor overload. Rendered as `def this(...) = this()` on the `@js.native` class (primary ctor stays
+  * empty so subclasses can `extends Parent`).
+  */
+final case class ConstructorDef(params: List[ParamDef])
 
 /** A field on a generated [[DictionaryDef]] — type plus required flag for default-arg emission decisions.
   */
@@ -121,12 +133,14 @@ final case class EnumDef(name: String, values: List[(String, String)])
   * `Window`, `Performance`, `CanvasRenderingContext2D`, `Node`, etc. — gets one of these.
   *
   * Each interface emits to `dom-facade/.../generated/Interfaces.scala` as one
-  * `@js.native @JSGlobal class <Name> extends <Parent>` with attribute and method members.
+  * `@js.native @JSGlobal class <Name> extends <Parent> with <jsMixins>` with attribute and method members.
   *
   * `inheritedMethodNames` captures every method scalaName declared anywhere up the inheritance chain — used by the
   * renderer to decide whether a method's optional params can carry defaults. Scala 3 forbids defaults on multiple
   * overloads of the same name across an inheritance chain, so if any ancestor declares the same name, defaults are
   * stripped from this class's overloads of it.
+  *
+  * `jsMixins` are Scala.js traits mixed into the native class (`js.Iterable[T]` for iterable/maplike/setlike).
   */
 final case class InterfaceDef(
     name: String,
@@ -134,4 +148,9 @@ final case class InterfaceDef(
     attributes: List[FacadeMember],
     methods: List[MethodDef],
     inheritedMethodNames: Set[String] = Set.empty,
+    constructors: List[ConstructorDef] = Nil,
+    constants: List[FacadeMember] = Nil,
+    staticMethods: List[MethodDef] = Nil,
+    staticAttributes: List[FacadeMember] = Nil,
+    jsMixins: List[String] = Nil,
 )

@@ -158,6 +158,98 @@ object RendererSpec extends ZIOSpecDefault:
         val src = Renderer.facades(facades)
         assertTrue(src.contains("package ascent.dom"))
       },
+      test("a single constructor becomes def this(...) = this() so subclasses can extend the class") {
+        val defs = List(
+          FacadeDef(
+            "Event",
+            parent = None,
+            members = List(FacadeMember("type", "String"), FacadeMember("bubbles", "Boolean")),
+            constructors = List(
+              ConstructorDef(
+                List(ParamDef("type", "String"), ParamDef("eventInitDict", "EventInit", optional = true))
+              )
+            ),
+          )
+        )
+        val src = Renderer.facades(defs)
+        assertTrue(
+          src.contains("class Event extends js.Object:"),
+          src.contains("def this(@unused `type`: String, @unused eventInitDict: EventInit = js.native) = this()"),
+          src.contains("def `type`: String = js.native"),
+          src.contains("def bubbles: Boolean = js.native"),
+        )
+      },
+      test("constants emit on the JS companion object") {
+        val defs = List(
+          FacadeDef(
+            "Event",
+            parent = None,
+            members = Nil,
+            constants = List(FacadeMember("CAPTURING_PHASE", "Int"), FacadeMember("NONE", "Int")),
+          )
+        )
+        val src = Renderer.facades(defs)
+        assertTrue(
+          src.contains("object Event extends js.Object:"),
+          src.contains("val CAPTURING_PHASE: Int = js.native"),
+          src.contains("val NONE: Int = js.native"),
+        )
+      },
+    ),
+    suite("dom-facade: Interfaces.scala")(
+      test("static operations emit on the companion, not the instance") {
+        val defs = List(
+          InterfaceDef(
+            "CSSStyleValue",
+            parent = None,
+            attributes = Nil,
+            methods = Nil,
+            staticMethods = List(
+              MethodDef(
+                "parse",
+                "parse",
+                "CSSStyleValue",
+                List(ParamDef("property", "String"), ParamDef("cssText", "String")),
+              )
+            ),
+          )
+        )
+        val src = Renderer.interfaces(defs)
+        assertTrue(
+          src.contains("object CSSStyleValue extends js.Object:"),
+          src.contains("def parse(property: String, cssText: String): CSSStyleValue = js.native"),
+          !src.linesIterator.exists(l => l.trim.startsWith("class CSSStyleValue") && l.contains("parse")),
+        )
+      },
+      test("multiple constructor overloads each emit def this(...) = this()") {
+        val defs = List(
+          InterfaceDef(
+            "CSSRotate",
+            parent = Some("CSSTransformComponent"),
+            attributes = Nil,
+            methods = Nil,
+            constructors = List(
+              ConstructorDef(List(ParamDef("angle", "CSSNumericValue"))),
+              ConstructorDef(
+                List(
+                  ParamDef("x", "CSSNumberish"),
+                  ParamDef("y", "CSSNumberish"),
+                  ParamDef("z", "CSSNumberish"),
+                  ParamDef("angle", "CSSNumericValue"),
+                )
+              ),
+            ),
+          )
+        )
+        val src = Renderer.interfaces(defs)
+        assertTrue(
+          src.contains("class CSSRotate extends CSSTransformComponent:"),
+          src.contains("def this(@unused angle: CSSNumericValue) = this()"),
+          src.contains(
+            "def this(@unused x: CSSNumberish, @unused y: CSSNumberish, @unused z: CSSNumberish, @unused angle: CSSNumericValue) = this()"
+          ),
+        )
+      },
     ),
     suite("safety: identifier escaping")(
       test("a scalaName that collides with a Scala keyword is backticked in the emitted val") {

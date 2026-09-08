@@ -223,28 +223,17 @@ private[chekhov] object LiveOps:
 
   def press(el: dom.Element, key: String): IO[Throwable, Unit] =
     ZIO.succeed {
-      val dyn  = el.asInstanceOf[js.Dynamic]
-      val view = eventView(el)
-      val init = js.Dynamic.literal(bubbles = true, cancelable = true, key = key)
-      val ev   = js.Dynamic.newInstance(view.selectDynamic("KeyboardEvent"))("keydown", init)
-      dyn.dispatchEvent(ev)
-      ()
+      val init = js.Dynamic
+        .literal(bubbles = true, cancelable = true, key = key)
+        .asInstanceOf[dom.KeyboardEventInit]
+      dispatch(el, new dom.KeyboardEvent("keydown", init))
     }
 
   def dispatchInput(el: dom.Element): Unit =
-    val view = eventView(el)
-    val init = js.Dynamic.literal(bubbles = true)
-    val ev   = js.Dynamic.newInstance(view.selectDynamic("InputEvent"))("input", init)
-    el.asInstanceOf[js.Dynamic].dispatchEvent(ev)
-    ()
+    val init = js.Dynamic.literal(bubbles = true).asInstanceOf[dom.InputEventInit]
+    dispatch(el, new dom.InputEvent("input", init))
 
-  /** Construct events in the iframe's window. Parent-window `InputEvent` is a different realm. */
-  def eventView(el: dom.Element): js.Dynamic =
-    val doc  = el.asInstanceOf[js.Dynamic].ownerDocument
-    val view =
-      if doc != null && !js.isUndefined(doc) then doc.selectDynamic("defaultView")
-      else js.undefined
-    // `js.Dynamic.global` is not a value; fall back through `.window`.
-    if view == null || js.isUndefined(view) then js.Dynamic.global.window
-    else view.asInstanceOf[js.Dynamic]
+  private def dispatch(el: dom.Element, ev: dom.Event): Unit =
+    el.asInstanceOf[dom.EventTarget].dispatchEvent(ev)
+    ()
 end LiveOps

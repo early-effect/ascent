@@ -54,8 +54,6 @@ extension (self: Request)
 end extension
 
 extension (self: Notification)
-  def permissionTyped: Option[ascent.domtypes.NotificationPermission] =
-    ascent.domtypes.NotificationPermission.fromDom(self.permission)
   def dirTyped: Option[ascent.domtypes.NotificationDirection] = ascent.domtypes.NotificationDirection.fromDom(self.dir)
 
 extension (self: CanvasRenderingContext2D)
@@ -110,10 +108,6 @@ extension (self: PerformanceNavigationTiming)
   def typeTyped: Option[ascent.domtypes.NavigationTimingType] =
     ascent.domtypes.NavigationTimingType.fromDom(self.`type`)
 
-extension (self: NavigationEvent)
-  def dirTyped: Option[ascent.domtypes.SpatialNavigationDirection] =
-    ascent.domtypes.SpatialNavigationDirection.fromDom(self.dir)
-
 extension (self: KeyframeEffect)
   def compositeTyped: Option[ascent.domtypes.CompositeOperation] =
     ascent.domtypes.CompositeOperation.fromDom(self.composite)
@@ -128,10 +122,6 @@ extension (self: AudioDecoder)
 
 extension (self: DevicePosture)
   def typeTyped: Option[ascent.domtypes.DevicePostureType] = ascent.domtypes.DevicePostureType.fromDom(self.`type`)
-
-extension (self: SFrameTransformErrorEvent)
-  def errorTypeTyped: Option[ascent.domtypes.SFrameTransformErrorEventType] =
-    ascent.domtypes.SFrameTransformErrorEventType.fromDom(self.errorType)
 
 extension (self: GPUDeviceLostInfo)
   def reasonTyped: Option[ascent.domtypes.GPUDeviceLostReason] =
@@ -313,10 +303,6 @@ extension (self: TextTrack)
   def kindTyped: Option[ascent.domtypes.TextTrackKind] = ascent.domtypes.TextTrackKind.fromDom(self.kind)
   def modeTyped: Option[ascent.domtypes.TextTrackMode] = ascent.domtypes.TextTrackMode.fromDom(self.mode)
 
-extension (self: MediaKeyMessageEvent)
-  def messageTypeTyped: Option[ascent.domtypes.MediaKeyMessageType] =
-    ascent.domtypes.MediaKeyMessageType.fromDom(self.messageType)
-
 extension (self: PointerTimeline)
   def axisTyped: Option[ascent.domtypes.PointerAxis] = ascent.domtypes.PointerAxis.fromDom(self.axis)
 
@@ -336,14 +322,6 @@ extension (self: USBOutTransferResult)
 extension (self: WindowClient)
   def visibilityStateTyped: Option[ascent.domtypes.DocumentVisibilityState] =
     ascent.domtypes.DocumentVisibilityState.fromDom(self.visibilityState)
-
-extension (self: SpeechRecognitionErrorEvent)
-  def errorTyped: Option[ascent.domtypes.SpeechRecognitionErrorCode] =
-    ascent.domtypes.SpeechRecognitionErrorCode.fromDom(self.error)
-
-extension (self: NavigationCurrentEntryChangeEvent)
-  def navigationTypeTyped: Option[ascent.domtypes.NavigationType] =
-    ascent.domtypes.NavigationType.fromDom(self.navigationType)
 
 extension (self: XRWebGLDepthInformation)
   def textureTypeTyped: Option[ascent.domtypes.XRTextureType] = ascent.domtypes.XRTextureType.fromDom(self.textureType)
@@ -498,25 +476,14 @@ extension (self: Rewriter)
 
 extension (self: Lock) def modeTyped: Option[ascent.domtypes.LockMode] = ascent.domtypes.LockMode.fromDom(self.mode)
 
-extension (self: CaptureActionEvent)
-  def actionTyped: Option[ascent.domtypes.CaptureAction] = ascent.domtypes.CaptureAction.fromDom(self.action)
-
 extension (self: VideoDecoder)
   def stateTyped: Option[ascent.domtypes.CodecState] = ascent.domtypes.CodecState.fromDom(self.state)
 
 extension (self: XRView) def eyeTyped: Option[ascent.domtypes.XREye] = ascent.domtypes.XREye.fromDom(self.eye)
 
-extension (self: SecurityPolicyViolationEvent)
-  def dispositionTyped: Option[ascent.domtypes.SecurityPolicyViolationEventDisposition] =
-    ascent.domtypes.SecurityPolicyViolationEventDisposition.fromDom(self.disposition)
-
 extension (self: GPUBuffer)
   def mapStateTyped: Option[ascent.domtypes.GPUBufferMapState] =
     ascent.domtypes.GPUBufferMapState.fromDom(self.mapState)
-
-extension (self: NavigateEvent)
-  def navigationTypeTyped: Option[ascent.domtypes.NavigationType] =
-    ascent.domtypes.NavigationType.fromDom(self.navigationType)
 
 extension (self: Highlight)
   def typeTyped: Option[ascent.domtypes.HighlightType] = ascent.domtypes.HighlightType.fromDom(self.`type`)
@@ -540,9 +507,6 @@ extension (self: PresentationConnection)
     ascent.domtypes.PresentationConnectionState.fromDom(self.state)
   def binaryTypeTyped: Option[ascent.domtypes.BinaryType] = ascent.domtypes.BinaryType.fromDom(self.binaryType)
 
-extension (self: XRVisibilityMaskChangeEvent)
-  def eyeTyped: Option[ascent.domtypes.XREye] = ascent.domtypes.XREye.fromDom(self.eye)
-
 extension (self: PerformanceTimingConfidence)
   def valueTyped: Option[ascent.domtypes.PerformanceTimingConfidenceValue] =
     ascent.domtypes.PerformanceTimingConfidenceValue.fromDom(self.value)
@@ -560,10 +524,6 @@ extension (self: Client)
 extension (self: XMLHttpRequest)
   def responseTypeTyped: Option[ascent.domtypes.XMLHttpRequestResponseType] =
     ascent.domtypes.XMLHttpRequestResponseType.fromDom(self.responseType)
-
-extension (self: TaskPriorityChangeEvent)
-  def previousPriorityTyped: Option[ascent.domtypes.TaskPriority] =
-    ascent.domtypes.TaskPriority.fromDom(self.previousPriority)
 
 extension (self: RTCEncodedVideoFrame)
   def typeTyped: Option[ascent.domtypes.EncodedVideoChunkType] =
@@ -587,10 +547,6 @@ extension (self: VideoFrame)
 
 extension (self: WaveShaperNode)
   def oversampleTyped: Option[ascent.domtypes.OverSampleType] = ascent.domtypes.OverSampleType.fromDom(self.oversample)
-
-extension (self: PresentationConnectionCloseEvent)
-  def reasonTyped: Option[ascent.domtypes.PresentationConnectionCloseReason] =
-    ascent.domtypes.PresentationConnectionCloseReason.fromDom(self.reason)
 
 extension (self: VideoEncoder)
   def stateTyped: Option[ascent.domtypes.CodecState] = ascent.domtypes.CodecState.fromDom(self.state)
@@ -619,6 +575,48 @@ extension (self: PaymentRequest)
   def shippingTypeTyped: Option[ascent.domtypes.PaymentShippingType] =
     ascent.domtypes.PaymentShippingType.fromDom(self.shippingType)
 
+extension (self: NavigationEvent)
+  def dirTyped: Option[ascent.domtypes.SpatialNavigationDirection] =
+    ascent.domtypes.SpatialNavigationDirection.fromDom(self.dir)
+
+extension (self: SFrameTransformErrorEvent)
+  def errorTypeTyped: Option[ascent.domtypes.SFrameTransformErrorEventType] =
+    ascent.domtypes.SFrameTransformErrorEventType.fromDom(self.errorType)
+
 extension (self: SpeechSynthesisErrorEvent)
   def errorTyped: Option[ascent.domtypes.SpeechSynthesisErrorCode] =
     ascent.domtypes.SpeechSynthesisErrorCode.fromDom(self.error)
+
+extension (self: MediaKeyMessageEvent)
+  def messageTypeTyped: Option[ascent.domtypes.MediaKeyMessageType] =
+    ascent.domtypes.MediaKeyMessageType.fromDom(self.messageType)
+
+extension (self: SpeechRecognitionErrorEvent)
+  def errorTyped: Option[ascent.domtypes.SpeechRecognitionErrorCode] =
+    ascent.domtypes.SpeechRecognitionErrorCode.fromDom(self.error)
+
+extension (self: NavigationCurrentEntryChangeEvent)
+  def navigationTypeTyped: Option[ascent.domtypes.NavigationType] =
+    ascent.domtypes.NavigationType.fromDom(self.navigationType)
+
+extension (self: SecurityPolicyViolationEvent)
+  def dispositionTyped: Option[ascent.domtypes.SecurityPolicyViolationEventDisposition] =
+    ascent.domtypes.SecurityPolicyViolationEventDisposition.fromDom(self.disposition)
+
+extension (self: CaptureActionEvent)
+  def actionTyped: Option[ascent.domtypes.CaptureAction] = ascent.domtypes.CaptureAction.fromDom(self.action)
+
+extension (self: NavigateEvent)
+  def navigationTypeTyped: Option[ascent.domtypes.NavigationType] =
+    ascent.domtypes.NavigationType.fromDom(self.navigationType)
+
+extension (self: XRVisibilityMaskChangeEvent)
+  def eyeTyped: Option[ascent.domtypes.XREye] = ascent.domtypes.XREye.fromDom(self.eye)
+
+extension (self: TaskPriorityChangeEvent)
+  def previousPriorityTyped: Option[ascent.domtypes.TaskPriority] =
+    ascent.domtypes.TaskPriority.fromDom(self.previousPriority)
+
+extension (self: PresentationConnectionCloseEvent)
+  def reasonTyped: Option[ascent.domtypes.PresentationConnectionCloseReason] =
+    ascent.domtypes.PresentationConnectionCloseReason.fromDom(self.reason)
