@@ -18,7 +18,9 @@ object MyVersions extends ZipxVersions:
   val zio                = Lib("dev.zio", "zio", "2.1.26")
   val zioTest            = zio.mod("zio-test")
   val zioTestSbt         = zio.mod("zio-test-sbt")
-  val zioJson            = Lib("dev.zio", "zio-json", "1.0.0")
+  // Hold 0.10.0: chekhov-driver 0.0.5 was compiled against JsonEncoderDerivation, which zio-json 1.0.0
+  // removed (native Scala 3 macros). e2e then dies with NoClassDefFoundError until chekhov is rebuilt.
+  val zioJson            = Lib("dev.zio", "zio-json", "0.10.0")
   val zioHttp            = Lib("dev.zio", "zio-http", "3.11.4")
   val zioHttpDatastarSdk = zioHttp.mod("zio-http-datastar-sdk")
 
@@ -41,9 +43,6 @@ object MyVersions extends ZipxVersions:
   val chekhovCore    = chekhovZioTest.mod("chekhov-core")
   val chekhovDom     = chekhovZioTest.mod("chekhov-dom")
   val neotype        = Lib("io.github.kitlangton", "neotype", "0.7.2")
-  // chekhov-driver 0.0.5 was compiled against zio-json 0.10.0; 1.0.0 dropped the Magnolia
-  // transitive and e2e dies with NoClassDefFoundError: magnolia1/SerializableFunction0 until chekhov is rebuilt.
-  val magnolia       = Lib("com.softwaremill.magnolia1_3", "magnolia", "1.3.23")
 
   val scalajs        = Plugin("org.scala-js", "sbt-scalajs", "1.22.0")
   val scalaNative    = Plugin("org.scala-native", "sbt-scala-native", "0.5.12")
@@ -77,7 +76,7 @@ object MyVersions extends ZipxVersions:
   def domgenLib       = library(zioJson, fastparse)
   def docsJvm         = library(specularZioTest, specularTheme)
   def docsJs          = library(specular, zioTest)
-  def e2eTests        = library(chekhovZioTest.test, chekhovDriver.test, magnolia.test)
+  def e2eTests        = library(chekhovZioTest.test, chekhovDriver.test)
   def chekhovCoreLib  = library(chekhovCore)
   def chekhovDomLib   = library(chekhovDom)
   def sbtPreviewLib   = library(neotype)
