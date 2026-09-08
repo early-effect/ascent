@@ -43,35 +43,41 @@ object Eq extends LowPriorityEq:
   def by[A, K](key: A => K)(using ke: Eq[K]): Eq[A] = (a, b) => ke.eqv(key(a), key(b))
 
   /** Structural, Mirror-based derivation for case classes (products) and enums/sealed hierarchies (sums).
-    * Field-by-field for products; same-case-then-recurse for sums. Recurses to the `Eq` of each element type, so nested
-    * case classes compare structurally and a field with an explicit/override `Eq` uses it. Inline so the per-element
-    * `Eq`s are resolved at the derivation site with no runtime reflection.
+    * Field-by-field for products; same-case-then-recurse for sums. Product fields summon `Eq` so a nested explicit
+    * instance is honoured. Sum cases are derived from each case's own `Mirror` rather than summoned: `Eq[-A]` would
+    * otherwise select the parent instance as `Eq[case]` and recurse. Inline so the per-element `Eq`s are resolved at
+    * the derivation site with no runtime reflection.
     */
-  inline given derived[A](using m: Mirror.Of[A]): Eq[A] =
+  inline given derived[A](using Mirror.Of[A]): Eq[A] = fromMirror[A]
+
+  private inline def fromMirror[A](using m: Mirror.Of[A]): Eq[A] =
     inline m match
-      case s: Mirror.SumOf[A]     => sumEq[A](s, summonCaseEqs[s.MirroredElemTypes])
+      case s: Mirror.SumOf[A]     => sumEq[A](s, caseEqs[s.MirroredElemTypes])
       case p: Mirror.ProductOf[A] => productEq[A](summonElemEqs[p.MirroredElemTypes])
 
   /** Field-by-field product equality. Non-inline so its anonymous class is defined ONCE rather than duplicated at every
-    * `derived` call site — only the element-`Eq` summoning is inlined.
+    * `derived` call site — only the element-`Eq` summoning is inlined. `elemEqs` is by-name so a recursive ADT can
+    * mention the parent instance from a field without initializing it during the parent's own construction.
     */
-  private def productEq[A](elemEqs: Vector[Eq[?]]): Eq[A] = new Eq[A]:
+  private def productEq[A](elemEqs: => Vector[Eq[?]]): Eq[A] = new Eq[A]:
+    private lazy val eqs         = elemEqs
     def eqv(a: A, b: A): Boolean =
       val pa = a.asInstanceOf[Product]
       val pb = b.asInstanceOf[Product]
       var i  = 0
       var ok = true
-      while ok && i < elemEqs.length do
-        ok = elemEqs(i).asInstanceOf[Eq[Any]].eqv(pa.productElement(i), pb.productElement(i))
+      while ok && i < eqs.length do
+        ok = eqs(i).asInstanceOf[Eq[Any]].eqv(pa.productElement(i), pb.productElement(i))
         i += 1
       ok
 
   /** Same-case-then-recurse sum equality. Non-inline for the same reason as [[productEq]]. */
-  private def sumEq[A](s: Mirror.SumOf[A], caseEqs: Vector[Eq[?]]): Eq[A] = new Eq[A]:
+  private def sumEq[A](s: Mirror.SumOf[A], caseEqs: => Vector[Eq[?]]): Eq[A] = new Eq[A]:
+    private lazy val eqs         = caseEqs
     def eqv(a: A, b: A): Boolean =
       val ia = s.ordinal(a)
       val ib = s.ordinal(b)
-      ia == ib && caseEqs(ia).asInstanceOf[Eq[Any]].eqv(a, b)
+      ia == ib && eqs(ia).asInstanceOf[Eq[Any]].eqv(a, b)
 
   /** Summon an `Eq` for every element type of a product (its fields). */
   private inline def summonElemEqs[T <: Tuple]: Vector[Eq[?]] =
@@ -79,12 +85,12 @@ object Eq extends LowPriorityEq:
       case _: EmptyTuple => Vector.empty
       case _: (h *: t)   => summonInline[Eq[h]] +: summonElemEqs[t]
 
-  /** Summon an `Eq` for every case of a sum. Each case type has its own `Mirror`, so `derived` (or an explicit
-    * instance) is summoned recursively.
+  /** Per-case `Eq` from that case's `Mirror`. Must not `summonInline[Eq[h]]`: contravariance makes the parent a valid
+    * `Eq[h]`, which is the instance we are in the middle of building.
     */
-  private inline def summonCaseEqs[T <: Tuple]: Vector[Eq[?]] =
+  private inline def caseEqs[T <: Tuple]: Vector[Eq[?]] =
     inline erasedValue[T] match
       case _: EmptyTuple => Vector.empty
-      case _: (h *: t)   => summonInline[Eq[h]] +: summonCaseEqs[t]
+      case _: (h *: t)   => fromMirror[h](using summonInline[Mirror.Of[h]]) +: caseEqs[t]
 
 end Eq
