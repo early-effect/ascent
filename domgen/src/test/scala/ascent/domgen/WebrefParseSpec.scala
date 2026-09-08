@@ -177,6 +177,63 @@ object WebrefParseSpec extends ZIOSpecDefault:
         }""")
         yield assertTrue(idl.interfaces("X").attributes.head.idlType == "any")
       },
+      test("const members are surfaced with name and IDL type") {
+        for idl <- Webref.parseIdl(resource("idlparsed-uievents.json"))
+        yield
+          val byName = idl.interfaces("Event").constants.map(c => c.name -> c.idlType).toMap
+          assertTrue(
+            byName.keySet == Set("NONE", "CAPTURING_PHASE", "AT_TARGET", "BUBBLING_PHASE"),
+            byName("CAPTURING_PHASE") == "unsigned short",
+          )
+      },
+      test("static operations land on staticOperations, not instance operations") {
+        for idl <- Webref.parseIdl(resource("idlparsed-html.json"))
+        yield
+          val css = idl.interfaces("CSSStyleValue")
+          assertTrue(
+            css.operations.isEmpty,
+            css.staticOperations.map(_.name) == List("parse"),
+            css.staticOperations.head.params.map(_.name) == List("property", "cssText"),
+          )
+      },
+      test("constructor members are surfaced with argument names, types, and optional flags") {
+        for idl <- Webref.parseIdl(resource("idlparsed-uievents.json"))
+        yield
+          val ctor = idl.interfaces("Event").constructors.head
+          assertTrue(
+            idl.interfaces("Event").constructors.size == 1,
+            ctor.params.map(_.name) == List("type", "eventInitDict"),
+            ctor.params.map(_.idlType) == List("DOMString", "EventInit"),
+            ctor.params.map(_.optional) == List(false, true),
+          )
+      },
+      test("a constructor with no arguments list is a zero-arg constructor, not dropped") {
+        for idl <- Webref.parseIdl(resource("idlparsed-html.json"))
+        yield assertTrue(idl.interfaces("HTMLInputElement").constructors == List(Webref.IdlConstructor(Nil)))
+      },
+      test("the known webref member kinds are either modelled or a tracked gap") {
+        // Census of `type` values on members in the vendored idlparsed snapshot. A new kind must land
+        // in modelledMemberKinds or trackedGapMemberKinds — never as a silent drop.
+        val kindsInSnapshot = Set(
+          "attribute",
+          "field",
+          "operation",
+          "const",
+          "constructor",
+          "iterable",
+          "maplike",
+          "setlike",
+          "async_iterable",
+        )
+        assertTrue(
+          (kindsInSnapshot -- Webref.modelledMemberKinds -- Webref.trackedGapMemberKinds).isEmpty,
+          Webref.modelledMemberKinds.contains("constructor"),
+          Webref.modelledMemberKinds.contains("const"),
+          Webref.trackedGapMemberKinds.contains("iterable"),
+          Webref.trackedGapSpecials.contains("getter"),
+          Webref.trackedGapGenerics.contains("Promise"),
+        )
+      },
       test("operation members are surfaced with their return type and ordered argument list") {
         for idl <- Webref.parseIdl(resource("idlparsed-html.json"))
         yield

@@ -106,7 +106,6 @@ trait HTMLScriptElement extends HTMLElement:
   def event_=(value: String): Unit
   def htmlFor: String
   def htmlFor_=(value: String): Unit
-  def supports(`type`: String): Boolean
 end HTMLScriptElement
 
 trait HTMLUnknownElement extends HTMLElement
@@ -2890,7 +2889,6 @@ trait Document extends Node:
   def measureElement(element: Element): ascent.domcore.PlatformOpaque
   def measureText(text: String, styleMap: ascent.domcore.PlatformOpaque): ascent.domcore.PlatformOpaque
   def exitFullscreen(): ascent.domcore.PlatformOpaque
-  def parseHTMLUnsafe(html: ascent.domcore.PlatformOpaque | String): Document
   def getElementsByName(elementName: String): NodeList
   def open(unused1: String, unused2: String): Document
   def open(url: String, name: String, features: String): ascent.domcore.PlatformOpaque
@@ -2910,7 +2908,6 @@ trait Document extends Node:
   def exitPictureInPicture(): ascent.domcore.PlatformOpaque
   def exitPointerLock(): Unit
   def hasUnpartitionedCookieAccess(): ascent.domcore.PlatformOpaque
-  def parseHTML(html: String, options: ascent.domcore.PlatformOpaque): Document
   def getSelection(): ascent.domcore.PlatformOpaque
   def hasStorageAccess(): ascent.domcore.PlatformOpaque
   def requestStorageAccess(): ascent.domcore.PlatformOpaque

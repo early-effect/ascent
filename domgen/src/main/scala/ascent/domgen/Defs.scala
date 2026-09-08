@@ -71,6 +71,10 @@ final case class FacadeDef(
     parent: Option[String],
     members: List[FacadeMember],
     methods: List[MethodDef] = Nil,
+    constructors: List[ConstructorDef] = Nil,
+    constants: List[FacadeMember] = Nil,
+    staticMethods: List[MethodDef] = Nil,
+    staticAttributes: List[FacadeMember] = Nil,
 )
 
 /** A method parameter on a generated [[MethodDef]].
@@ -93,6 +97,11 @@ final case class MethodDef(
     returnType: String,
     params: List[ParamDef],
 )
+
+/** One WebIDL constructor overload. Rendered as `def this(...) = this()` on the `@js.native` class (primary ctor stays
+  * empty so subclasses can `extends Parent`).
+  */
+final case class ConstructorDef(params: List[ParamDef])
 
 /** A field on a generated [[DictionaryDef]] — type plus required flag for default-arg emission decisions.
   */
@@ -134,4 +143,8 @@ final case class InterfaceDef(
     attributes: List[FacadeMember],
     methods: List[MethodDef],
     inheritedMethodNames: Set[String] = Set.empty,
+    constructors: List[ConstructorDef] = Nil,
+    constants: List[FacadeMember] = Nil,
+    staticMethods: List[MethodDef] = Nil,
+    staticAttributes: List[FacadeMember] = Nil,
 )

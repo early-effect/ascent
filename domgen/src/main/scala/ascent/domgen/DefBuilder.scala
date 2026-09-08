@@ -300,6 +300,10 @@ object DefBuilder:
             attributes = ownAttrsDedup.values.toList,
             methods = ownMethodsDedup.values.toList,
             inheritedMethodNames = inheritedMethodSigs.map(_._1),
+            constructors = constructorsOf(iface, idl, typeOf),
+            constants = constantsOf(iface, idl, typeOf),
+            staticMethods = staticMethodsOf(iface, idl, typeOf),
+            staticAttributes = staticAttributesOf(iface, idl, typeOf),
           )
         )
     }
@@ -382,6 +386,44 @@ object DefBuilder:
       )
     )
   end ownMethodsOf
+
+  /** Own constructors only. Mixins and ancestors are not constructible under the child's name. */
+  private def constructorsOf(
+      iface: Webref.IdlInterface,
+      idl: Webref.Idl,
+      typeOf: (String, Webref.Idl) => String,
+  ): List[ConstructorDef] =
+    iface.constructors.map { c =>
+      ConstructorDef(c.params.map(p => ParamDef(scalaName(p.name), typeOf(p.idlType, idl), p.optional)))
+    }
+
+  private def constantsOf(
+      iface: Webref.IdlInterface,
+      idl: Webref.Idl,
+      typeOf: (String, Webref.Idl) => String,
+  ): List[FacadeMember] =
+    iface.constants.map(c => FacadeMember(c.name, typeOf(c.idlType, idl), readonly = true))
+
+  private def staticMethodsOf(
+      iface: Webref.IdlInterface,
+      idl: Webref.Idl,
+      typeOf: (String, Webref.Idl) => String,
+  ): List[MethodDef] =
+    iface.staticOperations.map { o =>
+      MethodDef(
+        scalaName = scalaName(o.name),
+        domName = o.name,
+        returnType = typeOf(o.returnType, idl),
+        params = o.params.map(p => ParamDef(scalaName(p.name), typeOf(p.idlType, idl), p.optional)),
+      )
+    }
+
+  private def staticAttributesOf(
+      iface: Webref.IdlInterface,
+      idl: Webref.Idl,
+      typeOf: (String, Webref.Idl) => String,
+  ): List[FacadeMember] =
+    iface.staticAttributes.map(a => FacadeMember(scalaName(a.name), typeOf(a.idlType, idl), a.readonly))
 
   // --- dictionaries + enums ---
 
@@ -491,12 +533,19 @@ object DefBuilder:
 
   // --- event facade hierarchy ---
 
-  /** One [[FacadeDef]] per event interface referenced by any event, plus all transitively-named ancestors (so
-    * `MouseEvent`'s `UIEvent`/`Event` parents are emitted even if no event names them directly). Members and parent
-    * come from the merged IDL.
+  /** One [[FacadeDef]] per IDL interface that inherits from `Event`, plus any event-json interface and its ancestors.
+    * That keeps `MessageEvent` / `CustomEvent` in the same hierarchy as `KeyboardEvent`, not as `js.Object` in
+    * Interfaces.scala.
     */
   def facadeDefs(events: List[Webref.Event], idl: Webref.Idl): List[FacadeDef] =
-    val roots                       = events.map(_.interface).toSet
+    def underEvent(name: String, seen: Set[String]): Boolean =
+      name == "Event" || (
+        !seen.contains(name) &&
+          idl.interfaces.get(name).exists(i => !i.isMixin && i.inheritance.exists(p => underEvent(p, seen + name)))
+      )
+    val roots = events.map(_.interface).toSet ++ idl.interfaces.collect {
+      case (name, iface) if !iface.isMixin && underEvent(name, Set.empty) => name
+    }
     val closure                     = scala.collection.mutable.LinkedHashSet.empty[String]
     def collect(name: String): Unit =
       if !closure.contains(name) then
@@ -529,6 +578,10 @@ object DefBuilder:
         parent = iface.inheritance.filter(idl.interfaces.contains),
         members = facadeMembers(iface, idl),
         methods = ownOps,
+        constructors = constructorsOf(iface, idl, scalaFacadeType),
+        constants = constantsOf(iface, idl, scalaFacadeType),
+        staticMethods = staticMethodsOf(iface, idl, scalaFacadeType),
+        staticAttributes = staticAttributesOf(iface, idl, scalaFacadeType),
       )
     }
   end facadeDefs

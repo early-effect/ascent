@@ -456,6 +456,17 @@ object DefBuilderSpec extends ZIOSpecDefault:
             facades("MouseEvent").parent == Some("UIEvent"),
             facades("MouseEvent").members.map(_.name).toSet == Set("clientX", "clientY"),
             facades("Event").parent == None,
+            facades("Event").constants.map(_.name).toSet == Set(
+              "NONE",
+              "CAPTURING_PHASE",
+              "AT_TARGET",
+              "BUBBLING_PHASE",
+            ),
+            facades("Event").constructors == List(
+              ConstructorDef(
+                List(ParamDef("type", "String"), ParamDef("eventInitDict", "EventInit", optional = true))
+              )
+            ),
           )
       },
       test(

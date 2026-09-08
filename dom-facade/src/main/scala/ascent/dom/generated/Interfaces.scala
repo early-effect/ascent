@@ -2,6 +2,7 @@
 
 package ascent.dom
 
+import scala.annotation.unused
 import scala.scalajs.js
 import scala.scalajs.js.annotation.JSGlobal
 
@@ -22,6 +23,7 @@ import scala.scalajs.js.annotation.JSGlobal
 @js.native
 @JSGlobal
 class QuotaExceededError extends DOMException:
+  def this(@unused message: String = js.native, @unused options: QuotaExceededErrorOptions = js.native) = this()
   def quota: Double     = js.native
   def requested: Double = js.native
 
@@ -37,14 +39,18 @@ class Summarizer extends js.Object:
   def expectedContextLanguages: scala.scalajs.js.Any                                                     = js.native
   def outputLanguage: String                                                                             = js.native
   def inputQuota: Double                                                                                 = js.native
-  def create(options: SummarizerCreateOptions = js.native): scala.scalajs.js.Any                         = js.native
-  def availability(options: SummarizerCreateCoreOptions = js.native): scala.scalajs.js.Any               = js.native
   def summarize(input: String, options: SummarizerSummarizeOptions = js.native): scala.scalajs.js.Any    = js.native
   def summarizeStreaming(input: String, options: SummarizerSummarizeOptions = js.native): ReadableStream = js.native
   def measureInputUsage(input: String, options: SummarizerSummarizeOptions = js.native): scala.scalajs.js.Any =
     js.native
   def destroy(): Unit = js.native
 end Summarizer
+
+@js.native
+@JSGlobal
+object Summarizer extends js.Object:
+  def create(options: SummarizerCreateOptions = js.native): scala.scalajs.js.Any           = js.native
+  def availability(options: SummarizerCreateCoreOptions = js.native): scala.scalajs.js.Any = js.native
 
 @js.native
 @JSGlobal
@@ -57,24 +63,27 @@ class AuthenticatorAttestationResponse extends AuthenticatorResponse:
 
 @js.native
 @JSGlobal
-class USBConnectionEvent extends js.Object:
-  def device: USBDevice = js.native
-
-@js.native
-@JSGlobal
 class CSSMathClamp extends CSSMathValue:
+  def this(
+      @unused lower: scala.scalajs.js.Any,
+      @unused value: scala.scalajs.js.Any,
+      @unused upper: scala.scalajs.js.Any,
+  ) = this()
   def lower: CSSNumericValue = js.native
   def value: CSSNumericValue = js.native
   def upper: CSSNumericValue = js.native
+end CSSMathClamp
 
 @js.native
 @JSGlobal
 class Global extends js.Object:
+  def this(@unused descriptor: GlobalDescriptor, @unused v: scala.scalajs.js.Any = js.native) = this()
   var value: scala.scalajs.js.Any = js.native
 
 @js.native
 @JSGlobal
 class RTCIceCandidate extends js.Object:
+  def this(@unused candidateInitDict: RTCLocalIceCandidateInit = js.native) = this()
   def candidate: String             = js.native
   def sdpMid: String                = js.native
   def sdpMLineIndex: Int            = js.native
@@ -102,6 +111,7 @@ class EpubReadingSystem extends js.Object:
 @js.native
 @JSGlobal
 class CloseWatcher extends EventTarget:
+  def this(@unused options: CloseWatcherOptions = js.native) = this()
   var oncancel: scala.scalajs.js.Any = js.native
   var onclose: scala.scalajs.js.Any  = js.native
   def requestClose(): Unit           = js.native
@@ -110,19 +120,15 @@ class CloseWatcher extends EventTarget:
 
 @js.native
 @JSGlobal
-class ClipboardChangeEvent extends js.Object:
-  def types: scala.scalajs.js.Any    = js.native
-  def changeId: scala.scalajs.js.Any = js.native
-
-@js.native
-@JSGlobal
 class RTCError extends DOMException:
+  def this(@unused init: RTCErrorInit, @unused message: String = js.native) = this()
   def httpRequestStatusCode: Int = js.native
   def errorDetail: String        = js.native
   def sdpLineNumber: Int         = js.native
   def sctpCauseCode: Int         = js.native
   def receivedAlert: Int         = js.native
   def sentAlert: Int             = js.native
+end RTCError
 
 @js.native
 @JSGlobal
@@ -156,17 +162,14 @@ class SourceBufferList extends EventTarget:
 @js.native
 @JSGlobal
 class LanguageModel extends EventTarget:
-  def contextUsage: Double                                                                    = js.native
-  def contextWindow: Double                                                                   = js.native
-  var oncontextoverflow: scala.scalajs.js.Any                                                 = js.native
-  def inputUsage: Double                                                                      = js.native
-  def inputQuota: Double                                                                      = js.native
-  var onquotaoverflow: scala.scalajs.js.Any                                                   = js.native
-  def topK: Int                                                                               = js.native
-  def temperature: Double                                                                     = js.native
-  def create(options: LanguageModelCreateOptions = js.native): scala.scalajs.js.Any           = js.native
-  def availability(options: LanguageModelCreateCoreOptions = js.native): scala.scalajs.js.Any = js.native
-  def params(): scala.scalajs.js.Any                                                          = js.native
+  def contextUsage: Double                    = js.native
+  def contextWindow: Double                   = js.native
+  var oncontextoverflow: scala.scalajs.js.Any = js.native
+  def inputUsage: Double                      = js.native
+  def inputQuota: Double                      = js.native
+  var onquotaoverflow: scala.scalajs.js.Any   = js.native
+  def topK: Int                               = js.native
+  def temperature: Double                     = js.native
   def prompt(input: scala.scalajs.js.Any, options: LanguageModelPromptOptions = js.native): scala.scalajs.js.Any =
     js.native
   def promptStreaming(input: scala.scalajs.js.Any, options: LanguageModelPromptOptions = js.native): ReadableStream =
@@ -186,8 +189,10 @@ end LanguageModel
 
 @js.native
 @JSGlobal
-class ValueEvent extends js.Object:
-  def value: scala.scalajs.js.Any = js.native
+object LanguageModel extends js.Object:
+  def create(options: LanguageModelCreateOptions = js.native): scala.scalajs.js.Any           = js.native
+  def availability(options: LanguageModelCreateCoreOptions = js.native): scala.scalajs.js.Any = js.native
+  def params(): scala.scalajs.js.Any                                                          = js.native
 
 @js.native
 @JSGlobal
@@ -195,14 +200,18 @@ class Translator extends js.Object:
   def sourceLanguage: String                                                                             = js.native
   def targetLanguage: String                                                                             = js.native
   def inputQuota: Double                                                                                 = js.native
-  def create(options: TranslatorCreateOptions): scala.scalajs.js.Any                                     = js.native
-  def availability(options: TranslatorCreateCoreOptions): scala.scalajs.js.Any                           = js.native
   def translate(input: String, options: TranslatorTranslateOptions = js.native): scala.scalajs.js.Any    = js.native
   def translateStreaming(input: String, options: TranslatorTranslateOptions = js.native): ReadableStream = js.native
   def measureInputUsage(input: String, options: TranslatorTranslateOptions = js.native): scala.scalajs.js.Any =
     js.native
   def destroy(): Unit = js.native
 end Translator
+
+@js.native
+@JSGlobal
+object Translator extends js.Object:
+  def create(options: TranslatorCreateOptions): scala.scalajs.js.Any           = js.native
+  def availability(options: TranslatorCreateCoreOptions): scala.scalajs.js.Any = js.native
 
 @js.native
 @JSGlobal
@@ -223,12 +232,8 @@ class SVGLineElement extends SVGGeometryElement:
 
 @js.native
 @JSGlobal
-class TrackEvent extends js.Object:
-  def track: scala.scalajs.js.Any = js.native
-
-@js.native
-@JSGlobal
-class GPUValidationError extends GPUError
+class GPUValidationError extends GPUError:
+  def this(@unused message: String) = this()
 
 @js.native
 @JSGlobal
@@ -252,6 +257,7 @@ end SVGPointList
 @js.native
 @JSGlobal
 class USBInTransferResult extends js.Object:
+  def this(@unused status: String, @unused data: scala.scalajs.js.Any = js.native) = this()
   def data: scala.scalajs.js.Any = js.native
   def status: String             = js.native
 
@@ -346,6 +352,18 @@ end SVGMarkerElement
 
 @js.native
 @JSGlobal
+object SVGMarkerElement extends js.Object:
+  val SVG_MARKERUNITS_UNKNOWN: Int              = js.native
+  val SVG_MARKERUNITS_USERSPACEONUSE: Int       = js.native
+  val SVG_MARKERUNITS_STROKEWIDTH: Int          = js.native
+  val SVG_MARKER_ORIENT_UNKNOWN: Int            = js.native
+  val SVG_MARKER_ORIENT_AUTO: Int               = js.native
+  val SVG_MARKER_ORIENT_ANGLE: Int              = js.native
+  val SVG_MARKER_ORIENT_AUTO_START_REVERSE: Int = js.native
+end SVGMarkerElement
+
+@js.native
+@JSGlobal
 class CSSApplyStatementRule extends CSSRule:
   def name: String                         = js.native
   def getArguments(): scala.scalajs.js.Any = js.native
@@ -365,6 +383,18 @@ end EXT_disjoint_timer_query
 
 @js.native
 @JSGlobal
+object EXT_disjoint_timer_query extends js.Object:
+  val QUERY_COUNTER_BITS_EXT: scala.scalajs.js.Any     = js.native
+  val CURRENT_QUERY_EXT: scala.scalajs.js.Any          = js.native
+  val QUERY_RESULT_EXT: scala.scalajs.js.Any           = js.native
+  val QUERY_RESULT_AVAILABLE_EXT: scala.scalajs.js.Any = js.native
+  val TIME_ELAPSED_EXT: scala.scalajs.js.Any           = js.native
+  val TIMESTAMP_EXT: scala.scalajs.js.Any              = js.native
+  val GPU_DISJOINT_EXT: scala.scalajs.js.Any           = js.native
+end EXT_disjoint_timer_query
+
+@js.native
+@JSGlobal
 class CaretPosition extends js.Object:
   def offsetNode: Node         = js.native
   def offset: Int              = js.native
@@ -372,13 +402,8 @@ class CaretPosition extends js.Object:
 
 @js.native
 @JSGlobal
-class BufferedChangeEvent extends js.Object:
-  def addedRanges: TimeRanges   = js.native
-  def removedRanges: TimeRanges = js.native
-
-@js.native
-@JSGlobal
 class EncodedAudioChunk extends js.Object:
+  def this(@unused init: EncodedAudioChunkInit) = this()
   def `type`: String                                  = js.native
   def timestamp: Int                                  = js.native
   def duration: Int                                   = js.native
@@ -392,6 +417,7 @@ class OES_element_index_uint extends js.Object
 @js.native
 @JSGlobal
 class Request extends js.Object:
+  def this(@unused input: scala.scalajs.js.Any, @unused init: RequestInit = js.native) = this()
   def method: String                      = js.native
   def url: String                         = js.native
   def headers: Headers                    = js.native
@@ -428,8 +454,7 @@ class PerformancePaintTiming extends PerformanceEntry:
 @js.native
 @JSGlobal
 class Notification extends EventTarget:
-  def permission: String            = js.native
-  def maxActions: Int               = js.native
+  def this(@unused title: String, @unused options: NotificationOptions = js.native) = this()
   var onclick: scala.scalajs.js.Any = js.native
   var onshow: scala.scalajs.js.Any  = js.native
   var onerror: scala.scalajs.js.Any = js.native
@@ -450,11 +475,17 @@ class Notification extends EventTarget:
   def requireInteraction: Boolean   = js.native
   def data: scala.scalajs.js.Any    = js.native
   def actions: scala.scalajs.js.Any = js.native
+  def close(): Unit                 = js.native
+end Notification
+
+@js.native
+@JSGlobal
+object Notification extends js.Object:
+  def permission: String = js.native
+  def maxActions: Int    = js.native
   def requestPermission(
       deprecatedCallback: scala.scalajs.js.Function1[String, Unit] = js.native
   ): scala.scalajs.js.Any = js.native
-  def close(): Unit       = js.native
-end Notification
 
 @js.native
 @JSGlobal
@@ -476,6 +507,7 @@ class SVGFEDistantLightElement extends SVGElement:
 @js.native
 @JSGlobal
 class XRWebGLBinding extends js.Object:
+  def this(@unused session: XRSession, @unused context: scala.scalajs.js.Any) = this()
   def nativeProjectionScaleFactor: Double                                                              = js.native
   def usesDepthValues: Boolean                                                                         = js.native
   def getCameraImage(camera: XRCamera): WebGLTexture                                                   = js.native
@@ -721,13 +753,8 @@ class Worklet extends js.Object:
 
 @js.native
 @JSGlobal
-class CharacterBoundsUpdateEvent extends js.Object:
-  def rangeStart: Int = js.native
-  def rangeEnd: Int   = js.native
-
-@js.native
-@JSGlobal
 class CSSParserFunction extends CSSParserValue:
+  def this(@unused name: String, @unused args: scala.scalajs.js.Any) = this()
   def name: String               = js.native
   def args: scala.scalajs.js.Any = js.native
 
@@ -737,7 +764,16 @@ class EXT_texture_compression_rgtc extends js.Object
 
 @js.native
 @JSGlobal
+object EXT_texture_compression_rgtc extends js.Object:
+  val COMPRESSED_RED_RGTC1_EXT: scala.scalajs.js.Any              = js.native
+  val COMPRESSED_SIGNED_RED_RGTC1_EXT: scala.scalajs.js.Any       = js.native
+  val COMPRESSED_RED_GREEN_RGTC2_EXT: scala.scalajs.js.Any        = js.native
+  val COMPRESSED_SIGNED_RED_GREEN_RGTC2_EXT: scala.scalajs.js.Any = js.native
+
+@js.native
+@JSGlobal
 class CSSParserQualifiedRule extends CSSParserRule:
+  def this(@unused prelude: scala.scalajs.js.Any, @unused body: scala.scalajs.js.Any = js.native) = this()
   def prelude: scala.scalajs.js.Any = js.native
   def body: scala.scalajs.js.Any    = js.native
 
@@ -747,7 +783,23 @@ class WEBGL_compressed_texture_etc extends js.Object
 
 @js.native
 @JSGlobal
+object WEBGL_compressed_texture_etc extends js.Object:
+  val COMPRESSED_R11_EAC: scala.scalajs.js.Any                        = js.native
+  val COMPRESSED_SIGNED_R11_EAC: scala.scalajs.js.Any                 = js.native
+  val COMPRESSED_RG11_EAC: scala.scalajs.js.Any                       = js.native
+  val COMPRESSED_SIGNED_RG11_EAC: scala.scalajs.js.Any                = js.native
+  val COMPRESSED_RGB8_ETC2: scala.scalajs.js.Any                      = js.native
+  val COMPRESSED_SRGB8_ETC2: scala.scalajs.js.Any                     = js.native
+  val COMPRESSED_RGB8_PUNCHTHROUGH_ALPHA1_ETC2: scala.scalajs.js.Any  = js.native
+  val COMPRESSED_SRGB8_PUNCHTHROUGH_ALPHA1_ETC2: scala.scalajs.js.Any = js.native
+  val COMPRESSED_RGBA8_ETC2_EAC: scala.scalajs.js.Any                 = js.native
+  val COMPRESSED_SRGB8_ALPHA8_ETC2_EAC: scala.scalajs.js.Any          = js.native
+end WEBGL_compressed_texture_etc
+
+@js.native
+@JSGlobal
 class Animation extends EventTarget:
+  def this(@unused effect: AnimationEffect = js.native, @unused timeline: AnimationTimeline = js.native) = this()
   var id: String                                     = js.native
   var effect: AnimationEffect                        = js.native
   var timeline: AnimationTimeline                    = js.native
@@ -789,16 +841,12 @@ class XRReferenceSpace extends XRSpace:
 
 @js.native
 @JSGlobal
-class PeriodicSyncEvent extends js.Object:
-  def tag: String = js.native
-
-@js.native
-@JSGlobal
 class SVGMetadataElement extends SVGElement
 
 @js.native
 @JSGlobal
 class FederatedCredential extends Credential:
+  def this(@unused data: FederatedCredentialInit) = this()
   def provider: String = js.native
   def protocol: String = js.native
   def name: String     = js.native
@@ -807,6 +855,8 @@ class FederatedCredential extends Credential:
 @js.native
 @JSGlobal
 class PasswordCredential extends Credential:
+  def this(@unused form: HTMLFormElement) = this()
+  def this(@unused data: PasswordCredentialData) = this()
   def password: String = js.native
   def name: String     = js.native
   def iconURL: String  = js.native
@@ -848,26 +898,6 @@ class ManagedMediaSource extends MediaSource:
   def streaming: Boolean                     = js.native
   var onstartstreaming: scala.scalajs.js.Any = js.native
   var onendstreaming: scala.scalajs.js.Any   = js.native
-
-@js.native
-@JSGlobal
-class StorageEvent extends js.Object:
-  def key: String          = js.native
-  def oldValue: String     = js.native
-  def newValue: String     = js.native
-  def url: String          = js.native
-  def storageArea: Storage = js.native
-  def initStorageEvent(
-      `type`: String,
-      bubbles: Boolean = js.native,
-      cancelable: Boolean = js.native,
-      key: String = js.native,
-      oldValue: String = js.native,
-      newValue: String = js.native,
-      url: String = js.native,
-      storageArea: Storage = js.native,
-  ): Unit = js.native
-end StorageEvent
 
 @js.native
 @JSGlobal
@@ -994,8 +1024,10 @@ end SVGFEMorphologyElement
 
 @js.native
 @JSGlobal
-class WebGLContextEvent extends js.Object:
-  def statusMessage: String = js.native
+object SVGFEMorphologyElement extends js.Object:
+  val SVG_MORPHOLOGY_OPERATOR_UNKNOWN: Int = js.native
+  val SVG_MORPHOLOGY_OPERATOR_ERODE: Int   = js.native
+  val SVG_MORPHOLOGY_OPERATOR_DILATE: Int  = js.native
 
 @js.native
 @JSGlobal
@@ -1006,14 +1038,20 @@ class XRCamera extends js.Object:
 @js.native
 @JSGlobal
 class ReadableStream extends js.Object:
+  def this(@unused underlyingSource: scala.scalajs.js.Any = js.native, @unused strategy: QueuingStrategy = js.native) =
+    this()
   def locked: Boolean                                                                                      = js.native
-  def from(asyncIterable: scala.scalajs.js.Any): ReadableStream                                            = js.native
   def cancel(reason: scala.scalajs.js.Any = js.native): scala.scalajs.js.Any                               = js.native
   def getReader(options: ReadableStreamGetReaderOptions = js.native): scala.scalajs.js.Any                 = js.native
   def pipeThrough(transform: ReadableWritablePair, options: StreamPipeOptions = js.native): ReadableStream = js.native
   def pipeTo(destination: WritableStream, options: StreamPipeOptions = js.native): scala.scalajs.js.Any    = js.native
   def tee(): scala.scalajs.js.Any                                                                          = js.native
 end ReadableStream
+
+@js.native
+@JSGlobal
+object ReadableStream extends js.Object:
+  def from(asyncIterable: scala.scalajs.js.Any): ReadableStream = js.native
 
 @js.native
 @JSGlobal
@@ -1038,6 +1076,7 @@ class HTMLMetaElement extends HTMLElement:
 @js.native
 @JSGlobal
 class EventSource extends EventTarget:
+  def this(@unused url: String, @unused eventSourceInitDict: EventSourceInit = js.native) = this()
   def url: String                     = js.native
   def withCredentials: Boolean        = js.native
   def readyState: Int                 = js.native
@@ -1049,7 +1088,15 @@ end EventSource
 
 @js.native
 @JSGlobal
+object EventSource extends js.Object:
+  val CONNECTING: Int = js.native
+  val OPEN: Int       = js.native
+  val CLOSED: Int     = js.native
+
+@js.native
+@JSGlobal
 class CSSSkewY extends CSSTransformComponent:
+  def this(@unused ay: CSSNumericValue) = this()
   var ay: CSSNumericValue = js.native
 
 @js.native
@@ -1058,27 +1105,40 @@ class WEBGL_compressed_texture_s3tc_srgb extends js.Object
 
 @js.native
 @JSGlobal
-class BluetoothServiceDataFilter extends js.Object
+object WEBGL_compressed_texture_s3tc_srgb extends js.Object:
+  val COMPRESSED_SRGB_S3TC_DXT1_EXT: scala.scalajs.js.Any       = js.native
+  val COMPRESSED_SRGB_ALPHA_S3TC_DXT1_EXT: scala.scalajs.js.Any = js.native
+  val COMPRESSED_SRGB_ALPHA_S3TC_DXT3_EXT: scala.scalajs.js.Any = js.native
+  val COMPRESSED_SRGB_ALPHA_S3TC_DXT5_EXT: scala.scalajs.js.Any = js.native
+
+@js.native
+@JSGlobal
+class BluetoothServiceDataFilter extends js.Object:
+  def this(@unused init: scala.scalajs.js.Any = js.native) = this()
 
 @js.native
 @JSGlobal
 class HTMLScriptElement extends HTMLElement:
-  var `type`: String                    = js.native
-  var src: String                       = js.native
-  var noModule: Boolean                 = js.native
-  var async: Boolean                    = js.native
-  var defer: Boolean                    = js.native
-  def blocking: DOMTokenList            = js.native
-  var crossOrigin: String               = js.native
-  var referrerPolicy: String            = js.native
-  var integrity: String                 = js.native
-  var fetchPriority: String             = js.native
-  var text: String                      = js.native
-  var charset: String                   = js.native
-  var event: String                     = js.native
-  var htmlFor: String                   = js.native
-  def supports(`type`: String): Boolean = js.native
+  var `type`: String         = js.native
+  var src: String            = js.native
+  var noModule: Boolean      = js.native
+  var async: Boolean         = js.native
+  var defer: Boolean         = js.native
+  def blocking: DOMTokenList = js.native
+  var crossOrigin: String    = js.native
+  var referrerPolicy: String = js.native
+  var integrity: String      = js.native
+  var fetchPriority: String  = js.native
+  var text: String           = js.native
+  var charset: String        = js.native
+  var event: String          = js.native
+  var htmlFor: String        = js.native
 end HTMLScriptElement
+
+@js.native
+@JSGlobal
+object HTMLScriptElement extends js.Object:
+  def supports(`type`: String): Boolean = js.native
 
 @js.native
 @JSGlobal
@@ -1095,25 +1155,30 @@ class GamepadHapticActuator extends js.Object:
 @js.native
 @JSGlobal
 class MediaRecorder extends EventTarget:
-  def stream: MediaStream                      = js.native
-  def mimeType: String                         = js.native
-  def state: String                            = js.native
-  var onstart: scala.scalajs.js.Any            = js.native
-  var onstop: scala.scalajs.js.Any             = js.native
-  var ondataavailable: scala.scalajs.js.Any    = js.native
-  var onpause: scala.scalajs.js.Any            = js.native
-  var onresume: scala.scalajs.js.Any           = js.native
-  var onerror: scala.scalajs.js.Any            = js.native
-  def videoBitsPerSecond: Int                  = js.native
-  def audioBitsPerSecond: Int                  = js.native
-  def audioBitrateMode: String                 = js.native
-  def start(timeslice: Int = js.native): Unit  = js.native
-  def stop(): Unit                             = js.native
-  def pause(): Unit                            = js.native
-  def resume(): Unit                           = js.native
-  def requestData(): Unit                      = js.native
-  def isTypeSupported(`type`: String): Boolean = js.native
+  def this(@unused stream: MediaStream, @unused options: MediaRecorderOptions = js.native) = this()
+  def stream: MediaStream                     = js.native
+  def mimeType: String                        = js.native
+  def state: String                           = js.native
+  var onstart: scala.scalajs.js.Any           = js.native
+  var onstop: scala.scalajs.js.Any            = js.native
+  var ondataavailable: scala.scalajs.js.Any   = js.native
+  var onpause: scala.scalajs.js.Any           = js.native
+  var onresume: scala.scalajs.js.Any          = js.native
+  var onerror: scala.scalajs.js.Any           = js.native
+  def videoBitsPerSecond: Int                 = js.native
+  def audioBitsPerSecond: Int                 = js.native
+  def audioBitrateMode: String                = js.native
+  def start(timeslice: Int = js.native): Unit = js.native
+  def stop(): Unit                            = js.native
+  def pause(): Unit                           = js.native
+  def resume(): Unit                          = js.native
+  def requestData(): Unit                     = js.native
 end MediaRecorder
+
+@js.native
+@JSGlobal
+object MediaRecorder extends js.Object:
+  def isTypeSupported(`type`: String): Boolean = js.native
 
 @js.native
 @JSGlobal
@@ -1139,6 +1204,7 @@ class XRProjectionLayer extends XRCompositionLayer:
 @js.native
 @JSGlobal
 class USBIsochronousInTransferPacket extends js.Object:
+  def this(@unused status: String, @unused data: scala.scalajs.js.Any = js.native) = this()
   def data: scala.scalajs.js.Any = js.native
   def status: String             = js.native
 
@@ -1160,11 +1226,24 @@ class EXT_texture_filter_anisotropic extends js.Object
 
 @js.native
 @JSGlobal
+object EXT_texture_filter_anisotropic extends js.Object:
+  val TEXTURE_MAX_ANISOTROPY_EXT: scala.scalajs.js.Any     = js.native
+  val MAX_TEXTURE_MAX_ANISOTROPY_EXT: scala.scalajs.js.Any = js.native
+
+@js.native
+@JSGlobal
 class CSSLCH extends CSSColorValue:
+  def this(
+      @unused l: scala.scalajs.js.Any,
+      @unused c: scala.scalajs.js.Any,
+      @unused h: scala.scalajs.js.Any,
+      @unused alpha: scala.scalajs.js.Any = js.native,
+  ) = this()
   var l: scala.scalajs.js.Any     = js.native
   var c: scala.scalajs.js.Any     = js.native
   var h: scala.scalajs.js.Any     = js.native
   var alpha: scala.scalajs.js.Any = js.native
+end CSSLCH
 
 @js.native
 @JSGlobal
@@ -1172,7 +1251,13 @@ class OES_texture_half_float extends js.Object
 
 @js.native
 @JSGlobal
-class GravitySensor extends Accelerometer
+object OES_texture_half_float extends js.Object:
+  val HALF_FLOAT_OES: scala.scalajs.js.Any = js.native
+
+@js.native
+@JSGlobal
+class GravitySensor extends Accelerometer:
+  def this(@unused options: AccelerometerSensorOptions = js.native) = this()
 
 @js.native
 @JSGlobal
@@ -1200,6 +1285,14 @@ class MediaError extends js.Object:
 
 @js.native
 @JSGlobal
+object MediaError extends js.Object:
+  val MEDIA_ERR_ABORTED: Int           = js.native
+  val MEDIA_ERR_NETWORK: Int           = js.native
+  val MEDIA_ERR_DECODE: Int            = js.native
+  val MEDIA_ERR_SRC_NOT_SUPPORTED: Int = js.native
+
+@js.native
+@JSGlobal
 class CSSParserRule extends js.Object
 
 @js.native
@@ -1208,8 +1301,12 @@ class IdleDetector extends EventTarget:
   def userState: String                                             = js.native
   def screenState: String                                           = js.native
   var onchange: scala.scalajs.js.Any                                = js.native
-  def requestPermission(): scala.scalajs.js.Any                     = js.native
   def start(options: IdleOptions = js.native): scala.scalajs.js.Any = js.native
+
+@js.native
+@JSGlobal
+object IdleDetector extends js.Object:
+  def requestPermission(): scala.scalajs.js.Any = js.native
 
 @js.native
 @JSGlobal
@@ -1219,7 +1316,27 @@ class SVGPreserveAspectRatio extends js.Object:
 
 @js.native
 @JSGlobal
+object SVGPreserveAspectRatio extends js.Object:
+  val SVG_PRESERVEASPECTRATIO_UNKNOWN: Int  = js.native
+  val SVG_PRESERVEASPECTRATIO_NONE: Int     = js.native
+  val SVG_PRESERVEASPECTRATIO_XMINYMIN: Int = js.native
+  val SVG_PRESERVEASPECTRATIO_XMIDYMIN: Int = js.native
+  val SVG_PRESERVEASPECTRATIO_XMAXYMIN: Int = js.native
+  val SVG_PRESERVEASPECTRATIO_XMINYMID: Int = js.native
+  val SVG_PRESERVEASPECTRATIO_XMIDYMID: Int = js.native
+  val SVG_PRESERVEASPECTRATIO_XMAXYMID: Int = js.native
+  val SVG_PRESERVEASPECTRATIO_XMINYMAX: Int = js.native
+  val SVG_PRESERVEASPECTRATIO_XMIDYMAX: Int = js.native
+  val SVG_PRESERVEASPECTRATIO_XMAXYMAX: Int = js.native
+  val SVG_MEETORSLICE_UNKNOWN: Int          = js.native
+  val SVG_MEETORSLICE_MEET: Int             = js.native
+  val SVG_MEETORSLICE_SLICE: Int            = js.native
+end SVGPreserveAspectRatio
+
+@js.native
+@JSGlobal
 class MediaMetadata extends js.Object:
+  def this(@unused init: MediaMetadataInit = js.native) = this()
   var title: String                     = js.native
   var artist: String                    = js.native
   var album: String                     = js.native
@@ -1583,6 +1700,7 @@ end WebGLRenderingContext
 @js.native
 @JSGlobal
 class ProximitySensor extends Sensor:
+  def this(@unused sensorOptions: SensorOptions = js.native) = this()
   def distance: Double = js.native
   def max: Double      = js.native
   def near: Boolean    = js.native
@@ -1602,21 +1720,12 @@ class Scheduling extends js.Object:
 
 @js.native
 @JSGlobal
-class GamepadEvent extends js.Object:
-  def gamepad: Gamepad = js.native
-
-@js.native
-@JSGlobal
 class OES_fbo_render_mipmap extends js.Object
 
 @js.native
 @JSGlobal
-class MIDIMessageEvent extends js.Object:
-  def data: scala.scalajs.js.Any = js.native
-
-@js.native
-@JSGlobal
 class OverconstrainedError extends DOMException:
+  def this(@unused constraint: String, @unused message: String = js.native) = this()
   def constraint: String = js.native
 
 @js.native
@@ -1628,6 +1737,12 @@ class Baseline extends js.Object:
 @js.native
 @JSGlobal
 class WEBGL_debug_renderer_info extends js.Object
+
+@js.native
+@JSGlobal
+object WEBGL_debug_renderer_info extends js.Object:
+  val UNMASKED_VENDOR_WEBGL: scala.scalajs.js.Any   = js.native
+  val UNMASKED_RENDERER_WEBGL: scala.scalajs.js.Any = js.native
 
 @js.native
 @JSGlobal
@@ -1661,6 +1776,7 @@ class CredentialsContainer extends js.Object:
 @js.native
 @JSGlobal
 class USBInterface extends js.Object:
+  def this(@unused configuration: USBConfiguration, @unused interfaceNumber: scala.scalajs.js.Any) = this()
   def interfaceNumber: scala.scalajs.js.Any = js.native
   def alternate: USBAlternateInterface      = js.native
   def alternates: scala.scalajs.js.Any      = js.native
@@ -1703,29 +1819,19 @@ class DocumentPictureInPicture extends EventTarget:
 
 @js.native
 @JSGlobal
-class BluetoothAdvertisingEvent extends js.Object:
-  def device: BluetoothDevice                        = js.native
-  def uuids: scala.scalajs.js.Any                    = js.native
-  def name: String                                   = js.native
-  def appearance: Int                                = js.native
-  def txPower: scala.scalajs.js.Any                  = js.native
-  def rssi: scala.scalajs.js.Any                     = js.native
-  def manufacturerData: BluetoothManufacturerDataMap = js.native
-  def serviceData: BluetoothServiceDataMap           = js.native
-end BluetoothAdvertisingEvent
-
-@js.native
-@JSGlobal
 class LanguageDetector extends js.Object:
   def expectedInputLanguages: scala.scalajs.js.Any                                                    = js.native
   def inputQuota: Double                                                                              = js.native
-  def create(options: LanguageDetectorCreateOptions = js.native): scala.scalajs.js.Any                = js.native
-  def availability(options: LanguageDetectorCreateCoreOptions = js.native): scala.scalajs.js.Any      = js.native
   def detect(input: String, options: LanguageDetectorDetectOptions = js.native): scala.scalajs.js.Any = js.native
   def measureInputUsage(input: String, options: LanguageDetectorDetectOptions = js.native): scala.scalajs.js.Any =
     js.native
   def destroy(): Unit = js.native
-end LanguageDetector
+
+@js.native
+@JSGlobal
+object LanguageDetector extends js.Object:
+  def create(options: LanguageDetectorCreateOptions = js.native): scala.scalajs.js.Any           = js.native
+  def availability(options: LanguageDetectorCreateCoreOptions = js.native): scala.scalajs.js.Any = js.native
 
 @js.native
 @JSGlobal
@@ -1739,6 +1845,7 @@ class NavigatorUAData extends js.Object:
 @js.native
 @JSGlobal
 class GPUPipelineError extends DOMException:
+  def this(@unused message: String = js.native, @unused options: GPUPipelineErrorInit) = this()
   def reason: String = js.native
 
 @js.native
@@ -1773,6 +1880,7 @@ class WorkletGroupEffect extends js.Object:
 @js.native
 @JSGlobal
 class InputDeviceCapabilities extends js.Object:
+  def this(@unused deviceInitDict: InputDeviceCapabilitiesInit = js.native) = this()
   def firesTouchEvents: Boolean       = js.native
   def pointerMovementScrolls: Boolean = js.native
 
@@ -1791,18 +1899,43 @@ end SVGFEBlendElement
 
 @js.native
 @JSGlobal
+object SVGFEBlendElement extends js.Object:
+  val SVG_FEBLEND_MODE_UNKNOWN: Int     = js.native
+  val SVG_FEBLEND_MODE_NORMAL: Int      = js.native
+  val SVG_FEBLEND_MODE_MULTIPLY: Int    = js.native
+  val SVG_FEBLEND_MODE_SCREEN: Int      = js.native
+  val SVG_FEBLEND_MODE_DARKEN: Int      = js.native
+  val SVG_FEBLEND_MODE_LIGHTEN: Int     = js.native
+  val SVG_FEBLEND_MODE_OVERLAY: Int     = js.native
+  val SVG_FEBLEND_MODE_COLOR_DODGE: Int = js.native
+  val SVG_FEBLEND_MODE_COLOR_BURN: Int  = js.native
+  val SVG_FEBLEND_MODE_HARD_LIGHT: Int  = js.native
+  val SVG_FEBLEND_MODE_SOFT_LIGHT: Int  = js.native
+  val SVG_FEBLEND_MODE_DIFFERENCE: Int  = js.native
+  val SVG_FEBLEND_MODE_EXCLUSION: Int   = js.native
+  val SVG_FEBLEND_MODE_HUE: Int         = js.native
+  val SVG_FEBLEND_MODE_SATURATION: Int  = js.native
+  val SVG_FEBLEND_MODE_COLOR: Int       = js.native
+  val SVG_FEBLEND_MODE_LUMINOSITY: Int  = js.native
+end SVGFEBlendElement
+
+@js.native
+@JSGlobal
 class CSSUnparsedValue extends CSSStyleValue:
+  def this(@unused members: scala.scalajs.js.Any) = this()
   def length: Int = js.native
 
 @js.native
 @JSGlobal
 class CountQueuingStrategy extends js.Object:
+  def this(@unused init: QueuingStrategyInit) = this()
   def highWaterMark: Double                                                        = js.native
   def size: scala.scalajs.js.Function1[scala.scalajs.js.Any, scala.scalajs.js.Any] = js.native
 
 @js.native
 @JSGlobal
-class BluetoothManufacturerDataFilter extends js.Object
+class BluetoothManufacturerDataFilter extends js.Object:
+  def this(@unused init: scala.scalajs.js.Any = js.native) = this()
 
 @js.native
 @JSGlobal
@@ -1811,14 +1944,6 @@ class StylePropertyMap extends StylePropertyMapReadOnly:
   def append(property: String, values: scala.scalajs.js.Any): Unit = js.native
   def delete(property: String): Unit                               = js.native
   def clear(): Unit                                                = js.native
-
-@js.native
-@JSGlobal
-class RTCTrackEvent extends js.Object:
-  def receiver: RTCRtpReceiver       = js.native
-  def track: MediaStreamTrack        = js.native
-  def streams: scala.scalajs.js.Any  = js.native
-  def transceiver: RTCRtpTransceiver = js.native
 
 @js.native
 @JSGlobal
@@ -1849,6 +1974,7 @@ class HTMLLabelElement extends HTMLElement:
 @js.native
 @JSGlobal
 class CSSParserDeclaration extends CSSParserRule:
+  def this(@unused name: String, @unused body: scala.scalajs.js.Any = js.native) = this()
   def name: String               = js.native
   def body: scala.scalajs.js.Any = js.native
 
@@ -1896,11 +2022,6 @@ end DocumentFragment
 
 @js.native
 @JSGlobal
-class PageRevealEvent extends js.Object:
-  def viewTransition: ViewTransition = js.native
-
-@js.native
-@JSGlobal
 class HTMLUListElement extends HTMLElement:
   var compact: Boolean = js.native
   var `type`: String   = js.native
@@ -1916,12 +2037,6 @@ class AudioScheduledSourceNode extends AudioNode:
   var onended: scala.scalajs.js.Any         = js.native
   def start(when: Double = js.native): Unit = js.native
   def stop(when: Double = js.native): Unit  = js.native
-
-@js.native
-@JSGlobal
-class NavigationEvent extends js.Object:
-  def dir: String                = js.native
-  def relatedTarget: EventTarget = js.native
 
 @js.native
 @JSGlobal
@@ -2113,6 +2228,7 @@ class SVGCircleElement extends SVGGeometryElement:
 @js.native
 @JSGlobal
 class Memory extends js.Object:
+  def this(@unused descriptor: MemoryDescriptor) = this()
   def buffer: scala.scalajs.js.Any                            = js.native
   def grow(delta: scala.scalajs.js.Any): scala.scalajs.js.Any = js.native
   def toFixedLengthBuffer(): scala.scalajs.js.Any             = js.native
@@ -2128,6 +2244,7 @@ class HTMLCollection extends js.Object:
 @js.native
 @JSGlobal
 class Path2D extends js.Object:
+  def this(@unused path: scala.scalajs.js.Any = js.native) = this()
   def addPath(path: Path2D, transform: DOMMatrix2DInit = js.native): Unit                                  = js.native
   def closePath(): Unit                                                                                    = js.native
   def moveTo(x: Double, y: Double): Unit                                                                   = js.native
@@ -2169,13 +2286,11 @@ class WebTransportReceiveStream extends ReadableStream:
 
 @js.native
 @JSGlobal
-class SyncEvent extends js.Object:
-  def tag: String         = js.native
-  def lastChance: Boolean = js.native
-
-@js.native
-@JSGlobal
 class IntersectionObserver extends js.Object:
+  def this(
+      @unused callback: scala.scalajs.js.Function2[scala.scalajs.js.Any, IntersectionObserver, Unit],
+      @unused options: IntersectionObserverInit = js.native,
+  ) = this()
   def root: scala.scalajs.js.Any          = js.native
   def rootMargin: String                  = js.native
   def scrollMargin: String                = js.native
@@ -2207,18 +2322,26 @@ end Cache
 @js.native
 @JSGlobal
 class FragmentResult extends js.Object:
+  def this(@unused options: FragmentResultOptions = js.native) = this()
   def inlineSize: Double = js.native
   def blockSize: Double  = js.native
 
 @js.native
 @JSGlobal
 class KeyframeEffect extends AnimationEffect:
+  def this(
+      @unused target: Element,
+      @unused keyframes: scala.scalajs.js.Any,
+      @unused options: scala.scalajs.js.Any = js.native,
+  ) = this()
+  def this(@unused source: KeyframeEffect) = this()
   var target: Element                                     = js.native
   var pseudoElement: String                               = js.native
   var composite: String                                   = js.native
   var iterationComposite: String                          = js.native
   def getKeyframes(): scala.scalajs.js.Any                = js.native
   def setKeyframes(keyframes: scala.scalajs.js.Any): Unit = js.native
+end KeyframeEffect
 
 @js.native
 @JSGlobal
@@ -2235,6 +2358,7 @@ end HTMLTemplateElement
 @js.native
 @JSGlobal
 class AudioBuffer extends js.Object:
+  def this(@unused options: AudioBufferOptions) = this()
   def sampleRate: Double                                 = js.native
   def length: Int                                        = js.native
   def duration: Double                                   = js.native
@@ -2252,10 +2376,17 @@ class OES_texture_half_float_linear extends js.Object
 @js.native
 @JSGlobal
 class CSSOKLCH extends CSSColorValue:
+  def this(
+      @unused l: scala.scalajs.js.Any,
+      @unused c: scala.scalajs.js.Any,
+      @unused h: scala.scalajs.js.Any,
+      @unused alpha: scala.scalajs.js.Any = js.native,
+  ) = this()
   var l: scala.scalajs.js.Any     = js.native
   var c: scala.scalajs.js.Any     = js.native
   var h: scala.scalajs.js.Any     = js.native
   var alpha: scala.scalajs.js.Any = js.native
+end CSSOKLCH
 
 @js.native
 @JSGlobal
@@ -2266,12 +2397,6 @@ class VideoTrackList extends EventTarget:
   var onaddtrack: scala.scalajs.js.Any     = js.native
   var onremovetrack: scala.scalajs.js.Any  = js.native
   def getTrackById(id: String): VideoTrack = js.native
-
-@js.native
-@JSGlobal
-class NotificationEvent extends js.Object:
-  def notification: Notification = js.native
-  def action: String             = js.native
 
 @js.native
 @JSGlobal
@@ -2334,14 +2459,28 @@ end SVGFEConvolveMatrixElement
 
 @js.native
 @JSGlobal
+object SVGFEConvolveMatrixElement extends js.Object:
+  val SVG_EDGEMODE_UNKNOWN: Int   = js.native
+  val SVG_EDGEMODE_DUPLICATE: Int = js.native
+  val SVG_EDGEMODE_WRAP: Int      = js.native
+  val SVG_EDGEMODE_NONE: Int      = js.native
+
+@js.native
+@JSGlobal
 class ReportingObserver extends js.Object:
+  def this(
+      @unused callback: scala.scalajs.js.Function2[scala.scalajs.js.Any, ReportingObserver, Unit],
+      @unused options: ReportingObserverOptions = js.native,
+  ) = this()
   def observe(): Unit                     = js.native
   def disconnect(): Unit                  = js.native
   def takeRecords(): scala.scalajs.js.Any = js.native
+end ReportingObserver
 
 @js.native
 @JSGlobal
 class SFrameEncrypterStream extends js.Object:
+  def this(@unused options: SFrameTransformOptions) = this()
   def readable: ReadableStream                                                            = js.native
   def writable: WritableStream                                                            = js.native
   def setEncryptionKey(key: CryptoKey, keyId: scala.scalajs.js.Any): scala.scalajs.js.Any = js.native
@@ -2349,6 +2488,7 @@ class SFrameEncrypterStream extends js.Object:
 @js.native
 @JSGlobal
 class AudioData extends js.Object:
+  def this(@unused init: AudioDataInit) = this()
   def format: String                                                                   = js.native
   def sampleRate: Double                                                               = js.native
   def numberOfFrames: Int                                                              = js.native
@@ -2363,16 +2503,10 @@ end AudioData
 @js.native
 @JSGlobal
 class Magnetometer extends Sensor:
+  def this(@unused sensorOptions: MagnetometerSensorOptions = js.native) = this()
   def x: Double = js.native
   def y: Double = js.native
   def z: Double = js.native
-
-@js.native
-@JSGlobal
-class CloseEvent extends js.Object:
-  def wasClean: Boolean = js.native
-  def code: Int         = js.native
-  def reason: String    = js.native
 
 @js.native
 @JSGlobal
@@ -2381,18 +2515,14 @@ class CSSParserValue extends js.Object
 @js.native
 @JSGlobal
 class CSSVariableReferenceValue extends js.Object:
+  def this(@unused variable: String, @unused fallback: CSSUnparsedValue = js.native) = this()
   var variable: String           = js.native
   def fallback: CSSUnparsedValue = js.native
 
 @js.native
 @JSGlobal
-class SnapEvent extends js.Object:
-  def snapTargetBlock: Node  = js.native
-  def snapTargetInline: Node = js.native
-
-@js.native
-@JSGlobal
 class ReadableStreamDefaultReader extends js.Object:
+  def this(@unused stream: ReadableStream) = this()
   def closed: scala.scalajs.js.Any                                           = js.native
   def read(): scala.scalajs.js.Any                                           = js.native
   def releaseLock(): Unit                                                    = js.native
@@ -2400,31 +2530,26 @@ class ReadableStreamDefaultReader extends js.Object:
 
 @js.native
 @JSGlobal
-class MessageEvent extends js.Object:
-  def data: scala.scalajs.js.Any   = js.native
-  def origin: String               = js.native
-  def lastEventId: String          = js.native
-  def source: scala.scalajs.js.Any = js.native
-  def ports: scala.scalajs.js.Any  = js.native
-  def initMessageEvent(
-      `type`: String,
-      bubbles: Boolean = js.native,
-      cancelable: Boolean = js.native,
-      data: scala.scalajs.js.Any = js.native,
-      origin: String = js.native,
-      lastEventId: String = js.native,
-      source: scala.scalajs.js.Any = js.native,
-      ports: scala.scalajs.js.Any = js.native,
-  ): Unit = js.native
-end MessageEvent
+class DOMRect extends DOMRectReadOnly:
+  def this(
+      @unused x: Double = js.native,
+      @unused y: Double = js.native,
+      @unused width: Double = js.native,
+      @unused height: Double = js.native,
+  ) = this()
 
 @js.native
 @JSGlobal
-class DOMRect extends DOMRectReadOnly
+object DOMRect extends js.Object:
+  def fromRect(other: DOMRectInit = js.native): DOMRect = js.native
 
 @js.native
 @JSGlobal
-class JsonLdProcessor extends js.Object:
+class JsonLdProcessor extends js.Object
+
+@js.native
+@JSGlobal
+object JsonLdProcessor extends js.Object:
   def compact(
       input: scala.scalajs.js.Any,
       context: scala.scalajs.js.Any = js.native,
@@ -2689,6 +2814,22 @@ class WEBGL_clip_cull_distance extends js.Object
 
 @js.native
 @JSGlobal
+object WEBGL_clip_cull_distance extends js.Object:
+  val MAX_CLIP_DISTANCES_WEBGL: scala.scalajs.js.Any                   = js.native
+  val MAX_CULL_DISTANCES_WEBGL: scala.scalajs.js.Any                   = js.native
+  val MAX_COMBINED_CLIP_AND_CULL_DISTANCES_WEBGL: scala.scalajs.js.Any = js.native
+  val CLIP_DISTANCE0_WEBGL: scala.scalajs.js.Any                       = js.native
+  val CLIP_DISTANCE1_WEBGL: scala.scalajs.js.Any                       = js.native
+  val CLIP_DISTANCE2_WEBGL: scala.scalajs.js.Any                       = js.native
+  val CLIP_DISTANCE3_WEBGL: scala.scalajs.js.Any                       = js.native
+  val CLIP_DISTANCE4_WEBGL: scala.scalajs.js.Any                       = js.native
+  val CLIP_DISTANCE5_WEBGL: scala.scalajs.js.Any                       = js.native
+  val CLIP_DISTANCE6_WEBGL: scala.scalajs.js.Any                       = js.native
+  val CLIP_DISTANCE7_WEBGL: scala.scalajs.js.Any                       = js.native
+end WEBGL_clip_cull_distance
+
+@js.native
+@JSGlobal
 class NotRestoredReasons extends js.Object:
   def src: String                    = js.native
   def id: String                     = js.native
@@ -2767,6 +2908,12 @@ class EXT_blend_minmax extends js.Object
 
 @js.native
 @JSGlobal
+object EXT_blend_minmax extends js.Object:
+  val MIN_EXT: scala.scalajs.js.Any = js.native
+  val MAX_EXT: scala.scalajs.js.Any = js.native
+
+@js.native
+@JSGlobal
 class GPUError extends js.Object:
   def message: String = js.native
 
@@ -2783,6 +2930,7 @@ class XRCylinderLayer extends XRCompositionLayer:
 @js.native
 @JSGlobal
 class RTCIdentityAssertion extends js.Object:
+  def this(@unused idp: String, @unused name: String) = this()
   var idp: String  = js.native
   var name: String = js.native
 
@@ -2824,11 +2972,6 @@ end HTMLButtonElement
 
 @js.native
 @JSGlobal
-class CanMakePaymentEvent extends js.Object:
-  def respondWith(canMakePaymentResponse: scala.scalajs.js.Any): Unit = js.native
-
-@js.native
-@JSGlobal
 class TextTrackCueList extends js.Object:
   def length: Int                          = js.native
   def getCueById(id: String): TextTrackCue = js.native
@@ -2842,16 +2985,21 @@ class BreakToken extends js.Object:
 @js.native
 @JSGlobal
 class AudioDecoder extends EventTarget:
-  def state: String                                                       = js.native
-  def decodeQueueSize: Int                                                = js.native
-  var ondequeue: scala.scalajs.js.Any                                     = js.native
-  def configure(config: AudioDecoderConfig): Unit                         = js.native
-  def decode(chunk: EncodedAudioChunk): Unit                              = js.native
-  def flush(): scala.scalajs.js.Any                                       = js.native
-  def reset(): Unit                                                       = js.native
-  def close(): Unit                                                       = js.native
-  def isConfigSupported(config: AudioDecoderConfig): scala.scalajs.js.Any = js.native
+  def this(@unused init: AudioDecoderInit) = this()
+  def state: String                               = js.native
+  def decodeQueueSize: Int                        = js.native
+  var ondequeue: scala.scalajs.js.Any             = js.native
+  def configure(config: AudioDecoderConfig): Unit = js.native
+  def decode(chunk: EncodedAudioChunk): Unit      = js.native
+  def flush(): scala.scalajs.js.Any               = js.native
+  def reset(): Unit                               = js.native
+  def close(): Unit                               = js.native
 end AudioDecoder
+
+@js.native
+@JSGlobal
+object AudioDecoder extends js.Object:
+  def isConfigSupported(config: AudioDecoderConfig): scala.scalajs.js.Any = js.native
 
 @js.native
 @JSGlobal
@@ -2883,11 +3031,16 @@ class Plugin extends js.Object:
 @js.native
 @JSGlobal
 class PressureObserver extends js.Object:
-  def knownSources: scala.scalajs.js.Any                                                          = js.native
+  def this(@unused callback: scala.scalajs.js.Function2[scala.scalajs.js.Any, PressureObserver, Unit]) = this()
   def observe(source: String, options: PressureObserverOptions = js.native): scala.scalajs.js.Any = js.native
   def unobserve(source: String): Unit                                                             = js.native
   def disconnect(): Unit                                                                          = js.native
   def takeRecords(): scala.scalajs.js.Any                                                         = js.native
+
+@js.native
+@JSGlobal
+object PressureObserver extends js.Object:
+  def knownSources: scala.scalajs.js.Any = js.native
 
 @js.native
 @JSGlobal
@@ -2913,7 +3066,8 @@ class XRSubImage extends js.Object:
 
 @js.native
 @JSGlobal
-class GPUInternalError extends GPUError
+class GPUInternalError extends GPUError:
+  def this(@unused message: String) = this()
 
 @js.native
 @JSGlobal
@@ -2979,18 +3133,13 @@ class NodeList extends js.Object:
 @js.native
 @JSGlobal
 class ShadowAnimation extends Animation:
+  def this(@unused source: Animation, @unused newTarget: scala.scalajs.js.Any) = this()
   def sourceAnimation: Animation = js.native
 
 @js.native
 @JSGlobal
-class SFrameTransformErrorEvent extends js.Object:
-  def errorType: String           = js.native
-  def keyID: scala.scalajs.js.Any = js.native
-  def frame: scala.scalajs.js.Any = js.native
-
-@js.native
-@JSGlobal
 class CSSStyleSheet extends StyleSheet:
+  def this(@unused options: CSSStyleSheetInit = js.native) = this()
   def ownerRule: CSSRule                                                                            = js.native
   def cssRules: CSSRuleList                                                                         = js.native
   def rules: CSSRuleList                                                                            = js.native
@@ -3005,6 +3154,7 @@ end CSSStyleSheet
 @js.native
 @JSGlobal
 class Gyroscope extends Sensor:
+  def this(@unused sensorOptions: GyroscopeSensorOptions = js.native) = this()
   def x: Double = js.native
   def y: Double = js.native
   def z: Double = js.native
@@ -3076,6 +3226,12 @@ class PushSubscription extends js.Object:
 @js.native
 @JSGlobal
 class URLPattern extends js.Object:
+  def this(
+      @unused input: scala.scalajs.js.Any,
+      @unused baseURL: String,
+      @unused options: URLPatternOptions = js.native,
+  ) = this()
+  def this(@unused input: scala.scalajs.js.Any, @unused options: URLPatternOptions) = this()
   def protocol: String                                                                             = js.native
   def username: String                                                                             = js.native
   def password: String                                                                             = js.native
@@ -3153,18 +3309,15 @@ class RTCIceCandidatePair extends js.Object:
 
 @js.native
 @JSGlobal
-class ContentVisibilityAutoStateChangeEvent extends js.Object:
-  def skipped: Boolean = js.native
-
-@js.native
-@JSGlobal
 class ScrollTimeline extends AnimationTimeline:
+  def this(@unused options: ScrollTimelineOptions = js.native) = this()
   def source: Element = js.native
   def axis: String    = js.native
 
 @js.native
 @JSGlobal
 class DOMMatrixReadOnly extends js.Object:
+  def this(@unused init: scala.scalajs.js.Any = js.native) = this()
   def a: Double                                                                                    = js.native
   def b: Double                                                                                    = js.native
   def c: Double                                                                                    = js.native
@@ -3189,9 +3342,6 @@ class DOMMatrixReadOnly extends js.Object:
   def m44: Double                                                                                  = js.native
   def is2D: Boolean                                                                                = js.native
   def isIdentity: Boolean                                                                          = js.native
-  def fromMatrix(other: DOMMatrixInit = js.native): DOMMatrixReadOnly                              = js.native
-  def fromFloat32Array(array32: scala.scalajs.js.Any): DOMMatrixReadOnly                           = js.native
-  def fromFloat64Array(array64: scala.scalajs.js.Any): DOMMatrixReadOnly                           = js.native
   def translate(tx: Double = js.native, ty: Double = js.native, tz: Double = js.native): DOMMatrix = js.native
   def scale(
       scaleX: Double = js.native,
@@ -3230,7 +3380,21 @@ end DOMMatrixReadOnly
 
 @js.native
 @JSGlobal
+object DOMMatrixReadOnly extends js.Object:
+  def fromMatrix(other: DOMMatrixInit = js.native): DOMMatrixReadOnly    = js.native
+  def fromFloat32Array(array32: scala.scalajs.js.Any): DOMMatrixReadOnly = js.native
+  def fromFloat64Array(array64: scala.scalajs.js.Any): DOMMatrixReadOnly = js.native
+
+@js.native
+@JSGlobal
 class SVGUnitTypes extends js.Object
+
+@js.native
+@JSGlobal
+object SVGUnitTypes extends js.Object:
+  val SVG_UNIT_TYPE_UNKNOWN: Int           = js.native
+  val SVG_UNIT_TYPE_USERSPACEONUSE: Int    = js.native
+  val SVG_UNIT_TYPE_OBJECTBOUNDINGBOX: Int = js.native
 
 @js.native
 @JSGlobal
@@ -3256,6 +3420,11 @@ class ANGLE_instanced_arrays extends js.Object:
   ): Unit                                                                                        = js.native
   def vertexAttribDivisorANGLE(index: scala.scalajs.js.Any, divisor: scala.scalajs.js.Any): Unit = js.native
 end ANGLE_instanced_arrays
+
+@js.native
+@JSGlobal
+object ANGLE_instanced_arrays extends js.Object:
+  val VERTEX_ATTRIB_ARRAY_DIVISOR_ANGLE: scala.scalajs.js.Any = js.native
 
 @js.native
 @JSGlobal
@@ -3285,6 +3454,16 @@ class SVGFETurbulenceElement extends SVGElement:
   def height: SVGAnimatedLength           = js.native
   def result: SVGAnimatedString           = js.native
 end SVGFETurbulenceElement
+
+@js.native
+@JSGlobal
+object SVGFETurbulenceElement extends js.Object:
+  val SVG_TURBULENCE_TYPE_UNKNOWN: Int      = js.native
+  val SVG_TURBULENCE_TYPE_FRACTALNOISE: Int = js.native
+  val SVG_TURBULENCE_TYPE_TURBULENCE: Int   = js.native
+  val SVG_STITCHTYPE_UNKNOWN: Int           = js.native
+  val SVG_STITCHTYPE_STITCH: Int            = js.native
+  val SVG_STITCHTYPE_NOSTITCH: Int          = js.native
 
 @js.native
 @JSGlobal
@@ -3397,24 +3576,29 @@ end OES_draw_buffers_indexed
 @js.native
 @JSGlobal
 class URL extends js.Object:
-  var href: String                                             = js.native
-  def origin: String                                           = js.native
-  var protocol: String                                         = js.native
-  var username: String                                         = js.native
-  var password: String                                         = js.native
-  var host: String                                             = js.native
-  var hostname: String                                         = js.native
-  var port: String                                             = js.native
-  var pathname: String                                         = js.native
-  var search: String                                           = js.native
-  def searchParams: URLSearchParams                            = js.native
-  var hash: String                                             = js.native
+  def this(@unused url: String, @unused base: String = js.native) = this()
+  var href: String                  = js.native
+  def origin: String                = js.native
+  var protocol: String              = js.native
+  var username: String              = js.native
+  var password: String              = js.native
+  var host: String                  = js.native
+  var hostname: String              = js.native
+  var port: String                  = js.native
+  var pathname: String              = js.native
+  var search: String                = js.native
+  def searchParams: URLSearchParams = js.native
+  var hash: String                  = js.native
+  def toJSON(): String              = js.native
+end URL
+
+@js.native
+@JSGlobal
+object URL extends js.Object:
   def createObjectURL(obj: scala.scalajs.js.Any): String       = js.native
   def revokeObjectURL(url: String): Unit                       = js.native
   def parse(url: String, base: String = js.native): URL        = js.native
   def canParse(url: String, base: String = js.native): Boolean = js.native
-  def toJSON(): String                                         = js.native
-end URL
 
 @js.native
 @JSGlobal
@@ -3428,7 +3612,18 @@ class BluetoothManufacturerDataMap extends js.Object
 
 @js.native
 @JSGlobal
-class DOMPoint extends DOMPointReadOnly
+class DOMPoint extends DOMPointReadOnly:
+  def this(
+      @unused x: Double = js.native,
+      @unused y: Double = js.native,
+      @unused z: Double = js.native,
+      @unused w: Double = js.native,
+  ) = this()
+
+@js.native
+@JSGlobal
+object DOMPoint extends js.Object:
+  def fromPoint(other: DOMPointInit = js.native): DOMPoint = js.native
 
 @js.native
 @JSGlobal
@@ -3464,12 +3659,6 @@ class SVGAElement extends SVGGraphicsElement:
   var hash: String              = js.native
   def href: SVGAnimatedString   = js.native
 end SVGAElement
-
-@js.native
-@JSGlobal
-class AnimationPlaybackEvent extends js.Object:
-  def currentTime: scala.scalajs.js.Any  = js.native
-  def timelineTime: scala.scalajs.js.Any = js.native
 
 @js.native
 @JSGlobal
@@ -3558,15 +3747,6 @@ class SVGPathElement extends SVGGeometryElement:
 
 @js.native
 @JSGlobal
-class ErrorEvent extends js.Object:
-  def message: String             = js.native
-  def filename: String            = js.native
-  def lineno: Int                 = js.native
-  def colno: Int                  = js.native
-  def error: scala.scalajs.js.Any = js.native
-
-@js.native
-@JSGlobal
 class HTMLStyleElement extends HTMLElement:
   var disabled: Boolean      = js.native
   var media: String          = js.native
@@ -3585,6 +3765,7 @@ class VideoPlaybackQuality extends js.Object:
 @js.native
 @JSGlobal
 class GroupEffect extends js.Object:
+  def this(@unused children: scala.scalajs.js.Any, @unused timing: scala.scalajs.js.Any = js.native) = this()
   def children: AnimationNodeList             = js.native
   def firstChild: AnimationEffect             = js.native
   def lastChild: AnimationEffect              = js.native
@@ -3613,11 +3794,13 @@ class GPUBindGroupLayout extends js.Object:
 
 @js.native
 @JSGlobal
-class ChannelMergerNode extends AudioNode
+class ChannelMergerNode extends AudioNode:
+  def this(@unused context: BaseAudioContext, @unused options: ChannelMergerOptions = js.native) = this()
 
 @js.native
 @JSGlobal
 class CSSSkewX extends CSSTransformComponent:
+  def this(@unused ax: CSSNumericValue) = this()
   var ax: CSSNumericValue = js.native
 
 @js.native
@@ -3631,9 +3814,15 @@ class XRPose extends js.Object:
 @js.native
 @JSGlobal
 class CSSColor extends CSSColorValue:
+  def this(
+      @unused colorSpace: scala.scalajs.js.Any,
+      @unused channels: scala.scalajs.js.Any,
+      @unused alpha: scala.scalajs.js.Any = js.native,
+  ) = this()
   var colorSpace: scala.scalajs.js.Any = js.native
   var channels: scala.scalajs.js.Any   = js.native
   var alpha: scala.scalajs.js.Any      = js.native
+end CSSColor
 
 @js.native
 @JSGlobal
@@ -3646,13 +3835,17 @@ class Writer extends js.Object:
   def expectedContextLanguages: scala.scalajs.js.Any                                                  = js.native
   def outputLanguage: String                                                                          = js.native
   def inputQuota: Double                                                                              = js.native
-  def create(options: WriterCreateOptions = js.native): scala.scalajs.js.Any                          = js.native
-  def availability(options: WriterCreateCoreOptions = js.native): scala.scalajs.js.Any                = js.native
   def write(input: String, options: WriterWriteOptions = js.native): scala.scalajs.js.Any             = js.native
   def writeStreaming(input: String, options: WriterWriteOptions = js.native): ReadableStream          = js.native
   def measureInputUsage(input: String, options: WriterWriteOptions = js.native): scala.scalajs.js.Any = js.native
   def destroy(): Unit                                                                                 = js.native
 end Writer
+
+@js.native
+@JSGlobal
+object Writer extends js.Object:
+  def create(options: WriterCreateOptions = js.native): scala.scalajs.js.Any           = js.native
+  def availability(options: WriterCreateCoreOptions = js.native): scala.scalajs.js.Any = js.native
 
 @js.native
 @JSGlobal
@@ -3673,6 +3866,16 @@ class SVGTextPathElement extends SVGTextContentElement:
   def method: SVGAnimatedEnumeration  = js.native
   def spacing: SVGAnimatedEnumeration = js.native
   def href: SVGAnimatedString         = js.native
+
+@js.native
+@JSGlobal
+object SVGTextPathElement extends js.Object:
+  val TEXTPATH_METHODTYPE_UNKNOWN: Int  = js.native
+  val TEXTPATH_METHODTYPE_ALIGN: Int    = js.native
+  val TEXTPATH_METHODTYPE_STRETCH: Int  = js.native
+  val TEXTPATH_SPACINGTYPE_UNKNOWN: Int = js.native
+  val TEXTPATH_SPACINGTYPE_AUTO: Int    = js.native
+  val TEXTPATH_SPACINGTYPE_EXACT: Int   = js.native
 
 @js.native
 @JSGlobal
@@ -3726,6 +3929,7 @@ class HTMLAllCollection extends js.Object:
 @js.native
 @JSGlobal
 class ResizeObserver extends js.Object:
+  def this(@unused callback: scala.scalajs.js.Function2[scala.scalajs.js.Any, ResizeObserver, Unit]) = this()
   def observe(target: Element, options: ResizeObserverOptions = js.native): Unit = js.native
   def unobserve(target: Element): Unit                                           = js.native
   def disconnect(): Unit                                                         = js.native
@@ -3746,12 +3950,8 @@ end DataTransfer
 
 @js.native
 @JSGlobal
-class RTCErrorEvent extends js.Object:
-  def error: RTCError = js.native
-
-@js.native
-@JSGlobal
 class BluetoothDataFilter extends js.Object:
+  def this(@unused init: BluetoothDataFilterInit = js.native) = this()
   def dataPrefix: scala.scalajs.js.Any = js.native
   def mask: scala.scalajs.js.Any       = js.native
 
@@ -3763,11 +3963,6 @@ class HTMLAudioElement extends HTMLMediaElement
 @JSGlobal
 class GPUCompilationInfo extends js.Object:
   def messages: scala.scalajs.js.Any = js.native
-
-@js.native
-@JSGlobal
-class OfflineAudioCompletionEvent extends js.Object:
-  def renderedBuffer: AudioBuffer = js.native
 
 @js.native
 @JSGlobal
@@ -3796,6 +3991,18 @@ class SVGFECompositeElement extends SVGElement:
   def width: SVGAnimatedLength         = js.native
   def height: SVGAnimatedLength        = js.native
   def result: SVGAnimatedString        = js.native
+end SVGFECompositeElement
+
+@js.native
+@JSGlobal
+object SVGFECompositeElement extends js.Object:
+  val SVG_FECOMPOSITE_OPERATOR_UNKNOWN: Int    = js.native
+  val SVG_FECOMPOSITE_OPERATOR_OVER: Int       = js.native
+  val SVG_FECOMPOSITE_OPERATOR_IN: Int         = js.native
+  val SVG_FECOMPOSITE_OPERATOR_OUT: Int        = js.native
+  val SVG_FECOMPOSITE_OPERATOR_ATOP: Int       = js.native
+  val SVG_FECOMPOSITE_OPERATOR_XOR: Int        = js.native
+  val SVG_FECOMPOSITE_OPERATOR_ARITHMETIC: Int = js.native
 end SVGFECompositeElement
 
 @js.native
@@ -3862,18 +4069,6 @@ end HTMLObjectElement
 
 @js.native
 @JSGlobal
-class CustomEvent extends js.Object:
-  def detail: scala.scalajs.js.Any = js.native
-  def initCustomEvent(
-      `type`: String,
-      bubbles: Boolean = js.native,
-      cancelable: Boolean = js.native,
-      detail: scala.scalajs.js.Any = js.native,
-  ): Unit = js.native
-end CustomEvent
-
-@js.native
-@JSGlobal
 class WEBGL_multi_draw_instanced_base_vertex_base_instance extends js.Object:
   def multiDrawArraysInstancedBaseInstanceWEBGL(
       mode: scala.scalajs.js.Any,
@@ -3912,16 +4107,17 @@ class CSSCustomMediaRule extends CSSRule:
 
 @js.native
 @JSGlobal
-class TextFormatUpdateEvent extends js.Object:
-  def getTextFormats(): scala.scalajs.js.Any = js.native
-
-@js.native
-@JSGlobal
-class RTCRtpScriptTransform extends js.Object
+class RTCRtpScriptTransform extends js.Object:
+  def this(
+      @unused workerOrWorkerAndParameters: scala.scalajs.js.Any,
+      @unused options: scala.scalajs.js.Any = js.native,
+      @unused transfer: scala.scalajs.js.Any = js.native,
+  ) = this()
 
 @js.native
 @JSGlobal
 class CSSMathSum extends CSSMathValue:
+  def this(@unused args: scala.scalajs.js.Any) = this()
   def values: CSSNumericArray = js.native
 
 @js.native
@@ -3939,30 +4135,36 @@ class PeriodicSyncManager extends js.Object:
 @js.native
 @JSGlobal
 class FaceDetector extends js.Object:
+  def this(@unused faceDetectorOptions: FaceDetectorOptions = js.native) = this()
   def detect(image: scala.scalajs.js.Any): scala.scalajs.js.Any = js.native
 
 @js.native
 @JSGlobal
 class DOMQuad extends js.Object:
-  def p1: DOMPoint                                      = js.native
-  def p2: DOMPoint                                      = js.native
-  def p3: DOMPoint                                      = js.native
-  def p4: DOMPoint                                      = js.native
+  def this(
+      @unused p1: DOMPointInit = js.native,
+      @unused p2: DOMPointInit = js.native,
+      @unused p3: DOMPointInit = js.native,
+      @unused p4: DOMPointInit = js.native,
+  ) = this()
+  def p1: DOMPoint                   = js.native
+  def p2: DOMPoint                   = js.native
+  def p3: DOMPoint                   = js.native
+  def p4: DOMPoint                   = js.native
+  def getBounds(): DOMRect           = js.native
+  def toJSON(): scala.scalajs.js.Any = js.native
+end DOMQuad
+
+@js.native
+@JSGlobal
+object DOMQuad extends js.Object:
   def fromRect(other: DOMRectInit = js.native): DOMQuad = js.native
   def fromQuad(other: DOMQuadInit = js.native): DOMQuad = js.native
-  def getBounds(): DOMRect                              = js.native
-  def toJSON(): scala.scalajs.js.Any                    = js.native
-end DOMQuad
 
 @js.native
 @JSGlobal
 class HTMLDListElement extends HTMLElement:
   var compact: Boolean = js.native
-
-@js.native
-@JSGlobal
-class DocumentPictureInPictureEvent extends js.Object:
-  def window: Window = js.native
 
 @js.native
 @JSGlobal
@@ -4007,19 +4209,15 @@ class ModelContext extends EventTarget:
 
 @js.native
 @JSGlobal
-class AutofillEvent extends js.Object:
-  def autofillValues: scala.scalajs.js.Any     = js.native
-  def refill: scala.scalajs.js.Function0[Unit] = js.native
-
-@js.native
-@JSGlobal
 class USBAlternateInterface extends js.Object:
+  def this(@unused deviceInterface: USBInterface, @unused alternateSetting: scala.scalajs.js.Any) = this()
   def alternateSetting: scala.scalajs.js.Any  = js.native
   def interfaceClass: scala.scalajs.js.Any    = js.native
   def interfaceSubclass: scala.scalajs.js.Any = js.native
   def interfaceProtocol: scala.scalajs.js.Any = js.native
   def interfaceName: String                   = js.native
   def endpoints: scala.scalajs.js.Any         = js.native
+end USBAlternateInterface
 
 @js.native
 @JSGlobal
@@ -4038,20 +4236,21 @@ end SVGPatternElement
 
 @js.native
 @JSGlobal
-class DocumentTimeline extends AnimationTimeline
+class DocumentTimeline extends AnimationTimeline:
+  def this(@unused options: DocumentTimelineOptions = js.native) = this()
 
 @js.native
 @JSGlobal
 class AudioWorkletNode extends AudioNode:
+  def this(
+      @unused context: BaseAudioContext,
+      @unused name: String,
+      @unused options: AudioWorkletNodeOptions = js.native,
+  ) = this()
   def parameters: AudioParamMap              = js.native
   def port: MessagePort                      = js.native
   var onprocessorerror: scala.scalajs.js.Any = js.native
-
-@js.native
-@JSGlobal
-class PaymentMethodChangeEvent extends PaymentRequestUpdateEvent:
-  def methodName: String                  = js.native
-  def methodDetails: scala.scalajs.js.Any = js.native
+end AudioWorkletNode
 
 @js.native
 @JSGlobal
@@ -4068,12 +4267,6 @@ class XRViewport extends js.Object:
   def y: Int      = js.native
   def width: Int  = js.native
   def height: Int = js.native
-
-@js.native
-@JSGlobal
-class PushEvent extends js.Object:
-  def data: PushMessageData      = js.native
-  def notification: Notification = js.native
 
 @js.native
 @JSGlobal
@@ -4118,7 +4311,17 @@ class OES_vertex_array_object extends js.Object:
 
 @js.native
 @JSGlobal
+object OES_vertex_array_object extends js.Object:
+  val VERTEX_ARRAY_BINDING_OES: scala.scalajs.js.Any = js.native
+
+@js.native
+@JSGlobal
 class OES_standard_derivatives extends js.Object
+
+@js.native
+@JSGlobal
+object OES_standard_derivatives extends js.Object:
+  val FRAGMENT_SHADER_DERIVATIVE_HINT_OES: scala.scalajs.js.Any = js.native
 
 @js.native
 @JSGlobal
@@ -4128,6 +4331,7 @@ class AudioSinkInfo extends js.Object:
 @js.native
 @JSGlobal
 class Blob extends js.Object:
+  def this(@unused blobParts: scala.scalajs.js.Any = js.native, @unused options: BlobPropertyBag = js.native) = this()
   def size: Int                                                                                  = js.native
   def `type`: String                                                                             = js.native
   def slice(start: Int = js.native, end: Int = js.native, contentType: String = js.native): Blob = js.native
@@ -4159,6 +4363,7 @@ class BluetoothRemoteGATTServer extends js.Object:
 @js.native
 @JSGlobal
 class CSSMathProduct extends CSSMathValue:
+  def this(@unused args: scala.scalajs.js.Any) = this()
   def values: CSSNumericArray = js.native
 
 @js.native
@@ -4194,12 +4399,14 @@ class XRAnchorSet extends js.Object
 @js.native
 @JSGlobal
 class ConvolverNode extends AudioNode:
+  def this(@unused context: BaseAudioContext, @unused options: ConvolverOptions = js.native) = this()
   var buffer: AudioBuffer = js.native
   var normalize: Boolean  = js.native
 
 @js.native
 @JSGlobal
-class StaticRange extends AbstractRange
+class StaticRange extends AbstractRange:
+  def this(@unused init: StaticRangeInit) = this()
 
 @js.native
 @JSGlobal
@@ -4259,6 +4466,29 @@ end Node
 
 @js.native
 @JSGlobal
+object Node extends js.Object:
+  val ELEMENT_NODE: Int                              = js.native
+  val ATTRIBUTE_NODE: Int                            = js.native
+  val TEXT_NODE: Int                                 = js.native
+  val CDATA_SECTION_NODE: Int                        = js.native
+  val ENTITY_REFERENCE_NODE: Int                     = js.native
+  val ENTITY_NODE: Int                               = js.native
+  val PROCESSING_INSTRUCTION_NODE: Int               = js.native
+  val COMMENT_NODE: Int                              = js.native
+  val DOCUMENT_NODE: Int                             = js.native
+  val DOCUMENT_TYPE_NODE: Int                        = js.native
+  val DOCUMENT_FRAGMENT_NODE: Int                    = js.native
+  val NOTATION_NODE: Int                             = js.native
+  val DOCUMENT_POSITION_DISCONNECTED: Int            = js.native
+  val DOCUMENT_POSITION_PRECEDING: Int               = js.native
+  val DOCUMENT_POSITION_FOLLOWING: Int               = js.native
+  val DOCUMENT_POSITION_CONTAINS: Int                = js.native
+  val DOCUMENT_POSITION_CONTAINED_BY: Int            = js.native
+  val DOCUMENT_POSITION_IMPLEMENTATION_SPECIFIC: Int = js.native
+end Node
+
+@js.native
+@JSGlobal
 class StorageBucketManager extends js.Object:
   def open(name: String, options: StorageBucketOptions = js.native): scala.scalajs.js.Any = js.native
   def keys(): scala.scalajs.js.Any                                                        = js.native
@@ -4267,10 +4497,14 @@ class StorageBucketManager extends js.Object:
 @js.native
 @JSGlobal
 class Origin extends js.Object:
-  def opaque: Boolean                           = js.native
+  def opaque: Boolean                      = js.native
+  def isSameOrigin(other: Origin): Boolean = js.native
+  def isSameSite(other: Origin): Boolean   = js.native
+
+@js.native
+@JSGlobal
+object Origin extends js.Object:
   def from(value: scala.scalajs.js.Any): Origin = js.native
-  def isSameOrigin(other: Origin): Boolean      = js.native
-  def isSameSite(other: Origin): Boolean        = js.native
 
 @js.native
 @JSGlobal
@@ -4325,17 +4559,6 @@ class AnimationTimeline extends js.Object:
 
 @js.native
 @JSGlobal
-class BackgroundFetchUpdateUIEvent extends BackgroundFetchEvent:
-  def updateUI(options: BackgroundFetchUIOptions = js.native): scala.scalajs.js.Any = js.native
-
-@js.native
-@JSGlobal
-class PromiseRejectionEvent extends js.Object:
-  def promise: scala.scalajs.js.Any = js.native
-  def reason: scala.scalajs.js.Any  = js.native
-
-@js.native
-@JSGlobal
 class Permissions extends js.Object:
   def request(permissionDesc: scala.scalajs.js.Any): scala.scalajs.js.Any = js.native
   def revoke(permissionDesc: scala.scalajs.js.Any): scala.scalajs.js.Any  = js.native
@@ -4361,6 +4584,7 @@ class DataTransferItem extends js.Object:
 @js.native
 @JSGlobal
 class RTCPeerConnection extends EventTarget:
+  def this(@unused configuration: RTCConfiguration = js.native) = this()
   def peerIdentity: scala.scalajs.js.Any                                                           = js.native
   def idpLoginUrl: String                                                                          = js.native
   def idpErrorInfo: String                                                                         = js.native
@@ -4419,13 +4643,12 @@ class RTCPeerConnection extends EventTarget:
       candidate: RTCIceCandidateInit,
       successCallback: scala.scalajs.js.Function0[Unit],
       failureCallback: scala.scalajs.js.Function1[DOMException, Unit],
-  ): scala.scalajs.js.Any                                                              = js.native
-  def generateCertificate(keygenAlgorithm: scala.scalajs.js.Any): scala.scalajs.js.Any = js.native
-  def getSenders(): scala.scalajs.js.Any                                               = js.native
-  def getReceivers(): scala.scalajs.js.Any                                             = js.native
-  def getTransceivers(): scala.scalajs.js.Any                                          = js.native
-  def addTrack(track: MediaStreamTrack, streams: MediaStream): RTCRtpSender            = js.native
-  def removeTrack(sender: RTCRtpSender): Unit                                          = js.native
+  ): scala.scalajs.js.Any                                                   = js.native
+  def getSenders(): scala.scalajs.js.Any                                    = js.native
+  def getReceivers(): scala.scalajs.js.Any                                  = js.native
+  def getTransceivers(): scala.scalajs.js.Any                               = js.native
+  def addTrack(track: MediaStreamTrack, streams: MediaStream): RTCRtpSender = js.native
+  def removeTrack(sender: RTCRtpSender): Unit                               = js.native
   def addTransceiver(trackOrKind: scala.scalajs.js.Any, init: RTCRtpTransceiverInit = js.native): RTCRtpTransceiver =
     js.native
   def createDataChannel(label: String, dataChannelDict: RTCDataChannelInit = js.native): RTCDataChannel = js.native
@@ -4434,34 +4657,28 @@ end RTCPeerConnection
 
 @js.native
 @JSGlobal
+object RTCPeerConnection extends js.Object:
+  def generateCertificate(keygenAlgorithm: scala.scalajs.js.Any): scala.scalajs.js.Any = js.native
+
+@js.native
+@JSGlobal
 class CSSLab extends CSSColorValue:
+  def this(
+      @unused l: scala.scalajs.js.Any,
+      @unused a: scala.scalajs.js.Any,
+      @unused b: scala.scalajs.js.Any,
+      @unused alpha: scala.scalajs.js.Any = js.native,
+  ) = this()
   var l: scala.scalajs.js.Any     = js.native
   var a: scala.scalajs.js.Any     = js.native
   var b: scala.scalajs.js.Any     = js.native
   var alpha: scala.scalajs.js.Any = js.native
-
-@js.native
-@JSGlobal
-class IDBVersionChangeEvent extends js.Object:
-  def oldVersion: Int = js.native
-  def newVersion: Int = js.native
-
-@js.native
-@JSGlobal
-class TextEvent extends js.Object:
-  def data: String = js.native
-  def initTextEvent(
-      `type`: String,
-      bubbles: Boolean = js.native,
-      cancelable: Boolean = js.native,
-      view: Window = js.native,
-      data: String = js.native,
-  ): Unit = js.native
-end TextEvent
+end CSSLab
 
 @js.native
 @JSGlobal
 class CSSKeywordValue extends CSSStyleValue:
+  def this(@unused value: String) = this()
   var value: String = js.native
 
 @js.native
@@ -4508,8 +4725,12 @@ class CSSNumericValue extends CSSStyleValue:
   def to(unit: String): CSSUnitValue                     = js.native
   def toSum(units: String): CSSMathSum                   = js.native
   def `type`(): CSSNumericType                           = js.native
-  def parse(cssText: String): CSSNumericValue            = js.native
 end CSSNumericValue
+
+@js.native
+@JSGlobal
+object CSSNumericValue extends js.Object:
+  def parse(cssText: String): CSSNumericValue = js.native
 
 @js.native
 @JSGlobal
@@ -4648,10 +4869,14 @@ class SubtleCrypto extends js.Object:
       ciphertext: scala.scalajs.js.Any,
   ): scala.scalajs.js.Any                                                                 = js.native
   def getPublicKey(key: CryptoKey, keyUsages: scala.scalajs.js.Any): scala.scalajs.js.Any = js.native
-  def supports(operation: String, algorithm: scala.scalajs.js.Any, length: Int): Boolean  = js.native
+end SubtleCrypto
+
+@js.native
+@JSGlobal
+object SubtleCrypto extends js.Object:
+  def supports(operation: String, algorithm: scala.scalajs.js.Any, length: Int = js.native): Boolean = js.native
   def supports(operation: String, algorithm: scala.scalajs.js.Any, additionalAlgorithm: scala.scalajs.js.Any): Boolean =
     js.native
-end SubtleCrypto
 
 @js.native
 @JSGlobal
@@ -4684,6 +4909,18 @@ class SVGTransform extends js.Object:
   def setRotate(angle: Double, cx: Double, cy: Double): Unit = js.native
   def setSkewX(angle: Double): Unit                          = js.native
   def setSkewY(angle: Double): Unit                          = js.native
+end SVGTransform
+
+@js.native
+@JSGlobal
+object SVGTransform extends js.Object:
+  val SVG_TRANSFORM_UNKNOWN: Int   = js.native
+  val SVG_TRANSFORM_MATRIX: Int    = js.native
+  val SVG_TRANSFORM_TRANSLATE: Int = js.native
+  val SVG_TRANSFORM_SCALE: Int     = js.native
+  val SVG_TRANSFORM_ROTATE: Int    = js.native
+  val SVG_TRANSFORM_SKEWX: Int     = js.native
+  val SVG_TRANSFORM_SKEWY: Int     = js.native
 end SVGTransform
 
 @js.native
@@ -4759,6 +4996,11 @@ class KHR_parallel_shader_compile extends js.Object
 
 @js.native
 @JSGlobal
+object KHR_parallel_shader_compile extends js.Object:
+  val COMPLETION_STATUS_KHR: scala.scalajs.js.Any = js.native
+
+@js.native
+@JSGlobal
 class CSSPositionTryDescriptors extends CSSStyleDeclaration:
   var margin: String            = js.native
   var marginTop: String         = js.native
@@ -4803,7 +5045,8 @@ end CSSPositionTryDescriptors
 
 @js.native
 @JSGlobal
-class RelativeOrientationSensor extends OrientationSensor
+class RelativeOrientationSensor extends OrientationSensor:
+  def this(@unused sensorOptions: OrientationSensorOptions = js.native) = this()
 
 @js.native
 @JSGlobal
@@ -4841,11 +5084,13 @@ end CSSPageDescriptors
 @js.native
 @JSGlobal
 class CSSMathNegate extends CSSMathValue:
+  def this(@unused arg: scala.scalajs.js.Any) = this()
   def value: CSSNumericValue = js.native
 
 @js.native
 @JSGlobal
 class WebSocket extends EventTarget:
+  def this(@unused url: String, @unused protocols: scala.scalajs.js.Any = js.native) = this()
   def url: String                                                    = js.native
   def readyState: Int                                                = js.native
   def bufferedAmount: Int                                            = js.native
@@ -4862,9 +5107,11 @@ end WebSocket
 
 @js.native
 @JSGlobal
-class BlobEvent extends js.Object:
-  def data: Blob       = js.native
-  def timecode: Double = js.native
+object WebSocket extends js.Object:
+  val CONNECTING: Int = js.native
+  val OPEN: Int       = js.native
+  val CLOSING: Int    = js.native
+  val CLOSED: Int     = js.native
 
 @js.native
 @JSGlobal
@@ -4878,6 +5125,7 @@ class Scheduler extends js.Object:
 @js.native
 @JSGlobal
 class OffscreenCanvas extends EventTarget:
+  def this(@unused width: Int, @unused height: Int) = this()
   var width: Int                                                                                     = js.native
   var height: Int                                                                                    = js.native
   var oncontextlost: scala.scalajs.js.Any                                                            = js.native
@@ -4890,6 +5138,7 @@ end OffscreenCanvas
 @js.native
 @JSGlobal
 class CSSMathMin extends CSSMathValue:
+  def this(@unused args: scala.scalajs.js.Any) = this()
   def values: CSSNumericArray = js.native
 
 @js.native
@@ -4909,6 +5158,7 @@ class MLTensor extends js.Object:
 @js.native
 @JSGlobal
 class WebTransportError extends DOMException:
+  def this(@unused message: String = js.native, @unused options: WebTransportErrorOptions = js.native) = this()
   def source: String       = js.native
   def streamErrorCode: Int = js.native
 
@@ -4922,13 +5172,8 @@ class LanguageModelParams extends js.Object:
 
 @js.native
 @JSGlobal
-class SpeechRecognitionEvent extends js.Object:
-  def resultIndex: Int                     = js.native
-  def results: SpeechRecognitionResultList = js.native
-
-@js.native
-@JSGlobal
 class AudioBufferSourceNode extends AudioScheduledSourceNode:
+  def this(@unused context: BaseAudioContext, @unused options: AudioBufferSourceOptions = js.native) = this()
   var buffer: AudioBuffer                                         = js.native
   def playbackRate: AudioParam                                    = js.native
   def detune: AudioParam                                          = js.native
@@ -4959,6 +5204,7 @@ end FileSystemDirectoryEntry
 @js.native
 @JSGlobal
 class TextFormat extends js.Object:
+  def this(@unused options: TextFormatInit = js.native) = this()
   def rangeStart: Int            = js.native
   def rangeEnd: Int              = js.native
   def underlineStyle: String     = js.native
@@ -4967,11 +5213,13 @@ class TextFormat extends js.Object:
 @js.native
 @JSGlobal
 class RTCRtpSFrameEncrypter extends js.Object:
+  def this(@unused options: RTCRtpSFrameEncrypterOptions) = this()
   def setEncryptionKey(key: CryptoKey, keyId: scala.scalajs.js.Any): scala.scalajs.js.Any = js.native
 
 @js.native
 @JSGlobal
 class MediaStreamAudioSourceNode extends AudioNode:
+  def this(@unused context: AudioContext, @unused options: MediaStreamAudioSourceOptions) = this()
   def mediaStream: MediaStream = js.native
 
 @js.native
@@ -5020,11 +5268,6 @@ class SerialPort extends EventTarget:
   def close(): scala.scalajs.js.Any                                              = js.native
   def forget(): scala.scalajs.js.Any                                             = js.native
 end SerialPort
-
-@js.native
-@JSGlobal
-class PresentationConnectionAvailableEvent extends js.Object:
-  def connection: PresentationConnection = js.native
 
 @js.native
 @JSGlobal
@@ -5105,6 +5348,7 @@ class SVGNumber extends js.Object:
 @js.native
 @JSGlobal
 class Sanitizer extends js.Object:
+  def this(@unused configuration: scala.scalajs.js.Any = js.native) = this()
   def get(): SanitizerConfig                                             = js.native
   def allowElement(element: scala.scalajs.js.Any): Boolean               = js.native
   def removeElement(element: scala.scalajs.js.Any): Boolean              = js.native
@@ -5191,14 +5435,18 @@ class MediaSource extends EventTarget:
   var onsourceopen: scala.scalajs.js.Any                     = js.native
   var onsourceended: scala.scalajs.js.Any                    = js.native
   var onsourceclose: scala.scalajs.js.Any                    = js.native
-  def canConstructInDedicatedWorker: Boolean                 = js.native
   def addSourceBuffer(`type`: String): SourceBuffer          = js.native
   def removeSourceBuffer(sourceBuffer: SourceBuffer): Unit   = js.native
   def endOfStream(error: String = js.native): Unit           = js.native
   def setLiveSeekableRange(start: Double, end: Double): Unit = js.native
   def clearLiveSeekableRange(): Unit                         = js.native
-  def isTypeSupported(`type`: String): Boolean               = js.native
 end MediaSource
+
+@js.native
+@JSGlobal
+object MediaSource extends js.Object:
+  def canConstructInDedicatedWorker: Boolean   = js.native
+  def isTypeSupported(`type`: String): Boolean = js.native
 
 @js.native
 @JSGlobal
@@ -5251,7 +5499,11 @@ class MediaQueryList extends EventTarget:
 
 @js.native
 @JSGlobal
-class BluetoothUUID extends js.Object:
+class BluetoothUUID extends js.Object
+
+@js.native
+@JSGlobal
+object BluetoothUUID extends js.Object:
   def getService(name: scala.scalajs.js.Any): scala.scalajs.js.Any        = js.native
   def getCharacteristic(name: scala.scalajs.js.Any): scala.scalajs.js.Any = js.native
   def getDescriptor(name: scala.scalajs.js.Any): scala.scalajs.js.Any     = js.native
@@ -5310,18 +5562,6 @@ class ShadowRoot extends DocumentFragment:
   def setHTML(html: String, options: SetHTMLOptions = js.native): Unit = js.native
   def getAnimations(): scala.scalajs.js.Any                            = js.native
 end ShadowRoot
-
-@js.native
-@JSGlobal
-class FetchEvent extends js.Object:
-  def request: Request                           = js.native
-  def preloadResponse: scala.scalajs.js.Any      = js.native
-  def clientId: String                           = js.native
-  def resultingClientId: String                  = js.native
-  def replacesClientId: String                   = js.native
-  def handled: scala.scalajs.js.Any              = js.native
-  def respondWith(r: scala.scalajs.js.Any): Unit = js.native
-end FetchEvent
 
 @js.native
 @JSGlobal
@@ -6241,6 +6481,11 @@ class WEBGL_compressed_texture_etc1 extends js.Object
 
 @js.native
 @JSGlobal
+object WEBGL_compressed_texture_etc1 extends js.Object:
+  val COMPRESSED_RGB_ETC1_WEBGL: scala.scalajs.js.Any = js.native
+
+@js.native
+@JSGlobal
 class RdfLiteral extends js.Object:
   def value: String    = js.native
   def datatype: String = js.native
@@ -6249,14 +6494,20 @@ class RdfLiteral extends js.Object:
 @js.native
 @JSGlobal
 class ClipboardItem extends js.Object:
+  def this(@unused items: scala.scalajs.js.Any, @unused options: ClipboardItemOptions = js.native) = this()
   def presentationStyle: String                     = js.native
   def types: scala.scalajs.js.Any                   = js.native
   def getType(`type`: String): scala.scalajs.js.Any = js.native
-  def supports(`type`: String): Boolean             = js.native
+
+@js.native
+@JSGlobal
+object ClipboardItem extends js.Object:
+  def supports(`type`: String): Boolean = js.native
 
 @js.native
 @JSGlobal
 class PannerNode extends AudioNode:
+  def this(@unused context: BaseAudioContext, @unused options: PannerOptions = js.native) = this()
   var panningModel: String                                  = js.native
   def positionX: AudioParam                                 = js.native
   def positionY: AudioParam                                 = js.native
@@ -6348,7 +6599,8 @@ class WebTransportBidirectionalStream extends js.Object:
 
 @js.native
 @JSGlobal
-class SequenceEffect extends GroupEffect
+class SequenceEffect extends GroupEffect:
+  def this(@unused children: scala.scalajs.js.Any, @unused timing: scala.scalajs.js.Any = js.native) = this()
 
 @js.native
 @JSGlobal
@@ -6366,16 +6618,21 @@ end GeolocationCoordinates
 @js.native
 @JSGlobal
 class AudioEncoder extends EventTarget:
-  def state: String                                                       = js.native
-  def encodeQueueSize: Int                                                = js.native
-  var ondequeue: scala.scalajs.js.Any                                     = js.native
-  def configure(config: AudioEncoderConfig): Unit                         = js.native
-  def encode(data: AudioData): Unit                                       = js.native
-  def flush(): scala.scalajs.js.Any                                       = js.native
-  def reset(): Unit                                                       = js.native
-  def close(): Unit                                                       = js.native
-  def isConfigSupported(config: AudioEncoderConfig): scala.scalajs.js.Any = js.native
+  def this(@unused init: AudioEncoderInit) = this()
+  def state: String                               = js.native
+  def encodeQueueSize: Int                        = js.native
+  var ondequeue: scala.scalajs.js.Any             = js.native
+  def configure(config: AudioEncoderConfig): Unit = js.native
+  def encode(data: AudioData): Unit               = js.native
+  def flush(): scala.scalajs.js.Any               = js.native
+  def reset(): Unit                               = js.native
+  def close(): Unit                               = js.native
 end AudioEncoder
+
+@js.native
+@JSGlobal
+object AudioEncoder extends js.Object:
+  def isConfigSupported(config: AudioEncoderConfig): scala.scalajs.js.Any = js.native
 
 @js.native
 @JSGlobal
@@ -6397,9 +6654,13 @@ end BluetoothDevice
 @js.native
 @JSGlobal
 class TaskSignal extends AbortSignal:
-  def priority: String                                                        = js.native
-  var onprioritychange: scala.scalajs.js.Any                                  = js.native
-  def any(signals: scala.scalajs.js.Any, init: TaskSignalAnyInit): TaskSignal = js.native
+  def priority: String                       = js.native
+  var onprioritychange: scala.scalajs.js.Any = js.native
+
+@js.native
+@JSGlobal
+object TaskSignal extends js.Object:
+  def any(signals: scala.scalajs.js.Any, init: TaskSignalAnyInit = js.native): TaskSignal = js.native
 
 @js.native
 @JSGlobal
@@ -6434,6 +6695,15 @@ class SVGAngle extends js.Object:
 
 @js.native
 @JSGlobal
+object SVGAngle extends js.Object:
+  val SVG_ANGLETYPE_UNKNOWN: Int     = js.native
+  val SVG_ANGLETYPE_UNSPECIFIED: Int = js.native
+  val SVG_ANGLETYPE_DEG: Int         = js.native
+  val SVG_ANGLETYPE_RAD: Int         = js.native
+  val SVG_ANGLETYPE_GRAD: Int        = js.native
+
+@js.native
+@JSGlobal
 class Attr extends Node:
   def namespaceURI: String  = js.native
   def prefix: String        = js.native
@@ -6447,6 +6717,7 @@ end Attr
 @js.native
 @JSGlobal
 class CSSTransformValue extends CSSStyleValue:
+  def this(@unused transforms: scala.scalajs.js.Any) = this()
   def length: Int           = js.native
   def is2D: Boolean         = js.native
   def toMatrix(): DOMMatrix = js.native
@@ -6502,25 +6773,31 @@ class CrashReportContext extends js.Object:
 
 @js.native
 @JSGlobal
-class RTCTransformEvent extends js.Object:
-  def transformer: RTCRtpScriptTransformer = js.native
-
-@js.native
-@JSGlobal
 class HTMLFormControlsCollection extends HTMLCollection
 
 @js.native
 @JSGlobal
 class IdentityCredential extends Credential:
-  def token: scala.scalajs.js.Any                                                    = js.native
-  def isAutoSelected: Boolean                                                        = js.native
-  def configURL: String                                                              = js.native
+  def token: scala.scalajs.js.Any = js.native
+  def isAutoSelected: Boolean     = js.native
+  def configURL: String           = js.native
+
+@js.native
+@JSGlobal
+object IdentityCredential extends js.Object:
   def disconnect(options: IdentityCredentialDisconnectOptions): scala.scalajs.js.Any = js.native
 
 @js.native
 @JSGlobal
 class WEBGL_provoking_vertex extends js.Object:
   def provokingVertexWEBGL(provokeMode: scala.scalajs.js.Any): Unit = js.native
+
+@js.native
+@JSGlobal
+object WEBGL_provoking_vertex extends js.Object:
+  val FIRST_VERTEX_CONVENTION_WEBGL: scala.scalajs.js.Any = js.native
+  val LAST_VERTEX_CONVENTION_WEBGL: scala.scalajs.js.Any  = js.native
+  val PROVOKING_VERTEX_WEBGL: scala.scalajs.js.Any        = js.native
 
 @js.native
 @JSGlobal
@@ -6559,13 +6836,6 @@ class IDBCursorWithValue extends IDBCursor:
 @JSGlobal
 class InputDeviceInfo extends MediaDeviceInfo:
   def getCapabilities(): MediaTrackCapabilities = js.native
-
-@js.native
-@JSGlobal
-class TimeEvent extends js.Object:
-  def view: scala.scalajs.js.Any                                                                    = js.native
-  def detail: Int                                                                                   = js.native
-  def initTimeEvent(typeArg: String, viewArg: Window = js.native, detailArg: Int = js.native): Unit = js.native
 
 @js.native
 @JSGlobal
@@ -6609,11 +6879,13 @@ end CaptureController
 @js.native
 @JSGlobal
 class ConstantSourceNode extends AudioScheduledSourceNode:
+  def this(@unused context: BaseAudioContext, @unused options: ConstantSourceOptions = js.native) = this()
   def offset: AudioParam = js.native
 
 @js.native
 @JSGlobal
 class EditContext extends EventTarget:
+  def this(@unused options: EditContextInit = js.native) = this()
   def text: String                                                                        = js.native
   def selectionStart: Int                                                                 = js.native
   def selectionEnd: Int                                                                   = js.native
@@ -6652,9 +6924,15 @@ end HTMLGeolocationElement
 @js.native
 @JSGlobal
 class Exception extends js.Object:
+  def this(
+      @unused exceptionTag: Tag,
+      @unused payload: scala.scalajs.js.Any,
+      @unused options: ExceptionOptions = js.native,
+  ) = this()
   def stack: scala.scalajs.js.Any                                 = js.native
   def getArg(exceptionTag: Tag, index: Int): scala.scalajs.js.Any = js.native
   def is(exceptionTag: Tag): Boolean                              = js.native
+end Exception
 
 @js.native
 @JSGlobal
@@ -6687,13 +6965,6 @@ class CanvasGradient extends js.Object:
 @JSGlobal
 class CSSFontFeatureValuesMap extends js.Object:
   def set(featureValueName: String, values: scala.scalajs.js.Any): Unit = js.native
-
-@js.native
-@JSGlobal
-class HIDInputReportEvent extends js.Object:
-  def device: HIDDevice              = js.native
-  def reportId: scala.scalajs.js.Any = js.native
-  def data: scala.scalajs.js.Any     = js.native
 
 @js.native
 @JSGlobal
@@ -6796,11 +7067,14 @@ class NavigationTransition extends js.Object:
 @js.native
 @JSGlobal
 class OfflineAudioContext extends BaseAudioContext:
+  def this(@unused contextOptions: OfflineAudioContextOptions) = this()
+  def this(@unused numberOfChannels: Int, @unused length: Int, @unused sampleRate: Double) = this()
   def length: Int                                        = js.native
   var oncomplete: scala.scalajs.js.Any                   = js.native
   def startRendering(): scala.scalajs.js.Any             = js.native
   def resume(): scala.scalajs.js.Any                     = js.native
   def suspend(suspendTime: Double): scala.scalajs.js.Any = js.native
+end OfflineAudioContext
 
 @js.native
 @JSGlobal
@@ -6861,6 +7135,16 @@ end SVGComponentTransferFunctionElement
 
 @js.native
 @JSGlobal
+object SVGComponentTransferFunctionElement extends js.Object:
+  val SVG_FECOMPONENTTRANSFER_TYPE_UNKNOWN: Int  = js.native
+  val SVG_FECOMPONENTTRANSFER_TYPE_IDENTITY: Int = js.native
+  val SVG_FECOMPONENTTRANSFER_TYPE_TABLE: Int    = js.native
+  val SVG_FECOMPONENTTRANSFER_TYPE_DISCRETE: Int = js.native
+  val SVG_FECOMPONENTTRANSFER_TYPE_LINEAR: Int   = js.native
+  val SVG_FECOMPONENTTRANSFER_TYPE_GAMMA: Int    = js.native
+
+@js.native
+@JSGlobal
 class SVGAnimatedPreserveAspectRatio extends js.Object:
   def baseVal: SVGPreserveAspectRatio = js.native
   def animVal: SVGPreserveAspectRatio = js.native
@@ -6868,11 +7152,10 @@ class SVGAnimatedPreserveAspectRatio extends js.Object:
 @js.native
 @JSGlobal
 class RTCRtpSender extends js.Object:
-  var transform: scala.scalajs.js.Any                   = js.native
-  def track: MediaStreamTrack                           = js.native
-  def transport: RTCDtlsTransport                       = js.native
-  def dtmf: RTCDTMFSender                               = js.native
-  def getCapabilities(kind: String): RTCRtpCapabilities = js.native
+  var transform: scala.scalajs.js.Any = js.native
+  def track: MediaStreamTrack         = js.native
+  def transport: RTCDtlsTransport     = js.native
+  def dtmf: RTCDTMFSender             = js.native
   def setParameters(
       parameters: RTCRtpSendParameters,
       setParameterOptions: RTCSetParameterOptions = js.native,
@@ -6882,6 +7165,11 @@ class RTCRtpSender extends js.Object:
   def setStreams(streams: MediaStream): Unit                          = js.native
   def getStats(): scala.scalajs.js.Any                                = js.native
 end RTCRtpSender
+
+@js.native
+@JSGlobal
+object RTCRtpSender extends js.Object:
+  def getCapabilities(kind: String): RTCRtpCapabilities = js.native
 
 @js.native
 @JSGlobal
@@ -6909,16 +7197,6 @@ class RTCDataChannel extends EventTarget:
   def send(data: Blob): Unit                    = js.native
   def send(data: scala.scalajs.js.Any): Unit    = js.native
 end RTCDataChannel
-
-@js.native
-@JSGlobal
-class RTCDataChannelEvent extends js.Object:
-  def channel: RTCDataChannel = js.native
-
-@js.native
-@JSGlobal
-class PaymentRequestUpdateEvent extends js.Object:
-  def updateWith(detailsPromise: scala.scalajs.js.Any): Unit = js.native
 
 @js.native
 @JSGlobal
@@ -6950,6 +7228,13 @@ class WEBGL_color_buffer_float extends js.Object
 
 @js.native
 @JSGlobal
+object WEBGL_color_buffer_float extends js.Object:
+  val RGBA32F_EXT: scala.scalajs.js.Any                               = js.native
+  val FRAMEBUFFER_ATTACHMENT_COMPONENT_TYPE_EXT: scala.scalajs.js.Any = js.native
+  val UNSIGNED_NORMALIZED_EXT: scala.scalajs.js.Any                   = js.native
+
+@js.native
+@JSGlobal
 class HTMLTitleElement extends HTMLElement:
   var text: String = js.native
 
@@ -6978,21 +7263,16 @@ end TextTrack
 
 @js.native
 @JSGlobal
-class MediaKeyMessageEvent extends js.Object:
-  def messageType: String           = js.native
-  def message: scala.scalajs.js.Any = js.native
-
-@js.native
-@JSGlobal
 class File extends Blob:
+  def this(
+      @unused fileBits: scala.scalajs.js.Any,
+      @unused fileName: String,
+      @unused options: FilePropertyBag = js.native,
+  ) = this()
   def name: String               = js.native
   def lastModified: Int          = js.native
   def webkitRelativePath: String = js.native
-
-@js.native
-@JSGlobal
-class InstallEvent extends js.Object:
-  def addRoutes(rules: scala.scalajs.js.Any): scala.scalajs.js.Any = js.native
+end File
 
 @js.native
 @JSGlobal
@@ -7016,14 +7296,14 @@ end MathMLAnchorElement
 @js.native
 @JSGlobal
 class TransformStream extends js.Object:
+  def this(
+      @unused transformer: scala.scalajs.js.Any = js.native,
+      @unused writableStrategy: QueuingStrategy = js.native,
+      @unused readableStrategy: QueuingStrategy = js.native,
+  ) = this()
   def readable: ReadableStream = js.native
   def writable: WritableStream = js.native
-
-@js.native
-@JSGlobal
-class ExtendableCookieChangeEvent extends js.Object:
-  def changed: scala.scalajs.js.Any = js.native
-  def deleted: scala.scalajs.js.Any = js.native
+end TransformStream
 
 @js.native
 @JSGlobal
@@ -7051,12 +7331,26 @@ class SVGFETileElement extends SVGElement:
 @js.native
 @JSGlobal
 class PointerTimeline extends AnimationTimeline:
+  def this(@unused options: PointerTimelineOptions = js.native) = this()
   def source: Element = js.native
   def axis: String    = js.native
 
 @js.native
 @JSGlobal
 class EXT_texture_norm16 extends js.Object
+
+@js.native
+@JSGlobal
+object EXT_texture_norm16 extends js.Object:
+  val R16_EXT: scala.scalajs.js.Any          = js.native
+  val RG16_EXT: scala.scalajs.js.Any         = js.native
+  val RGB16_EXT: scala.scalajs.js.Any        = js.native
+  val RGBA16_EXT: scala.scalajs.js.Any       = js.native
+  val R16_SNORM_EXT: scala.scalajs.js.Any    = js.native
+  val RG16_SNORM_EXT: scala.scalajs.js.Any   = js.native
+  val RGB16_SNORM_EXT: scala.scalajs.js.Any  = js.native
+  val RGBA16_SNORM_EXT: scala.scalajs.js.Any = js.native
+end EXT_texture_norm16
 
 @js.native
 @JSGlobal
@@ -7089,10 +7383,17 @@ end TreeWalker
 @js.native
 @JSGlobal
 class CSSHSL extends CSSColorValue:
+  def this(
+      @unused h: scala.scalajs.js.Any,
+      @unused s: scala.scalajs.js.Any,
+      @unused l: scala.scalajs.js.Any,
+      @unused alpha: scala.scalajs.js.Any = js.native,
+  ) = this()
   var h: scala.scalajs.js.Any     = js.native
   var s: scala.scalajs.js.Any     = js.native
   var l: scala.scalajs.js.Any     = js.native
   var alpha: scala.scalajs.js.Any = js.native
+end CSSHSL
 
 @js.native
 @JSGlobal
@@ -7116,6 +7417,11 @@ end HTMLMeterElement
 @js.native
 @JSGlobal
 class WEBGL_depth_texture extends js.Object
+
+@js.native
+@JSGlobal
+object WEBGL_depth_texture extends js.Object:
+  val UNSIGNED_INT_24_8_WEBGL: scala.scalajs.js.Any = js.native
 
 @js.native
 @JSGlobal
@@ -7191,6 +7497,14 @@ class EXT_sRGB extends js.Object
 
 @js.native
 @JSGlobal
+object EXT_sRGB extends js.Object:
+  val SRGB_EXT: scala.scalajs.js.Any                                  = js.native
+  val SRGB_ALPHA_EXT: scala.scalajs.js.Any                            = js.native
+  val SRGB8_ALPHA8_EXT: scala.scalajs.js.Any                          = js.native
+  val FRAMEBUFFER_ATTACHMENT_COLOR_ENCODING_EXT: scala.scalajs.js.Any = js.native
+
+@js.native
+@JSGlobal
 class ScriptProcessorNode extends AudioNode:
   var onaudioprocess: scala.scalajs.js.Any = js.native
   def bufferSize: Int                      = js.native
@@ -7198,6 +7512,7 @@ class ScriptProcessorNode extends AudioNode:
 @js.native
 @JSGlobal
 class USBIsochronousOutTransferPacket extends js.Object:
+  def this(@unused status: String, @unused bytesWritten: Int = js.native) = this()
   def bytesWritten: Int = js.native
   def status: String    = js.native
 
@@ -7230,6 +7545,7 @@ end HTMLTableCellElement
 @js.native
 @JSGlobal
 class DecompressionStream extends js.Object:
+  def this(@unused format: String) = this()
   def readable: ReadableStream = js.native
   def writable: WritableStream = js.native
 
@@ -7303,14 +7619,21 @@ class HighlightRegistry extends js.Object:
 @js.native
 @JSGlobal
 class USBEndpoint extends js.Object:
+  def this(
+      @unused alternate: USBAlternateInterface,
+      @unused endpointNumber: scala.scalajs.js.Any,
+      @unused direction: String,
+  ) = this()
   def endpointNumber: scala.scalajs.js.Any = js.native
   def direction: String                    = js.native
   def `type`: String                       = js.native
   def packetSize: Int                      = js.native
+end USBEndpoint
 
 @js.native
 @JSGlobal
 class Profiler extends EventTarget:
+  def this(@unused options: ProfilerInitOptions) = this()
   def sampleInterval: Double       = js.native
   def stopped: Boolean             = js.native
   def stop(): scala.scalajs.js.Any = js.native
@@ -7326,9 +7649,40 @@ class RTCDTMFSender extends EventTarget:
 @js.native
 @JSGlobal
 class DOMException extends js.Object:
+  def this(@unused message: String = js.native, @unused name: String = js.native) = this()
   def name: String    = js.native
   def message: String = js.native
   def code: Int       = js.native
+
+@js.native
+@JSGlobal
+object DOMException extends js.Object:
+  val INDEX_SIZE_ERR: Int              = js.native
+  val DOMSTRING_SIZE_ERR: Int          = js.native
+  val HIERARCHY_REQUEST_ERR: Int       = js.native
+  val WRONG_DOCUMENT_ERR: Int          = js.native
+  val INVALID_CHARACTER_ERR: Int       = js.native
+  val NO_DATA_ALLOWED_ERR: Int         = js.native
+  val NO_MODIFICATION_ALLOWED_ERR: Int = js.native
+  val NOT_FOUND_ERR: Int               = js.native
+  val NOT_SUPPORTED_ERR: Int           = js.native
+  val INUSE_ATTRIBUTE_ERR: Int         = js.native
+  val INVALID_STATE_ERR: Int           = js.native
+  val SYNTAX_ERR: Int                  = js.native
+  val INVALID_MODIFICATION_ERR: Int    = js.native
+  val NAMESPACE_ERR: Int               = js.native
+  val INVALID_ACCESS_ERR: Int          = js.native
+  val VALIDATION_ERR: Int              = js.native
+  val TYPE_MISMATCH_ERR: Int           = js.native
+  val SECURITY_ERR: Int                = js.native
+  val NETWORK_ERR: Int                 = js.native
+  val ABORT_ERR: Int                   = js.native
+  val URL_MISMATCH_ERR: Int            = js.native
+  val QUOTA_EXCEEDED_ERR: Int          = js.native
+  val TIMEOUT_ERR: Int                 = js.native
+  val INVALID_NODE_TYPE_ERR: Int       = js.native
+  val DATA_CLONE_ERR: Int              = js.native
+end DOMException
 
 @js.native
 @JSGlobal
@@ -7337,12 +7691,12 @@ class GPUCommandBuffer extends js.Object:
 
 @js.native
 @JSGlobal
-class XRLayerEvent extends js.Object:
-  def layer: XRLayer = js.native
-
-@js.native
-@JSGlobal
 class FontFace extends js.Object:
+  def this(
+      @unused family: String,
+      @unused source: scala.scalajs.js.Any,
+      @unused descriptors: FontFaceDescriptors = js.native,
+  ) = this()
   var family: String                 = js.native
   var style: String                  = js.native
   var weight: String                 = js.native
@@ -7385,12 +7739,14 @@ class DigitalGoodsService extends js.Object:
 @js.native
 @JSGlobal
 class Headers extends js.Object:
+  def this(@unused init: scala.scalajs.js.Any = js.native) = this()
   def append(name: String, value: String): Unit = js.native
   def delete(name: String): Unit                = js.native
   def get(name: String): String                 = js.native
   def getSetCookie(): scala.scalajs.js.Any      = js.native
   def has(name: String): Boolean                = js.native
   def set(name: String, value: String): Unit    = js.native
+end Headers
 
 @js.native
 @JSGlobal
@@ -7435,31 +7791,27 @@ class RTCIdentityProviderGlobalScope extends WorkerGlobalScope:
 
 @js.native
 @JSGlobal
-class MediaStreamTrackEvent extends js.Object:
-  def track: MediaStreamTrack = js.native
-
-@js.native
-@JSGlobal
 class USBOutTransferResult extends js.Object:
+  def this(@unused status: String, @unused bytesWritten: Int = js.native) = this()
   def bytesWritten: Int = js.native
   def status: String    = js.native
 
 @js.native
 @JSGlobal
-class SensorErrorEvent extends js.Object:
-  def error: DOMException = js.native
+class DigitalCredential extends Credential:
+  def protocol: scala.scalajs.js.Any = js.native
+  def data: scala.scalajs.js.Any     = js.native
+  def toJSON(): scala.scalajs.js.Any = js.native
 
 @js.native
 @JSGlobal
-class DigitalCredential extends Credential:
-  def protocol: scala.scalajs.js.Any                     = js.native
-  def data: scala.scalajs.js.Any                         = js.native
-  def toJSON(): scala.scalajs.js.Any                     = js.native
+object DigitalCredential extends js.Object:
   def userAgentAllowsProtocol(protocol: String): Boolean = js.native
 
 @js.native
 @JSGlobal
 class IntersectionObserverEntry extends js.Object:
+  def this(@unused intersectionObserverEntryInit: IntersectionObserverEntryInit) = this()
   def time: Double                        = js.native
   def rootBounds: DOMRectReadOnly         = js.native
   def boundingClientRect: DOMRectReadOnly = js.native
@@ -7509,8 +7861,15 @@ end HTMLTextAreaElement
 @js.native
 @JSGlobal
 class DataCue extends TextTrackCue:
+  def this(
+      @unused startTime: Double,
+      @unused endTime: Double,
+      @unused value: scala.scalajs.js.Any,
+      @unused `type`: String = js.native,
+  ) = this()
   var value: scala.scalajs.js.Any = js.native
   def `type`: String              = js.native
+end DataCue
 
 @js.native
 @JSGlobal
@@ -7570,14 +7929,17 @@ end SVGFEGaussianBlurElement
 
 @js.native
 @JSGlobal
-class CSSMatrixComponent extends CSSTransformComponent:
-  var matrix: DOMMatrix = js.native
+object SVGFEGaussianBlurElement extends js.Object:
+  val SVG_EDGEMODE_UNKNOWN: Int   = js.native
+  val SVG_EDGEMODE_DUPLICATE: Int = js.native
+  val SVG_EDGEMODE_WRAP: Int      = js.native
+  val SVG_EDGEMODE_NONE: Int      = js.native
 
 @js.native
 @JSGlobal
-class SpeechRecognitionErrorEvent extends js.Object:
-  def error: String   = js.native
-  def message: String = js.native
+class CSSMatrixComponent extends CSSTransformComponent:
+  def this(@unused matrix: DOMMatrixReadOnly, @unused options: CSSMatrixComponentOptions = js.native) = this()
+  var matrix: DOMMatrix = js.native
 
 @js.native
 @JSGlobal
@@ -7595,7 +7957,41 @@ class WEBGL_compressed_texture_astc extends js.Object:
 
 @js.native
 @JSGlobal
+object WEBGL_compressed_texture_astc extends js.Object:
+  val COMPRESSED_RGBA_ASTC_4x4_KHR: scala.scalajs.js.Any           = js.native
+  val COMPRESSED_RGBA_ASTC_5x4_KHR: scala.scalajs.js.Any           = js.native
+  val COMPRESSED_RGBA_ASTC_5x5_KHR: scala.scalajs.js.Any           = js.native
+  val COMPRESSED_RGBA_ASTC_6x5_KHR: scala.scalajs.js.Any           = js.native
+  val COMPRESSED_RGBA_ASTC_6x6_KHR: scala.scalajs.js.Any           = js.native
+  val COMPRESSED_RGBA_ASTC_8x5_KHR: scala.scalajs.js.Any           = js.native
+  val COMPRESSED_RGBA_ASTC_8x6_KHR: scala.scalajs.js.Any           = js.native
+  val COMPRESSED_RGBA_ASTC_8x8_KHR: scala.scalajs.js.Any           = js.native
+  val COMPRESSED_RGBA_ASTC_10x5_KHR: scala.scalajs.js.Any          = js.native
+  val COMPRESSED_RGBA_ASTC_10x6_KHR: scala.scalajs.js.Any          = js.native
+  val COMPRESSED_RGBA_ASTC_10x8_KHR: scala.scalajs.js.Any          = js.native
+  val COMPRESSED_RGBA_ASTC_10x10_KHR: scala.scalajs.js.Any         = js.native
+  val COMPRESSED_RGBA_ASTC_12x10_KHR: scala.scalajs.js.Any         = js.native
+  val COMPRESSED_RGBA_ASTC_12x12_KHR: scala.scalajs.js.Any         = js.native
+  val COMPRESSED_SRGB8_ALPHA8_ASTC_4x4_KHR: scala.scalajs.js.Any   = js.native
+  val COMPRESSED_SRGB8_ALPHA8_ASTC_5x4_KHR: scala.scalajs.js.Any   = js.native
+  val COMPRESSED_SRGB8_ALPHA8_ASTC_5x5_KHR: scala.scalajs.js.Any   = js.native
+  val COMPRESSED_SRGB8_ALPHA8_ASTC_6x5_KHR: scala.scalajs.js.Any   = js.native
+  val COMPRESSED_SRGB8_ALPHA8_ASTC_6x6_KHR: scala.scalajs.js.Any   = js.native
+  val COMPRESSED_SRGB8_ALPHA8_ASTC_8x5_KHR: scala.scalajs.js.Any   = js.native
+  val COMPRESSED_SRGB8_ALPHA8_ASTC_8x6_KHR: scala.scalajs.js.Any   = js.native
+  val COMPRESSED_SRGB8_ALPHA8_ASTC_8x8_KHR: scala.scalajs.js.Any   = js.native
+  val COMPRESSED_SRGB8_ALPHA8_ASTC_10x5_KHR: scala.scalajs.js.Any  = js.native
+  val COMPRESSED_SRGB8_ALPHA8_ASTC_10x6_KHR: scala.scalajs.js.Any  = js.native
+  val COMPRESSED_SRGB8_ALPHA8_ASTC_10x8_KHR: scala.scalajs.js.Any  = js.native
+  val COMPRESSED_SRGB8_ALPHA8_ASTC_10x10_KHR: scala.scalajs.js.Any = js.native
+  val COMPRESSED_SRGB8_ALPHA8_ASTC_12x10_KHR: scala.scalajs.js.Any = js.native
+  val COMPRESSED_SRGB8_ALPHA8_ASTC_12x12_KHR: scala.scalajs.js.Any = js.native
+end WEBGL_compressed_texture_astc
+
+@js.native
+@JSGlobal
 class ImageCapture extends js.Object:
+  def this(@unused videoTrack: MediaStreamTrack) = this()
   def track: MediaStreamTrack                                                   = js.native
   def takePhoto(photoSettings: PhotoSettings = js.native): scala.scalajs.js.Any = js.native
   def getPhotoCapabilities(): scala.scalajs.js.Any                              = js.native
@@ -7607,12 +8003,6 @@ class ImageCapture extends js.Object:
 class NavigationPrecommitController extends js.Object:
   def redirect(url: String, options: NavigationNavigateOptions = js.native): Unit = js.native
   def addHandler(handler: scala.scalajs.js.Function0[Unit]): Unit                 = js.native
-
-@js.native
-@JSGlobal
-class NavigationCurrentEntryChangeEvent extends js.Object:
-  def navigationType: String       = js.native
-  def from: NavigationHistoryEntry = js.native
 
 @js.native
 @JSGlobal
@@ -7631,19 +8021,8 @@ class XRHand extends js.Object:
 
 @js.native
 @JSGlobal
-class WindowControlsOverlayGeometryChangeEvent extends js.Object:
-  def titlebarAreaRect: DOMRect = js.native
-  def visible: Boolean          = js.native
-
-@js.native
-@JSGlobal
 class LayoutWorkletGlobalScope extends WorkletGlobalScope:
   def registerLayout(name: String, layoutCtor: scala.scalajs.js.Function0[Unit]): Unit = js.native
-
-@js.native
-@JSGlobal
-class ContentIndexEvent extends js.Object:
-  def id: String = js.native
 
 @js.native
 @JSGlobal
@@ -7794,11 +8173,19 @@ class CSSConditionRule extends CSSGroupingRule:
 @js.native
 @JSGlobal
 class ImageData extends js.Object:
+  def this(@unused sw: Int, @unused sh: Int, @unused settings: ImageDataSettings) = this()
+  def this(
+      @unused data: scala.scalajs.js.Any,
+      @unused sw: Int,
+      @unused sh: Int = js.native,
+      @unused settings: ImageDataSettings = js.native,
+  ) = this()
   def width: Int                 = js.native
   def height: Int                = js.native
   def data: scala.scalajs.js.Any = js.native
   def pixelFormat: String        = js.native
   def colorSpace: String         = js.native
+end ImageData
 
 @js.native
 @JSGlobal
@@ -7897,6 +8284,20 @@ end HTMLMediaElement
 
 @js.native
 @JSGlobal
+object HTMLMediaElement extends js.Object:
+  val NETWORK_EMPTY: Int     = js.native
+  val NETWORK_IDLE: Int      = js.native
+  val NETWORK_LOADING: Int   = js.native
+  val NETWORK_NO_SOURCE: Int = js.native
+  val HAVE_NOTHING: Int      = js.native
+  val HAVE_METADATA: Int     = js.native
+  val HAVE_CURRENT_DATA: Int = js.native
+  val HAVE_FUTURE_DATA: Int  = js.native
+  val HAVE_ENOUGH_DATA: Int  = js.native
+end HTMLMediaElement
+
+@js.native
+@JSGlobal
 class BluetoothRemoteGATTCharacteristic extends EventTarget:
   def service: BluetoothRemoteGATTService                                                = js.native
   def uuid: scala.scalajs.js.Any                                                         = js.native
@@ -7915,11 +8316,6 @@ end BluetoothRemoteGATTCharacteristic
 
 @js.native
 @JSGlobal
-class BackgroundFetchEvent extends js.Object:
-  def registration: BackgroundFetchRegistration = js.native
-
-@js.native
-@JSGlobal
 class WEBGL_debug_shaders extends js.Object:
   def getTranslatedShaderSource(shader: WebGLShader): String = js.native
 
@@ -7934,7 +8330,11 @@ class BluetoothRemoteGATTDescriptor extends js.Object:
 
 @js.native
 @JSGlobal
-class CropTarget extends js.Object:
+class CropTarget extends js.Object
+
+@js.native
+@JSGlobal
+object CropTarget extends js.Object:
   def fromElement(element: Element): scala.scalajs.js.Any = js.native
 
 @js.native
@@ -7953,11 +8353,13 @@ class SVGDescElement extends SVGElement
 @js.native
 @JSGlobal
 class USBIsochronousOutTransferResult extends js.Object:
+  def this(@unused packets: scala.scalajs.js.Any) = this()
   def packets: scala.scalajs.js.Any = js.native
 
 @js.native
 @JSGlobal
 class IdentityCredentialError extends DOMException:
+  def this(@unused message: String = js.native, @unused options: IdentityCredentialErrorInit = js.native) = this()
   def error: String = js.native
   def url: String   = js.native
 
@@ -7988,6 +8390,7 @@ class BrowserCaptureMediaStreamTrack extends MediaStreamTrack:
 @js.native
 @JSGlobal
 class ByteLengthQueuingStrategy extends js.Object:
+  def this(@unused init: QueuingStrategyInit) = this()
   def highWaterMark: Double                                                        = js.native
   def size: scala.scalajs.js.Function1[scala.scalajs.js.Any, scala.scalajs.js.Any] = js.native
 
@@ -8022,13 +8425,8 @@ end HTMLFormElement
 
 @js.native
 @JSGlobal
-class LinearAccelerationSensor extends Accelerometer
-
-@js.native
-@JSGlobal
-class RTCPeerConnectionIceEvent extends js.Object:
-  def candidate: RTCIceCandidate = js.native
-  def url: String                = js.native
+class LinearAccelerationSensor extends Accelerometer:
+  def this(@unused options: AccelerometerSensorOptions = js.native) = this()
 
 @js.native
 @JSGlobal
@@ -8048,7 +8446,15 @@ end SVGTextContentElement
 
 @js.native
 @JSGlobal
-class PeriodicWave extends js.Object
+object SVGTextContentElement extends js.Object:
+  val LENGTHADJUST_UNKNOWN: Int          = js.native
+  val LENGTHADJUST_SPACING: Int          = js.native
+  val LENGTHADJUST_SPACINGANDGLYPHS: Int = js.native
+
+@js.native
+@JSGlobal
+class PeriodicWave extends js.Object:
+  def this(@unused context: BaseAudioContext, @unused options: PeriodicWaveOptions = js.native) = this()
 
 @js.native
 @JSGlobal
@@ -8071,12 +8477,6 @@ end EventTarget
 @JSGlobal
 class TrustedScriptURL extends js.Object:
   def toJSON(): String = js.native
-
-@js.native
-@JSGlobal
-class MediaQueryListEvent extends js.Object:
-  def media: String    = js.native
-  def matches: Boolean = js.native
 
 @js.native
 @JSGlobal
@@ -8110,6 +8510,8 @@ class XRLightProbe extends EventTarget:
 @js.native
 @JSGlobal
 class PresentationRequest extends EventTarget:
+  def this(@unused url: String) = this()
+  def this(@unused urls: scala.scalajs.js.Any) = this()
   var onconnectionavailable: scala.scalajs.js.Any             = js.native
   def start(): scala.scalajs.js.Any                           = js.native
   def reconnect(presentationId: String): scala.scalajs.js.Any = js.native
@@ -8118,12 +8520,14 @@ class PresentationRequest extends EventTarget:
 @js.native
 @JSGlobal
 class DynamicsCompressorNode extends AudioNode:
+  def this(@unused context: BaseAudioContext, @unused options: DynamicsCompressorOptions = js.native) = this()
   def threshold: AudioParam = js.native
   def knee: AudioParam      = js.native
   def ratio: AudioParam     = js.native
   def reduction: Double     = js.native
   def attack: AudioParam    = js.native
   def release: AudioParam   = js.native
+end DynamicsCompressorNode
 
 @js.native
 @JSGlobal
@@ -8163,6 +8567,7 @@ class RTCStatsReport extends js.Object
 @js.native
 @JSGlobal
 class Touch extends js.Object:
+  def this(@unused touchInitDict: TouchInit) = this()
   def identifier: Int       = js.native
   def target: EventTarget   = js.native
   def screenX: Double       = js.native
@@ -8187,6 +8592,7 @@ class MIDIOutputMap extends js.Object
 @js.native
 @JSGlobal
 class FormData extends js.Object:
+  def this(@unused form: HTMLFormElement = js.native, @unused submitter: HTMLElement = js.native) = this()
   def append(name: String, value: String): Unit                     = js.native
   def append(name: String, blobValue: Blob, filename: String): Unit = js.native
   def delete(name: String): Unit                                    = js.native
@@ -8316,11 +8722,6 @@ class Clipboard extends EventTarget:
 
 @js.native
 @JSGlobal
-class PictureInPictureEvent extends js.Object:
-  def pictureInPictureWindow: PictureInPictureWindow = js.native
-
-@js.native
-@JSGlobal
 class SVGLinearGradientElement extends SVGGradientElement:
   def x1: SVGAnimatedLength = js.native
   def y1: SVGAnimatedLength = js.native
@@ -8329,16 +8730,18 @@ class SVGLinearGradientElement extends SVGGradientElement:
 
 @js.native
 @JSGlobal
-class FontFaceSetLoadEvent extends js.Object:
-  def fontfaces: scala.scalajs.js.Any = js.native
-
-@js.native
-@JSGlobal
 class CSSRGB extends CSSColorValue:
+  def this(
+      @unused r: scala.scalajs.js.Any,
+      @unused g: scala.scalajs.js.Any,
+      @unused b: scala.scalajs.js.Any,
+      @unused alpha: scala.scalajs.js.Any = js.native,
+  ) = this()
   var r: scala.scalajs.js.Any     = js.native
   var g: scala.scalajs.js.Any     = js.native
   var b: scala.scalajs.js.Any     = js.native
   var alpha: scala.scalajs.js.Any = js.native
+end CSSRGB
 
 @js.native
 @JSGlobal
@@ -8355,9 +8758,15 @@ end HTMLDialogElement
 @js.native
 @JSGlobal
 class CSSScale extends CSSTransformComponent:
+  def this(
+      @unused x: scala.scalajs.js.Any,
+      @unused y: scala.scalajs.js.Any,
+      @unused z: scala.scalajs.js.Any = js.native,
+  ) = this()
   var x: scala.scalajs.js.Any = js.native
   var y: scala.scalajs.js.Any = js.native
   var z: scala.scalajs.js.Any = js.native
+end CSSScale
 
 @js.native
 @JSGlobal
@@ -8382,6 +8791,22 @@ class SVGLength extends js.Object:
   var valueAsString: String                                                      = js.native
   def newValueSpecifiedUnits(unitType: Int, valueInSpecifiedUnits: Double): Unit = js.native
   def convertToSpecifiedUnits(unitType: Int): Unit                               = js.native
+
+@js.native
+@JSGlobal
+object SVGLength extends js.Object:
+  val SVG_LENGTHTYPE_UNKNOWN: Int    = js.native
+  val SVG_LENGTHTYPE_NUMBER: Int     = js.native
+  val SVG_LENGTHTYPE_PERCENTAGE: Int = js.native
+  val SVG_LENGTHTYPE_EMS: Int        = js.native
+  val SVG_LENGTHTYPE_EXS: Int        = js.native
+  val SVG_LENGTHTYPE_PX: Int         = js.native
+  val SVG_LENGTHTYPE_CM: Int         = js.native
+  val SVG_LENGTHTYPE_MM: Int         = js.native
+  val SVG_LENGTHTYPE_IN: Int         = js.native
+  val SVG_LENGTHTYPE_PT: Int         = js.native
+  val SVG_LENGTHTYPE_PC: Int         = js.native
+end SVGLength
 
 @js.native
 @JSGlobal
@@ -8489,9 +8914,13 @@ class SVGGeometryElement extends SVGGraphicsElement:
 @js.native
 @JSGlobal
 class TextDetector extends js.Object:
+  def detect(image: scala.scalajs.js.Any): scala.scalajs.js.Any = js.native
+
+@js.native
+@JSGlobal
+object TextDetector extends js.Object:
   def availability(options: TextDetectorOptions): scala.scalajs.js.Any             = js.native
   def create(options: TextDetectorCreateOptions = js.native): scala.scalajs.js.Any = js.native
-  def detect(image: scala.scalajs.js.Any): scala.scalajs.js.Any                    = js.native
 
 @js.native
 @JSGlobal
@@ -8557,7 +8986,8 @@ end GPUCommandEncoder
 
 @js.native
 @JSGlobal
-class Tag extends js.Object
+class Tag extends js.Object:
+  def this(@unused `type`: TagType) = this()
 
 @js.native
 @JSGlobal
@@ -8612,6 +9042,7 @@ end GPUQueue
 @js.native
 @JSGlobal
 class MutationObserver extends js.Object:
+  def this(@unused callback: scala.scalajs.js.Function2[scala.scalajs.js.Any, MutationObserver, Unit]) = this()
   def observe(target: Node, options: MutationObserverInit = js.native): Unit = js.native
   def disconnect(): Unit                                                     = js.native
   def takeRecords(): scala.scalajs.js.Any                                    = js.native
@@ -8624,10 +9055,17 @@ class ModelContextClient extends js.Object:
 @js.native
 @JSGlobal
 class CSSOKLab extends CSSColorValue:
+  def this(
+      @unused l: scala.scalajs.js.Any,
+      @unused a: scala.scalajs.js.Any,
+      @unused b: scala.scalajs.js.Any,
+      @unused alpha: scala.scalajs.js.Any = js.native,
+  ) = this()
   var l: scala.scalajs.js.Any     = js.native
   var a: scala.scalajs.js.Any     = js.native
   var b: scala.scalajs.js.Any     = js.native
   var alpha: scala.scalajs.js.Any = js.native
+end CSSOKLab
 
 @js.native
 @JSGlobal
@@ -8736,6 +9174,14 @@ end HTMLTrackElement
 
 @js.native
 @JSGlobal
+object HTMLTrackElement extends js.Object:
+  val NONE: Int    = js.native
+  val LOADING: Int = js.native
+  val LOADED: Int  = js.native
+  val ERROR: Int   = js.native
+
+@js.native
+@JSGlobal
 class ChapterInformation extends js.Object:
   def title: String                 = js.native
   def startTime: Double             = js.native
@@ -8758,6 +9204,7 @@ class SVGMaskElement extends SVGElement:
 @js.native
 @JSGlobal
 class WebTransport extends js.Object:
+  def this(@unused url: String, @unused options: WebTransportOptions = js.native) = this()
   def ready: scala.scalajs.js.Any                             = js.native
   def reliability: String                                     = js.native
   def congestionControl: String                               = js.native
@@ -8770,7 +9217,6 @@ class WebTransport extends js.Object:
   def datagrams: WebTransportDatagramDuplexStream             = js.native
   def incomingBidirectionalStreams: ReadableStream            = js.native
   def incomingUnidirectionalStreams: ReadableStream           = js.native
-  def supportsReliableOnly: Boolean                           = js.native
   def getStats(): scala.scalajs.js.Any                        = js.native
   def exportKeyingMaterial(
       label: scala.scalajs.js.Any,
@@ -8781,6 +9227,11 @@ class WebTransport extends js.Object:
   def createUnidirectionalStream(options: WebTransportSendStreamOptions = js.native): scala.scalajs.js.Any = js.native
   def createSendGroup(): WebTransportSendGroup                                                             = js.native
 end WebTransport
+
+@js.native
+@JSGlobal
+object WebTransport extends js.Object:
+  def supportsReliableOnly: Boolean = js.native
 
 @js.native
 @JSGlobal
@@ -8839,6 +9290,7 @@ class LayoutFragment extends js.Object:
 @js.native
 @JSGlobal
 class IIRFilterNode extends AudioNode:
+  def this(@unused context: BaseAudioContext, @unused options: IIRFilterOptions) = this()
   def getFrequencyResponse(
       frequencyHz: scala.scalajs.js.Any,
       magResponse: scala.scalajs.js.Any,
@@ -8847,12 +9299,8 @@ class IIRFilterNode extends AudioNode:
 
 @js.native
 @JSGlobal
-class HIDConnectionEvent extends js.Object:
-  def device: HIDDevice = js.native
-
-@js.native
-@JSGlobal
 class Table extends js.Object:
+  def this(@unused descriptor: TableDescriptor, @unused value: scala.scalajs.js.Any = js.native) = this()
   def length: scala.scalajs.js.Any                                                                     = js.native
   def grow(delta: scala.scalajs.js.Any, value: scala.scalajs.js.Any = js.native): scala.scalajs.js.Any = js.native
   def get(index: scala.scalajs.js.Any): scala.scalajs.js.Any                                           = js.native
@@ -8871,6 +9319,7 @@ class PaymentManager extends js.Object:
 @js.native
 @JSGlobal
 class BluetoothLEScanFilter extends js.Object:
+  def this(@unused init: BluetoothLEScanFilterInit = js.native) = this()
   def name: String                                      = js.native
   def namePrefix: String                                = js.native
   def services: scala.scalajs.js.Any                    = js.native
@@ -8930,6 +9379,7 @@ end DocumentType
 @js.native
 @JSGlobal
 class SFrameDecrypterStream extends EventTarget:
+  def this(@unused options: SFrameTransformOptions) = this()
   def readable: ReadableStream                                                            = js.native
   def writable: WritableStream                                                            = js.native
   var onerror: scala.scalajs.js.Any                                                       = js.native
@@ -8939,6 +9389,7 @@ class SFrameDecrypterStream extends EventTarget:
 @js.native
 @JSGlobal
 class AnalyserNode extends AudioNode:
+  def this(@unused context: BaseAudioContext, @unused options: AnalyserOptions = js.native) = this()
   var fftSize: Int                                              = js.native
   def frequencyBinCount: Int                                    = js.native
   var minDecibels: Double                                       = js.native
@@ -9016,12 +9467,6 @@ end HTMLTableRowElement
 
 @js.native
 @JSGlobal
-class CommandEvent extends js.Object:
-  def source: Element = js.native
-  def command: String = js.native
-
-@js.native
-@JSGlobal
 class GPURenderBundle extends js.Object:
   var label: String = js.native
 
@@ -9043,7 +9488,16 @@ class EXT_color_buffer_half_float extends js.Object
 
 @js.native
 @JSGlobal
+object EXT_color_buffer_half_float extends js.Object:
+  val RGBA16F_EXT: scala.scalajs.js.Any                               = js.native
+  val RGB16F_EXT: scala.scalajs.js.Any                                = js.native
+  val FRAMEBUFFER_ATTACHMENT_COMPONENT_TYPE_EXT: scala.scalajs.js.Any = js.native
+  val UNSIGNED_NORMALIZED_EXT: scala.scalajs.js.Any                   = js.native
+
+@js.native
+@JSGlobal
 class Text extends CharacterData:
+  def this(@unused data: String = js.native) = this()
   def wholeText: String                                                      = js.native
   def assignedSlot: HTMLSlotElement                                          = js.native
   def splitText(offset: Int): Text                                           = js.native
@@ -9107,6 +9561,7 @@ class AttributionAggregationServices extends js.Object
 @js.native
 @JSGlobal
 class TextDecoderStream extends js.Object:
+  def this(@unused label: String = js.native, @unused options: TextDecoderOptions = js.native) = this()
   def encoding: String         = js.native
   def fatal: Boolean           = js.native
   def ignoreBOM: Boolean       = js.native
@@ -9116,6 +9571,7 @@ class TextDecoderStream extends js.Object:
 @js.native
 @JSGlobal
 class CSSParserBlock extends CSSParserValue:
+  def this(@unused name: String, @unused body: scala.scalajs.js.Any) = this()
   def name: String               = js.native
   def body: scala.scalajs.js.Any = js.native
 
@@ -9127,10 +9583,15 @@ class LaunchQueue extends js.Object:
 @js.native
 @JSGlobal
 class IDBKeyRange extends js.Object:
-  def lower: scala.scalajs.js.Any                                                     = js.native
-  def upper: scala.scalajs.js.Any                                                     = js.native
-  def lowerOpen: Boolean                                                              = js.native
-  def upperOpen: Boolean                                                              = js.native
+  def lower: scala.scalajs.js.Any                  = js.native
+  def upper: scala.scalajs.js.Any                  = js.native
+  def lowerOpen: Boolean                           = js.native
+  def upperOpen: Boolean                           = js.native
+  def includes(key: scala.scalajs.js.Any): Boolean = js.native
+
+@js.native
+@JSGlobal
+object IDBKeyRange extends js.Object:
   def only(value: scala.scalajs.js.Any): IDBKeyRange                                  = js.native
   def lowerBound(lower: scala.scalajs.js.Any, open: Boolean = js.native): IDBKeyRange = js.native
   def upperBound(upper: scala.scalajs.js.Any, open: Boolean = js.native): IDBKeyRange = js.native
@@ -9139,13 +9600,13 @@ class IDBKeyRange extends js.Object:
       upper: scala.scalajs.js.Any,
       lowerOpen: Boolean = js.native,
       upperOpen: Boolean = js.native,
-  ): IDBKeyRange                                   = js.native
-  def includes(key: scala.scalajs.js.Any): Boolean = js.native
+  ): IDBKeyRange = js.native
 end IDBKeyRange
 
 @js.native
 @JSGlobal
 class MediaStreamTrackProcessor extends js.Object:
+  def this(@unused init: MediaStreamTrackProcessorInit) = this()
   def readable: ReadableStream = js.native
   def discardedFrames: Int     = js.native
   def totalFrames: Int         = js.native
@@ -9245,6 +9706,7 @@ class EyeDropper extends js.Object:
 @js.native
 @JSGlobal
 class ViewTimeline extends ScrollTimeline:
+  def this(@unused options: ViewTimelineOptions = js.native) = this()
   def subject: Element             = js.native
   def startOffset: CSSNumericValue = js.native
   def endOffset: CSSNumericValue   = js.native
@@ -9257,14 +9719,22 @@ class HTMLDataListElement extends HTMLElement:
 @js.native
 @JSGlobal
 class CSSHWB extends CSSColorValue:
+  def this(
+      @unused h: CSSNumericValue,
+      @unused w: scala.scalajs.js.Any,
+      @unused b: scala.scalajs.js.Any,
+      @unused alpha: scala.scalajs.js.Any = js.native,
+  ) = this()
   var h: CSSNumericValue          = js.native
   var w: scala.scalajs.js.Any     = js.native
   var b: scala.scalajs.js.Any     = js.native
   var alpha: scala.scalajs.js.Any = js.native
+end CSSHWB
 
 @js.native
 @JSGlobal
 class CompressionStream extends js.Object:
+  def this(@unused format: String) = this()
   def readable: ReadableStream = js.native
   def writable: WritableStream = js.native
 
@@ -9444,6 +9914,7 @@ end OffscreenCanvasRenderingContext2D
 @js.native
 @JSGlobal
 class EncodedVideoChunk extends js.Object:
+  def this(@unused init: EncodedVideoChunkInit) = this()
   def `type`: String                                  = js.native
   def timestamp: Int                                  = js.native
   def duration: Int                                   = js.native
@@ -9522,30 +9993,42 @@ end FontMetrics
 @js.native
 @JSGlobal
 class Response extends js.Object:
-  def `type`: String                                                 = js.native
-  def url: String                                                    = js.native
-  def redirected: Boolean                                            = js.native
-  def status: Int                                                    = js.native
-  def ok: Boolean                                                    = js.native
-  def statusText: String                                             = js.native
-  def headers: Headers                                               = js.native
-  def body: ReadableStream                                           = js.native
-  def bodyUsed: Boolean                                              = js.native
-  def error(): Response                                              = js.native
-  def redirect(url: String, status: Int = js.native): Response       = js.native
-  def json(data: scala.scalajs.js.Any, init: ResponseInit): Response = js.native
-  def arrayBuffer(): scala.scalajs.js.Any                            = js.native
-  def blob(): scala.scalajs.js.Any                                   = js.native
-  def bytes(): scala.scalajs.js.Any                                  = js.native
-  def formData(): scala.scalajs.js.Any                               = js.native
-  def json(): scala.scalajs.js.Any                                   = js.native
-  def text(): scala.scalajs.js.Any                                   = js.native
+  def this(@unused body: scala.scalajs.js.Any = js.native, @unused init: ResponseInit = js.native) = this()
+  def `type`: String                      = js.native
+  def url: String                         = js.native
+  def redirected: Boolean                 = js.native
+  def status: Int                         = js.native
+  def ok: Boolean                         = js.native
+  def statusText: String                  = js.native
+  def headers: Headers                    = js.native
+  def body: ReadableStream                = js.native
+  def bodyUsed: Boolean                   = js.native
+  def arrayBuffer(): scala.scalajs.js.Any = js.native
+  def blob(): scala.scalajs.js.Any        = js.native
+  def bytes(): scala.scalajs.js.Any       = js.native
+  def formData(): scala.scalajs.js.Any    = js.native
+  def json(): scala.scalajs.js.Any        = js.native
+  def text(): scala.scalajs.js.Any        = js.native
 end Response
 
 @js.native
 @JSGlobal
+object Response extends js.Object:
+  def error(): Response                                                          = js.native
+  def redirect(url: String, status: Int = js.native): Response                   = js.native
+  def json(data: scala.scalajs.js.Any, init: ResponseInit = js.native): Response = js.native
+
+@js.native
+@JSGlobal
 class WorkletAnimation extends Animation:
+  def this(
+      @unused animatorName: String,
+      @unused effects: scala.scalajs.js.Any = js.native,
+      @unused timeline: AnimationTimeline = js.native,
+      @unused options: scala.scalajs.js.Any = js.native,
+  ) = this()
   def animatorName: String = js.native
+end WorkletAnimation
 
 @js.native
 @JSGlobal
@@ -9555,6 +10038,8 @@ class AudioWorkletProcessor extends js.Object:
 @js.native
 @JSGlobal
 class MediaStream extends EventTarget:
+  def this(@unused stream: MediaStream) = this()
+  def this(@unused tracks: scala.scalajs.js.Any) = this()
   def id: String                                      = js.native
   def active: Boolean                                 = js.native
   var onaddtrack: scala.scalajs.js.Any                = js.native
@@ -9626,15 +10111,6 @@ class LayoutEdges extends js.Object:
 
 @js.native
 @JSGlobal
-class DeviceOrientationEvent extends js.Object:
-  def alpha: Double                                                          = js.native
-  def beta: Double                                                           = js.native
-  def gamma: Double                                                          = js.native
-  def absolute: Boolean                                                      = js.native
-  def requestPermission(absolute: Boolean = js.native): scala.scalajs.js.Any = js.native
-
-@js.native
-@JSGlobal
 class HTMLMenuElement extends HTMLElement:
   var compact: Boolean = js.native
 
@@ -9655,12 +10131,14 @@ class LayoutShift extends PerformanceEntry:
 @js.native
 @JSGlobal
 class AnimationTrigger extends js.Object:
+  def this(@unused options: AnimationTriggerOptions = js.native) = this()
   var timeline: AnimationTimeline          = js.native
   var behavior: String                     = js.native
   var rangeStart: scala.scalajs.js.Any     = js.native
   var rangeEnd: scala.scalajs.js.Any       = js.native
   var exitRangeStart: scala.scalajs.js.Any = js.native
   var exitRangeEnd: scala.scalajs.js.Any   = js.native
+end AnimationTrigger
 
 @js.native
 @JSGlobal
@@ -9702,16 +10180,13 @@ end XRCompositionLayer
 @js.native
 @JSGlobal
 class FencedFrameConfig extends js.Object:
+  def this(@unused url: String) = this()
   def setSharedStorageContext(contextString: String): Unit = js.native
 
 @js.native
 @JSGlobal
-class KeyFrameRequestEvent extends js.Object:
-  def rid: String = js.native
-
-@js.native
-@JSGlobal
 class BiquadFilterNode extends AudioNode:
+  def this(@unused context: BaseAudioContext, @unused options: BiquadFilterOptions = js.native) = this()
   var `type`: String        = js.native
   def frequency: AudioParam = js.native
   def detune: AudioParam    = js.native
@@ -9747,6 +10222,7 @@ class HTMLBRElement extends HTMLElement:
 @js.native
 @JSGlobal
 class GainNode extends AudioNode:
+  def this(@unused context: BaseAudioContext, @unused options: GainOptions = js.native) = this()
   def gain: AudioParam = js.native
 
 @js.native
@@ -9756,6 +10232,7 @@ class EventCounts extends js.Object
 @js.native
 @JSGlobal
 class MLGraphBuilder extends js.Object:
+  def this(@unused context: MLContext) = this()
   def input(name: String, descriptor: MLOperandDescriptor): MLOperand                         = js.native
   def constant(descriptor: MLOperandDescriptor, buffer: scala.scalajs.js.Any): MLOperand      = js.native
   def constant(dataType: String, value: scala.scalajs.js.Any): MLOperand                      = js.native
@@ -9935,12 +10412,6 @@ end MLGraphBuilder
 
 @js.native
 @JSGlobal
-class PageSwapEvent extends js.Object:
-  def activation: NavigationActivation = js.native
-  def viewTransition: ViewTransition   = js.native
-
-@js.native
-@JSGlobal
 class XRBoundedReferenceSpace extends XRReferenceSpace:
   def boundsGeometry: scala.scalajs.js.Any = js.native
 
@@ -9954,6 +10425,7 @@ class WebGLShaderPrecisionFormat extends js.Object:
 @js.native
 @JSGlobal
 class USBConfiguration extends js.Object:
+  def this(@unused device: USBDevice, @unused configurationValue: scala.scalajs.js.Any) = this()
   def configurationValue: scala.scalajs.js.Any = js.native
   def configurationName: String                = js.native
   def interfaces: scala.scalajs.js.Any         = js.native
@@ -10037,17 +10509,27 @@ class NavigationDestination extends js.Object:
 @js.native
 @JSGlobal
 class DOMRectReadOnly extends js.Object:
-  def x: Double                                                 = js.native
-  def y: Double                                                 = js.native
-  def width: Double                                             = js.native
-  def height: Double                                            = js.native
-  def top: Double                                               = js.native
-  def right: Double                                             = js.native
-  def bottom: Double                                            = js.native
-  def left: Double                                              = js.native
-  def fromRect(other: DOMRectInit = js.native): DOMRectReadOnly = js.native
-  def toJSON(): scala.scalajs.js.Any                            = js.native
+  def this(
+      @unused x: Double = js.native,
+      @unused y: Double = js.native,
+      @unused width: Double = js.native,
+      @unused height: Double = js.native,
+  ) = this()
+  def x: Double                      = js.native
+  def y: Double                      = js.native
+  def width: Double                  = js.native
+  def height: Double                 = js.native
+  def top: Double                    = js.native
+  def right: Double                  = js.native
+  def bottom: Double                 = js.native
+  def left: Double                   = js.native
+  def toJSON(): scala.scalajs.js.Any = js.native
 end DOMRectReadOnly
+
+@js.native
+@JSGlobal
+object DOMRectReadOnly extends js.Object:
+  def fromRect(other: DOMRectInit = js.native): DOMRectReadOnly = js.native
 
 @js.native
 @JSGlobal
@@ -10061,6 +10543,15 @@ class SVGFEColorMatrixElement extends SVGElement:
   def height: SVGAnimatedLength      = js.native
   def result: SVGAnimatedString      = js.native
 end SVGFEColorMatrixElement
+
+@js.native
+@JSGlobal
+object SVGFEColorMatrixElement extends js.Object:
+  val SVG_FECOLORMATRIX_TYPE_UNKNOWN: Int          = js.native
+  val SVG_FECOLORMATRIX_TYPE_MATRIX: Int           = js.native
+  val SVG_FECOLORMATRIX_TYPE_SATURATE: Int         = js.native
+  val SVG_FECOLORMATRIX_TYPE_HUEROTATE: Int        = js.native
+  val SVG_FECOLORMATRIX_TYPE_LUMINANCETOALPHA: Int = js.native
 
 @js.native
 @JSGlobal
@@ -10083,6 +10574,7 @@ class ResizeObserverSize extends js.Object:
 @js.native
 @JSGlobal
 class MediaStreamAudioDestinationNode extends AudioNode:
+  def this(@unused context: AudioContext, @unused options: AudioNodeOptions = js.native) = this()
   def stream: MediaStream = js.native
 
 @js.native
@@ -10099,6 +10591,7 @@ class XRHitTestSource extends js.Object:
 @js.native
 @JSGlobal
 class OscillatorNode extends AudioScheduledSourceNode:
+  def this(@unused context: BaseAudioContext, @unused options: OscillatorOptions = js.native) = this()
   var `type`: String                                    = js.native
   def frequency: AudioParam                             = js.native
   def detune: AudioParam                                = js.native
@@ -10170,13 +10663,6 @@ class SVGMPathElement extends SVGElement:
 
 @js.native
 @JSGlobal
-class AudioProcessingEvent extends js.Object:
-  def playbackTime: Double      = js.native
-  def inputBuffer: AudioBuffer  = js.native
-  def outputBuffer: AudioBuffer = js.native
-
-@js.native
-@JSGlobal
 class XPathResult extends js.Object:
   def resultType: Int                = js.native
   def numberValue: Double            = js.native
@@ -10187,6 +10673,21 @@ class XPathResult extends js.Object:
   def snapshotLength: Int            = js.native
   def iterateNext(): Node            = js.native
   def snapshotItem(index: Int): Node = js.native
+end XPathResult
+
+@js.native
+@JSGlobal
+object XPathResult extends js.Object:
+  val ANY_TYPE: Int                     = js.native
+  val NUMBER_TYPE: Int                  = js.native
+  val STRING_TYPE: Int                  = js.native
+  val BOOLEAN_TYPE: Int                 = js.native
+  val UNORDERED_NODE_ITERATOR_TYPE: Int = js.native
+  val ORDERED_NODE_ITERATOR_TYPE: Int   = js.native
+  val UNORDERED_NODE_SNAPSHOT_TYPE: Int = js.native
+  val ORDERED_NODE_SNAPSHOT_TYPE: Int   = js.native
+  val ANY_UNORDERED_NODE_TYPE: Int      = js.native
+  val FIRST_ORDERED_NODE_TYPE: Int      = js.native
 end XPathResult
 
 @js.native
@@ -10204,6 +10705,14 @@ class EXT_texture_compression_bptc extends js.Object
 
 @js.native
 @JSGlobal
+object EXT_texture_compression_bptc extends js.Object:
+  val COMPRESSED_RGBA_BPTC_UNORM_EXT: scala.scalajs.js.Any         = js.native
+  val COMPRESSED_SRGB_ALPHA_BPTC_UNORM_EXT: scala.scalajs.js.Any   = js.native
+  val COMPRESSED_RGB_BPTC_SIGNED_FLOAT_EXT: scala.scalajs.js.Any   = js.native
+  val COMPRESSED_RGB_BPTC_UNSIGNED_FLOAT_EXT: scala.scalajs.js.Any = js.native
+
+@js.native
+@JSGlobal
 class SVGAnimatedRect extends js.Object:
   def baseVal: DOMRect         = js.native
   def animVal: DOMRectReadOnly = js.native
@@ -10211,6 +10720,7 @@ class SVGAnimatedRect extends js.Object:
 @js.native
 @JSGlobal
 class NDEFMessage extends js.Object:
+  def this(@unused messageInit: NDEFMessageInit) = this()
   def records: scala.scalajs.js.Any = js.native
 
 @js.native
@@ -10221,10 +10731,18 @@ class XPathExpression extends js.Object:
 @js.native
 @JSGlobal
 class CSSRotate extends CSSTransformComponent:
+  def this(@unused angle: CSSNumericValue) = this()
+  def this(
+      @unused x: scala.scalajs.js.Any,
+      @unused y: scala.scalajs.js.Any,
+      @unused z: scala.scalajs.js.Any,
+      @unused angle: CSSNumericValue,
+  ) = this()
   var x: scala.scalajs.js.Any = js.native
   var y: scala.scalajs.js.Any = js.native
   var z: scala.scalajs.js.Any = js.native
   var angle: CSSNumericValue  = js.native
+end CSSRotate
 
 @js.native
 @JSGlobal
@@ -10258,11 +10776,33 @@ class WEBGL_blend_equation_advanced_coherent extends js.Object
 
 @js.native
 @JSGlobal
-class MediaStreamTrackAudioSourceNode extends AudioNode
+object WEBGL_blend_equation_advanced_coherent extends js.Object:
+  val MULTIPLY: scala.scalajs.js.Any       = js.native
+  val SCREEN: scala.scalajs.js.Any         = js.native
+  val OVERLAY: scala.scalajs.js.Any        = js.native
+  val DARKEN: scala.scalajs.js.Any         = js.native
+  val LIGHTEN: scala.scalajs.js.Any        = js.native
+  val COLORDODGE: scala.scalajs.js.Any     = js.native
+  val COLORBURN: scala.scalajs.js.Any      = js.native
+  val HARDLIGHT: scala.scalajs.js.Any      = js.native
+  val SOFTLIGHT: scala.scalajs.js.Any      = js.native
+  val DIFFERENCE: scala.scalajs.js.Any     = js.native
+  val EXCLUSION: scala.scalajs.js.Any      = js.native
+  val HSL_HUE: scala.scalajs.js.Any        = js.native
+  val HSL_SATURATION: scala.scalajs.js.Any = js.native
+  val HSL_COLOR: scala.scalajs.js.Any      = js.native
+  val HSL_LUMINOSITY: scala.scalajs.js.Any = js.native
+end WEBGL_blend_equation_advanced_coherent
+
+@js.native
+@JSGlobal
+class MediaStreamTrackAudioSourceNode extends AudioNode:
+  def this(@unused context: AudioContext, @unused options: MediaStreamTrackAudioSourceOptions) = this()
 
 @js.native
 @JSGlobal
 class ReadableStreamBYOBReader extends js.Object:
+  def this(@unused stream: ReadableStream) = this()
   def closed: scala.scalajs.js.Any = js.native
   def read(view: scala.scalajs.js.Any, options: ReadableStreamBYOBReaderReadOptions = js.native): scala.scalajs.js.Any =
     js.native
@@ -10272,15 +10812,24 @@ class ReadableStreamBYOBReader extends js.Object:
 @js.native
 @JSGlobal
 class XRWebGLLayer extends XRLayer:
-  def antialias: Boolean                                          = js.native
-  def ignoreDepthValues: Boolean                                  = js.native
-  var fixedFoveation: Double                                      = js.native
-  def framebuffer: WebGLFramebuffer                               = js.native
-  def framebufferWidth: Int                                       = js.native
-  def framebufferHeight: Int                                      = js.native
-  def getViewport(view: XRView): XRViewport                       = js.native
-  def getNativeFramebufferScaleFactor(session: XRSession): Double = js.native
+  def this(
+      @unused session: XRSession,
+      @unused context: scala.scalajs.js.Any,
+      @unused layerInit: XRWebGLLayerInit = js.native,
+  ) = this()
+  def antialias: Boolean                    = js.native
+  def ignoreDepthValues: Boolean            = js.native
+  var fixedFoveation: Double                = js.native
+  def framebuffer: WebGLFramebuffer         = js.native
+  def framebufferWidth: Int                 = js.native
+  def framebufferHeight: Int                = js.native
+  def getViewport(view: XRView): XRViewport = js.native
 end XRWebGLLayer
+
+@js.native
+@JSGlobal
+object XRWebGLLayer extends js.Object:
+  def getNativeFramebufferScaleFactor(session: XRSession): Double = js.native
 
 @js.native
 @JSGlobal
@@ -10294,6 +10843,14 @@ class OVR_multiview2 extends js.Object:
       numViews: scala.scalajs.js.Any,
   ): Unit = js.native
 end OVR_multiview2
+
+@js.native
+@JSGlobal
+object OVR_multiview2 extends js.Object:
+  val FRAMEBUFFER_ATTACHMENT_TEXTURE_NUM_VIEWS_OVR: scala.scalajs.js.Any       = js.native
+  val FRAMEBUFFER_ATTACHMENT_TEXTURE_BASE_VIEW_INDEX_OVR: scala.scalajs.js.Any = js.native
+  val MAX_VIEWS_OVR: scala.scalajs.js.Any                                      = js.native
+  val FRAMEBUFFER_INCOMPLETE_VIEW_TARGETS_OVR: scala.scalajs.js.Any            = js.native
 
 @js.native
 @JSGlobal
@@ -10315,7 +10872,11 @@ class AuthenticatorResponse extends js.Object:
 
 @js.native
 @JSGlobal
-class CSSStyleValue extends js.Object:
+class CSSStyleValue extends js.Object
+
+@js.native
+@JSGlobal
+object CSSStyleValue extends js.Object:
   def parse(property: String, cssText: String): CSSStyleValue           = js.native
   def parseAll(property: String, cssText: String): scala.scalajs.js.Any = js.native
 
@@ -10339,15 +10900,6 @@ class PerformanceEventTiming extends PerformanceEntry:
 @JSGlobal
 class XMLSerializer extends js.Object:
   def serializeToString(root: Node): String = js.native
-
-@js.native
-@JSGlobal
-class DeviceMotionEvent extends js.Object:
-  def acceleration: DeviceMotionEventAcceleration                 = js.native
-  def accelerationIncludingGravity: DeviceMotionEventAcceleration = js.native
-  def rotationRate: DeviceMotionEventRotationRate                 = js.native
-  def interval: Double                                            = js.native
-  def requestPermission(): scala.scalajs.js.Any                   = js.native
 
 @js.native
 @JSGlobal
@@ -10418,6 +10970,7 @@ class SVGClipPathElement extends SVGElement:
 @js.native
 @JSGlobal
 class VideoColorSpace extends js.Object:
+  def this(@unused init: VideoColorSpaceInit = js.native) = this()
   def primaries: String             = js.native
   def transfer: String              = js.native
   def matrix: String                = js.native
@@ -10454,13 +11007,17 @@ class Rewriter extends js.Object:
   def expectedContextLanguages: scala.scalajs.js.Any                                                      = js.native
   def outputLanguage: String                                                                              = js.native
   def inputQuota: Double                                                                                  = js.native
-  def create(options: RewriterCreateOptions = js.native): scala.scalajs.js.Any                            = js.native
-  def availability(options: RewriterCreateCoreOptions = js.native): scala.scalajs.js.Any                  = js.native
   def rewrite(input: String, options: RewriterRewriteOptions = js.native): scala.scalajs.js.Any           = js.native
   def rewriteStreaming(input: String, options: RewriterRewriteOptions = js.native): ReadableStream        = js.native
   def measureInputUsage(input: String, options: RewriterRewriteOptions = js.native): scala.scalajs.js.Any = js.native
   def destroy(): Unit                                                                                     = js.native
 end Rewriter
+
+@js.native
+@JSGlobal
+object Rewriter extends js.Object:
+  def create(options: RewriterCreateOptions = js.native): scala.scalajs.js.Any           = js.native
+  def availability(options: RewriterCreateCoreOptions = js.native): scala.scalajs.js.Any = js.native
 
 @js.native
 @JSGlobal
@@ -10484,12 +11041,14 @@ class Lock extends js.Object:
 @js.native
 @JSGlobal
 class UncalibratedMagnetometer extends Sensor:
+  def this(@unused sensorOptions: MagnetometerSensorOptions = js.native) = this()
   def x: Double     = js.native
   def y: Double     = js.native
   def z: Double     = js.native
   def xBias: Double = js.native
   def yBias: Double = js.native
   def zBias: Double = js.native
+end UncalibratedMagnetometer
 
 @js.native
 @JSGlobal
@@ -10497,6 +11056,14 @@ class PerformanceNavigation extends js.Object:
   def `type`: Int                    = js.native
   def redirectCount: Int             = js.native
   def toJSON(): scala.scalajs.js.Any = js.native
+
+@js.native
+@JSGlobal
+object PerformanceNavigation extends js.Object:
+  val TYPE_NAVIGATE: Int     = js.native
+  val TYPE_RELOAD: Int       = js.native
+  val TYPE_BACK_FORWARD: Int = js.native
+  val TYPE_RESERVED: Int     = js.native
 
 @js.native
 @JSGlobal
@@ -10530,11 +11097,6 @@ end HTMLSelectElement
 
 @js.native
 @JSGlobal
-class CaptureActionEvent extends js.Object:
-  def action: String = js.native
-
-@js.native
-@JSGlobal
 class CSSNumericArray extends js.Object:
   def length: Int = js.native
 
@@ -10544,7 +11106,16 @@ class WEBGL_compressed_texture_s3tc extends js.Object
 
 @js.native
 @JSGlobal
+object WEBGL_compressed_texture_s3tc extends js.Object:
+  val COMPRESSED_RGB_S3TC_DXT1_EXT: scala.scalajs.js.Any  = js.native
+  val COMPRESSED_RGBA_S3TC_DXT1_EXT: scala.scalajs.js.Any = js.native
+  val COMPRESSED_RGBA_S3TC_DXT3_EXT: scala.scalajs.js.Any = js.native
+  val COMPRESSED_RGBA_S3TC_DXT5_EXT: scala.scalajs.js.Any = js.native
+
+@js.native
+@JSGlobal
 class CSSMathInvert extends CSSMathValue:
+  def this(@unused arg: scala.scalajs.js.Any) = this()
   def value: CSSNumericValue = js.native
 
 @js.native
@@ -10554,20 +11125,26 @@ class WebGLVertexArrayObjectOES extends WebGLObject
 @js.native
 @JSGlobal
 class VideoDecoder extends EventTarget:
-  def state: String                                                       = js.native
-  def decodeQueueSize: Int                                                = js.native
-  var ondequeue: scala.scalajs.js.Any                                     = js.native
-  def configure(config: VideoDecoderConfig): Unit                         = js.native
-  def decode(chunk: EncodedVideoChunk): Unit                              = js.native
-  def flush(): scala.scalajs.js.Any                                       = js.native
-  def reset(): Unit                                                       = js.native
-  def close(): Unit                                                       = js.native
-  def isConfigSupported(config: VideoDecoderConfig): scala.scalajs.js.Any = js.native
+  def this(@unused init: VideoDecoderInit) = this()
+  def state: String                               = js.native
+  def decodeQueueSize: Int                        = js.native
+  var ondequeue: scala.scalajs.js.Any             = js.native
+  def configure(config: VideoDecoderConfig): Unit = js.native
+  def decode(chunk: EncodedVideoChunk): Unit      = js.native
+  def flush(): scala.scalajs.js.Any               = js.native
+  def reset(): Unit                               = js.native
+  def close(): Unit                               = js.native
 end VideoDecoder
 
 @js.native
 @JSGlobal
+object VideoDecoder extends js.Object:
+  def isConfigSupported(config: VideoDecoderConfig): scala.scalajs.js.Any = js.native
+
+@js.native
+@JSGlobal
 class StereoPannerNode extends AudioNode:
+  def this(@unused context: BaseAudioContext, @unused options: StereoPannerOptions = js.native) = this()
   def pan: AudioParam = js.native
 
 @js.native
@@ -10616,6 +11193,7 @@ class AudioTrack extends js.Object:
 @js.native
 @JSGlobal
 class NDEFRecord extends js.Object:
+  def this(@unused recordInit: NDEFRecordInit) = this()
   def recordType: String                = js.native
   def mediaType: String                 = js.native
   def id: String                        = js.native
@@ -10652,24 +11230,8 @@ end NavigatorManagedData
 
 @js.native
 @JSGlobal
-class SecurityPolicyViolationEvent extends js.Object:
-  def documentURI: String        = js.native
-  def referrer: String           = js.native
-  def blockedURI: String         = js.native
-  def effectiveDirective: String = js.native
-  def violatedDirective: String  = js.native
-  def originalPolicy: String     = js.native
-  def sourceFile: String         = js.native
-  def sample: String             = js.native
-  def disposition: String        = js.native
-  def statusCode: Int            = js.native
-  def lineNumber: Int            = js.native
-  def columnNumber: Int          = js.native
-end SecurityPolicyViolationEvent
-
-@js.native
-@JSGlobal
 class WritableStreamDefaultWriter extends js.Object:
+  def this(@unused stream: WritableStream) = this()
   def closed: scala.scalajs.js.Any                                          = js.native
   def desiredSize: Double                                                   = js.native
   def ready: scala.scalajs.js.Any                                           = js.native
@@ -10687,6 +11249,7 @@ class CSSNestedDeclarations extends CSSRule:
 @js.native
 @JSGlobal
 class XRRigidTransform extends js.Object:
+  def this(@unused position: DOMPointInit = js.native, @unused orientation: DOMPointInit = js.native) = this()
   def position: DOMPointReadOnly    = js.native
   def orientation: DOMPointReadOnly = js.native
   def matrix: scala.scalajs.js.Any  = js.native
@@ -10704,6 +11267,7 @@ class ReadableByteStreamController extends js.Object:
 @js.native
 @JSGlobal
 class AmbientLightSensor extends Sensor:
+  def this(@unused sensorOptions: SensorOptions = js.native) = this()
   def illuminance: Double = js.native
 
 @js.native
@@ -10770,6 +11334,7 @@ class CSSKeyframeRule extends CSSRule:
 @js.native
 @JSGlobal
 class Accelerometer extends Sensor:
+  def this(@unused options: AccelerometerSensorOptions = js.native) = this()
   def x: Double = js.native
   def y: Double = js.native
   def z: Double = js.native
@@ -10921,30 +11486,14 @@ class AnimationWorkletGlobalScope extends WorkletGlobalScope:
 @js.native
 @JSGlobal
 class Worker extends EventTarget:
+  def this(@unused scriptURL: scala.scalajs.js.Any, @unused options: WorkerOptions = js.native) = this()
   var onerror: scala.scalajs.js.Any                                                         = js.native
   var onmessage: scala.scalajs.js.Any                                                       = js.native
   var onmessageerror: scala.scalajs.js.Any                                                  = js.native
   def terminate(): Unit                                                                     = js.native
   def postMessage(message: scala.scalajs.js.Any, transfer: scala.scalajs.js.Any): Unit      = js.native
   def postMessage(message: scala.scalajs.js.Any, options: StructuredSerializeOptions): Unit = js.native
-
-@js.native
-@JSGlobal
-class NavigateEvent extends js.Object:
-  def navigationType: String                                           = js.native
-  def destination: NavigationDestination                               = js.native
-  def canIntercept: Boolean                                            = js.native
-  def userInitiated: Boolean                                           = js.native
-  def hashChange: Boolean                                              = js.native
-  def signal: AbortSignal                                              = js.native
-  def formData: FormData                                               = js.native
-  def downloadRequest: String                                          = js.native
-  def info: scala.scalajs.js.Any                                       = js.native
-  def hasUAVisualTransition: Boolean                                   = js.native
-  def sourceElement: Element                                           = js.native
-  def intercept(options: NavigationInterceptOptions = js.native): Unit = js.native
-  def scroll(): Unit                                                   = js.native
-end NavigateEvent
+end Worker
 
 @js.native
 @JSGlobal
@@ -11066,15 +11615,6 @@ end MathMLElement
 
 @js.native
 @JSGlobal
-class TextUpdateEvent extends js.Object:
-  def updateRangeStart: Int = js.native
-  def updateRangeEnd: Int   = js.native
-  def text: String          = js.native
-  def selectionStart: Int   = js.native
-  def selectionEnd: Int     = js.native
-
-@js.native
-@JSGlobal
 class GPURenderPassEncoder extends js.Object:
   var label: String = js.native
   def setViewport(x: Double, y: Double, width: Double, height: Double, minDepth: Double, maxDepth: Double): Unit =
@@ -11142,12 +11682,14 @@ end GPURenderPassEncoder
 @js.native
 @JSGlobal
 class USBIsochronousInTransferResult extends js.Object:
+  def this(@unused packets: scala.scalajs.js.Any, @unused data: scala.scalajs.js.Any = js.native) = this()
   def data: scala.scalajs.js.Any    = js.native
   def packets: scala.scalajs.js.Any = js.native
 
 @js.native
 @JSGlobal
 class SpeechSynthesisUtterance extends EventTarget:
+  def this(@unused text: String = js.native) = this()
   var text: String                     = js.native
   var lang: String                     = js.native
   var voice: SpeechSynthesisVoice      = js.native
@@ -11172,6 +11714,7 @@ class External extends js.Object:
 @js.native
 @JSGlobal
 class CSSTranslate extends CSSTransformComponent:
+  def this(@unused x: CSSNumericValue, @unused y: CSSNumericValue, @unused z: CSSNumericValue = js.native) = this()
   var x: CSSNumericValue = js.native
   var y: CSSNumericValue = js.native
   var z: CSSNumericValue = js.native
@@ -11204,6 +11747,7 @@ class SVGAnimateMotionElement extends SVGAnimationElement
 @js.native
 @JSGlobal
 class Highlight extends js.Object:
+  def this(@unused initialRanges: AbstractRange) = this()
   var priority: Int  = js.native
   var `type`: String = js.native
 
@@ -11211,11 +11755,6 @@ class Highlight extends js.Object:
 @JSGlobal
 class XRTransientInputHitTestSource extends js.Object:
   def cancel(): Unit = js.native
-
-@js.native
-@JSGlobal
-class GPUUncapturedErrorEvent extends js.Object:
-  def error: GPUError = js.native
 
 @js.native
 @JSGlobal
@@ -11238,6 +11777,13 @@ end FileReader
 
 @js.native
 @JSGlobal
+object FileReader extends js.Object:
+  val EMPTY: Int   = js.native
+  val LOADING: Int = js.native
+  val DONE: Int    = js.native
+
+@js.native
+@JSGlobal
 class FileSystemWritableFileStream extends WritableStream:
   def write(data: scala.scalajs.js.Any): scala.scalajs.js.Any = js.native
   def seek(position: Int): scala.scalajs.js.Any               = js.native
@@ -11254,6 +11800,7 @@ class CSSFontPaletteValuesRule extends CSSRule:
 @js.native
 @JSGlobal
 class VTTCue extends TextTrackCue:
+  def this(@unused startTime: Double, @unused endTime: Double, @unused text: String) = this()
   var region: VTTRegion                = js.native
   var vertical: String                 = js.native
   var snapToLines: Boolean             = js.native
@@ -11278,6 +11825,7 @@ class LayoutChild extends js.Object:
 @js.native
 @JSGlobal
 class BroadcastChannel extends EventTarget:
+  def this(@unused name: String) = this()
   def name: String                                     = js.native
   var onmessage: scala.scalajs.js.Any                  = js.native
   var onmessageerror: scala.scalajs.js.Any             = js.native
@@ -11306,7 +11854,8 @@ class SVGAnimateTransformElement extends SVGAnimationElement
 
 @js.native
 @JSGlobal
-class GPUOutOfMemoryError extends GPUError
+class GPUOutOfMemoryError extends GPUError:
+  def this(@unused message: String) = this()
 
 @js.native
 @JSGlobal
@@ -11415,9 +11964,17 @@ class EXT_disjoint_timer_query_webgl2 extends js.Object:
 
 @js.native
 @JSGlobal
+object EXT_disjoint_timer_query_webgl2 extends js.Object:
+  val QUERY_COUNTER_BITS_EXT: scala.scalajs.js.Any = js.native
+  val TIME_ELAPSED_EXT: scala.scalajs.js.Any       = js.native
+  val TIMESTAMP_EXT: scala.scalajs.js.Any          = js.native
+  val GPU_DISJOINT_EXT: scala.scalajs.js.Any       = js.native
+
+@js.native
+@JSGlobal
 class Observable extends js.Object:
+  def this(@unused callback: scala.scalajs.js.Function1[Subscriber, Unit]) = this()
   def subscribe(observer: scala.scalajs.js.Any = js.native, options: SubscribeOptions = js.native): Unit   = js.native
-  def from(value: scala.scalajs.js.Any): Observable                                                        = js.native
   def takeUntil(value: scala.scalajs.js.Any): Observable                                                   = js.native
   def map(mapper: scala.scalajs.js.Function2[scala.scalajs.js.Any, Int, scala.scalajs.js.Any]): Observable = js.native
   def filter(predicate: scala.scalajs.js.Function2[scala.scalajs.js.Any, Int, Boolean]): Observable        = js.native
@@ -11458,6 +12015,11 @@ end Observable
 
 @js.native
 @JSGlobal
+object Observable extends js.Object:
+  def from(value: scala.scalajs.js.Any): Observable = js.native
+
+@js.native
+@JSGlobal
 class XRAnchor extends js.Object:
   def anchorSpace: XRSpace                            = js.native
   def requestPersistentHandle(): scala.scalajs.js.Any = js.native
@@ -11466,6 +12028,7 @@ class XRAnchor extends js.Object:
 @js.native
 @JSGlobal
 class CSSPerspective extends CSSTransformComponent:
+  def this(@unused length: scala.scalajs.js.Any) = this()
   var length: scala.scalajs.js.Any = js.native
 
 @js.native
@@ -11483,6 +12046,7 @@ class SVGSetElement extends SVGAnimationElement
 @js.native
 @JSGlobal
 class PerformanceMark extends PerformanceEntry:
+  def this(@unused markName: String, @unused markOptions: PerformanceMarkOptions = js.native) = this()
   def detail: scala.scalajs.js.Any = js.native
 
 @js.native
@@ -11502,6 +12066,7 @@ end WorkerLocation
 @js.native
 @JSGlobal
 class DOMMatrix extends DOMMatrixReadOnly:
+  def this(@unused init: scala.scalajs.js.Any = js.native) = this()
   def multiplySelf(other: DOMMatrixInit = js.native): DOMMatrix                                        = js.native
   def preMultiplySelf(other: DOMMatrixInit = js.native): DOMMatrix                                     = js.native
   def translateSelf(tx: Double = js.native, ty: Double = js.native, tz: Double = js.native): DOMMatrix = js.native
@@ -11532,6 +12097,13 @@ class DOMMatrix extends DOMMatrixReadOnly:
   def invertSelf(): DOMMatrix                          = js.native
   def setMatrixValue(transformList: String): DOMMatrix = js.native
 end DOMMatrix
+
+@js.native
+@JSGlobal
+object DOMMatrix extends js.Object:
+  def fromMatrix(other: DOMMatrixInit = js.native): DOMMatrix    = js.native
+  def fromFloat32Array(array32: scala.scalajs.js.Any): DOMMatrix = js.native
+  def fromFloat64Array(array64: scala.scalajs.js.Any): DOMMatrix = js.native
 
 @js.native
 @JSGlobal
@@ -11569,10 +12141,23 @@ class CSSStyleProperties extends CSSStyleDeclaration:
 @js.native
 @JSGlobal
 class PerformanceObserver extends js.Object:
-  def supportedEntryTypes: scala.scalajs.js.Any                   = js.native
+  def this(
+      @unused callback: scala.scalajs.js.Function3[
+        PerformanceObserverEntryList,
+        PerformanceObserver,
+        PerformanceObserverCallbackOptions,
+        Unit,
+      ]
+  ) = this()
   def observe(options: PerformanceObserverInit = js.native): Unit = js.native
   def disconnect(): Unit                                          = js.native
   def takeRecords(): scala.scalajs.js.Any                         = js.native
+end PerformanceObserver
+
+@js.native
+@JSGlobal
+object PerformanceObserver extends js.Object:
+  def supportedEntryTypes: scala.scalajs.js.Any = js.native
 
 @js.native
 @JSGlobal
@@ -11582,11 +12167,16 @@ class HTMLLIElement extends HTMLElement:
 
 @js.native
 @JSGlobal
-class ChannelSplitterNode extends AudioNode
+class ChannelSplitterNode extends AudioNode:
+  def this(@unused context: BaseAudioContext, @unused options: ChannelSplitterOptions = js.native) = this()
 
 @js.native
 @JSGlobal
-class IdentityProvider extends js.Object:
+class IdentityProvider extends js.Object
+
+@js.native
+@JSGlobal
+object IdentityProvider extends js.Object:
   def close(): Unit = js.native
   def resolve(token: scala.scalajs.js.Any, options: IdentityResolveOptions = js.native): scala.scalajs.js.Any =
     js.native
@@ -11600,18 +12190,29 @@ class WebGLObject extends js.Object:
 @js.native
 @JSGlobal
 class DOMPointReadOnly extends js.Object:
+  def this(
+      @unused x: Double = js.native,
+      @unused y: Double = js.native,
+      @unused z: Double = js.native,
+      @unused w: Double = js.native,
+  ) = this()
   def x: Double                                                    = js.native
   def y: Double                                                    = js.native
   def z: Double                                                    = js.native
   def w: Double                                                    = js.native
-  def fromPoint(other: DOMPointInit = js.native): DOMPointReadOnly = js.native
   def matrixTransform(matrix: DOMMatrixInit = js.native): DOMPoint = js.native
   def toJSON(): scala.scalajs.js.Any                               = js.native
 end DOMPointReadOnly
 
 @js.native
 @JSGlobal
+object DOMPointReadOnly extends js.Object:
+  def fromPoint(other: DOMPointInit = js.native): DOMPointReadOnly = js.native
+
+@js.native
+@JSGlobal
 class TextDecoder extends js.Object:
+  def this(@unused label: String = js.native, @unused options: TextDecoderOptions = js.native) = this()
   def encoding: String                                                                                = js.native
   def fatal: Boolean                                                                                  = js.native
   def ignoreBOM: Boolean                                                                              = js.native
@@ -11634,28 +12235,49 @@ class WEBGL_draw_buffers extends js.Object:
 
 @js.native
 @JSGlobal
-class SpeechRecognitionPhrase extends js.Object:
-  def phrase: String = js.native
-  def boost: Double  = js.native
+object WEBGL_draw_buffers extends js.Object:
+  val COLOR_ATTACHMENT0_WEBGL: scala.scalajs.js.Any     = js.native
+  val COLOR_ATTACHMENT1_WEBGL: scala.scalajs.js.Any     = js.native
+  val COLOR_ATTACHMENT2_WEBGL: scala.scalajs.js.Any     = js.native
+  val COLOR_ATTACHMENT3_WEBGL: scala.scalajs.js.Any     = js.native
+  val COLOR_ATTACHMENT4_WEBGL: scala.scalajs.js.Any     = js.native
+  val COLOR_ATTACHMENT5_WEBGL: scala.scalajs.js.Any     = js.native
+  val COLOR_ATTACHMENT6_WEBGL: scala.scalajs.js.Any     = js.native
+  val COLOR_ATTACHMENT7_WEBGL: scala.scalajs.js.Any     = js.native
+  val COLOR_ATTACHMENT8_WEBGL: scala.scalajs.js.Any     = js.native
+  val COLOR_ATTACHMENT9_WEBGL: scala.scalajs.js.Any     = js.native
+  val COLOR_ATTACHMENT10_WEBGL: scala.scalajs.js.Any    = js.native
+  val COLOR_ATTACHMENT11_WEBGL: scala.scalajs.js.Any    = js.native
+  val COLOR_ATTACHMENT12_WEBGL: scala.scalajs.js.Any    = js.native
+  val COLOR_ATTACHMENT13_WEBGL: scala.scalajs.js.Any    = js.native
+  val COLOR_ATTACHMENT14_WEBGL: scala.scalajs.js.Any    = js.native
+  val COLOR_ATTACHMENT15_WEBGL: scala.scalajs.js.Any    = js.native
+  val DRAW_BUFFER0_WEBGL: scala.scalajs.js.Any          = js.native
+  val DRAW_BUFFER1_WEBGL: scala.scalajs.js.Any          = js.native
+  val DRAW_BUFFER2_WEBGL: scala.scalajs.js.Any          = js.native
+  val DRAW_BUFFER3_WEBGL: scala.scalajs.js.Any          = js.native
+  val DRAW_BUFFER4_WEBGL: scala.scalajs.js.Any          = js.native
+  val DRAW_BUFFER5_WEBGL: scala.scalajs.js.Any          = js.native
+  val DRAW_BUFFER6_WEBGL: scala.scalajs.js.Any          = js.native
+  val DRAW_BUFFER7_WEBGL: scala.scalajs.js.Any          = js.native
+  val DRAW_BUFFER8_WEBGL: scala.scalajs.js.Any          = js.native
+  val DRAW_BUFFER9_WEBGL: scala.scalajs.js.Any          = js.native
+  val DRAW_BUFFER10_WEBGL: scala.scalajs.js.Any         = js.native
+  val DRAW_BUFFER11_WEBGL: scala.scalajs.js.Any         = js.native
+  val DRAW_BUFFER12_WEBGL: scala.scalajs.js.Any         = js.native
+  val DRAW_BUFFER13_WEBGL: scala.scalajs.js.Any         = js.native
+  val DRAW_BUFFER14_WEBGL: scala.scalajs.js.Any         = js.native
+  val DRAW_BUFFER15_WEBGL: scala.scalajs.js.Any         = js.native
+  val MAX_COLOR_ATTACHMENTS_WEBGL: scala.scalajs.js.Any = js.native
+  val MAX_DRAW_BUFFERS_WEBGL: scala.scalajs.js.Any      = js.native
+end WEBGL_draw_buffers
 
 @js.native
 @JSGlobal
-class PaymentRequestEvent extends js.Object:
-  def topOrigin: String                             = js.native
-  def paymentRequestOrigin: String                  = js.native
-  def paymentRequestId: String                      = js.native
-  def methodData: scala.scalajs.js.Any              = js.native
-  def total: scala.scalajs.js.Any                   = js.native
-  def modifiers: scala.scalajs.js.Any               = js.native
-  def paymentOptions: scala.scalajs.js.Any          = js.native
-  def shippingOptions: scala.scalajs.js.Any         = js.native
-  def openWindow(url: String): scala.scalajs.js.Any = js.native
-  def changePaymentMethod(methodName: String, methodDetails: scala.scalajs.js.Any = js.native): scala.scalajs.js.Any =
-    js.native
-  def changeShippingAddress(shippingAddress: AddressInit = js.native): scala.scalajs.js.Any = js.native
-  def changeShippingOption(shippingOption: String): scala.scalajs.js.Any                    = js.native
-  def respondWith(handlerResponsePromise: scala.scalajs.js.Any): Unit                       = js.native
-end PaymentRequestEvent
+class SpeechRecognitionPhrase extends js.Object:
+  def this(@unused phrase: String, @unused boost: Double = js.native) = this()
+  def phrase: String = js.native
+  def boost: Double  = js.native
 
 @js.native
 @JSGlobal
@@ -11664,6 +12286,14 @@ class SVGGradientElement extends SVGElement:
   def gradientTransform: SVGAnimatedTransformList = js.native
   def spreadMethod: SVGAnimatedEnumeration        = js.native
   def href: SVGAnimatedString                     = js.native
+
+@js.native
+@JSGlobal
+object SVGGradientElement extends js.Object:
+  val SVG_SPREADMETHOD_UNKNOWN: Int = js.native
+  val SVG_SPREADMETHOD_PAD: Int     = js.native
+  val SVG_SPREADMETHOD_REFLECT: Int = js.native
+  val SVG_SPREADMETHOD_REPEAT: Int  = js.native
 
 @js.native
 @JSGlobal
@@ -11733,6 +12363,15 @@ end SVGFEDisplacementMapElement
 
 @js.native
 @JSGlobal
+object SVGFEDisplacementMapElement extends js.Object:
+  val SVG_CHANNEL_UNKNOWN: Int = js.native
+  val SVG_CHANNEL_R: Int       = js.native
+  val SVG_CHANNEL_G: Int       = js.native
+  val SVG_CHANNEL_B: Int       = js.native
+  val SVG_CHANNEL_A: Int       = js.native
+
+@js.native
+@JSGlobal
 class PresentationConnection extends EventTarget:
   def id: String                             = js.native
   def url: String                            = js.native
@@ -11763,15 +12402,6 @@ class ResizeObserverEntry extends js.Object:
   def borderBoxSize: scala.scalajs.js.Any             = js.native
   def contentBoxSize: scala.scalajs.js.Any            = js.native
   def devicePixelContentBoxSize: scala.scalajs.js.Any = js.native
-
-@js.native
-@JSGlobal
-class XRVisibilityMaskChangeEvent extends js.Object:
-  def session: XRSession             = js.native
-  def eye: String                    = js.native
-  def index: Int                     = js.native
-  def vertices: scala.scalajs.js.Any = js.native
-  def indices: scala.scalajs.js.Any  = js.native
 
 @js.native
 @JSGlobal
@@ -12067,12 +12697,6 @@ class WebGLBuffer extends WebGLObject
 
 @js.native
 @JSGlobal
-class NDEFReadingEvent extends js.Object:
-  def serialNumber: String = js.native
-  def message: NDEFMessage = js.native
-
-@js.native
-@JSGlobal
 class HTMLTableElement extends HTMLElement:
   var caption: HTMLTableCaptionElement                       = js.native
   var tHead: HTMLTableSectionElement                         = js.native
@@ -12116,6 +12740,7 @@ class WebGLSampler extends WebGLObject
 @js.native
 @JSGlobal
 class Instance extends js.Object:
+  def this(@unused module: Module, @unused importObject: scala.scalajs.js.Any = js.native) = this()
   def exports: scala.scalajs.js.Any = js.native
 
 @js.native
@@ -12149,17 +12774,8 @@ end ServiceWorkerGlobalScope
 
 @js.native
 @JSGlobal
-class BeforeInstallPromptEvent extends js.Object:
-  def prompt(): scala.scalajs.js.Any = js.native
-
-@js.native
-@JSGlobal
-class RTCDTMFToneChangeEvent extends js.Object:
-  def tone: String = js.native
-
-@js.native
-@JSGlobal
 class AudioContext extends BaseAudioContext:
+  def this(@unused contextOptions: AudioContextOptions = js.native) = this()
   def baseLatency: Double                                                                               = js.native
   def outputLatency: Double                                                                             = js.native
   def sinkId: scala.scalajs.js.Any                                                                      = js.native
@@ -12217,12 +12833,17 @@ end XMLHttpRequest
 
 @js.native
 @JSGlobal
-class TaskPriorityChangeEvent extends js.Object:
-  def previousPriority: String = js.native
+object XMLHttpRequest extends js.Object:
+  val UNSENT: Int           = js.native
+  val OPENED: Int           = js.native
+  val HEADERS_RECEIVED: Int = js.native
+  val LOADING: Int          = js.native
+  val DONE: Int             = js.native
 
 @js.native
 @JSGlobal
-class Comment extends CharacterData
+class Comment extends CharacterData:
+  def this(@unused data: String = js.native) = this()
 
 @js.native
 @JSGlobal
@@ -12237,18 +12858,22 @@ class SVGAnimatedTransformList extends js.Object:
 @js.native
 @JSGlobal
 class AbortSignal extends EventTarget:
-  def aborted: Boolean                                             = js.native
-  def reason: scala.scalajs.js.Any                                 = js.native
-  var onabort: scala.scalajs.js.Any                                = js.native
+  def aborted: Boolean              = js.native
+  def reason: scala.scalajs.js.Any  = js.native
+  var onabort: scala.scalajs.js.Any = js.native
+  def throwIfAborted(): Unit        = js.native
+
+@js.native
+@JSGlobal
+object AbortSignal extends js.Object:
   def abort(reason: scala.scalajs.js.Any = js.native): AbortSignal = js.native
   def timeout(milliseconds: Int): AbortSignal                      = js.native
   def any(signals: scala.scalajs.js.Any): AbortSignal              = js.native
-  def throwIfAborted(): Unit                                       = js.native
-end AbortSignal
 
 @js.native
 @JSGlobal
 class DelayNode extends AudioNode:
+  def this(@unused context: BaseAudioContext, @unused options: DelayOptions = js.native) = this()
   def delayTime: AudioParam = js.native
 
 @js.native
@@ -12259,12 +12884,14 @@ class RadioNodeList extends NodeList:
 @js.native
 @JSGlobal
 class SharedWorker extends EventTarget:
+  def this(@unused scriptURL: scala.scalajs.js.Any, @unused options: scala.scalajs.js.Any = js.native) = this()
   def port: MessagePort             = js.native
   var onerror: scala.scalajs.js.Any = js.native
 
 @js.native
 @JSGlobal
 class URLSearchParams extends js.Object:
+  def this(@unused init: scala.scalajs.js.Any = js.native) = this()
   def size: Int                                             = js.native
   def append(name: String, value: String): Unit             = js.native
   def delete(name: String, value: String = js.native): Unit = js.native
@@ -12317,8 +12944,12 @@ class XRDepthInformation extends js.Object:
 @js.native
 @JSGlobal
 class Credential extends js.Object:
-  def id: String                                              = js.native
-  def `type`: String                                          = js.native
+  def id: String     = js.native
+  def `type`: String = js.native
+
+@js.native
+@JSGlobal
+object Credential extends js.Object:
   def isConditionalMediationAvailable(): scala.scalajs.js.Any = js.native
 
 @js.native
@@ -12344,6 +12975,8 @@ class XMLDocument extends Document
 @js.native
 @JSGlobal
 class RTCEncodedVideoFrame extends js.Object:
+  def this(@unused originalFrame: RTCEncodedVideoFrame, @unused options: RTCEncodedVideoFrameOptions = js.native) =
+    this()
   def `type`: String                              = js.native
   var data: scala.scalajs.js.Any                  = js.native
   def getMetadata(): RTCEncodedVideoFrameMetadata = js.native
@@ -12363,6 +12996,7 @@ end NavigationHistoryEntry
 @js.native
 @JSGlobal
 class XRMediaBinding extends js.Object:
+  def this(@unused session: XRSession) = this()
   def createQuadLayer(video: HTMLVideoElement, init: XRMediaQuadLayerInit = js.native): XRQuadLayer = js.native
   def createCylinderLayer(video: HTMLVideoElement, init: XRMediaCylinderLayerInit = js.native): XRCylinderLayer =
     js.native
@@ -12371,7 +13005,11 @@ class XRMediaBinding extends js.Object:
 
 @js.native
 @JSGlobal
-class RestrictionTarget extends js.Object:
+class RestrictionTarget extends js.Object
+
+@js.native
+@JSGlobal
+object RestrictionTarget extends js.Object:
   def fromElement(element: Element): scala.scalajs.js.Any = js.native
 
 @js.native
@@ -12427,7 +13065,8 @@ class BluetoothLEScanPermissionResult extends PermissionStatus:
 
 @js.native
 @JSGlobal
-class AbsoluteOrientationSensor extends OrientationSensor
+class AbsoluteOrientationSensor extends OrientationSensor:
+  def this(@unused sensorOptions: OrientationSensorOptions = js.native) = this()
 
 @js.native
 @JSGlobal
@@ -12437,7 +13076,16 @@ class GeolocationPositionError extends js.Object:
 
 @js.native
 @JSGlobal
+object GeolocationPositionError extends js.Object:
+  val PERMISSION_DENIED: Int    = js.native
+  val POSITION_UNAVAILABLE: Int = js.native
+  val TIMEOUT: Int              = js.native
+
+@js.native
+@JSGlobal
 class XRRay extends js.Object:
+  def this(@unused origin: DOMPointInit = js.native, @unused direction: XRRayDirectionInit = js.native) = this()
+  def this(@unused transform: XRRigidTransform) = this()
   def origin: DOMPointReadOnly     = js.native
   def direction: DOMPointReadOnly  = js.native
   def matrix: scala.scalajs.js.Any = js.native
@@ -12451,16 +13099,15 @@ class RdfTriple extends js.Object:
 
 @js.native
 @JSGlobal
-class MIDIConnectionEvent extends js.Object:
-  def port: MIDIPort = js.native
-
-@js.native
-@JSGlobal
 class PushManager extends js.Object:
-  def supportedContentEncodings: scala.scalajs.js.Any                                         = js.native
   def subscribe(options: PushSubscriptionOptionsInit = js.native): scala.scalajs.js.Any       = js.native
   def getSubscription(): scala.scalajs.js.Any                                                 = js.native
   def permissionState(options: PushSubscriptionOptionsInit = js.native): scala.scalajs.js.Any = js.native
+
+@js.native
+@JSGlobal
+object PushManager extends js.Object:
+  def supportedContentEncodings: scala.scalajs.js.Any = js.native
 
 @js.native
 @JSGlobal
@@ -12520,6 +13167,8 @@ end Selection
 @js.native
 @JSGlobal
 class RTCEncodedAudioFrame extends js.Object:
+  def this(@unused originalFrame: RTCEncodedAudioFrame, @unused options: RTCEncodedAudioFrameOptions = js.native) =
+    this()
   var data: scala.scalajs.js.Any                  = js.native
   def getMetadata(): RTCEncodedAudioFrameMetadata = js.native
 
@@ -12530,22 +13179,21 @@ class XRPermissionStatus extends PermissionStatus:
 
 @js.native
 @JSGlobal
-class PortalActivateEvent extends js.Object:
-  def data: scala.scalajs.js.Any            = js.native
-  def adoptPredecessor(): HTMLPortalElement = js.native
-
-@js.native
-@JSGlobal
 class CSSImageValue extends CSSStyleValue
 
 @js.native
 @JSGlobal
 class PublicKeyCredential extends Credential:
-  def rawId: scala.scalajs.js.Any                                           = js.native
-  def response: AuthenticatorResponse                                       = js.native
-  def authenticatorAttachment: String                                       = js.native
-  def getClientExtensionResults(): AuthenticationExtensionsClientOutputs    = js.native
-  def toJSON(): scala.scalajs.js.Any                                        = js.native
+  def rawId: scala.scalajs.js.Any                                        = js.native
+  def response: AuthenticatorResponse                                    = js.native
+  def authenticatorAttachment: String                                    = js.native
+  def getClientExtensionResults(): AuthenticationExtensionsClientOutputs = js.native
+  def toJSON(): scala.scalajs.js.Any                                     = js.native
+
+@js.native
+@JSGlobal
+object PublicKeyCredential extends js.Object:
+  def isConditionalMediationAvailable(): scala.scalajs.js.Any               = js.native
   def isUserVerifyingPlatformAuthenticatorAvailable(): scala.scalajs.js.Any = js.native
   def getClientCapabilities(): scala.scalajs.js.Any                         = js.native
   def parseCreationOptionsFromJSON(
@@ -12633,6 +13281,8 @@ end WEBGL_multi_draw
 @js.native
 @JSGlobal
 class WritableStream extends js.Object:
+  def this(@unused underlyingSink: scala.scalajs.js.Any = js.native, @unused strategy: QueuingStrategy = js.native) =
+    this()
   def locked: Boolean                                                       = js.native
   def abort(reason: scala.scalajs.js.Any = js.native): scala.scalajs.js.Any = js.native
   def close(): scala.scalajs.js.Any                                         = js.native
@@ -12644,7 +13294,8 @@ class WebGLFramebuffer extends WebGLObject
 
 @js.native
 @JSGlobal
-class MediaStreamTrackHandle extends js.Object
+class MediaStreamTrackHandle extends js.Object:
+  def this(@unused track: MediaStreamTrack) = this()
 
 @js.native
 @JSGlobal
@@ -12674,9 +13325,15 @@ end ContactAddress
 @js.native
 @JSGlobal
 class CSSParserAtRule extends CSSParserRule:
+  def this(
+      @unused name: String,
+      @unused prelude: scala.scalajs.js.Any,
+      @unused body: scala.scalajs.js.Any = js.native,
+  ) = this()
   def name: String                  = js.native
   def prelude: scala.scalajs.js.Any = js.native
   def body: scala.scalajs.js.Any    = js.native
+end CSSParserAtRule
 
 @js.native
 @JSGlobal
@@ -12696,7 +13353,11 @@ class CSSMediaRule extends CSSConditionRule:
 
 @js.native
 @JSGlobal
-class CSSColorValue extends CSSStyleValue:
+class CSSColorValue extends CSSStyleValue
+
+@js.native
+@JSGlobal
+object CSSColorValue extends js.Object:
   def parse(cssText: String): scala.scalajs.js.Any = js.native
 
 @js.native
@@ -12749,6 +13410,7 @@ class VideoTrack extends js.Object:
 @js.native
 @JSGlobal
 class RTCSessionDescription extends js.Object:
+  def this(@unused descriptionInitDict: RTCSessionDescriptionInit) = this()
   def `type`: String                      = js.native
   def sdp: String                         = js.native
   def toJSON(): RTCSessionDescriptionInit = js.native
@@ -12773,6 +13435,7 @@ end Bluetooth
 @js.native
 @JSGlobal
 class RTCRtpSFrameDecrypter extends EventTarget:
+  def this(@unused options: SFrameTransformOptions) = this()
   var onerror: scala.scalajs.js.Any                                                       = js.native
   def addDecryptionKey(key: CryptoKey, keyId: scala.scalajs.js.Any): scala.scalajs.js.Any = js.native
   def removeDecryptionKey(keyId: scala.scalajs.js.Any): scala.scalajs.js.Any              = js.native
@@ -12791,12 +13454,6 @@ end RTCRtpTransceiver
 
 @js.native
 @JSGlobal
-class CapturedMouseEvent extends js.Object:
-  def surfaceX: Int = js.native
-  def surfaceY: Int = js.native
-
-@js.native
-@JSGlobal
 class XRSpace extends EventTarget
 
 @js.native
@@ -12812,13 +13469,6 @@ class AuthenticatorAssertionResponse extends AuthenticatorResponse:
 
 @js.native
 @JSGlobal
-class XRInputSourcesChangeEvent extends js.Object:
-  def session: XRSession            = js.native
-  def added: scala.scalajs.js.Any   = js.native
-  def removed: scala.scalajs.js.Any = js.native
-
-@js.native
-@JSGlobal
 class XRPlane extends js.Object:
   def planeSpace: XRSpace           = js.native
   def polygon: scala.scalajs.js.Any = js.native
@@ -12829,6 +13479,11 @@ class XRPlane extends js.Object:
 @js.native
 @JSGlobal
 class Module extends js.Object:
+  def this(@unused bytes: scala.scalajs.js.Any, @unused options: WebAssemblyCompileOptions = js.native) = this()
+
+@js.native
+@JSGlobal
+object Module extends js.Object:
   def exports(moduleObject: Module): scala.scalajs.js.Any                             = js.native
   def imports(moduleObject: Module): scala.scalajs.js.Any                             = js.native
   def customSections(moduleObject: Module, sectionName: String): scala.scalajs.js.Any = js.native
@@ -12836,6 +13491,8 @@ class Module extends js.Object:
 @js.native
 @JSGlobal
 class VideoFrame extends js.Object:
+  def this(@unused image: scala.scalajs.js.Any, @unused init: VideoFrameInit) = this()
+  def this(@unused data: scala.scalajs.js.Any, @unused init: VideoFrameBufferInit) = this()
   def format: String                                                    = js.native
   def codedWidth: Int                                                   = js.native
   def codedHeight: Int                                                  = js.native
@@ -12865,6 +13522,7 @@ class SpeechRecognitionResult extends js.Object:
 @js.native
 @JSGlobal
 class WaveShaperNode extends AudioNode:
+  def this(@unused context: BaseAudioContext, @unused options: WaveShaperOptions = js.native) = this()
   var curve: scala.scalajs.js.Any = js.native
   var oversample: String          = js.native
 
@@ -12885,23 +13543,9 @@ class HTMLDetailsElement extends HTMLElement:
 @js.native
 @JSGlobal
 class CSSSkew extends CSSTransformComponent:
+  def this(@unused ax: CSSNumericValue, @unused ay: CSSNumericValue) = this()
   var ax: CSSNumericValue = js.native
   var ay: CSSNumericValue = js.native
-
-@js.native
-@JSGlobal
-class RTCPeerConnectionIceErrorEvent extends js.Object:
-  def address: String   = js.native
-  def port: Int         = js.native
-  def url: String       = js.native
-  def errorCode: Int    = js.native
-  def errorText: String = js.native
-
-@js.native
-@JSGlobal
-class PresentationConnectionCloseEvent extends js.Object:
-  def reason: String  = js.native
-  def message: String = js.native
 
 @js.native
 @JSGlobal
@@ -12917,7 +13561,6 @@ class RTCRtpReceiver extends js.Object:
   def track: MediaStreamTrack                           = js.native
   def transport: RTCDtlsTransport                       = js.native
   var jitterBufferTarget: Double                        = js.native
-  def getCapabilities(kind: String): RTCRtpCapabilities = js.native
   def getParameters(): RTCRtpReceiveParameters          = js.native
   def getContributingSources(): scala.scalajs.js.Any    = js.native
   def getSynchronizationSources(): scala.scalajs.js.Any = js.native
@@ -12926,11 +13569,25 @@ end RTCRtpReceiver
 
 @js.native
 @JSGlobal
+object RTCRtpReceiver extends js.Object:
+  def getCapabilities(kind: String): RTCRtpCapabilities = js.native
+
+@js.native
+@JSGlobal
 class WEBGL_compressed_texture_pvrtc extends js.Object
 
 @js.native
 @JSGlobal
+object WEBGL_compressed_texture_pvrtc extends js.Object:
+  val COMPRESSED_RGB_PVRTC_4BPPV1_IMG: scala.scalajs.js.Any  = js.native
+  val COMPRESSED_RGB_PVRTC_2BPPV1_IMG: scala.scalajs.js.Any  = js.native
+  val COMPRESSED_RGBA_PVRTC_4BPPV1_IMG: scala.scalajs.js.Any = js.native
+  val COMPRESSED_RGBA_PVRTC_2BPPV1_IMG: scala.scalajs.js.Any = js.native
+
+@js.native
+@JSGlobal
 class VideoEncoder extends EventTarget:
+  def this(@unused init: VideoEncoderInit) = this()
   def state: String                                                                   = js.native
   def encodeQueueSize: Int                                                            = js.native
   var ondequeue: scala.scalajs.js.Any                                                 = js.native
@@ -12939,8 +13596,12 @@ class VideoEncoder extends EventTarget:
   def flush(): scala.scalajs.js.Any                                                   = js.native
   def reset(): Unit                                                                   = js.native
   def close(): Unit                                                                   = js.native
-  def isConfigSupported(config: VideoEncoderConfig): scala.scalajs.js.Any             = js.native
 end VideoEncoder
+
+@js.native
+@JSGlobal
+object VideoEncoder extends js.Object:
+  def isConfigSupported(config: VideoEncoderConfig): scala.scalajs.js.Any = js.native
 
 @js.native
 @JSGlobal
@@ -12958,12 +13619,6 @@ class XRRenderState extends js.Object:
   def inlineVerticalFieldOfView: Double = js.native
   def baseLayer: XRWebGLLayer           = js.native
   def layers: scala.scalajs.js.Any      = js.native
-
-@js.native
-@JSGlobal
-class MediaEncryptedEvent extends js.Object:
-  def initDataType: String           = js.native
-  def initData: scala.scalajs.js.Any = js.native
 
 @js.native
 @JSGlobal
@@ -13035,6 +13690,14 @@ end Range
 
 @js.native
 @JSGlobal
+object Range extends js.Object:
+  val START_TO_START: Int = js.native
+  val START_TO_END: Int   = js.native
+  val END_TO_END: Int     = js.native
+  val END_TO_START: Int   = js.native
+
+@js.native
+@JSGlobal
 class DOMRectList extends js.Object:
   def length: Int               = js.native
   def item(index: Int): DOMRect = js.native
@@ -13055,37 +13718,42 @@ class HTMLProgressElement extends HTMLElement:
 @js.native
 @JSGlobal
 class CSSMathMax extends CSSMathValue:
+  def this(@unused args: scala.scalajs.js.Any) = this()
   def values: CSSNumericArray = js.native
 
 @js.native
 @JSGlobal
 class SpeechRecognition extends EventTarget:
-  var grammars: SpeechGrammarList                                        = js.native
-  var lang: String                                                       = js.native
-  var continuous: Boolean                                                = js.native
-  var interimResults: Boolean                                            = js.native
-  var unspokenPunctuation: Boolean                                       = js.native
-  var maxAlternatives: Int                                               = js.native
-  var processLocally: Boolean                                            = js.native
-  var phrases: scala.scalajs.js.Any                                      = js.native
-  var onaudiostart: scala.scalajs.js.Any                                 = js.native
-  var onsoundstart: scala.scalajs.js.Any                                 = js.native
-  var onspeechstart: scala.scalajs.js.Any                                = js.native
-  var onspeechend: scala.scalajs.js.Any                                  = js.native
-  var onsoundend: scala.scalajs.js.Any                                   = js.native
-  var onaudioend: scala.scalajs.js.Any                                   = js.native
-  var onresult: scala.scalajs.js.Any                                     = js.native
-  var onnomatch: scala.scalajs.js.Any                                    = js.native
-  var onerror: scala.scalajs.js.Any                                      = js.native
-  var onstart: scala.scalajs.js.Any                                      = js.native
-  var onend: scala.scalajs.js.Any                                        = js.native
-  def start(): Unit                                                      = js.native
-  def start(audioTrack: MediaStreamTrack): Unit                          = js.native
-  def stop(): Unit                                                       = js.native
-  def abort(): Unit                                                      = js.native
+  var grammars: SpeechGrammarList               = js.native
+  var lang: String                              = js.native
+  var continuous: Boolean                       = js.native
+  var interimResults: Boolean                   = js.native
+  var unspokenPunctuation: Boolean              = js.native
+  var maxAlternatives: Int                      = js.native
+  var processLocally: Boolean                   = js.native
+  var phrases: scala.scalajs.js.Any             = js.native
+  var onaudiostart: scala.scalajs.js.Any        = js.native
+  var onsoundstart: scala.scalajs.js.Any        = js.native
+  var onspeechstart: scala.scalajs.js.Any       = js.native
+  var onspeechend: scala.scalajs.js.Any         = js.native
+  var onsoundend: scala.scalajs.js.Any          = js.native
+  var onaudioend: scala.scalajs.js.Any          = js.native
+  var onresult: scala.scalajs.js.Any            = js.native
+  var onnomatch: scala.scalajs.js.Any           = js.native
+  var onerror: scala.scalajs.js.Any             = js.native
+  var onstart: scala.scalajs.js.Any             = js.native
+  var onend: scala.scalajs.js.Any               = js.native
+  def start(): Unit                             = js.native
+  def start(audioTrack: MediaStreamTrack): Unit = js.native
+  def stop(): Unit                              = js.native
+  def abort(): Unit                             = js.native
+end SpeechRecognition
+
+@js.native
+@JSGlobal
+object SpeechRecognition extends js.Object:
   def available(options: SpeechRecognitionOptions): scala.scalajs.js.Any = js.native
   def install(options: SpeechRecognitionOptions): scala.scalajs.js.Any   = js.native
-end SpeechRecognition
 
 @js.native
 @JSGlobal
@@ -13131,15 +13799,27 @@ class CSSRule extends js.Object:
 
 @js.native
 @JSGlobal
-class ImageBitmapRenderingContext extends js.Object:
-  def canvas: scala.scalajs.js.Any                       = js.native
-  def transferFromImageBitmap(bitmap: ImageBitmap): Unit = js.native
+object CSSRule extends js.Object:
+  val KEYFRAMES_RULE: Int           = js.native
+  val KEYFRAME_RULE: Int            = js.native
+  val SUPPORTS_RULE: Int            = js.native
+  val COUNTER_STYLE_RULE: Int       = js.native
+  val FONT_FEATURE_VALUES_RULE: Int = js.native
+  val STYLE_RULE: Int               = js.native
+  val CHARSET_RULE: Int             = js.native
+  val IMPORT_RULE: Int              = js.native
+  val MEDIA_RULE: Int               = js.native
+  val FONT_FACE_RULE: Int           = js.native
+  val PAGE_RULE: Int                = js.native
+  val MARGIN_RULE: Int              = js.native
+  val NAMESPACE_RULE: Int           = js.native
+end CSSRule
 
 @js.native
 @JSGlobal
-class DeviceChangeEvent extends js.Object:
-  def devices: scala.scalajs.js.Any             = js.native
-  def userInsertedDevices: scala.scalajs.js.Any = js.native
+class ImageBitmapRenderingContext extends js.Object:
+  def canvas: scala.scalajs.js.Any                       = js.native
+  def transferFromImageBitmap(bitmap: ImageBitmap): Unit = js.native
 
 @js.native
 @JSGlobal
@@ -13155,6 +13835,7 @@ class WritableStreamDefaultController extends js.Object:
 @js.native
 @JSGlobal
 class ImageDecoder extends js.Object:
+  def this(@unused init: ImageDecoderInit) = this()
   def `type`: String                                                        = js.native
   def complete: Boolean                                                     = js.native
   def completed: scala.scalajs.js.Any                                       = js.native
@@ -13162,8 +13843,12 @@ class ImageDecoder extends js.Object:
   def decode(options: ImageDecodeOptions = js.native): scala.scalajs.js.Any = js.native
   def reset(): Unit                                                         = js.native
   def close(): Unit                                                         = js.native
-  def isTypeSupported(`type`: String): scala.scalajs.js.Any                 = js.native
 end ImageDecoder
+
+@js.native
+@JSGlobal
+object ImageDecoder extends js.Object:
+  def isTypeSupported(`type`: String): scala.scalajs.js.Any = js.native
 
 @js.native
 @JSGlobal
@@ -13194,12 +13879,6 @@ class BluetoothPermissionResult extends PermissionStatus:
 @js.native
 @JSGlobal
 class WorkletGlobalScope extends js.Object
-
-@js.native
-@JSGlobal
-class PushSubscriptionChangeEvent extends js.Object:
-  def newSubscription: PushSubscription = js.native
-  def oldSubscription: PushSubscription = js.native
 
 @js.native
 @JSGlobal
@@ -13242,6 +13921,7 @@ class ServiceWorker extends EventTarget:
 @js.native
 @JSGlobal
 class CSSUnitValue extends CSSNumericValue:
+  def this(@unused value: Double, @unused unit: String) = this()
   var value: Double = js.native
   def unit: String  = js.native
 
@@ -13393,8 +14073,13 @@ end HTMLCanvasElement
 @js.native
 @JSGlobal
 class BarcodeDetector extends js.Object:
-  def getSupportedFormats(): scala.scalajs.js.Any               = js.native
+  def this(@unused barcodeDetectorOptions: BarcodeDetectorOptions = js.native) = this()
   def detect(image: scala.scalajs.js.Any): scala.scalajs.js.Any = js.native
+
+@js.native
+@JSGlobal
+object BarcodeDetector extends js.Object:
+  def getSupportedFormats(): scala.scalajs.js.Any = js.native
 
 @js.native
 @JSGlobal
@@ -13611,7 +14296,6 @@ class Document extends Node:
   def measureElement(element: Element): FontMetrics                                                   = js.native
   def measureText(text: String, styleMap: StylePropertyMapReadOnly): FontMetrics                      = js.native
   def exitFullscreen(): scala.scalajs.js.Any                                                          = js.native
-  def parseHTMLUnsafe(html: scala.scalajs.js.Any): Document                                           = js.native
   def getElementsByName(elementName: String): NodeList                                                = js.native
   def open(unused1: String, unused2: String): Document                                                = js.native
   def open(url: String, name: String, features: String): scala.scalajs.js.Any                         = js.native
@@ -13631,7 +14315,6 @@ class Document extends Node:
   def exitPictureInPicture(): scala.scalajs.js.Any                                                    = js.native
   def exitPointerLock(): Unit                                                                         = js.native
   def hasUnpartitionedCookieAccess(): scala.scalajs.js.Any                                            = js.native
-  def parseHTML(html: String, options: SetHTMLOptions = js.native): Document                          = js.native
   def getSelection(): Selection                                                                       = js.native
   def hasStorageAccess(): scala.scalajs.js.Any                                                        = js.native
   def requestStorageAccess(): scala.scalajs.js.Any                                                    = js.native
@@ -13678,17 +14361,25 @@ end Document
 
 @js.native
 @JSGlobal
+object Document extends js.Object:
+  def parseHTMLUnsafe(html: scala.scalajs.js.Any): Document                  = js.native
+  def parseHTML(html: String, options: SetHTMLOptions = js.native): Document = js.native
+
+@js.native
+@JSGlobal
 class Ink extends js.Object:
   def requestPresenter(param: InkPresenterParam = js.native): scala.scalajs.js.Any = js.native
 
 @js.native
 @JSGlobal
 class TaskController extends AbortController:
+  def this(@unused init: TaskControllerInit = js.native) = this()
   def setPriority(priority: String): Unit = js.native
 
 @js.native
 @JSGlobal
 class MediaElementAudioSourceNode extends AudioNode:
+  def this(@unused context: AudioContext, @unused options: MediaElementAudioSourceOptions) = this()
   def mediaElement: HTMLMediaElement = js.native
 
 @js.native
@@ -13756,6 +14447,11 @@ class FontFacePalettes extends js.Object:
 @js.native
 @JSGlobal
 class PaymentRequest extends EventTarget:
+  def this(
+      @unused methodData: scala.scalajs.js.Any,
+      @unused details: PaymentDetailsInit,
+      @unused options: PaymentOptions = js.native,
+  ) = this()
   def id: String                                                                   = js.native
   def shippingAddress: ContactAddress                                              = js.native
   def shippingOption: String                                                       = js.native
@@ -13766,6 +14462,10 @@ class PaymentRequest extends EventTarget:
   def show(detailsPromise: scala.scalajs.js.Any = js.native): scala.scalajs.js.Any = js.native
   def abort(): scala.scalajs.js.Any                                                = js.native
   def canMakePayment(): scala.scalajs.js.Any                                       = js.native
-  def securePaymentConfirmationAvailability(): scala.scalajs.js.Any                = js.native
-  def getSecurePaymentConfirmationCapabilities(): scala.scalajs.js.Any             = js.native
 end PaymentRequest
+
+@js.native
+@JSGlobal
+object PaymentRequest extends js.Object:
+  def securePaymentConfirmationAvailability(): scala.scalajs.js.Any    = js.native
+  def getSecurePaymentConfirmationCapabilities(): scala.scalajs.js.Any = js.native

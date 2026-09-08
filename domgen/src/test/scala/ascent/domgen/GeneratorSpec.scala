@@ -154,6 +154,9 @@ object GeneratorSpec extends ZIOSpecDefault:
           src.contains("class MouseEvent extends UIEvent"),
           src.contains("class UIEvent extends Event"),
           src.contains("class Event extends js.Object"),
+          src.contains("def this(@unused `type`: String, @unused eventInitDict: EventInit = js.native) = this()"),
+          src.contains("object Event extends js.Object"),
+          src.contains("val CAPTURING_PHASE: Int = js.native"),
         )
       end for
     },

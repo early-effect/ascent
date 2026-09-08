@@ -121,7 +121,6 @@ class HTMLScriptElementMemory extends HTMLElementMemory with HTMLScriptElement:
   def event_=(value: String): Unit          = attributeMap.set("event", value)
   def htmlFor: String                       = attributeMap.getOrElse("for", "")
   def htmlFor_=(value: String): Unit        = attributeMap.set("for", value)
-  def supports(`type`: String): Boolean     = ???
 end HTMLScriptElementMemory
 
 class HTMLUnknownElementMemory extends HTMLElementMemory with HTMLUnknownElement
@@ -2946,7 +2945,6 @@ class DocumentMemory extends NodeMemory with Document with DocumentOverrides:
   def measureElement(element: Element): ascent.domcore.PlatformOpaque                                     = ???
   def measureText(text: String, styleMap: ascent.domcore.PlatformOpaque): ascent.domcore.PlatformOpaque   = ???
   def exitFullscreen(): ascent.domcore.PlatformOpaque                                                     = ???
-  def parseHTMLUnsafe(html: ascent.domcore.PlatformOpaque | String): Document                             = ???
   def getElementsByName(elementName: String): NodeList                                                    = ???
   def open(unused1: String, unused2: String): Document                                                    = ???
   def open(url: String, name: String, features: String): ascent.domcore.PlatformOpaque                    = ???
@@ -2966,7 +2964,6 @@ class DocumentMemory extends NodeMemory with Document with DocumentOverrides:
   def exitPictureInPicture(): ascent.domcore.PlatformOpaque                                               = ???
   def exitPointerLock(): Unit                                                                             = ???
   def hasUnpartitionedCookieAccess(): ascent.domcore.PlatformOpaque                                       = ???
-  def parseHTML(html: String, options: ascent.domcore.PlatformOpaque): Document                           = ???
   def getSelection(): ascent.domcore.PlatformOpaque                                                       = ???
   def hasStorageAccess(): ascent.domcore.PlatformOpaque                                                   = ???
   def requestStorageAccess(): ascent.domcore.PlatformOpaque                                               = ???

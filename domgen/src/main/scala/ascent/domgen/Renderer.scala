@@ -242,24 +242,16 @@ object Renderer:
         val methodLines = methods.map { m =>
           val isLongest     = keepDefaultsFor.contains((m.scalaName, m.params.size))
           val allowDefaults = !overloadedNames.contains(m.scalaName) || isLongest
-          val params        = m.params
-            .map { p =>
-              val base = s"${safeId(p.name)}: ${p.scalaType}"
-              if p.optional && allowDefaults then s"$base = js.native" else base
-            }
-            .mkString(", ")
-          s"  def ${safeId(m.scalaName)}($params): ${m.returnType} = js.native"
+          s"  def ${safeId(m.scalaName)}(${renderParams(m.params, allowDefaults)}): ${m.returnType} = js.native"
         }
-        val body      = (attrLines ++ methodLines).mkString("\n")
-        val bodyBlock = if body.isEmpty then "" else s":\n$body\n"
-        s"""@js.native
-         |@JSGlobal
-         |class ${d.interface} extends $parent$bodyBlock""".stripMargin
+        renderJsNativeClass(d.interface, parent, d.constructors, attrLines ++ methodLines) +
+          renderCompanion(d.interface, d.constants, d.staticAttributes, d.staticMethods)
       }
       .mkString("\n\n")
     s"""$header
        |package ascent.dom
        |
+       |import scala.annotation.unused
        |import scala.scalajs.js
        |import scala.scalajs.js.annotation.JSGlobal
        |
@@ -289,6 +281,7 @@ object Renderer:
     s"""$header
        |package ascent.dom
        |
+       |import scala.annotation.unused
        |import scala.scalajs.js
        |import scala.scalajs.js.annotation.JSGlobal
        |
@@ -517,20 +510,78 @@ object Renderer:
       ownNameCounts.getOrElse(name, 0) > 1 || d.inheritedMethodNames.contains(name)
     val methodLines = methods.map { m =>
       val allowDefaults = !isOverloaded(m.scalaName)
-      val params        = m.params
-        .map { p =>
-          val base = s"${safeId(p.name)}: ${p.scalaType}"
-          if p.optional && allowDefaults then s"$base = js.native" else base
-        }
-        .mkString(", ")
-      s"  def ${safeId(m.scalaName)}($params): ${m.returnType} = js.native"
+      s"  def ${safeId(m.scalaName)}(${renderParams(m.params, allowDefaults)}): ${m.returnType} = js.native"
     }
-    val body      = (attrLines ++ methodLines).mkString("\n")
-    val bodyBlock = if body.isEmpty then "" else s":\n$body\n"
+    renderJsNativeClass(d.name, parent, d.constructors, attrLines ++ methodLines) +
+      renderCompanion(d.name, d.constants, d.staticAttributes, d.staticMethods)
+  end renderInterface
+
+  private def renderParams(params: List[ParamDef], allowDefaults: Boolean, unused: Boolean = false): String =
+    params
+      .map { p =>
+        val marked = if unused then s"@unused ${safeId(p.name)}" else safeId(p.name)
+        val base   = s"$marked: ${p.scalaType}"
+        if p.optional && allowDefaults then s"$base = js.native" else base
+      }
+      .mkString(", ")
+
+  /** `@js.native` class header. The primary constructor is always empty so a subclass can `extends Parent` without
+    * forwarding args (Scala.js native classes cannot call `super(...)`). IDL constructors become `def this(...) =
+    * this()`. A 0-arg IDL constructor is the primary, so it is not re-emitted. Param names are `_`-prefixed so they
+    * `@unused` so `-Wunused` does not flag constructor args that exist only to bind the JS signature.
+    */
+  private def renderJsNativeClass(
+      className: String,
+      parent: String,
+      constructors: List[ConstructorDef],
+      bodyLines: List[String],
+  ): String =
+    val ctorOverloads = constructors.distinctBy(_.params.map(p => (p.scalaType, p.optional))).filter(_.params.nonEmpty)
+    val longest       = ctorOverloads.map(_.params.size).maxOption.getOrElse(0)
+    val longestCount  = ctorOverloads.count(_.params.size == longest)
+    val auxLines      = ctorOverloads.map { ctor =>
+      val allow = ctorOverloads.size == 1 || (ctor.params.size == longest && longestCount == 1)
+      s"  def this(${renderParams(ctor.params, allow, unused = true)}) = this()"
+    }
+    val members = (auxLines ++ bodyLines).mkString("\n")
+    val header  = s"class $className extends $parent"
+    val rest    = if members.isEmpty then "" else s":\n$members\n"
     s"""@js.native
        |@JSGlobal
-       |class ${d.name} extends $parent$bodyBlock""".stripMargin
-  end renderInterface
+       |$header$rest""".stripMargin
+  end renderJsNativeClass
+
+  /** JS companion for `const` / `static` members. Empty when the interface has none, so most classes stay
+    * companion-free.
+    */
+  private def renderCompanion(
+      name: String,
+      constants: List[FacadeMember],
+      staticAttrs: List[FacadeMember],
+      staticMethods: List[MethodDef],
+  ): String =
+    if constants.isEmpty && staticAttrs.isEmpty && staticMethods.isEmpty then ""
+    else
+      val constLines = constants.map(c => s"  val ${safeId(c.name)}: ${c.scalaType} = js.native")
+      val attrLines  = staticAttrs.map { a =>
+        val keyword = if a.readonly then "def" else "var"
+        s"  $keyword ${safeId(a.name)}: ${a.scalaType} = js.native"
+      }
+      val overloaded  = staticMethods.groupBy(_.scalaName).filter(_._2.size > 1).keySet
+      val longestFor  = overloaded.map(n => (n, staticMethods.filter(_.scalaName == n).map(_.params.size).max))
+      val methodLines = staticMethods.map { m =>
+        val allow = !overloaded.contains(m.scalaName) || longestFor.contains((m.scalaName, m.params.size))
+        s"  def ${safeId(m.scalaName)}(${renderParams(m.params, allow)}): ${m.returnType} = js.native"
+      }
+      val body = (constLines ++ attrLines ++ methodLines).mkString("\n")
+      s"""
+         |
+         |@js.native
+         |@JSGlobal
+         |object $name extends js.Object:
+         |$body
+         |""".stripMargin
+  end renderCompanion
 
   // --- dom-core/.../generated/Elements.scala (platform-neutral structural traits) ---
 

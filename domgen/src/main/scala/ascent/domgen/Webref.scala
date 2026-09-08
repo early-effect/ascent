@@ -12,6 +12,21 @@ import zio.json.ast.Json
   */
 object Webref:
 
+  /** Member `type` values [[parseIdl]] turns into the [[Idl]] model. */
+  val modelledMemberKinds: Set[String] =
+    Set("attribute", "operation", "constructor", "field", "enum-value", "const")
+
+  /** Member `type` values present in the vendored snapshot that we deliberately do not emit yet. A generator test fails
+    * when a snapshot kind is in neither this set nor [[modelledMemberKinds]], so silent drops cannot return.
+    */
+  val trackedGapMemberKinds: Set[String] = Set("iterable", "maplike", "setlike", "async_iterable")
+
+  /** Operation/attribute `special` values we do not emit (unnamed getters etc.). `static` is modelled (companion). */
+  val trackedGapSpecials: Set[String] = Set("getter", "setter", "deleter", "stringifier")
+
+  /** IDL generics [[simpleIdlType]] does not yet model; they fall through to `any` / `js.Any`. */
+  val trackedGapGenerics: Set[String] = Set("Promise", "FrozenArray", "record")
+
   /** Lift a zio-json decode `Either` into a ZIO effect with a typed [[WebrefParseError]] channel. */
   private def decode[A](source: String, result: Either[String, A]): IO[WebrefParseError, A] =
     ZIO.fromEither(result).mapError(WebrefParseError(source, _))
@@ -72,10 +87,18 @@ object Webref:
     */
   final case class IdlOperation(name: String, returnType: String, params: List[IdlParam])
 
+  /** A WebIDL constructor. Arguments use the same [[IdlParam]] shape as operations; there is no return type (the
+    * constructed interface is the result). Overloads are separate list entries.
+    */
+  final case class IdlConstructor(params: List[IdlParam])
+
+  /** A WebIDL `const` member (`const unsigned short CAPTURING_PHASE = 1`). Emitted on the JS companion. */
+  final case class IdlConst(name: String, idlType: String)
+
   /** A parsed WebIDL interface OR `interface mixin`: its inheritance parent (if any), attribute members, operation
-    * members, and a flag distinguishing the two kinds. Mixins don't appear by name in user code — they're folded into a
-    * target interface via [[IdlIncludes]] statements (`Target includes Mixin;`). The walks in
-    * [[DefBuilder.attributesFor]] / [[DefBuilder.methodsFor]] use both.
+    * members, constructors, constants, static members, and a flag distinguishing the two kinds. Mixins don't appear by
+    * name in user code — they're folded into a target interface via [[IdlIncludes]] statements (`Target includes
+    * Mixin;`). The walks in [[DefBuilder.attributesFor]] / [[DefBuilder.methodsFor]] use both.
     */
   final case class IdlInterface(
       name: String,
@@ -83,6 +106,10 @@ object Webref:
       attributes: List[IdlAttribute],
       operations: List[IdlOperation] = Nil,
       isMixin: Boolean = false,
+      constructors: List[IdlConstructor] = Nil,
+      constants: List[IdlConst] = Nil,
+      staticOperations: List[IdlOperation] = Nil,
+      staticAttributes: List[IdlAttribute] = Nil,
   )
 
   /** A WebIDL `Target includes Mixin;` statement. Surfaced separately because (a) the same target can include several
@@ -163,6 +190,9 @@ object Webref:
       value: Option[Json] = None,
       // Attribute-only: carries `[Reflect]` when present — see IdlAttribute.reflected.
       extAttrs: List[RawExtAttr] = Nil,
+      // "" for ordinary members; "static" for companion members; getter/setter/deleter/stringifier
+      // for operators we do not emit yet.
+      special: String = "",
   )
   private object RawMember:
     given JsonDecoder[RawMember] = DeriveJsonDecoder.gen[RawMember]
@@ -287,25 +317,48 @@ object Webref:
           IdlParam(an, ty, opt.getOrElse(false))
         }
 
+      def membersOf(members: List[RawMember]): (
+          List[IdlAttribute],
+          List[IdlOperation],
+          List[IdlConstructor],
+          List[IdlConst],
+          List[IdlOperation],
+          List[IdlAttribute],
+      ) =
+        def attr(n: String, t: Json, ro: Option[Boolean], ext: List[RawExtAttr]): IdlAttribute =
+          IdlAttribute(n, simpleIdlType(t).getOrElse("any"), ro.getOrElse(false), ext.exists(_.name == "Reflect"))
+        def op(n: String, t: Json, maybeArgs: Option[List[RawArgument]]): IdlOperation =
+          IdlOperation(n, simpleIdlType(t).getOrElse("any"), paramsOf(maybeArgs))
+        val attrs = members.collect {
+          case RawMember("attribute", Some(n), Some(t), _, ro, _, _, ext, spec) if spec != "static" =>
+            attr(n, t, ro, ext)
+        }
+        val staticAttrs = members.collect { case RawMember("attribute", Some(n), Some(t), _, ro, _, _, ext, "static") =>
+          attr(n, t, ro, ext)
+        }
+        val ops = members.collect {
+          case RawMember("operation", Some(n), Some(t), maybeArgs, _, _, _, _, spec)
+              if n.nonEmpty && spec != "static" =>
+            op(n, t, maybeArgs)
+        }
+        val staticOps = members.collect {
+          case RawMember("operation", Some(n), Some(t), maybeArgs, _, _, _, _, "static") if n.nonEmpty =>
+            op(n, t, maybeArgs)
+        }
+        val ctors = members.collect { case RawMember("constructor", _, _, maybeArgs, _, _, _, _, _) =>
+          IdlConstructor(paramsOf(maybeArgs))
+        }
+        val constants = members.collect { case RawMember("const", Some(n), Some(t), _, _, _, _, _, _) =>
+          IdlConst(n, simpleIdlType(t).getOrElse("any"))
+        }
+        (attrs, ops, ctors, constants, staticOps, staticAttrs)
+      end membersOf
+
       val interfaces = file.idlparsed.idlNames.collect {
         case (name, raw) if raw.`type`.contains("interface") || raw.`type`.contains("interface mixin") =>
-          val attrs = raw.members.collect { case RawMember("attribute", Some(n), Some(t), _, ro, _, _, ext) =>
-            // Same fall-back-to-`any` story as operations: a union-typed attribute
-            // (`attribute (Foo or Bar) baz`) still surfaces, just with `js.Any` as its
-            // declared type.
-            IdlAttribute(n, simpleIdlType(t).getOrElse("any"), ro.getOrElse(false), ext.exists(_.name == "Reflect"))
-          }
-          val ops = raw.members.collect {
-            case RawMember("operation", Some(n), Some(t), maybeArgs, _, _, _, _) if n.nonEmpty =>
-              // Skip IDL "stringifiers", anonymous "getter Foo (...)", "setter ...", and
-              // "deleter ..." operations — these have no member name and need special-case
-              // handling in Scala (apply/update operators) which we don't yet emit.
-              // Union / generic return types fall back to `any` so the operation still
-              // surfaces with the right arity.
-              IdlOperation(n, simpleIdlType(t).getOrElse("any"), paramsOf(maybeArgs))
-          }
-          val isMixin = raw.`type`.contains("interface mixin")
-          name -> IdlInterface(name, raw.inheritance, attrs, ops, isMixin)
+          val (attrs, ops, ctors, constants, staticOps, staticAttrs) = membersOf(raw.members)
+          val isMixin                                                = raw.`type`.contains("interface mixin")
+          name -> IdlInterface(name, raw.inheritance, attrs, ops, isMixin, ctors, constants, staticOps, staticAttrs)
       }
 
       // Two callback shapes:
@@ -321,7 +374,7 @@ object Webref:
           // Conventionally one op called handleEvent — pick the first operation member
           // and treat the interface as a function with that op's signature.
           val opOpt = raw.members.collectFirst {
-            case RawMember("operation", _, Some(t), maybeArgs, _, _, _, _) if simpleIdlType(t).isDefined =>
+            case RawMember("operation", _, Some(t), maybeArgs, _, _, _, _, _) if simpleIdlType(t).isDefined =>
               IdlCallback(name, simpleIdlType(t).get, paramsOf(maybeArgs))
           }
           opOpt
@@ -332,7 +385,7 @@ object Webref:
       // a `@js.native trait` per dictionary.
       val dictionaries = file.idlparsed.idlNames.collect {
         case (name, raw) if raw.`type`.contains("dictionary") =>
-          val fields = raw.members.collect { case RawMember("field", Some(n), Some(t), _, _, req, _, _) =>
+          val fields = raw.members.collect { case RawMember("field", Some(n), Some(t), _, _, req, _, _, _) =>
             IdlField(n, simpleIdlType(t).getOrElse("any"), req.getOrElse(false))
           }
           IdlDictionary(name, raw.inheritance, fields)
@@ -343,7 +396,7 @@ object Webref:
       val enums = file.idlparsed.idlNames.collect {
         case (name, raw) if raw.`type`.contains("enum") =>
           val values = raw.values.getOrElse(Nil).collect {
-            case RawMember("enum-value", _, _, _, _, _, Some(Json.Str(v)), _) => v
+            case RawMember("enum-value", _, _, _, _, _, Some(Json.Str(v)), _, _) => v
           }
           IdlEnum(name, values)
       }.toList
@@ -362,24 +415,23 @@ object Webref:
       // as the canonical definition — the type flag tells us interface vs mixin.
       val partials = extended.collect {
         case (target, RawExtended(t, _, _, _, _, Some(members))) if (t == "interface" || t == "interface mixin") =>
-          val attrs = members.collect { case RawMember("attribute", Some(n), Some(typ), _, ro, _, _, ext) =>
-            IdlAttribute(n, simpleIdlType(typ).getOrElse("any"), ro.getOrElse(false), ext.exists(_.name == "Reflect"))
-          }
-          val ops = members.collect {
-            case RawMember("operation", Some(n), Some(typ), maybeArgs, _, _, _, _) if n.nonEmpty =>
-              IdlOperation(n, simpleIdlType(typ).getOrElse("any"), paramsOf(maybeArgs))
-          }
-          (target, t == "interface mixin", attrs, ops)
+          val (attrs, ops, ctors, constants, staticOps, staticAttrs) = membersOf(members)
+          (target, t == "interface mixin", attrs, ops, ctors, constants, staticOps, staticAttrs)
       }
-      val withPartials = partials.foldLeft(interfaces) { case (acc, (target, isMixin, attrs, ops)) =>
-        val existing = acc.getOrElse(target, IdlInterface(target, None, Nil, Nil, isMixin))
-        acc.updated(
-          target,
-          existing.copy(
-            attributes = existing.attributes ++ attrs,
-            operations = existing.operations ++ ops,
-          ),
-        )
+      val withPartials = partials.foldLeft(interfaces) {
+        case (acc, (target, isMixin, attrs, ops, ctors, constants, staticOps, staticAttrs)) =>
+          val existing = acc.getOrElse(target, IdlInterface(target, None, Nil, Nil, isMixin))
+          acc.updated(
+            target,
+            existing.copy(
+              attributes = existing.attributes ++ attrs,
+              operations = existing.operations ++ ops,
+              constructors = existing.constructors ++ ctors,
+              constants = existing.constants ++ constants,
+              staticOperations = existing.staticOperations ++ staticOps,
+              staticAttributes = existing.staticAttributes ++ staticAttrs,
+            ),
+          )
       }
       Idl(withPartials, includes, (bareCallbacks ++ interfaceCallbacks).toList, dictionaries, enums)
     }
@@ -405,6 +457,10 @@ object Webref:
         attributes = a.attributes ++ b.attributes,
         operations = a.operations ++ b.operations,
         isMixin = a.isMixin || b.isMixin,
+        constructors = a.constructors ++ b.constructors,
+        constants = a.constants ++ b.constants,
+        staticOperations = a.staticOperations ++ b.staticOperations,
+        staticAttributes = a.staticAttributes ++ b.staticAttributes,
       )
     val mergedIfaces = idls.foldLeft(Map.empty[String, IdlInterface]) { (acc, idl) =>
       idl.interfaces.foldLeft(acc) { case (a, (k, v)) =>
