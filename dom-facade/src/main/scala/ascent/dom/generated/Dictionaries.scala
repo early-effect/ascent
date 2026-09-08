@@ -100,26 +100,26 @@ trait AttributionConversionResult extends js.Object:
 
 @js.native
 trait AttributionConversionOptions extends js.Object:
-  var aggregationService: String              = js.native
-  var epsilon: Double                         = js.native
-  var histogramSize: Int                      = js.native
-  var lookbackDays: Int                       = js.native
-  var matchValues: scala.scalajs.js.Any       = js.native
-  var impressionSites: scala.scalajs.js.Any   = js.native
-  var impressionCallers: scala.scalajs.js.Any = js.native
-  var credit: scala.scalajs.js.Any            = js.native
-  var value: Int                              = js.native
-  var maxValue: Int                           = js.native
+  var aggregationService: String                        = js.native
+  var epsilon: Double                                   = js.native
+  var histogramSize: Int                                = js.native
+  var lookbackDays: Int                                 = js.native
+  var matchValues: scala.scalajs.js.Array[Int]          = js.native
+  var impressionSites: scala.scalajs.js.Array[String]   = js.native
+  var impressionCallers: scala.scalajs.js.Array[String] = js.native
+  var credit: scala.scalajs.js.Array[Double]            = js.native
+  var value: Int                                        = js.native
+  var maxValue: Int                                     = js.native
 end AttributionConversionOptions
 
 @js.native
 trait AttributionImpressionOptions extends js.Object:
-  var histogramIndex: Int                     = js.native
-  var matchValue: Int                         = js.native
-  var conversionSites: scala.scalajs.js.Any   = js.native
-  var conversionCallers: scala.scalajs.js.Any = js.native
-  var lifetimeDays: Int                       = js.native
-  var priority: Int                           = js.native
+  var histogramIndex: Int                               = js.native
+  var matchValue: Int                                   = js.native
+  var conversionSites: scala.scalajs.js.Array[String]   = js.native
+  var conversionCallers: scala.scalajs.js.Array[String] = js.native
+  var lifetimeDays: Int                                 = js.native
+  var priority: Int                                     = js.native
 
 @js.native
 trait AttributionImpressionResult extends js.Object
@@ -134,8 +134,8 @@ trait AudioOutputOptions extends js.Object:
 
 @js.native
 trait AutofillEventInit extends EventInit:
-  var autofillValues: scala.scalajs.js.Any = js.native
-  var allowRefill: Boolean                 = js.native
+  var autofillValues: scala.scalajs.js.Array[scala.scalajs.js.Any] = js.native
+  var allowRefill: Boolean                                         = js.native
 
 @js.native
 trait BackgroundFetchEventInit extends ExtendableEventInit:
@@ -147,8 +147,8 @@ trait BackgroundFetchOptions extends BackgroundFetchUIOptions:
 
 @js.native
 trait BackgroundFetchUIOptions extends js.Object:
-  var icons: scala.scalajs.js.Any = js.native
-  var title: String               = js.native
+  var icons: scala.scalajs.js.Array[ImageResource] = js.native
+  var title: String                                = js.native
 
 @js.native
 trait SyncEventInit extends ExtendableEventInit:
@@ -157,9 +157,9 @@ trait SyncEventInit extends ExtendableEventInit:
 
 @js.native
 trait CaptureHandleConfig extends js.Object:
-  var exposeOrigin: Boolean                  = js.native
-  var handle: String                         = js.native
-  var permittedOrigins: scala.scalajs.js.Any = js.native
+  var exposeOrigin: Boolean                            = js.native
+  var handle: String                                   = js.native
+  var permittedOrigins: scala.scalajs.js.Array[String] = js.native
 
 @js.native
 trait CaptureHandle extends js.Object:
@@ -173,12 +173,12 @@ trait CapturedMouseEventInit extends EventInit:
 
 @js.native
 trait ClipboardUnsanitizedFormats extends js.Object:
-  var unsanitized: scala.scalajs.js.Any = js.native
+  var unsanitized: scala.scalajs.js.Array[String] = js.native
 
 @js.native
 trait ClipboardChangeEventInit extends EventInit:
-  var types: scala.scalajs.js.Any    = js.native
-  var changeId: scala.scalajs.js.Any = js.native
+  var types: scala.scalajs.js.Array[String] = js.native
+  var changeId: scala.scalajs.js.Any        = js.native
 
 @js.native
 trait ClipboardItemOptions extends js.Object:
@@ -198,18 +198,18 @@ trait PressureObserverOptions extends js.Object:
 
 @js.native
 trait ConnectionAllowlistViolationReport extends ReportBody:
-  var url: String                     = js.native
-  var connection: String              = js.native
-  var allowlist: scala.scalajs.js.Any = js.native
-  var disposition: String             = js.native
+  var url: String                               = js.native
+  var connection: String                        = js.native
+  var allowlist: scala.scalajs.js.Array[String] = js.native
+  var disposition: String                       = js.native
 
 @js.native
 trait ContactInfo extends js.Object:
-  var address: scala.scalajs.js.Any = js.native
-  var email: scala.scalajs.js.Any   = js.native
-  var icon: scala.scalajs.js.Any    = js.native
-  var name: scala.scalajs.js.Any    = js.native
-  var tel: scala.scalajs.js.Any     = js.native
+  var address: scala.scalajs.js.Array[ContactAddress] = js.native
+  var email: scala.scalajs.js.Array[String]           = js.native
+  var icon: scala.scalajs.js.Array[Blob]              = js.native
+  var name: scala.scalajs.js.Array[String]            = js.native
+  var tel: scala.scalajs.js.Array[String]             = js.native
 
 @js.native
 trait ContactsSelectOptions extends js.Object:
@@ -221,12 +221,12 @@ trait ContentIndexEventInit extends ExtendableEventInit:
 
 @js.native
 trait ContentDescription extends js.Object:
-  var id: String                  = js.native
-  var title: String               = js.native
-  var description: String         = js.native
-  var category: String            = js.native
-  var icons: scala.scalajs.js.Any = js.native
-  var url: String                 = js.native
+  var id: String                                   = js.native
+  var title: String                                = js.native
+  var description: String                          = js.native
+  var category: String                             = js.native
+  var icons: scala.scalajs.js.Array[ImageResource] = js.native
+  var url: String                                  = js.native
 
 @js.native
 trait CookieStoreDeleteOptions extends js.Object:
@@ -277,8 +277,8 @@ trait CrashReportBody extends ReportBody:
 
 @js.native
 trait FederatedCredentialRequestOptions extends js.Object:
-  var providers: scala.scalajs.js.Any = js.native
-  var protocols: scala.scalajs.js.Any = js.native
+  var providers: scala.scalajs.js.Array[String] = js.native
+  var protocols: scala.scalajs.js.Array[String] = js.native
 
 @js.native
 trait PasswordCredentialData extends CredentialData:
@@ -335,7 +335,7 @@ trait ContentVisibilityAutoStateChangeEventInit extends EventInit:
 
 @js.native
 trait FontFaceSetLoadEventInit extends EventInit:
-  var fontfaces: scala.scalajs.js.Any = js.native
+  var fontfaces: scala.scalajs.js.Array[FontFace] = js.native
 
 @js.native
 trait FontFaceDescriptors extends js.Object:
@@ -353,12 +353,12 @@ end FontFaceDescriptors
 
 @js.native
 trait HighlightHitResult extends js.Object:
-  var highlight: Highlight         = js.native
-  var ranges: scala.scalajs.js.Any = js.native
+  var highlight: Highlight                          = js.native
+  var ranges: scala.scalajs.js.Array[AbstractRange] = js.native
 
 @js.native
 trait HighlightsFromPointOptions extends js.Object:
-  var shadowRoots: scala.scalajs.js.Any = js.native
+  var shadowRoots: scala.scalajs.js.Array[ShadowRoot] = js.native
 
 @js.native
 trait IntrinsicSizesResultOptions extends js.Object:
@@ -380,8 +380,8 @@ end LayoutConstraintsOptions
 
 @js.native
 trait BreakTokenOptions extends js.Object:
-  var childBreakTokens: scala.scalajs.js.Any = js.native
-  var data: scala.scalajs.js.Any             = js.native
+  var childBreakTokens: scala.scalajs.js.Array[ChildBreakToken] = js.native
+  var data: scala.scalajs.js.Any                                = js.native
 
 @js.native
 trait LayoutOptions extends js.Object:
@@ -390,12 +390,12 @@ trait LayoutOptions extends js.Object:
 
 @js.native
 trait FragmentResultOptions extends js.Object:
-  var inlineSize: Double                   = js.native
-  var blockSize: Double                    = js.native
-  var autoBlockSize: Double                = js.native
-  var childFragments: scala.scalajs.js.Any = js.native
-  var data: scala.scalajs.js.Any           = js.native
-  var breakToken: BreakTokenOptions        = js.native
+  var inlineSize: Double                                     = js.native
+  var blockSize: Double                                      = js.native
+  var autoBlockSize: Double                                  = js.native
+  var childFragments: scala.scalajs.js.Array[LayoutFragment] = js.native
+  var data: scala.scalajs.js.Any                             = js.native
+  var breakToken: BreakTokenOptions                          = js.native
 
 @js.native
 trait FunctionParameter extends js.Object:
@@ -405,8 +405,8 @@ trait FunctionParameter extends js.Object:
 
 @js.native
 trait SpatialNavigationSearchOptions extends js.Object:
-  var candidates: scala.scalajs.js.Any = js.native
-  var container: Node                  = js.native
+  var candidates: scala.scalajs.js.Array[Node] = js.native
+  var container: Node                          = js.native
 
 @js.native
 trait FocusableAreasOption extends js.Object:
@@ -461,8 +461,8 @@ end CSSNumericType
 
 @js.native
 trait StartViewTransitionOptions extends js.Object:
-  var update: scala.scalajs.js.Function0[Unit] = js.native
-  var types: scala.scalajs.js.Any              = js.native
+  var update: scala.scalajs.js.Function0[scala.scalajs.js.Promise[scala.scalajs.js.Any]] = js.native
+  var types: scala.scalajs.js.Array[String]                                              = js.native
 
 @js.native
 trait CSSStyleSheetInit extends js.Object:
@@ -484,7 +484,7 @@ trait CheckVisibilityOptions extends js.Object:
 
 @js.native
 trait CaretPositionFromPointOptions extends js.Object:
-  var shadowRoots: scala.scalajs.js.Any = js.native
+  var shadowRoots: scala.scalajs.js.Array[ShadowRoot] = js.native
 
 @js.native
 trait ScrollIntoViewOptions extends ScrollOptions:
@@ -528,7 +528,7 @@ trait DigitalCredentialCreateRequest extends js.Object:
 
 @js.native
 trait DigitalCredentialRequestOptions extends js.Object:
-  var requests: scala.scalajs.js.Any = js.native
+  var requests: scala.scalajs.js.Array[DigitalCredentialGetRequest] = js.native
 
 @js.native
 trait DigitalCredentialGetRequest extends js.Object:
@@ -537,7 +537,7 @@ trait DigitalCredentialGetRequest extends js.Object:
 
 @js.native
 trait DigitalCredentialCreationOptions extends js.Object:
-  var requests: scala.scalajs.js.Any = js.native
+  var requests: scala.scalajs.js.Array[DigitalCredentialCreateRequest] = js.native
 
 @js.native
 trait ItemDetails extends js.Object:
@@ -546,7 +546,7 @@ trait ItemDetails extends js.Object:
   var price: PaymentCurrencyAmount             = js.native
   var `type`: String                           = js.native
   var description: String                      = js.native
-  var iconURLs: scala.scalajs.js.Any           = js.native
+  var iconURLs: scala.scalajs.js.Array[String] = js.native
   var subscriptionPeriod: String               = js.native
   var freeTrialPeriod: String                  = js.native
   var introductoryPrice: PaymentCurrencyAmount = js.native
@@ -579,13 +579,13 @@ trait StaticRangeInit extends js.Object:
 
 @js.native
 trait MutationObserverInit extends js.Object:
-  var childList: Boolean                    = js.native
-  var attributes: Boolean                   = js.native
-  var characterData: Boolean                = js.native
-  var subtree: Boolean                      = js.native
-  var attributeOldValue: Boolean            = js.native
-  var characterDataOldValue: Boolean        = js.native
-  var attributeFilter: scala.scalajs.js.Any = js.native
+  var childList: Boolean                              = js.native
+  var attributes: Boolean                             = js.native
+  var characterData: Boolean                          = js.native
+  var subtree: Boolean                                = js.native
+  var attributeOldValue: Boolean                      = js.native
+  var characterDataOldValue: Boolean                  = js.native
+  var attributeFilter: scala.scalajs.js.Array[String] = js.native
 
 @js.native
 trait ElementCreationOptions extends js.Object:
@@ -643,7 +643,7 @@ trait EditContextInit extends js.Object:
 
 @js.native
 trait TextFormatUpdateEventInit extends EventInit:
-  var textFormats: scala.scalajs.js.Any = js.native
+  var textFormats: scala.scalajs.js.Array[TextFormat] = js.native
 
 @js.native
 trait TextFormatInit extends js.Object:
@@ -698,13 +698,13 @@ trait MediaEncryptedEventInit extends EventInit:
 
 @js.native
 trait MediaKeySystemConfiguration extends js.Object:
-  var label: String                           = js.native
-  var initDataTypes: scala.scalajs.js.Any     = js.native
-  var audioCapabilities: scala.scalajs.js.Any = js.native
-  var videoCapabilities: scala.scalajs.js.Any = js.native
-  var distinctiveIdentifier: String           = js.native
-  var persistentState: String                 = js.native
-  var sessionTypes: scala.scalajs.js.Any      = js.native
+  var label: String                                                            = js.native
+  var initDataTypes: scala.scalajs.js.Array[String]                            = js.native
+  var audioCapabilities: scala.scalajs.js.Array[MediaKeySystemMediaCapability] = js.native
+  var videoCapabilities: scala.scalajs.js.Array[MediaKeySystemMediaCapability] = js.native
+  var distinctiveIdentifier: String                                            = js.native
+  var persistentState: String                                                  = js.native
+  var sessionTypes: scala.scalajs.js.Array[String]                             = js.native
 
 @js.native
 trait FileSystemFlags extends js.Object:
@@ -721,9 +721,9 @@ trait ColorSelectionOptions extends js.Object:
 
 @js.native
 trait IdentityProviderWellKnown extends js.Object:
-  var provider_urls: scala.scalajs.js.Any = js.native
-  var accounts_endpoint: String           = js.native
-  var login_url: String                   = js.native
+  var provider_urls: scala.scalajs.js.Array[String] = js.native
+  var accounts_endpoint: String                     = js.native
+  var login_url: String                             = js.native
 
 @js.native
 trait IdentityCredentialDisconnectOptions extends IdentityProviderConfig:
@@ -743,24 +743,24 @@ end IdentityProviderAPIConfig
 
 @js.native
 trait IdentityProviderBranding extends js.Object:
-  var background_color: String    = js.native
-  var color: String               = js.native
-  var icons: scala.scalajs.js.Any = js.native
-  var name: String                = js.native
+  var background_color: String                            = js.native
+  var color: String                                       = js.native
+  var icons: scala.scalajs.js.Array[IdentityProviderIcon] = js.native
+  var name: String                                        = js.native
 
 @js.native
 trait IdentityProviderAccount extends js.Object:
-  var id: String                             = js.native
-  var name: String                           = js.native
-  var email: String                          = js.native
-  var tel: String                            = js.native
-  var username: String                       = js.native
-  var given_name: String                     = js.native
-  var picture: String                        = js.native
-  var approved_clients: scala.scalajs.js.Any = js.native
-  var login_hints: scala.scalajs.js.Any      = js.native
-  var domain_hints: scala.scalajs.js.Any     = js.native
-  var label_hints: scala.scalajs.js.Any      = js.native
+  var id: String                                       = js.native
+  var name: String                                     = js.native
+  var email: String                                    = js.native
+  var tel: String                                      = js.native
+  var username: String                                 = js.native
+  var given_name: String                               = js.native
+  var picture: String                                  = js.native
+  var approved_clients: scala.scalajs.js.Array[String] = js.native
+  var login_hints: scala.scalajs.js.Array[String]      = js.native
+  var domain_hints: scala.scalajs.js.Array[String]     = js.native
+  var label_hints: scala.scalajs.js.Array[String]      = js.native
 end IdentityProviderAccount
 
 @js.native
@@ -803,14 +803,14 @@ trait DisconnectedAccount extends js.Object:
 
 @js.native
 trait IdentityProviderRequestOptions extends IdentityProviderConfig:
-  var loginHint: String            = js.native
-  var domainHint: String           = js.native
-  var fields: scala.scalajs.js.Any = js.native
-  var params: scala.scalajs.js.Any = js.native
+  var loginHint: String                      = js.native
+  var domainHint: String                     = js.native
+  var fields: scala.scalajs.js.Array[String] = js.native
+  var params: scala.scalajs.js.Any           = js.native
 
 @js.native
 trait IdentityProviderAccountList extends js.Object:
-  var accounts: scala.scalajs.js.Any = js.native
+  var accounts: scala.scalajs.js.Array[IdentityProviderAccount] = js.native
 
 @js.native
 trait IdentityResolveOptions extends js.Object:
@@ -818,18 +818,18 @@ trait IdentityResolveOptions extends js.Object:
 
 @js.native
 trait IdentityCredentialRequestOptions extends js.Object:
-  var providers: scala.scalajs.js.Any = js.native
-  var context: String                 = js.native
-  var mode: String                    = js.native
+  var providers: scala.scalajs.js.Array[IdentityProviderRequestOptions] = js.native
+  var context: String                                                   = js.native
+  var mode: String                                                      = js.native
 
 @js.native
 trait FenceEvent extends js.Object:
-  var eventType: String                 = js.native
-  var eventData: String                 = js.native
-  var destination: scala.scalajs.js.Any = js.native
-  var crossOriginExposed: Boolean       = js.native
-  var once: Boolean                     = js.native
-  var destinationURL: String            = js.native
+  var eventType: String                           = js.native
+  var eventData: String                           = js.native
+  var destination: scala.scalajs.js.Array[String] = js.native
+  var crossOriginExposed: Boolean                 = js.native
+  var once: Boolean                               = js.native
+  var destinationURL: String                      = js.native
 
 @js.native
 trait DeferredRequestInit extends RequestInit:
@@ -886,10 +886,10 @@ trait FileSystemHandlePermissionDescriptor extends js.Object:
 
 @js.native
 trait FilePickerOptions extends js.Object:
-  var types: scala.scalajs.js.Any     = js.native
-  var excludeAcceptAllOption: Boolean = js.native
-  var id: String                      = js.native
-  var startIn: scala.scalajs.js.Any   = js.native
+  var types: scala.scalajs.js.Array[FilePickerAcceptType] = js.native
+  var excludeAcceptAllOption: Boolean                     = js.native
+  var id: String                                          = js.native
+  var startIn: scala.scalajs.js.Any                       = js.native
 
 @js.native
 trait SaveFilePickerOptions extends FilePickerOptions:
@@ -1036,15 +1036,15 @@ trait GyroscopeSensorOptions extends SensorOptions:
 
 @js.native
 trait HandwritingPrediction extends js.Object:
-  var text: String                             = js.native
-  var segmentationResult: scala.scalajs.js.Any = js.native
+  var text: String                                                   = js.native
+  var segmentationResult: scala.scalajs.js.Array[HandwritingSegment] = js.native
 
 @js.native
 trait HandwritingSegment extends js.Object:
-  var grapheme: String                      = js.native
-  var beginIndex: Int                       = js.native
-  var endIndex: Int                         = js.native
-  var drawingSegments: scala.scalajs.js.Any = js.native
+  var grapheme: String                                                   = js.native
+  var beginIndex: Int                                                    = js.native
+  var endIndex: Int                                                      = js.native
+  var drawingSegments: scala.scalajs.js.Array[HandwritingDrawingSegment] = js.native
 
 @js.native
 trait HandwritingRecognizerQueryResult extends js.Object:
@@ -1073,14 +1073,14 @@ trait HandwritingDrawingSegment extends js.Object:
 
 @js.native
 trait HandwritingModelConstraint extends js.Object:
-  var languages: scala.scalajs.js.Any = js.native
+  var languages: scala.scalajs.js.Array[String] = js.native
 
 @js.native
 trait HandwritingHintsQueryResult extends js.Object:
-  var recognitionType: scala.scalajs.js.Any = js.native
-  var inputType: scala.scalajs.js.Any       = js.native
-  var textContext: Boolean                  = js.native
-  var alternatives: Boolean                 = js.native
+  var recognitionType: scala.scalajs.js.Array[String] = js.native
+  var inputType: scala.scalajs.js.Array[String]       = js.native
+  var textContext: Boolean                            = js.native
+  var alternatives: Boolean                           = js.native
 
 @js.native
 trait PromiseRejectionEventInit extends EventInit:
@@ -1145,7 +1145,7 @@ trait HashChangeEventInit extends EventInit:
 
 @js.native
 trait StructuredSerializeOptions extends js.Object:
-  var transfer: scala.scalajs.js.Any = js.native
+  var transfer: scala.scalajs.js.Array[scala.scalajs.js.Any] = js.native
 
 @js.native
 trait PageSwapEventInit extends EventInit:
@@ -1190,11 +1190,11 @@ trait TrackEventInit extends EventInit:
 
 @js.native
 trait MessageEventInit extends EventInit:
-  var data: scala.scalajs.js.Any   = js.native
-  var origin: String               = js.native
-  var lastEventId: String          = js.native
-  var source: scala.scalajs.js.Any = js.native
-  var ports: scala.scalajs.js.Any  = js.native
+  var data: scala.scalajs.js.Any                 = js.native
+  var origin: String                             = js.native
+  var lastEventId: String                        = js.native
+  var source: scala.scalajs.js.Any               = js.native
+  var ports: scala.scalajs.js.Array[MessagePort] = js.native
 
 @js.native
 trait StorageEventInit extends EventInit:
@@ -1218,8 +1218,8 @@ trait SharedWorkerOptions extends WorkerOptions:
 
 @js.native
 trait GetHTMLOptions extends js.Object:
-  var serializableShadowRoots: Boolean  = js.native
-  var shadowRoots: scala.scalajs.js.Any = js.native
+  var serializableShadowRoots: Boolean                = js.native
+  var shadowRoots: scala.scalajs.js.Array[ShadowRoot] = js.native
 
 @js.native
 trait CanvasRenderingContext2DSettings extends js.Object:
@@ -1259,8 +1259,8 @@ trait NavigationNavigateOptions extends NavigationOptions:
 
 @js.native
 trait NavigationResult extends js.Object:
-  var committed: scala.scalajs.js.Any = js.native
-  var finished: scala.scalajs.js.Any  = js.native
+  var committed: scala.scalajs.js.Promise[NavigationHistoryEntry] = js.native
+  var finished: scala.scalajs.js.Promise[NavigationHistoryEntry]  = js.native
 
 @js.native
 trait PopStateEventInit extends EventInit:
@@ -1298,10 +1298,11 @@ trait PageRevealEventInit extends EventInit:
 
 @js.native
 trait NavigationInterceptOptions extends js.Object:
-  var precommitHandler: scala.scalajs.js.Function1[NavigationPrecommitController, Unit] = js.native
-  var handler: scala.scalajs.js.Function0[Unit]                                         = js.native
-  var focusReset: String                                                                = js.native
-  var scroll: String                                                                    = js.native
+  var precommitHandler: scala.scalajs.js.Function1[NavigationPrecommitController, scala.scalajs.js.Promise[Unit]] =
+    js.native
+  var handler: scala.scalajs.js.Function0[scala.scalajs.js.Promise[Unit]] = js.native
+  var focusReset: String                                                  = js.native
+  var scroll: String                                                      = js.native
 
 @js.native
 trait ImageBitmapRenderingContextSettings extends js.Object:
@@ -1336,15 +1337,15 @@ trait Point2D extends js.Object:
 
 @js.native
 trait ConstrainPoint2DParameters extends js.Object:
-  var exact: scala.scalajs.js.Any = js.native
-  var ideal: scala.scalajs.js.Any = js.native
+  var exact: scala.scalajs.js.Array[Point2D] = js.native
+  var ideal: scala.scalajs.js.Array[Point2D] = js.native
 
 @js.native
 trait PhotoCapabilities extends js.Object:
-  var redEyeReduction: String             = js.native
-  var imageHeight: MediaSettingsRange     = js.native
-  var imageWidth: MediaSettingsRange      = js.native
-  var fillLightMode: scala.scalajs.js.Any = js.native
+  var redEyeReduction: String                       = js.native
+  var imageHeight: MediaSettingsRange               = js.native
+  var imageWidth: MediaSettingsRange                = js.native
+  var fillLightMode: scala.scalajs.js.Array[String] = js.native
 
 @js.native
 trait ImageResource extends js.Object:
@@ -1419,10 +1420,10 @@ trait ProfilerStack extends js.Object:
 
 @js.native
 trait ProfilerTrace extends js.Object:
-  var resources: scala.scalajs.js.Any = js.native
-  var frames: scala.scalajs.js.Any    = js.native
-  var stacks: scala.scalajs.js.Any    = js.native
-  var samples: scala.scalajs.js.Any   = js.native
+  var resources: scala.scalajs.js.Array[scala.scalajs.js.Any] = js.native
+  var frames: scala.scalajs.js.Array[ProfilerFrame]           = js.native
+  var stacks: scala.scalajs.js.Array[ProfilerStack]           = js.native
+  var samples: scala.scalajs.js.Array[ProfilerSample]         = js.native
 
 @js.native
 trait ProfilerInitOptions extends js.Object:
@@ -1436,19 +1437,20 @@ trait JsonLdError extends js.Object:
 
 @js.native
 trait JsonLdOptions extends js.Object:
-  var base: String                                                                  = js.native
-  var compactArrays: Boolean                                                        = js.native
-  var compactToRelative: Boolean                                                    = js.native
-  var documentLoader: scala.scalajs.js.Function2[String, LoadDocumentOptions, Unit] = js.native
-  var expandContext: scala.scalajs.js.Any                                           = js.native
-  var extractAllScripts: Boolean                                                    = js.native
-  var frameExpansion: Boolean                                                       = js.native
-  var ordered: Boolean                                                              = js.native
-  var processingMode: String                                                        = js.native
-  var produceGeneralizedRdf: Boolean                                                = js.native
-  var rdfDirection: String                                                          = js.native
-  var useNativeTypes: Boolean                                                       = js.native
-  var useRdfType: Boolean                                                           = js.native
+  var base: String               = js.native
+  var compactArrays: Boolean     = js.native
+  var compactToRelative: Boolean = js.native
+  var documentLoader
+      : scala.scalajs.js.Function2[String, LoadDocumentOptions, scala.scalajs.js.Promise[RemoteDocument]] = js.native
+  var expandContext: scala.scalajs.js.Any                                                                 = js.native
+  var extractAllScripts: Boolean                                                                          = js.native
+  var frameExpansion: Boolean                                                                             = js.native
+  var ordered: Boolean                                                                                    = js.native
+  var processingMode: String                                                                              = js.native
+  var produceGeneralizedRdf: Boolean                                                                      = js.native
+  var rdfDirection: String                                                                                = js.native
+  var useNativeTypes: Boolean                                                                             = js.native
+  var useRdfType: Boolean                                                                                 = js.native
 end JsonLdOptions
 
 @js.native
@@ -1464,7 +1466,7 @@ trait JsonLdFramingError extends js.Object:
 
 @js.native
 trait QueryOptions extends js.Object:
-  var postscriptNames: scala.scalajs.js.Any = js.native
+  var postscriptNames: scala.scalajs.js.Array[String] = js.native
 
 @js.native
 trait MagnetometerSensorOptions extends SensorOptions:
@@ -1476,13 +1478,13 @@ trait PromptResponseObject extends js.Object:
 
 @js.native
 trait MediaCapabilitiesKeySystemConfiguration extends js.Object:
-  var keySystem: String                  = js.native
-  var initDataType: String               = js.native
-  var distinctiveIdentifier: String      = js.native
-  var persistentState: String            = js.native
-  var sessionTypes: scala.scalajs.js.Any = js.native
-  var audio: KeySystemTrackConfiguration = js.native
-  var video: KeySystemTrackConfiguration = js.native
+  var keySystem: String                            = js.native
+  var initDataType: String                         = js.native
+  var distinctiveIdentifier: String                = js.native
+  var persistentState: String                      = js.native
+  var sessionTypes: scala.scalajs.js.Array[String] = js.native
+  var audio: KeySystemTrackConfiguration           = js.native
+  var video: KeySystemTrackConfiguration           = js.native
 
 @js.native
 trait MediaCapabilitiesInfo extends js.Object:
@@ -1646,7 +1648,7 @@ trait DoubleRange extends js.Object:
 
 @js.native
 trait DeviceChangeEventInit extends EventInit:
-  var devices: scala.scalajs.js.Any = js.native
+  var devices: scala.scalajs.js.Array[MediaDeviceInfo] = js.native
 
 @js.native
 trait ConstrainDOMStringParameters extends js.Object:
@@ -1675,26 +1677,26 @@ end MediaTrackSettings
 
 @js.native
 trait MediaTrackConstraints extends MediaTrackConstraintSet:
-  var advanced: scala.scalajs.js.Any = js.native
+  var advanced: scala.scalajs.js.Array[MediaTrackConstraintSet] = js.native
 
 @js.native
 trait MediaTrackCapabilities extends js.Object:
-  var width: ULongRange                      = js.native
-  var height: ULongRange                     = js.native
-  var aspectRatio: DoubleRange               = js.native
-  var frameRate: DoubleRange                 = js.native
-  var facingMode: scala.scalajs.js.Any       = js.native
-  var resizeMode: scala.scalajs.js.Any       = js.native
-  var sampleRate: ULongRange                 = js.native
-  var sampleSize: ULongRange                 = js.native
-  var echoCancellation: scala.scalajs.js.Any = js.native
-  var autoGainControl: scala.scalajs.js.Any  = js.native
-  var noiseSuppression: scala.scalajs.js.Any = js.native
-  var latency: DoubleRange                   = js.native
-  var channelCount: ULongRange               = js.native
-  var deviceId: String                       = js.native
-  var groupId: String                        = js.native
-  var backgroundBlur: scala.scalajs.js.Any   = js.native
+  var width: ULongRange                                 = js.native
+  var height: ULongRange                                = js.native
+  var aspectRatio: DoubleRange                          = js.native
+  var frameRate: DoubleRange                            = js.native
+  var facingMode: scala.scalajs.js.Array[String]        = js.native
+  var resizeMode: scala.scalajs.js.Array[String]        = js.native
+  var sampleRate: ULongRange                            = js.native
+  var sampleSize: ULongRange                            = js.native
+  var echoCancellation: scala.scalajs.js.Any            = js.native
+  var autoGainControl: scala.scalajs.js.Array[Boolean]  = js.native
+  var noiseSuppression: scala.scalajs.js.Array[Boolean] = js.native
+  var latency: DoubleRange                              = js.native
+  var channelCount: ULongRange                          = js.native
+  var deviceId: String                                  = js.native
+  var groupId: String                                   = js.native
+  var backgroundBlur: scala.scalajs.js.Array[Boolean]   = js.native
 end MediaTrackCapabilities
 
 @js.native
@@ -1719,9 +1721,9 @@ trait MediaPositionState extends js.Object:
 
 @js.native
 trait ChapterInformationInit extends js.Object:
-  var title: String                 = js.native
-  var startTime: Double             = js.native
-  var artwork: scala.scalajs.js.Any = js.native
+  var title: String                               = js.native
+  var startTime: Double                           = js.native
+  var artwork: scala.scalajs.js.Array[MediaImage] = js.native
 
 @js.native
 trait MediaSessionActionDetails extends js.Object:
@@ -1740,11 +1742,11 @@ trait MediaImage extends js.Object:
 
 @js.native
 trait MediaMetadataInit extends js.Object:
-  var title: String                     = js.native
-  var artist: String                    = js.native
-  var album: String                     = js.native
-  var artwork: scala.scalajs.js.Any     = js.native
-  var chapterInfo: scala.scalajs.js.Any = js.native
+  var title: String                                               = js.native
+  var artist: String                                              = js.native
+  var album: String                                               = js.native
+  var artwork: scala.scalajs.js.Array[MediaImage]                 = js.native
+  var chapterInfo: scala.scalajs.js.Array[ChapterInformationInit] = js.native
 
 @js.native
 trait BlobEventInit extends EventInit:
@@ -1774,21 +1776,21 @@ trait GetNotificationOptions extends js.Object:
 
 @js.native
 trait NotificationOptions extends js.Object:
-  var dir: String                   = js.native
-  var lang: String                  = js.native
-  var body: String                  = js.native
-  var navigate: String              = js.native
-  var tag: String                   = js.native
-  var image: String                 = js.native
-  var icon: String                  = js.native
-  var badge: String                 = js.native
-  var vibrate: scala.scalajs.js.Any = js.native
-  var timestamp: Double             = js.native
-  var renotify: Boolean             = js.native
-  var silent: Boolean               = js.native
-  var requireInteraction: Boolean   = js.native
-  var data: scala.scalajs.js.Any    = js.native
-  var actions: scala.scalajs.js.Any = js.native
+  var dir: String                                         = js.native
+  var lang: String                                        = js.native
+  var body: String                                        = js.native
+  var navigate: String                                    = js.native
+  var tag: String                                         = js.native
+  var image: String                                       = js.native
+  var icon: String                                        = js.native
+  var badge: String                                       = js.native
+  var vibrate: scala.scalajs.js.Any                       = js.native
+  var timestamp: Double                                   = js.native
+  var renotify: Boolean                                   = js.native
+  var silent: Boolean                                     = js.native
+  var requireInteraction: Boolean                         = js.native
+  var data: scala.scalajs.js.Any                          = js.native
+  var actions: scala.scalajs.js.Array[NotificationAction] = js.native
 end NotificationOptions
 
 @js.native
@@ -1914,9 +1916,9 @@ trait PayerErrors extends js.Object:
 
 @js.native
 trait PaymentDetailsBase extends js.Object:
-  var displayItems: scala.scalajs.js.Any    = js.native
-  var shippingOptions: scala.scalajs.js.Any = js.native
-  var modifiers: scala.scalajs.js.Any       = js.native
+  var displayItems: scala.scalajs.js.Array[PaymentItem]              = js.native
+  var shippingOptions: scala.scalajs.js.Array[PaymentShippingOption] = js.native
+  var modifiers: scala.scalajs.js.Array[PaymentDetailsModifier]      = js.native
 
 @js.native
 trait PaymentOptions extends js.Object:
@@ -1941,21 +1943,21 @@ trait PaymentValidationErrors extends js.Object:
 
 @js.native
 trait PaymentDetailsModifier extends js.Object:
-  var supportedMethods: String                     = js.native
-  var total: PaymentItem                           = js.native
-  var additionalDisplayItems: scala.scalajs.js.Any = js.native
-  var data: scala.scalajs.js.Any                   = js.native
+  var supportedMethods: String                                    = js.native
+  var total: PaymentItem                                          = js.native
+  var additionalDisplayItems: scala.scalajs.js.Array[PaymentItem] = js.native
+  var data: scala.scalajs.js.Any                                  = js.native
 
 @js.native
 trait MemoryMeasurement extends js.Object:
-  var bytes: Int                      = js.native
-  var breakdown: scala.scalajs.js.Any = js.native
+  var bytes: Int                                              = js.native
+  var breakdown: scala.scalajs.js.Array[MemoryBreakdownEntry] = js.native
 
 @js.native
 trait MemoryBreakdownEntry extends js.Object:
-  var bytes: Int                        = js.native
-  var attribution: scala.scalajs.js.Any = js.native
-  var types: scala.scalajs.js.Any       = js.native
+  var bytes: Int                                             = js.native
+  var attribution: scala.scalajs.js.Array[MemoryAttribution] = js.native
+  var types: scala.scalajs.js.Array[String]                  = js.native
 
 @js.native
 trait MemoryAttribution extends js.Object:
@@ -1974,9 +1976,9 @@ trait PerformanceObserverCallbackOptions extends js.Object:
 
 @js.native
 trait PerformanceObserverInit extends js.Object:
-  var entryTypes: scala.scalajs.js.Any = js.native
-  var `type`: String                   = js.native
-  var buffered: Boolean                = js.native
+  var entryTypes: scala.scalajs.js.Array[String] = js.native
+  var `type`: String                             = js.native
+  var buffered: Boolean                          = js.native
 
 @js.native
 trait BackgroundSyncOptions extends js.Object:
@@ -2026,21 +2028,21 @@ trait MouseEventInit extends EventModifierInit:
 
 @js.native
 trait PointerEventInit extends MouseEventInit:
-  var pointerId: Int                        = js.native
-  var width: Double                         = js.native
-  var height: Double                        = js.native
-  var pressure: Double                      = js.native
-  var tangentialPressure: Double            = js.native
-  var tiltX: Int                            = js.native
-  var tiltY: Int                            = js.native
-  var twist: Int                            = js.native
-  var altitudeAngle: Double                 = js.native
-  var azimuthAngle: Double                  = js.native
-  var pointerType: String                   = js.native
-  var isPrimary: Boolean                    = js.native
-  var persistentDeviceId: Int               = js.native
-  var coalescedEvents: scala.scalajs.js.Any = js.native
-  var predictedEvents: scala.scalajs.js.Any = js.native
+  var pointerId: Int                                        = js.native
+  var width: Double                                         = js.native
+  var height: Double                                        = js.native
+  var pressure: Double                                      = js.native
+  var tangentialPressure: Double                            = js.native
+  var tiltX: Int                                            = js.native
+  var tiltY: Int                                            = js.native
+  var twist: Int                                            = js.native
+  var altitudeAngle: Double                                 = js.native
+  var azimuthAngle: Double                                  = js.native
+  var pointerType: String                                   = js.native
+  var isPrimary: Boolean                                    = js.native
+  var persistentDeviceId: Int                               = js.native
+  var coalescedEvents: scala.scalajs.js.Array[PointerEvent] = js.native
+  var predictedEvents: scala.scalajs.js.Array[PointerEvent] = js.native
 end PointerEventInit
 
 @js.native
@@ -2073,11 +2075,11 @@ trait PresentationConnectionAvailableEventInit extends EventInit:
 
 @js.native
 trait LanguageModelCreateCoreOptions extends js.Object:
-  var topK: Double                          = js.native
-  var temperature: Double                   = js.native
-  var expectedInputs: scala.scalajs.js.Any  = js.native
-  var expectedOutputs: scala.scalajs.js.Any = js.native
-  var tools: scala.scalajs.js.Any           = js.native
+  var topK: Double                                                   = js.native
+  var temperature: Double                                            = js.native
+  var expectedInputs: scala.scalajs.js.Array[LanguageModelExpected]  = js.native
+  var expectedOutputs: scala.scalajs.js.Array[LanguageModelExpected] = js.native
+  var tools: scala.scalajs.js.Array[LanguageModelTool]               = js.native
 
 @js.native
 trait LanguageModelAppendOptions extends js.Object:
@@ -2085,15 +2087,15 @@ trait LanguageModelAppendOptions extends js.Object:
 
 @js.native
 trait LanguageModelExpected extends js.Object:
-  var `type`: String                  = js.native
-  var languages: scala.scalajs.js.Any = js.native
+  var `type`: String                            = js.native
+  var languages: scala.scalajs.js.Array[String] = js.native
 
 @js.native
 trait LanguageModelTool extends js.Object:
-  var name: String                                                    = js.native
-  var description: String                                             = js.native
-  var inputSchema: scala.scalajs.js.Any                               = js.native
-  var execute: scala.scalajs.js.Function1[scala.scalajs.js.Any, Unit] = js.native
+  var name: String                                                                                = js.native
+  var description: String                                                                         = js.native
+  var inputSchema: scala.scalajs.js.Any                                                           = js.native
+  var execute: scala.scalajs.js.Function1[scala.scalajs.js.Any, scala.scalajs.js.Promise[String]] = js.native
 
 @js.native
 trait LanguageModelCloneOptions extends js.Object:
@@ -2101,9 +2103,9 @@ trait LanguageModelCloneOptions extends js.Object:
 
 @js.native
 trait LanguageModelCreateOptions extends LanguageModelCreateCoreOptions:
-  var signal: AbortSignal                                      = js.native
-  var monitor: scala.scalajs.js.Function1[CreateMonitor, Unit] = js.native
-  var initialPrompts: scala.scalajs.js.Any                     = js.native
+  var signal: AbortSignal                                          = js.native
+  var monitor: scala.scalajs.js.Function1[CreateMonitor, Unit]     = js.native
+  var initialPrompts: scala.scalajs.js.Array[LanguageModelMessage] = js.native
 
 @js.native
 trait LanguageModelMessage extends js.Object:
@@ -2133,9 +2135,9 @@ trait PushPermissionDescriptor extends PermissionDescriptor:
 
 @js.native
 trait PushSubscriptionJSON extends js.Object:
-  var endpoint: String           = js.native
-  var expirationTime: Double     = js.native
-  var keys: scala.scalajs.js.Any = js.native
+  var endpoint: String                          = js.native
+  var expirationTime: Double                    = js.native
+  var keys: scala.scalajs.js.Dictionary[String] = js.native
 
 @js.native
 trait PushSubscriptionOptionsInit extends js.Object:
@@ -2160,8 +2162,8 @@ trait Report extends js.Object:
 
 @js.native
 trait ReportingObserverOptions extends js.Object:
-  var types: scala.scalajs.js.Any = js.native
-  var buffered: Boolean           = js.native
+  var types: scala.scalajs.js.Array[String] = js.native
+  var buffered: Boolean                     = js.native
 
 @js.native
 trait ReportBody extends js.Object
@@ -2193,8 +2195,8 @@ end StorageAccessTypes
 
 @js.native
 trait SanitizerElementNamespaceWithAttributes extends SanitizerElementNamespace:
-  var attributes: scala.scalajs.js.Any       = js.native
-  var removeAttributes: scala.scalajs.js.Any = js.native
+  var attributes: scala.scalajs.js.Array[scala.scalajs.js.Any]       = js.native
+  var removeAttributes: scala.scalajs.js.Array[scala.scalajs.js.Any] = js.native
 
 @js.native
 trait SanitizerElementNamespace extends js.Object:
@@ -2211,15 +2213,15 @@ trait SetHTMLUnsafeOptions extends js.Object:
 
 @js.native
 trait SanitizerConfig extends js.Object:
-  var elements: scala.scalajs.js.Any                     = js.native
-  var removeElements: scala.scalajs.js.Any               = js.native
-  var replaceWithChildrenElements: scala.scalajs.js.Any  = js.native
-  var processingInstructions: scala.scalajs.js.Any       = js.native
-  var removeProcessingInstructions: scala.scalajs.js.Any = js.native
-  var attributes: scala.scalajs.js.Any                   = js.native
-  var removeAttributes: scala.scalajs.js.Any             = js.native
-  var comments: Boolean                                  = js.native
-  var dataAttributes: Boolean                            = js.native
+  var elements: scala.scalajs.js.Array[scala.scalajs.js.Any]                     = js.native
+  var removeElements: scala.scalajs.js.Array[scala.scalajs.js.Any]               = js.native
+  var replaceWithChildrenElements: scala.scalajs.js.Array[scala.scalajs.js.Any]  = js.native
+  var processingInstructions: scala.scalajs.js.Array[scala.scalajs.js.Any]       = js.native
+  var removeProcessingInstructions: scala.scalajs.js.Array[scala.scalajs.js.Any] = js.native
+  var attributes: scala.scalajs.js.Array[scala.scalajs.js.Any]                   = js.native
+  var removeAttributes: scala.scalajs.js.Array[scala.scalajs.js.Any]             = js.native
+  var comments: Boolean                                                          = js.native
+  var dataAttributes: Boolean                                                    = js.native
 end SanitizerConfig
 
 @js.native
@@ -2274,18 +2276,18 @@ trait ViewTimelineOptions extends js.Object:
 
 @js.native
 trait SecurePaymentConfirmationRequest extends js.Object:
-  var challenge: scala.scalajs.js.Any                    = js.native
-  var rpId: String                                       = js.native
-  var credentialIds: scala.scalajs.js.Any                = js.native
-  var instrument: PaymentCredentialInstrument            = js.native
-  var timeout: Int                                       = js.native
-  var payeeName: String                                  = js.native
-  var payeeOrigin: String                                = js.native
-  var paymentEntitiesLogos: scala.scalajs.js.Any         = js.native
-  var extensions: AuthenticationExtensionsClientInputs   = js.native
-  var browserBoundPubKeyCredParams: scala.scalajs.js.Any = js.native
-  var locale: scala.scalajs.js.Any                       = js.native
-  var showOptOut: Boolean                                = js.native
+  var challenge: scala.scalajs.js.Any                                                     = js.native
+  var rpId: String                                                                        = js.native
+  var credentialIds: scala.scalajs.js.Array[scala.scalajs.js.Any]                         = js.native
+  var instrument: PaymentCredentialInstrument                                             = js.native
+  var timeout: Int                                                                        = js.native
+  var payeeName: String                                                                   = js.native
+  var payeeOrigin: String                                                                 = js.native
+  var paymentEntitiesLogos: scala.scalajs.js.Array[PaymentEntityLogo]                     = js.native
+  var extensions: AuthenticationExtensionsClientInputs                                    = js.native
+  var browserBoundPubKeyCredParams: scala.scalajs.js.Array[PublicKeyCredentialParameters] = js.native
+  var locale: scala.scalajs.js.Array[String]                                              = js.native
+  var showOptOut: Boolean                                                                 = js.native
 end SecurePaymentConfirmationRequest
 
 @js.native
@@ -2318,32 +2320,32 @@ trait PaymentCredentialInstrument extends js.Object:
 
 @js.native
 trait AuthenticationExtensionsPaymentInputs extends js.Object:
-  var isPayment: Boolean                                 = js.native
-  var browserBoundPubKeyCredParams: scala.scalajs.js.Any = js.native
-  var rpId: String                                       = js.native
-  var topOrigin: String                                  = js.native
-  var payeeName: String                                  = js.native
-  var payeeOrigin: String                                = js.native
-  var paymentEntitiesLogos: scala.scalajs.js.Any         = js.native
-  var total: PaymentCurrencyAmount                       = js.native
-  var instrument: PaymentCredentialInstrument            = js.native
+  var isPayment: Boolean                                                                  = js.native
+  var browserBoundPubKeyCredParams: scala.scalajs.js.Array[PublicKeyCredentialParameters] = js.native
+  var rpId: String                                                                        = js.native
+  var topOrigin: String                                                                   = js.native
+  var payeeName: String                                                                   = js.native
+  var payeeOrigin: String                                                                 = js.native
+  var paymentEntitiesLogos: scala.scalajs.js.Array[PaymentEntityLogo]                     = js.native
+  var total: PaymentCurrencyAmount                                                        = js.native
+  var instrument: PaymentCredentialInstrument                                             = js.native
 end AuthenticationExtensionsPaymentInputs
 
 @js.native
 trait CollectedClientAdditionalPaymentData extends js.Object:
-  var rpId: String                               = js.native
-  var topOrigin: String                          = js.native
-  var payeeName: String                          = js.native
-  var payeeOrigin: String                        = js.native
-  var paymentEntitiesLogos: scala.scalajs.js.Any = js.native
-  var total: PaymentCurrencyAmount               = js.native
-  var instrument: PaymentCredentialInstrument    = js.native
-  var browserBoundPublicKey: String              = js.native
+  var rpId: String                                                    = js.native
+  var topOrigin: String                                               = js.native
+  var payeeName: String                                               = js.native
+  var payeeOrigin: String                                             = js.native
+  var paymentEntitiesLogos: scala.scalajs.js.Array[PaymentEntityLogo] = js.native
+  var total: PaymentCurrencyAmount                                    = js.native
+  var instrument: PaymentCredentialInstrument                         = js.native
+  var browserBoundPublicKey: String                                   = js.native
 end CollectedClientAdditionalPaymentData
 
 @js.native
 trait GetComposedRangesOptions extends js.Object:
-  var shadowRoots: scala.scalajs.js.Any = js.native
+  var shadowRoots: scala.scalajs.js.Array[ShadowRoot] = js.native
 
 @js.native
 trait SerialPortInfo extends js.Object:
@@ -2375,8 +2377,8 @@ trait SerialInputSignals extends js.Object:
 
 @js.native
 trait SerialPortRequestOptions extends js.Object:
-  var filters: scala.scalajs.js.Any                         = js.native
-  var allowedBluetoothServiceClassIds: scala.scalajs.js.Any = js.native
+  var filters: scala.scalajs.js.Array[SerialPortFilter]                             = js.native
+  var allowedBluetoothServiceClassIds: scala.scalajs.js.Array[scala.scalajs.js.Any] = js.native
 
 @js.native
 trait SerialPortFilter extends js.Object:
@@ -2386,11 +2388,11 @@ trait SerialPortFilter extends js.Object:
 
 @js.native
 trait ExtendableMessageEventInit extends ExtendableEventInit:
-  var data: scala.scalajs.js.Any   = js.native
-  var origin: String               = js.native
-  var lastEventId: String          = js.native
-  var source: scala.scalajs.js.Any = js.native
-  var ports: scala.scalajs.js.Any  = js.native
+  var data: scala.scalajs.js.Any                 = js.native
+  var origin: String                             = js.native
+  var lastEventId: String                        = js.native
+  var source: scala.scalajs.js.Any               = js.native
+  var ports: scala.scalajs.js.Array[MessagePort] = js.native
 
 @js.native
 trait NavigationPreloadState extends js.Object:
@@ -2415,12 +2417,12 @@ trait CacheQueryOptions extends js.Object:
 
 @js.native
 trait FetchEventInit extends ExtendableEventInit:
-  var request: Request                      = js.native
-  var preloadResponse: scala.scalajs.js.Any = js.native
-  var clientId: String                      = js.native
-  var resultingClientId: String             = js.native
-  var replacesClientId: String              = js.native
-  var handled: scala.scalajs.js.Any         = js.native
+  var request: Request                                                = js.native
+  var preloadResponse: scala.scalajs.js.Promise[scala.scalajs.js.Any] = js.native
+  var clientId: String                                                = js.native
+  var resultingClientId: String                                       = js.native
+  var replacesClientId: String                                        = js.native
+  var handled: scala.scalajs.js.Promise[Unit]                         = js.native
 
 @js.native
 trait ExtendableEventInit extends EventInit
@@ -2436,13 +2438,13 @@ trait RouterSourceDict extends js.Object:
 
 @js.native
 trait RouterCondition extends js.Object:
-  var urlPattern: scala.scalajs.js.Any = js.native
-  var requestMethod: String            = js.native
-  var requestMode: String              = js.native
-  var requestDestination: String       = js.native
-  var runningStatus: String            = js.native
-  var or: scala.scalajs.js.Any         = js.native
-  var not: RouterCondition             = js.native
+  var urlPattern: scala.scalajs.js.Any            = js.native
+  var requestMethod: String                       = js.native
+  var requestMode: String                         = js.native
+  var requestDestination: String                  = js.native
+  var runningStatus: String                       = js.native
+  var or: scala.scalajs.js.Array[RouterCondition] = js.native
+  var not: RouterCondition                        = js.native
 
 @js.native
 trait RouterRule extends js.Object:
@@ -2451,24 +2453,24 @@ trait RouterRule extends js.Object:
 
 @js.native
 trait DetectedBarcode extends js.Object:
-  var boundingBox: DOMRectReadOnly       = js.native
-  var rawValue: String                   = js.native
-  var format: String                     = js.native
-  var cornerPoints: scala.scalajs.js.Any = js.native
+  var boundingBox: DOMRectReadOnly                  = js.native
+  var rawValue: String                              = js.native
+  var format: String                                = js.native
+  var cornerPoints: scala.scalajs.js.Array[Point2D] = js.native
 
 @js.native
 trait BarcodeDetectorOptions extends js.Object:
-  var formats: scala.scalajs.js.Any = js.native
+  var formats: scala.scalajs.js.Array[String] = js.native
 
 @js.native
 trait Landmark extends js.Object:
-  var locations: scala.scalajs.js.Any = js.native
-  var `type`: String                  = js.native
+  var locations: scala.scalajs.js.Array[Point2D] = js.native
+  var `type`: String                             = js.native
 
 @js.native
 trait DetectedFace extends js.Object:
-  var boundingBox: DOMRectReadOnly    = js.native
-  var landmarks: scala.scalajs.js.Any = js.native
+  var boundingBox: DOMRectReadOnly                = js.native
+  var landmarks: scala.scalajs.js.Array[Landmark] = js.native
 
 @js.native
 trait FaceDetectorOptions extends js.Object:
@@ -2491,9 +2493,9 @@ trait SpeechSynthesisErrorEventInit extends SpeechSynthesisEventInit:
 
 @js.native
 trait SpeechRecognitionOptions extends js.Object:
-  var langs: scala.scalajs.js.Any = js.native
-  var processLocally: Boolean     = js.native
-  var quality: String             = js.native
+  var langs: scala.scalajs.js.Array[String] = js.native
+  var processLocally: Boolean               = js.native
+  var quality: String                       = js.native
 
 @js.native
 trait SpeechSynthesisEventInit extends EventInit:
@@ -2547,11 +2549,11 @@ trait ReadableStreamGetReaderOptions extends js.Object:
 
 @js.native
 trait UnderlyingSource extends js.Object:
-  var start: scala.scalajs.js.Function1[scala.scalajs.js.Any, scala.scalajs.js.Any] = js.native
-  var pull: scala.scalajs.js.Function1[scala.scalajs.js.Any, Unit]                  = js.native
-  var cancel: scala.scalajs.js.Function1[scala.scalajs.js.Any, Unit]                = js.native
-  var `type`: String                                                                = js.native
-  var autoAllocateChunkSize: Int                                                    = js.native
+  var start: scala.scalajs.js.Function1[scala.scalajs.js.Any, scala.scalajs.js.Any]            = js.native
+  var pull: scala.scalajs.js.Function1[scala.scalajs.js.Any, scala.scalajs.js.Promise[Unit]]   = js.native
+  var cancel: scala.scalajs.js.Function1[scala.scalajs.js.Any, scala.scalajs.js.Promise[Unit]] = js.native
+  var `type`: String                                                                           = js.native
+  var autoAllocateChunkSize: Int                                                               = js.native
 
 @js.native
 trait ReadableWritablePair extends js.Object:
@@ -2560,12 +2562,16 @@ trait ReadableWritablePair extends js.Object:
 
 @js.native
 trait Transformer extends js.Object:
-  var start: scala.scalajs.js.Function1[TransformStreamDefaultController, scala.scalajs.js.Any]           = js.native
-  var transform: scala.scalajs.js.Function2[scala.scalajs.js.Any, TransformStreamDefaultController, Unit] = js.native
-  var flush: scala.scalajs.js.Function1[TransformStreamDefaultController, Unit]                           = js.native
-  var cancel: scala.scalajs.js.Function1[scala.scalajs.js.Any, Unit]                                      = js.native
+  var start: scala.scalajs.js.Function1[TransformStreamDefaultController, scala.scalajs.js.Any] = js.native
+  var transform
+      : scala.scalajs.js.Function2[scala.scalajs.js.Any, TransformStreamDefaultController, scala.scalajs.js.Promise[
+        Unit
+      ]]                                                                                                  = js.native
+  var flush: scala.scalajs.js.Function1[TransformStreamDefaultController, scala.scalajs.js.Promise[Unit]] = js.native
+  var cancel: scala.scalajs.js.Function1[scala.scalajs.js.Any, scala.scalajs.js.Promise[Unit]]            = js.native
   var readableType: scala.scalajs.js.Any                                                                  = js.native
   var writableType: scala.scalajs.js.Any                                                                  = js.native
+end Transformer
 
 @js.native
 trait QueuingStrategyInit extends js.Object:
@@ -2578,11 +2584,13 @@ trait QueuingStrategy extends js.Object:
 
 @js.native
 trait UnderlyingSink extends js.Object:
-  var start: scala.scalajs.js.Function1[WritableStreamDefaultController, scala.scalajs.js.Any]       = js.native
-  var write: scala.scalajs.js.Function2[scala.scalajs.js.Any, WritableStreamDefaultController, Unit] = js.native
-  var close: scala.scalajs.js.Function0[Unit]                                                        = js.native
-  var abort: scala.scalajs.js.Function1[scala.scalajs.js.Any, Unit]                                  = js.native
-  var `type`: scala.scalajs.js.Any                                                                   = js.native
+  var start: scala.scalajs.js.Function1[WritableStreamDefaultController, scala.scalajs.js.Any] = js.native
+  var write: scala.scalajs.js.Function2[scala.scalajs.js.Any, WritableStreamDefaultController, scala.scalajs.js.Promise[
+    Unit
+  ]]                                                                                          = js.native
+  var close: scala.scalajs.js.Function0[scala.scalajs.js.Promise[Unit]]                       = js.native
+  var abort: scala.scalajs.js.Function1[scala.scalajs.js.Any, scala.scalajs.js.Promise[Unit]] = js.native
+  var `type`: scala.scalajs.js.Any                                                            = js.native
 
 @js.native
 trait SVGPathDataSettings extends js.Object:
@@ -2590,24 +2598,24 @@ trait SVGPathDataSettings extends js.Object:
 
 @js.native
 trait TextDetectorOptions extends js.Object:
-  var languages: scala.scalajs.js.Any = js.native
+  var languages: scala.scalajs.js.Array[String] = js.native
 
 @js.native
 trait TextDetectorCreateOptions extends js.Object:
-  var signal: AbortSignal             = js.native
-  var languages: scala.scalajs.js.Any = js.native
+  var signal: AbortSignal                       = js.native
+  var languages: scala.scalajs.js.Array[String] = js.native
 
 @js.native
 trait DetectedText extends js.Object:
-  var boundingBox: DOMRectReadOnly       = js.native
-  var rawValue: String                   = js.native
-  var cornerPoints: scala.scalajs.js.Any = js.native
+  var boundingBox: DOMRectReadOnly                  = js.native
+  var rawValue: String                              = js.native
+  var cornerPoints: scala.scalajs.js.Array[Point2D] = js.native
 
 @js.native
 trait TouchEventInit extends EventModifierInit:
-  var touches: scala.scalajs.js.Any        = js.native
-  var targetTouches: scala.scalajs.js.Any  = js.native
-  var changedTouches: scala.scalajs.js.Any = js.native
+  var touches: scala.scalajs.js.Array[Touch]        = js.native
+  var targetTouches: scala.scalajs.js.Array[Touch]  = js.native
+  var changedTouches: scala.scalajs.js.Array[Touch] = js.native
 
 @js.native
 trait TouchInit extends js.Object:
@@ -2630,7 +2638,7 @@ end TouchInit
 
 @js.native
 trait LanguageDetectorCreateCoreOptions extends js.Object:
-  var expectedInputLanguages: scala.scalajs.js.Any = js.native
+  var expectedInputLanguages: scala.scalajs.js.Array[String] = js.native
 
 @js.native
 trait TranslatorCreateOptions extends TranslatorCreateCoreOptions:
@@ -2662,10 +2670,10 @@ trait TranslatorTranslateOptions extends js.Object:
 
 @js.native
 trait PrivateToken extends js.Object:
-  var version: String               = js.native
-  var operation: String             = js.native
-  var refreshPolicy: String         = js.native
-  var issuers: scala.scalajs.js.Any = js.native
+  var version: String                         = js.native
+  var operation: String                       = js.native
+  var refreshPolicy: String                   = js.native
+  var issuers: scala.scalajs.js.Array[String] = js.native
 
 @js.native
 trait TrustedTypePolicyOptions extends js.Object:
@@ -2675,17 +2683,17 @@ trait TrustedTypePolicyOptions extends js.Object:
 
 @js.native
 trait UADataValues extends js.Object:
-  var architecture: String                  = js.native
-  var bitness: String                       = js.native
-  var brands: scala.scalajs.js.Any          = js.native
-  var formFactors: scala.scalajs.js.Any     = js.native
-  var fullVersionList: scala.scalajs.js.Any = js.native
-  var model: String                         = js.native
-  var mobile: Boolean                       = js.native
-  var platform: String                      = js.native
-  var platformVersion: String               = js.native
-  var uaFullVersion: String                 = js.native
-  var wow64: Boolean                        = js.native
+  var architecture: String                                             = js.native
+  var bitness: String                                                  = js.native
+  var brands: scala.scalajs.js.Array[NavigatorUABrandVersion]          = js.native
+  var formFactors: scala.scalajs.js.Array[String]                      = js.native
+  var fullVersionList: scala.scalajs.js.Array[NavigatorUABrandVersion] = js.native
+  var model: String                                                    = js.native
+  var mobile: Boolean                                                  = js.native
+  var platform: String                                                 = js.native
+  var platformVersion: String                                          = js.native
+  var uaFullVersion: String                                            = js.native
+  var wow64: Boolean                                                   = js.native
 end UADataValues
 
 @js.native
@@ -2695,9 +2703,9 @@ trait NavigatorUABrandVersion extends js.Object:
 
 @js.native
 trait UALowEntropyJSON extends js.Object:
-  var brands: scala.scalajs.js.Any = js.native
-  var mobile: Boolean              = js.native
-  var platform: String             = js.native
+  var brands: scala.scalajs.js.Array[NavigatorUABrandVersion] = js.native
+  var mobile: Boolean                                         = js.native
+  var platform: String                                        = js.native
 
 @js.native
 trait KeyboardEventInit extends EventModifierInit:
@@ -2746,15 +2754,15 @@ trait CompositionEventInit extends UIEventInit:
 
 @js.native
 trait URLPatternResult extends js.Object:
-  var inputs: scala.scalajs.js.Any        = js.native
-  var protocol: URLPatternComponentResult = js.native
-  var username: URLPatternComponentResult = js.native
-  var password: URLPatternComponentResult = js.native
-  var hostname: URLPatternComponentResult = js.native
-  var port: URLPatternComponentResult     = js.native
-  var pathname: URLPatternComponentResult = js.native
-  var search: URLPatternComponentResult   = js.native
-  var hash: URLPatternComponentResult     = js.native
+  var inputs: scala.scalajs.js.Array[scala.scalajs.js.Any] = js.native
+  var protocol: URLPatternComponentResult                  = js.native
+  var username: URLPatternComponentResult                  = js.native
+  var password: URLPatternComponentResult                  = js.native
+  var hostname: URLPatternComponentResult                  = js.native
+  var port: URLPatternComponentResult                      = js.native
+  var pathname: URLPatternComponentResult                  = js.native
+  var search: URLPatternComponentResult                    = js.native
+  var hash: URLPatternComponentResult                      = js.native
 end URLPatternResult
 
 @js.native
@@ -2837,8 +2845,8 @@ trait TableDescriptor extends js.Object:
 
 @js.native
 trait WebAssemblyCompileOptions extends js.Object:
-  var importedStringConstants: String = js.native
-  var builtins: scala.scalajs.js.Any  = js.native
+  var importedStringConstants: String          = js.native
+  var builtins: scala.scalajs.js.Array[String] = js.native
 
 @js.native
 trait MemoryDescriptor extends js.Object:
@@ -2848,7 +2856,7 @@ trait MemoryDescriptor extends js.Object:
 
 @js.native
 trait TagType extends js.Object:
-  var parameters: scala.scalajs.js.Any = js.native
+  var parameters: scala.scalajs.js.Array[String] = js.native
 
 @js.native
 trait ModuleImportDescriptor extends js.Object:
@@ -2950,50 +2958,50 @@ trait PaymentHandlerResponse extends js.Object:
 
 @js.native
 trait PaymentRequestEventInit extends ExtendableEventInit:
-  var topOrigin: String                     = js.native
-  var paymentRequestOrigin: String          = js.native
-  var paymentRequestId: String              = js.native
-  var methodData: scala.scalajs.js.Any      = js.native
-  var total: PaymentCurrencyAmount          = js.native
-  var modifiers: scala.scalajs.js.Any       = js.native
-  var paymentOptions: PaymentOptions        = js.native
-  var shippingOptions: scala.scalajs.js.Any = js.native
+  var topOrigin: String                                              = js.native
+  var paymentRequestOrigin: String                                   = js.native
+  var paymentRequestId: String                                       = js.native
+  var methodData: scala.scalajs.js.Array[PaymentMethodData]          = js.native
+  var total: PaymentCurrencyAmount                                   = js.native
+  var modifiers: scala.scalajs.js.Array[PaymentDetailsModifier]      = js.native
+  var paymentOptions: PaymentOptions                                 = js.native
+  var shippingOptions: scala.scalajs.js.Array[PaymentShippingOption] = js.native
 end PaymentRequestEventInit
 
 @js.native
 trait AddressInit extends js.Object:
-  var country: String                   = js.native
-  var addressLine: scala.scalajs.js.Any = js.native
-  var region: String                    = js.native
-  var city: String                      = js.native
-  var dependentLocality: String         = js.native
-  var postalCode: String                = js.native
-  var sortingCode: String               = js.native
-  var organization: String              = js.native
-  var recipient: String                 = js.native
-  var phone: String                     = js.native
+  var country: String                             = js.native
+  var addressLine: scala.scalajs.js.Array[String] = js.native
+  var region: String                              = js.native
+  var city: String                                = js.native
+  var dependentLocality: String                   = js.native
+  var postalCode: String                          = js.native
+  var sortingCode: String                         = js.native
+  var organization: String                        = js.native
+  var recipient: String                           = js.native
+  var phone: String                               = js.native
 end AddressInit
 
 @js.native
 trait PaymentRequestDetailsUpdate extends js.Object:
-  var error: String                             = js.native
-  var total: PaymentCurrencyAmount              = js.native
-  var modifiers: scala.scalajs.js.Any           = js.native
-  var shippingOptions: scala.scalajs.js.Any     = js.native
-  var paymentMethodErrors: scala.scalajs.js.Any = js.native
-  var shippingAddressErrors: AddressErrors      = js.native
+  var error: String                                                  = js.native
+  var total: PaymentCurrencyAmount                                   = js.native
+  var modifiers: scala.scalajs.js.Array[PaymentDetailsModifier]      = js.native
+  var shippingOptions: scala.scalajs.js.Array[PaymentShippingOption] = js.native
+  var paymentMethodErrors: scala.scalajs.js.Any                      = js.native
+  var shippingAddressErrors: AddressErrors                           = js.native
 
 @js.native
 trait BluetoothLEScanOptions extends js.Object:
-  var filters: scala.scalajs.js.Any    = js.native
-  var keepRepeatedDevices: Boolean     = js.native
-  var acceptAllAdvertisements: Boolean = js.native
+  var filters: scala.scalajs.js.Array[BluetoothLEScanFilterInit] = js.native
+  var keepRepeatedDevices: Boolean                               = js.native
+  var acceptAllAdvertisements: Boolean                           = js.native
 
 @js.native
 trait BluetoothLEScanPermissionDescriptor extends PermissionDescriptor:
-  var filters: scala.scalajs.js.Any    = js.native
-  var keepRepeatedDevices: Boolean     = js.native
-  var acceptAllAdvertisements: Boolean = js.native
+  var filters: scala.scalajs.js.Array[BluetoothLEScanFilterInit] = js.native
+  var keepRepeatedDevices: Boolean                               = js.native
+  var acceptAllAdvertisements: Boolean                           = js.native
 
 @js.native
 trait BluetoothManufacturerDataFilterInit extends BluetoothDataFilterInit:
@@ -3001,11 +3009,11 @@ trait BluetoothManufacturerDataFilterInit extends BluetoothDataFilterInit:
 
 @js.native
 trait RequestDeviceOptions extends js.Object:
-  var filters: scala.scalajs.js.Any                  = js.native
-  var exclusionFilters: scala.scalajs.js.Any         = js.native
-  var optionalServices: scala.scalajs.js.Any         = js.native
-  var optionalManufacturerData: scala.scalajs.js.Any = js.native
-  var acceptAllDevices: Boolean                      = js.native
+  var filters: scala.scalajs.js.Array[BluetoothLEScanFilterInit]          = js.native
+  var exclusionFilters: scala.scalajs.js.Array[BluetoothLEScanFilterInit] = js.native
+  var optionalServices: scala.scalajs.js.Array[scala.scalajs.js.Any]      = js.native
+  var optionalManufacturerData: scala.scalajs.js.Array[Int]               = js.native
+  var acceptAllDevices: Boolean                                           = js.native
 
 @js.native
 trait ValueEventInit extends EventInit:
@@ -3013,18 +3021,18 @@ trait ValueEventInit extends EventInit:
 
 @js.native
 trait AllowedBluetoothDevice extends js.Object:
-  var deviceId: String                              = js.native
-  var mayUseGATT: Boolean                           = js.native
-  var allowedServices: scala.scalajs.js.Any         = js.native
-  var allowedManufacturerData: scala.scalajs.js.Any = js.native
+  var deviceId: String                                     = js.native
+  var mayUseGATT: Boolean                                  = js.native
+  var allowedServices: scala.scalajs.js.Any                = js.native
+  var allowedManufacturerData: scala.scalajs.js.Array[Int] = js.native
 
 @js.native
 trait BluetoothPermissionDescriptor extends PermissionDescriptor:
-  var deviceId: String                               = js.native
-  var filters: scala.scalajs.js.Any                  = js.native
-  var optionalServices: scala.scalajs.js.Any         = js.native
-  var optionalManufacturerData: scala.scalajs.js.Any = js.native
-  var acceptAllDevices: Boolean                      = js.native
+  var deviceId: String                                               = js.native
+  var filters: scala.scalajs.js.Array[BluetoothLEScanFilterInit]     = js.native
+  var optionalServices: scala.scalajs.js.Array[scala.scalajs.js.Any] = js.native
+  var optionalManufacturerData: scala.scalajs.js.Array[Int]          = js.native
+  var acceptAllDevices: Boolean                                      = js.native
 
 @js.native
 trait WatchAdvertisementsOptions extends js.Object:
@@ -3053,20 +3061,20 @@ trait BluetoothDataFilterInit extends js.Object:
 
 @js.native
 trait BluetoothLEScanFilterInit extends js.Object:
-  var services: scala.scalajs.js.Any         = js.native
-  var name: String                           = js.native
-  var namePrefix: String                     = js.native
-  var manufacturerData: scala.scalajs.js.Any = js.native
-  var serviceData: scala.scalajs.js.Any      = js.native
+  var services: scala.scalajs.js.Array[scala.scalajs.js.Any]                        = js.native
+  var name: String                                                                  = js.native
+  var namePrefix: String                                                            = js.native
+  var manufacturerData: scala.scalajs.js.Array[BluetoothManufacturerDataFilterInit] = js.native
+  var serviceData: scala.scalajs.js.Array[BluetoothServiceDataFilterInit]           = js.native
 
 @js.native
 trait BluetoothPermissionStorage extends js.Object:
-  var allowedDevices: scala.scalajs.js.Any = js.native
+  var allowedDevices: scala.scalajs.js.Array[AllowedBluetoothDevice] = js.native
 
 @js.native
 trait LockManagerSnapshot extends js.Object:
-  var held: scala.scalajs.js.Any    = js.native
-  var pending: scala.scalajs.js.Any = js.native
+  var held: scala.scalajs.js.Array[LockInfo]    = js.native
+  var pending: scala.scalajs.js.Array[LockInfo] = js.native
 
 @js.native
 trait LockOptions extends js.Object:
@@ -3101,7 +3109,7 @@ trait NDEFRecordInit extends js.Object:
 
 @js.native
 trait NDEFMessageInit extends js.Object:
-  var records: scala.scalajs.js.Any = js.native
+  var records: scala.scalajs.js.Array[NDEFRecordInit] = js.native
 
 @js.native
 trait NDEFWriteOptions extends js.Object:
@@ -3114,14 +3122,14 @@ trait NDEFMakeReadOnlyOptions extends js.Object:
 
 @js.native
 trait OTPCredentialRequestOptions extends js.Object:
-  var transport: scala.scalajs.js.Any = js.native
+  var transport: scala.scalajs.js.Array[String] = js.native
 
 @js.native
 trait ShareData extends js.Object:
-  var files: scala.scalajs.js.Any = js.native
-  var title: String               = js.native
-  var text: String                = js.native
-  var url: String                 = js.native
+  var files: scala.scalajs.js.Array[File] = js.native
+  var title: String                       = js.native
+  var text: String                        = js.native
+  var url: String                         = js.native
 
 @js.native
 trait OfflineAudioCompletionEventInit extends EventInit:
@@ -3165,8 +3173,8 @@ trait ConstantSourceOptions extends js.Object:
 
 @js.native
 trait IIRFilterOptions extends AudioNodeOptions:
-  var feedforward: scala.scalajs.js.Any = js.native
-  var feedback: scala.scalajs.js.Any    = js.native
+  var feedforward: scala.scalajs.js.Array[Double] = js.native
+  var feedback: scala.scalajs.js.Array[Double]    = js.native
 
 @js.native
 trait ChannelMergerOptions extends AudioNodeOptions:
@@ -3246,8 +3254,8 @@ trait PeriodicWaveConstraints extends js.Object:
 
 @js.native
 trait WaveShaperOptions extends AudioNodeOptions:
-  var curve: scala.scalajs.js.Any = js.native
-  var oversample: String          = js.native
+  var curve: scala.scalajs.js.Array[Double] = js.native
+  var oversample: String                    = js.native
 
 @js.native
 trait MediaElementAudioSourceOptions extends js.Object:
@@ -3264,8 +3272,8 @@ trait AudioBufferSourceOptions extends js.Object:
 
 @js.native
 trait PeriodicWaveOptions extends PeriodicWaveConstraints:
-  var real: scala.scalajs.js.Any = js.native
-  var imag: scala.scalajs.js.Any = js.native
+  var real: scala.scalajs.js.Array[Double] = js.native
+  var imag: scala.scalajs.js.Array[Double] = js.native
 
 @js.native
 trait ChannelSplitterOptions extends AudioNodeOptions:
@@ -3279,11 +3287,11 @@ trait AudioProcessingEventInit extends EventInit:
 
 @js.native
 trait AudioWorkletNodeOptions extends AudioNodeOptions:
-  var numberOfInputs: Int                      = js.native
-  var numberOfOutputs: Int                     = js.native
-  var outputChannelCount: scala.scalajs.js.Any = js.native
-  var parameterData: scala.scalajs.js.Any      = js.native
-  var processorOptions: scala.scalajs.js.Any   = js.native
+  var numberOfInputs: Int                                = js.native
+  var numberOfOutputs: Int                               = js.native
+  var outputChannelCount: scala.scalajs.js.Array[Int]    = js.native
+  var parameterData: scala.scalajs.js.Dictionary[Double] = js.native
+  var processorOptions: scala.scalajs.js.Any             = js.native
 
 @js.native
 trait AudioNodeOptions extends js.Object:
@@ -3332,9 +3340,9 @@ trait AuthenticatorAssertionResponseJSON extends js.Object:
 
 @js.native
 trait PublicKeyCredentialDescriptor extends js.Object:
-  var `type`: String                   = js.native
-  var id: scala.scalajs.js.Any         = js.native
-  var transports: scala.scalajs.js.Any = js.native
+  var `type`: String                             = js.native
+  var id: scala.scalajs.js.Any                   = js.native
+  var transports: scala.scalajs.js.Array[String] = js.native
 
 @js.native
 trait TokenBinding extends js.Object:
@@ -3343,8 +3351,8 @@ trait TokenBinding extends js.Object:
 
 @js.native
 trait AuthenticationExtensionsPRFInputsJSON extends js.Object:
-  var eval: AuthenticationExtensionsPRFValuesJSON = js.native
-  var evalByCredential: scala.scalajs.js.Any      = js.native
+  var eval: AuthenticationExtensionsPRFValuesJSON                                          = js.native
+  var evalByCredential: scala.scalajs.js.Dictionary[AuthenticationExtensionsPRFValuesJSON] = js.native
 
 @js.native
 trait PublicKeyCredentialParameters extends js.Object:
@@ -3353,13 +3361,13 @@ trait PublicKeyCredentialParameters extends js.Object:
 
 @js.native
 trait PublicKeyCredentialRequestOptions extends js.Object:
-  var challenge: scala.scalajs.js.Any                  = js.native
-  var timeout: Int                                     = js.native
-  var rpId: String                                     = js.native
-  var allowCredentials: scala.scalajs.js.Any           = js.native
-  var userVerification: String                         = js.native
-  var hints: scala.scalajs.js.Any                      = js.native
-  var extensions: AuthenticationExtensionsClientInputs = js.native
+  var challenge: scala.scalajs.js.Any                                         = js.native
+  var timeout: Int                                                            = js.native
+  var rpId: String                                                            = js.native
+  var allowCredentials: scala.scalajs.js.Array[PublicKeyCredentialDescriptor] = js.native
+  var userVerification: String                                                = js.native
+  var hints: scala.scalajs.js.Array[String]                                   = js.native
+  var extensions: AuthenticationExtensionsClientInputs                        = js.native
 
 @js.native
 trait PublicKeyCredentialRpEntity extends PublicKeyCredentialEntity:
@@ -3382,9 +3390,9 @@ trait AuthenticationExtensionsLargeBlobOutputsJSON extends js.Object:
 
 @js.native
 trait PublicKeyCredentialDescriptorJSON extends js.Object:
-  var `type`: String                   = js.native
-  var id: scala.scalajs.js.Any         = js.native
-  var transports: scala.scalajs.js.Any = js.native
+  var `type`: String                             = js.native
+  var id: scala.scalajs.js.Any                   = js.native
+  var transports: scala.scalajs.js.Array[String] = js.native
 
 @js.native
 trait AuthenticationExtensionsPRFValues extends js.Object:
@@ -3408,17 +3416,17 @@ trait PublicKeyCredentialUserEntityJSON extends js.Object:
 
 @js.native
 trait PublicKeyCredentialCreationOptionsJSON extends js.Object:
-  var rp: PublicKeyCredentialRpEntity                        = js.native
-  var user: PublicKeyCredentialUserEntityJSON                = js.native
-  var challenge: scala.scalajs.js.Any                        = js.native
-  var pubKeyCredParams: scala.scalajs.js.Any                 = js.native
-  var timeout: Int                                           = js.native
-  var excludeCredentials: scala.scalajs.js.Any               = js.native
-  var authenticatorSelection: AuthenticatorSelectionCriteria = js.native
-  var hints: scala.scalajs.js.Any                            = js.native
-  var attestation: String                                    = js.native
-  var attestationFormats: scala.scalajs.js.Any               = js.native
-  var extensions: AuthenticationExtensionsClientInputsJSON   = js.native
+  var rp: PublicKeyCredentialRpEntity                                               = js.native
+  var user: PublicKeyCredentialUserEntityJSON                                       = js.native
+  var challenge: scala.scalajs.js.Any                                               = js.native
+  var pubKeyCredParams: scala.scalajs.js.Array[PublicKeyCredentialParameters]       = js.native
+  var timeout: Int                                                                  = js.native
+  var excludeCredentials: scala.scalajs.js.Array[PublicKeyCredentialDescriptorJSON] = js.native
+  var authenticatorSelection: AuthenticatorSelectionCriteria                        = js.native
+  var hints: scala.scalajs.js.Array[String]                                         = js.native
+  var attestation: String                                                           = js.native
+  var attestationFormats: scala.scalajs.js.Array[String]                            = js.native
+  var extensions: AuthenticationExtensionsClientInputsJSON                          = js.native
 end PublicKeyCredentialCreationOptionsJSON
 
 @js.native
@@ -3436,34 +3444,34 @@ trait AuthenticationExtensionsLargeBlobInputs extends js.Object:
 
 @js.native
 trait PublicKeyCredentialCreationOptions extends js.Object:
-  var rp: PublicKeyCredentialRpEntity                        = js.native
-  var user: PublicKeyCredentialUserEntity                    = js.native
-  var challenge: scala.scalajs.js.Any                        = js.native
-  var pubKeyCredParams: scala.scalajs.js.Any                 = js.native
-  var timeout: Int                                           = js.native
-  var excludeCredentials: scala.scalajs.js.Any               = js.native
-  var authenticatorSelection: AuthenticatorSelectionCriteria = js.native
-  var hints: scala.scalajs.js.Any                            = js.native
-  var attestation: String                                    = js.native
-  var attestationFormats: scala.scalajs.js.Any               = js.native
-  var extensions: AuthenticationExtensionsClientInputs       = js.native
+  var rp: PublicKeyCredentialRpEntity                                           = js.native
+  var user: PublicKeyCredentialUserEntity                                       = js.native
+  var challenge: scala.scalajs.js.Any                                           = js.native
+  var pubKeyCredParams: scala.scalajs.js.Array[PublicKeyCredentialParameters]   = js.native
+  var timeout: Int                                                              = js.native
+  var excludeCredentials: scala.scalajs.js.Array[PublicKeyCredentialDescriptor] = js.native
+  var authenticatorSelection: AuthenticatorSelectionCriteria                    = js.native
+  var hints: scala.scalajs.js.Array[String]                                     = js.native
+  var attestation: String                                                       = js.native
+  var attestationFormats: scala.scalajs.js.Array[String]                        = js.native
+  var extensions: AuthenticationExtensionsClientInputs                          = js.native
 end PublicKeyCredentialCreationOptions
 
 @js.native
 trait PublicKeyCredentialRequestOptionsJSON extends js.Object:
-  var challenge: scala.scalajs.js.Any                      = js.native
-  var timeout: Int                                         = js.native
-  var rpId: String                                         = js.native
-  var allowCredentials: scala.scalajs.js.Any               = js.native
-  var userVerification: String                             = js.native
-  var hints: scala.scalajs.js.Any                          = js.native
-  var extensions: AuthenticationExtensionsClientInputsJSON = js.native
+  var challenge: scala.scalajs.js.Any                                             = js.native
+  var timeout: Int                                                                = js.native
+  var rpId: String                                                                = js.native
+  var allowCredentials: scala.scalajs.js.Array[PublicKeyCredentialDescriptorJSON] = js.native
+  var userVerification: String                                                    = js.native
+  var hints: scala.scalajs.js.Array[String]                                       = js.native
+  var extensions: AuthenticationExtensionsClientInputsJSON                        = js.native
 
 @js.native
 trait AllAcceptedCredentialsOptions extends js.Object:
-  var rpId: String                                   = js.native
-  var userId: scala.scalajs.js.Any                   = js.native
-  var allAcceptedCredentialIds: scala.scalajs.js.Any = js.native
+  var rpId: String                                                           = js.native
+  var userId: scala.scalajs.js.Any                                           = js.native
+  var allAcceptedCredentialIds: scala.scalajs.js.Array[scala.scalajs.js.Any] = js.native
 
 @js.native
 trait AuthenticationResponseJSON extends js.Object:
@@ -3501,20 +3509,20 @@ trait PublicKeyCredentialUserEntity extends PublicKeyCredentialEntity:
 
 @js.native
 trait AuthenticationExtensionsPRFInputs extends js.Object:
-  var eval: AuthenticationExtensionsPRFValues = js.native
-  var evalByCredential: scala.scalajs.js.Any  = js.native
+  var eval: AuthenticationExtensionsPRFValues                                          = js.native
+  var evalByCredential: scala.scalajs.js.Dictionary[AuthenticationExtensionsPRFValues] = js.native
 
 @js.native
 trait AuthenticationExtensionsClientInputs extends js.Object
 
 @js.native
 trait AuthenticatorAttestationResponseJSON extends js.Object:
-  var clientDataJSON: scala.scalajs.js.Any     = js.native
-  var authenticatorData: scala.scalajs.js.Any  = js.native
-  var transports: scala.scalajs.js.Any         = js.native
-  var publicKey: scala.scalajs.js.Any          = js.native
-  var publicKeyAlgorithm: scala.scalajs.js.Any = js.native
-  var attestationObject: scala.scalajs.js.Any  = js.native
+  var clientDataJSON: scala.scalajs.js.Any       = js.native
+  var authenticatorData: scala.scalajs.js.Any    = js.native
+  var transports: scala.scalajs.js.Array[String] = js.native
+  var publicKey: scala.scalajs.js.Any            = js.native
+  var publicKeyAlgorithm: scala.scalajs.js.Any   = js.native
+  var attestationObject: scala.scalajs.js.Any    = js.native
 
 @js.native
 trait AuthenticationExtensionsLargeBlobOutputs extends js.Object:
@@ -3597,20 +3605,20 @@ trait VideoEncoderInit extends js.Object:
 
 @js.native
 trait VideoFrameCopyToOptions extends js.Object:
-  var rect: DOMRectInit            = js.native
-  var layout: scala.scalajs.js.Any = js.native
-  var format: String               = js.native
-  var colorSpace: String           = js.native
+  var rect: DOMRectInit                           = js.native
+  var layout: scala.scalajs.js.Array[PlaneLayout] = js.native
+  var format: String                              = js.native
+  var colorSpace: String                          = js.native
 
 @js.native
 trait AudioDataInit extends js.Object:
-  var format: String                 = js.native
-  var sampleRate: Double             = js.native
-  var numberOfFrames: Int            = js.native
-  var numberOfChannels: Int          = js.native
-  var timestamp: Int                 = js.native
-  var data: scala.scalajs.js.Any     = js.native
-  var transfer: scala.scalajs.js.Any = js.native
+  var format: String                                         = js.native
+  var sampleRate: Double                                     = js.native
+  var numberOfFrames: Int                                    = js.native
+  var numberOfChannels: Int                                  = js.native
+  var timestamp: Int                                         = js.native
+  var data: scala.scalajs.js.Any                             = js.native
+  var transfer: scala.scalajs.js.Array[scala.scalajs.js.Any] = js.native
 
 @js.native
 trait AudioDecoderSupport extends js.Object:
@@ -3619,39 +3627,39 @@ trait AudioDecoderSupport extends js.Object:
 
 @js.native
 trait ImageDecoderInit extends js.Object:
-  var `type`: String                 = js.native
-  var data: scala.scalajs.js.Any     = js.native
-  var colorSpaceConversion: String   = js.native
-  var desiredWidth: Int              = js.native
-  var desiredHeight: Int             = js.native
-  var preferAnimation: Boolean       = js.native
-  var transfer: scala.scalajs.js.Any = js.native
+  var `type`: String                                         = js.native
+  var data: scala.scalajs.js.Any                             = js.native
+  var colorSpaceConversion: String                           = js.native
+  var desiredWidth: Int                                      = js.native
+  var desiredHeight: Int                                     = js.native
+  var preferAnimation: Boolean                               = js.native
+  var transfer: scala.scalajs.js.Array[scala.scalajs.js.Any] = js.native
 
 @js.native
 trait VideoFrameBufferInit extends js.Object:
-  var format: String                  = js.native
-  var codedWidth: Int                 = js.native
-  var codedHeight: Int                = js.native
-  var timestamp: Int                  = js.native
-  var duration: Int                   = js.native
-  var layout: scala.scalajs.js.Any    = js.native
-  var visibleRect: DOMRectInit        = js.native
-  var rotation: Double                = js.native
-  var flip: Boolean                   = js.native
-  var displayWidth: Int               = js.native
-  var displayHeight: Int              = js.native
-  var colorSpace: VideoColorSpaceInit = js.native
-  var transfer: scala.scalajs.js.Any  = js.native
-  var metadata: VideoFrameMetadata    = js.native
+  var format: String                                         = js.native
+  var codedWidth: Int                                        = js.native
+  var codedHeight: Int                                       = js.native
+  var timestamp: Int                                         = js.native
+  var duration: Int                                          = js.native
+  var layout: scala.scalajs.js.Array[PlaneLayout]            = js.native
+  var visibleRect: DOMRectInit                               = js.native
+  var rotation: Double                                       = js.native
+  var flip: Boolean                                          = js.native
+  var displayWidth: Int                                      = js.native
+  var displayHeight: Int                                     = js.native
+  var colorSpace: VideoColorSpaceInit                        = js.native
+  var transfer: scala.scalajs.js.Array[scala.scalajs.js.Any] = js.native
+  var metadata: VideoFrameMetadata                           = js.native
 end VideoFrameBufferInit
 
 @js.native
 trait EncodedVideoChunkInit extends js.Object:
-  var `type`: String                 = js.native
-  var timestamp: Int                 = js.native
-  var duration: Int                  = js.native
-  var data: scala.scalajs.js.Any     = js.native
-  var transfer: scala.scalajs.js.Any = js.native
+  var `type`: String                                         = js.native
+  var timestamp: Int                                         = js.native
+  var duration: Int                                          = js.native
+  var data: scala.scalajs.js.Any                             = js.native
+  var transfer: scala.scalajs.js.Array[scala.scalajs.js.Any] = js.native
 
 @js.native
 trait VideoFrameInit extends js.Object:
@@ -3685,11 +3693,11 @@ trait ImageDecodeOptions extends js.Object:
 
 @js.native
 trait EncodedAudioChunkInit extends js.Object:
-  var `type`: String                 = js.native
-  var timestamp: Int                 = js.native
-  var duration: Int                  = js.native
-  var data: scala.scalajs.js.Any     = js.native
-  var transfer: scala.scalajs.js.Any = js.native
+  var `type`: String                                         = js.native
+  var timestamp: Int                                         = js.native
+  var duration: Int                                          = js.native
+  var data: scala.scalajs.js.Any                             = js.native
+  var transfer: scala.scalajs.js.Array[scala.scalajs.js.Any] = js.native
 
 @js.native
 trait PlaneLayout extends js.Object:
@@ -3866,24 +3874,24 @@ trait RsaKeyGenParams extends Algorithm:
 
 @js.native
 trait JsonWebKey extends js.Object:
-  var kty: String                   = js.native
-  var use: String                   = js.native
-  var key_ops: scala.scalajs.js.Any = js.native
-  var alg: String                   = js.native
-  var ext: Boolean                  = js.native
-  var crv: String                   = js.native
-  var x: String                     = js.native
-  var y: String                     = js.native
-  var d: String                     = js.native
-  var n: String                     = js.native
-  var e: String                     = js.native
-  var p: String                     = js.native
-  var q: String                     = js.native
-  var dp: String                    = js.native
-  var dq: String                    = js.native
-  var qi: String                    = js.native
-  var oth: scala.scalajs.js.Any     = js.native
-  var k: String                     = js.native
+  var kty: String                                     = js.native
+  var use: String                                     = js.native
+  var key_ops: scala.scalajs.js.Array[String]         = js.native
+  var alg: String                                     = js.native
+  var ext: Boolean                                    = js.native
+  var crv: String                                     = js.native
+  var x: String                                       = js.native
+  var y: String                                       = js.native
+  var d: String                                       = js.native
+  var n: String                                       = js.native
+  var e: String                                       = js.native
+  var p: String                                       = js.native
+  var q: String                                       = js.native
+  var dp: String                                      = js.native
+  var dq: String                                      = js.native
+  var qi: String                                      = js.native
+  var oth: scala.scalajs.js.Array[RsaOtherPrimesInfo] = js.native
+  var k: String                                       = js.native
 end JsonWebKey
 
 @js.native
@@ -4044,8 +4052,8 @@ trait GPUColorDict extends js.Object:
 
 @js.native
 trait GPUShaderModuleDescriptor extends GPUObjectDescriptorBase:
-  var code: String                           = js.native
-  var compilationHints: scala.scalajs.js.Any = js.native
+  var code: String                                                             = js.native
+  var compilationHints: scala.scalajs.js.Array[GPUShaderModuleCompilationHint] = js.native
 
 @js.native
 trait GPURenderBundleEncoderDescriptor extends GPURenderPassLayout:
@@ -4054,7 +4062,7 @@ trait GPURenderBundleEncoderDescriptor extends GPURenderPassLayout:
 
 @js.native
 trait GPUFragmentState extends GPUProgrammableStage:
-  var targets: scala.scalajs.js.Any = js.native
+  var targets: scala.scalajs.js.Array[GPUColorTargetState] = js.native
 
 @js.native
 trait GPUExternalTextureBindingLayout extends js.Object
@@ -4116,20 +4124,20 @@ trait GPUBufferBinding extends js.Object:
 
 @js.native
 trait GPUVertexBufferLayout extends js.Object:
-  var arrayStride: scala.scalajs.js.Any = js.native
-  var stepMode: String                  = js.native
-  var attributes: scala.scalajs.js.Any  = js.native
+  var arrayStride: scala.scalajs.js.Any                      = js.native
+  var stepMode: String                                       = js.native
+  var attributes: scala.scalajs.js.Array[GPUVertexAttribute] = js.native
 
 @js.native
 trait GPUTextureDescriptor extends GPUObjectDescriptorBase:
-  var size: scala.scalajs.js.Any          = js.native
-  var mipLevelCount: scala.scalajs.js.Any = js.native
-  var sampleCount: scala.scalajs.js.Any   = js.native
-  var dimension: String                   = js.native
-  var format: String                      = js.native
-  var usage: scala.scalajs.js.Any         = js.native
-  var viewFormats: scala.scalajs.js.Any   = js.native
-  var textureBindingViewDimension: String = js.native
+  var size: scala.scalajs.js.Any                  = js.native
+  var mipLevelCount: scala.scalajs.js.Any         = js.native
+  var sampleCount: scala.scalajs.js.Any           = js.native
+  var dimension: String                           = js.native
+  var format: String                              = js.native
+  var usage: scala.scalajs.js.Any                 = js.native
+  var viewFormats: scala.scalajs.js.Array[String] = js.native
+  var textureBindingViewDimension: String         = js.native
 end GPUTextureDescriptor
 
 @js.native
@@ -4143,11 +4151,11 @@ trait GPUTexelCopyBufferInfo extends GPUTexelCopyBufferLayout:
 
 @js.native
 trait GPURenderPassDescriptor extends GPUObjectDescriptorBase:
-  var colorAttachments: scala.scalajs.js.Any                      = js.native
-  var depthStencilAttachment: GPURenderPassDepthStencilAttachment = js.native
-  var occlusionQuerySet: GPUQuerySet                              = js.native
-  var timestampWrites: GPURenderPassTimestampWrites               = js.native
-  var maxDrawCount: scala.scalajs.js.Any                          = js.native
+  var colorAttachments: scala.scalajs.js.Array[GPURenderPassColorAttachment] = js.native
+  var depthStencilAttachment: GPURenderPassDepthStencilAttachment            = js.native
+  var occlusionQuerySet: GPUQuerySet                                         = js.native
+  var timestampWrites: GPURenderPassTimestampWrites                          = js.native
+  var maxDrawCount: scala.scalajs.js.Any                                     = js.native
 
 @js.native
 trait GPUBufferBindingLayout extends js.Object:
@@ -4219,7 +4227,7 @@ trait GPUTexelCopyTextureInfo extends js.Object:
 
 @js.native
 trait GPUVertexState extends GPUProgrammableStage:
-  var buffers: scala.scalajs.js.Any = js.native
+  var buffers: scala.scalajs.js.Array[GPUVertexBufferLayout] = js.native
 
 @js.native
 trait GPUComputePassTimestampWrites extends js.Object:
@@ -4239,9 +4247,9 @@ trait GPUOrigin3DDict extends js.Object:
 
 @js.native
 trait GPURenderPassLayout extends GPUObjectDescriptorBase:
-  var colorFormats: scala.scalajs.js.Any = js.native
-  var depthStencilFormat: String         = js.native
-  var sampleCount: scala.scalajs.js.Any  = js.native
+  var colorFormats: scala.scalajs.js.Array[String] = js.native
+  var depthStencilFormat: String                   = js.native
+  var sampleCount: scala.scalajs.js.Any            = js.native
 
 @js.native
 trait GPUSamplerDescriptor extends GPUObjectDescriptorBase:
@@ -4259,9 +4267,9 @@ end GPUSamplerDescriptor
 
 @js.native
 trait GPUProgrammableStage extends js.Object:
-  var module: GPUShaderModule         = js.native
-  var entryPoint: String              = js.native
-  var constants: scala.scalajs.js.Any = js.native
+  var module: GPUShaderModule                                      = js.native
+  var entryPoint: String                                           = js.native
+  var constants: scala.scalajs.js.Dictionary[scala.scalajs.js.Any] = js.native
 
 @js.native
 trait GPURenderPassDepthStencilAttachment extends js.Object:
@@ -4278,9 +4286,9 @@ end GPURenderPassDepthStencilAttachment
 
 @js.native
 trait GPUDeviceDescriptor extends GPUObjectDescriptorBase:
-  var requiredFeatures: scala.scalajs.js.Any = js.native
-  var requiredLimits: scala.scalajs.js.Any   = js.native
-  var defaultQueue: GPUQueueDescriptor       = js.native
+  var requiredFeatures: scala.scalajs.js.Array[String] = js.native
+  var requiredLimits: scala.scalajs.js.Any             = js.native
+  var defaultQueue: GPUQueueDescriptor                 = js.native
 
 @js.native
 trait GPUBufferDescriptor extends GPUObjectDescriptorBase:
@@ -4290,8 +4298,8 @@ trait GPUBufferDescriptor extends GPUObjectDescriptorBase:
 
 @js.native
 trait GPUBindGroupDescriptor extends GPUObjectDescriptorBase:
-  var layout: GPUBindGroupLayout    = js.native
-  var entries: scala.scalajs.js.Any = js.native
+  var layout: GPUBindGroupLayout                         = js.native
+  var entries: scala.scalajs.js.Array[GPUBindGroupEntry] = js.native
 
 @js.native
 trait GPUVertexAttribute extends js.Object:
@@ -4363,21 +4371,21 @@ trait GPUObjectDescriptorBase extends js.Object:
 
 @js.native
 trait GPUPipelineLayoutDescriptor extends GPUObjectDescriptorBase:
-  var bindGroupLayouts: scala.scalajs.js.Any = js.native
-  var immediateSize: scala.scalajs.js.Any    = js.native
+  var bindGroupLayouts: scala.scalajs.js.Array[GPUBindGroupLayout] = js.native
+  var immediateSize: scala.scalajs.js.Any                          = js.native
 
 @js.native
 trait GPUQueueDescriptor extends GPUObjectDescriptorBase
 
 @js.native
 trait GPUCanvasConfiguration extends js.Object:
-  var device: GPUDevice                 = js.native
-  var format: String                    = js.native
-  var usage: scala.scalajs.js.Any       = js.native
-  var viewFormats: scala.scalajs.js.Any = js.native
-  var colorSpace: String                = js.native
-  var toneMapping: GPUCanvasToneMapping = js.native
-  var alphaMode: String                 = js.native
+  var device: GPUDevice                           = js.native
+  var format: String                              = js.native
+  var usage: scala.scalajs.js.Any                 = js.native
+  var viewFormats: scala.scalajs.js.Array[String] = js.native
+  var colorSpace: String                          = js.native
+  var toneMapping: GPUCanvasToneMapping           = js.native
+  var alphaMode: String                           = js.native
 
 @js.native
 trait GPUBindGroupEntry extends js.Object:
@@ -4386,7 +4394,7 @@ trait GPUBindGroupEntry extends js.Object:
 
 @js.native
 trait GPUBindGroupLayoutDescriptor extends GPUObjectDescriptorBase:
-  var entries: scala.scalajs.js.Any = js.native
+  var entries: scala.scalajs.js.Array[GPUBindGroupLayoutEntry] = js.native
 
 @js.native
 trait GPUMultisampleState extends js.Object:
@@ -4396,8 +4404,8 @@ trait GPUMultisampleState extends js.Object:
 
 @js.native
 trait HIDDeviceRequestOptions extends js.Object:
-  var filters: scala.scalajs.js.Any          = js.native
-  var exclusionFilters: scala.scalajs.js.Any = js.native
+  var filters: scala.scalajs.js.Array[HIDDeviceFilter]          = js.native
+  var exclusionFilters: scala.scalajs.js.Array[HIDDeviceFilter] = js.native
 
 @js.native
 trait HIDConnectionEventInit extends EventInit:
@@ -4411,13 +4419,13 @@ trait HIDInputReportEventInit extends EventInit:
 
 @js.native
 trait HIDCollectionInfo extends js.Object:
-  var usagePage: Int                       = js.native
-  var usage: Int                           = js.native
-  var `type`: scala.scalajs.js.Any         = js.native
-  var children: scala.scalajs.js.Any       = js.native
-  var inputReports: scala.scalajs.js.Any   = js.native
-  var outputReports: scala.scalajs.js.Any  = js.native
-  var featureReports: scala.scalajs.js.Any = js.native
+  var usagePage: Int                                        = js.native
+  var usage: Int                                            = js.native
+  var `type`: scala.scalajs.js.Any                          = js.native
+  var children: scala.scalajs.js.Array[HIDCollectionInfo]   = js.native
+  var inputReports: scala.scalajs.js.Array[HIDReportInfo]   = js.native
+  var outputReports: scala.scalajs.js.Array[HIDReportInfo]  = js.native
+  var featureReports: scala.scalajs.js.Array[HIDReportInfo] = js.native
 
 @js.native
 trait HIDDeviceFilter extends js.Object:
@@ -4428,8 +4436,8 @@ trait HIDDeviceFilter extends js.Object:
 
 @js.native
 trait HIDReportInfo extends js.Object:
-  var reportId: scala.scalajs.js.Any = js.native
-  var items: scala.scalajs.js.Any    = js.native
+  var reportId: scala.scalajs.js.Any               = js.native
+  var items: scala.scalajs.js.Array[HIDReportItem] = js.native
 
 @js.native
 trait HIDReportItem extends js.Object:
@@ -4443,7 +4451,7 @@ trait HIDReportItem extends js.Object:
   var hasNull: Boolean                                          = js.native
   var hasPreferredState: Boolean                                = js.native
   var wrap: Boolean                                             = js.native
-  var usages: scala.scalajs.js.Any                              = js.native
+  var usages: scala.scalajs.js.Array[Int]                       = js.native
   var usageMinimum: Int                                         = js.native
   var usageMaximum: Int                                         = js.native
   var reportSize: Int                                           = js.native
@@ -4460,7 +4468,7 @@ trait HIDReportItem extends js.Object:
   var logicalMaximum: Int                                       = js.native
   var physicalMinimum: Int                                      = js.native
   var physicalMaximum: Int                                      = js.native
-  var strings: scala.scalajs.js.Any                             = js.native
+  var strings: scala.scalajs.js.Array[String]                   = js.native
 end HIDReportItem
 
 @js.native
@@ -4470,17 +4478,20 @@ trait QuotaExceededErrorOptions extends js.Object:
 
 @js.native
 trait ModelContextTool extends js.Object:
-  var name: String                                                                        = js.native
-  var title: String                                                                       = js.native
-  var description: String                                                                 = js.native
-  var inputSchema: scala.scalajs.js.Any                                                   = js.native
-  var execute: scala.scalajs.js.Function2[scala.scalajs.js.Any, ModelContextClient, Unit] = js.native
-  var annotations: ToolAnnotations                                                        = js.native
+  var name: String                      = js.native
+  var title: String                     = js.native
+  var description: String               = js.native
+  var inputSchema: scala.scalajs.js.Any = js.native
+  var execute: scala.scalajs.js.Function2[scala.scalajs.js.Any, ModelContextClient, scala.scalajs.js.Promise[
+    scala.scalajs.js.Any
+  ]]                               = js.native
+  var annotations: ToolAnnotations = js.native
+end ModelContextTool
 
 @js.native
 trait ModelContextRegisterToolOptions extends js.Object:
-  var signal: AbortSignal             = js.native
-  var exposedTo: scala.scalajs.js.Any = js.native
+  var signal: AbortSignal                       = js.native
+  var exposedTo: scala.scalajs.js.Array[String] = js.native
 
 @js.native
 trait ToolAnnotations extends js.Object:
@@ -4539,10 +4550,10 @@ end MLLstmSupportLimits
 
 @js.native
 trait MLLayerNormalizationOptions extends MLOperatorOptions:
-  var scale: MLOperand           = js.native
-  var bias: MLOperand            = js.native
-  var axes: scala.scalajs.js.Any = js.native
-  var epsilon: Double            = js.native
+  var scale: MLOperand                  = js.native
+  var bias: MLOperand                   = js.native
+  var axes: scala.scalajs.js.Array[Int] = js.native
+  var epsilon: Double                   = js.native
 
 @js.native
 trait MLSplitSupportLimits extends js.Object:
@@ -4555,11 +4566,11 @@ trait MLGatherOptions extends MLOperatorOptions:
 
 @js.native
 trait MLReverseOptions extends MLOperatorOptions:
-  var axes: scala.scalajs.js.Any = js.native
+  var axes: scala.scalajs.js.Array[Int] = js.native
 
 @js.native
 trait MLTransposeOptions extends MLOperatorOptions:
-  var permutation: scala.scalajs.js.Any = js.native
+  var permutation: scala.scalajs.js.Array[Int] = js.native
 
 @js.native
 trait MLQuantizeDequantizeLinearSupportLimits extends js.Object:
@@ -4589,8 +4600,8 @@ trait MLClampOptions extends MLOperatorOptions:
 
 @js.native
 trait MLReduceOptions extends MLOperatorOptions:
-  var axes: scala.scalajs.js.Any = js.native
-  var keepDimensions: Boolean    = js.native
+  var axes: scala.scalajs.js.Array[Int] = js.native
+  var keepDimensions: Boolean           = js.native
 
 @js.native
 trait MLConcatSupportLimits extends js.Object:
@@ -4615,15 +4626,15 @@ trait MLCumulativeSumOptions extends MLOperatorOptions:
 
 @js.native
 trait MLLstmOptions extends MLOperatorOptions:
-  var bias: MLOperand                   = js.native
-  var recurrentBias: MLOperand          = js.native
-  var peepholeWeight: MLOperand         = js.native
-  var initialHiddenState: MLOperand     = js.native
-  var initialCellState: MLOperand       = js.native
-  var returnSequence: Boolean           = js.native
-  var direction: String                 = js.native
-  var layout: String                    = js.native
-  var activations: scala.scalajs.js.Any = js.native
+  var bias: MLOperand                             = js.native
+  var recurrentBias: MLOperand                    = js.native
+  var peepholeWeight: MLOperand                   = js.native
+  var initialHiddenState: MLOperand               = js.native
+  var initialCellState: MLOperand                 = js.native
+  var returnSequence: Boolean                     = js.native
+  var direction: String                           = js.native
+  var layout: String                              = js.native
+  var activations: scala.scalajs.js.Array[String] = js.native
 end MLLstmOptions
 
 @js.native
@@ -4636,13 +4647,13 @@ trait MLOperatorOptions extends js.Object:
 
 @js.native
 trait MLPool2dOptions extends MLOperatorOptions:
-  var windowDimensions: scala.scalajs.js.Any = js.native
-  var padding: scala.scalajs.js.Any          = js.native
-  var strides: scala.scalajs.js.Any          = js.native
-  var dilations: scala.scalajs.js.Any        = js.native
-  var layout: String                         = js.native
-  var outputShapeRounding: String            = js.native
-  var outputSizes: scala.scalajs.js.Any      = js.native
+  var windowDimensions: scala.scalajs.js.Array[Int] = js.native
+  var padding: scala.scalajs.js.Array[Int]          = js.native
+  var strides: scala.scalajs.js.Array[Int]          = js.native
+  var dilations: scala.scalajs.js.Array[Int]        = js.native
+  var layout: String                                = js.native
+  var outputShapeRounding: String                   = js.native
+  var outputSizes: scala.scalajs.js.Array[Int]      = js.native
 
 @js.native
 trait MLLogicalNotSupportLimits extends js.Object:
@@ -4675,14 +4686,14 @@ trait MLScatterOptions extends MLOperatorOptions:
 
 @js.native
 trait MLGruOptions extends MLOperatorOptions:
-  var bias: MLOperand                   = js.native
-  var recurrentBias: MLOperand          = js.native
-  var initialHiddenState: MLOperand     = js.native
-  var resetAfter: Boolean               = js.native
-  var returnSequence: Boolean           = js.native
-  var direction: String                 = js.native
-  var layout: String                    = js.native
-  var activations: scala.scalajs.js.Any = js.native
+  var bias: MLOperand                             = js.native
+  var recurrentBias: MLOperand                    = js.native
+  var initialHiddenState: MLOperand               = js.native
+  var resetAfter: Boolean                         = js.native
+  var returnSequence: Boolean                     = js.native
+  var direction: String                           = js.native
+  var layout: String                              = js.native
+  var activations: scala.scalajs.js.Array[String] = js.native
 end MLGruOptions
 
 @js.native
@@ -4697,7 +4708,7 @@ trait MLTensorDescriptor extends MLOperandDescriptor:
 
 @js.native
 trait MLSliceOptions extends MLOperatorOptions:
-  var strides: scala.scalajs.js.Any = js.native
+  var strides: scala.scalajs.js.Array[Int] = js.native
 
 @js.native
 trait MLLeakyReluOptions extends MLOperatorOptions:
@@ -4705,15 +4716,15 @@ trait MLLeakyReluOptions extends MLOperatorOptions:
 
 @js.native
 trait MLConvTranspose2dOptions extends MLOperatorOptions:
-  var padding: scala.scalajs.js.Any       = js.native
-  var strides: scala.scalajs.js.Any       = js.native
-  var dilations: scala.scalajs.js.Any     = js.native
-  var outputPadding: scala.scalajs.js.Any = js.native
-  var outputSizes: scala.scalajs.js.Any   = js.native
-  var groups: Int                         = js.native
-  var inputLayout: String                 = js.native
-  var filterLayout: String                = js.native
-  var bias: MLOperand                     = js.native
+  var padding: scala.scalajs.js.Array[Int]       = js.native
+  var strides: scala.scalajs.js.Array[Int]       = js.native
+  var dilations: scala.scalajs.js.Array[Int]     = js.native
+  var outputPadding: scala.scalajs.js.Array[Int] = js.native
+  var outputSizes: scala.scalajs.js.Array[Int]   = js.native
+  var groups: Int                                = js.native
+  var inputLayout: String                        = js.native
+  var filterLayout: String                       = js.native
+  var bias: MLOperand                            = js.native
 end MLConvTranspose2dOptions
 
 @js.native
@@ -4736,11 +4747,11 @@ trait MLInstanceNormalizationOptions extends MLOperatorOptions:
 
 @js.native
 trait MLLstmCellOptions extends MLOperatorOptions:
-  var bias: MLOperand                   = js.native
-  var recurrentBias: MLOperand          = js.native
-  var peepholeWeight: MLOperand         = js.native
-  var layout: String                    = js.native
-  var activations: scala.scalajs.js.Any = js.native
+  var bias: MLOperand                             = js.native
+  var recurrentBias: MLOperand                    = js.native
+  var peepholeWeight: MLOperand                   = js.native
+  var layout: String                              = js.native
+  var activations: scala.scalajs.js.Array[String] = js.native
 
 @js.native
 trait MLGemmSupportLimits extends js.Object:
@@ -4771,11 +4782,11 @@ trait MLGemmOptions extends MLOperatorOptions:
 
 @js.native
 trait MLGruCellOptions extends MLOperatorOptions:
-  var bias: MLOperand                   = js.native
-  var recurrentBias: MLOperand          = js.native
-  var resetAfter: Boolean               = js.native
-  var layout: String                    = js.native
-  var activations: scala.scalajs.js.Any = js.native
+  var bias: MLOperand                             = js.native
+  var recurrentBias: MLOperand                    = js.native
+  var resetAfter: Boolean                         = js.native
+  var layout: String                              = js.native
+  var activations: scala.scalajs.js.Array[String] = js.native
 
 @js.native
 trait MLNormalizationSupportLimits extends js.Object:
@@ -4818,8 +4829,8 @@ trait MLTensorLimits extends js.Object:
 
 @js.native
 trait MLOperandDescriptor extends js.Object:
-  var dataType: String            = js.native
-  var shape: scala.scalajs.js.Any = js.native
+  var dataType: String                   = js.native
+  var shape: scala.scalajs.js.Array[Int] = js.native
 
 @js.native
 trait MLArgMinMaxOptions extends MLOperatorOptions:
@@ -4828,13 +4839,13 @@ trait MLArgMinMaxOptions extends MLOperatorOptions:
 
 @js.native
 trait MLConv2dOptions extends MLOperatorOptions:
-  var padding: scala.scalajs.js.Any   = js.native
-  var strides: scala.scalajs.js.Any   = js.native
-  var dilations: scala.scalajs.js.Any = js.native
-  var groups: Int                     = js.native
-  var inputLayout: String             = js.native
-  var filterLayout: String            = js.native
-  var bias: MLOperand                 = js.native
+  var padding: scala.scalajs.js.Array[Int]   = js.native
+  var strides: scala.scalajs.js.Array[Int]   = js.native
+  var dilations: scala.scalajs.js.Array[Int] = js.native
+  var groups: Int                            = js.native
+  var inputLayout: String                    = js.native
+  var filterLayout: String                   = js.native
+  var bias: MLOperand                        = js.native
 
 @js.native
 trait MLScatterSupportLimits extends js.Object:
@@ -4862,10 +4873,10 @@ trait MLConv2dSupportLimits extends js.Object:
 
 @js.native
 trait MLResample2dOptions extends MLOperatorOptions:
-  var mode: String                 = js.native
-  var scales: scala.scalajs.js.Any = js.native
-  var sizes: scala.scalajs.js.Any  = js.native
-  var axes: scala.scalajs.js.Any   = js.native
+  var mode: String                           = js.native
+  var scales: scala.scalajs.js.Array[Double] = js.native
+  var sizes: scala.scalajs.js.Array[Int]     = js.native
+  var axes: scala.scalajs.js.Array[Int]      = js.native
 
 @js.native
 trait RTCEncodedVideoFrameOptions extends js.Object:
@@ -4878,14 +4889,14 @@ trait WorkerAndParameters extends js.Object:
 
 @js.native
 trait RTCEncodedFrameMetadata extends js.Object:
-  var synchronizationSource: Int                = js.native
-  var payloadType: scala.scalajs.js.Any         = js.native
-  var contributingSources: scala.scalajs.js.Any = js.native
-  var rtpTimestamp: Int                         = js.native
-  var receiveTime: Double                       = js.native
-  var captureTime: Double                       = js.native
-  var senderCaptureTimeOffset: Double           = js.native
-  var mimeType: String                          = js.native
+  var synchronizationSource: Int                       = js.native
+  var payloadType: scala.scalajs.js.Any                = js.native
+  var contributingSources: scala.scalajs.js.Array[Int] = js.native
+  var rtpTimestamp: Int                                = js.native
+  var receiveTime: Double                              = js.native
+  var captureTime: Double                              = js.native
+  var senderCaptureTimeOffset: Double                  = js.native
+  var mimeType: String                                 = js.native
 end RTCEncodedFrameMetadata
 
 @js.native
@@ -4900,13 +4911,13 @@ trait RTCRtpSFrameEncrypterOptions extends SFrameTransformOptions:
 
 @js.native
 trait RTCEncodedVideoFrameMetadata extends RTCEncodedFrameMetadata:
-  var frameId: Int                       = js.native
-  var dependencies: scala.scalajs.js.Any = js.native
-  var width: Int                         = js.native
-  var height: Int                        = js.native
-  var spatialIndex: Int                  = js.native
-  var temporalIndex: Int                 = js.native
-  var timestamp: Int                     = js.native
+  var frameId: Int                              = js.native
+  var dependencies: scala.scalajs.js.Array[Int] = js.native
+  var width: Int                                = js.native
+  var height: Int                               = js.native
+  var spatialIndex: Int                         = js.native
+  var temporalIndex: Int                        = js.native
+  var timestamp: Int                            = js.native
 
 @js.native
 trait RTCEncodedAudioFrameMetadata extends RTCEncodedFrameMetadata:
@@ -4923,8 +4934,8 @@ trait RTCEncodedAudioFrameOptions extends js.Object:
 
 @js.native
 trait RTCIceGatherOptions extends js.Object:
-  var gatherPolicy: String             = js.native
-  var iceServers: scala.scalajs.js.Any = js.native
+  var gatherPolicy: String                             = js.native
+  var iceServers: scala.scalajs.js.Array[RTCIceServer] = js.native
 
 @js.native
 trait RTCIdentityValidationResult extends js.Object:
@@ -4944,8 +4955,12 @@ trait RTCIdentityAssertionResult extends js.Object:
 
 @js.native
 trait RTCIdentityProvider extends js.Object:
-  var generateAssertion: scala.scalajs.js.Function3[String, String, RTCIdentityProviderOptions, Unit] = js.native
-  var validateAssertion: scala.scalajs.js.Function2[String, String, Unit]                             = js.native
+  var generateAssertion
+      : scala.scalajs.js.Function3[String, String, RTCIdentityProviderOptions, scala.scalajs.js.Promise[
+        RTCIdentityAssertionResult
+      ]] = js.native
+  var validateAssertion
+      : scala.scalajs.js.Function2[String, String, scala.scalajs.js.Promise[RTCIdentityValidationResult]] = js.native
 
 @js.native
 trait RTCIdentityProviderDetails extends js.Object:
@@ -5011,40 +5026,40 @@ trait RTCReceivedRtpStreamStats extends RTCRtpStreamStats:
 
 @js.native
 trait RTCOutboundRtpStreamStats extends RTCSentRtpStreamStats:
-  var mid: String                                      = js.native
-  var mediaSourceId: String                            = js.native
-  var remoteId: String                                 = js.native
-  var rid: String                                      = js.native
-  var encodingIndex: Int                               = js.native
-  var headerBytesSent: Int                             = js.native
-  var retransmittedPacketsSent: Int                    = js.native
-  var retransmittedBytesSent: Int                      = js.native
-  var rtxSsrc: Int                                     = js.native
-  var targetBitrate: Double                            = js.native
-  var totalEncodedBytesTarget: Int                     = js.native
-  var frameWidth: Int                                  = js.native
-  var frameHeight: Int                                 = js.native
-  var framesPerSecond: Double                          = js.native
-  var framesSent: Int                                  = js.native
-  var hugeFramesSent: Int                              = js.native
-  var framesEncoded: Int                               = js.native
-  var keyFramesEncoded: Int                            = js.native
-  var qpSum: Int                                       = js.native
-  var psnrSum: scala.scalajs.js.Any                    = js.native
-  var psnrMeasurements: Int                            = js.native
-  var totalEncodeTime: Double                          = js.native
-  var totalPacketSendDelay: Double                     = js.native
-  var qualityLimitationReason: String                  = js.native
-  var qualityLimitationDurations: scala.scalajs.js.Any = js.native
-  var qualityLimitationResolutionChanges: Int          = js.native
-  var nackCount: Int                                   = js.native
-  var firCount: Int                                    = js.native
-  var pliCount: Int                                    = js.native
-  var encoderImplementation: String                    = js.native
-  var powerEfficientEncoder: Boolean                   = js.native
-  var active: Boolean                                  = js.native
-  var scalabilityMode: String                          = js.native
-  var packetsSentWithEct1: Int                         = js.native
+  var mid: String                                                     = js.native
+  var mediaSourceId: String                                           = js.native
+  var remoteId: String                                                = js.native
+  var rid: String                                                     = js.native
+  var encodingIndex: Int                                              = js.native
+  var headerBytesSent: Int                                            = js.native
+  var retransmittedPacketsSent: Int                                   = js.native
+  var retransmittedBytesSent: Int                                     = js.native
+  var rtxSsrc: Int                                                    = js.native
+  var targetBitrate: Double                                           = js.native
+  var totalEncodedBytesTarget: Int                                    = js.native
+  var frameWidth: Int                                                 = js.native
+  var frameHeight: Int                                                = js.native
+  var framesPerSecond: Double                                         = js.native
+  var framesSent: Int                                                 = js.native
+  var hugeFramesSent: Int                                             = js.native
+  var framesEncoded: Int                                              = js.native
+  var keyFramesEncoded: Int                                           = js.native
+  var qpSum: Int                                                      = js.native
+  var psnrSum: scala.scalajs.js.Dictionary[Double]                    = js.native
+  var psnrMeasurements: Int                                           = js.native
+  var totalEncodeTime: Double                                         = js.native
+  var totalPacketSendDelay: Double                                    = js.native
+  var qualityLimitationReason: String                                 = js.native
+  var qualityLimitationDurations: scala.scalajs.js.Dictionary[Double] = js.native
+  var qualityLimitationResolutionChanges: Int                         = js.native
+  var nackCount: Int                                                  = js.native
+  var firCount: Int                                                   = js.native
+  var pliCount: Int                                                   = js.native
+  var encoderImplementation: String                                   = js.native
+  var powerEfficientEncoder: Boolean                                  = js.native
+  var active: Boolean                                                 = js.native
+  var scalabilityMode: String                                         = js.native
+  var packetsSentWithEct1: Int                                        = js.native
 end RTCOutboundRtpStreamStats
 
 @js.native
@@ -5234,9 +5249,9 @@ trait RTCErrorInit extends js.Object:
 
 @js.native
 trait RTCRtpParameters extends js.Object:
-  var headerExtensions: scala.scalajs.js.Any = js.native
-  var rtcp: RTCRtcpParameters                = js.native
-  var codecs: scala.scalajs.js.Any           = js.native
+  var headerExtensions: scala.scalajs.js.Array[RTCRtpHeaderExtensionParameters] = js.native
+  var rtcp: RTCRtcpParameters                                                   = js.native
+  var codecs: scala.scalajs.js.Array[RTCRtpCodecParameters]                     = js.native
 
 @js.native
 trait RTCLocalIceCandidateInit extends RTCIceCandidateInit:
@@ -5286,12 +5301,12 @@ trait RTCOfferOptions extends RTCOfferAnswerOptions:
 
 @js.native
 trait RTCConfiguration extends js.Object:
-  var iceServers: scala.scalajs.js.Any           = js.native
-  var iceTransportPolicy: String                 = js.native
-  var bundlePolicy: String                       = js.native
-  var rtcpMuxPolicy: String                      = js.native
-  var certificates: scala.scalajs.js.Any         = js.native
-  var iceCandidatePoolSize: scala.scalajs.js.Any = js.native
+  var iceServers: scala.scalajs.js.Array[RTCIceServer]     = js.native
+  var iceTransportPolicy: String                           = js.native
+  var bundlePolicy: String                                 = js.native
+  var rtcpMuxPolicy: String                                = js.native
+  var certificates: scala.scalajs.js.Array[RTCCertificate] = js.native
+  var iceCandidatePoolSize: scala.scalajs.js.Any           = js.native
 
 @js.native
 trait RTCSessionDescriptionInit extends js.Object:
@@ -5307,10 +5322,10 @@ trait RTCRtpCodecParameters extends RTCRtpCodec:
 
 @js.native
 trait RTCTrackEventInit extends EventInit:
-  var receiver: RTCRtpReceiver       = js.native
-  var track: MediaStreamTrack        = js.native
-  var streams: scala.scalajs.js.Any  = js.native
-  var transceiver: RTCRtpTransceiver = js.native
+  var receiver: RTCRtpReceiver                     = js.native
+  var track: MediaStreamTrack                      = js.native
+  var streams: scala.scalajs.js.Array[MediaStream] = js.native
+  var transceiver: RTCRtpTransceiver               = js.native
 
 @js.native
 trait RTCAnswerOptions extends RTCOfferAnswerOptions
@@ -5341,8 +5356,8 @@ trait RTCRtpHeaderExtensionParameters extends js.Object:
 
 @js.native
 trait RTCRtpSendParameters extends RTCRtpParameters:
-  var transactionId: String           = js.native
-  var encodings: scala.scalajs.js.Any = js.native
+  var transactionId: String                                       = js.native
+  var encodings: scala.scalajs.js.Array[RTCRtpEncodingParameters] = js.native
 
 @js.native
 trait RTCDataChannelEventInit extends EventInit:
@@ -5376,9 +5391,9 @@ trait RTCDtlsFingerprint extends js.Object:
 
 @js.native
 trait RTCRtpTransceiverInit extends js.Object:
-  var direction: String                   = js.native
-  var streams: scala.scalajs.js.Any       = js.native
-  var sendEncodings: scala.scalajs.js.Any = js.native
+  var direction: String                                               = js.native
+  var streams: scala.scalajs.js.Array[MediaStream]                    = js.native
+  var sendEncodings: scala.scalajs.js.Array[RTCRtpEncodingParameters] = js.native
 
 @js.native
 trait RTCDataChannelInit extends js.Object:
@@ -5396,8 +5411,8 @@ trait RTCLocalSessionDescriptionInit extends js.Object:
 
 @js.native
 trait RTCRtpCapabilities extends js.Object:
-  var codecs: scala.scalajs.js.Any           = js.native
-  var headerExtensions: scala.scalajs.js.Any = js.native
+  var codecs: scala.scalajs.js.Array[RTCRtpCodec]                               = js.native
+  var headerExtensions: scala.scalajs.js.Array[RTCRtpHeaderExtensionCapability] = js.native
 
 @js.native
 trait RTCRtpCodingParameters extends js.Object:
@@ -5448,15 +5463,15 @@ trait WebTransportSendOptions extends js.Object:
 
 @js.native
 trait WebTransportOptions extends js.Object:
-  var allowPooling: Boolean                                   = js.native
-  var requireUnreliable: Boolean                              = js.native
-  var headers: scala.scalajs.js.Any                           = js.native
-  var serverCertificateHashes: scala.scalajs.js.Any           = js.native
-  var congestionControl: String                               = js.native
-  var anticipatedConcurrentIncomingUnidirectionalStreams: Int = js.native
-  var anticipatedConcurrentIncomingBidirectionalStreams: Int  = js.native
-  var protocols: scala.scalajs.js.Any                         = js.native
-  var datagramsReadableType: String                           = js.native
+  var allowPooling: Boolean                                             = js.native
+  var requireUnreliable: Boolean                                        = js.native
+  var headers: scala.scalajs.js.Any                                     = js.native
+  var serverCertificateHashes: scala.scalajs.js.Array[WebTransportHash] = js.native
+  var congestionControl: String                                         = js.native
+  var anticipatedConcurrentIncomingUnidirectionalStreams: Int           = js.native
+  var anticipatedConcurrentIncomingBidirectionalStreams: Int            = js.native
+  var protocols: scala.scalajs.js.Array[String]                         = js.native
+  var datagramsReadableType: String                                     = js.native
 end WebTransportOptions
 
 @js.native
@@ -5490,13 +5505,13 @@ trait WebTransportSendStreamStats extends js.Object:
 
 @js.native
 trait USBPermissionDescriptor extends PermissionDescriptor:
-  var filters: scala.scalajs.js.Any          = js.native
-  var exclusionFilters: scala.scalajs.js.Any = js.native
+  var filters: scala.scalajs.js.Array[USBDeviceFilter]          = js.native
+  var exclusionFilters: scala.scalajs.js.Array[USBDeviceFilter] = js.native
 
 @js.native
 trait USBDeviceRequestOptions extends js.Object:
-  var filters: scala.scalajs.js.Any          = js.native
-  var exclusionFilters: scala.scalajs.js.Any = js.native
+  var filters: scala.scalajs.js.Array[USBDeviceFilter]          = js.native
+  var exclusionFilters: scala.scalajs.js.Array[USBDeviceFilter] = js.native
 
 @js.native
 trait USBBlocklistEntry extends js.Object:
@@ -5533,14 +5548,14 @@ trait AllowedUSBDevice extends js.Object:
 
 @js.native
 trait USBPermissionStorage extends js.Object:
-  var allowedDevices: scala.scalajs.js.Any = js.native
+  var allowedDevices: scala.scalajs.js.Array[AllowedUSBDevice] = js.native
 
 @js.native
 trait XRDepthStateInit extends js.Object:
-  var usagePreference: scala.scalajs.js.Any      = js.native
-  var dataFormatPreference: scala.scalajs.js.Any = js.native
-  var depthTypeRequest: scala.scalajs.js.Any     = js.native
-  var matchDepthView: Boolean                    = js.native
+  var usagePreference: scala.scalajs.js.Array[String]      = js.native
+  var dataFormatPreference: scala.scalajs.js.Array[String] = js.native
+  var depthTypeRequest: scala.scalajs.js.Array[String]     = js.native
+  var matchDepthView: Boolean                              = js.native
 
 @js.native
 trait XRDOMOverlayInit extends js.Object:
@@ -5552,15 +5567,15 @@ trait XRDOMOverlayState extends js.Object:
 
 @js.native
 trait XRHitTestOptionsInit extends js.Object:
-  var space: XRSpace                    = js.native
-  var entityTypes: scala.scalajs.js.Any = js.native
-  var offsetRay: XRRay                  = js.native
+  var space: XRSpace                              = js.native
+  var entityTypes: scala.scalajs.js.Array[String] = js.native
+  var offsetRay: XRRay                            = js.native
 
 @js.native
 trait XRTransientInputHitTestOptionsInit extends js.Object:
-  var profile: String                   = js.native
-  var entityTypes: scala.scalajs.js.Any = js.native
-  var offsetRay: XRRay                  = js.native
+  var profile: String                             = js.native
+  var entityTypes: scala.scalajs.js.Array[String] = js.native
+  var offsetRay: XRRay                            = js.native
 
 @js.native
 trait XRRayDirectionInit extends js.Object:
@@ -5579,8 +5594,8 @@ trait XRSessionEventInit extends EventInit:
 
 @js.native
 trait XRSessionInit extends js.Object:
-  var requiredFeatures: scala.scalajs.js.Any = js.native
-  var optionalFeatures: scala.scalajs.js.Any = js.native
+  var requiredFeatures: scala.scalajs.js.Array[String] = js.native
+  var optionalFeatures: scala.scalajs.js.Array[String] = js.native
 
 @js.native
 trait XRVisibilityMaskChangeEventInit extends EventInit:
@@ -5592,24 +5607,24 @@ trait XRVisibilityMaskChangeEventInit extends EventInit:
 
 @js.native
 trait XRRenderStateInit extends js.Object:
-  var depthNear: Double                 = js.native
-  var depthFar: Double                  = js.native
-  var passthroughFullyObscured: Boolean = js.native
-  var inlineVerticalFieldOfView: Double = js.native
-  var baseLayer: XRWebGLLayer           = js.native
-  var layers: scala.scalajs.js.Any      = js.native
+  var depthNear: Double                       = js.native
+  var depthFar: Double                        = js.native
+  var passthroughFullyObscured: Boolean       = js.native
+  var inlineVerticalFieldOfView: Double       = js.native
+  var baseLayer: XRWebGLLayer                 = js.native
+  var layers: scala.scalajs.js.Array[XRLayer] = js.native
 
 @js.native
 trait XRInputSourcesChangeEventInit extends EventInit:
-  var session: XRSession            = js.native
-  var added: scala.scalajs.js.Any   = js.native
-  var removed: scala.scalajs.js.Any = js.native
+  var session: XRSession                             = js.native
+  var added: scala.scalajs.js.Array[XRInputSource]   = js.native
+  var removed: scala.scalajs.js.Array[XRInputSource] = js.native
 
 @js.native
 trait XRPermissionDescriptor extends PermissionDescriptor:
-  var mode: String                           = js.native
-  var requiredFeatures: scala.scalajs.js.Any = js.native
-  var optionalFeatures: scala.scalajs.js.Any = js.native
+  var mode: String                                     = js.native
+  var requiredFeatures: scala.scalajs.js.Array[String] = js.native
+  var optionalFeatures: scala.scalajs.js.Array[String] = js.native
 
 @js.native
 trait XRWebGLLayerInit extends js.Object:
@@ -5730,12 +5745,12 @@ trait WriterWriteOptions extends js.Object:
 
 @js.native
 trait WriterCreateCoreOptions extends js.Object:
-  var tone: String                                   = js.native
-  var format: String                                 = js.native
-  var length: String                                 = js.native
-  var expectedInputLanguages: scala.scalajs.js.Any   = js.native
-  var expectedContextLanguages: scala.scalajs.js.Any = js.native
-  var outputLanguage: String                         = js.native
+  var tone: String                                             = js.native
+  var format: String                                           = js.native
+  var length: String                                           = js.native
+  var expectedInputLanguages: scala.scalajs.js.Array[String]   = js.native
+  var expectedContextLanguages: scala.scalajs.js.Array[String] = js.native
+  var outputLanguage: String                                   = js.native
 
 @js.native
 trait RewriterRewriteOptions extends js.Object:
@@ -5755,12 +5770,12 @@ trait SummarizerSummarizeOptions extends js.Object:
 
 @js.native
 trait RewriterCreateCoreOptions extends js.Object:
-  var tone: String                                   = js.native
-  var format: String                                 = js.native
-  var length: String                                 = js.native
-  var expectedInputLanguages: scala.scalajs.js.Any   = js.native
-  var expectedContextLanguages: scala.scalajs.js.Any = js.native
-  var outputLanguage: String                         = js.native
+  var tone: String                                             = js.native
+  var format: String                                           = js.native
+  var length: String                                           = js.native
+  var expectedInputLanguages: scala.scalajs.js.Array[String]   = js.native
+  var expectedContextLanguages: scala.scalajs.js.Array[String] = js.native
+  var outputLanguage: String                                   = js.native
 
 @js.native
 trait SummarizerCreateOptions extends SummarizerCreateCoreOptions:
@@ -5770,13 +5785,13 @@ trait SummarizerCreateOptions extends SummarizerCreateCoreOptions:
 
 @js.native
 trait SummarizerCreateCoreOptions extends js.Object:
-  var `type`: String                                 = js.native
-  var format: String                                 = js.native
-  var length: String                                 = js.native
-  var preference: String                             = js.native
-  var expectedInputLanguages: scala.scalajs.js.Any   = js.native
-  var expectedContextLanguages: scala.scalajs.js.Any = js.native
-  var outputLanguage: String                         = js.native
+  var `type`: String                                           = js.native
+  var format: String                                           = js.native
+  var length: String                                           = js.native
+  var preference: String                                       = js.native
+  var expectedInputLanguages: scala.scalajs.js.Array[String]   = js.native
+  var expectedContextLanguages: scala.scalajs.js.Array[String] = js.native
+  var outputLanguage: String                                   = js.native
 
 @js.native
 trait ProgressEventInit extends EventInit:

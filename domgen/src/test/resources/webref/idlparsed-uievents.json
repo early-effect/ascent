@@ -10,8 +10,27 @@
         "name": "Event",
         "inheritance": null,
         "members": [
+          {
+            "type": "constructor",
+            "arguments": [
+              { "type": "argument", "name": "type", "idlType": { "type": "argument-type", "idlType": "DOMString" }, "optional": false },
+              { "type": "argument", "name": "eventInitDict", "idlType": { "type": "argument-type", "idlType": "EventInit" }, "optional": true }
+            ]
+          },
+          { "type": "const", "name": "NONE", "idlType": { "idlType": "unsigned short" } },
+          { "type": "const", "name": "CAPTURING_PHASE", "idlType": { "idlType": "unsigned short" } },
+          { "type": "const", "name": "AT_TARGET", "idlType": { "idlType": "unsigned short" } },
+          { "type": "const", "name": "BUBBLING_PHASE", "idlType": { "idlType": "unsigned short" } },
           { "type": "attribute", "name": "type", "idlType": { "type": "attribute-type", "nullable": false, "union": false, "idlType": "DOMString" } },
           { "type": "attribute", "name": "bubbles", "idlType": { "type": "attribute-type", "nullable": false, "union": false, "idlType": "boolean" } }
+        ]
+      },
+      "EventInit": {
+        "type": "dictionary",
+        "name": "EventInit",
+        "inheritance": null,
+        "members": [
+          { "type": "field", "name": "bubbles", "idlType": { "idlType": "boolean" }, "required": false }
         ]
       },
       "UIEvent": {
