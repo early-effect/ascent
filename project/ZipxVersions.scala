@@ -18,6 +18,8 @@ object MyVersions extends ZipxVersions:
   val zio                = Lib("dev.zio", "zio", "2.1.26")
   val zioTest            = zio.mod("zio-test")
   val zioTestSbt         = zio.mod("zio-test-sbt")
+  // Hold 0.10.0: chekhov-driver 0.0.5 was compiled against JsonEncoderDerivation, which zio-json 1.0.0
+  // removed (native Scala 3 macros). e2e then dies with NoClassDefFoundError until chekhov is rebuilt.
   val zioJson            = Lib("dev.zio", "zio-json", "0.10.0")
   val zioHttp            = Lib("dev.zio", "zio-http", "3.11.4")
   val zioHttpDatastarSdk = zioHttp.mod("zio-http-datastar-sdk")
@@ -40,7 +42,7 @@ object MyVersions extends ZipxVersions:
   val chekhovDriver  = chekhovZioTest.mod("chekhov-driver")
   val chekhovCore    = chekhovZioTest.mod("chekhov-core")
   val chekhovDom     = chekhovZioTest.mod("chekhov-dom")
-  val neotype        = Lib("io.github.kitlangton", "neotype", "0.7.1")
+  val neotype        = Lib("io.github.kitlangton", "neotype", "0.7.2")
 
   val scalajs        = Plugin("org.scala-js", "sbt-scalajs", "1.22.0")
   val scalaNative    = Plugin("org.scala-native", "sbt-scala-native", "0.5.12")
