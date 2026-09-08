@@ -19,6 +19,15 @@ object AscentZipx:
   private def alias(name: String): SbtCommand =
     SbtCommand.raw(name).fold(msg => sys.error(s"zipx: $msg"), identity)
 
+  /** sbt 2 packages class directories as `classes.sbtdir.zip` for the action cache. Concurrent compiles of the same
+    * module can drop that zip (`coreJS / compileIncremental`: file referenced by the build does not exist). Limit
+    * Compile to 1 in the e2e session only: a global limit of 1 serializes test / test-js / test-native as well.
+    */
+  private val serializeE2eCompile: SbtCommand =
+    SbtCommand
+      .raw("set Global / concurrentRestrictions += Tags.limit(Tags.Compile, 1)")
+      .fold(msg => sys.error(s"zipx: $msg"), identity)
+
   /** `apt-get update && apt-get install -y <packages>` as a shell AST rather than a string. */
   private def aptInstall(packages: Word*): Script =
     Script(
@@ -110,6 +119,7 @@ object AscentZipx:
         .once(
           name = CapabilityName("e2e"),
           command = zipxTasks.session(
+            serializeE2eCompile,
             LocalProject("e2e") / chekhovInstall,
             LocalProject("e2e") / Test / testFull,
             LocalProject("chekhovJs") / Test / testFull,
