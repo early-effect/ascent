@@ -91,7 +91,7 @@ package object dsl:
   /** Keyed-list rendering with a per-item reactive `Squawk[A]` — the conduit-free way to get fine-grained per-row
     * updates. `render(key, initial, signal)` runs ONCE per key; the engine feeds the item's latest value into `signal`
     * on each parent emit (Eq-deduped), so a row repaints only the boundaries bound to fields that actually changed. The
-    * `Eq[A]` gates that dedup; it resolves structurally for case classes via `derives Eq`.
+    * `Eq[A]` gates that dedup; it resolves structurally for case classes and enums via `derives Eq`.
     */
   def forEachSignal[A, R](items: Squawk[Seq[A]])(key: A => String)(
       render: (String, A, Squawk[A]) => UI[R]
