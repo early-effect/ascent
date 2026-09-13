@@ -20,8 +20,8 @@ object MyVersions extends ZipxVersions:
   val zioTestSbt         = zio.mod("zio-test-sbt")
   // Hold 0.10.0: chekhov-driver 0.0.5 was compiled against JsonEncoderDerivation, which zio-json 1.0.0
   // removed (native Scala 3 macros). e2e then dies with NoClassDefFoundError until chekhov is rebuilt.
-  val zioJson            = Lib("dev.zio", "zio-json", "0.10.0")
-  val zioHttp            = Lib("dev.zio", "zio-http", "3.11.4")
+  val zioJson            = Lib("dev.zio", "zio-json", "1.1.0")
+  val zioHttp            = Lib("dev.zio", "zio-http", "3.11.5")
   val zioHttpDatastarSdk = zioHttp.mod("zio-http-datastar-sdk")
 
   val scalaJavaTime     = Lib("io.github.cquiroz", "scala-java-time", "2.7.0")
@@ -34,7 +34,7 @@ object MyVersions extends ZipxVersions:
   val scalafmtDynamic = Lib("org.scalameta", "scalafmt-dynamic", "3.11.5")
     .excluding(ZipxExclude.org("org.scala-lang.modules", "scala-collection-compat_2.13"))
 
-  val specular        = Lib("rocks.earlyeffect", "specular-core", "0.14.1")
+  val specular        = Lib("rocks.earlyeffect", "specular-core", "0.14.2")
   val specularZioTest = specular.mod("specular-zio-test")
   val specularTheme   = specular.mod("early-effect-docs-theme")
 
@@ -47,9 +47,9 @@ object MyVersions extends ZipxVersions:
   val scalajs        = Plugin("org.scala-js", "sbt-scalajs", "1.22.0")
   val scalaNative    = Plugin("org.scala-native", "sbt-scala-native", "0.5.12")
   val scalafmt       = Plugin("org.scalameta", "sbt-scalafmt", "2.6.2")
-  val scalafix       = Plugin("ch.epfl.scala", "sbt-scalafix", "0.14.7")
+  val scalafix       = Plugin("ch.epfl.scala", "sbt-scalafix", "0.14.8")
   val dynverCi       = Plugin("rocks.earlyeffect", "sbt-dynver-ci", "0.2.3")
-  val specularPlugin = Plugin("rocks.earlyeffect", "sbt-specular", "0.14.1")
+  val specularPlugin = Plugin("rocks.earlyeffect", "sbt-specular", "0.14.2")
   val sbtSplice      = Plugin("rocks.earlyeffect", "sbt-splice", "0.1.0")
   val sbtReload      = Plugin("com.jamesward", "sbt-reload", "0.0.8")
   val sbtChekhov     = Plugin("rocks.earlyeffect", "sbt-chekhov", "0.0.5")
