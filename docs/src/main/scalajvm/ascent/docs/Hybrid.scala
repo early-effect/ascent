@@ -3,10 +3,10 @@ package ascent.docs
 import ascent.*
 import ascent.datastar.http.AscentDatastar
 import ascent.dsl.*
+import heddle.*
+import heddle.datastar.{Datastar, events}
 import specular.{DocSpec, exampleZIO, md, page, section}
 import zio.*
-import zio.http.*
-import zio.http.datastar.*
 import zio.test.*
 
 /** Client serverRegion + server patchRegion. */
@@ -37,19 +37,18 @@ E.div(
 `patchRegion` targets `#id` with inner mode by default; the same id the client mounted.
 """,
       exampleZIO {
-        val list                                            = E.ul(E.li("hello"), E.li("world"))
-        val handler0: Handler[Datastar, Nothing, Any, Unit] = Handler.fromZIO {
+        val list = E.ul(E.li("hello"), E.li("world"))
+        val sse  = events {
           AscentDatastar.patchRegion("messages", list)
         }
-        val sse = events(handler0)
-        for
-          response <- sse(())
-          body     <- response.body.asString.orDie
+        (for
+          response <- sse.run(Request.get("/sse"))
+          body     <- response.body.utf8
         yield (
           body.contains("event: datastar-patch-elements"),
           body.contains("data: selector #messages"),
           body.contains("hello"),
-        )
+        )).orDie
       }.assert { case (ev, sel, html) => assertTrue(ev, sel, html) },
     ),
     section("Scoped live server")(
@@ -70,28 +69,33 @@ wiring lives in `example/hybrid-chat`.
         def routes(msgs: Ref[Vector[String]], pulse: Hub[Unit]): Routes[Any, Nothing] =
           Routes(
             Method.GET / "sse" -> events {
-              handler { (_: Request) =>
-                for
-                  _      <- pushMessages(msgs)
-                  stream <- pulse.subscribe.map(zio.stream.ZStream.fromQueue(_))
-                  _      <- stream.mapZIO(_ => pushMessages(msgs)).runDrain
-                yield ()
-              }
+              for
+                _      <- pushMessages(msgs)
+                stream <- pulse.subscribe.map(zio.stream.ZStream.fromQueue(_))
+                _      <- stream.mapZIO(_ => pushMessages(msgs)).runDrain
+              yield ()
             },
             Method.POST / "send" -> handler { (_: Request) =>
               (msgs.update(_ :+ "ping") *> pulse.publish(()).unit).as(Response.ok)
             },
-          ).sandbox
+          )
 
         (for
-          pulse <- Hub.unbounded[Unit]
-          msgs  <- Ref.make(Vector("welcome"))
-          port  <- Server.install(routes(msgs, pulse))
-          base = s"http://localhost:$port"
-          st <- Client.batched(Request.post(s"$base/send", Body.empty)).map(_.status)
-        yield st)
-          .provideSomeLayer(Server.defaultWith(_.port(0)) ++ Client.default)
-          .orDie
+          pulse  <- Hub.unbounded[Unit]
+          msgs   <- Ref.make(Vector("welcome"))
+          result <- ZIO
+            .scoped {
+              Server
+                .install(routes(msgs, pulse))
+                .mapError(e => RuntimeException(e.message))
+                .flatMap { server =>
+                  server.port.flatMap { port =>
+                    Client.request(Method.POST, s"http://127.0.0.1:$port/send").map(_.status)
+                  }
+                }
+            }
+            .provide(Server.defaultWith(_.port(0)))
+        yield result).orDie
       }.assert(st => assertTrue(st == Status.Ok)),
     ),
   )

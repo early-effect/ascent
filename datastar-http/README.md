@@ -1,26 +1,24 @@
 # ascent-datastar-http
 
-The **server-side** idiomatic wrapper over the official
-[`zio-http-datastar-sdk`](https://github.com/zio/zio-http). It makes a zio-http server "an ascent
-client": render an ascent `UI` subtree to HTML via [`ascent-html`](../html/) and push it through the
-SDK's `ServerSentEventGenerator` as a granular `patch-elements`, or push typed `patch-signals`.
+The **server-side** wrapper over [heddle](https://github.com/early-effect/heddle) Datastar SSE. It
+makes a heddle server "an ascent client": render an ascent `UI` subtree to HTML via
+[`ascent-html`](../html/) and push it as a granular `patch-elements`, or push typed `patch-signals`.
 
-> JVM only (the SDK + zio-http are JVM). Depends on `html` and `datastar`, plus
-> `zio-http-datastar-sdk` (version in [`ZipxVersions`](../project/ZipxVersions.scala)).
+> JVM only. Depends on `html`, `datastar`, `heddle`, and `heddle-zio-json` (versions in
+> [`ZipxVersions`](../project/ZipxVersions.scala)).
 
-You author views **once** in ascent's typed DSL + CSS-in-Scala; the SDK owns the SSE transport, signal
-reading, and (via zio-http) compression. A datastar user keeps the SDK's `events { }` /
-`req.readSignals` idiom and only swaps `template2` for ascent views.
+You author views **once** in ascent's typed DSL + CSS-in-Scala; heddle owns the SSE transport.
 
 ```scala
 import ascent.datastar.http.AscentDatastar
-import zio.http.datastar.*
+import heddle.*
+import heddle.datastar.events
 
 events {
   handler { (req: Request) =>
     for
-      _ <- AscentDatastar.patchRegion("messages", MessageView.list(msgs))  // ascent UI → #messages
-      _ <- AscentDatastar.patchSignal("typing", "Alice is typing…")        // typed signal
+      _ <- AscentDatastar.patchRegion("messages", MessageView.list(msgs))
+      _ <- AscentDatastar.patchSignal("typing", "Alice is typing…")
     yield ()
   }
 }
@@ -41,12 +39,10 @@ client's [`serverRegion(id)`](../core/) boundary.
 
 ## Compression
 
-Brotli/gzip are **server config**, not a dependency of this module — configure zio-http's
-`responseCompression`. Note Netty's brotli needs `brotli4j` on the classpath, and brotli's `lgwin`
-must be set explicitly (the default `-1` throws):
+Brotli/gzip are middleware, not a dependency of this module:
 
 ```scala
-Server.Config.CompressionOptions.brotli(quality = 8, lgwin = 24)
+routes @@ Middleware.compress(compressors = Chunk(heddle.brotli.Brotli.compressor, Compressor.gzip))
 ```
 
 See [`example/hybrid-chat-server`](../example/hybrid-chat-server/) and

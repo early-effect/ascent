@@ -25,8 +25,11 @@ trait AscentChekhovSuite extends ZIOSpecDefault:
     artifactsDir = Path.of("target/chekhov"),
   )
 
-  protected def chekhovLayer: ZLayer[Any, ChekhovError, ChekhovSuite.Env] =
+  protected val chekhovLayer: ZLayer[Any, ChekhovError, ChekhovSuite.Env] =
     ZLayer.succeed(chekhovConfig) >>> ChekhovSuite.fullStack
+
+  protected val testLayers: ZLayer[Any, ChekhovError, heddle.Server.Config & ChekhovSuite.Env] =
+    PreviewServe.serverLayer ++ chekhovLayer
 
   /** Kill CSS motion so Playwright click is not blocked by fill-mode fade-ins or the looping title glow. */
   protected def settle(page: Page): IO[ChekhovError, Unit] =

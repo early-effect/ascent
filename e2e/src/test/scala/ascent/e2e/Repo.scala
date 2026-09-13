@@ -1,7 +1,7 @@
 package ascent.e2e
 
+import heddle.*
 import zio.*
-import zio.http.*
 
 import java.nio.file.{Files, Path, Paths}
 
@@ -29,23 +29,31 @@ object Repo:
 
   /** Copy a staged preview so one spec's `dev-stamp` rewrite cannot reload another spec's tab. */
   def copyPreview(exampleDir: String): Task[Path] =
-    ZIO.attempt {
+    ZIO.attempt:
       val src  = preview(exampleDir)
       val dest = Files.createTempDirectory(s"ascent-e2e-$exampleDir-")
-      Using.resource(Files.walk(src)) { walk =>
-        walk.forEach { from =>
+      Using.resource(Files.walk(src)): walk =>
+        walk.forEach: from =>
           val to = dest.resolve(src.relativize(from))
           if Files.isDirectory(from) then Files.createDirectories(to)
           else Files.copy(from, to)
-        }
-      }
       dest
-    }
 end Repo
 
 object PreviewServe:
-  val serverLayer: ZLayer[Any, Throwable, Server] =
-    Server.defaultWith(_.onAnyOpenPort)
+  val serverLayer: ULayer[Server.Config] =
+    Server.defaultWith(_.port(0))
 
-  def install(routes: Routes[Any, Response]): ZIO[Server, Throwable, PreviewUrl] =
-    Server.install(routes).map(port => PreviewUrl(s"http://127.0.0.1:$port"))
+  def install(routes: Routes[Any, Response]): ZIO[Server.Config & Scope, Throwable, PreviewUrl] =
+    Server
+      .install(routes)
+      .mapError(e => RuntimeException(e.message))
+      .flatMap: server =>
+        server.port.map(port => PreviewUrl(s"http://127.0.0.1:$port"))
+
+  /** Per-test scope: halt runs when `use` finishes, before the next test. */
+  def withServer[R, E, A](
+      routes: Routes[Any, Response]
+  )(use: PreviewUrl => ZIO[R, E, A]): ZIO[R & Server.Config, E | Throwable, A] =
+    ZIO.scoped(install(routes).flatMap(use))
+end PreviewServe
