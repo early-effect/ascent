@@ -2,7 +2,7 @@ import scala.collection.immutable.ListMap
 
 import sbt.*
 import sbt.Keys.testFull
-import zipx.plugin.ZipxPlugin.autoImport.{Exec as _, *}
+import zipx.plugin.ZipxPlugin.autoImport.*
 import zipx.shell.Exec as ZipxExec
 
 import chekhov.sbt.ChekhovPlugin.autoImport.chekhovInstall
