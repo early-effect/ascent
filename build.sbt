@@ -51,9 +51,8 @@ pomIncludeRepository := { _ => false }
 // loudly if anyone tries to publish off-CI.
 usePgpKeyHex(sys.env.getOrElse("PGP_KEY_HEX", "MISSING_KEY_HEX"))
 
-// zio-schema-json 1.8.5 still pins zio-json 0.9.1 while we resolve 0.10.0. Under early-semver a
-// 0.9 -> 0.10 bump reads as breaking, so sbt 2.x's strict eviction check fails the build. The codec
-// API in play is unchanged across the bump, so force 0.10.0 rather than hold zio-json back.
+// Take zio-json 1.1.0 from heddle. Older transitives still pin 0.9/0.10; under early-semver that
+// is a hard eviction without a scheme. The old hold at 0.10.0 was for zio-http schema and is gone.
 libraryDependencySchemes += "dev.zio" %% "zio-json" % "always"
 
 val scalaVersions = Seq(scala3Version)
@@ -562,7 +561,7 @@ lazy val docs: ProjectMatrix = (projectMatrix in file("docs"))
         .settings(
           docsDogfoodSettings,
           MyVersions.docsJvm,
-          // specular-site (via the theme) still declares zio-json 0.9.x
+          // specular-site (via the theme) may still declare an older zio-json; take catalog 1.1.0.
           dependencyOverrides += MyVersions.moduleID(MyVersions.zioJson),
           zioTestSettings,
           Compile / mainClass             := Some("ascent.docs.ServeSite"),

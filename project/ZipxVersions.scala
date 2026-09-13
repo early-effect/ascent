@@ -18,9 +18,7 @@ object MyVersions extends ZipxVersions:
   val zio                = Lib("dev.zio", "zio", "2.1.26")
   val zioTest            = zio.mod("zio-test")
   val zioTestSbt         = zio.mod("zio-test-sbt")
-  // Hold 0.10.0: chekhov-driver 0.0.5 was compiled against JsonEncoderDerivation, which zio-json 1.0.0
-  // removed (native Scala 3 macros). e2e then dies with NoClassDefFoundError until chekhov is rebuilt.
-  val zioJson      = Lib("dev.zio", "zio-json", "0.10.0")
+  val zioJson      = Lib("dev.zio", "zio-json", "1.1.0")
   val heddle       = Lib("rocks.earlyeffect", "heddle", "0.1.0")
   val heddleJson   = heddle.mod("heddle-zio-json")
   val heddleBrotli = heddle.mod("heddle-brotli")
