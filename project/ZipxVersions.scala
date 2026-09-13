@@ -12,7 +12,7 @@ import zipx.*
   * module already pulls them (specular-core / specular-site via the docs theme).
   */
 object MyVersions extends ZipxVersions:
-  val sbt: SbtVersion     = SbtVersion("2.0.8")
+  val sbt: SbtVersion     = SbtVersion("2.1.0-M1")
   val scala: ScalaVersion = ScalaVersion("3.9.0")
 
   val zio                = Lib("dev.zio", "zio", "2.1.26")
@@ -36,7 +36,7 @@ object MyVersions extends ZipxVersions:
   val specularZioTest = specular.mod("specular-zio-test")
   val specularTheme   = specular.mod("early-effect-docs-theme")
 
-  val chekhovZioTest = Lib("rocks.earlyeffect", "chekhov-zio-test", "0.0.5")
+  val chekhovZioTest = Lib("rocks.earlyeffect", "chekhov-zio-test", "0.1.0")
   val chekhovDriver  = chekhovZioTest.mod("chekhov-driver")
   val chekhovCore    = chekhovZioTest.mod("chekhov-core")
   val chekhovDom     = chekhovZioTest.mod("chekhov-dom")
@@ -50,7 +50,7 @@ object MyVersions extends ZipxVersions:
   val specularPlugin = Plugin("rocks.earlyeffect", "sbt-specular", "0.14.1")
   val sbtSplice      = Plugin("rocks.earlyeffect", "sbt-splice", "0.1.0")
   val sbtReload      = Plugin("com.jamesward", "sbt-reload", "0.0.8")
-  val sbtChekhov     = Plugin("rocks.earlyeffect", "sbt-chekhov", "0.0.5")
+  val sbtChekhov     = Plugin("rocks.earlyeffect", "sbt-chekhov", "0.1.0")
 
   def zioTests = library(zioTest.test, zioTestSbt.test)
   def zioLib   = library(zio)
