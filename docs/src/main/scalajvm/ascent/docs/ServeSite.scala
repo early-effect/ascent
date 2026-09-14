@@ -1,8 +1,8 @@
 package ascent.docs
 
 import ascent.preview.{Preview, PreviewConfig}
+import heddle.*
 import zio.*
-import zio.http.*
 
 import java.nio.file.Paths
 

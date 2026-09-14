@@ -12,32 +12,31 @@ object PreviewReloadSpec extends AscentChekhovSuite:
 
   def spec =
     suite("preview reload")(
-      test("stamp rewrite reloads the tab; silent subscribe does not") {
-        (for
-          root <- Repo.copyPreview("todo-conduit")
-          stamp = root.resolve("assets/dev-stamp")
-          base <- PreviewServe.install(Preview.routes(PreviewConfig(root)))
-          page <- Chekhov.page
-          _    <- page.goto(base.value + "/")
-          _    <- Poll.until("app mounted")(page.innerText("body"))(_.nonEmpty)
-          _    <- page.evaluate(
-            "() => { window.__ascentLoadId = 'keep'; return window.__ascentLoadId }",
-            isFunction = true,
-          )
-          still <- page.evaluate("() => window.__ascentLoadId", isFunction = true).delay(400.millis)
-          _     <- ZIO.attempt(
-            Files.writeString(
-              stamp,
-              java.lang.Long.toString(java.lang.System.currentTimeMillis),
-              StandardCharsets.UTF_8,
-            )
-          )
-          gone <- Poll.until("tab reloaded")(page.evaluate("() => window.__ascentLoadId", isFunction = true))(json =>
-            !json.contains("keep")
-          )
-        yield assertTrue(still.contains("keep"), !gone.contains("keep")))
-          .tapError(_ => screenshot("preview-reload"))
-          .provide(PreviewServe.serverLayer.orDie, chekhovLayer)
-      }
-    )
+      test("stamp rewrite reloads the tab; silent subscribe does not"):
+        Repo
+          .copyPreview("todo-conduit")
+          .flatMap: root =>
+            val stamp = root.resolve("assets/dev-stamp")
+            PreviewServe.withServer(Preview.routes(PreviewConfig(root))): base =>
+              (for
+                page <- Chekhov.page
+                _    <- page.goto(base.value + "/")
+                _    <- Poll.until("app mounted")(page.innerText("body"))(_.nonEmpty)
+                _    <- page.evaluate(
+                  "() => { window.__ascentLoadId = 'keep'; return window.__ascentLoadId }",
+                  isFunction = true,
+                )
+                still <- page.evaluate("() => window.__ascentLoadId", isFunction = true).delay(400.millis)
+                _     <- ZIO.attempt:
+                  Files.writeString(
+                    stamp,
+                    java.lang.Long.toString(java.lang.System.currentTimeMillis),
+                    StandardCharsets.UTF_8,
+                  )
+                gone <- Poll.until("tab reloaded")(page.evaluate("() => window.__ascentLoadId", isFunction = true)):
+                  json => !json.contains("keep")
+              yield assertTrue(still.contains("keep"), !gone.contains("keep"))).tapError(_ =>
+                screenshot("preview-reload")
+              )
+    ).provideSomeShared[Scope](testLayers) @@ TestAspect.withLiveClock
 end PreviewReloadSpec
