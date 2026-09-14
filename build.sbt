@@ -715,9 +715,6 @@ lazy val e2e = (project in file("e2e"))
     zioTestSettings,
     MyVersions.e2eTests,
     chekhovBrowsers := Seq(chekhov.ChekhovBrowser.Firefox),
-    // `{ a.value; b.value; c.value }` makes all three dependencies, so sbt runs them in parallel.
-    // Each stage's spliceFast is `extracted.runTask`, so Tags.limit(Tags.Compile, 1) does not
-    // serialize them and zinc races on shared JS upstreams (`ascent.css` missing from domCoreJS).
     e2eStage := Def.uncached {
       Def
         .sequential(
