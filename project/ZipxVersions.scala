@@ -19,7 +19,7 @@ object MyVersions extends ZipxVersions:
   val zioTest            = zio.mod("zio-test")
   val zioTestSbt         = zio.mod("zio-test-sbt")
   val zioJson      = Lib("dev.zio", "zio-json", "1.1.0")
-  val heddle       = Lib("rocks.earlyeffect", "heddle", "0.1.0")
+  val heddle       = Lib("rocks.earlyeffect", "heddle", "0.2.0")
   val heddleJson   = heddle.mod("heddle-zio-json")
   val heddleBrotli = heddle.mod("heddle-brotli")
 
@@ -32,11 +32,11 @@ object MyVersions extends ZipxVersions:
   val scalafmtDynamic = Lib("org.scalameta", "scalafmt-dynamic", "3.11.5")
     .excluding(ZipxExclude.org("org.scala-lang.modules", "scala-collection-compat_2.13"))
 
-  val specular        = Lib("rocks.earlyeffect", "specular-core", "0.14.1")
+  val specular        = Lib("rocks.earlyeffect", "specular-core", "0.16.0")
   val specularZioTest = specular.mod("specular-zio-test")
   val specularTheme   = specular.mod("early-effect-docs-theme")
 
-  val chekhovZioTest = Lib("rocks.earlyeffect", "chekhov-zio-test", "0.1.0")
+  val chekhovZioTest = Lib("rocks.earlyeffect", "chekhov-zio-test", "0.1.1")
   val chekhovDriver  = chekhovZioTest.mod("chekhov-driver")
   val chekhovCore    = chekhovZioTest.mod("chekhov-core")
   val chekhovDom     = chekhovZioTest.mod("chekhov-dom")
@@ -45,12 +45,12 @@ object MyVersions extends ZipxVersions:
   val scalajs        = Plugin("org.scala-js", "sbt-scalajs", "1.22.0")
   val scalaNative    = Plugin("org.scala-native", "sbt-scala-native", "0.5.12")
   val scalafmt       = Plugin("org.scalameta", "sbt-scalafmt", "2.6.2")
-  val scalafix       = Plugin("ch.epfl.scala", "sbt-scalafix", "0.14.7")
+  val scalafix       = Plugin("ch.epfl.scala", "sbt-scalafix", "0.14.9")
   val dynverCi       = Plugin("rocks.earlyeffect", "sbt-dynver-ci", "0.2.3")
-  val specularPlugin = Plugin("rocks.earlyeffect", "sbt-specular", "0.14.1")
+  val specularPlugin = Plugin("rocks.earlyeffect", "sbt-specular", "0.16.0")
   val sbtSplice      = Plugin("rocks.earlyeffect", "sbt-splice", "0.1.0")
   val sbtReload      = Plugin("com.jamesward", "sbt-reload", "0.0.8")
-  val sbtChekhov     = Plugin("rocks.earlyeffect", "sbt-chekhov", "0.1.0")
+  val sbtChekhov     = Plugin("rocks.earlyeffect", "sbt-chekhov", "0.1.1")
 
   def zioTests = library(zioTest.test, zioTestSbt.test)
   def zioLib   = library(zio)

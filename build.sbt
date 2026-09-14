@@ -54,6 +54,8 @@ usePgpKeyHex(sys.env.getOrElse("PGP_KEY_HEX", "MISSING_KEY_HEX"))
 // Take zio-json 1.1.0 from heddle. Older transitives still pin 0.9/0.10; under early-semver that
 // is a hard eviction without a scheme. The old hold at 0.10.0 was for zio-http schema and is gone.
 libraryDependencySchemes += "dev.zio" %% "zio-json" % "always"
+// specular-site 0.16.0 still pins heddle 0.1.0; catalog takes 0.2.0. Under early-semver 0.1 -> 0.2 is a hard conflict.
+libraryDependencySchemes += "rocks.earlyeffect" %% "heddle" % "always"
 
 val scalaVersions = Seq(scala3Version)
 
