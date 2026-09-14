@@ -14,15 +14,15 @@ val scala3Version: String = MyVersions.scala
 // sbt 2.x scopes bare build.sbt settings to ThisBuild, so these apply build-wide to every module.
 organization         := "rocks.earlyeffect"
 organizationName     := "Early Effect"
-organizationHomepage := Some(url("https://www.earlyeffect.rocks"))
+organizationHomepage := Some(uri("https://www.earlyeffect.rocks"))
 versionScheme        := Some("early-semver")
 // No hardcoded version — sbt-dynver-ci: clean tag -> 0.1.0, else <last-tag>-ci (cache-stable).
 
-homepage := Some(url("https://github.com/early-effect/ascent"))
-licenses := Seq("Apache-2.0" -> url("http://www.apache.org/licenses/LICENSE-2.0.txt"))
+homepage := Some(uri("https://github.com/early-effect/ascent"))
+licenses := Seq("Apache-2.0" -> uri("http://www.apache.org/licenses/LICENSE-2.0.txt"))
 scmInfo  := Some(
   ScmInfo(
-    url("https://github.com/early-effect/ascent"),
+    uri("https://github.com/early-effect/ascent"),
     "scm:git@github.com:early-effect/ascent.git",
   )
 )
@@ -31,7 +31,7 @@ developers := List(
     "russwyte",
     "Russ White",
     "356303+russwyte@users.noreply.github.com",
-    url("https://github.com/russwyte"),
+    uri("https://github.com/russwyte"),
   )
 )
 
@@ -433,9 +433,6 @@ lazy val sbtAscentPreview = (project in file("sbt-ascent-preview"))
   .disablePlugins(chekhov.sbt.ChekhovPlugin)
   .settings(
     name := "sbt-ascent-preview",
-    // sbt 2.0.x Eval is Scala 3.8.4 (TASTy 28.8). ThisBuild is 3.9.0 for libraries; a 28.9
-    // plugin jar is unreadable (#80). Leave this pin when sbt itself moves: TASTy is backward compatible.
-    scalaVersion := "3.8.4",
     scalacOptions ++= commonScalacOptions,
     Compile / unmanagedSources += (ThisBuild / baseDirectory).value / "project" / "AscentPreviewPlugin.scala",
     Compile / unmanagedSources += (ThisBuild / baseDirectory).value / "project" / "AscentPreviewPort.scala",
