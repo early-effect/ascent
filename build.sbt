@@ -14,15 +14,15 @@ val scala3Version: String = MyVersions.scala
 // sbt 2.x scopes bare build.sbt settings to ThisBuild, so these apply build-wide to every module.
 organization         := "rocks.earlyeffect"
 organizationName     := "Early Effect"
-organizationHomepage := Some(url("https://www.earlyeffect.rocks"))
+organizationHomepage := Some(uri("https://www.earlyeffect.rocks"))
 versionScheme        := Some("early-semver")
 // No hardcoded version — sbt-dynver-ci: clean tag -> 0.1.0, else <last-tag>-ci (cache-stable).
 
-homepage := Some(url("https://github.com/early-effect/ascent"))
-licenses := Seq("Apache-2.0" -> url("http://www.apache.org/licenses/LICENSE-2.0.txt"))
+homepage := Some(uri("https://github.com/early-effect/ascent"))
+licenses := Seq("Apache-2.0" -> uri("http://www.apache.org/licenses/LICENSE-2.0.txt"))
 scmInfo  := Some(
   ScmInfo(
-    url("https://github.com/early-effect/ascent"),
+    uri("https://github.com/early-effect/ascent"),
     "scm:git@github.com:early-effect/ascent.git",
   )
 )
@@ -31,7 +31,7 @@ developers := List(
     "russwyte",
     "Russ White",
     "356303+russwyte@users.noreply.github.com",
-    url("https://github.com/russwyte"),
+    uri("https://github.com/russwyte"),
   )
 )
 
