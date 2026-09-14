@@ -1,7 +1,8 @@
 package ascent.preview
 
+import heddle.*
+import heddle.sse.{ServerSentEvent, Sse}
 import zio.*
-import zio.http.*
 import zio.stream.*
 
 import java.io.File
@@ -25,29 +26,14 @@ object Preview:
 
   /** Serve `config.root` until interruption.
     *
-    * Sidecar and HTTP run beside each other (`zipPar`) in the caller's `Scope`. A sidecar that returns still keeps its
-    * finalizers registered until that scope closes; a never-ending sidecar is interrupted with the server. Sidecar
-    * failure interrupts HTTP.
-    *
-    * Extra routes are installed as `extraRoutes ++` static/reload so concrete paths (`/sse`, `/__beard/events`) win
-    * over the static `GET / trailing` handler. CORS, when enabled, wraps the combined app.
-    *
-    * If extra routes close over a resource, acquire it in this same `Scope` **before** calling [[serve]] so bind cannot
-    * race the resource. Do not also pass that resource as `sidecar` (zipPar would race).
-    *
-    * `restartSidecarOnStamp` (default false) reruns the sidecar in a child scope each time stamp bytes change. HTTP
-    * stays up; extra routes are not reinstalled. Use it for a worker you want reset on `~` rebuild, not for a resource
-    * the installed routes close over.
-    *
-    * Provide `Server` at the call site (`PreviewMain` uses `Server.defaultWith(_.port(config.port))`; examples add
-    * compression). [[Server.install]] returns the bound port for logging and [[PreviewConfig.openBrowser]].
+    * Provide `Server.Config` at the call site (`Server.defaultWith(_.port(config.port))`).
     */
   def serve(
       config: PreviewConfig,
       sidecar: ZIO[Scope, Throwable, Any] = ZIO.unit,
       extraRoutes: Routes[Any, Response] = Routes.empty,
       restartSidecarOnStamp: Boolean = false,
-  ): ZIO[Scope & Server, Throwable, Nothing] =
+  ): ZIO[Scope & Server.Config, Throwable, Nothing] =
     val app  = withCors(config, extraRoutes ++ staticAndReload(config))
     val side =
       if restartSidecarOnStamp then restartSidecar(config, sidecar)
@@ -55,39 +41,50 @@ object Preview:
     side.zipParRight(installAndHang(config, app))
   end serve
 
+  /** `serve` with `Server.defaultWith(_.port(config.port))`. For `ZIOAppDefault` entry points. */
+  def serveForever(config: PreviewConfig): ZIO[Scope, Throwable, Nothing] =
+    serve(config).provideSome[Scope](Server.defaultWith(_.port(config.port)))
+
   private def staticAndReload(config: PreviewConfig): Routes[Any, Response] =
     val docRoot = config.root.toAbsolutePath.normalize.toFile
     Routes(
-      Method.GET / trailing ->
-        Handler
-          .identity[Request]
-          .flatMap { request =>
-            if isReload(request.path, config.reloadPath) then sseHandler(config)
-            else
-              resolveFile(docRoot, request.path) match
-                case Some(file) => Handler.fromFile(file)
-                case None       => Handler.notFound
-          }
-          .catchAll {
-            case _: java.io.FileNotFoundException       => Handler.notFound
-            case _: java.nio.file.AccessDeniedException => Handler.status(Status.Forbidden)
-            case _                                      => Handler.notFound
-          }
+      Method.GET / trailing -> { (path: Path, _: Request) =>
+        if isReload(path, config.reloadPath) then
+          ZIO.succeed(Sse.response(stampEvents(config.root.resolve(config.stamp))))
+        else
+          resolveFile(docRoot, path) match
+            case Some(file) =>
+              heddle.Files.fromPath(file.toPath).catchAll {
+                case _: java.nio.file.NoSuchFileException   => ZIO.succeed(Response.notFound())
+                case _: java.nio.file.AccessDeniedException => ZIO.succeed(Response.empty(Status.Forbidden))
+                case _                                      => ZIO.succeed(Response.notFound())
+              }
+            case None => ZIO.succeed(Response.notFound())
+      }
     )
   end staticAndReload
 
   private def withCors(config: PreviewConfig, app: Routes[Any, Response]): Routes[Any, Response] =
-    if config.cors then app @@ Middleware.cors else app
+    if config.cors then app @@ Middleware.cors() else app
 
-  private def installAndHang(config: PreviewConfig, app: Routes[Any, Response]): ZIO[Server, Throwable, Nothing] =
+  private def installAndHang(
+      config: PreviewConfig,
+      app: Routes[Any, Response],
+  ): ZIO[Scope & Server.Config, Throwable, Nothing] =
     val dir = config.root.toAbsolutePath.normalize.toFile
-    Server.install(app).flatMap { bound =>
-      val url = s"http://localhost:$bound/"
-      Console.printLine(s"Serving ${dir.getAbsolutePath}") *>
-        Console.printLine(s"Open $url") *>
-        ZIO.when(config.openBrowser)(openBrowser(url)) *>
-        ZIO.never
-    }
+    Server
+      .install(app)
+      .mapError(e => RuntimeException(e.message))
+      .flatMap { server =>
+        server.port.flatMap { bound =>
+          val url = s"http://localhost:$bound/"
+          Console.printLine(s"Serving ${dir.getAbsolutePath}") *>
+            Console.printLine(s"Open $url") *>
+            ZIO.when(config.openBrowser)(openBrowser(url)) *>
+            ZIO.never
+        }
+      }
+  end installAndHang
 
   /** Child-scope sidecar, interrupted and re-acquired on each stamp change. */
   private def restartSidecar(
@@ -108,7 +105,6 @@ object Preview:
     }.forever
   end restartSidecar
 
-  /** `open` on macOS, `xdg-open` elsewhere, `rundll32` on Windows. Not executed in tests; command only. */
   private[preview] def browseCommand(osName: String, url: String): Seq[String] =
     val os = osName.toLowerCase(java.util.Locale.ROOT)
     if os.contains("mac") then Seq("open", url)
@@ -129,24 +125,17 @@ object Preview:
       .ignore
   end openBrowser
 
-  /** True when `candidate` is `root` or a descendant (canonical paths, not string prefix). */
   private[preview] def isUnderRoot(root: File, candidate: File): Boolean =
     val rootPath = root.getCanonicalFile.toPath.normalize
     val candPath = candidate.getCanonicalFile.toPath.normalize
     candPath.startsWith(rootPath)
 
   private def isReload(requestPath: Path, reload: JPath): Boolean =
-    val got  = requestPath.dropLeadingSlash.encode
-    val want = reload.normalize.iterator().asScala.map(_.toString).mkString("/")
+    val got  = requestPath.segments
+    val want = Chunk.fromIterator(reload.normalize.iterator().asScala.map(_.toString))
     got == want
 
-  private def sseHandler(config: PreviewConfig): Handler[Any, Nothing, Request, Response] =
-    handler { (_: Request) =>
-      Response.fromServerSentEvents(stampEvents(config.root.resolve(config.stamp)))
-    }
-
-  /** Skip the snapshot at subscribe; emit one `reload` event when stamp bytes change. */
-  private[preview] def stampEvents(stamp: JPath): ZStream[Any, Nothing, ServerSentEvent[String]] =
+  private[preview] def stampEvents(stamp: JPath): ZStream[Any, Nothing, ServerSentEvent] =
     ZStream
       .tick(50.millis)
       .mapZIO(_ => readStamp(stamp))
@@ -162,8 +151,8 @@ object Preview:
       .orElseSucceed(None)
 
   private def resolveFile(docRoot: File, path: Path): Option[File] =
-    val relative = path.dropLeadingSlash.encode
-    if relative.contains("..") then return None
+    val relative = path.segments.mkString("/")
+    if path.segments.exists(s => s == ".." || s.contains("..")) then return None
     val target =
       if relative.isEmpty then docRoot
       else new File(docRoot, relative)

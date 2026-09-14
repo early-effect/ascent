@@ -51,9 +51,8 @@ pomIncludeRepository := { _ => false }
 // loudly if anyone tries to publish off-CI.
 usePgpKeyHex(sys.env.getOrElse("PGP_KEY_HEX", "MISSING_KEY_HEX"))
 
-// zio-schema-json 1.8.5 still pins zio-json 0.9.1 while we resolve 0.10.0. Under early-semver a
-// 0.9 -> 0.10 bump reads as breaking, so sbt 2.x's strict eviction check fails the build. The codec
-// API in play is unchanged across the bump, so force 0.10.0 rather than hold zio-json back.
+// Take zio-json 1.1.0 from heddle. Older transitives still pin 0.9/0.10; under early-semver that
+// is a hard eviction without a scheme. The old hold at 0.10.0 was for zio-http schema and is gone.
 libraryDependencySchemes += "dev.zio" %% "zio-json" % "always"
 
 val scalaVersions = Seq(scala3Version)
@@ -399,13 +398,10 @@ lazy val datastarJs = (projectMatrix in file("datastar-js"))
   )
   .jsPlatform(scalaVersions = scalaVersions)
 
-// --- ascent-datastar-http : server-side idiomatic wrapper over the official zio-http-datastar-sdk.
+// --- ascent-datastar-http : server-side wrapper over heddle Datastar SSE.
 //   Makes the server "an ascent client": render an ascent UI subtree via ascent-html, push it as a
-//   granular patch-elements (selector + mode) or patch-signals through the SDK's
-//   ServerSentEventGenerator, and re-export the SDK's events{} / readSignals so datastar users keep
-//   their idiom while authoring views in ascent's typed DSL. JVM only (the SDK + zio-http are JVM).
-//   zio-http-datastar-sdk version is the catalog row in ZipxVersions. Real-server integration tests
-//   use zio-http's own Server/Client.
+//   granular patch-elements (selector + mode) or patch-signals. JVM only. Real-server integration
+//   tests use heddle Server/Client.
 lazy val datastarHttp = (projectMatrix in file("datastar-http"))
   .disablePlugins(chekhov.sbt.ChekhovPlugin)
   .dependsOn(html, datastar)
@@ -492,9 +488,9 @@ lazy val datastarExample = (projectMatrix in file("example/datastar-app"))
         .settings(examplePreviewSettings(autoServe = false)),
   )
 
-// --- ascent example: datastar-app SERVER — the zio-http backend (JVM). Holds the count, serves the
-//   datastar SSE stream + the increment action via the ascent-datastar-http wrapper, with zio-http's
-//   built-in brotli compression, and composes ascent-preview so the spliced client is same-origin. ---
+// --- ascent example: datastar-app SERVER — the heddle backend (JVM). Holds the count, serves the
+//   datastar SSE stream + the increment action via the ascent-datastar-http wrapper, with heddle-brotli
+//   compression, and composes ascent-preview so the spliced client is same-origin. ---
 lazy val datastarExampleServer = (projectMatrix in file("example/datastar-app-server"))
   .disablePlugins(chekhov.sbt.ChekhovPlugin)
   .dependsOn(datastarHttp, preview)
@@ -503,8 +499,6 @@ lazy val datastarExampleServer = (projectMatrix in file("example/datastar-app-se
     publish / skip := true,
     test / skip    := true,
     scalacOptions ++= commonScalacOptions,
-    // Netty's brotli compression needs the brotli4j native lib on the classpath (zio-http doesn't
-    // bundle it). Without it, enabling brotli throws ClassNotFoundException at request time.
     MyVersions.brotli,
   )
   .jvmPlatform(scalaVersions = scalaVersions)
@@ -567,7 +561,7 @@ lazy val docs: ProjectMatrix = (projectMatrix in file("docs"))
         .settings(
           docsDogfoodSettings,
           MyVersions.docsJvm,
-          // specular-site (via the theme) still declares zio-json 0.9.x
+          // specular-site (via the theme) may still declare an older zio-json; take catalog 1.1.0.
           dependencyOverrides += MyVersions.moduleID(MyVersions.zioJson),
           zioTestSettings,
           Compile / mainClass             := Some("ascent.docs.ServeSite"),

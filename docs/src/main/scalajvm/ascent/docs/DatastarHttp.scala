@@ -1,39 +1,37 @@
 package ascent.docs
 
 import ascent.datastar.http.AscentDatastar
+import heddle.*
+import heddle.datastar.{Datastar, events}
 import specular.{DocSpec, exampleZIO, md, page, section}
 import zio.*
-import zio.http.*
-import zio.http.datastar.*
 import zio.json.JsonEncoder
 import zio.test.*
 
-/** Server bridge: AscentDatastar over zio-http, with a Scope-bound test server. */
+/** Server bridge: AscentDatastar over heddle, with a Scope-bound test server. */
 object DatastarHttp extends DocSpec:
 
   def doc = page("Datastar HTTP")(
     md"""
-`ascent-datastar-http` makes a zio-http server "an ascent client": render a `UI` with
-`ascent-html`, push `patch-elements` / `patch-signals` through the official datastar SDK.
-Keep the SDK's `events { handler { … } }` idiom; swap templates for ascent views.
+`ascent-datastar-http` makes a heddle server "an ascent client": render a `UI` with
+`ascent-html`, push `patch-elements` / `patch-signals` through heddle's Datastar SSE generator.
 """,
     section("patchSignal")(
       md"""
 Handler-level assert: the SSE body carries a `datastar-patch-signals` frame with the named value.
 """,
       exampleZIO {
-        val handler0: Handler[Datastar, Nothing, Any, Unit] = Handler.fromZIO {
+        val sse = events {
           AscentDatastar.patchSignal("count", 42)
         }
-        val sse = events(handler0)
-        for
-          response <- sse(())
-          body     <- response.body.asString.orDie
+        (for
+          response <- sse.run(Request.get("/sse"))
+          body     <- response.body.utf8
         yield (
           response.status == Status.Ok,
           body.contains("event: datastar-patch-signals"),
           body.contains("\"count\":42"),
-        )
+        )).orDie
       }.assert { case (ok, ev, signal) => assertTrue(ok, ev, signal) },
     ),
     section("Live counter server")(
@@ -50,29 +48,34 @@ succeeds while the server is live, then the Scope closes and the port is release
         def routes(state: State): Routes[Any, Nothing] =
           Routes(
             Method.GET / "sse" -> events {
-              handler { (_: Request) =>
-                for
-                  _      <- pushCount(state)
-                  stream <- state.pulse.subscribe.map(zio.stream.ZStream.fromQueue(_))
-                  _      <- stream.mapZIO(_ => pushCount(state)).runDrain
-                yield ()
-              }
+              for
+                _      <- pushCount(state)
+                stream <- state.pulse.subscribe.map(zio.stream.ZStream.fromQueue(_))
+                _      <- stream.mapZIO(_ => pushCount(state)).runDrain
+              yield ()
             },
             Method.POST / "increment" -> handler { (_: Request) =>
               (state.count.update(_ + 1) *> state.pulse.publish(()).unit).as(Response.ok)
             },
-          ).sandbox
+          )
 
         (for
           count <- Ref.make(0)
           pulse <- Hub.unbounded[Unit]
           state = State(count, pulse)
-          port <- Server.install(routes(state))
-          base = s"http://localhost:$port"
-          st <- Client.batched(Request.post(s"$base/increment", Body.empty)).map(_.status)
-        yield st)
-          .provideSomeLayer(Server.defaultWith(_.port(0)) ++ Client.default)
-          .orDie
+          result <- ZIO
+            .scoped {
+              Server
+                .install(routes(state))
+                .mapError(e => RuntimeException(e.message))
+                .flatMap { server =>
+                  server.port.flatMap { port =>
+                    Client.request(Method.POST, s"http://127.0.0.1:$port/increment").map(_.status)
+                  }
+                }
+            }
+            .provide(Server.defaultWith(_.port(0)))
+        yield result).orDie
       }.assert(st => assertTrue(st == Status.Ok)),
     ),
   )

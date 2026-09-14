@@ -36,7 +36,7 @@ bindings). Patches for unknown names are logged no-ops; decode failures retain t
 | -------- | ---- |
 | `ascent-datastar` | Protocol + `SignalStore` (JVM / JS / Native) |
 | `ascent-datastar-js` | Browser: EventSource → store / DOM, action fetch |
-| `ascent-datastar-http` | Server: `AscentDatastar` over zio-http datastar SDK |
+| `ascent-datastar-http` | Server: `AscentDatastar` over heddle Datastar SSE |
 
 See [Datastar HTTP](datastar-http.html) for SSE routes and [Hybrid regions](hybrid-regions.html)
 for `serverRegion` + `patchRegion`.

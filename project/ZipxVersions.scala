@@ -12,24 +12,22 @@ import zipx.*
   * module already pulls them (specular-core / specular-site via the docs theme).
   */
 object MyVersions extends ZipxVersions:
-  val sbt: SbtVersion     = SbtVersion("2.0.8")
+  val sbt: SbtVersion     = SbtVersion("2.1.0-M1")
   val scala: ScalaVersion = ScalaVersion("3.9.0")
 
   val zio                = Lib("dev.zio", "zio", "2.1.26")
   val zioTest            = zio.mod("zio-test")
   val zioTestSbt         = zio.mod("zio-test-sbt")
-  // Hold 0.10.0: chekhov-driver 0.0.5 was compiled against JsonEncoderDerivation, which zio-json 1.0.0
-  // removed (native Scala 3 macros). e2e then dies with NoClassDefFoundError until chekhov is rebuilt.
-  val zioJson            = Lib("dev.zio", "zio-json", "0.10.0")
-  val zioHttp            = Lib("dev.zio", "zio-http", "3.11.4")
-  val zioHttpDatastarSdk = zioHttp.mod("zio-http-datastar-sdk")
+  val zioJson      = Lib("dev.zio", "zio-json", "1.1.0")
+  val heddle       = Lib("rocks.earlyeffect", "heddle", "0.1.0")
+  val heddleJson   = heddle.mod("heddle-zio-json")
+  val heddleBrotli = heddle.mod("heddle-brotli")
 
   val scalaJavaTime     = Lib("io.github.cquiroz", "scala-java-time", "2.7.0")
   val scalaJavaTimeTzdb = scalaJavaTime.mod("scala-java-time-tzdb")
 
   val fastparse = Lib("com.lihaoyi", "fastparse", "3.1.1")
-  val conduit   = Lib("rocks.earlyeffect", "conduit", "0.0.7")
-  val brotli4j  = Lib("com.aayushatharva.brotli4j", "brotli4j", "1.23.0").java
+  val conduit = Lib("rocks.earlyeffect", "conduit", "0.0.7")
 
   val scalafmtDynamic = Lib("org.scalameta", "scalafmt-dynamic", "3.11.5")
     .excluding(ZipxExclude.org("org.scala-lang.modules", "scala-collection-compat_2.13"))
@@ -38,7 +36,7 @@ object MyVersions extends ZipxVersions:
   val specularZioTest = specular.mod("specular-zio-test")
   val specularTheme   = specular.mod("early-effect-docs-theme")
 
-  val chekhovZioTest = Lib("rocks.earlyeffect", "chekhov-zio-test", "0.0.5")
+  val chekhovZioTest = Lib("rocks.earlyeffect", "chekhov-zio-test", "0.1.0")
   val chekhovDriver  = chekhovZioTest.mod("chekhov-driver")
   val chekhovCore    = chekhovZioTest.mod("chekhov-core")
   val chekhovDom     = chekhovZioTest.mod("chekhov-dom")
@@ -52,7 +50,7 @@ object MyVersions extends ZipxVersions:
   val specularPlugin = Plugin("rocks.earlyeffect", "sbt-specular", "0.14.1")
   val sbtSplice      = Plugin("rocks.earlyeffect", "sbt-splice", "0.1.0")
   val sbtReload      = Plugin("com.jamesward", "sbt-reload", "0.0.8")
-  val sbtChekhov     = Plugin("rocks.earlyeffect", "sbt-chekhov", "0.0.5")
+  val sbtChekhov     = Plugin("rocks.earlyeffect", "sbt-chekhov", "0.1.0")
 
   def zioTests = library(zioTest.test, zioTestSbt.test)
   def zioLib   = library(zio)
@@ -70,9 +68,9 @@ object MyVersions extends ZipxVersions:
   def cssLib          = library(fastparse)
   def conduitLib      = library(conduit)
   def datastarLib     = library(zioJson)
-  def datastarHttpLib = library(zioHttpDatastarSdk)
-  def previewLib      = library(zioHttp)
-  def brotli          = library(brotli4j)
+  def datastarHttpLib = library(heddle, heddleJson)
+  def previewLib      = library(heddle)
+  def brotli          = library(heddleBrotli)
   def domgenLib       = library(zioJson, fastparse)
   def docsJvm         = library(specularZioTest, specularTheme)
   def docsJs          = library(specular, zioTest)

@@ -1,7 +1,7 @@
 package ascent.preview
 
+import heddle.*
 import zio.*
-import zio.http.*
 import zio.test.*
 
 import java.nio.charset.StandardCharsets
@@ -17,14 +17,14 @@ object PreviewSpec extends ZIOSpecDefault:
             "index.html"       -> "<html>home</html>",
             "assets/theme.css" -> "body{color:red}",
           )
-          resp <- Preview.routes(PreviewConfig(tmp)).runZIO(Request.get(URL.root))
-          body <- resp.body.asString
+          resp <- Preview.routes(PreviewConfig(tmp)).runZIO(Request.get(Url.root))
+          body <- resp.body.utf8
         yield assertTrue(resp.status.isSuccess, body.contains("home"))
       },
       test("directory without index is not success") {
         for
           tmp  <- tempSite("assets/theme.css" -> "body{}")
-          resp <- Preview.routes(PreviewConfig(tmp)).runZIO(Request.get(URL.root / "assets"))
+          resp <- Preview.routes(PreviewConfig(tmp)).runZIO(Request.get(Url.root / "assets"))
         yield assertTrue(!resp.status.isSuccess)
       },
       test("serves index.html from the site root") {
@@ -33,8 +33,8 @@ object PreviewSpec extends ZIOSpecDefault:
             "index.html"       -> "<html>ok</html>",
             "assets/theme.css" -> "body{color:red}",
           )
-          resp <- Preview.routes(PreviewConfig(tmp)).runZIO(Request.get(URL.root / "index.html"))
-          body <- resp.body.asString
+          resp <- Preview.routes(PreviewConfig(tmp)).runZIO(Request.get(Url.root / "index.html"))
+          body <- resp.body.utf8
         yield assertTrue(resp.status.isSuccess, body.contains("ok"))
       },
       test("serves nested assets") {
@@ -43,20 +43,20 @@ object PreviewSpec extends ZIOSpecDefault:
             "index.html"       -> "<html/>",
             "assets/theme.css" -> "body{color:red}",
           )
-          resp <- Preview.routes(PreviewConfig(tmp)).runZIO(Request.get(URL.root / "assets" / "theme.css"))
-          body <- resp.body.asString
+          resp <- Preview.routes(PreviewConfig(tmp)).runZIO(Request.get(Url.root / "assets" / "theme.css"))
+          body <- resp.body.utf8
         yield assertTrue(resp.status.isSuccess, body.contains("color:red"))
       },
       test("missing file is not success") {
         for
           tmp  <- tempSite("index.html" -> "<html/>")
-          resp <- Preview.routes(PreviewConfig(tmp)).runZIO(Request.get(URL.root / "missing.html"))
+          resp <- Preview.routes(PreviewConfig(tmp)).runZIO(Request.get(Url.root / "missing.html"))
         yield assertTrue(!resp.status.isSuccess)
       },
       test("rejects path traversal") {
         for
           tmp  <- tempSite("index.html" -> "<html>ok</html>")
-          resp <- Preview.routes(PreviewConfig(tmp)).runZIO(Request.get(URL.root / ".." / "etc" / "passwd"))
+          resp <- Preview.routes(PreviewConfig(tmp)).runZIO(Request.get(Url.root / ".." / "etc" / "passwd"))
         yield assertTrue(!resp.status.isSuccess)
       },
       test("sibling prefix of site root is not served") {
@@ -72,9 +72,7 @@ object PreviewSpec extends ZIOSpecDefault:
           }
           resp <- Preview
             .routes(PreviewConfig(site))
-            .runZIO(
-              Request.get(URL.root / ".." / "site-evil" / "secret.html")
-            )
+            .runZIO(Request.get(Url.root / ".." / "site-evil" / "secret.html"))
         yield assertTrue(!resp.status.isSuccess)
       },
       test("CORS header is absent by default") {
@@ -82,18 +80,16 @@ object PreviewSpec extends ZIOSpecDefault:
           tmp  <- tempSite("index.html" -> "<html/>")
           resp <- Preview
             .routes(PreviewConfig(tmp))
-            .runZIO(
-              Request.get(URL.root).addHeader(Header.Origin("http", "example.com", None))
-            )
-        yield assertTrue(resp.headers.get(Header.AccessControlAllowOrigin).isEmpty)
+            .runZIO(Request.get(Url.root).addHeader(Header.origin("http", "example.com")))
+        yield assertTrue(resp.header(HeaderName.AccessControlAllowOrigin).isEmpty)
       },
       test("CORS header is present when enabled") {
         for
           tmp  <- tempSite("index.html" -> "<html/>")
           resp <- Preview
             .routes(PreviewConfig(tmp, cors = true))
-            .runZIO(Request.get(URL.root).addHeader(Header.Origin("http", "example.com", None)))
-        yield assertTrue(resp.headers.get(Header.AccessControlAllowOrigin).isDefined)
+            .runZIO(Request.get(Url.root).addHeader(Header.origin("http", "example.com")))
+        yield assertTrue(resp.header(HeaderName.AccessControlAllowOrigin).isDefined)
       },
     ),
     suite("SSE stamp")(
@@ -106,11 +102,11 @@ object PreviewSpec extends ZIOSpecDefault:
             Files.writeString(stamp, "1", StandardCharsets.UTF_8)
           }
           chunk <- Preview.stampEvents(stamp).take(1).runCollect.timeout(250.millis)
-          resp  <- Preview.routes(PreviewConfig(tmp)).runZIO(Request.get(URL.root / "__ascent" / "reload"))
+          resp  <- Preview.routes(PreviewConfig(tmp)).runZIO(Request.get(Url.root / "__ascent" / "reload"))
         yield assertTrue(
           chunk.isEmpty,
           resp.status.isSuccess,
-          resp.headers.get(Header.ContentType).exists(_.renderedValue.contains("text/event-stream")),
+          resp.header(HeaderName.ContentType).exists(_.contains("text/event-stream")),
         )
       },
       test("rewriting stamp bytes emits a reload event") {
@@ -172,25 +168,33 @@ object PreviewSpec extends ZIOSpecDefault:
         for
           tmp <- tempSite("hello.html" -> "<html>hello</html>")
           routes = Preview.routes(PreviewConfig(tmp))
-          port <- Server.install(routes)
-          resp <- ZClient.batched(Request.get(url"http://127.0.0.1:$port/hello.html"))
-          body <- resp.body.asString
-        yield assertTrue(resp.status.isSuccess, body.contains("hello"))
-      }
-        .provide(Server.defaultWith(_.onAnyOpenPort), Client.default) @@
-        TestAspect.withLiveClock @@
-        TestAspect.timeout(10.seconds)
+          result <- ZIO
+            .scoped {
+              Server.install(routes).flatMap { server =>
+                server.port.flatMap { port =>
+                  Client.get(s"http://127.0.0.1:$port/hello.html").flatMap { resp =>
+                    resp.body.utf8.map(body => assertTrue(resp.status.isSuccess, body.contains("hello")))
+                  }
+                }
+              }
+            }
+            .provide(Server.defaultWith(_.port(0)))
+        yield result
+      } @@ TestAspect.withLiveClock @@ TestAspect.timeout(10.seconds)
     ),
     suite("serve")(
       test("extra routes are reachable and static still serves") {
         for
           tmp   <- tempSite("index.html" -> "<html>home</html>")
-          fiber <- ZIO.scoped(Preview.serve(PreviewConfig(tmp), extraRoutes = ping)).fork
-          port  <- ZIO.serviceWithZIO[Server](_.port)
+          port  <- freePort
+          fiber <- Preview
+            .serve(PreviewConfig(tmp, port = port), extraRoutes = ping)
+            .provideSome[Scope](Server.defaultWith(_.port(port)))
+            .fork
           pingR <- getUntilOk(s"http://127.0.0.1:$port/api/ping")
-          pingB <- pingR.body.asString
-          homeR <- ZClient.batched(Request.get(url"http://127.0.0.1:$port/"))
-          homeB <- homeR.body.asString
+          pingB <- pingR.body.utf8
+          homeR <- Client.get(s"http://127.0.0.1:$port/")
+          homeB <- homeR.body.utf8
           _     <- fiber.interrupt
         yield assertTrue(pingR.status.isSuccess, pingB == "pong", homeB.contains("home"))
       },
@@ -198,31 +202,35 @@ object PreviewSpec extends ZIOSpecDefault:
         for
           tmp   <- tempSite("index.html" -> "<html/>")
           flag  <- Ref.make(false)
+          port  <- freePort
           fiber <- ZIO
-            .scoped(Preview.serve(PreviewConfig(tmp), sidecar = ZIO.addFinalizer(flag.set(true))))
+            .scoped(
+              Preview.serve(PreviewConfig(tmp, port = port), sidecar = ZIO.addFinalizer(flag.set(true)))
+            )
+            .provide(Server.defaultWith(_.port(port)))
             .fork
-          port <- ZIO.serviceWithZIO[Server](_.port)
-          _    <- getUntilOk(s"http://127.0.0.1:$port/")
-          _    <- fiber.interrupt
-          v    <- flag.get
+          _ <- getUntilOk(s"http://127.0.0.1:$port/")
+          _ <- fiber.interrupt
+          v <- flag.get
         yield assertTrue(v)
       },
       test("sidecar and extra routes run together") {
         for
           tmp   <- tempSite("index.html" -> "<html/>")
           flag  <- Ref.make(false)
+          port  <- freePort
           fiber <- ZIO
             .scoped(
               Preview.serve(
-                PreviewConfig(tmp),
+                PreviewConfig(tmp, port = port),
                 sidecar = ZIO.addFinalizer(flag.set(true)),
                 extraRoutes = ping,
               )
             )
+            .provide(Server.defaultWith(_.port(port)))
             .fork
-          port  <- ZIO.serviceWithZIO[Server](_.port)
           pingR <- getUntilOk(s"http://127.0.0.1:$port/api/ping")
-          body  <- pingR.body.asString
+          body  <- pingR.body.utf8
           _     <- fiber.interrupt
           v     <- flag.get
         yield assertTrue(pingR.status.isSuccess, body == "pong", v)
@@ -230,32 +238,73 @@ object PreviewSpec extends ZIOSpecDefault:
       test("CORS header is present on extra routes when enabled") {
         for
           tmp   <- tempSite("index.html" -> "<html/>")
-          fiber <- ZIO.scoped(Preview.serve(PreviewConfig(tmp, cors = true), extraRoutes = ping)).fork
-          port  <- ZIO.serviceWithZIO[Server](_.port)
-          _     <- getUntilOk(s"http://127.0.0.1:$port/api/ping")
-          resp  <- ZClient.batched(
-            Request.get(url"http://127.0.0.1:$port/api/ping").addHeader(Header.Origin("http", "example.com", None))
+          port  <- freePort
+          fiber <- Preview
+            .serve(PreviewConfig(tmp, port = port, cors = true), extraRoutes = ping)
+            .provideSome[Scope](Server.defaultWith(_.port(port)))
+            .fork
+          _    <- getUntilOk(s"http://127.0.0.1:$port/api/ping")
+          resp <- Client.request(
+            Method.GET,
+            s"http://127.0.0.1:$port/api/ping",
+            Headers.empty.add(Header.origin("http", "example.com")),
           )
           _ <- fiber.interrupt
-        yield assertTrue(resp.headers.get(Header.AccessControlAllowOrigin).isDefined)
+        yield assertTrue(resp.header(HeaderName.AccessControlAllowOrigin).isDefined)
+      },
+      test("restartSidecarOnStamp finalizes the previous sidecar") {
+        for
+          tmp     <- tempSite("index.html" -> "<html/>")
+          started <- Ref.make(0)
+          stopped <- Ref.make(0)
+          port    <- freePort
+          sidecar =
+            started.update(_ + 1) *>
+              ZIO.addFinalizer(stopped.update(_ + 1)) *>
+              ZIO.never
+          fiber <- Preview
+            .serve(
+              PreviewConfig(tmp, port = port),
+              sidecar = sidecar,
+              extraRoutes = ping,
+              restartSidecarOnStamp = true,
+            )
+            .provideSome[Scope](Server.defaultWith(_.port(port)))
+            .fork
+          _ <- getUntilOk(s"http://127.0.0.1:$port/api/ping")
+          _ <- started.get.repeatUntil(_ >= 1)
+          stamp = tmp.resolve("assets/dev-stamp")
+          _ <- ZIO.attempt {
+            Files.createDirectories(stamp.getParent)
+            Files.writeString(stamp, "1", StandardCharsets.UTF_8)
+          }
+          _ <- ZIO.sleep(150.millis)
+          _ <- ZIO.attempt(Files.writeString(stamp, "2", StandardCharsets.UTF_8))
+          _ <- started.get.repeatUntil(_ >= 2).timeoutFail(RuntimeException("sidecar did not restart"))(3.seconds)
+          _ <- stopped.get
+            .repeatUntil(_ >= 1)
+            .timeoutFail(RuntimeException("previous sidecar did not finalize"))(3.seconds)
+          _ <- fiber.interrupt
+          s <- started.get
+          k <- stopped.get
+        yield assertTrue(s >= 2, k >= 1)
       },
       test("restartSidecarOnStamp re-runs sidecar when stamp bytes change") {
         for
           tmp   <- tempSite("index.html" -> "<html/>")
           count <- Ref.make(0)
-          fiber <- ZIO
-            .scoped(
-              Preview.serve(
-                PreviewConfig(tmp),
-                sidecar = count.update(_ + 1),
-                extraRoutes = ping,
-                restartSidecarOnStamp = true,
-              )
+          port  <- freePort
+          fiber <- Preview
+            .serve(
+              PreviewConfig(tmp, port = port),
+              sidecar = count.update(_ + 1),
+              extraRoutes = ping,
+              restartSidecarOnStamp = true,
             )
+            .provideSome[Scope](Server.defaultWith(_.port(port)))
             .fork
-          port <- ZIO.serviceWithZIO[Server](_.port)
-          _    <- getUntilOk(s"http://127.0.0.1:$port/api/ping")
-          _    <- count.get.repeatUntil(_ >= 1)
+          _ <- getUntilOk(s"http://127.0.0.1:$port/api/ping")
+          _ <- count.get.repeatUntil(_ >= 1)
           stamp = tmp.resolve("assets/dev-stamp")
           _ <- ZIO.attempt {
             Files.createDirectories(stamp.getParent)
@@ -268,18 +317,11 @@ object PreviewSpec extends ZIOSpecDefault:
           _     <- fiber.interrupt
         yield assertTrue(n >= 2, pingR.status.isSuccess)
       },
-    ).provide(Server.defaultWith(_.onAnyOpenPort), Client.default) @@
-      TestAspect.withLiveClock @@
-      TestAspect.timeout(15.seconds),
+    ) @@ TestAspect.withLiveClock @@ TestAspect.timeout(15.seconds),
     test("sidecar failure fails serve and unbinds when Server is provided with serve") {
       for
         tmp  <- tempSite("index.html" -> "<html/>")
-        port <- ZIO.attempt {
-          val ss = java.net.ServerSocket(0)
-          val p  = ss.getLocalPort
-          ss.close()
-          p
-        }
+        port <- freePort
         exit <- Preview
           .serve(PreviewConfig(tmp, port = port), sidecar = ZIO.fail(RuntimeException("sidecar")))
           .provideSome[Scope](Server.defaultWith(_.port(port)))
@@ -294,11 +336,19 @@ object PreviewSpec extends ZIOSpecDefault:
   ) @@ TestAspect.withLiveClock @@ TestAspect.sequential
 
   private val ping: Routes[Any, Response] =
-    Routes(Method.GET / "api" / "ping" -> handler { (_: Request) => ZIO.succeed(Response.text("pong")) })
+    Routes(Method.GET / "api" / "ping" -> Handler.text("pong"))
 
-  private def getUntilOk(url: String): ZIO[Client, Throwable, Response] =
-    ZClient
-      .batched(Request.get(url))
+  private def freePort: Task[Int] =
+    ZIO.attempt {
+      val ss = java.net.ServerSocket(0)
+      val p  = ss.getLocalPort
+      ss.close()
+      p
+    }
+
+  private def getUntilOk(url: String): Task[Response] =
+    Client
+      .get(url)
       .flatMap { resp =>
         if resp.status.isSuccess then ZIO.succeed(resp)
         else ZIO.fail(RuntimeException(s"${resp.status} $url"))
