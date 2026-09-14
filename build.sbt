@@ -715,10 +715,14 @@ lazy val e2e = (project in file("e2e"))
     zioTestSettings,
     MyVersions.e2eTests,
     chekhovBrowsers := Seq(chekhov.ChekhovBrowser.Firefox),
-    e2eStage        := Def.uncached {
-      (LocalProject("todoConduitJS") / ascentPreviewStage).value
-      (LocalProject("datastarExampleJS") / ascentPreviewStage).value
-      (LocalProject("hybridChatJS") / ascentPreviewStage).value
+    e2eStage := Def.uncached {
+      Def
+        .sequential(
+          LocalProject("todoConduitJS") / ascentPreviewStage,
+          LocalProject("datastarExampleJS") / ascentPreviewStage,
+          LocalProject("hybridChatJS") / ascentPreviewStage,
+        )
+        .value
       ()
     },
     Test / javaOptions += s"-Dascent.repoRoot=${(ThisBuild / baseDirectory).value.getAbsolutePath}",

@@ -32,7 +32,7 @@ object MyVersions extends ZipxVersions:
   val scalafmtDynamic = Lib("org.scalameta", "scalafmt-dynamic", "3.11.5")
     .excluding(ZipxExclude.org("org.scala-lang.modules", "scala-collection-compat_2.13"))
 
-  val specular        = Lib("rocks.earlyeffect", "specular-core", "0.16.0")
+  val specular        = Lib("rocks.earlyeffect", "specular-core", "0.16.1")
   val specularZioTest = specular.mod("specular-zio-test")
   val specularTheme   = specular.mod("early-effect-docs-theme")
 
@@ -47,7 +47,7 @@ object MyVersions extends ZipxVersions:
   val scalafmt       = Plugin("org.scalameta", "sbt-scalafmt", "2.6.2")
   val scalafix       = Plugin("ch.epfl.scala", "sbt-scalafix", "0.14.9")
   val dynverCi       = Plugin("rocks.earlyeffect", "sbt-dynver-ci", "0.2.3")
-  val specularPlugin = Plugin("rocks.earlyeffect", "sbt-specular", "0.16.0")
+  val specularPlugin = Plugin("rocks.earlyeffect", "sbt-specular", "0.16.1")
   val sbtSplice      = Plugin("rocks.earlyeffect", "sbt-splice", "0.1.0")
   val sbtReload      = Plugin("com.jamesward", "sbt-reload", "0.0.8")
   val sbtChekhov     = Plugin("rocks.earlyeffect", "sbt-chekhov", "0.1.1")
