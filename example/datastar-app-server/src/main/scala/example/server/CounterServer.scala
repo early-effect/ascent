@@ -26,18 +26,22 @@ object CounterServer extends ZIOAppDefault:
   private def pushCount(state: State): ZIO[Datastar, Nothing, Unit] =
     state.count.get.flatMap(c => AscentDatastar.patchSignal("count", c))
 
+  private val compressed =
+    Middleware.compress(compressors = Chunk(Brotli.compressor, Compressor.gzip))
+
   def apiRoutes(state: State): Routes[Any, Nothing] =
     Routes(
+      Method.POST / "increment" -> handler { (_: Request) =>
+        bump(state).as(Response.ok)
+      }
+    ) @@ compressed ++ Routes(
       Method.GET / "sse" -> events {
         for
           _      <- pushCount(state)
           stream <- state.pulse.subscribe.map(zio.stream.ZStream.fromQueue(_))
           _      <- stream.mapZIO(_ => pushCount(state)).runDrain
         yield ()
-      },
-      Method.POST / "increment" -> handler { (_: Request) =>
-        bump(state).as(Response.ok)
-      },
+      }
     )
 
   def routes(state: State, previewRoot: JPath, port: Int = 8080): Routes[Any, Response] =
@@ -59,7 +63,7 @@ object CounterServer extends ZIOAppDefault:
       _     <- Preview
         .serve(PreviewConfig(root = root, port = 8080), extraRoutes = apiRoutes(state))
         .provideSome[Scope](
-          Server.defaultWith(_.port(8080).copy(compressors = Chunk(Compressor.gzip, Brotli.compressor)))
+          Server.defaultWith(_.port(8080))
         )
     yield ()
 end CounterServer
