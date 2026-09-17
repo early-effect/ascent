@@ -4,9 +4,7 @@ import ascent.ast.UI
 import ascent.datastar.ElementPatchMode
 import heddle.*
 import heddle.datastar.{events, readSignals}
-import heddle.json.zioJsonCodec
 import zio.*
-import zio.json.{JsonDecoder, JsonEncoder}
 import zio.test.*
 
 object AscentDatastarSpec extends ZIOSpecDefault:
@@ -14,8 +12,7 @@ object AscentDatastarSpec extends ZIOSpecDefault:
   private def el(tag: String, children: Vector[UI[Any]] = Vector.empty) =
     UI.Element[Any](tag, Vector.empty, children)
 
-  final case class Counter(count: Int) derives JsonEncoder, JsonDecoder
-  given JsonCodec[Counter] = zioJsonCodec
+  final case class Counter(count: Int) derives JsonCodec
 
   def spec = suite("AscentDatastar")(
     test("patch renders an ascent UI subtree into a datastar-patch-elements frame with selector + mode") {

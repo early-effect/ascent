@@ -5,7 +5,6 @@ import ascent.preview.{Preview, PreviewConfig}
 import heddle.*
 import heddle.brotli.Brotli
 import heddle.datastar.{Datastar, events, readSignals}
-import heddle.json.given
 import zio.*
 
 import java.nio.file.Path as JPath
@@ -25,16 +24,11 @@ object ChatServer extends ZIOAppDefault:
       _ <- AscentDatastar.patchSignal("typing", label)
     yield ()
 
+  private val compressed =
+    Middleware.compress(compressors = Chunk(Brotli.compressor, Compressor.gzip))
+
   def apiRoutes(room: ChatRoom): Routes[Any, Nothing] =
     Routes(
-      Method.GET / "chat" / "sse" -> events(handler { (req: Request) =>
-        (for
-          join   <- req.readSignals[JoinRequest].orElseSucceed(JoinRequest(""))
-          _      <- pushState(room, join.username)
-          stream <- ChatRoom.subscribe(room)
-          _      <- stream.mapZIO(_ => pushState(room, join.username)).runDrain
-        yield ()).as(Response.ok)
-      }),
       Method.POST / "chat" / "send" -> handler { (req: Request) =>
         for
           rq <- req.readSignals[MessageRequest].orElseSucceed(MessageRequest("", ""))
@@ -52,6 +46,15 @@ object ChatServer extends ZIOAppDefault:
           _  <- ChatRoom.clearTyping(room, rq.username).delay(3.seconds).forkDaemon
         yield Response.ok
       },
+    ) @@ compressed ++ Routes(
+      Method.GET / "chat" / "sse" -> events(handler { (req: Request) =>
+        (for
+          join   <- req.readSignals[JoinRequest].orElseSucceed(JoinRequest(""))
+          _      <- pushState(room, join.username)
+          stream <- ChatRoom.subscribe(room)
+          _      <- stream.mapZIO(_ => pushState(room, join.username)).runDrain
+        yield ()).as(Response.ok)
+      })
     )
 
   def routes(room: ChatRoom, previewRoot: JPath, port: Int = 8080): Routes[Any, Response] =
@@ -73,7 +76,7 @@ object ChatServer extends ZIOAppDefault:
       _    <- Preview
         .serve(PreviewConfig(root = root, port = 8080), extraRoutes = apiRoutes(room))
         .provideSome[Scope](
-          Server.defaultWith(_.port(8080).copy(compressors = Chunk(Compressor.gzip, Brotli.compressor)))
+          Server.defaultWith(_.port(8080))
         )
     yield ()
 end ChatServer

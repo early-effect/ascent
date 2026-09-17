@@ -1,6 +1,6 @@
 package example.chat
 
-import zio.json.{JsonDecoder, JsonEncoder}
+import zio.json.JsonCodec
 
 /** A chat message. The server owns these; it renders them to HTML (via ascent-html) and pushes the rendered list into
   * the client's server region.
@@ -14,6 +14,6 @@ object Message:
 /** The signal payloads the CLIENT posts and the server reads via `readSignals`. The client binds its inputs to signals
   * of the same names (`username`, `message`), so the server decodes them directly.
   */
-final case class MessageRequest(username: String, message: String) derives JsonEncoder, JsonDecoder
-final case class TypingRequest(username: String) derives JsonEncoder, JsonDecoder
-final case class JoinRequest(username: String) derives JsonEncoder, JsonDecoder
+final case class MessageRequest(username: String, message: String) derives JsonCodec
+final case class TypingRequest(username: String) derives JsonCodec
+final case class JoinRequest(username: String) derives JsonCodec
