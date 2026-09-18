@@ -1,24 +1,27 @@
 package ascent.preview.sbt
 
+import scala.util.control.NonFatal
+
 import _root_.sbt.*
 import _root_.sbt.Keys.*
-import _root_.sbt.nio.Keys.{ fileInputs, watchOnTermination }
+import _root_.sbt.nio.Keys.{fileInputs, watchOnTermination}
+import _root_.sbt.nio.file.Glob
 import sjsonnew.BasicJsonProtocol.given
 import AscentPreviewPort.given
 
-/** Local static preview: serve a directory once, watch a rebuild task, never restart Preview.
+/** Local static preview: serve a directory once, watch sources, never restart Preview.
   *
-  * The loop is `sbt ~<module>/ascentPreview`. sbt 2 `~` collects `fileInputs` from the compiled graph. zinc `compile`
-  * does not depend on `unmanagedSources`, so a graph that only reaches `compile` / `spliceFast` watches nothing.
-  * `ascentPreview / fileInputs` copies `Compile / unmanagedSources / fileInputs` (the Glob key `~` actually
-  * monitors). Do not set `watchTriggers` on these keys: a non-empty set replaces transitive `fileInputs`.
+  * The loop is `sbt <module>/ascentPreview`. It starts Preview, prints the URL, and stays up. A private `FileTreeView`
+  * poller (not sbt `~`) watches `Compile / unmanagedSources / fileInputs` plus `ascentPreviewIndex`. zinc `compile`
+  * does not depend on `unmanagedSources`; do not set `watchTriggers` (a non-empty set replaces transitive
+  * `fileInputs`). Do not watch `ascentPreviewRoot` (stamp/JS output would loop).
   *
   * `ascentPreviewServe` is idempotent, so the Preview JVM stays up; rebuilds rewrite `assets/dev-stamp` and the tab
-  * reloads over SSE.
+  * reloads over SSE (`location.reload()`). That is the refresh: Ascent has no VDOM.
   *
   * Enable on the module you want to type (`todoConduitJS`, `docs`). Specular docs should set `ascentPreviewRebuild` to
   * `specularSite` / `specularSiteDev` and `ascentPreviewRoot` to the site directory. Scala.js apps keep the default
-  * rebuild (`ascentPreviewStage`).
+  * rebuild (`ascentPreviewStage`). `ascentPreviewOnce` is the one-shot (rebuild + serve, return).
   *
   * Do not name this package `sbt` (shadows `_root_.sbt`).
   */
@@ -32,7 +35,7 @@ object AscentPreviewPlugin extends AutoPlugin:
     val AscentPreviewPort   = ascent.preview.sbt.AscentPreviewPort
     val ascentPreviewEnable =
       settingKey[Boolean](
-        "When false, skip forking Preview and printing the URL (rebuild still runs so ~ has a watch graph)"
+        "When false, skip forking Preview and printing the URL (rebuild and the watch loop still run)"
       )
     val ascentPreviewAutoServe =
       settingKey[Boolean](
@@ -44,7 +47,11 @@ object AscentPreviewPlugin extends AutoPlugin:
       )
     val ascentPreviewAutoOpen =
       settingKey[Boolean](
-        "When true, open the preview URL in a browser once the preview process binds (not on ~ rebuilds)"
+        "When true, open the preview URL in a browser once the preview process binds (not on watch rebuilds)"
+      )
+    val ascentPreviewWatchCycles =
+      settingKey[Option[Int]](
+        "None = watch until Enter or interrupt; Some(n) = return after n watch-triggered rebuilds (scripted)"
       )
     val ascentPreviewRoot =
       settingKey[File]("Directory Preview serves (JS default: <sources' parent>/target/preview)")
@@ -65,11 +72,13 @@ object AscentPreviewPlugin extends AutoPlugin:
     val ascentPreviewStage =
       taskKey[File]("Link/copy JS, copy index.html, write assets/dev-stamp into ascentPreviewRoot")
     val ascentPreviewRebuild =
-      taskKey[Unit]("Update the served tree and stamp; this is what ~ascentPreview re-runs")
+      taskKey[Unit]("Update the served tree and stamp; re-run on each watch cycle")
     val ascentPreviewServe =
       taskKey[Unit]("Start ascentPreviewMain in the background if it is not already running for this project")
+    val ascentPreviewOnce =
+      taskKey[Unit]("Rebuild and start Preview once, then return (no watch)")
     val ascentPreview =
-      taskKey[Unit]("Rebuild, then start Preview once. Watch with sbt ~<module>/ascentPreview")
+      taskKey[StateTransform]("Rebuild, start Preview, then watch sources and rebuild until Enter or interrupt")
   end autoImport
 
   import autoImport.*
@@ -81,15 +90,32 @@ object AscentPreviewPlugin extends AutoPlugin:
 
   private val spliceFastKey: TaskKey[File] = TaskKey[File]("spliceFast")
 
+  private val LoopCommandName = "ascentPreviewWatchLoop"
+
+  private val loopStateKey: AttributeKey[AscentPreviewLoop] =
+    AttributeKey[AscentPreviewLoop]("ascentPreviewLoop")
+
+  private final case class AscentPreviewLoop(
+      scope: Scope,
+      globs: Seq[Glob],
+      cycles: Option[Int],
+      triggered: Int,
+  )
+
+  override def globalSettings: Seq[Setting[?]] = Seq(
+    commands += Command.command(LoopCommandName)(runWatchLoop)
+  )
+
   override def projectSettings: Seq[Setting[?]] = Seq(
-    ascentPreviewEnable     := true,
-    ascentPreviewAutoServe  := true,
-    ascentPreviewMain       := "ascent.preview.PreviewMain",
-    ascentPreviewAutoOpen   := false,
-    ascentPreviewPort       := AscentPreviewPort(8765),
-    ascentPreviewLibVersion := "",
-    ascentPreviewRoot       := Def.uncached(sourceDirectory.value.getParentFile / "target" / "preview"),
-    ascentPreviewIndex      := Def.uncached(sourceDirectory.value.getParentFile / "index.html"),
+    ascentPreviewEnable      := true,
+    ascentPreviewAutoServe   := true,
+    ascentPreviewMain        := "ascent.preview.PreviewMain",
+    ascentPreviewAutoOpen    := false,
+    ascentPreviewWatchCycles := None,
+    ascentPreviewPort        := AscentPreviewPort(8765),
+    ascentPreviewLibVersion  := "",
+    ascentPreviewRoot        := Def.uncached(sourceDirectory.value.getParentFile / "target" / "preview"),
+    ascentPreviewIndex       := Def.uncached(sourceDirectory.value.getParentFile / "index.html"),
     libraryDependencies ++= {
       val v = ascentPreviewLibVersion.value
       if v.isEmpty then Nil
@@ -104,45 +130,38 @@ object AscentPreviewPlugin extends AutoPlugin:
         )
       }
     },
-    ascentPreviewStage   := Def.uncached(stageTree.value),
-    // ~ collects Glob keys (fileInputs), not tasks. zinc compile never lists unmanagedSources;
-    // putting those globs on these keys is what sbt 2 actually monitors.
+    ascentPreviewStage := Def.uncached(stageTree.value),
+    // Poller reads these globs. zinc compile never lists unmanagedSources; index.html is not a
+    // Scala source. Do not watch ascentPreviewRoot (stamp/JS output would loop).
     ascentPreview / fileInputs ++= (Compile / unmanagedSources / fileInputs).value,
+    ascentPreview / fileInputs ++= Seq(Glob(ascentPreviewIndex.value)),
     ascentPreviewRebuild / fileInputs ++= (Compile / unmanagedSources / fileInputs).value,
+    ascentPreviewRebuild / fileInputs ++= Seq(Glob(ascentPreviewIndex.value)),
     ascentPreviewRebuild := Def.uncached {
       val _ = (ascentPreviewRebuild / fileInputs).value
       val _ = ascentPreviewStage.value
       ()
     },
     ascentPreviewServe := Def.uncached(ensureTreeThenServe.value),
-    // Read fileInputs so WatchTransitiveDependencies sees the Glob key. Rebuild stays a static
-    // .value. Serve runs in this body afterward: `{ rebuild.value; serve.value }` would fork in
-    // parallel with an empty root.
+    ascentPreviewOnce  := Def.uncached(previewOnce.value),
+    // First rebuild+serve is a normal task evaluation so Execute can finish. The watch is a
+    // Command that runTasks rebuild then prepends itself (the `~` re-entry, without Continuous).
+    // Nested runTask from inside a still-running task deadlocks sbt 2 on a Scala.js graph.
     ascentPreview := Def.uncached {
-      val enabled = ascentPreviewEnable.value
-      val auto    = ascentPreviewAutoServe.value
-      val log     = streams.value.log
-      val base    = baseDirectory.value
-      val _       = (ascentPreview / fileInputs).value
-      val _       = ascentPreviewRebuild.value
-      if enabled && auto then
-        startPreviewIfNeeded(
-          service = bgJobService.value,
-          log = log,
-          converter = fileConverter.value,
-          st = state.value,
-          rs = Keys.resolvedScoped.value,
-          root = ascentPreviewRoot.value,
-          requested = ascentPreviewPort.value,
-          cp = ascentPreviewClasspath.value,
-          autoOpen = ascentPreviewAutoOpen.value,
-          main = ascentPreviewMain.value,
-          base = base,
-        )
-        logPreviewUrl(log, readBoundPort(base))
-      end if
+      val globs  = (ascentPreview / fileInputs).value
+      val cycles = ascentPreviewWatchCycles.value
+      val scope  = Keys.resolvedScoped.value.scope
+      val log    = streams.value.log
+      val _      = previewOnce.value
+      if cycles.isEmpty then log.info("ascentPreview: watching sources; Enter or interrupt to stop")
+      else log.info(s"ascentPreview: watching sources until ${cycles.get} rebuild(s)")
+      StateTransform { s =>
+        s.put(loopStateKey, AscentPreviewLoop(scope, globs, cycles, triggered = 0))
+          .copy(remainingCommands = Exec(LoopCommandName, None) +: s.remainingCommands)
+      }
     },
     ascentPreview / aggregate          := false,
+    ascentPreviewOnce / aggregate      := false,
     ascentPreviewServe / aggregate     := false,
     ascentPreviewStage / aggregate     := false,
     ascentPreviewRebuild / aggregate   := false,
@@ -154,6 +173,68 @@ object AscentPreviewPlugin extends AutoPlugin:
         state
     },
   )
+
+  private def previewOnce: Def.Initialize[Task[Unit]] = Def.task {
+    val enabled = ascentPreviewEnable.value
+    val auto    = ascentPreviewAutoServe.value
+    val log     = streams.value.log
+    val base    = baseDirectory.value
+    val _       = ascentPreviewRebuild.value
+    if enabled && auto then
+      startPreviewIfNeeded(
+        service = bgJobService.value,
+        log = log,
+        converter = fileConverter.value,
+        st = state.value,
+        rs = Keys.resolvedScoped.value,
+        root = ascentPreviewRoot.value,
+        requested = ascentPreviewPort.value,
+        cp = ascentPreviewClasspath.value,
+        autoOpen = ascentPreviewAutoOpen.value,
+        main = ascentPreviewMain.value,
+        base = base,
+      )
+      logPreviewUrl(log, readBoundPort(base))
+    end if
+  }
+
+  private def runWatchLoop(s: State): State =
+    s.get(loopStateKey) match
+      case None =>
+        s.log.warn("ascentPreview: watch loop has no session state")
+        s
+      case Some(loop) =>
+        val limit       = loop.cycles.getOrElse(Int.MaxValue)
+        val listenStdin = loop.cycles.isEmpty
+        if loop.triggered >= limit then finishWatch(s, loop)
+        else
+          val snap = AscentPreviewWatch.snapshot(loop.globs)
+          AscentPreviewWatch.await(loop.globs, snap, listenStdin) match
+            case AscentPreviewWatch.Event.Stop =>
+              s.log.info("ascentPreview: stopped")
+              finishWatch(s, loop)
+            case AscentPreviewWatch.Event.Changed =>
+              s.log.info("ascentPreview: source change, rebuilding")
+              val scopedRebuild = loop.scope.copy(task = Zero) / ascentPreviewRebuild
+              val after         =
+                try
+                  val (next, _) = Project.extract(s).runTask(scopedRebuild, s)
+                  next.put(loopStateKey, loop.copy(triggered = loop.triggered + 1))
+                catch
+                  case NonFatal(e) =>
+                    s.log.error(s"ascentPreview: rebuild failed: ${e.getMessage}")
+                    s
+              val again = after.get(loopStateKey).getOrElse(loop)
+              if again.triggered >= limit then finishWatch(after, again)
+              else after.copy(remainingCommands = Exec(LoopCommandName, None) +: after.remainingCommands)
+          end match
+        end if
+  end runWatchLoop
+
+  private def finishWatch(s: State, loop: AscentPreviewLoop): State =
+    val service = Project.extract(s).get(bgJobService)
+    stopPreviewJobs(service, loop.scope)
+    s.remove(loopStateKey)
 
   /** Rebuild automatically when the served tree is missing (`docs/ascentPreviewServe` alone, first clone, …). */
   private def ensureTreeThenServe: Def.Initialize[Task[Unit]] = Def.taskDyn {
@@ -261,7 +342,9 @@ object AscentPreviewPlugin extends AutoPlugin:
     IO.read(f).trim.toInt
 
   private def isPreviewSpawn(label: String): Boolean =
-    label == ascentPreviewServe.key.label || label == ascentPreview.key.label
+    label == ascentPreviewServe.key.label ||
+      label == ascentPreview.key.label ||
+      label == ascentPreviewOnce.key.label
 
   private def isPreviewJob(spawning: ScopedKey[?], scope: Scope): Boolean =
     isPreviewSpawn(spawning.key.label) &&

@@ -1,3 +1,10 @@
-# ~ monitors fileInputs on the task (same pattern as sbt-reload's checkWatchWiring). compile is not enough.
+# fileInputs must match Hello.scala and index.html. Nested runTask is the rebuild loop.
 > checkWatchGraph
+> proveNestedRunTask
+> ascentPreviewOnce
+> recordOnceStamp
+> set ascentPreviewWatchCycles := Some(1)
+# Scripted `$` is FileCommands, not a shell. Fork the rewrite, then block in the watch loop.
+> scheduleHelloRewrite
 > ascentPreview
+> checkWatchFired

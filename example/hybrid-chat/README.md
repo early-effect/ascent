@@ -25,7 +25,7 @@ Two terminals. `sbt run` cwd is the repo root, so the server looks for
 `example/hybrid-chat/target/preview` (override with a path argument).
 
 ```bash
-sbt ~hybridChatJS/ascentPreview          # splice + stamp; relink on change
+sbt hybridChatJS/ascentPreview          # splice + stamp; rebuild on save
 sbt hybridChatServer/run                 # Preview.serve + API on :8080
 ```
 

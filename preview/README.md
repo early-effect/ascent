@@ -7,14 +7,15 @@ This is a published JVM library (`rocks.earlyeffect %% "ascent-preview"`), not a
 helper. Pair it with **`sbt-ascent-preview`** so the command is the same in every repo:
 
 ```bash
-sbt ~<module>/ascentPreview
+sbt <module>/ascentPreview
 ```
 
-`~` watches `Compile / unmanagedSources / fileInputs` (copied onto `ascentPreview`; zinc `compile`
-does not list those globs) plus whatever `ascentPreviewRebuild` runs (default JS: `spliceFast`).
-The task does **not** restart Preview. One-shot (no watch): `sbt <module>/ascentPreview`. Do not set
-`watchTriggers` on `ascentPreview` / `ascentPreviewRebuild`: a non-empty set replaces transitive
-`fileInputs` on sbt 2.
+The task starts Preview, prints the URL, and stays up. Saving a `.scala` file (or `index.html`)
+rebuilds (`ascentPreviewRebuild`, default JS: `spliceFast`), rewrites `assets/dev-stamp`, and the
+tab reloads over SSE. Preview does **not** restart. Enter or interrupt stops Preview. One-shot
+(start and return): `sbt <module>/ascentPreviewOnce`. Do not set `watchTriggers` on `ascentPreview` /
+`ascentPreviewRebuild`: a non-empty set replaces transitive `fileInputs` on sbt 2. Do not
+`~ascentPreview`: sbt 2 `Continuous` shares `globalFileTreeRepository` and a second `~` goes deaf.
 
 ## Install
 
