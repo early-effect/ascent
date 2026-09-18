@@ -1,0 +1,3 @@
+# sbt 2 ~ walks the compiled graph. Nested taskDyn used to hide rebuild/compile from inspect.
+> checkWatchGraph
+> ascentPreview

@@ -439,6 +439,8 @@ lazy val sbtAscentPreview = (project in file("sbt-ascent-preview"))
     Compile / unmanagedSources += (ThisBuild / baseDirectory).value / "project" / "AscentPreviewPlugin.scala",
     Compile / unmanagedSources += (ThisBuild / baseDirectory).value / "project" / "AscentPreviewPort.scala",
     MyVersions.sbtPreviewLib,
+    scriptedLaunchOpts ++= Seq("-Xmx2g", s"-Dplugin.version=${version.value}"),
+    scriptedBufferLog := false,
   )
 
 // --- ascent example: todo-conduit — TodoMVC over conduit (js only) ---
@@ -648,7 +650,10 @@ def ascentPlatformTestCommand(find: ProjectMatrix => ProjectFinder): String =
 // ascentChekhov is not in ascentMatrices: the JVM row is browser-free selector tests and
 // joins testJVM. Live JSEnv tests live in chekhovJs (ChekhovJSEnv, not jsdom) so they stay
 // off testJS.
-addCommandAlias("testJVM", ascentPlatformTestCommand(_.jvm) + "; ascentChekhov/test")
+addCommandAlias(
+  "testJVM",
+  ascentPlatformTestCommand(_.jvm) + "; ascentChekhov/test; sbtAscentPreview/scripted",
+)
 addCommandAlias("testJS", ascentPlatformTestCommand(_.js))
 addCommandAlias("testNative", ascentPlatformTestCommand(_.native))
 

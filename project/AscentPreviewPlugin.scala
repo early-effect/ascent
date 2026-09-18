@@ -8,12 +8,16 @@ import AscentPreviewPort.given
 
 /** Local static preview: serve a directory once, watch a rebuild task, never restart Preview.
   *
-  * The loop is `sbt ~<module>/ascentPreview`. `~` watches sources. [[ascentPreviewServe]] is idempotent, so the Preview
-  * JVM stays up; rebuilds rewrite `assets/dev-stamp` and the tab reloads over SSE.
+  * The loop is `sbt ~<module>/ascentPreview`. sbt 2 `~` walks the compiled graph of `ascentPreviewRebuild` (default JS:
+  * `ascentPreviewStage` → `ascentPreviewBundle` → `spliceFast`). Do not set `watchTriggers` on these keys: a non-empty
+  * set replaces transitive `fileInputs`.
   *
-  * Enable on the module you want to type (`todoConduitJS`, `docs`). Specular docs should set [[ascentPreviewRebuild]]
-  * to `specularSite` / `specularSiteDev` and [[ascentPreviewRoot]] to the site directory. Scala.js apps keep the
-  * default rebuild ([[ascentPreviewStage]]).
+  * `ascentPreviewServe` is idempotent, so the Preview JVM stays up; rebuilds rewrite `assets/dev-stamp` and the tab
+  * reloads over SSE.
+  *
+  * Enable on the module you want to type (`todoConduitJS`, `docs`). Specular docs should set `ascentPreviewRebuild` to
+  * `specularSite` / `specularSiteDev` and `ascentPreviewRoot` to the site directory. Scala.js apps keep the default
+  * rebuild (`ascentPreviewStage`).
   *
   * Do not name this package `sbt` (shadows `_root_.sbt`).
   */
@@ -26,7 +30,9 @@ object AscentPreviewPlugin extends AutoPlugin:
     type AscentPreviewPort = ascent.preview.sbt.AscentPreviewPort
     val AscentPreviewPort   = ascent.preview.sbt.AscentPreviewPort
     val ascentPreviewEnable =
-      settingKey[Boolean]("When false, ascentPreview is a no-op (Specular/docs opt-out)")
+      settingKey[Boolean](
+        "When false, skip forking Preview and printing the URL (rebuild still runs so ~ has a watch graph)"
+      )
     val ascentPreviewAutoServe =
       settingKey[Boolean](
         "When true, ascentPreview starts ascentPreviewMain. False when a JVM app already calls Preview.serve"
@@ -89,20 +95,44 @@ object AscentPreviewPlugin extends AutoPlugin:
       else Seq("rocks.earlyeffect" % "ascent-preview_3" % v)
     },
     ascentPreviewClasspath := Def.uncached((Compile / fullClasspath).value),
-    ascentPreviewBundle    := Def.uncached(resolveBundle.value),
-    ascentPreviewStage     := Def.uncached(stageTree.value),
-    ascentPreviewRebuild   := Def.uncached {
+    ascentPreviewBundle    := Def.uncached {
+      spliceFastKey.?.value.getOrElse {
+        sys.error(
+          "ascentPreviewBundle is not set and spliceFast is not defined on this project. " +
+            "Set ascentPreviewBundle (spliceFast or fastLinkJS output), or override ascentPreviewRebuild."
+        )
+      }
+    },
+    ascentPreviewStage   := Def.uncached(stageTree.value),
+    ascentPreviewRebuild := Def.uncached {
       val _ = ascentPreviewStage.value
       ()
     },
-    // taskDyn so rebuild finishes before serve. A plain `{ a.value; b.value }` makes *both*
-    // dependencies of this task, so sbt runs them in parallel and serve sees a missing root.
     ascentPreviewServe := Def.uncached(ensureTreeThenServe.value),
-    ascentPreview      := Def.uncached {
-      previewLoop.value
-      // Always, including a second run where serve is already up or cached.
-      if ascentPreviewEnable.value && ascentPreviewAutoServe.value then
-        logPreviewUrl(streams.value.log, readBoundPort(baseDirectory.value))
+    // Rebuild is a static .value so sbt 2 ~ sees its fileInputs. Serve runs in this body afterward:
+    // `{ rebuild.value; serve.value }` would fork in parallel with an empty root.
+    ascentPreview := Def.uncached {
+      val enabled = ascentPreviewEnable.value
+      val auto    = ascentPreviewAutoServe.value
+      val log     = streams.value.log
+      val base    = baseDirectory.value
+      val _       = ascentPreviewRebuild.value
+      if enabled && auto then
+        startPreviewIfNeeded(
+          service = bgJobService.value,
+          log = log,
+          converter = fileConverter.value,
+          st = state.value,
+          rs = Keys.resolvedScoped.value,
+          root = ascentPreviewRoot.value,
+          requested = ascentPreviewPort.value,
+          cp = ascentPreviewClasspath.value,
+          autoOpen = ascentPreviewAutoOpen.value,
+          main = ascentPreviewMain.value,
+          base = base,
+        )
+        logPreviewUrl(log, readBoundPort(base))
+      end if
     },
     ascentPreview / aggregate          := false,
     ascentPreviewServe / aggregate     := false,
@@ -117,16 +147,6 @@ object AscentPreviewPlugin extends AutoPlugin:
     },
   )
 
-  private def previewLoop: Def.Initialize[Task[Unit]] = Def.taskDyn {
-    if !ascentPreviewEnable.value then Def.task(())
-    else if ascentPreviewAutoServe.value then
-      Def.taskDyn {
-        ascentPreviewRebuild.value
-        ascentPreviewServe
-      }
-    else ascentPreviewRebuild
-  }
-
   /** Rebuild automatically when the served tree is missing (`docs/ascentPreviewServe` alone, first clone, …). */
   private def ensureTreeThenServe: Def.Initialize[Task[Unit]] = Def.taskDyn {
     val root = ascentPreviewRoot.value
@@ -137,20 +157,6 @@ object AscentPreviewPlugin extends AutoPlugin:
         ascentPreviewRebuild.value
         serveIfNeeded
       }
-  }
-
-  private def resolveBundle: Def.Initialize[Task[File]] = Def.task {
-    val st        = state.value
-    val extracted = Project.extract(st)
-    val ref       = thisProjectRef.value
-    extracted.getOpt(ref / spliceFastKey) match
-      case Some(_) =>
-        extracted.runTask(ref / spliceFastKey, st)._2
-      case None =>
-        sys.error(
-          "ascentPreviewBundle is not set and spliceFast is not defined on this project. " +
-            "Set ascentPreviewBundle (spliceFast or fastLinkJS output), or override ascentPreviewRebuild."
-        )
   }
 
   private def stageTree: Def.Initialize[Task[File]] = Def.task {
@@ -168,18 +174,35 @@ object AscentPreviewPlugin extends AutoPlugin:
   }
 
   private def serveIfNeeded: Def.Initialize[Task[Unit]] = Def.task {
-    val service   = bgJobService.value
-    val log       = streams.value.log
-    val converter = fileConverter.value
-    val st        = state.value
-    val rs        = Keys.resolvedScoped.value
-    val root      = ascentPreviewRoot.value
-    val requested = ascentPreviewPort.value
-    val cp        = ascentPreviewClasspath.value
-    val autoOpen  = ascentPreviewAutoOpen.value
-    val main      = ascentPreviewMain.value
-    val base      = baseDirectory.value
-    val already   = service.jobs.exists(job => isPreviewJob(job.spawningTask, rs.scope))
+    startPreviewIfNeeded(
+      service = bgJobService.value,
+      log = streams.value.log,
+      converter = fileConverter.value,
+      st = state.value,
+      rs = Keys.resolvedScoped.value,
+      root = ascentPreviewRoot.value,
+      requested = ascentPreviewPort.value,
+      cp = ascentPreviewClasspath.value,
+      autoOpen = ascentPreviewAutoOpen.value,
+      main = ascentPreviewMain.value,
+      base = baseDirectory.value,
+    )
+  }
+
+  private def startPreviewIfNeeded(
+      service: BackgroundJobService,
+      log: Logger,
+      converter: xsbti.FileConverter,
+      st: State,
+      rs: Def.ScopedKey[?],
+      root: File,
+      requested: AscentPreviewPort,
+      cp: Classpath,
+      autoOpen: Boolean,
+      main: String,
+      base: File,
+  ): Unit =
+    val already = service.jobs.exists(job => isPreviewJob(job.spawningTask, rs.scope))
     if already then log.info(s"ascentPreviewServe: already running ${root.getAbsolutePath}")
     else
       if !root.exists then sys.error(s"ascentPreviewServe: root does not exist: $root (run ascentPreviewRebuild first)")
@@ -206,7 +229,7 @@ object AscentPreviewPlugin extends AutoPlugin:
       }
       ()
     end if
-  }
+  end startPreviewIfNeeded
 
   /** OSC 8 hyperlink so Cursor / VS Code / iTerm can Cmd-click the URL. */
   private def logPreviewUrl(log: Logger, port: Int): Unit =
@@ -229,15 +252,17 @@ object AscentPreviewPlugin extends AutoPlugin:
     if !f.isFile then sys.error(s"ascentPreview: missing ${f.getAbsolutePath} (Preview was not started)")
     IO.read(f).trim.toInt
 
+  private def isPreviewSpawn(label: String): Boolean =
+    label == ascentPreviewServe.key.label || label == ascentPreview.key.label
+
   private def isPreviewJob(spawning: ScopedKey[?], scope: Scope): Boolean =
-    spawning.key.label == ascentPreviewServe.key.label &&
+    isPreviewSpawn(spawning.key.label) &&
       spawning.scope.project == scope.project
 
   private def stopPreviewJobs(service: BackgroundJobService, scope: Scope): Unit =
-    val label = ascentPreviewServe.key.label
     service.jobs
       .filter { h =>
-        h.spawningTask.key.label == label && h.spawningTask.scope.project == scope.project
+        isPreviewSpawn(h.spawningTask.key.label) && h.spawningTask.scope.project == scope.project
       }
       .foreach { h =>
         service.stop(h)
