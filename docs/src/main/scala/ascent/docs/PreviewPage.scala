@@ -14,10 +14,11 @@ fires when **`assets/dev-stamp` contents** change. The tab reloads. The Preview 
 HTML and JS may churn on disk; rewrite the stamp to poke the browser. Never watch a task that
 kills the server (`~runReload`, `~preview/run`).
 
-The command to remember is **`sbt ~<module>/ascentPreview`**. `~` is sbt's file watch on
-**`ascentPreviewRebuild`** (and, on the default JS path, `spliceFast`). Preview stays up. One-shot
-(start once, no watch): `sbt <module>/ascentPreview`. Do not copy `watchTriggers` onto these keys:
-a non-empty set replaces transitive `fileInputs` on sbt 2.
+The command to remember is **`sbt ~<module>/ascentPreview`**. `~` is sbt's file watch. The plugin
+copies **`Compile / unmanagedSources / fileInputs`** onto `ascentPreview` so zinc's `compile` graph
+(which does not list those globs) still rebuilds on `.scala` edits. Default JS rebuild still runs
+`spliceFast`. Preview stays up. One-shot (start once, no watch): `sbt <module>/ascentPreview`. Do
+not copy `watchTriggers` onto these keys: a non-empty set replaces transitive `fileInputs` on sbt 2.
 """,
     section("Install")(
       md"""
@@ -54,10 +55,11 @@ sbt ~todoConduitJS/ascentPreview
 # open http://localhost:8765
 ```
 
-Default rebuild is `ascentPreviewStage`: this project's `spliceFast` (a real `.value` dep, so `~`
-sees Scala.js sources), copy `index.html`, write `assets/dev-stamp`. Override `ascentPreviewBundle`
-for plain `fastLinkJS`. If `spliceFast` is not defined, set `ascentPreviewBundle` or override
-`ascentPreviewRebuild`.
+Default rebuild is `ascentPreviewStage`: this project's `spliceFast`, copy `index.html`, write
+`assets/dev-stamp`. `~` sees Scala.js sources because `ascentPreview / fileInputs` copies
+`Compile / unmanagedSources / fileInputs`, not because `spliceFast` reaches zinc `compile`. Override
+`ascentPreviewBundle` for plain `fastLinkJS`. If `spliceFast` is not defined, set
+`ascentPreviewBundle` or override `ascentPreviewRebuild`.
 """
     ),
     section("Specular docs")(
@@ -173,8 +175,9 @@ sbt ~preview/run             # same: the process is the watch target
 ```
 
 Watch the **rebuild** (`ascentPreview` / `ascentPreviewStage` / `specularSiteDev`), not the server.
-`~ascentPreview` already depends on `ascentPreviewRebuild`; consumers that set
-`ascentPreviewRebuild := specularSiteDev.value` get that task's sources for free.
+`~ascentPreview` copies Compile source `fileInputs` onto itself and then runs `ascentPreviewRebuild`.
+Overriding rebuild (for example `ascentPreviewRebuild := specularSiteDev.value`) keeps the source
+watch.
 """
     ),
   )

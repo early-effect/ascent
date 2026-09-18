@@ -1,4 +1,5 @@
 import sbt.ScopeAxis.{Select, Zero}
+import sbt.nio.Keys.fileInputs
 
 scalaVersion := "3.9.0"
 
@@ -11,7 +12,7 @@ ascentPreviewRebuild   := Def.uncached {
 }
 
 lazy val checkWatchGraph =
-  taskKey[Unit]("Fail unless inspect ascentPreview lists rebuild and compile")
+  taskKey[Unit]("Fail unless ascentPreview fileInputs matches Hello.scala")
 
 checkWatchGraph := Def.uncached {
   val extracted = Project.extract(state.value)
@@ -21,6 +22,12 @@ checkWatchGraph := Def.uncached {
     Project.details(extracted.structure, false, sk)
   val preview = detailsOf(ascentPreview.key)
   val rebuild = detailsOf(ascentPreviewRebuild.key)
+  val globs   = (ascentPreview / fileInputs).value
+  val hello   = ((Compile / scalaSource).value / "Hello.scala").toPath
+  if !globs.exists(_.matches(hello)) then
+    sys.error(s"ascentPreview / fileInputs ($globs) does not watch $hello")
+  if !preview.contains("fileInputs") then
+    sys.error(s"ascentPreview inspect missing fileInputs:\n$preview")
   if !preview.contains("ascentPreviewRebuild") then
     sys.error(s"ascentPreview inspect missing ascentPreviewRebuild:\n$preview")
   if !rebuild.contains("compile") then

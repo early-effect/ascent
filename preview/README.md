@@ -10,10 +10,11 @@ helper. Pair it with **`sbt-ascent-preview`** so the command is the same in ever
 sbt ~<module>/ascentPreview
 ```
 
-`~` watches whatever `ascentPreviewRebuild` depends on (default JS: `spliceFast` as a real task
-dep). The task does **not** restart Preview. One-shot (no watch): `sbt <module>/ascentPreview`.
-Do not set `watchTriggers` on `ascentPreview` / `ascentPreviewRebuild`: a non-empty set replaces
-transitive `fileInputs` on sbt 2.
+`~` watches `Compile / unmanagedSources / fileInputs` (copied onto `ascentPreview`; zinc `compile`
+does not list those globs) plus whatever `ascentPreviewRebuild` runs (default JS: `spliceFast`).
+The task does **not** restart Preview. One-shot (no watch): `sbt <module>/ascentPreview`. Do not set
+`watchTriggers` on `ascentPreview` / `ascentPreviewRebuild`: a non-empty set replaces transitive
+`fileInputs` on sbt 2.
 
 ## Install
 

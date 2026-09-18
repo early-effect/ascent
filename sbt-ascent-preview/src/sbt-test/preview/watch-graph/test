@@ -1,3 +1,3 @@
-# sbt 2 ~ walks the compiled graph. Nested taskDyn used to hide rebuild/compile from inspect.
+# ~ monitors fileInputs on the task (same pattern as sbt-reload's checkWatchWiring). compile is not enough.
 > checkWatchGraph
 > ascentPreview

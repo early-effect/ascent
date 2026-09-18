@@ -2,15 +2,16 @@ package ascent.preview.sbt
 
 import _root_.sbt.*
 import _root_.sbt.Keys.*
-import _root_.sbt.nio.Keys.watchOnTermination
+import _root_.sbt.nio.Keys.{ fileInputs, watchOnTermination }
 import sjsonnew.BasicJsonProtocol.given
 import AscentPreviewPort.given
 
 /** Local static preview: serve a directory once, watch a rebuild task, never restart Preview.
   *
-  * The loop is `sbt ~<module>/ascentPreview`. sbt 2 `~` walks the compiled graph of `ascentPreviewRebuild` (default JS:
-  * `ascentPreviewStage` → `ascentPreviewBundle` → `spliceFast`). Do not set `watchTriggers` on these keys: a non-empty
-  * set replaces transitive `fileInputs`.
+  * The loop is `sbt ~<module>/ascentPreview`. sbt 2 `~` collects `fileInputs` from the compiled graph. zinc `compile`
+  * does not depend on `unmanagedSources`, so a graph that only reaches `compile` / `spliceFast` watches nothing.
+  * `ascentPreview / fileInputs` copies `Compile / unmanagedSources / fileInputs` (the Glob key `~` actually
+  * monitors). Do not set `watchTriggers` on these keys: a non-empty set replaces transitive `fileInputs`.
   *
   * `ascentPreviewServe` is idempotent, so the Preview JVM stays up; rebuilds rewrite `assets/dev-stamp` and the tab
   * reloads over SSE.
@@ -104,18 +105,25 @@ object AscentPreviewPlugin extends AutoPlugin:
       }
     },
     ascentPreviewStage   := Def.uncached(stageTree.value),
+    // ~ collects Glob keys (fileInputs), not tasks. zinc compile never lists unmanagedSources;
+    // putting those globs on these keys is what sbt 2 actually monitors.
+    ascentPreview / fileInputs ++= (Compile / unmanagedSources / fileInputs).value,
+    ascentPreviewRebuild / fileInputs ++= (Compile / unmanagedSources / fileInputs).value,
     ascentPreviewRebuild := Def.uncached {
+      val _ = (ascentPreviewRebuild / fileInputs).value
       val _ = ascentPreviewStage.value
       ()
     },
     ascentPreviewServe := Def.uncached(ensureTreeThenServe.value),
-    // Rebuild is a static .value so sbt 2 ~ sees its fileInputs. Serve runs in this body afterward:
-    // `{ rebuild.value; serve.value }` would fork in parallel with an empty root.
+    // Read fileInputs so WatchTransitiveDependencies sees the Glob key. Rebuild stays a static
+    // .value. Serve runs in this body afterward: `{ rebuild.value; serve.value }` would fork in
+    // parallel with an empty root.
     ascentPreview := Def.uncached {
       val enabled = ascentPreviewEnable.value
       val auto    = ascentPreviewAutoServe.value
       val log     = streams.value.log
       val base    = baseDirectory.value
+      val _       = (ascentPreview / fileInputs).value
       val _       = ascentPreviewRebuild.value
       if enabled && auto then
         startPreviewIfNeeded(

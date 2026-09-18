@@ -182,9 +182,10 @@ sbt ~todoConduitJS/ascentPreview   # example app → http://localhost:8765
 sbt ~docs/ascentPreview            # this repo's docs site (auto port; URL printed in the terminal)
 ```
 
-`~` watches whatever `ascentPreviewRebuild` depends on (default JS: `spliceFast`). Preview **does
-not restart**: the rebuild rewrites `assets/dev-stamp` and the tab reloads over `/__ascent/reload`.
-One-shot (no watch): drop the `~`.
+`~` watches `Compile / unmanagedSources / fileInputs` (copied onto `ascentPreview`; zinc `compile`
+does not list those globs) and then runs `ascentPreviewRebuild` (default JS: `spliceFast`). Preview
+**does not restart**: the rebuild rewrites `assets/dev-stamp` and the tab reloads over
+`/__ascent/reload`. One-shot (no watch): drop the `~`.
 
 Do **not** `sbt ~docs/Test/runReload` (that kills the Preview JVM on every compile).
 
