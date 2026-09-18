@@ -1,3 +1,10 @@
-# sbt 2 ~ walks the compiled graph. Nested taskDyn used to hide rebuild/compile from inspect.
+# fileInputs must match Hello.scala and index.html. Nested runTask is the rebuild loop.
 > checkWatchGraph
+> proveNestedRunTask
+> ascentPreviewOnce
+> recordOnceStamp
+> set ascentPreviewWatchCycles := Some(1)
+# Scripted `$` is FileCommands, not a shell. Fork the rewrite, then block in the watch loop.
+> scheduleHelloRewrite
 > ascentPreview
+> checkWatchFired

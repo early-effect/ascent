@@ -428,7 +428,7 @@ lazy val preview = (projectMatrix in file("preview"))
   )
   .jvmPlatform(scalaVersions = scalaVersions)
 
-// --- sbt-ascent-preview : enablePlugins(AscentPreviewPlugin) then `sbt ~<module>/ascentPreview`. ---
+// --- sbt-ascent-preview : enablePlugins(AscentPreviewPlugin) then `sbt <module>/ascentPreview`. ---
 // Same source as project/AscentPreviewPlugin.scala (this repo cannot addSbtPlugin itself).
 lazy val sbtAscentPreview = (project in file("sbt-ascent-preview"))
   .enablePlugins(SbtPlugin)
@@ -438,6 +438,7 @@ lazy val sbtAscentPreview = (project in file("sbt-ascent-preview"))
     scalacOptions ++= commonScalacOptions,
     Compile / unmanagedSources += (ThisBuild / baseDirectory).value / "project" / "AscentPreviewPlugin.scala",
     Compile / unmanagedSources += (ThisBuild / baseDirectory).value / "project" / "AscentPreviewPort.scala",
+    Compile / unmanagedSources += (ThisBuild / baseDirectory).value / "project" / "AscentPreviewWatch.scala",
     MyVersions.sbtPreviewLib,
     scriptedLaunchOpts ++= Seq("-Xmx2g", s"-Dplugin.version=${version.value}"),
     scriptedBufferLog := false,

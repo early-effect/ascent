@@ -16,7 +16,7 @@ on `:8080`.
 ## Run it
 
 ```bash
-sbt ~datastarExampleJS/ascentPreview     # splice the client
+sbt datastarExampleJS/ascentPreview     # splice the client
 sbt datastarExampleServer/run            # Preview.serve + API on :8080
 ```
 

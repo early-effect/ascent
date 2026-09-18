@@ -14,10 +14,13 @@ fires when **`assets/dev-stamp` contents** change. The tab reloads. The Preview 
 HTML and JS may churn on disk; rewrite the stamp to poke the browser. Never watch a task that
 kills the server (`~runReload`, `~preview/run`).
 
-The command to remember is **`sbt ~<module>/ascentPreview`**. `~` is sbt's file watch on
-**`ascentPreviewRebuild`** (and, on the default JS path, `spliceFast`). Preview stays up. One-shot
-(start once, no watch): `sbt <module>/ascentPreview`. Do not copy `watchTriggers` onto these keys:
-a non-empty set replaces transitive `fileInputs` on sbt 2.
+The command to remember is **`sbt <module>/ascentPreview`**. It starts Preview, prints the URL, and
+stays up. A private file poller (not sbt `~`) watches **`Compile / unmanagedSources / fileInputs`**
+plus `ascentPreviewIndex`. Saving a `.scala` file or `index.html` runs `ascentPreviewRebuild`
+(default JS: `spliceFast`), rewrites the stamp, and the tab does `location.reload()`. Preview stays
+up. Enter or interrupt stops Preview. One-shot (start and return): `sbt <module>/ascentPreviewOnce`.
+Do not copy `watchTriggers` onto these keys: a non-empty set replaces transitive `fileInputs` on
+sbt 2. Do not `~ascentPreview`.
 """,
     section("Install")(
       md"""
@@ -50,14 +53,15 @@ lazy val todoConduit = (project in file("example/todo-conduit"))
 ```
 
 ```bash
-sbt ~todoConduitJS/ascentPreview
+sbt todoConduitJS/ascentPreview
 # open http://localhost:8765
 ```
 
-Default rebuild is `ascentPreviewStage`: this project's `spliceFast` (a real `.value` dep, so `~`
-sees Scala.js sources), copy `index.html`, write `assets/dev-stamp`. Override `ascentPreviewBundle`
-for plain `fastLinkJS`. If `spliceFast` is not defined, set `ascentPreviewBundle` or override
-`ascentPreviewRebuild`.
+Default rebuild is `ascentPreviewStage`: this project's `spliceFast`, copy `index.html`, write
+`assets/dev-stamp`. The poller sees Scala.js sources because `ascentPreview / fileInputs` copies
+`Compile / unmanagedSources / fileInputs`, not because `spliceFast` reaches zinc `compile`. Override
+`ascentPreviewBundle` for plain `fastLinkJS`. If `spliceFast` is not defined, set
+`ascentPreviewBundle` or override `ascentPreviewRebuild`.
 """
     ),
     section("Specular docs")(
@@ -76,7 +80,7 @@ an example `target/preview`.
 ```
 
 ```bash
-sbt ~docs/ascentPreview
+sbt docs/ascentPreview
 # open the localhost URL sbt prints (port is auto)
 ```
 
@@ -113,12 +117,12 @@ static trailing GET so `/sse` wins over a file lookup.
 extra routes are not reinstalled. Default off (process-lifetime sidecar).
 
 A custom wrapper main is still a `ZIOAppDefault` that calls `Preview.serve`. Point
-`ascentPreviewMain` at it if `~ascentPreview` should fork that main instead of `PreviewMain`.
+`ascentPreviewMain` at it if `ascentPreview` should fork that main instead of `PreviewMain`.
 
 Datastar / hybrid still use two commands when the API lives in a JVM module:
 
 ```bash
-sbt ~datastarExampleJS/ascentPreview   # stage + stamp only
+sbt datastarExampleJS/ascentPreview   # stage + stamp only
 sbt datastarExampleServer/run          # Preview.serve + API on :8080
 ```
 
@@ -158,7 +162,7 @@ CORS is off by default so same-origin example servers stay strict.
 Paths are jailed: `..` is rejected, and the resolved file must be a canonical descendant of `root`.
 CLI: `PreviewMain <port> <siteRoot> [--open]` (default `8765` and `target/site`). `--open` is
 what `ascentPreviewAutoOpen := true` passes so the tab opens once the socket is bound, not on every
-`~` rebuild.
+watch rebuild.
 
 Module bind: `ascentPreviewPort := AscentPreviewPort(8701)` or
 `ascentPreviewPort := AscentPreviewPort("auto")` (first free port `>= 8700`).
@@ -173,8 +177,9 @@ sbt ~preview/run             # same: the process is the watch target
 ```
 
 Watch the **rebuild** (`ascentPreview` / `ascentPreviewStage` / `specularSiteDev`), not the server.
-`~ascentPreview` already depends on `ascentPreviewRebuild`; consumers that set
-`ascentPreviewRebuild := specularSiteDev.value` get that task's sources for free.
+`ascentPreview` copies Compile source `fileInputs` onto itself (plus `index.html`) and then runs
+`ascentPreviewRebuild` on each save. Overriding rebuild (for example
+`ascentPreviewRebuild := specularSiteDev.value`) keeps the source watch.
 """
     ),
   )
