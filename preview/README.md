@@ -10,8 +10,10 @@ helper. Pair it with **`sbt-ascent-preview`** so the command is the same in ever
 sbt ~<module>/ascentPreview
 ```
 
-`~` is sbt's file watch. The task does **not** restart Preview. One-shot (no watch):
-`sbt <module>/ascentPreview`.
+`~` watches whatever `ascentPreviewRebuild` depends on (default JS: `spliceFast` as a real task
+dep). The task does **not** restart Preview. One-shot (no watch): `sbt <module>/ascentPreview`.
+Do not set `watchTriggers` on `ascentPreview` / `ascentPreviewRebuild`: a non-empty set replaces
+transitive `fileInputs` on sbt 2.
 
 ## Install
 
