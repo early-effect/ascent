@@ -15,12 +15,14 @@ HTML and JS may churn on disk; rewrite the stamp to poke the browser. Never watc
 kills the server (`~runReload`, `~preview/run`).
 
 The command to remember is **`sbt <module>/ascentPreview`**. It starts Preview, prints the URL, and
-stays up. A private file poller (not sbt `~`) watches **`Compile / unmanagedSources / fileInputs`**
-plus `ascentPreviewIndex`. Saving a `.scala` file or `index.html` runs `ascentPreviewRebuild`
-(default JS: `spliceFast`), rewrites the stamp, and the tab does `location.reload()`. Preview stays
-up. Enter or interrupt stops Preview. One-shot (start and return): `sbt <module>/ascentPreviewOnce`.
-Do not copy `watchTriggers` onto these keys: a non-empty set replaces transitive `fileInputs` on
-sbt 2. Do not `~ascentPreview`.
+watches sources. From a terminal it stays in the foreground until interrupt (Ctrl-C). Typed at an
+sbt prompt, it returns so tests and compiles still run; stop with `<module>/ascentPreviewStop`. A
+private file poller (not sbt `~`) watches **`Compile / unmanagedSources / fileInputs`** plus
+`ascentPreviewIndex`. Saving a `.scala` file or `index.html` queues `ascentPreviewRebuild`
+(default JS: `spliceFast`) on the sbt command queue, rewrites the stamp, and the tab does
+`location.reload()`. Preview stays up. One-shot (start and return, no watch):
+`sbt <module>/ascentPreviewOnce`. Do not copy `watchTriggers` onto these keys: a non-empty set
+replaces transitive `fileInputs` on sbt 2. Do not `~ascentPreview`.
 """,
     section("Install")(
       md"""
@@ -177,9 +179,10 @@ sbt ~preview/run             # same: the process is the watch target
 ```
 
 Watch the **rebuild** (`ascentPreview` / `ascentPreviewStage` / `specularSiteDev`), not the server.
-`ascentPreview` copies Compile source `fileInputs` onto itself (plus `index.html`) and then runs
+`ascentPreview` copies Compile source `fileInputs` onto itself (plus `index.html`) and then queues
 `ascentPreviewRebuild` on each save. Overriding rebuild (for example
-`ascentPreviewRebuild := specularSiteDev.value`) keeps the source watch.
+`ascentPreviewRebuild := specularSiteDev.value`) keeps the source watch. The poller is a background
+job; it does not own the sbt prompt.
 """
     ),
   )

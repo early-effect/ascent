@@ -182,10 +182,12 @@ sbt todoConduitJS/ascentPreview   # example app → http://localhost:8765
 sbt docs/ascentPreview            # this repo's docs site (auto port; URL printed in the terminal)
 ```
 
-`ascentPreview` starts Preview, prints the URL, and stays up. Save a `.scala` file (or `index.html`):
-the served tree rebuilds, `assets/dev-stamp` is rewritten, and the tab reloads over `/__ascent/reload`.
-Preview **does not restart**. Enter or interrupt stops Preview. One-shot (start and return):
-`sbt <module>/ascentPreviewOnce`. Do not `~ascentPreview`.
+`ascentPreview` starts Preview, prints the URL, and watches sources. From a terminal
+(`sbt <module>/ascentPreview`) it stays in the foreground until interrupt (Ctrl-C). Typed at an
+sbt prompt, it returns so tests and compiles still run; stop with `<module>/ascentPreviewStop` (or
+`exit`). Save a `.scala` file (or `index.html`): the served tree rebuilds, `assets/dev-stamp` is
+rewritten, and the tab reloads over `/__ascent/reload`. Preview **does not restart**. One-shot
+(start and return, no watch): `sbt <module>/ascentPreviewOnce`. Do not `~ascentPreview`.
 
 Do **not** `sbt ~docs/Test/runReload` (that kills the Preview JVM on every compile).
 
@@ -221,7 +223,8 @@ sbt todoConduitJS/ascentPreview
 ```
 
 `ascentPreview` stages `index.html` + spliceFast JS + `assets/dev-stamp`, then starts
-`ascent-preview` and watches sources. After a `.scala` edit, the loop restages and the tab reloads.
+`ascent-preview` and watches sources in the background. After a `.scala` edit, the poller restages
+and the tab reloads. The sbt prompt stays free.
 Docs use the same command: `sbt docs/ascentPreview`.
 
 Datastar and hybrid examples call `Preview.serve` with extra API routes so the client and API

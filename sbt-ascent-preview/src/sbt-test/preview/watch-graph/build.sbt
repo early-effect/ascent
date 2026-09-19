@@ -7,6 +7,8 @@ enablePlugins(AscentPreviewPlugin)
 
 ascentPreviewAutoServe := false
 
+libraryDependencies += "org.scalameta" %% "munit" % "1.1.1" % Test
+
 def helloGreeting(src: File): String =
   val Greeting = """def greeting: String = "([^"]+)"""".r
   Greeting.findFirstMatchIn(IO.read(src)).map(_.group(1)).getOrElse("missing")
@@ -32,11 +34,17 @@ lazy val checkWatchGraph =
 lazy val proveNestedRunTask =
   taskKey[Unit]("Nested Extracted.runTask(rebuild) twice after a source edit")
 
-lazy val scheduleHelloRewrite =
-  taskKey[Unit]("Rewrite Hello.scala after a delay so the watch loop can observe it")
+lazy val rewriteHello =
+  taskKey[Unit]("Rewrite Hello.scala so the background watch can observe it")
 
 lazy val checkWatchFired =
   taskKey[Unit]("Fail unless the watch cycle restaged after-watch title and a new stamp")
+
+lazy val recordOnceStamp =
+  taskKey[Unit]("Remember the one-shot stamp so waitWatchFired can see a change")
+
+lazy val forceCompile =
+  taskKey[Unit]("Wipe class products and zinc analysis, then compile Compile and Test")
 
 proveNestedRunTask := Def.uncached {
   val st0       = state.value
@@ -49,22 +57,16 @@ proveNestedRunTask := Def.uncached {
   ()
 }
 
-scheduleHelloRewrite := Def.uncached {
+rewriteHello := Def.uncached {
   val src = (Compile / scalaSource).value / "Hello.scala"
-  val t   = new Thread("scheduleHelloRewrite"):
-    override def run(): Unit =
-      Thread.sleep(4000)
-      IO.write(src, "object Hello:\n  def greeting: String = \"after-watch\"\n")
-  t.setDaemon(true)
-  t.start()
-  ()
+  IO.write(src, "object Hello:\n  def greeting: String = \"after-watch\"\n")
 }
 
 checkWatchFired := Def.uncached {
   val dest  = ascentPreviewRoot.value
   val html  = IO.read(dest / "index.html")
   val stamp = IO.read(dest / "assets" / "dev-stamp")
-  val once  = IO.read(baseDirectory.value / "target" / "once-stamp")
+  val once  = IO.read(baseDirectory.value / "once-stamp")
   if !html.contains("after-watch") then
     sys.error(s"staged index title was not after-watch:\n$html")
   if stamp.isEmpty then sys.error("empty assets/dev-stamp")
@@ -72,14 +74,31 @@ checkWatchFired := Def.uncached {
   ()
 }
 
-lazy val recordOnceStamp =
-  taskKey[Unit]("Remember the one-shot stamp so checkWatchFired can see a change")
-
 recordOnceStamp := Def.uncached {
   val stamp = IO.read(ascentPreviewRoot.value / "assets" / "dev-stamp")
-  IO.createDirectory(baseDirectory.value / "target")
-  IO.write(baseDirectory.value / "target" / "once-stamp", stamp)
-  ()
+  IO.write(baseDirectory.value / "once-stamp", stamp)
+}
+
+forceCompile := Def.taskDyn {
+  val classes     = (Compile / classDirectory).value
+  val testClasses = (Test / classDirectory).value
+  val tgt         = target.value
+  IO.delete(classes)
+  IO.delete(testClasses)
+  def wipeZinc(dir: File): Unit =
+    if dir.isDirectory then
+      val fs = dir.listFiles
+      if fs != null then
+        fs.foreach { f =>
+          if f.isDirectory then wipeZinc(f)
+          else if f.getName.contains("inc_compile") then IO.delete(f)
+        }
+  wipeZinc(tgt)
+  Def.task {
+    val _ = (Compile / compile).value
+    val _ = (Test / compile).value
+    ()
+  }
 }
 
 checkWatchGraph := Def.uncached {
@@ -88,7 +107,7 @@ checkWatchGraph := Def.uncached {
   def detailsOf(key: AttributeKey[?]): String =
     val sk = Def.ScopedKey(Scope(Select(extracted.currentRef), Zero, Zero, Zero), key)
     Project.details(extracted.structure, false, sk)
-  val preview = detailsOf(ascentPreview.key)
+  val watch   = detailsOf(ascentPreviewWatch.key)
   val rebuild = detailsOf(ascentPreviewRebuild.key)
   val globs   = (ascentPreview / fileInputs).value
   val hello   = ((Compile / scalaSource).value / "Hello.scala").toPath
@@ -97,8 +116,8 @@ checkWatchGraph := Def.uncached {
     sys.error(s"ascentPreview / fileInputs ($globs) does not watch $hello")
   if !globs.exists(_.matches(index)) then
     sys.error(s"ascentPreview / fileInputs ($globs) does not watch $index")
-  if !preview.contains("fileInputs") then
-    sys.error(s"ascentPreview inspect missing fileInputs:\n$preview")
+  if !watch.contains("fileInputs") then
+    sys.error(s"ascentPreviewWatch inspect missing fileInputs:\n$watch")
   if !rebuild.contains("compile") then
     sys.error(s"ascentPreviewRebuild inspect missing compile:\n$rebuild")
   ()

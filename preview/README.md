@@ -10,10 +10,12 @@ helper. Pair it with **`sbt-ascent-preview`** so the command is the same in ever
 sbt <module>/ascentPreview
 ```
 
-The task starts Preview, prints the URL, and stays up. Saving a `.scala` file (or `index.html`)
-rebuilds (`ascentPreviewRebuild`, default JS: `spliceFast`), rewrites `assets/dev-stamp`, and the
-tab reloads over SSE. Preview does **not** restart. Enter or interrupt stops Preview. One-shot
-(start and return): `sbt <module>/ascentPreviewOnce`. Do not set `watchTriggers` on `ascentPreview` /
+The task starts Preview, prints the URL, and watches sources. From a terminal it stays in the
+foreground until interrupt (Ctrl-C). Typed at an sbt prompt, it returns so tests and compiles still
+run; stop with `<module>/ascentPreviewStop`. Saving a `.scala` file (or `index.html`) rebuilds
+(`ascentPreviewRebuild`, default JS: `spliceFast`), rewrites `assets/dev-stamp`, and the tab reloads
+over SSE. Preview does **not** restart. One-shot (start and return, no watch):
+`sbt <module>/ascentPreviewOnce`. Do not set `watchTriggers` on `ascentPreview` /
 `ascentPreviewRebuild`: a non-empty set replaces transitive `fileInputs` on sbt 2. Do not
 `~ascentPreview`: sbt 2 `Continuous` shares `globalFileTreeRepository` and a second `~` goes deaf.
 
