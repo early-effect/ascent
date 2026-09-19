@@ -439,6 +439,7 @@ lazy val sbtAscentPreview = (project in file("sbt-ascent-preview"))
     Compile / unmanagedSources += (ThisBuild / baseDirectory).value / "project" / "AscentPreviewPlugin.scala",
     Compile / unmanagedSources += (ThisBuild / baseDirectory).value / "project" / "AscentPreviewPort.scala",
     Compile / unmanagedSources += (ThisBuild / baseDirectory).value / "project" / "AscentPreviewWatch.scala",
+    Compile / unmanagedSources += (ThisBuild / baseDirectory).value / "project" / "AscentPreviewCommand.scala",
     MyVersions.sbtPreviewLib,
     scriptedLaunchOpts ++= Seq("-Xmx2g", s"-Dplugin.version=${version.value}"),
     scriptedBufferLog := false,

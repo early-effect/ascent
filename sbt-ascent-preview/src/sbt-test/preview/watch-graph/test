@@ -3,8 +3,19 @@
 > proveNestedRunTask
 > ascentPreviewOnce
 > recordOnceStamp
-> set ascentPreviewWatchCycles := Some(1)
-# Scripted `$` is FileCommands, not a shell. Fork the rewrite, then block in the watch loop.
-> scheduleHelloRewrite
+# Watch is a bg job; the next lines MUST run (old loop would hang here).
 > ascentPreview
+> compile
+> Test / compile
+> test
+# Forced compile: wipe products + zinc, then compile. Not a cached no-op.
+> forceCompile
+> test
+# File change, then yield the command queue so the queued rebuild can run.
+> rewriteHello
+> eval Thread.sleep(5000L)
 > checkWatchFired
+> test
+> forceCompile
+> checkWatchFired
+> ascentPreviewStop
