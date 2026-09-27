@@ -346,12 +346,18 @@ object PreviewSpec extends ZIOSpecDefault:
       p
     }
 
-  private def getUntilOk(url: String): Task[Response] =
+  /** Why the preview was not serving `url` yet: not listening, or answering with an error status. */
+  private enum NotReady:
+    case Unreachable(error: ClientError)
+    case Answered(status: Status)
+
+  private def getUntilOk(url: String): IO[NotReady, Response] =
     Client
       .get(url)
+      .mapError(NotReady.Unreachable(_))
       .flatMap { resp =>
         if resp.status.isSuccess then ZIO.succeed(resp)
-        else ZIO.fail(RuntimeException(s"${resp.status} $url"))
+        else ZIO.fail(NotReady.Answered(resp.status))
       }
       .retry(Schedule.spaced(50.millis) && Schedule.recurs(80))
 

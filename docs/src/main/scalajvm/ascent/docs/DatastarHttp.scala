@@ -59,23 +59,21 @@ succeeds while the server is live, then the Scope closes and the port is release
             },
           )
 
-        (for
+        for
           count <- Ref.make(0)
           pulse <- Hub.unbounded[Unit]
           state = State(count, pulse)
           result <- ZIO
             .scoped {
-              Server
-                .install(routes(state))
-                .mapError(e => RuntimeException(e.message))
-                .flatMap { server =>
-                  server.port.flatMap { port =>
-                    Client.request(Method.POST, s"http://127.0.0.1:$port/increment").map(_.status)
-                  }
+              Server.install(routes(state)).flatMap { server =>
+                server.port.flatMap { port =>
+                  Client.request(Method.POST, s"http://127.0.0.1:$port/increment").map(_.status)
                 }
+              }
             }
             .provide(Server.defaultWith(_.port(0)))
-        yield result).orDie
+        yield result
+        end for
       }.assert(st => assertTrue(st == Status.Ok)),
     ),
   )

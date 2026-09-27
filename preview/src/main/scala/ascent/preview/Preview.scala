@@ -1,7 +1,7 @@
 package ascent.preview
 
 import heddle.*
-import heddle.sse.{ServerSentEvent, Sse}
+import heddle.sse.{ServerSentEvent, Sse, SseField}
 import zio.*
 import zio.stream.*
 
@@ -135,12 +135,14 @@ object Preview:
     val want = Chunk.fromIterator(reload.normalize.iterator().asScala.map(_.toString))
     got == want
 
+  private val reloadEvent: ServerSentEvent = ServerSentEvent("reload", Some(SseField("reload")))
+
   private[preview] def stampEvents(stamp: JPath): ZStream[Any, Nothing, ServerSentEvent] =
     ZStream
       .tick(50.millis)
       .mapZIO(_ => readStamp(stamp))
       .zipWithPrevious
-      .collect { case (Some(prev), next) if prev != next => ServerSentEvent("reload", Some("reload")) }
+      .collect { case (Some(prev), next) if prev != next => Preview.reloadEvent }
 
   private def readStamp(path: JPath): UIO[Option[String]] =
     ZIO

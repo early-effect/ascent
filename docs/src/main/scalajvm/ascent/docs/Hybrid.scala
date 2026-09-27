@@ -80,22 +80,20 @@ wiring lives in `example/hybrid-chat`.
             },
           )
 
-        (for
+        for
           pulse  <- Hub.unbounded[Unit]
           msgs   <- Ref.make(Vector("welcome"))
           result <- ZIO
             .scoped {
-              Server
-                .install(routes(msgs, pulse))
-                .mapError(e => RuntimeException(e.message))
-                .flatMap { server =>
-                  server.port.flatMap { port =>
-                    Client.request(Method.POST, s"http://127.0.0.1:$port/send").map(_.status)
-                  }
+              Server.install(routes(msgs, pulse)).flatMap { server =>
+                server.port.flatMap { port =>
+                  Client.request(Method.POST, s"http://127.0.0.1:$port/send").map(_.status)
                 }
+              }
             }
             .provide(Server.defaultWith(_.port(0)))
-        yield result).orDie
+        yield result
+        end for
       }.assert(st => assertTrue(st == Status.Ok)),
     ),
   )
