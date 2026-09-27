@@ -76,10 +76,10 @@ jobs:
           cache-key-suffix: cache-rehydrate
           node-version: ""
           sbt-disk-cache: "false"
-          local-cache: "true"
+          cache-mode: save
           cache-epoch: ""
       - name: cache-rehydrate
-        run: sbt 'compile'
+        run: sbt 'Test/compile'
   test:
     name: test
     runs-on: ubuntu-latest
@@ -102,7 +102,7 @@ jobs:
           cache-key-suffix: test
           node-version: ""
           sbt-disk-cache: "false"
-          local-cache: "true"
+          cache-mode: save
           cache-epoch: ""
       - name: test
         run: |
@@ -134,7 +134,7 @@ jobs:
           cache-key-suffix: fmt
           node-version: ""
           sbt-disk-cache: "false"
-          local-cache: "true"
+          cache-mode: restore
           cache-epoch: ""
       - name: fmt
         run: |
@@ -166,7 +166,7 @@ jobs:
           cache-key-suffix: workflow-check
           node-version: ""
           sbt-disk-cache: "false"
-          local-cache: "true"
+          cache-mode: restore
           cache-epoch: ""
       - name: workflow-check
         run: |
@@ -198,7 +198,7 @@ jobs:
           cache-key-suffix: advisories
           node-version: ""
           sbt-disk-cache: "false"
-          local-cache: "true"
+          cache-mode: restore
           cache-epoch: ""
       - name: advisories
         run: |
@@ -231,7 +231,7 @@ jobs:
           cache-key-suffix: test-js
           node-version: ""
           sbt-disk-cache: "false"
-          local-cache: "true"
+          cache-mode: restore
           cache-epoch: ""
       - name: Set up Node
         uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
@@ -273,7 +273,7 @@ jobs:
           cache-key-suffix: test-native
           node-version: ""
           sbt-disk-cache: "false"
-          local-cache: "true"
+          cache-mode: restore
           cache-epoch: ""
       - name: Install Scala Native build dependencies
         run: sudo apt-get update && sudo apt-get install -y clang libstdc++-12-dev libgc-dev libunwind-dev
@@ -307,7 +307,7 @@ jobs:
           cache-key-suffix: e2e
           node-version: "24"
           sbt-disk-cache: "false"
-          local-cache: "true"
+          cache-mode: restore
           cache-epoch: ""
       - name: e2e
         run: |
@@ -341,7 +341,7 @@ jobs:
           cache-key-suffix: publish
           node-version: ""
           sbt-disk-cache: "false"
-          local-cache: "true"
+          cache-mode: restore
           cache-epoch: ""
       - name: Import signing key
         run: |
