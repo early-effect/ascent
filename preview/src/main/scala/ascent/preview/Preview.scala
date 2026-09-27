@@ -54,10 +54,12 @@ object Preview:
         else
           resolveFile(docRoot, path) match
             case Some(file) =>
+              // A missing file or a directory is 404, a file the server may not read is 403, and any other read
+              // failure is the server's own, 500.
               heddle.Files.fromPath(file.toPath).catchAll {
-                case _: java.nio.file.NoSuchFileException   => ZIO.succeed(Response.notFound())
-                case _: java.nio.file.AccessDeniedException => ZIO.succeed(Response.empty(Status.Forbidden))
-                case _                                      => ZIO.succeed(Response.notFound())
+                case heddle.error.FileError.Unreadable(_, _: java.nio.file.AccessDeniedException) =>
+                  ZIO.succeed(Response.empty(Status.Forbidden))
+                case other => ZIO.succeed(other.toResponse)
               }
             case None => ZIO.succeed(Response.notFound())
       }
