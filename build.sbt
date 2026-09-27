@@ -147,7 +147,7 @@ lazy val root = (project in file("."))
   .disablePlugins(chekhov.sbt.ChekhovPlugin)
   .aggregate(
     (domTypes.projectRefs ++ core.projectRefs ++ domFacade.projectRefs ++ domCore.projectRefs ++
-      mountEngine.projectRefs ++ js.projectRefs ++
+      mountEngine.projectRefs ++ js.projectRefs ++ mcpApp.projectRefs ++
       domgen.projectRefs ++ css.projectRefs ++ conduitBridge.projectRefs ++ history.projectRefs ++
       html.projectRefs ++ datastar.projectRefs ++ datastarJs.projectRefs ++
       datastarHttp.projectRefs ++ datastarExample.projectRefs ++ datastarExampleServer.projectRefs ++
@@ -283,6 +283,21 @@ lazy val js = (projectMatrix in file("js"))
   .settings(
     name := "ascent-js",
     scalacOptions ++= commonScalacOptions,
+    zioTestSettings,
+    jsdomTestEnv,
+  )
+  .jsPlatform(scalaVersions = scalaVersions)
+
+// --- ascent-mcp-app : author an MCP App view in ascent over heddle's view bridge. The view renders its launch
+//   tool's Run and calls its shed's grants; the host's context and teardown drive it. JS only: a view is a page in
+//   the host's sandboxed iframe.
+lazy val mcpApp = (projectMatrix in file("mcp-app"))
+  .disablePlugins(chekhov.sbt.ChekhovPlugin)
+  .dependsOn(js)
+  .settings(
+    name := "ascent-mcp-app",
+    scalacOptions ++= commonScalacOptions,
+    MyVersions.mcpAppLib,
     zioTestSettings,
     jsdomTestEnv,
   )
@@ -628,6 +643,7 @@ lazy val ascentMatrices: Seq[ProjectMatrix] = Seq(
   domCore,
   mountEngine,
   js,
+  mcpApp,
   domgen,
   css,
   conduitBridge,

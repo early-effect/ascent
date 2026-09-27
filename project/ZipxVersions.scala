@@ -21,6 +21,7 @@ object MyVersions extends ZipxVersions:
   val zioJson      = Lib("dev.zio", "zio-json", "1.1.0")
   val heddle       = Lib("rocks.earlyeffect", "heddle", "0.7.1")
   val heddleBrotli = heddle.mod("heddle-brotli")
+  val heddleApps   = heddle.mod("heddle-mcp-apps")
 
   val scalaJavaTime     = Lib("io.github.cquiroz", "scala-java-time", "2.7.0")
   val scalaJavaTimeTzdb = scalaJavaTime.mod("scala-java-time-tzdb")
@@ -69,6 +70,7 @@ object MyVersions extends ZipxVersions:
   def datastarLib     = library(zioJson)
   def datastarHttpLib = library(heddle)
   def previewLib      = library(heddle)
+  def mcpAppLib       = library(heddleApps)
   def brotli          = library(heddleBrotli)
   def domgenLib       = library(zioJson, fastparse)
   def docsJvm         = library(specularZioTest, specularTheme)

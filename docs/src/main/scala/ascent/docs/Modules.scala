@@ -19,6 +19,7 @@ published so consumers resolve transitively.
 | `ascent-css` | Typed CSS-in-Scala |
 | `ascent-conduit` | Optional conduit `Ctx[M]` |
 | `ascent-history` | Optional URL session as a Squawk (`History` / `Location`) |
+| `ascent-mcp-app` | An MCP App view (JS): renders the launch tool's `Run`, calls the shed's grants, follows the host |
 | `ascent-html` | SSR string renderer |
 | `ascent-datastar` | Datastar protocol + SignalStore |
 | `ascent-datastar-js` | Browser datastar runtime |
