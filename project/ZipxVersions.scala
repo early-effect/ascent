@@ -19,7 +19,7 @@ object MyVersions extends ZipxVersions:
   val zioTest            = zio.mod("zio-test")
   val zioTestSbt         = zio.mod("zio-test-sbt")
   val zioJson      = Lib("dev.zio", "zio-json", "1.1.0")
-  val heddle       = Lib("rocks.earlyeffect", "heddle", "0.3.0")
+  val heddle       = Lib("rocks.earlyeffect", "heddle", "0.5.0")
   val heddleBrotli = heddle.mod("heddle-brotli")
 
   val scalaJavaTime     = Lib("io.github.cquiroz", "scala-java-time", "2.7.0")
