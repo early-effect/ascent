@@ -18,6 +18,7 @@ object MyVersions extends ZipxVersions:
   val zio                = Lib("dev.zio", "zio", "2.1.26")
   val zioTest            = zio.mod("zio-test")
   val zioTestSbt         = zio.mod("zio-test-sbt")
+  val zioStreams         = zio.mod("zio-streams")
   val zioJson      = Lib("dev.zio", "zio-json", "1.1.0")
   val heddle       = Lib("rocks.earlyeffect", "heddle", "0.7.1")
   val heddleBrotli = heddle.mod("heddle-brotli")
@@ -66,6 +67,7 @@ object MyVersions extends ZipxVersions:
     )
   def nativeJavaTime  = javaTime ++ nativeTestInterface
   def cssLib          = library(fastparse)
+  def elementLib      = library(zioStreams)
   def conduitLib      = library(conduit)
   def datastarLib     = library(zioJson)
   def datastarHttpLib = library(heddle)

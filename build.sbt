@@ -142,7 +142,7 @@ lazy val root = (project in file("."))
   .disablePlugins(chekhov.sbt.ChekhovPlugin)
   .aggregate(
     (domTypes.projectRefs ++ core.projectRefs ++ domFacade.projectRefs ++ domCore.projectRefs ++
-      mountEngine.projectRefs ++ js.projectRefs ++ mcpApp.projectRefs ++
+      mountEngine.projectRefs ++ js.projectRefs ++ element.projectRefs ++ mcpApp.projectRefs ++
       domgen.projectRefs ++ css.projectRefs ++ conduitBridge.projectRefs ++ history.projectRefs ++
       html.projectRefs ++ datastar.projectRefs ++ datastarJs.projectRefs ++
       datastarHttp.projectRefs ++ datastarExample.projectRefs ++ datastarExampleServer.projectRefs ++
@@ -278,6 +278,21 @@ lazy val js = (projectMatrix in file("js"))
   .settings(
     name := "ascent-js",
     scalacOptions ++= commonScalacOptions,
+    zioTestSettings,
+    jsdomTestEnv,
+  )
+  .jsPlatform(scalaVersions = scalaVersions)
+
+// --- ascent-element : custom elements from ascent. `CustomElement.define` registers a tag whose instances' lives
+//   arrive as a ZStream (the browser calls the lifecycle; ZIO hears it through a stream, never an Unsafe run).
+//   JS only: custom elements are a browser API.
+lazy val element = (projectMatrix in file("element"))
+  .disablePlugins(chekhov.sbt.ChekhovPlugin)
+  .dependsOn(js)
+  .settings(
+    name := "ascent-element",
+    scalacOptions ++= commonScalacOptions,
+    MyVersions.elementLib,
     zioTestSettings,
     jsdomTestEnv,
   )
@@ -638,6 +653,7 @@ lazy val ascentMatrices: Seq[ProjectMatrix] = Seq(
   domCore,
   mountEngine,
   js,
+  element,
   mcpApp,
   domgen,
   css,
