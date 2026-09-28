@@ -57,12 +57,12 @@ object McpAppSpec extends ZIOSpecDefault:
   private val parent: URIO[Scope, dom.Element] =
     ZIO.acquireRelease(ZIO.succeed {
       val div = dom.document.createElement("div")
-      val _   = dom.document.documentElement.appendChild(div)
+      dom.document.documentElement.foreach(_.appendChild(div))
       div
-    })(div => ZIO.succeed(div.parentNode.removeChild(div)).unit)
+    })(div => ZIO.succeed(div.parentNode.foreach(_.removeChild(div))))
 
   private def text(el: dom.Element, tag: String): Option[String] =
-    Option(el.querySelector(tag)).map(_.textContent)
+    el.querySelector(tag).flatMap(_.textContent)
 
   def spec = suite("McpApp")(
     test("the view renders the launch tool's run, typed from the shed, and themes :root from the host"):
@@ -98,8 +98,8 @@ object McpAppSpec extends ZIOSpecDefault:
           el           <- parent
           _            <- app.mount(view, el, AppInfo("counter-view", "1"))
           _            <- ZIO.succeed(el.querySelector("button") match
-            case b: dom.HTMLButtonElement => b.click()
-            case _                        => ())
+            case Some(b: dom.HTMLButtonElement) => b.click()
+            case _                              => ())
           served <- calls.get.repeatUntil(_ == 1)
         yield assertTrue(served == 1)
       }

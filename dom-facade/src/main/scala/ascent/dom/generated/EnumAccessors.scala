@@ -15,13 +15,17 @@ extension (self: Summarizer)
     ascent.domtypes.PerformancePreference.fromDom(self.preference)
 
 extension (self: RTCIceCandidate)
-  def componentTyped: Option[ascent.domtypes.RTCIceComponent] = ascent.domtypes.RTCIceComponent.fromDom(self.component)
-  def protocolTyped: Option[ascent.domtypes.RTCIceProtocol]   = ascent.domtypes.RTCIceProtocol.fromDom(self.protocol)
-  def typeTyped: Option[ascent.domtypes.RTCIceCandidateType]  = ascent.domtypes.RTCIceCandidateType.fromDom(self.`type`)
+  def componentTyped: Option[ascent.domtypes.RTCIceComponent] =
+    self.component.flatMap(ascent.domtypes.RTCIceComponent.fromDom)
+  def protocolTyped: Option[ascent.domtypes.RTCIceProtocol] =
+    self.protocol.flatMap(ascent.domtypes.RTCIceProtocol.fromDom)
+  def typeTyped: Option[ascent.domtypes.RTCIceCandidateType] =
+    self.`type`.flatMap(ascent.domtypes.RTCIceCandidateType.fromDom)
   def tcpTypeTyped: Option[ascent.domtypes.RTCIceTcpCandidateType] =
-    ascent.domtypes.RTCIceTcpCandidateType.fromDom(self.tcpType)
+    self.tcpType.flatMap(ascent.domtypes.RTCIceTcpCandidateType.fromDom)
   def relayProtocolTyped: Option[ascent.domtypes.RTCIceServerTransportProtocol] =
-    ascent.domtypes.RTCIceServerTransportProtocol.fromDom(self.relayProtocol)
+    self.relayProtocol.flatMap(ascent.domtypes.RTCIceServerTransportProtocol.fromDom)
+end extension
 
 extension (self: RTCError)
   def errorDetailTyped: Option[ascent.domtypes.RTCErrorDetailType] =
@@ -90,9 +94,10 @@ extension (self: USBIsochronousInTransferPacket)
   def statusTyped: Option[ascent.domtypes.USBTransferStatus] = ascent.domtypes.USBTransferStatus.fromDom(self.status)
 
 extension (self: IdleDetector)
-  def userStateTyped: Option[ascent.domtypes.UserIdleState]     = ascent.domtypes.UserIdleState.fromDom(self.userState)
+  def userStateTyped: Option[ascent.domtypes.UserIdleState] =
+    self.userState.flatMap(ascent.domtypes.UserIdleState.fromDom)
   def screenStateTyped: Option[ascent.domtypes.ScreenIdleState] =
-    ascent.domtypes.ScreenIdleState.fromDom(self.screenState)
+    self.screenState.flatMap(ascent.domtypes.ScreenIdleState.fromDom)
 
 extension (self: WebGLRenderingContext)
   def drawingBufferColorSpaceTyped: Option[ascent.domtypes.PredefinedColorSpace] =
@@ -115,7 +120,8 @@ extension (self: KeyframeEffect)
     ascent.domtypes.IterationCompositeOperation.fromDom(self.iterationComposite)
 
 extension (self: AudioData)
-  def formatTyped: Option[ascent.domtypes.AudioSampleFormat] = ascent.domtypes.AudioSampleFormat.fromDom(self.format)
+  def formatTyped: Option[ascent.domtypes.AudioSampleFormat] =
+    self.format.flatMap(ascent.domtypes.AudioSampleFormat.fromDom)
 
 extension (self: AudioDecoder)
   def stateTyped: Option[ascent.domtypes.CodecState] = ascent.domtypes.CodecState.fromDom(self.state)
@@ -360,7 +366,7 @@ extension (self: XRSession)
   def depthUsageTyped: Option[ascent.domtypes.XRDepthUsage] = ascent.domtypes.XRDepthUsage.fromDom(self.depthUsage)
   def depthDataFormatTyped: Option[ascent.domtypes.XRDepthDataFormat] =
     ascent.domtypes.XRDepthDataFormat.fromDom(self.depthDataFormat)
-  def depthTypeTyped: Option[ascent.domtypes.XRDepthType] = ascent.domtypes.XRDepthType.fromDom(self.depthType)
+  def depthTypeTyped: Option[ascent.domtypes.XRDepthType] = self.depthType.flatMap(ascent.domtypes.XRDepthType.fromDom)
   def preferredReflectionFormatTyped: Option[ascent.domtypes.XRReflectionFormat] =
     ascent.domtypes.XRReflectionFormat.fromDom(self.preferredReflectionFormat)
   def visibilityStateTyped: Option[ascent.domtypes.XRVisibilityState] =
@@ -463,11 +469,11 @@ extension (self: IDBCursor)
 
 extension (self: VideoColorSpace)
   def primariesTyped: Option[ascent.domtypes.VideoColorPrimaries] =
-    ascent.domtypes.VideoColorPrimaries.fromDom(self.primaries)
+    self.primaries.flatMap(ascent.domtypes.VideoColorPrimaries.fromDom)
   def transferTyped: Option[ascent.domtypes.VideoTransferCharacteristics] =
-    ascent.domtypes.VideoTransferCharacteristics.fromDom(self.transfer)
+    self.transfer.flatMap(ascent.domtypes.VideoTransferCharacteristics.fromDom)
   def matrixTyped: Option[ascent.domtypes.VideoMatrixCoefficients] =
-    ascent.domtypes.VideoMatrixCoefficients.fromDom(self.matrix)
+    self.matrix.flatMap(ascent.domtypes.VideoMatrixCoefficients.fromDom)
 
 extension (self: Rewriter)
   def toneTyped: Option[ascent.domtypes.RewriterTone]     = ascent.domtypes.RewriterTone.fromDom(self.tone)
@@ -536,14 +542,15 @@ extension (self: RTCRtpTransceiver)
   def directionTyped: Option[ascent.domtypes.RTCRtpTransceiverDirection] =
     ascent.domtypes.RTCRtpTransceiverDirection.fromDom(self.direction)
   def currentDirectionTyped: Option[ascent.domtypes.RTCRtpTransceiverDirection] =
-    ascent.domtypes.RTCRtpTransceiverDirection.fromDom(self.currentDirection)
+    self.currentDirection.flatMap(ascent.domtypes.RTCRtpTransceiverDirection.fromDom)
 
 extension (self: XRPlane)
   def orientationTyped: Option[ascent.domtypes.XRPlaneOrientation] =
-    ascent.domtypes.XRPlaneOrientation.fromDom(self.orientation)
+    self.orientation.flatMap(ascent.domtypes.XRPlaneOrientation.fromDom)
 
 extension (self: VideoFrame)
-  def formatTyped: Option[ascent.domtypes.VideoPixelFormat] = ascent.domtypes.VideoPixelFormat.fromDom(self.format)
+  def formatTyped: Option[ascent.domtypes.VideoPixelFormat] =
+    self.format.flatMap(ascent.domtypes.VideoPixelFormat.fromDom)
 
 extension (self: WaveShaperNode)
   def oversampleTyped: Option[ascent.domtypes.OverSampleType] = ascent.domtypes.OverSampleType.fromDom(self.oversample)
@@ -573,7 +580,7 @@ extension (self: Document)
 
 extension (self: PaymentRequest)
   def shippingTypeTyped: Option[ascent.domtypes.PaymentShippingType] =
-    ascent.domtypes.PaymentShippingType.fromDom(self.shippingType)
+    self.shippingType.flatMap(ascent.domtypes.PaymentShippingType.fromDom)
 
 extension (self: NavigationEvent)
   def dirTyped: Option[ascent.domtypes.SpatialNavigationDirection] =
@@ -597,7 +604,7 @@ extension (self: SpeechRecognitionErrorEvent)
 
 extension (self: NavigationCurrentEntryChangeEvent)
   def navigationTypeTyped: Option[ascent.domtypes.NavigationType] =
-    ascent.domtypes.NavigationType.fromDom(self.navigationType)
+    self.navigationType.flatMap(ascent.domtypes.NavigationType.fromDom)
 
 extension (self: SecurityPolicyViolationEvent)
   def dispositionTyped: Option[ascent.domtypes.SecurityPolicyViolationEventDisposition] =

@@ -86,7 +86,14 @@ object Webref:
     * state distinct from the DOM attribute). The in-memory DOM backend's generator uses this to auto-implement
     * reflected properties as reads/writes against the element's attribute map, with zero hand-written code.
     */
-  final case class IdlAttribute(name: String, idlType: String, readonly: Boolean = false, reflected: Boolean = false)
+  /** `nullable` is WebIDL's `T?`: the value may be `null`. */
+  final case class IdlAttribute(
+      name: String,
+      idlType: String,
+      readonly: Boolean = false,
+      reflected: Boolean = false,
+      nullable: Boolean = false,
+  )
 
   /** A WebIDL operation parameter (argument). */
   final case class IdlParam(name: String, idlType: String, optional: Boolean)
@@ -98,7 +105,14 @@ object Webref:
     * `special` is the WebIDL special (`""`, `"getter"`, `"setter"`, `"deleter"`, `"stringifier"`). Unnamed specials
     * land here with a synthesized Scala name (`apply` / `update` / `delete` / `toString`).
     */
-  final case class IdlOperation(name: String, returnType: String, params: List[IdlParam], special: String = "")
+  final case class IdlOperation(
+      name: String,
+      returnType: String,
+      params: List[IdlParam],
+      special: String = "",
+      /** The return type is WebIDL's `T?`: the call may answer `null`. */
+      returnsNullable: Boolean = false,
+  )
 
   /** A WebIDL constructor. Arguments use the same [[IdlParam]] shape as operations; there is no return type (the
     * constructed interface is the result). Overloads are separate list entries.
@@ -185,6 +199,8 @@ object Webref:
         * its members joined by `" | "`). `MessageEventSource` -> `"WindowProxy | MessagePort | ServiceWorker"`.
         */
       typedefs: Map[String, String] = Map.empty,
+      /** Typedefs whose own type is WebIDL's `T?`: `EventHandler` is `EventHandlerNonNull?`. */
+      nullableTypedefs: Set[String] = Set.empty,
   )
 
   // The raw shapes we decode before reducing. `idlType` is polymorphic (string | object | union)
@@ -293,6 +309,7 @@ object Webref:
       idlType: Either[String, List[UnionMemberShape]],
       union: Boolean = false,
       generic: String = "",
+      nullable: Boolean = false,
   )
   private object IdlTypeShape:
     given JsonDecoder[Either[String, List[UnionMemberShape]]] =
@@ -318,6 +335,9 @@ object Webref:
     * inferring from payload shape alone) is what keeps these two cases from being confused with each other or with an
     * unmodeled generic.
     */
+  /** WebIDL's `T?` on a member's type. */
+  private def isNullable(idlType: Json): Boolean = idlType.as[IdlTypeShape].exists(_.nullable)
+
   private def simpleIdlType(idlType: Json): Option[String] =
     idlType.as[IdlTypeShape] match
       case Right(shape) if shape.union =>
@@ -375,9 +395,15 @@ object Webref:
           Option[IdlIterable],
       ) =
         def attr(n: String, t: Json, ro: Option[Boolean], ext: List[RawExtAttr]): IdlAttribute =
-          IdlAttribute(n, simpleIdlType(t).getOrElse("any"), ro.getOrElse(false), ext.exists(_.name == "Reflect"))
+          IdlAttribute(
+            n,
+            simpleIdlType(t).getOrElse("any"),
+            ro.getOrElse(false),
+            ext.exists(_.name == "Reflect"),
+            isNullable(t),
+          )
         def op(n: String, t: Json, maybeArgs: Option[List[RawArgument]], spec: String = ""): IdlOperation =
-          IdlOperation(n, simpleIdlType(t).getOrElse("any"), paramsOf(maybeArgs), spec)
+          IdlOperation(n, simpleIdlType(t).getOrElse("any"), paramsOf(maybeArgs), spec, isNullable(t))
         val attrs = members.collect {
           case RawMember("attribute", Some(n), Some(t), _, ro, _, _, ext, spec) if spec != "static" =>
             attr(n, t, ro, ext)
@@ -553,13 +579,23 @@ object Webref:
             ),
           )
       }
-      val typedefs = file.idlparsed.idlNames
+      val typedefRaws = file.idlparsed.idlNames
         .collect {
-          case (name, raw) if raw.`type`.contains("typedef") => raw.idlType.flatMap(simpleIdlType).map(name -> _)
+          case (name, raw) if raw.`type`.contains("typedef") => raw.idlType.map(name -> _)
         }
         .flatten
         .toMap
-      Idl(withPartials, includes, (bareCallbacks ++ interfaceCallbacks).toList, dictionaries, enums, typedefs)
+      val typedefs         = typedefRaws.flatMap((name, t) => simpleIdlType(t).map(name -> _))
+      val nullableTypedefs = typedefRaws.collect { case (name, t) if isNullable(t) => name }.toSet
+      Idl(
+        withPartials,
+        includes,
+        (bareCallbacks ++ interfaceCallbacks).toList,
+        dictionaries,
+        enums,
+        typedefs,
+        nullableTypedefs,
+      )
     }
 
   /** Merge interface tables AND includes statements from several idlparsed spec files into one lookup.
@@ -607,6 +643,7 @@ object Webref:
       enums = idls.flatMap(_.enums).toList,
       // On a name collision the earlier file wins, as for interfaces.
       typedefs = idls.foldLeft(Map.empty[String, String])((acc, idl) => idl.typedefs ++ acc),
+      nullableTypedefs = idls.flatMap(_.nullableTypedefs).toSet,
     )
   end mergeIdl
 

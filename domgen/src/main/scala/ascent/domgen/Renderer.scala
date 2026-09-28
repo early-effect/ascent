@@ -228,22 +228,14 @@ object Renderer:
   def facades(defs: List[FacadeDef]): String =
     val classes = defs
       .map { d =>
-        val parent = d.parent.getOrElse("js.Object")
+        val parent = d.parent.getOrElse(rootType)
         // Drop members whose names collide with java.lang.Object's, mirror of the
         // Interfaces.scala renderer.
-        val attrs     = d.members.filterNot(m => objectMethodClashes.contains(m.name))
-        val methods   = d.methods.filterNot(m => objectMethodClashes.contains(m.scalaName))
-        val attrLines = attrs.map(m => s"  def ${safeId(m.name)}: ${m.scalaType} = js.native")
-        // Same overload-defaults rule as Interfaces.scala: defaults only on the longest
-        // overload of each name.
-        val overloadedNames = methods.groupBy(_.scalaName).filter(_._2.size > 1).keySet
-        val keepDefaultsFor =
-          overloadedNames.map(n => (n, methods.filter(_.scalaName == n).map(_.params.size).max))
-        val methodLines = methods.map { m =>
-          val isLongest     = keepDefaultsFor.contains((m.scalaName, m.params.size))
-          val allowDefaults = !overloadedNames.contains(m.scalaName) || isLongest
-          renderNativeMethod(m, allowDefaults)
-        }
+        val attrs       = d.members.filterNot(m => objectMethodClashes.contains(m.name))
+        val methods     = d.methods.filterNot(m => objectMethodClashes.contains(m.scalaName))
+        val attrLines   = attrs.map(m => renderNativeMember(m.copy(readonly = true)))
+        val defaults    = facadeDefaults(methods)
+        val methodLines = methods.map(m => renderNativeMethod(m, defaults(m)))
         renderJsNativeClass(d.interface, parent, d.constructors, attrLines ++ methodLines) +
           renderCompanion(d.interface, d.constants, d.staticAttributes, d.staticMethods)
       }
@@ -253,7 +245,7 @@ object Renderer:
        |
        |import scala.annotation.unused
        |import scala.scalajs.js
-       |${jsAnnotImportLine(defs.flatMap(_.methods))}
+       |${jsAnnotImportLine(defs.flatMap(_.methods), defs.exists(_.members.exists(_.nullable)))}
        |
        |/** Typed event-interface facades, generated from the vendored webref IDL.
        |  *
@@ -283,7 +275,10 @@ object Renderer:
        |
        |import scala.annotation.unused
        |import scala.scalajs.js
-       |${jsAnnotImportLine(defs.flatMap(d => d.methods ++ d.staticMethods))}
+       |${jsAnnotImportLine(
+        defs.flatMap(d => d.methods ++ d.staticMethods),
+        defs.exists(_.attributes.exists(_.nullable)),
+      )}
        |
        |/** Generated `@js.native` typed interfaces, from the vendored webref IDL.
        |  *
@@ -440,6 +435,75 @@ object Renderer:
   private def capitalize(s: String): String =
     if s.isEmpty then s else s.head.toUpper.toString + s.tail
 
+  // --- dom-facade/.../generated/NullableAccessors.scala ---
+
+  /** `Option` views of every nullable member (WebIDL's `T?`), one `extension` block per declaring owner; a subclass
+    * reaches its ancestors' through subtyping. A read is `Option`; a writable member's setter takes an `Option`, with
+    * `None` writing `null`. An operation with optional trailing arguments gets one accessor per arity its raw member
+    * accepts, as the raw member does through its `= js.native` defaults. The hand-written `PlatformObject` companion
+    * exports the object, so the accessors sit in every facade type's implicit scope and need no import.
+    */
+  def nullableAccessors(interfaces: List[InterfaceDef], facades: List[FacadeDef]): String =
+    def block(
+        owner: String,
+        members: List[FacadeMember],
+        methods: List[MethodDef],
+        defaults: MethodDef => Boolean,
+    ): Option[String] =
+      val attrs     = members.filter(m => m.nullable && !objectMethodClashes.contains(m.name))
+      val ops       = methods.filter(m => m.returnsNullable && !m.bracketAccess && m.jsSymbol.isEmpty)
+      val attrLines = attrs.flatMap { m =>
+        val raw  = safeId(rawName(m.name))
+        val read = s"  def ${safeId(m.name)}: Option[${m.scalaType}] = nullable(self.$raw)"
+        if m.readonly then List(read)
+        else
+          List(read, s"  def ${safeId(m.name + "_=")}(value: Option[${m.scalaType}]): Unit = self.$raw = value.orNull")
+      }
+      val opLines = ops
+        .flatMap(m => arities(m, defaults(m)).map(params => (m, params)))
+        .distinctBy((m, params) => (m.scalaName, params.map(_.scalaType)))
+        .map { (m, params) =>
+          val decl = params.map(p => s"${safeId(p.name)}: ${p.scalaType}").mkString(", ")
+          val args = params.map(p => safeId(p.name)).mkString(", ")
+          s"  def ${safeId(m.scalaName)}($decl): Option[${m.returnType}] = nullable(self.${safeId(rawName(m.scalaName))}($args))"
+        }
+      val specLines = SpecTypedOp.of(owner).flatMap(_.accessors).map(line => s"  $line")
+      Option.when(attrLines.nonEmpty || opLines.nonEmpty || specLines.nonEmpty)(
+        (s"extension (self: $owner)" :: attrLines ++ opLines ++ specLines).mkString("\n")
+      )
+    end block
+    val blocks = interfaces.flatMap { d =>
+      val methods = interfaceMethods(d)
+      block(d.name, d.attributes, methods, interfaceDefaults(d.inheritedMethodNames, methods))
+    } ++ facades.flatMap { d =>
+      val methods = d.methods.filterNot(m => objectMethodClashes.contains(m.scalaName))
+      block(d.interface, d.members.map(_.copy(readonly = true)), methods, facadeDefaults(methods))
+    }
+    s"""$header
+       |package ascent.dom
+       |
+       |/** `Option` views of the members WebIDL marks nullable (`T?`), where the browser may answer `null`. Each raw
+       |  * native member keeps the DOM name under `@JSName` and is spelled `…OrNull`; these are what callers use.
+       |  * [[PlatformObject]]'s companion exports them, so every facade type finds them without an import.
+       |  */
+       |object NullableAccessors:
+       |  /** `None` for `null`; `.nn` narrows the rest, which the `Option` has already checked. */
+       |  private def nullable[A](value: A | Null): Option[A] = Option(value).map(_.nn)
+       |
+       |${blocks.map(_.linesIterator.map(l => if l.isEmpty then l else s"  $l").mkString("\n")).mkString("\n\n")}
+       |end NullableAccessors
+       |""".stripMargin
+  end nullableAccessors
+
+  /** The argument lists a raw method accepts: every prefix that stops inside its optional tail when the method keeps
+    * `= js.native` defaults, otherwise the full list alone.
+    */
+  private[domgen] def arities(m: MethodDef, defaults: Boolean): List[List[ParamDef]] =
+    val required = m.params.indexWhere(_.optional) match
+      case -1 => m.params.size
+      case i  => i
+    if defaults then (required to m.params.size).map(m.params.take).toList else List(m.params)
+
   // --- dom-facade/.../generated/EnumAccessors.scala (additive, bridges @js.native String members to real enums) ---
 
   /** Render an ADDITIVE `extension` accessor for every `@js.native` facade/interface member whose [[FacadeMember]]
@@ -480,7 +544,12 @@ object Renderer:
           val enumTpe = s"ascent.domtypes.${m.enumType.get}"
           // safeId must wrap the COMBINED identifier (e.g. `typeTyped`, not `` `type` `` followed
           // by a bare `Typed` — those are two separate tokens in Scala, a syntax error).
-          s"""  def ${safeId(m.name + "Typed")}: Option[$enumTpe] = $enumTpe.fromDom(self.${safeId(m.name)})"""
+          // A nullable member (WebIDL `T?`) is read through its `Option` view: `None` for `null` as for an unknown value.
+          if m.nullable then
+            s"""  def ${safeId(m.name + "Typed")}: Option[$enumTpe] = self.${safeId(
+                m.name
+              )}.flatMap($enumTpe.fromDom)"""
+          else s"""  def ${safeId(m.name + "Typed")}: Option[$enumTpe] = $enumTpe.fromDom(self.${safeId(m.name)})"""
         }
         .mkString("\n")
       List(s"""extension (self: $interfaceName)
@@ -489,33 +558,36 @@ object Renderer:
   end renderAccessorBlock
 
   private def renderInterface(d: InterfaceDef): String =
-    val parent    = d.parent.getOrElse("js.Object")
-    val attrs     = d.attributes.filterNot(a => objectMethodClashes.contains(a.name))
-    val methods   = d.methods.filterNot(m => objectMethodClashes.contains(m.scalaName))
-    val attrLines = attrs.map { a =>
-      // Writable IDL attributes (`attribute T name`) emit as `var`; read-only (`readonly
-      // attribute T name`) emit as `def`. Matches WebIDL semantics, and lets callers
-      // assign to live properties (text.data = "..."; canvas.width = 320; etc.) without
-      // dropping to js.Dynamic.
-      val keyword = if a.readonly then "def" else "var"
-      s"  $keyword ${safeId(a.name)}: ${a.scalaType} = js.native"
-    }
-    // Scala 3 forbids default args on multiple overloads of the same name *anywhere in
-    // the inheritance chain*. Track names that are overloaded among:
-    //   - own methods (the locally-emitted ones)
-    //   - inherited methods declared on any ancestor (`inheritedMethodNames`)
-    // For names that ARE overloaded across own+inherited, strip defaults from ALL own
-    // overloads. For uniquely-named own methods, defaults are fine.
-    val ownNameCounts                       = methods.groupBy(_.scalaName).view.mapValues(_.size).toMap
-    def isOverloaded(name: String): Boolean =
-      ownNameCounts.getOrElse(name, 0) > 1 || d.inheritedMethodNames.contains(name)
-    val methodLines = methods.map { m =>
-      val allowDefaults = !isOverloaded(m.scalaName)
-      renderNativeMethod(m, allowDefaults)
-    }
+    val parent      = d.parent.getOrElse(rootType)
+    val attrs       = d.attributes.filterNot(a => objectMethodClashes.contains(a.name))
+    val methods     = interfaceMethods(d)
+    val attrLines   = attrs.map(renderNativeMember)
+    val defaults    = interfaceDefaults(d.inheritedMethodNames, methods)
+    val methodLines = methods.map(m => renderNativeMethod(m, defaults(m))) ++ SpecTypedOp.of(d.name).map(_.raw)
     renderJsNativeClass(d.name, parent, d.constructors, attrLines ++ methodLines, d.jsMixins) +
       renderCompanion(d.name, d.constants, d.staticAttributes, d.staticMethods)
   end renderInterface
+
+  /** The hand-written native trait every generated interface and event facade extends; see `PlatformObject.scala`. */
+  private val rootType = "PlatformObject"
+
+  /** The IDL operations an interface renders: those `java.lang.Object` does not claim, less any [[SpecTypedOp]]
+    * replaces.
+    */
+  private def interfaceMethods(d: InterfaceDef): List[MethodDef] =
+    d.methods.filterNot(m => objectMethodClashes.contains(m.scalaName) || SpecTypedOp.replaces(d.name, m.scalaName))
+
+  /** Scala 3 allows default arguments on one overload of a name only, inherited overloads included, so an interface
+    * method keeps its `= js.native` defaults when no other method, own or inherited, shares its name.
+    */
+  private def interfaceDefaults(inherited: Set[String], methods: List[MethodDef]): MethodDef => Boolean =
+    val counts = methods.groupBy(_.scalaName).view.mapValues(_.size).toMap
+    m => counts.getOrElse(m.scalaName, 0) <= 1 && !inherited.contains(m.scalaName)
+
+  /** A facade method keeps its defaults when its name is unique, or when it is the longest overload of that name. */
+  private def facadeDefaults(methods: List[MethodDef]): MethodDef => Boolean =
+    val byName = methods.groupBy(_.scalaName)
+    m => byName.get(m.scalaName).forall(same => same.size == 1 || same.map(_.params.size).max == m.params.size)
 
   private def renderParams(params: List[ParamDef], allowDefaults: Boolean, unused: Boolean = false): String =
     params
@@ -559,13 +631,31 @@ object Renderer:
       Option.when(m.bracketAccess)("  @JSBracketAccess"),
       m.jsSymbol.map(s => s"  @JSName(js.Symbol.$s)"),
     ).flatten
-    val defLine = s"  def ${safeId(m.scalaName)}(${renderParams(m.params, allowDefaults)}): ${m.returnType} = js.native"
-    (annots :+ defLine).mkString("\n")
+    val nullableName =
+      Option.when(m.returnsNullable && !m.bracketAccess && m.jsSymbol.isEmpty)(s"""  @JSName("${m.domName}")""")
+    val (name, tpe) =
+      if nullableName.isDefined then (rawName(m.scalaName), s"${m.returnType} | Null") else (m.scalaName, m.returnType)
+    val defLine = s"  def ${safeId(name)}(${renderParams(m.params, allowDefaults)}): $tpe = js.native"
+    ((annots ++ nullableName) :+ defLine).mkString("\n")
+  end renderNativeMethod
 
-  private def jsAnnotImportLine(methods: Iterable[MethodDef]): String =
+  /** A writable IDL attribute (`attribute T name`) is a `var`, a readonly one a `def`, matching WebIDL, so callers
+    * assign live properties (`text.data = "..."`) without dropping to js.Dynamic. A nullable one (WebIDL's `T?`) is the
+    * raw `…OrNull` member, typed `T | Null`; [[nullableAccessors]] exposes it as `Option[T]`.
+    */
+  private def renderNativeMember(m: FacadeMember): String =
+    val keyword = if m.readonly then "def" else "var"
+    if m.nullable then s"""  @JSName("${m.name}")
+         |  $keyword ${safeId(rawName(m.name))}: ${m.scalaType} | Null = js.native""".stripMargin
+    else s"  $keyword ${safeId(m.name)}: ${m.scalaType} = js.native"
+
+  /** The raw spelling of a nullable member: the name says it may be `null`. */
+  private def rawName(name: String): String = s"${name}OrNull"
+
+  private def jsAnnotImportLine(methods: Iterable[MethodDef], nullableMembers: Boolean): String =
     val names = List("JSGlobal") ++
       Option.when(methods.exists(_.bracketAccess))("JSBracketAccess").toList ++
-      Option.when(methods.exists(_.jsSymbol.isDefined))("JSName").toList
+      Option.when(nullableMembers || methods.exists(m => m.jsSymbol.isDefined || m.returnsNullable))("JSName").toList
     if names.size == 1 then s"import scala.scalajs.js.annotation.${names.head}"
     else s"import scala.scalajs.js.annotation.{${names.mkString(", ")}}"
 

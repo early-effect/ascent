@@ -215,7 +215,7 @@ object DefBuilderSpec extends ZIOSpecDefault:
       },
       test("InterfaceDef parent that points at an unknown / skipped interface falls back to None") {
         // A parent the generator doesn't emit (skipped or missing) must resolve to None so the
-        // emitted class still compiles, falling back to `extends js.Object`.
+        // emitted class still compiles, falling back to `extends PlatformObject`.
         val idl = Webref.Idl(
           Map(
             "Child" -> Webref.IdlInterface("Child", Some("MissingParent"), Nil)
@@ -793,6 +793,58 @@ object DefBuilderSpec extends ZIOSpecDefault:
         assertTrue(DefBuilder.structuralType("record<DOMString, long>", Set.empty, idl) == "Map[String, Int]")
       },
     ),
+    suite("nullability (WebIDL's T?, directly or through a typedef)")({
+      val idl = Webref.Idl(
+        interfaces = Map(
+          "Node" -> Webref.IdlInterface(
+            "Node",
+            None,
+            attributes = List(
+              Webref.IdlAttribute("parentNode", "Node", readonly = true, nullable = true),
+              Webref.IdlAttribute("onclick", "EventHandler"),
+              Webref.IdlAttribute("nodeName", "DOMString", readonly = true),
+            ),
+            operations = List(
+              Webref.IdlOperation("lookupPrefix", "DOMString", Nil, returnsNullable = true),
+              Webref.IdlOperation("handler", "EventHandler", Nil),
+              Webref.IdlOperation("hasChildNodes", "boolean", Nil),
+            ),
+          )
+        ),
+        typedefs = Map("EventHandler" -> "EventHandlerNonNull"),
+        nullableTypedefs = Set("EventHandler"),
+      )
+      val node = DefBuilder.interfaceDefs(idl, skipNames = Set.empty).find(_.name == "Node")
+      List(
+        test("an attribute is nullable when its type is T? or names a nullable typedef, and not otherwise") {
+          assertTrue(
+            node
+              .map(_.attributes.map(a => a.name -> a.nullable))
+              .contains(
+                List("parentNode" -> true, "onclick" -> true, "nodeName" -> false)
+              )
+          )
+        },
+        test("an operation's result is nullable by the same rule") {
+          assertTrue(
+            node
+              .map(_.methods.map(m => m.scalaName -> m.returnsNullable))
+              .contains(
+                List("lookupPrefix" -> true, "handler" -> true, "hasChildNodes" -> false)
+              )
+          )
+        },
+        test("nullable is the T? mark or a nullable typedef name, for any type name") {
+          check(Gen.alphaNumericStringBounded(1, 12), Gen.boolean) { (name, marked) =>
+            val withTypedef = idl.copy(nullableTypedefs = Set(name))
+            assertTrue(
+              DefBuilder.nullable(marked, name, withTypedef),
+              DefBuilder.nullable(marked, name, idl.copy(nullableTypedefs = Set.empty)) == marked,
+            )
+          }
+        },
+      )
+    }*),
     suite("scalaFacadeType (typedefs, WindowProxy, unions)")({
       val any  = "scala.scalajs.js.Any"
       val base = Webref.Idl(

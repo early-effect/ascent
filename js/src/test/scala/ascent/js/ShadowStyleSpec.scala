@@ -17,7 +17,7 @@ object ShadowStyleSpec extends ZIOSpecDefault:
   private val shadow: UIO[dom.ShadowRoot] =
     ZIO.succeed {
       val host = dom.document.createElement("div")
-      val _    = dom.document.body.appendChild(host)
+      dom.document.body.foreach(_.appendChild(host))
       host.attachShadow(new dom.ShadowRootInit:
         mode = "open")
     }
@@ -33,8 +33,8 @@ object ShadowStyleSpec extends ZIOSpecDefault:
         }
         _ <- AscentApp.mount(E.p(Inside, "hi"), into)
       yield assertTrue(
-        Option(root.querySelector(selector(Inside))).exists(_.textContent.contains("rebeccapurple")),
-        Option(dom.document.head.querySelector(selector(Inside))).isEmpty,
+        root.querySelector(selector(Inside)).flatMap(_.textContent).exists(_.contains("rebeccapurple")),
+        dom.document.head.flatMap(_.querySelector(selector(Inside))).isEmpty,
       )
     ,
     test("addCssClass on an element inside a shadow root styles that root"):
@@ -47,9 +47,9 @@ object ShadowStyleSpec extends ZIOSpecDefault:
           div
         }
       yield assertTrue(
-        el.getAttribute("class").split(" ").contains(Toggled.className),
-        Option(root.querySelector(selector(Toggled))).isDefined,
-        Option(dom.document.head.querySelector(selector(Toggled))).isEmpty,
+        el.getAttribute("class").exists(_.split(" ").contains(Toggled.className)),
+        root.querySelector(selector(Toggled)).isDefined,
+        dom.document.head.flatMap(_.querySelector(selector(Toggled))).isEmpty,
       )
     ,
     test("a node outside any shadow root is styled in <head>"):

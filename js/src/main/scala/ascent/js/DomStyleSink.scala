@@ -43,18 +43,19 @@ object DomStyleSink extends StyleSink:
   private[ascent] def appendSync(target: StyleTarget, key: String, css: String): Unit =
     val selector = selectorFor(key)
     val existing = target match
-      case StyleTarget.Head         => Option(dom.document.head.querySelector(selector))
-      case StyleTarget.Shadow(root) => Option(root.querySelector(selector))
+      case StyleTarget.Head         => dom.document.head.flatMap(_.querySelector(selector))
+      case StyleTarget.Shadow(root) => root.querySelector(selector)
     existing match
       // Same DOM node, just rewrite its body. Identity preserved.
-      case Some(style) => style.textContent = css
+      case Some(style) => style.textContent = Some(css)
       case None        =>
         val style = dom.document.createElement("style")
         style.setAttribute(markerAttr, key)
-        style.textContent = css
-        val _ = target match
-          case StyleTarget.Head         => dom.document.head.appendChild(style)
-          case StyleTarget.Shadow(root) => root.appendChild(style)
+        style.textContent = Some(css)
+        // A document without a <head> (one being torn down) has nowhere to hold a style.
+        target match
+          case StyleTarget.Head         => dom.document.head.foreach(_.appendChild(style))
+          case StyleTarget.Shadow(root) => val _ = root.appendChild(style)
     end match
   end appendSync
 

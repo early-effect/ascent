@@ -54,11 +54,21 @@ object GeneratorSpec extends ZIOSpecDefault:
           "dom-facade/Interfaces.scala",
           "dom-facade/Dictionaries.scala",
           "dom-facade/EnumAccessors.scala",
+          "dom-facade/NullableAccessors.scala",
           "js/TypedEvents.scala",
           "dom-core/Elements.scala",
           "dom-core/ElementsMemory.scala",
           "dom-core/ElementFactory.scala",
         )
+      )
+    },
+    test("a nullable IDL member reaches NullableAccessors.scala as an Option read over its raw member") {
+      for
+        input <- inputZ
+        out   <- Generator.run(input)
+      yield assertTrue(
+        out.files("dom-facade/Facades.scala").contains("def dataOrNull: String | Null = js.native"),
+        out.files("dom-facade/NullableAccessors.scala").contains("def data: Option[String] = nullable(self.dataOrNull)"),
       )
     },
     test("Dictionaries.scala contains a trait for every IDL dictionary") {
@@ -153,7 +163,7 @@ object GeneratorSpec extends ZIOSpecDefault:
           src.contains("class PointerEvent extends MouseEvent"),
           src.contains("class MouseEvent extends UIEvent"),
           src.contains("class UIEvent extends Event"),
-          src.contains("class Event extends js.Object"),
+          src.contains("class Event extends PlatformObject"),
           src.contains("def this(@unused `type`: String, @unused eventInitDict: EventInit = js.native) = this()"),
           src.contains("object Event extends js.Object"),
           src.contains("val CAPTURING_PHASE: Int = js.native"),

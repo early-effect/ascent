@@ -19,10 +19,10 @@ object DomListenSpec extends ZIOSpecDefault:
     ZIO.acquireReleaseWith(
       acquire = ZIO.succeed {
         val p = dom.document.createElement("div")
-        dom.document.asInstanceOf[js.Dynamic].body.appendChild(p)
+        dom.document.body.foreach(_.appendChild(p))
         p
       }
-    )(release = p => ZIO.succeed(p.parentNode.removeChild(p)).unit)(use = use)
+    )(release = p => ZIO.succeed(p.parentNode.foreach(_.removeChild(p))))(use = use)
 
   /** Dispatch a synthetic `keydown` with the given key at `document`. */
   private def dispatchKeydown(key: String): UIO[Unit] =

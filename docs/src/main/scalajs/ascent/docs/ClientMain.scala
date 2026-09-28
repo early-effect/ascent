@@ -31,14 +31,13 @@ object ClientMain extends ZIOAppDefault:
   end run
 
   private def mountExample(id: String, body: URIO[Scope, ascent.ast.UI[Any]]): UIO[Unit] =
-    val el = Dom.document.getElementById(id)
-    if el == null then ZIO.unit
-    else
+    ZIO.foreachDiscard(Dom.document.getElementById(id)) { el =>
       for
         _  <- ZIO.succeed(clearChildren(el))
         ui <- ZIO.scoped(body)
         _  <- AscentApp.mount(ui, el)
       yield ()
+    }
   end mountExample
 
   private def clearChildren(el: dom.Element): Unit =

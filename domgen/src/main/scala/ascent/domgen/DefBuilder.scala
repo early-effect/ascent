@@ -277,15 +277,16 @@ object DefBuilder:
         val inheritedMethodSigs = collectInheritedMethodSigs(name, idl, typeOf, jsNative)
         val inheritedMixins     = collectInheritedMixins(name, idl, typeOf, jsNative)
         val ownAttrs            = ownAttributesOf(name, idl)
-          .filterNot((scalaAttrName, _, _, _, _) => inheritedAttrNames.contains(scalaAttrName))
-          .map { (scalaAttrName, idlType, ro, reflected, htmlAttrName) =>
+          .filterNot(a => inheritedAttrNames.contains(a.scalaName))
+          .map { a =>
             FacadeMember(
-              scalaAttrName,
-              typeOf(idlType, idl),
-              ro,
-              reflected,
-              Some(htmlAttrName),
-              enumNameFor(idlType, idl),
+              a.scalaName,
+              typeOf(a.idlType, idl),
+              a.readonly,
+              a.reflected,
+              Some(a.htmlName),
+              enumNameFor(a.idlType, idl),
+              a.nullable,
             )
           }
         val ownAttrsDedup = scala.collection.mutable.LinkedHashMap.empty[String, FacadeMember]
@@ -334,7 +335,7 @@ object DefBuilder:
       if visited.contains(name) then ()
       else
         idl.interfaces.get(name).foreach { iface =>
-          ownAttributesOf(name, idl).foreach((scalaAttrName, _, _, _, _) => acc += scalaAttrName)
+          ownAttributesOf(name, idl).foreach(a => acc += a.scalaName)
           if jsNative then collectionExtras(iface, idl, typeOf)._1.foreach(a => acc += a.name)
           iface.inheritance.foreach(p => walk(p, visited + name))
         }
@@ -394,13 +395,35 @@ object DefBuilder:
     * (`htmlAttributeName(a.name)`) alongside the existing scalaName/idlType/readonly — consumed by the structural-trait
     * path's in-memory-impl generator ([[Renderer.memoryImpls]]) to auto-implement simple reflected properties.
     */
-  private def ownAttributesOf(interface: String, idl: Webref.Idl): List[(String, String, Boolean, Boolean, String)] =
+  private def ownAttributesOf(interface: String, idl: Webref.Idl): List[OwnAttribute] =
     val mixinNames = idl.includes.filter(_.target == interface).map(_.mixin)
     val ownIface   = idl.interfaces.get(interface).toList.flatMap(_.attributes)
     val mixinIface = mixinNames.flatMap(m => idl.interfaces.get(m).toList.flatMap(_.attributes))
     (ownIface ++ mixinIface).map(a =>
-      (scalaName(a.name), a.idlType, a.readonly, a.reflected, htmlAttributeName(a.name))
+      OwnAttribute(
+        scalaName(a.name),
+        a.idlType,
+        a.readonly,
+        a.reflected,
+        htmlAttributeName(a.name),
+        nullable(a.nullable, a.idlType, idl),
+      )
     )
+  end ownAttributesOf
+
+  /** One attribute as [[ownAttributesOf]] sees it, before its IDL type is mapped to Scala. */
+  private final case class OwnAttribute(
+      scalaName: String,
+      idlType: String,
+      readonly: Boolean,
+      reflected: Boolean,
+      htmlName: String,
+      nullable: Boolean,
+  )
+
+  /** Whether a member may be `null`: its own type is WebIDL's `T?`, or it names a typedef that is (`EventHandler`). */
+  private[domgen] def nullable(marked: Boolean, idlType: String, idl: Webref.Idl): Boolean =
+    marked || idl.nullableTypedefs.contains(idlType)
 
   /** Same shape for methods — own ops plus mixin ops.
     *
@@ -423,6 +446,7 @@ object DefBuilder:
         returnType = typeOf(o.returnType, idl),
         params = o.params.map(p => ParamDef(scalaName(p.name), typeOf(p.idlType, idl), p.optional)),
         bracketAccess = o.special == "getter" && o.name == "apply" || o.special == "setter" && o.name == "update",
+        returnsNullable = nullable(o.returnsNullable, o.returnType, idl),
       )
     }
   end ownMethodsOf
@@ -623,6 +647,7 @@ object DefBuilder:
         domName = o.name,
         returnType = scalaFacadeType(o.returnType, idl),
         params = o.params.map(p => ParamDef(scalaName(p.name), scalaFacadeType(p.idlType, idl), p.optional)),
+        returnsNullable = nullable(o.returnsNullable, o.returnType, idl),
       )
       val key = (md.scalaName, md.params.map(_.scalaType))
       seen.getOrElseUpdate(key, md)
@@ -684,6 +709,7 @@ object DefBuilder:
             domName = o.name,
             returnType = scalaFacadeType(o.returnType, idl),
             params = o.params.map(p => ParamDef(scalaName(p.name), scalaFacadeType(p.idlType, idl), p.optional)),
+            returnsNullable = nullable(o.returnsNullable, o.returnType, idl),
           )
         )
         .filterNot(m => parentMethodSigs.contains((m.scalaName, m.params.map(_.scalaType))))
@@ -727,7 +753,16 @@ object DefBuilder:
       val childType = scalaFacadeType(a.idlType, idl)
       inheritedTypes.get(a.name) match
         case Some(parentType) if parentType != childType => None // type clash: drop
-        case _ => Some(FacadeMember(a.name, childType, enumType = enumNameFor(a.idlType, idl)))
+        case _                                           =>
+          Some(
+            FacadeMember(
+              a.name,
+              childType,
+              enumType = enumNameFor(a.idlType, idl),
+              nullable = nullable(a.nullable, a.idlType, idl),
+            )
+          )
+      end match
     }
   end facadeMembers
 

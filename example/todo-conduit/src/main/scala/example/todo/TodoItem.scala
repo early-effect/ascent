@@ -166,24 +166,26 @@ object TodoItem:
       // The parent <ul> gives every direct <li> the implicit listitem role; checked state lives on the checkbox below.
       A.draggable(draggable),
       Ev.sync.onDragStart { e =>
-        e.dataTransfer.setData("text/plain", id)
-        e.dataTransfer.effectAllowed = "move"
-        e.currentTarget.addCssClass(Dragging)
+        e.dataTransfer.foreach { data =>
+          data.setData("text/plain", id)
+          data.effectAllowed = "move"
+        }
+        e.currentTarget.foreach(_.addCssClass(Dragging))
       },
-      Ev.sync.onDragEnd(e => e.currentTarget.removeCssClass(Dragging)),
+      Ev.sync.onDragEnd(e => e.currentTarget.foreach(_.removeCssClass(Dragging))),
       Ev.sync.onDragOver { e =>
         e.preventDefault() // the browser's only cue this row accepts a drop
-        e.dataTransfer.dropEffect = "move"
-        e.currentTarget.addCssClass(DropTarget)
+        e.dataTransfer.foreach(_.dropEffect = "move")
+        e.currentTarget.foreach(_.addCssClass(DropTarget))
       },
-      Ev.sync.onDragLeave(e => e.currentTarget.removeCssClass(DropTarget)),
+      Ev.sync.onDragLeave(e => e.currentTarget.foreach(_.removeCssClass(DropTarget))),
       Ev.onDrop { e =>
         ZIO.succeed {
           e.preventDefault()
-          e.currentTarget.removeCssClass(DropTarget)
+          e.currentTarget.foreach(_.removeCssClass(DropTarget))
         } *> {
-          val draggedId = e.dataTransfer.getData("text/plain")
-          if draggedId.nonEmpty then ctx(TodoApp.Action.MoveTodo(draggedId, id)) else ZIO.unit
+          val draggedId = e.dataTransfer.map(_.getData("text/plain")).filter(_.nonEmpty)
+          ZIO.foreachDiscard(draggedId)(dragged => ctx(TodoApp.Action.MoveTodo(dragged, id)))
         }
       },
       when(editingValue.map(!_)) {

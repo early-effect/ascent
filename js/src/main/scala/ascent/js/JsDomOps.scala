@@ -41,17 +41,13 @@ object JsDomOps extends DomOps[dom.Node]:
   def removeChild(parent: dom.Node, child: dom.Node): Unit =
     parent.removeChild(child); ()
 
-  def parentOf(node: dom.Node): Option[dom.Node] =
-    val p = node.parentNode
-    if p == null || js.isUndefined(p) then None else Some(p)
+  def parentOf(node: dom.Node): Option[dom.Node] = node.parentNode
 
   def setAttribute(el: dom.Node, name: String, value: String): Unit =
     el.asInstanceOf[dom.Element].setAttribute(name, value)
   def removeAttribute(el: dom.Node, name: String): Unit =
     el.asInstanceOf[dom.Element].removeAttribute(name)
-  def getAttribute(el: dom.Node, name: String): Option[String] =
-    val v = el.asInstanceOf[dom.Element].getAttribute(name)
-    if v == null || js.isUndefined(v) then None else Some(v)
+  def getAttribute(el: dom.Node, name: String): Option[String] = el.asInstanceOf[dom.Element].getAttribute(name)
 
   def classAdd(el: dom.Node, token: String): Unit    = el.asInstanceOf[dom.Element].classList.add(token)
   def classRemove(el: dom.Node, token: String): Unit = el.asInstanceOf[dom.Element].classList.remove(token)
@@ -84,9 +80,7 @@ object JsDomOps extends DomOps[dom.Node]:
   def setTextData(textNode: dom.Node, data: String): Unit =
     textNode.asInstanceOf[js.Dynamic].data = data
 
-  def isActive(node: dom.Node): Boolean =
-    val active = doc.activeElement
-    active != null && (active.asInstanceOf[js.Any] eq node.asInstanceOf[js.Any])
+  def isActive(node: dom.Node): Boolean = doc.activeElement.exists(js.special.strictEquals(_, node))
 
   def addListener(el: dom.Node, eventType: String, handler: AscentEvent => Unit): DomOps.ListenerToken =
     // Build the stable js.Function ONCE — a fresh lambda at each use site would be a different function
@@ -102,10 +96,8 @@ object JsDomOps extends DomOps[dom.Node]:
       case JsDomOps.FnToken(listener) => el.asInstanceOf[dom.Element].removeEventListener(eventType, listener)
       case _                          => ()
 
-  def documentElement: dom.Node = doc.documentElement
-  def body: Option[dom.Node]    =
-    val b = doc.asInstanceOf[js.Dynamic].body
-    if b == null || js.isUndefined(b) then None else Some(b.asInstanceOf[dom.Node])
+  def documentElement: Option[dom.Node] = doc.documentElement
+  def body: Option[dom.Node]            = doc.body
 
   def sameNode(a: dom.Node, b: dom.Node): Boolean = a.asInstanceOf[js.Any] eq b.asInstanceOf[js.Any]
 

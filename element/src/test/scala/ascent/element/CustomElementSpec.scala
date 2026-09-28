@@ -9,6 +9,10 @@ object CustomElementSpec extends ZIOSpecDefault:
     .elements("a", "b", "c", "x9", "q")
     .flatMap(h => Gen.alphaNumericStringBounded(0, 6).map(t => s"$h-${t.toLowerCase}"))
 
+  /** Connect `el` to the document, as a page would; jsdom always has a body. */
+  private def attach(el: dom.Element): UIO[Unit] =
+    ZIO.succeed(dom.document.body.foreach(_.appendChild(el)))
+
   def spec = suite("CustomElement")(
     test("an instance the browser constructs reports each time the document gains and loses it"):
       ZIO.scoped(
@@ -16,9 +20,9 @@ object CustomElementSpec extends ZIOSpecDefault:
           defined <- CustomElement.define(ElementName("spec-lifecycle"))
           seen    <- defined.lifecycle.take(4).runCollect.fork
           el      <- defined.create
-          _       <- ZIO.succeed(dom.document.body.appendChild(el))
+          _       <- attach(el)
           _       <- ZIO.succeed(el.remove())
-          _       <- ZIO.succeed(dom.document.body.appendChild(el))
+          _       <- attach(el)
           _       <- ZIO.succeed(el.remove())
           events  <- seen.join
         yield assertTrue(
@@ -36,7 +40,7 @@ object CustomElementSpec extends ZIOSpecDefault:
           defined <- CustomElement.define(ElementName("spec-markup"))
           seen    <- defined.lifecycle.take(1).runCollect.fork
           host    <- ZIO.succeed(dom.document.createElement("div"))
-          _       <- ZIO.succeed { host.innerHTML = "<spec-markup></spec-markup>"; dom.document.body.appendChild(host) }
+          _       <- ZIO.succeed(host.innerHTML = "<spec-markup></spec-markup>") *> attach(host)
           events  <- seen.join
           _       <- ZIO.succeed(host.remove())
         yield assertTrue(events.headOption.exists(_.isInstanceOf[ElementLifecycle.Connected]))

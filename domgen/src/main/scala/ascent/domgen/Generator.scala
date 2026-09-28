@@ -91,17 +91,18 @@ object Generator:
       )
     yield GeneratorOutput(
       Map(
-        "dom-types/Elements.scala"       -> Renderer.elements(elementDefs),
-        "dom-types/Attrs.scala"          -> Renderer.attrs(attrDefs),
-        "dom-types/Events.scala"         -> Renderer.events(eventDefs),
-        "dom-types/Enums.scala"          -> Renderer.enumTypes(enumDefs),
-        "dom-facade/Facades.scala"       -> Renderer.facades(facadeDefs),
-        "dom-facade/Interfaces.scala"    -> Renderer.interfaces(interfaceDefs),
-        "dom-facade/Dictionaries.scala"  -> Renderer.dictionaries(dictionaryDefs),
-        "dom-facade/EnumAccessors.scala" -> Renderer.enumAccessors(interfaceDefs, facadeDefs),
-        "js/TypedEvents.scala"           -> Renderer.typedEvents(eventDefs),
-        "dom-core/Elements.scala"        -> Renderer.structuralTraits(structuralDefs),
-        "dom-core/ElementsMemory.scala"  -> Renderer.memoryImpls(
+        "dom-types/Elements.scala"           -> Renderer.elements(elementDefs),
+        "dom-types/Attrs.scala"              -> Renderer.attrs(attrDefs),
+        "dom-types/Events.scala"             -> Renderer.events(eventDefs),
+        "dom-types/Enums.scala"              -> Renderer.enumTypes(enumDefs),
+        "dom-facade/Facades.scala"           -> Renderer.facades(facadeDefs),
+        "dom-facade/Interfaces.scala"        -> Renderer.interfaces(interfaceDefs),
+        "dom-facade/Dictionaries.scala"      -> Renderer.dictionaries(dictionaryDefs),
+        "dom-facade/EnumAccessors.scala"     -> Renderer.enumAccessors(interfaceDefs, facadeDefs),
+        "dom-facade/NullableAccessors.scala" -> Renderer.nullableAccessors(interfaceDefs, facadeDefs),
+        "js/TypedEvents.scala"               -> Renderer.typedEvents(eventDefs),
+        "dom-core/Elements.scala"            -> Renderer.structuralTraits(structuralDefs),
+        "dom-core/ElementsMemory.scala"      -> Renderer.memoryImpls(
           structuralDefs.filterNot(d => noMemoryImplClass.contains(d.name)),
           handWrittenOverrides,
         ),

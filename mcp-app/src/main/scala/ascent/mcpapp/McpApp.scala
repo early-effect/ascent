@@ -36,7 +36,7 @@ final class McpApp[In, Err, Out, N <: Tuple, V <: Tuple] private (
       done    <- Promise.make[Nothing, Unit]
       mounted <- Promise.make[Nothing, Subscriptions]
       // Subscriptions release the view's listeners and observers; its nodes go with the container's content.
-      unmount = mounted.await.flatMap(_.cancelAll) *> ZIO.succeed(parent.textContent = "") *>
+      unmount = mounted.await.flatMap(_.cancelAll) *> ZIO.succeed(parent.textContent = None) *>
         views.interruptAll *> done.succeed(()).unit
       bridge  <- connect(port, app.settings(onTeardown = unmount))
       run     <- sq(Run.waiting: Run[In, Err, Out])

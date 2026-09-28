@@ -60,9 +60,9 @@ object Dom:
     * reference through the tree.
     */
   def focusFirst(selector: String): Unit =
-    val el = document.querySelector(selector)
-    if el != null && !js.isUndefined(el) then el.asInstanceOf[js.Dynamic].focus()
-    ()
+    document.querySelector(selector) match
+      case Some(el: dom.HTMLElement) => el.focus()
+      case _                         => ()
 
   /** Signal (via [[Diagnostics]]) if `target` lives inside a server-owned [[ascent.ast.UI.ServerRegion]] — client code
     * shouldn't mutate server-owned DOM, since the server may patch it out from under you. Returns `true` if a violation
@@ -154,8 +154,8 @@ end Dom
   * [[Dom.removeClass]] (which take a raw token). For transient presentational state driven from an event handler (a
   * drag-over highlight) that's kept out of the model:
   * {{{
-  *   Ev.sync.onDragStart(e => e.currentTarget.addCssClass(Dragging))
-  *   Ev.sync.onDragEnd(e => e.currentTarget.removeCssClass(Dragging))
+  *   Ev.sync.onDragStart(e => e.currentTarget.foreach(_.addCssClass(Dragging)))
+  *   Ev.sync.onDragEnd(e => e.currentTarget.foreach(_.removeCssClass(Dragging)))
   * }}}
   *
   * Because the class NAME is applied dynamically here — not through the `E.div(MyClass, …)` conversion that carries the

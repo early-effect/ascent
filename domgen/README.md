@@ -43,10 +43,24 @@ Written into the `generated/` source trees of the consuming modules:
 | Target | Files |
 |--------|-------|
 | `dom-types/.../generated/` | `Elements`, `Attrs`, `Events`, `Enums`, `EnumAccessors`, `AriaAttrs` |
-| `dom-facade/.../generated/` | `Interfaces`, `Facades`, `Dictionaries`, `EnumAccessors` (js-only DOM facade) |
+| `dom-facade/.../generated/` | `Interfaces`, `Facades`, `Dictionaries`, `EnumAccessors`, `NullableAccessors` (js-only DOM facade) |
 | `dom-core/.../generated/`  | `Elements`, `ElementsMemory`, `ElementFactory` |
 | `js/.../generated/`        | `TypedEvents` (typed event-handler DSL) |
 | `css/.../generated/`       | `StylesGenerated`, `StylesValueTraits`, `MediaFeatures`, `ContainerFeatures`, `FontFaceDescriptors`, `PageDescriptors`, `CounterStyleDescriptors`, `PseudoSelectors` |
+
+## Nullable members
+
+WebIDL's `T?` (directly, or through a nullable typedef such as `EventHandler`) means the browser may
+answer `null`. The generated class keeps such a member raw, under its DOM name, spelled `…OrNull` and
+typed `T | Null`; `NullableAccessors` gives each one an `Option` view (`parentNode: Option[Node]`, and
+for a writable member a setter taking `Option[T]`, where `None` writes `null`). An operation with
+optional trailing arguments gets one accessor per arity. Every generated interface extends the
+hand-written `PlatformObject`, whose companion exports the accessors, so they resolve under a bare
+`import ascent.dom` with no extra import.
+
+A few operations have a result the spec's prose fixes by an argument's value, which IDL cannot say.
+`SpecTypedOp` replaces each one with members keyed by a hand-written type: `HTMLCanvasElement.getContext`
+takes a `CanvasContextId[C, O]`, which pins the context type `C` and its options dictionary `O`.
 
 ## Inspecting the snapshot
 

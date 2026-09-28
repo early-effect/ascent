@@ -73,7 +73,10 @@ object Mount:
       idMode: IdMode = IdMode.HashWithRegistry,
   )(using ops: DomOps[N]): ZIO[R & StyleRegistry, Nothing, Subscriptions] =
     for
-      html    <- ZIO.succeed(ops.documentElement)
+      // A document with no root element cannot host a page; nothing else in it would work either.
+      html <- ZIO
+        .fromOption(ops.documentElement)
+        .orDieWith(_ => IllegalStateException("the document has no root element"))
       _       <- ZIO.succeed(ops.body.foreach(placeholder => ops.removeChild(html, placeholder)))
       cleanup <- mount(ui, html, idMode)
     yield cleanup

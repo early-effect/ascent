@@ -66,7 +66,7 @@ final class AscentRoot(val element: dom.Element):
       expectedTag: Option[String] = None,
   )(using Trace): IO[Throwable, dom.Element] =
     def attempt: UIO[Option[dom.Element]] =
-      ZIO.succeed(Option(element.querySelector(selector)).filter(el => el != null && !js.isUndefined(el)))
+      ZIO.succeed(element.querySelector(selector))
 
     def loop: IO[Throwable, dom.Element] =
       attempt.flatMap {
@@ -100,7 +100,7 @@ final class LiveBackend(root: AscentRoot, expectedTag: Option[String]) extends H
     resolve(selector).map(el => Option(el.asInstanceOf[js.Dynamic].innerText.asInstanceOf[String]).getOrElse(""))
 
   def textContent(selector: String)(using Trace): AscentChekhov.Effect[String] =
-    resolve(selector).map(el => Option(el.textContent).getOrElse(""))
+    resolve(selector).map(_.textContent.getOrElse(""))
 
   def resolve(selector: String)(using Trace): AscentChekhov.Effect[dom.Element] =
     root.waitFor(selector, expectedTag = expectedTag).flatMap { el =>
@@ -125,8 +125,8 @@ extension [H <: ElementHandle[AscentChekhov.Effect]](handle: H)
   def focus(using Trace): AscentChekhov.Effect[Unit] =
     element.map(el => LiveOps.focus(el))
 
-  def getAttribute(name: String)(using Trace): AscentChekhov.Effect[String] =
-    element.map(el => Option(el.getAttribute(name)).getOrElse(""))
+  def getAttribute(name: String)(using Trace): AscentChekhov.Effect[Option[String]] =
+    element.map(_.getAttribute(name))
 
   def disabled(using Trace): AscentChekhov.Effect[Boolean] =
     element.map(el => LiveOps.disabled(el))

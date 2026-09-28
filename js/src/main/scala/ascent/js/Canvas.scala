@@ -44,8 +44,7 @@ object Canvas:
         Attr.StaticAttr("style", AttrValue.Str(s"width:${cssWidth}px;height:${cssHeight}px;")),
         Attr.OnMount { canvasAny =>
           val canvas = canvasAny.asInstanceOf[dom.HTMLCanvasElement]
-          val ctx    = applyHiDpiSizing(canvas, cssWidth, cssHeight)
-          setup(canvas, ctx)
+          withHiDpiContext(canvas, cssWidth, cssHeight)(ctx => setup(canvas, ctx))
         },
       ),
       Vector.empty,
@@ -77,15 +76,16 @@ object Canvas:
         Attrs.height(cssHeight),
         Attr.StaticAttr("style", AttrValue.Str(s"width:${cssWidth}px;height:${cssHeight}px;")),
         Attr.OnMount { canvasAny =>
-          ZIO.succeed {
-            val canvas = canvasAny.asInstanceOf[dom.HTMLCanvasElement]
-            val ctx    = applyHiDpiSizing(canvas, cssWidth, cssHeight)
-            state.start = dom.window.performance.now()
-            // Recursive scheduler — each frame schedules the next.
-            lazy val tick: js.Function1[Double, Unit] = (now: Double) =>
-              draw(ctx, now - state.start)
+          val canvas = canvasAny.asInstanceOf[dom.HTMLCanvasElement]
+          withHiDpiContext(canvas, cssWidth, cssHeight) { ctx =>
+            ZIO.succeed {
+              state.start = dom.window.performance.now()
+              // Recursive scheduler — each frame schedules the next.
+              lazy val tick: js.Function1[Double, Unit] = (now: Double) =>
+                draw(ctx, now - state.start)
+                state.rafId = dom.window.requestAnimationFrame(tick)
               state.rafId = dom.window.requestAnimationFrame(tick)
-            state.rafId = dom.window.requestAnimationFrame(tick)
+            }
           }
         },
         Attr.OnUnmount { _ =>
@@ -100,19 +100,21 @@ object Canvas:
     )
   end animated
 
-  /** Set the backing-buffer size to `css * devicePixelRatio` and pre-`scale` the context so caller code can use
-    * CSS-pixel coordinates and still get crisp rendering on retina displays. Returns the configured 2D context.
+  /** Size the backing buffer to `css * devicePixelRatio` and pre-`scale` the 2D context, so `use` draws in CSS pixels
+    * and still renders crisply on high-density displays. A canvas the browser gives no 2D context skips `use`, with a
+    * warning.
     */
-  private def applyHiDpiSizing(
-      canvas: dom.HTMLCanvasElement,
-      cssWidth: Int,
-      cssHeight: Int,
-  ): dom.CanvasRenderingContext2D =
-    val dpr = dom.window.devicePixelRatio
-    canvas.width = (cssWidth * dpr).toInt
-    canvas.height = (cssHeight * dpr).toInt
-    val ctx = canvas.getContext("2d").asInstanceOf[dom.CanvasRenderingContext2D]
-    ctx.scale(dpr, dpr)
-    ctx
-  end applyHiDpiSizing
+  private def withHiDpiContext(canvas: dom.HTMLCanvasElement, cssWidth: Int, cssHeight: Int)(
+      use: dom.CanvasRenderingContext2D => UIO[Unit]
+  ): UIO[Unit] =
+    ZIO.suspendSucceed {
+      val dpr = dom.window.devicePixelRatio
+      canvas.width = (cssWidth * dpr).toInt
+      canvas.height = (cssHeight * dpr).toInt
+      canvas.getContext(dom.CanvasContextId.TwoD) match
+        case Some(ctx) =>
+          ctx.scale(dpr, dpr)
+          use(ctx)
+        case None => ZIO.logWarning("this <canvas> has no 2D context, so nothing is drawn on it")
+    }
 end Canvas
