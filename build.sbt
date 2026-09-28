@@ -55,11 +55,6 @@ usePgpKeyHex(sys.env.getOrElse("PGP_KEY_HEX", "MISSING_KEY_HEX"))
 // is a hard eviction without a scheme. The old hold at 0.10.0 was for zio-http schema and is gone.
 libraryDependencySchemes += "dev.zio" %% "zio-json" % "always"
 
-// The docs theme pulls specular-site 0.18.0, built on heddle 0.6.0; this build takes 0.7.1, which early-semver calls
-// a hard conflict. The eviction is safe: heddle's core (what specular-site calls) is unchanged from 0.6.0 to 0.7.1,
-// which changed only heddle-mcp and heddle-mcp-apps. Drop this once the docs use a specular built on heddle 0.7.
-libraryDependencySchemes += "rocks.earlyeffect" %% "heddle" % "always"
-
 val scalaVersions = Seq(scala3Version)
 
 // Cap peak memory during a full cross-build. The Scala Native link phase (LLVM optimize/codegen) is
