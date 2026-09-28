@@ -395,6 +395,30 @@ object RendererSpec extends ZIOSpecDefault:
           !src.contains("val br:"),
         )
       },
+      test("OffscreenCanvas.getContext is keyed by OffscreenContextId, and its IDL string form is gone") {
+        val offscreen = InterfaceDef(
+          "OffscreenCanvas",
+          parent = Some("EventTarget"),
+          attributes = Nil,
+          methods = List(
+            MethodDef(
+              "getContext",
+              "getContext",
+              "OffscreenCanvasRenderingContext2D | WebGLRenderingContext",
+              List(ParamDef("contextId", "String"), ParamDef("options", "scala.scalajs.js.Any", optional = true)),
+              returnsNullable = true,
+            )
+          ),
+        )
+        val native    = Renderer.interfaces(List(offscreen))
+        val accessors = Renderer.nullableAccessors(List(offscreen), Nil)
+        assertTrue(
+          native.contains("def getContextOrNull[C, O](contextId: OffscreenContextId[C, O], options: O = js.native)"),
+          !native.contains("contextId: String"),
+          accessors.contains("def getContext[C, O](contextId: OffscreenContextId[C, O]): Option[C]"),
+          !accessors.contains("contextId: String"),
+        )
+      },
       test("Document gains a createElement keyed by HtmlTag beside the String one") {
         val document = InterfaceDef(
           "Document",

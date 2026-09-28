@@ -113,7 +113,9 @@ actual spec:
   typed `@js.native` layer — ascent does not depend on `scalajs-dom`. It is generated from WebIDL, so
   a member the spec marks nullable reads as an `Option` (`frame.contentWindow: Option[Window]`,
   `el.getAttribute("id"): Option[String]`), and `canvas.getContext(CanvasContextId.TwoD)` answers a
-  `CanvasRenderingContext2D` where the IDL only says "one of five context types".
+  `CanvasRenderingContext2D` where the IDL only says "one of five context types". Lifecycle hooks pin
+  the element they take and check the live node against it: `Lifecycle.onMount[dom.HTMLCanvasElement]
+  { canvas => ... }` runs on a canvas, and on any other element logs that it did not run.
 
 ## The effect system, and conduit integration
 

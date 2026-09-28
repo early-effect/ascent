@@ -60,7 +60,7 @@ object DomListenSpec extends ZIOSpecDefault:
         for
           hits <- Ref.make(0)
           ui: UI[Any] = E.div(
-            Lifecycle.onMountScoped[dom.Element, Any] { _ =>
+            Lifecycle.onMountScoped[dom.Element] { _ =>
               Dom.listen(Dom.document, Events.onKeyDown)(_ => hits.update(_ + 1))
             }
           )
@@ -75,7 +75,7 @@ object DomListenSpec extends ZIOSpecDefault:
         for
           hits <- Ref.make(0)
           ui: UI[Any] = E.div(
-            Lifecycle.onMountScoped[dom.Element, Any] { _ =>
+            Lifecycle.onMountScoped[dom.Element] { _ =>
               Dom.listen(Dom.document, Events.onKeyDown)(_ => hits.update(_ + 1))
             }
           )
@@ -93,7 +93,7 @@ object DomListenSpec extends ZIOSpecDefault:
         for
           keys <- Ref.make(Vector.empty[String])
           ui: UI[Any] = E.input(
-            Dom.onDocument[dom.HTMLInputElement, Any](Events.onKeyDown) { (el, ev) =>
+            Dom.onDocument[dom.HTMLInputElement](Events.onKeyDown) { (el, ev) =>
               keys.update(_ :+ s"${el.tagName.toLowerCase}:${ev.key.getOrElse("?")}")
             }
           )
@@ -111,7 +111,7 @@ object DomListenSpec extends ZIOSpecDefault:
         for
           hits <- Ref.make(0)
           ui: UI[Any] = E.input(
-            Dom.onWindow[dom.HTMLInputElement, Any](Events.onKeyDown)((_, _) => hits.update(_ + 1))
+            Dom.onWindow[dom.HTMLInputElement](Events.onKeyDown)((_, _) => hits.update(_ + 1))
           )
           cleanup      <- AscentApp.mount(ui, parent)
           _            <- dispatchKeydownAt(dom.window.asInstanceOf[js.Dynamic], "/")
@@ -127,7 +127,7 @@ object DomListenSpec extends ZIOSpecDefault:
         for
           tags <- Ref.make(Vector.empty[String])
           ui: UI[Any] = E.input(
-            Dom.onDocument[dom.HTMLInputElement, Any](Events.onKeyDown) { (_, ev) =>
+            Dom.onDocument[dom.HTMLInputElement](Events.onKeyDown) { (_, ev) =>
               tags.update(_ :+ ev.targetTag.getOrElse("none"))
             }
           )

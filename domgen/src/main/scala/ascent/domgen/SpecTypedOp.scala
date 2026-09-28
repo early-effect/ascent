@@ -37,6 +37,21 @@ object SpecTypedOp:
     ),
   )
 
+  /** HTML §4.12.5.3: the same rule for an `OffscreenCanvas`, whose 2D context has its own type (`OffscreenContextId`).
+    */
+  val offscreenGetContext: SpecTypedOp = SpecTypedOp(
+    owner = "OffscreenCanvas",
+    name = "getContext",
+    replacesIdl = true,
+    raw = """  @JSName("getContext")
+            |  def getContextOrNull[C, O](contextId: OffscreenContextId[C, O], options: O = js.native): C | Null = js.native""".stripMargin,
+    accessors = List(
+      "def getContext[C, O](contextId: OffscreenContextId[C, O]): Option[C] = nullable(self.getContextOrNull(contextId))",
+      "def getContext[C, O](contextId: OffscreenContextId[C, O], options: O): Option[C] =",
+      "  nullable(self.getContextOrNull(contextId, options))",
+    ),
+  )
+
   /** HTML's element index: an HTML tag decides the interface `createElement` answers (`HtmlTag`). */
   val documentCreateElement: SpecTypedOp = SpecTypedOp(
     owner = "Document",
@@ -45,7 +60,7 @@ object SpecTypedOp:
     raw = "  def createElement[E <: HTMLElement](localName: HtmlTag[E]): E = js.native",
   )
 
-  val all: List[SpecTypedOp] = List(canvasGetContext, documentCreateElement)
+  val all: List[SpecTypedOp] = List(canvasGetContext, offscreenGetContext, documentCreateElement)
 
   def of(owner: String): List[SpecTypedOp] = all.filter(_.owner == owner)
 

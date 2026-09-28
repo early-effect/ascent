@@ -1614,14 +1614,9 @@ object NullableAccessors:
     )
     def oncontextrestored_=(value: Option[scala.scalajs.js.Function1[Event, scala.scalajs.js.Any]]): Unit =
       self.oncontextrestoredOrNull = value.orNull
-    def getContext(contextId: String): Option[
-      OffscreenCanvasRenderingContext2D | ImageBitmapRenderingContext | WebGLRenderingContext | WebGL2RenderingContext |
-        GPUCanvasContext
-    ] = nullable(self.getContextOrNull(contextId))
-    def getContext(contextId: String, options: scala.scalajs.js.Any): Option[
-      OffscreenCanvasRenderingContext2D | ImageBitmapRenderingContext | WebGLRenderingContext | WebGL2RenderingContext |
-        GPUCanvasContext
-    ] = nullable(self.getContextOrNull(contextId, options))
+    def getContext[C, O](contextId: OffscreenContextId[C, O]): Option[C] = nullable(self.getContextOrNull(contextId))
+    def getContext[C, O](contextId: OffscreenContextId[C, O], options: O): Option[C] =
+      nullable(self.getContextOrNull(contextId, options))
   end extension
 
   extension (self: WebTransportError) def streamErrorCode: Option[Int] = nullable(self.streamErrorCodeOrNull)

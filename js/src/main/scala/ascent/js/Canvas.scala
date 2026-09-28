@@ -26,9 +26,9 @@ import scala.scalajs.js
   */
 object Canvas:
 
-  /** A canvas with one-shot setup logic. The setup runs once at mount with the live canvas + context, and any cleanup
-    * it needs to do later (e.g. cancel a third-party library's loop) goes in the returned `UIO[Unit]` — wired to the
-    * element's OnUnmount.
+  /** A canvas with one-shot setup logic: `setup` runs once at mount with the live canvas and its 2D context. Cleanup
+    * that must run on unmount (a third-party library's loop) belongs in a [[Lifecycle.onMountScoped]] on the same
+    * element.
     */
   def element(
       cssWidth: Int,
@@ -42,8 +42,7 @@ object Canvas:
         // Inline style so the rendered size (in CSS pixels) matches what the caller asked
         // for — independent of the (possibly DPR-scaled) backing buffer.
         Attr.StaticAttr("style", AttrValue.Str(s"width:${cssWidth}px;height:${cssHeight}px;")),
-        Attr.OnMount { canvasAny =>
-          val canvas = canvasAny.asInstanceOf[dom.HTMLCanvasElement]
+        Lifecycle.onMount[dom.HTMLCanvasElement] { canvas =>
           withHiDpiContext(canvas, cssWidth, cssHeight)(ctx => setup(canvas, ctx))
         },
       ),
@@ -75,8 +74,7 @@ object Canvas:
         Attrs.width(cssWidth),
         Attrs.height(cssHeight),
         Attr.StaticAttr("style", AttrValue.Str(s"width:${cssWidth}px;height:${cssHeight}px;")),
-        Attr.OnMount { canvasAny =>
-          val canvas = canvasAny.asInstanceOf[dom.HTMLCanvasElement]
+        Lifecycle.onMount[dom.HTMLCanvasElement] { canvas =>
           withHiDpiContext(canvas, cssWidth, cssHeight) { ctx =>
             ZIO.succeed {
               state.start = dom.window.performance.now()

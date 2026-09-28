@@ -5799,14 +5799,10 @@ class OffscreenCanvas extends EventTarget:
   var oncontextlostOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
   @JSName("oncontextrestored")
   var oncontextrestoredOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  def transferToImageBitmap(): ImageBitmap                                                    = js.native
+  def convertToBlob(options: ImageEncodeOptions = js.native): scala.scalajs.js.Promise[Blob]  = js.native
   @JSName("getContext")
-  def getContextOrNull(
-      contextId: String,
-      options: scala.scalajs.js.Any = js.native,
-  ): OffscreenCanvasRenderingContext2D | ImageBitmapRenderingContext | WebGLRenderingContext | WebGL2RenderingContext | GPUCanvasContext | Null =
-    js.native
-  def transferToImageBitmap(): ImageBitmap                                                   = js.native
-  def convertToBlob(options: ImageEncodeOptions = js.native): scala.scalajs.js.Promise[Blob] = js.native
+  def getContextOrNull[C, O](contextId: OffscreenContextId[C, O], options: O = js.native): C | Null = js.native
 end OffscreenCanvas
 
 @js.native

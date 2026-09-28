@@ -723,7 +723,8 @@ lazy val ascentChekhov = (projectMatrix in file("chekhov"))
         ),
   )
 
-// Live withMounted suite. Own Scala.js module so Test/fastLinkJS is this project's
+// Live withMounted suite, plus the DOM facade checks that need a real browser (jsdom has no
+// OffscreenCanvas or context globals). Own Scala.js module so Test/fastLinkJS is this project's
 // bundle (tiny UIs in test sources). sbt dependsOn js.js; does not fastOpt the e2e apps.
 lazy val chekhovJs = (project in file("chekhov-js"))
   .enablePlugins(org.scalajs.sbtplugin.ScalaJSPlugin)

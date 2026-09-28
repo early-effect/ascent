@@ -60,7 +60,8 @@ hand-written `PlatformObject`, whose companion exports the accessors, so they re
 
 A few operations have a result the spec's prose fixes by an argument's value, which IDL cannot say.
 `SpecTypedOp` gives each one members keyed by a type that pins the result: `HTMLCanvasElement.getContext`
-takes a `CanvasContextId[C, O]` (the context type `C` and its options dictionary `O`), and
+takes a `CanvasContextId[C, O]` (the context type `C` and its options dictionary `O`), `OffscreenCanvas.getContext`
+takes an `OffscreenContextId[C, O]` (its 2D context is an `OffscreenCanvasRenderingContext2D`), and
 `Document.createElement` also takes an `HtmlTag[E]`, generated from HTML's element index, so
 `document.createElement(HtmlTag.iframe)` is an `HTMLIFrameElement`.
 
