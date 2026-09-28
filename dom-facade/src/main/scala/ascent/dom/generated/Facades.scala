@@ -75,7 +75,7 @@ class ValueEvent extends Event:
 @JSGlobal
 class TrackEvent extends Event:
   def this(@unused `type`: String, @unused eventInitDict: TrackEventInit = js.native) = this()
-  def track: scala.scalajs.js.Any = js.native
+  def track: VideoTrack | AudioTrack | TextTrack = js.native
 
 @js.native
 @JSGlobal
@@ -152,14 +152,14 @@ class MIDIMessageEvent extends Event:
 @JSGlobal
 class BluetoothAdvertisingEvent extends Event:
   def this(@unused `type`: String, @unused init: BluetoothAdvertisingEventInit) = this()
-  def device: BluetoothDevice                             = js.native
-  def uuids: scala.scalajs.js.Array[scala.scalajs.js.Any] = js.native
-  def name: String                                        = js.native
-  def appearance: Int                                     = js.native
-  def txPower: scala.scalajs.js.Any                       = js.native
-  def rssi: scala.scalajs.js.Any                          = js.native
-  def manufacturerData: BluetoothManufacturerDataMap      = js.native
-  def serviceData: BluetoothServiceDataMap                = js.native
+  def device: BluetoothDevice                        = js.native
+  def uuids: scala.scalajs.js.Array[String]          = js.native
+  def name: String                                   = js.native
+  def appearance: Int                                = js.native
+  def txPower: scala.scalajs.js.Any                  = js.native
+  def rssi: scala.scalajs.js.Any                     = js.native
+  def manufacturerData: BluetoothManufacturerDataMap = js.native
+  def serviceData: BluetoothServiceDataMap           = js.native
 end BluetoothAdvertisingEvent
 
 @js.native
@@ -171,7 +171,7 @@ class CompositionEvent extends UIEvent:
       typeArg: String,
       bubblesArg: Boolean = js.native,
       cancelableArg: Boolean = js.native,
-      viewArg: scala.scalajs.js.Any = js.native,
+      viewArg: Window = js.native,
       dataArg: String = js.native,
   ): Unit = js.native
 end CompositionEvent
@@ -267,11 +267,11 @@ class SnapEvent extends Event:
 @JSGlobal
 class MessageEvent extends Event:
   def this(@unused `type`: String, @unused eventInitDict: MessageEventInit = js.native) = this()
-  def data: scala.scalajs.js.Any                 = js.native
-  def origin: String                             = js.native
-  def lastEventId: String                        = js.native
-  def source: scala.scalajs.js.Any               = js.native
-  def ports: scala.scalajs.js.Array[MessagePort] = js.native
+  def data: scala.scalajs.js.Any                   = js.native
+  def origin: String                               = js.native
+  def lastEventId: String                          = js.native
+  def source: Window | MessagePort | ServiceWorker = js.native
+  def ports: scala.scalajs.js.Array[MessagePort]   = js.native
   def initMessageEvent(
       `type`: String,
       bubbles: Boolean = js.native,
@@ -279,7 +279,7 @@ class MessageEvent extends Event:
       data: scala.scalajs.js.Any = js.native,
       origin: String = js.native,
       lastEventId: String = js.native,
-      source: scala.scalajs.js.Any = js.native,
+      source: Window | MessagePort | ServiceWorker = js.native,
       ports: scala.scalajs.js.Array[MessagePort] = js.native,
   ): Unit = js.native
 end MessageEvent
@@ -342,8 +342,8 @@ class ErrorEvent extends Event:
 @JSGlobal
 class AnimationPlaybackEvent extends Event:
   def this(@unused `type`: String, @unused eventInitDict: AnimationPlaybackEventInit = js.native) = this()
-  def currentTime: scala.scalajs.js.Any  = js.native
-  def timelineTime: scala.scalajs.js.Any = js.native
+  def currentTime: Double | CSSNumericValue  = js.native
+  def timelineTime: Double | CSSNumericValue = js.native
 
 @js.native
 @JSGlobal
@@ -386,8 +386,8 @@ end CustomEvent
 @JSGlobal
 class AutofillEvent extends Event:
   def this(@unused `type`: String, @unused eventInitDict: AutofillEventInit = js.native) = this()
-  def autofillValues: scala.scalajs.js.Array[scala.scalajs.js.Any]       = js.native
-  def refill: scala.scalajs.js.Function0[scala.scalajs.js.Promise[Unit]] = js.native
+  def autofillValues: scala.scalajs.js.Array[scala.scalajs.js.Array[scala.scalajs.js.Any]] = js.native
+  def refill: scala.scalajs.js.Function0[scala.scalajs.js.Promise[Unit]]                   = js.native
 
 @js.native
 @JSGlobal
@@ -612,7 +612,7 @@ end MouseEvent
 @js.native
 @JSGlobal
 class TimeEvent extends Event:
-  def view: scala.scalajs.js.Any                                                                    = js.native
+  def view: Window                                                                                  = js.native
   def detail: Int                                                                                   = js.native
   def initTimeEvent(typeArg: String, viewArg: Window = js.native, detailArg: Int = js.native): Unit = js.native
 
@@ -668,11 +668,11 @@ class XRLayerEvent extends Event:
 @JSGlobal
 class ExtendableMessageEvent extends ExtendableEvent:
   def this(@unused `type`: String, @unused eventInitDict: ExtendableMessageEventInit = js.native) = this()
-  def data: scala.scalajs.js.Any                 = js.native
-  def origin: String                             = js.native
-  def lastEventId: String                        = js.native
-  def source: scala.scalajs.js.Any               = js.native
-  def ports: scala.scalajs.js.Array[MessagePort] = js.native
+  def data: scala.scalajs.js.Any                   = js.native
+  def origin: String                               = js.native
+  def lastEventId: String                          = js.native
+  def source: Client | ServiceWorker | MessagePort = js.native
+  def ports: scala.scalajs.js.Array[MessagePort]   = js.native
 
 @js.native
 @JSGlobal

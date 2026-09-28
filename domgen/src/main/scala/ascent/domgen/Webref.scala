@@ -181,6 +181,10 @@ object Webref:
       callbacks: List[IdlCallback] = Nil,
       dictionaries: List[IdlDictionary] = Nil,
       enums: List[IdlEnum] = Nil,
+      /** `typedef T Name;`: each name to the type it stands for, in the same simple form as a member's type (a union is
+        * its members joined by `" | "`). `MessageEventSource` -> `"WindowProxy | MessagePort | ServiceWorker"`.
+        */
+      typedefs: Map[String, String] = Map.empty,
   )
 
   // The raw shapes we decode before reducing. `idlType` is polymorphic (string | object | union)
@@ -549,7 +553,13 @@ object Webref:
             ),
           )
       }
-      Idl(withPartials, includes, (bareCallbacks ++ interfaceCallbacks).toList, dictionaries, enums)
+      val typedefs = file.idlparsed.idlNames
+        .collect {
+          case (name, raw) if raw.`type`.contains("typedef") => raw.idlType.flatMap(simpleIdlType).map(name -> _)
+        }
+        .flatten
+        .toMap
+      Idl(withPartials, includes, (bareCallbacks ++ interfaceCallbacks).toList, dictionaries, enums, typedefs)
     }
 
   /** Merge interface tables AND includes statements from several idlparsed spec files into one lookup.
@@ -595,6 +605,8 @@ object Webref:
       callbacks = idls.flatMap(_.callbacks).toList,
       dictionaries = idls.flatMap(_.dictionaries).toList,
       enums = idls.flatMap(_.enums).toList,
+      // On a name collision the earlier file wins, as for interfaces.
+      typedefs = idls.foldLeft(Map.empty[String, String])((acc, idl) => idl.typedefs ++ acc),
     )
   end mergeIdl
 

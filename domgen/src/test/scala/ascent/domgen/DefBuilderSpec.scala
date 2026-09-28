@@ -793,5 +793,41 @@ object DefBuilderSpec extends ZIOSpecDefault:
         assertTrue(DefBuilder.structuralType("record<DOMString, long>", Set.empty, idl) == "Map[String, Int]")
       },
     ),
+    suite("scalaFacadeType (typedefs, WindowProxy, unions)")({
+      val any  = "scala.scalajs.js.Any"
+      val base = Webref.Idl(
+        interfaces = List("Window", "MessagePort", "ServiceWorker", "Node")
+          .map(n => n -> Webref.IdlInterface(n, None, Nil, Nil))
+          .toMap,
+        typedefs = Map(
+          "MessageEventSource" -> "WindowProxy | MessagePort | ServiceWorker",
+          "GLenum"             -> "unsigned long",
+          "GLbitfield"         -> "GLenum",
+          "Loop"               -> "Loop",
+          "HalfTyped"          -> "Node | SomethingUnmodelled",
+        ),
+      )
+      def mapped(t: String) = DefBuilder.scalaFacadeType(t, base)
+      List(
+        test("WindowProxy, HTML's proxy for a Window, is typed Window") {
+          assertTrue(mapped("WindowProxy") == "Window")
+        },
+        test("a typedef resolves to what it names, through a chain of typedefs") {
+          assertTrue(mapped("GLenum") == "Int", mapped("GLbitfield") == "Int")
+        },
+        test("a union typedef becomes a Scala 3 union of its members, WindowProxy included") {
+          assertTrue(mapped("MessageEventSource") == "Window | MessagePort | ServiceWorker")
+        },
+        test("a union of typed members is a Scala 3 union, and members that map alike appear once") {
+          assertTrue(mapped("Node | DOMString") == "Node | String", mapped("DOMString | USVString") == "String")
+        },
+        test("one member the generator cannot type makes the whole union js.Any, never a partial type") {
+          assertTrue(mapped("Node | SomethingUnmodelled") == any, mapped("HalfTyped") == any)
+        },
+        test("a typedef cycle ends in js.Any rather than recursing forever") {
+          assertTrue(mapped("Loop") == any)
+        },
+      )
+    }*),
   )
 end DefBuilderSpec

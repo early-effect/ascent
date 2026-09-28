@@ -765,27 +765,42 @@ object DefBuilder:
     *      `Interfaces.scala`, so the symbol resolves)
     *   3. primitive / DOMString / fall-through to `js.Any`
     */
-  private[domgen] def scalaFacadeType(idlType: String, idl: Webref.Idl): String =
+  private[domgen] def scalaFacadeType(idlType: String, idl: Webref.Idl): String = resolveFacadeType(idlType, idl, 0)
+
+  /** `depth` bounds typedef chasing, so a (malformed) typedef cycle ends in `js.Any` rather than never ending. */
+  private def resolveFacadeType(idlType: String, idl: Webref.Idl, depth: Int): String =
+    val any = "scala.scalajs.js.Any"
     idl.callbacks.find(_.name == idlType) match
-      case Some(cb) if constructorCallbacks.contains(cb.name) => "scala.scalajs.js.Any"
+      case Some(cb) if constructorCallbacks.contains(cb.name) => any
       case Some(cb)                                           =>
         // Recursively resolve param/return types — a callback that takes an Event should
         // get `Function1[Event, Unit]`, not `Function1[js.Any, Unit]`.
-        val args = cb.params.map(p => scalaFacadeType(p.idlType, idl))
-        val ret  = scalaFacadeType(cb.returnType, idl)
+        val args = cb.params.map(p => resolveFacadeType(p.idlType, idl, depth))
+        val ret  = resolveFacadeType(cb.returnType, idl, depth)
         args.size match
           case 0 => s"scala.scalajs.js.Function0[$ret]"
           case 1 => s"scala.scalajs.js.Function1[${args(0)}, $ret]"
           case 2 => s"scala.scalajs.js.Function2[${args(0)}, ${args(1)}, $ret]"
           case 3 => s"scala.scalajs.js.Function3[${args(0)}, ${args(1)}, ${args(2)}, $ret]"
           case _ => "scala.scalajs.js.Function" // bigger arities are rare in callback shapes
+      case scala.None if idlType.contains(" | ") =>
+        // A union, as Webref.simpleIdlType joins it. A faithful Scala 3 union when every member resolves to a real
+        // type; one member the generator cannot type makes the whole union `js.Any`, since `A | js.Any` is `js.Any`.
+        val members = idlType.split(" \\| ").toList.map(m => resolveFacadeType(m, idl, depth)).distinct
+        if members.contains(any) then any else members.mkString(" | ")
       case scala.None =>
-        genericFacadeType(idlType, t => scalaFacadeType(t, idl)).getOrElse {
-          if idl.interfaces.contains(idlType) then idlType
+        genericFacadeType(idlType, t => resolveFacadeType(t, idl, depth)).getOrElse {
+          if idlType == "WindowProxy" then "Window" // HTML's WindowProxy is the proxy for a Window
+          else if idl.interfaces.contains(idlType) then idlType
           else if idl.dictionaries.exists(_.name == idlType) then idlType
           else if idl.enums.exists(_.name == idlType) then "String"
-          else baseScalaType(idlType)
+          else
+            idl.typedefs.get(idlType) match
+              case Some(named) if depth < 8 => resolveFacadeType(named, idl, depth + 1)
+              case _                        => baseScalaType(idlType)
         }
+    end match
+  end resolveFacadeType
 
   /** Callback typedefs the spec invokes with `new`, which WebIDL's `callback X = R ();` cannot say: the HTML spec's
     * prose has `define` check `IsConstructor` and construct the element. A function value would pass the facade and

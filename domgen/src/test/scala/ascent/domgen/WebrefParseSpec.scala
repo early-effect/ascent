@@ -110,6 +110,29 @@ object WebrefParseSpec extends ZIOSpecDefault:
         }""")
         yield assertTrue(idl.interfaces("X").attributes.head.idlType == "TrustedType | DOMString")
       },
+      test("a typedef decodes to the type it names, a union's members joined by ' | '") {
+        for idl <- Webref.parseIdl("""{
+          "idlparsed": { "idlNames": {
+            "GLenum": { "type": "typedef", "name": "GLenum", "idlType": { "idlType": "unsigned long" } },
+            "MessageEventSource": { "type": "typedef", "name": "MessageEventSource", "idlType": {
+              "type": "typedef-type", "union": true,
+              "idlType": [ { "idlType": "WindowProxy" }, { "idlType": "MessagePort" }, { "idlType": "ServiceWorker" } ]
+            } }
+          } }
+        }""")
+        yield assertTrue(
+          idl.typedefs == Map(
+            "GLenum"             -> "unsigned long",
+            "MessageEventSource" -> "WindowProxy | MessagePort | ServiceWorker",
+          ),
+          idl.interfaces.isEmpty,
+        )
+      },
+      test("merged specs keep every typedef, and the earlier file wins a name both define") {
+        val a = Webref.Idl(Map.empty, typedefs = Map("A" -> "long", "Shared" -> "DOMString"))
+        val b = Webref.Idl(Map.empty, typedefs = Map("B" -> "double", "Shared" -> "boolean"))
+        assertTrue(Webref.mergeIdl(a, b).typedefs == Map("A" -> "long", "B" -> "double", "Shared" -> "DOMString"))
+      },
       test("a union-typed operation parameter decodes the same way as a union-typed attribute") {
         for idl <- Webref.parseIdl("""{
           "idlparsed": { "idlNames": { "X": { "type": "interface", "name": "X", "members": [
