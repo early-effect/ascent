@@ -60,12 +60,12 @@ object MyVersions extends ZipxVersions:
   //   names the JS one.
 
   /** One generator and one webref snapshot produce all three, so they move together. */
-  val dom = ShipGroup("dom", "0.9.0")("domTypes", "domFacadeJS", "domCore")
+  val dom = ShipGroup("dom", "0.10.0")("domTypes", "domFacadeJS", "domCore")
 
   val core          = Ship("core", "0.9.0")
   val css           = Ship("css", "0.9.0")
-  val mountEngine   = Ship("mountEngine", "0.9.0")
-  val js            = Ship("jsJS", "0.9.0")
+  val mountEngine   = Ship("mountEngine", "0.10.0")
+  val js            = Ship("jsJS", "0.10.0")
   val element       = Ship("elementJS", "0.9.0")
   val mcpApp        = Ship("mcpAppJS", "0.9.0")
   val history       = Ship("history", "0.9.0")
@@ -74,7 +74,7 @@ object MyVersions extends ZipxVersions:
   val datastar      = Ship("datastar", "0.9.0")
   val datastarJs    = Ship("datastarJsJS", "0.9.0")
   val datastarHttp  = Ship("datastarHttp", "0.9.0")
-  val ascentChekhov = Ship("ascentChekhov", "0.9.0")
+  val ascentChekhov = Ship("ascentChekhov", "0.10.0")
 
   /** sbt-ascent-preview adds ascent-preview at its own version, so the two ship together. */
   val preview = ShipGroup("preview", "0.9.0")("preview", "sbtAscentPreview")

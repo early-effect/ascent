@@ -75,7 +75,7 @@ jobs:
           node-version: ""
           sbt-disk-cache: "false"
           cache-mode: save
-          cache-epoch: f2a8170a7461ec88
+          cache-epoch: dc3ae91bf0627d73
       - name: cache-rehydrate
         run: sbt 'Test/compile'
   modver:
@@ -102,7 +102,7 @@ jobs:
           node-version: ""
           sbt-disk-cache: "false"
           cache-mode: "off"
-          cache-epoch: f2a8170a7461ec88
+          cache-epoch: dc3ae91bf0627d73
       - name: Compute version-moved modules
         id: compute
         run: |
@@ -146,7 +146,7 @@ jobs:
           node-version: ""
           sbt-disk-cache: "false"
           cache-mode: save
-          cache-epoch: f2a8170a7461ec88
+          cache-epoch: dc3ae91bf0627d73
       - name: test
         run: |
           if [ "$ZIPX_VERIFY_CLEAN_FULL" = "true" ]; then
@@ -178,7 +178,7 @@ jobs:
           node-version: ""
           sbt-disk-cache: "false"
           cache-mode: restore
-          cache-epoch: f2a8170a7461ec88
+          cache-epoch: dc3ae91bf0627d73
       - name: fmt
         run: |
           if [ "$ZIPX_VERIFY_CLEAN_FULL" = "true" ]; then
@@ -210,7 +210,7 @@ jobs:
           node-version: ""
           sbt-disk-cache: "false"
           cache-mode: restore
-          cache-epoch: f2a8170a7461ec88
+          cache-epoch: dc3ae91bf0627d73
       - name: workflow-check
         run: |
           if [ "$ZIPX_VERIFY_CLEAN_FULL" = "true" ]; then
@@ -242,7 +242,7 @@ jobs:
           node-version: ""
           sbt-disk-cache: "false"
           cache-mode: restore
-          cache-epoch: f2a8170a7461ec88
+          cache-epoch: dc3ae91bf0627d73
       - name: advisories
         run: |
           if [ "$ZIPX_VERIFY_CLEAN_FULL" = "true" ]; then
@@ -278,7 +278,7 @@ jobs:
           node-version: ""
           sbt-disk-cache: "false"
           cache-mode: restore
-          cache-epoch: f2a8170a7461ec88
+          cache-epoch: dc3ae91bf0627d73
       - name: Fetch PR base SHA
         run: git fetch --no-tags origin "$ZIPX_MODVER_BASE_SHA"
       - name: modver-suggest
@@ -315,7 +315,7 @@ jobs:
           node-version: ""
           sbt-disk-cache: "false"
           cache-mode: restore
-          cache-epoch: f2a8170a7461ec88
+          cache-epoch: dc3ae91bf0627d73
       - name: Fetch PR base SHA
         run: git fetch --no-tags origin "$ZIPX_MODVER_BASE_SHA"
       - name: modver-check
@@ -350,7 +350,7 @@ jobs:
           node-version: ""
           sbt-disk-cache: "false"
           cache-mode: restore
-          cache-epoch: f2a8170a7461ec88
+          cache-epoch: dc3ae91bf0627d73
       - name: Set up Node
         uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
         with:
@@ -392,7 +392,7 @@ jobs:
           node-version: ""
           sbt-disk-cache: "false"
           cache-mode: restore
-          cache-epoch: f2a8170a7461ec88
+          cache-epoch: dc3ae91bf0627d73
       - name: Install Scala Native build dependencies
         run: sudo apt-get update && sudo apt-get install -y clang libstdc++-12-dev libgc-dev libunwind-dev
       - name: test-native
@@ -426,7 +426,7 @@ jobs:
           node-version: "24"
           sbt-disk-cache: "false"
           cache-mode: restore
-          cache-epoch: f2a8170a7461ec88
+          cache-epoch: dc3ae91bf0627d73
       - name: e2e
         run: |
           if [ "$ZIPX_VERIFY_CLEAN_FULL" = "true" ]; then
@@ -462,7 +462,7 @@ jobs:
           node-version: ""
           sbt-disk-cache: "false"
           cache-mode: restore
-          cache-epoch: f2a8170a7461ec88
+          cache-epoch: dc3ae91bf0627d73
       - name: Import signing key
         run: |
           mkdir -p ~/.gnupg && chmod 700 ~/.gnupg
@@ -508,7 +508,7 @@ jobs:
           node-version: ""
           sbt-disk-cache: "false"
           cache-mode: restore
-          cache-epoch: f2a8170a7461ec88
+          cache-epoch: dc3ae91bf0627d73
       - name: Import signing key
         run: |
           mkdir -p ~/.gnupg && chmod 700 ~/.gnupg
@@ -554,7 +554,7 @@ jobs:
           node-version: ""
           sbt-disk-cache: "false"
           cache-mode: restore
-          cache-epoch: f2a8170a7461ec88
+          cache-epoch: dc3ae91bf0627d73
       - name: Import signing key
         run: |
           mkdir -p ~/.gnupg && chmod 700 ~/.gnupg
@@ -600,7 +600,7 @@ jobs:
           node-version: ""
           sbt-disk-cache: "false"
           cache-mode: restore
-          cache-epoch: f2a8170a7461ec88
+          cache-epoch: dc3ae91bf0627d73
       - name: Import signing key
         run: |
           mkdir -p ~/.gnupg && chmod 700 ~/.gnupg
@@ -646,7 +646,7 @@ jobs:
           node-version: ""
           sbt-disk-cache: "false"
           cache-mode: restore
-          cache-epoch: f2a8170a7461ec88
+          cache-epoch: dc3ae91bf0627d73
       - name: Import signing key
         run: |
           mkdir -p ~/.gnupg && chmod 700 ~/.gnupg
@@ -693,7 +693,7 @@ jobs:
           node-version: ""
           sbt-disk-cache: "false"
           cache-mode: restore
-          cache-epoch: f2a8170a7461ec88
+          cache-epoch: dc3ae91bf0627d73
       - name: Import signing key
         run: |
           mkdir -p ~/.gnupg && chmod 700 ~/.gnupg
@@ -740,7 +740,7 @@ jobs:
           node-version: ""
           sbt-disk-cache: "false"
           cache-mode: restore
-          cache-epoch: f2a8170a7461ec88
+          cache-epoch: dc3ae91bf0627d73
       - name: Import signing key
         run: |
           mkdir -p ~/.gnupg && chmod 700 ~/.gnupg
@@ -787,7 +787,7 @@ jobs:
           node-version: ""
           sbt-disk-cache: "false"
           cache-mode: restore
-          cache-epoch: f2a8170a7461ec88
+          cache-epoch: dc3ae91bf0627d73
       - name: Import signing key
         run: |
           mkdir -p ~/.gnupg && chmod 700 ~/.gnupg
@@ -834,7 +834,7 @@ jobs:
           node-version: ""
           sbt-disk-cache: "false"
           cache-mode: restore
-          cache-epoch: f2a8170a7461ec88
+          cache-epoch: dc3ae91bf0627d73
       - name: Import signing key
         run: |
           mkdir -p ~/.gnupg && chmod 700 ~/.gnupg
@@ -881,7 +881,7 @@ jobs:
           node-version: ""
           sbt-disk-cache: "false"
           cache-mode: restore
-          cache-epoch: f2a8170a7461ec88
+          cache-epoch: dc3ae91bf0627d73
       - name: Import signing key
         run: |
           mkdir -p ~/.gnupg && chmod 700 ~/.gnupg
@@ -928,7 +928,7 @@ jobs:
           node-version: ""
           sbt-disk-cache: "false"
           cache-mode: restore
-          cache-epoch: f2a8170a7461ec88
+          cache-epoch: dc3ae91bf0627d73
       - name: Import signing key
         run: |
           mkdir -p ~/.gnupg && chmod 700 ~/.gnupg
@@ -975,7 +975,7 @@ jobs:
           node-version: ""
           sbt-disk-cache: "false"
           cache-mode: restore
-          cache-epoch: f2a8170a7461ec88
+          cache-epoch: dc3ae91bf0627d73
       - name: Import signing key
         run: |
           mkdir -p ~/.gnupg && chmod 700 ~/.gnupg
@@ -1022,7 +1022,7 @@ jobs:
           node-version: ""
           sbt-disk-cache: "false"
           cache-mode: restore
-          cache-epoch: f2a8170a7461ec88
+          cache-epoch: dc3ae91bf0627d73
       - name: Import signing key
         run: |
           mkdir -p ~/.gnupg && chmod 700 ~/.gnupg
@@ -1069,7 +1069,7 @@ jobs:
           node-version: ""
           sbt-disk-cache: "false"
           cache-mode: restore
-          cache-epoch: f2a8170a7461ec88
+          cache-epoch: dc3ae91bf0627d73
       - name: Import signing key
         run: |
           mkdir -p ~/.gnupg && chmod 700 ~/.gnupg
@@ -1116,7 +1116,7 @@ jobs:
           node-version: ""
           sbt-disk-cache: "false"
           cache-mode: restore
-          cache-epoch: f2a8170a7461ec88
+          cache-epoch: dc3ae91bf0627d73
       - name: Import signing key
         run: |
           mkdir -p ~/.gnupg && chmod 700 ~/.gnupg
@@ -1163,7 +1163,7 @@ jobs:
           node-version: ""
           sbt-disk-cache: "false"
           cache-mode: restore
-          cache-epoch: f2a8170a7461ec88
+          cache-epoch: dc3ae91bf0627d73
       - name: Import signing key
         run: |
           mkdir -p ~/.gnupg && chmod 700 ~/.gnupg
@@ -1210,7 +1210,7 @@ jobs:
           node-version: ""
           sbt-disk-cache: "false"
           cache-mode: restore
-          cache-epoch: f2a8170a7461ec88
+          cache-epoch: dc3ae91bf0627d73
       - name: Import signing key
         run: |
           mkdir -p ~/.gnupg && chmod 700 ~/.gnupg
@@ -1257,7 +1257,7 @@ jobs:
           node-version: ""
           sbt-disk-cache: "false"
           cache-mode: restore
-          cache-epoch: f2a8170a7461ec88
+          cache-epoch: dc3ae91bf0627d73
       - name: Import signing key
         run: |
           mkdir -p ~/.gnupg && chmod 700 ~/.gnupg
@@ -1304,7 +1304,7 @@ jobs:
           node-version: ""
           sbt-disk-cache: "false"
           cache-mode: restore
-          cache-epoch: f2a8170a7461ec88
+          cache-epoch: dc3ae91bf0627d73
       - name: Import signing key
         run: |
           mkdir -p ~/.gnupg && chmod 700 ~/.gnupg
@@ -1351,7 +1351,7 @@ jobs:
           node-version: ""
           sbt-disk-cache: "false"
           cache-mode: restore
-          cache-epoch: f2a8170a7461ec88
+          cache-epoch: dc3ae91bf0627d73
       - name: Import signing key
         run: |
           mkdir -p ~/.gnupg && chmod 700 ~/.gnupg
@@ -1399,7 +1399,7 @@ jobs:
           node-version: ""
           sbt-disk-cache: "false"
           cache-mode: restore
-          cache-epoch: f2a8170a7461ec88
+          cache-epoch: dc3ae91bf0627d73
       - name: Import signing key
         run: |
           mkdir -p ~/.gnupg && chmod 700 ~/.gnupg
@@ -1446,7 +1446,7 @@ jobs:
           node-version: ""
           sbt-disk-cache: "false"
           cache-mode: restore
-          cache-epoch: f2a8170a7461ec88
+          cache-epoch: dc3ae91bf0627d73
       - name: Import signing key
         run: |
           mkdir -p ~/.gnupg && chmod 700 ~/.gnupg
@@ -1494,7 +1494,7 @@ jobs:
           node-version: ""
           sbt-disk-cache: "false"
           cache-mode: restore
-          cache-epoch: f2a8170a7461ec88
+          cache-epoch: dc3ae91bf0627d73
       - name: Import signing key
         run: |
           mkdir -p ~/.gnupg && chmod 700 ~/.gnupg
@@ -1543,7 +1543,7 @@ jobs:
           node-version: ""
           sbt-disk-cache: "false"
           cache-mode: restore
-          cache-epoch: f2a8170a7461ec88
+          cache-epoch: dc3ae91bf0627d73
       - name: Import signing key
         run: |
           mkdir -p ~/.gnupg && chmod 700 ~/.gnupg
@@ -1591,7 +1591,7 @@ jobs:
           node-version: ""
           sbt-disk-cache: "false"
           cache-mode: restore
-          cache-epoch: f2a8170a7461ec88
+          cache-epoch: dc3ae91bf0627d73
       - name: Import signing key
         run: |
           mkdir -p ~/.gnupg && chmod 700 ~/.gnupg
@@ -1640,7 +1640,7 @@ jobs:
           node-version: ""
           sbt-disk-cache: "false"
           cache-mode: restore
-          cache-epoch: f2a8170a7461ec88
+          cache-epoch: dc3ae91bf0627d73
       - name: Import signing key
         run: |
           mkdir -p ~/.gnupg && chmod 700 ~/.gnupg
@@ -1689,7 +1689,7 @@ jobs:
           node-version: ""
           sbt-disk-cache: "false"
           cache-mode: restore
-          cache-epoch: f2a8170a7461ec88
+          cache-epoch: dc3ae91bf0627d73
       - name: Import signing key
         run: |
           mkdir -p ~/.gnupg && chmod 700 ~/.gnupg
@@ -1738,7 +1738,7 @@ jobs:
           node-version: ""
           sbt-disk-cache: "false"
           cache-mode: restore
-          cache-epoch: f2a8170a7461ec88
+          cache-epoch: dc3ae91bf0627d73
       - name: Import signing key
         run: |
           mkdir -p ~/.gnupg && chmod 700 ~/.gnupg
@@ -1787,7 +1787,7 @@ jobs:
           node-version: ""
           sbt-disk-cache: "false"
           cache-mode: restore
-          cache-epoch: f2a8170a7461ec88
+          cache-epoch: dc3ae91bf0627d73
       - name: Import signing key
         run: |
           mkdir -p ~/.gnupg && chmod 700 ~/.gnupg
@@ -1836,7 +1836,7 @@ jobs:
           node-version: ""
           sbt-disk-cache: "false"
           cache-mode: restore
-          cache-epoch: f2a8170a7461ec88
+          cache-epoch: dc3ae91bf0627d73
       - name: Import signing key
         run: |
           mkdir -p ~/.gnupg && chmod 700 ~/.gnupg
@@ -1885,7 +1885,7 @@ jobs:
           node-version: ""
           sbt-disk-cache: "false"
           cache-mode: restore
-          cache-epoch: f2a8170a7461ec88
+          cache-epoch: dc3ae91bf0627d73
       - name: Import signing key
         run: |
           mkdir -p ~/.gnupg && chmod 700 ~/.gnupg
@@ -1935,7 +1935,7 @@ jobs:
           node-version: ""
           sbt-disk-cache: "false"
           cache-mode: restore
-          cache-epoch: f2a8170a7461ec88
+          cache-epoch: dc3ae91bf0627d73
       - name: Import signing key
         run: |
           mkdir -p ~/.gnupg && chmod 700 ~/.gnupg
@@ -1983,7 +1983,7 @@ jobs:
           node-version: ""
           sbt-disk-cache: "false"
           cache-mode: restore
-          cache-epoch: f2a8170a7461ec88
+          cache-epoch: dc3ae91bf0627d73
       - name: Import signing key
         run: |
           mkdir -p ~/.gnupg && chmod 700 ~/.gnupg
@@ -2031,7 +2031,7 @@ jobs:
           node-version: ""
           sbt-disk-cache: "false"
           cache-mode: restore
-          cache-epoch: f2a8170a7461ec88
+          cache-epoch: dc3ae91bf0627d73
       - name: Import signing key
         run: |
           mkdir -p ~/.gnupg && chmod 700 ~/.gnupg
@@ -2080,7 +2080,7 @@ jobs:
           node-version: ""
           sbt-disk-cache: "false"
           cache-mode: restore
-          cache-epoch: f2a8170a7461ec88
+          cache-epoch: dc3ae91bf0627d73
       - name: Import signing key
         run: |
           mkdir -p ~/.gnupg && chmod 700 ~/.gnupg
@@ -2127,7 +2127,7 @@ jobs:
           node-version: ""
           sbt-disk-cache: "false"
           cache-mode: restore
-          cache-epoch: f2a8170a7461ec88
+          cache-epoch: dc3ae91bf0627d73
       - name: Import signing key
         run: |
           mkdir -p ~/.gnupg && chmod 700 ~/.gnupg
@@ -2174,7 +2174,7 @@ jobs:
           node-version: ""
           sbt-disk-cache: "false"
           cache-mode: restore
-          cache-epoch: f2a8170a7461ec88
+          cache-epoch: dc3ae91bf0627d73
       - name: Import signing key
         run: |
           mkdir -p ~/.gnupg && chmod 700 ~/.gnupg
@@ -2256,7 +2256,7 @@ jobs:
           node-version: ""
           sbt-disk-cache: "false"
           cache-mode: restore
-          cache-epoch: f2a8170a7461ec88
+          cache-epoch: dc3ae91bf0627d73
       - name: Download sona staging
         uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # v8.0.1
         with:
