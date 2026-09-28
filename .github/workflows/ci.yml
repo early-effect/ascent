@@ -4,13 +4,11 @@ name: CI
   push:
     branches:
       - main
-    tags:
-      - v[0-9]+.[0-9]+.[0-9]+
   pull_request: null
   workflow_dispatch: null
 concurrency:
   group: CI-${{ github.ref }}
-  cancel-in-progress: ${{ !startsWith(github.ref, 'refs/tags/') }}
+  cancel-in-progress: ${{ !startsWith(github.ref, 'refs/tags/') && github.ref != 'refs/heads/main' }}
 jobs:
   verify-gate:
     name: verify-gate
@@ -77,9 +75,54 @@ jobs:
           node-version: ""
           sbt-disk-cache: "false"
           cache-mode: save
-          cache-epoch: ""
+          cache-epoch: f2a8170a7461ec88
       - name: cache-rehydrate
         run: sbt 'Test/compile'
+  modver:
+    name: modver
+    runs-on: ubuntu-latest
+    if: ((github.event_name == 'push') && ((github.ref == 'refs/heads/main'))) || (github.event_name == 'workflow_dispatch')
+    permissions:
+      contents: read
+    env:
+      PLAYWRIGHT_BROWSERS_PATH: ${{ github.workspace }}/target/ms-playwright
+    outputs:
+      modules: ${{ steps.compute.outputs.modules }}
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          fetch-depth: "0"
+          fetch-tags: "true"
+      - name: zipx sbt setup
+        uses: ./.github/actions/zipx-sbt-setup
+        with:
+          java-version: "25"
+          runner-os: ubuntu-latest
+          cache-key-suffix: modver
+          node-version: ""
+          sbt-disk-cache: "false"
+          cache-mode: "off"
+          cache-epoch: f2a8170a7461ec88
+      - name: Compute version-moved modules
+        id: compute
+        run: |
+          if [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
+            sbt -batch --error zipxModverPublishModules
+            modules=$(cat target/zipx-modver-modules.json)
+          elif [ "${{ github.event_name }}" = "push" ]; then
+            before="${{ github.event.before }}"
+            if [ -z "$before" ] || [ "$before" = "0000000000000000000000000000000000000000" ]; then
+              echo "zipx: github.event.before is missing or all-zero; refusing to guess the publish set"
+              exit 1
+            else
+              sbt -batch --error "zipxModverPublishModules $before"
+              modules=$(cat target/zipx-modver-modules.json)
+            fi
+          else
+            echo "zipx: github.event.before is missing or all-zero; refusing to guess the publish set"
+            exit 1
+          fi
+          echo "modules=$modules" >> "$GITHUB_OUTPUT"
   test:
     name: test
     runs-on: ubuntu-latest
@@ -103,7 +146,7 @@ jobs:
           node-version: ""
           sbt-disk-cache: "false"
           cache-mode: save
-          cache-epoch: ""
+          cache-epoch: f2a8170a7461ec88
       - name: test
         run: |
           if [ "$ZIPX_VERIFY_CLEAN_FULL" = "true" ]; then
@@ -135,7 +178,7 @@ jobs:
           node-version: ""
           sbt-disk-cache: "false"
           cache-mode: restore
-          cache-epoch: ""
+          cache-epoch: f2a8170a7461ec88
       - name: fmt
         run: |
           if [ "$ZIPX_VERIFY_CLEAN_FULL" = "true" ]; then
@@ -167,7 +210,7 @@ jobs:
           node-version: ""
           sbt-disk-cache: "false"
           cache-mode: restore
-          cache-epoch: ""
+          cache-epoch: f2a8170a7461ec88
       - name: workflow-check
         run: |
           if [ "$ZIPX_VERIFY_CLEAN_FULL" = "true" ]; then
@@ -199,13 +242,88 @@ jobs:
           node-version: ""
           sbt-disk-cache: "false"
           cache-mode: restore
-          cache-epoch: ""
+          cache-epoch: f2a8170a7461ec88
       - name: advisories
         run: |
           if [ "$ZIPX_VERIFY_CLEAN_FULL" = "true" ]; then
             sbt 'cleanFull; zipxAdvisoryCheck'
           else
             sbt 'zipxAdvisoryCheck'
+          fi
+        env:
+          ZIPX_VERIFY_CLEAN_FULL: ${{ github.event_name == 'pull_request' && contains(github.event.pull_request.labels.*.name, 'clean') }}
+  modver-suggest:
+    name: modver-suggest
+    runs-on: ubuntu-latest
+    needs:
+      - verify-gate
+    if: (!cancelled() && !startsWith(github.ref, 'refs/tags/') && github.event_name != 'workflow_dispatch' && ((needs.verify-gate.result != 'success') || (needs.verify-gate.outputs.run == 'true'))) && (github.event_name == 'pull_request')
+    permissions:
+      contents: read
+      pull-requests: write
+    env:
+      PLAYWRIGHT_BROWSERS_PATH: ${{ github.workspace }}/target/ms-playwright
+      ZIPX_MODVER_BASE_SHA: ${{ github.event.pull_request.base.sha }}
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          fetch-depth: "0"
+          fetch-tags: "true"
+      - name: zipx sbt setup
+        uses: ./.github/actions/zipx-sbt-setup
+        with:
+          java-version: "25"
+          runner-os: ubuntu-latest
+          cache-key-suffix: modver-suggest
+          node-version: ""
+          sbt-disk-cache: "false"
+          cache-mode: restore
+          cache-epoch: f2a8170a7461ec88
+      - name: Fetch PR base SHA
+        run: git fetch --no-tags origin "$ZIPX_MODVER_BASE_SHA"
+      - name: modver-suggest
+        run: |
+          if [ "$ZIPX_VERIFY_CLEAN_FULL" = "true" ]; then
+            sbt 'cleanFull; zipxModverSuggest'
+          else
+            sbt 'zipxModverSuggest'
+          fi
+        env:
+          ZIPX_VERIFY_CLEAN_FULL: ${{ github.event_name == 'pull_request' && contains(github.event.pull_request.labels.*.name, 'clean') }}
+  modver-check:
+    name: modver-check
+    runs-on: ubuntu-latest
+    needs:
+      - verify-gate
+    if: (!cancelled() && !startsWith(github.ref, 'refs/tags/') && github.event_name != 'workflow_dispatch' && ((needs.verify-gate.result != 'success') || (needs.verify-gate.outputs.run == 'true'))) && (github.event_name == 'pull_request')
+    permissions:
+      contents: read
+    env:
+      PLAYWRIGHT_BROWSERS_PATH: ${{ github.workspace }}/target/ms-playwright
+      ZIPX_MODVER_BASE_SHA: ${{ github.event.pull_request.base.sha }}
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          fetch-depth: "0"
+          fetch-tags: "true"
+      - name: zipx sbt setup
+        uses: ./.github/actions/zipx-sbt-setup
+        with:
+          java-version: "25"
+          runner-os: ubuntu-latest
+          cache-key-suffix: modver-check
+          node-version: ""
+          sbt-disk-cache: "false"
+          cache-mode: restore
+          cache-epoch: f2a8170a7461ec88
+      - name: Fetch PR base SHA
+        run: git fetch --no-tags origin "$ZIPX_MODVER_BASE_SHA"
+      - name: modver-check
+        run: |
+          if [ "$ZIPX_VERIFY_CLEAN_FULL" = "true" ]; then
+            sbt 'cleanFull; zipxModverCheck'
+          else
+            sbt 'zipxModverCheck'
           fi
         env:
           ZIPX_VERIFY_CLEAN_FULL: ${{ github.event_name == 'pull_request' && contains(github.event.pull_request.labels.*.name, 'clean') }}
@@ -232,7 +350,7 @@ jobs:
           node-version: ""
           sbt-disk-cache: "false"
           cache-mode: restore
-          cache-epoch: ""
+          cache-epoch: f2a8170a7461ec88
       - name: Set up Node
         uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
         with:
@@ -274,7 +392,7 @@ jobs:
           node-version: ""
           sbt-disk-cache: "false"
           cache-mode: restore
-          cache-epoch: ""
+          cache-epoch: f2a8170a7461ec88
       - name: Install Scala Native build dependencies
         run: sudo apt-get update && sudo apt-get install -y clang libstdc++-12-dev libgc-dev libunwind-dev
       - name: test-native
@@ -308,7 +426,7 @@ jobs:
           node-version: "24"
           sbt-disk-cache: "false"
           cache-mode: restore
-          cache-epoch: ""
+          cache-epoch: f2a8170a7461ec88
       - name: e2e
         run: |
           if [ "$ZIPX_VERIFY_CLEAN_FULL" = "true" ]; then
@@ -318,10 +436,12 @@ jobs:
           fi
         env:
           ZIPX_VERIFY_CLEAN_FULL: ${{ github.event_name == 'pull_request' && contains(github.event.pull_request.labels.*.name, 'clean') }}
-  publish:
-    name: publish
+  publish-domTypes:
+    name: publish domTypes
     runs-on: ubuntu-latest
-    if: startsWith(github.ref, 'refs/tags/v')
+    needs:
+      - modver
+    if: "!cancelled() && (((github.event_name == 'push') && ((github.ref == 'refs/heads/main'))) || (github.event_name == 'workflow_dispatch')) && contains(fromJson(needs.modver.outputs.modules), 'domTypes')"
     env:
       PLAYWRIGHT_BROWSERS_PATH: ${{ github.workspace }}/target/ms-playwright
       PGP_KEY_HEX: ${{ secrets.PGP_KEY_HEX }}
@@ -338,11 +458,11 @@ jobs:
         with:
           java-version: "25"
           runner-os: ubuntu-latest
-          cache-key-suffix: publish
+          cache-key-suffix: publish-domTypes
           node-version: ""
           sbt-disk-cache: "false"
           cache-mode: restore
-          cache-epoch: ""
+          cache-epoch: f2a8170a7461ec88
       - name: Import signing key
         run: |
           mkdir -p ~/.gnupg && chmod 700 ~/.gnupg
@@ -355,10 +475,1808 @@ jobs:
       - name: cleanFull
         run: sbt 'cleanFull'
       - name: publish
-        run: sbt 'domTypes/publishSigned; domTypesJS/publishSigned; domTypesNative/publishSigned; preview/publishSigned; sbtAscentPreview/publishSigned; core/publishSigned; coreJS/publishSigned; coreNative/publishSigned; domFacadeJS/publishSigned; ascentChekhov/publishSigned; conduitBridge/publishSigned; conduitBridgeJS/publishSigned; conduitBridgeNative/publishSigned; css/publishSigned; cssJS/publishSigned; cssNative/publishSigned; datastar/publishSigned; datastarJS/publishSigned; datastarNative/publishSigned; history/publishSigned; historyJS/publishSigned; historyNative/publishSigned; domCore/publishSigned; domCoreJS/publishSigned; domCoreNative/publishSigned; mountEngine/publishSigned; mountEngineJS/publishSigned; mountEngineNative/publishSigned; html/publishSigned; htmlJS/publishSigned; htmlNative/publishSigned; jsJS/publishSigned; ascentChekhovJS/publishSigned; datastarHttp/publishSigned; datastarJsJS/publishSigned; mcpAppJS/publishSigned; sonaRelease'
+        run: sbt '+domTypes/zipxModverPublishSigned'
+      - name: Upload sona staging
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: sona-staging-publish-domTypes
+          path: target/sona-staging
+          if-no-files-found: error
+  publish-domTypesJS:
+    name: publish domTypesJS
+    runs-on: ubuntu-latest
+    needs:
+      - modver
+    if: "!cancelled() && (((github.event_name == 'push') && ((github.ref == 'refs/heads/main'))) || (github.event_name == 'workflow_dispatch')) && contains(fromJson(needs.modver.outputs.modules), 'domTypesJS')"
+    env:
+      PLAYWRIGHT_BROWSERS_PATH: ${{ github.workspace }}/target/ms-playwright
+      PGP_KEY_HEX: ${{ secrets.PGP_KEY_HEX }}
+      PGP_PASSPHRASE: ${{ secrets.PGP_PASSPHRASE }}
+      SONATYPE_PASSWORD: ${{ secrets.SONATYPE_PASSWORD }}
+      SONATYPE_USERNAME: ${{ secrets.SONATYPE_USERNAME }}
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          fetch-depth: "0"
+          fetch-tags: "true"
+      - name: zipx sbt setup
+        uses: ./.github/actions/zipx-sbt-setup
+        with:
+          java-version: "25"
+          runner-os: ubuntu-latest
+          cache-key-suffix: publish-domTypesJS
+          node-version: ""
+          sbt-disk-cache: "false"
+          cache-mode: restore
+          cache-epoch: f2a8170a7461ec88
+      - name: Import signing key
+        run: |
+          mkdir -p ~/.gnupg && chmod 700 ~/.gnupg
+          echo "allow-loopback-pinentry" >> ~/.gnupg/gpg-agent.conf
+          echo "pinentry-mode loopback"   >> ~/.gnupg/gpg.conf
+          gpgconf --kill gpg-agent || true
+          echo "$PGP_SECRET" | base64 --decode | gpg --batch --import
+        env:
+          PGP_SECRET: ${{ secrets.PGP_SECRET }}
+      - name: cleanFull
+        run: sbt 'cleanFull'
+      - name: publish
+        run: sbt '+domTypesJS/zipxModverPublishSigned'
+      - name: Upload sona staging
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: sona-staging-publish-domTypesJS
+          path: target/sona-staging
+          if-no-files-found: error
+  publish-domTypesNative:
+    name: publish domTypesNative
+    runs-on: ubuntu-latest
+    needs:
+      - modver
+    if: "!cancelled() && (((github.event_name == 'push') && ((github.ref == 'refs/heads/main'))) || (github.event_name == 'workflow_dispatch')) && contains(fromJson(needs.modver.outputs.modules), 'domTypesNative')"
+    env:
+      PLAYWRIGHT_BROWSERS_PATH: ${{ github.workspace }}/target/ms-playwright
+      PGP_KEY_HEX: ${{ secrets.PGP_KEY_HEX }}
+      PGP_PASSPHRASE: ${{ secrets.PGP_PASSPHRASE }}
+      SONATYPE_PASSWORD: ${{ secrets.SONATYPE_PASSWORD }}
+      SONATYPE_USERNAME: ${{ secrets.SONATYPE_USERNAME }}
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          fetch-depth: "0"
+          fetch-tags: "true"
+      - name: zipx sbt setup
+        uses: ./.github/actions/zipx-sbt-setup
+        with:
+          java-version: "25"
+          runner-os: ubuntu-latest
+          cache-key-suffix: publish-domTypesNative
+          node-version: ""
+          sbt-disk-cache: "false"
+          cache-mode: restore
+          cache-epoch: f2a8170a7461ec88
+      - name: Import signing key
+        run: |
+          mkdir -p ~/.gnupg && chmod 700 ~/.gnupg
+          echo "allow-loopback-pinentry" >> ~/.gnupg/gpg-agent.conf
+          echo "pinentry-mode loopback"   >> ~/.gnupg/gpg.conf
+          gpgconf --kill gpg-agent || true
+          echo "$PGP_SECRET" | base64 --decode | gpg --batch --import
+        env:
+          PGP_SECRET: ${{ secrets.PGP_SECRET }}
+      - name: cleanFull
+        run: sbt 'cleanFull'
+      - name: publish
+        run: sbt '+domTypesNative/zipxModverPublishSigned'
+      - name: Upload sona staging
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: sona-staging-publish-domTypesNative
+          path: target/sona-staging
+          if-no-files-found: error
+  publish-preview:
+    name: publish preview
+    runs-on: ubuntu-latest
+    needs:
+      - modver
+    if: "!cancelled() && (((github.event_name == 'push') && ((github.ref == 'refs/heads/main'))) || (github.event_name == 'workflow_dispatch')) && contains(fromJson(needs.modver.outputs.modules), 'preview')"
+    env:
+      PLAYWRIGHT_BROWSERS_PATH: ${{ github.workspace }}/target/ms-playwright
+      PGP_KEY_HEX: ${{ secrets.PGP_KEY_HEX }}
+      PGP_PASSPHRASE: ${{ secrets.PGP_PASSPHRASE }}
+      SONATYPE_PASSWORD: ${{ secrets.SONATYPE_PASSWORD }}
+      SONATYPE_USERNAME: ${{ secrets.SONATYPE_USERNAME }}
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          fetch-depth: "0"
+          fetch-tags: "true"
+      - name: zipx sbt setup
+        uses: ./.github/actions/zipx-sbt-setup
+        with:
+          java-version: "25"
+          runner-os: ubuntu-latest
+          cache-key-suffix: publish-preview
+          node-version: ""
+          sbt-disk-cache: "false"
+          cache-mode: restore
+          cache-epoch: f2a8170a7461ec88
+      - name: Import signing key
+        run: |
+          mkdir -p ~/.gnupg && chmod 700 ~/.gnupg
+          echo "allow-loopback-pinentry" >> ~/.gnupg/gpg-agent.conf
+          echo "pinentry-mode loopback"   >> ~/.gnupg/gpg.conf
+          gpgconf --kill gpg-agent || true
+          echo "$PGP_SECRET" | base64 --decode | gpg --batch --import
+        env:
+          PGP_SECRET: ${{ secrets.PGP_SECRET }}
+      - name: cleanFull
+        run: sbt 'cleanFull'
+      - name: publish
+        run: sbt '+preview/zipxModverPublishSigned'
+      - name: Upload sona staging
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: sona-staging-publish-preview
+          path: target/sona-staging
+          if-no-files-found: error
+  publish-sbtAscentPreview:
+    name: publish sbtAscentPreview
+    runs-on: ubuntu-latest
+    needs:
+      - modver
+    if: "!cancelled() && (((github.event_name == 'push') && ((github.ref == 'refs/heads/main'))) || (github.event_name == 'workflow_dispatch')) && contains(fromJson(needs.modver.outputs.modules), 'sbtAscentPreview')"
+    env:
+      PLAYWRIGHT_BROWSERS_PATH: ${{ github.workspace }}/target/ms-playwright
+      PGP_KEY_HEX: ${{ secrets.PGP_KEY_HEX }}
+      PGP_PASSPHRASE: ${{ secrets.PGP_PASSPHRASE }}
+      SONATYPE_PASSWORD: ${{ secrets.SONATYPE_PASSWORD }}
+      SONATYPE_USERNAME: ${{ secrets.SONATYPE_USERNAME }}
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          fetch-depth: "0"
+          fetch-tags: "true"
+      - name: zipx sbt setup
+        uses: ./.github/actions/zipx-sbt-setup
+        with:
+          java-version: "25"
+          runner-os: ubuntu-latest
+          cache-key-suffix: publish-sbtAscentPreview
+          node-version: ""
+          sbt-disk-cache: "false"
+          cache-mode: restore
+          cache-epoch: f2a8170a7461ec88
+      - name: Import signing key
+        run: |
+          mkdir -p ~/.gnupg && chmod 700 ~/.gnupg
+          echo "allow-loopback-pinentry" >> ~/.gnupg/gpg-agent.conf
+          echo "pinentry-mode loopback"   >> ~/.gnupg/gpg.conf
+          gpgconf --kill gpg-agent || true
+          echo "$PGP_SECRET" | base64 --decode | gpg --batch --import
+        env:
+          PGP_SECRET: ${{ secrets.PGP_SECRET }}
+      - name: cleanFull
+        run: sbt 'cleanFull'
+      - name: publish
+        run: sbt '+sbtAscentPreview/zipxModverPublishSigned'
+      - name: Upload sona staging
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: sona-staging-publish-sbtAscentPreview
+          path: target/sona-staging
+          if-no-files-found: error
+  publish-core:
+    name: publish core
+    runs-on: ubuntu-latest
+    needs:
+      - modver
+      - publish-domTypes
+    if: "!cancelled() && (((github.event_name == 'push') && ((github.ref == 'refs/heads/main'))) || (github.event_name == 'workflow_dispatch')) && contains(fromJson(needs.modver.outputs.modules), 'core') && needs.publish-domTypes.result != 'failure'"
+    env:
+      PLAYWRIGHT_BROWSERS_PATH: ${{ github.workspace }}/target/ms-playwright
+      PGP_KEY_HEX: ${{ secrets.PGP_KEY_HEX }}
+      PGP_PASSPHRASE: ${{ secrets.PGP_PASSPHRASE }}
+      SONATYPE_PASSWORD: ${{ secrets.SONATYPE_PASSWORD }}
+      SONATYPE_USERNAME: ${{ secrets.SONATYPE_USERNAME }}
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          fetch-depth: "0"
+          fetch-tags: "true"
+      - name: zipx sbt setup
+        uses: ./.github/actions/zipx-sbt-setup
+        with:
+          java-version: "25"
+          runner-os: ubuntu-latest
+          cache-key-suffix: publish-core
+          node-version: ""
+          sbt-disk-cache: "false"
+          cache-mode: restore
+          cache-epoch: f2a8170a7461ec88
+      - name: Import signing key
+        run: |
+          mkdir -p ~/.gnupg && chmod 700 ~/.gnupg
+          echo "allow-loopback-pinentry" >> ~/.gnupg/gpg-agent.conf
+          echo "pinentry-mode loopback"   >> ~/.gnupg/gpg.conf
+          gpgconf --kill gpg-agent || true
+          echo "$PGP_SECRET" | base64 --decode | gpg --batch --import
+        env:
+          PGP_SECRET: ${{ secrets.PGP_SECRET }}
+      - name: cleanFull
+        run: sbt 'cleanFull'
+      - name: publish
+        run: sbt '+core/zipxModverPublishSigned'
+      - name: Upload sona staging
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: sona-staging-publish-core
+          path: target/sona-staging
+          if-no-files-found: error
+  publish-coreJS:
+    name: publish coreJS
+    runs-on: ubuntu-latest
+    needs:
+      - modver
+      - publish-domTypesJS
+    if: "!cancelled() && (((github.event_name == 'push') && ((github.ref == 'refs/heads/main'))) || (github.event_name == 'workflow_dispatch')) && contains(fromJson(needs.modver.outputs.modules), 'coreJS') && needs.publish-domTypesJS.result != 'failure'"
+    env:
+      PLAYWRIGHT_BROWSERS_PATH: ${{ github.workspace }}/target/ms-playwright
+      PGP_KEY_HEX: ${{ secrets.PGP_KEY_HEX }}
+      PGP_PASSPHRASE: ${{ secrets.PGP_PASSPHRASE }}
+      SONATYPE_PASSWORD: ${{ secrets.SONATYPE_PASSWORD }}
+      SONATYPE_USERNAME: ${{ secrets.SONATYPE_USERNAME }}
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          fetch-depth: "0"
+          fetch-tags: "true"
+      - name: zipx sbt setup
+        uses: ./.github/actions/zipx-sbt-setup
+        with:
+          java-version: "25"
+          runner-os: ubuntu-latest
+          cache-key-suffix: publish-coreJS
+          node-version: ""
+          sbt-disk-cache: "false"
+          cache-mode: restore
+          cache-epoch: f2a8170a7461ec88
+      - name: Import signing key
+        run: |
+          mkdir -p ~/.gnupg && chmod 700 ~/.gnupg
+          echo "allow-loopback-pinentry" >> ~/.gnupg/gpg-agent.conf
+          echo "pinentry-mode loopback"   >> ~/.gnupg/gpg.conf
+          gpgconf --kill gpg-agent || true
+          echo "$PGP_SECRET" | base64 --decode | gpg --batch --import
+        env:
+          PGP_SECRET: ${{ secrets.PGP_SECRET }}
+      - name: cleanFull
+        run: sbt 'cleanFull'
+      - name: publish
+        run: sbt '+coreJS/zipxModverPublishSigned'
+      - name: Upload sona staging
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: sona-staging-publish-coreJS
+          path: target/sona-staging
+          if-no-files-found: error
+  publish-coreNative:
+    name: publish coreNative
+    runs-on: ubuntu-latest
+    needs:
+      - modver
+      - publish-domTypesNative
+    if: "!cancelled() && (((github.event_name == 'push') && ((github.ref == 'refs/heads/main'))) || (github.event_name == 'workflow_dispatch')) && contains(fromJson(needs.modver.outputs.modules), 'coreNative') && needs.publish-domTypesNative.result != 'failure'"
+    env:
+      PLAYWRIGHT_BROWSERS_PATH: ${{ github.workspace }}/target/ms-playwright
+      PGP_KEY_HEX: ${{ secrets.PGP_KEY_HEX }}
+      PGP_PASSPHRASE: ${{ secrets.PGP_PASSPHRASE }}
+      SONATYPE_PASSWORD: ${{ secrets.SONATYPE_PASSWORD }}
+      SONATYPE_USERNAME: ${{ secrets.SONATYPE_USERNAME }}
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          fetch-depth: "0"
+          fetch-tags: "true"
+      - name: zipx sbt setup
+        uses: ./.github/actions/zipx-sbt-setup
+        with:
+          java-version: "25"
+          runner-os: ubuntu-latest
+          cache-key-suffix: publish-coreNative
+          node-version: ""
+          sbt-disk-cache: "false"
+          cache-mode: restore
+          cache-epoch: f2a8170a7461ec88
+      - name: Import signing key
+        run: |
+          mkdir -p ~/.gnupg && chmod 700 ~/.gnupg
+          echo "allow-loopback-pinentry" >> ~/.gnupg/gpg-agent.conf
+          echo "pinentry-mode loopback"   >> ~/.gnupg/gpg.conf
+          gpgconf --kill gpg-agent || true
+          echo "$PGP_SECRET" | base64 --decode | gpg --batch --import
+        env:
+          PGP_SECRET: ${{ secrets.PGP_SECRET }}
+      - name: cleanFull
+        run: sbt 'cleanFull'
+      - name: publish
+        run: sbt '+coreNative/zipxModverPublishSigned'
+      - name: Upload sona staging
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: sona-staging-publish-coreNative
+          path: target/sona-staging
+          if-no-files-found: error
+  publish-domFacadeJS:
+    name: publish domFacadeJS
+    runs-on: ubuntu-latest
+    needs:
+      - modver
+      - publish-domTypesJS
+    if: "!cancelled() && (((github.event_name == 'push') && ((github.ref == 'refs/heads/main'))) || (github.event_name == 'workflow_dispatch')) && contains(fromJson(needs.modver.outputs.modules), 'domFacadeJS') && needs.publish-domTypesJS.result != 'failure'"
+    env:
+      PLAYWRIGHT_BROWSERS_PATH: ${{ github.workspace }}/target/ms-playwright
+      PGP_KEY_HEX: ${{ secrets.PGP_KEY_HEX }}
+      PGP_PASSPHRASE: ${{ secrets.PGP_PASSPHRASE }}
+      SONATYPE_PASSWORD: ${{ secrets.SONATYPE_PASSWORD }}
+      SONATYPE_USERNAME: ${{ secrets.SONATYPE_USERNAME }}
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          fetch-depth: "0"
+          fetch-tags: "true"
+      - name: zipx sbt setup
+        uses: ./.github/actions/zipx-sbt-setup
+        with:
+          java-version: "25"
+          runner-os: ubuntu-latest
+          cache-key-suffix: publish-domFacadeJS
+          node-version: ""
+          sbt-disk-cache: "false"
+          cache-mode: restore
+          cache-epoch: f2a8170a7461ec88
+      - name: Import signing key
+        run: |
+          mkdir -p ~/.gnupg && chmod 700 ~/.gnupg
+          echo "allow-loopback-pinentry" >> ~/.gnupg/gpg-agent.conf
+          echo "pinentry-mode loopback"   >> ~/.gnupg/gpg.conf
+          gpgconf --kill gpg-agent || true
+          echo "$PGP_SECRET" | base64 --decode | gpg --batch --import
+        env:
+          PGP_SECRET: ${{ secrets.PGP_SECRET }}
+      - name: cleanFull
+        run: sbt 'cleanFull'
+      - name: publish
+        run: sbt '+domFacadeJS/zipxModverPublishSigned'
+      - name: Upload sona staging
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: sona-staging-publish-domFacadeJS
+          path: target/sona-staging
+          if-no-files-found: error
+  publish-ascentChekhov:
+    name: publish ascentChekhov
+    runs-on: ubuntu-latest
+    needs:
+      - modver
+      - publish-core
+    if: "!cancelled() && (((github.event_name == 'push') && ((github.ref == 'refs/heads/main'))) || (github.event_name == 'workflow_dispatch')) && contains(fromJson(needs.modver.outputs.modules), 'ascentChekhov') && needs.publish-core.result != 'failure'"
+    env:
+      PLAYWRIGHT_BROWSERS_PATH: ${{ github.workspace }}/target/ms-playwright
+      PGP_KEY_HEX: ${{ secrets.PGP_KEY_HEX }}
+      PGP_PASSPHRASE: ${{ secrets.PGP_PASSPHRASE }}
+      SONATYPE_PASSWORD: ${{ secrets.SONATYPE_PASSWORD }}
+      SONATYPE_USERNAME: ${{ secrets.SONATYPE_USERNAME }}
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          fetch-depth: "0"
+          fetch-tags: "true"
+      - name: zipx sbt setup
+        uses: ./.github/actions/zipx-sbt-setup
+        with:
+          java-version: "25"
+          runner-os: ubuntu-latest
+          cache-key-suffix: publish-ascentChekhov
+          node-version: ""
+          sbt-disk-cache: "false"
+          cache-mode: restore
+          cache-epoch: f2a8170a7461ec88
+      - name: Import signing key
+        run: |
+          mkdir -p ~/.gnupg && chmod 700 ~/.gnupg
+          echo "allow-loopback-pinentry" >> ~/.gnupg/gpg-agent.conf
+          echo "pinentry-mode loopback"   >> ~/.gnupg/gpg.conf
+          gpgconf --kill gpg-agent || true
+          echo "$PGP_SECRET" | base64 --decode | gpg --batch --import
+        env:
+          PGP_SECRET: ${{ secrets.PGP_SECRET }}
+      - name: cleanFull
+        run: sbt 'cleanFull'
+      - name: publish
+        run: sbt '+ascentChekhov/zipxModverPublishSigned'
+      - name: Upload sona staging
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: sona-staging-publish-ascentChekhov
+          path: target/sona-staging
+          if-no-files-found: error
+  publish-conduitBridge:
+    name: publish conduitBridge
+    runs-on: ubuntu-latest
+    needs:
+      - modver
+      - publish-core
+    if: "!cancelled() && (((github.event_name == 'push') && ((github.ref == 'refs/heads/main'))) || (github.event_name == 'workflow_dispatch')) && contains(fromJson(needs.modver.outputs.modules), 'conduitBridge') && needs.publish-core.result != 'failure'"
+    env:
+      PLAYWRIGHT_BROWSERS_PATH: ${{ github.workspace }}/target/ms-playwright
+      PGP_KEY_HEX: ${{ secrets.PGP_KEY_HEX }}
+      PGP_PASSPHRASE: ${{ secrets.PGP_PASSPHRASE }}
+      SONATYPE_PASSWORD: ${{ secrets.SONATYPE_PASSWORD }}
+      SONATYPE_USERNAME: ${{ secrets.SONATYPE_USERNAME }}
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          fetch-depth: "0"
+          fetch-tags: "true"
+      - name: zipx sbt setup
+        uses: ./.github/actions/zipx-sbt-setup
+        with:
+          java-version: "25"
+          runner-os: ubuntu-latest
+          cache-key-suffix: publish-conduitBridge
+          node-version: ""
+          sbt-disk-cache: "false"
+          cache-mode: restore
+          cache-epoch: f2a8170a7461ec88
+      - name: Import signing key
+        run: |
+          mkdir -p ~/.gnupg && chmod 700 ~/.gnupg
+          echo "allow-loopback-pinentry" >> ~/.gnupg/gpg-agent.conf
+          echo "pinentry-mode loopback"   >> ~/.gnupg/gpg.conf
+          gpgconf --kill gpg-agent || true
+          echo "$PGP_SECRET" | base64 --decode | gpg --batch --import
+        env:
+          PGP_SECRET: ${{ secrets.PGP_SECRET }}
+      - name: cleanFull
+        run: sbt 'cleanFull'
+      - name: publish
+        run: sbt '+conduitBridge/zipxModverPublishSigned'
+      - name: Upload sona staging
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: sona-staging-publish-conduitBridge
+          path: target/sona-staging
+          if-no-files-found: error
+  publish-conduitBridgeJS:
+    name: publish conduitBridgeJS
+    runs-on: ubuntu-latest
+    needs:
+      - modver
+      - publish-coreJS
+    if: "!cancelled() && (((github.event_name == 'push') && ((github.ref == 'refs/heads/main'))) || (github.event_name == 'workflow_dispatch')) && contains(fromJson(needs.modver.outputs.modules), 'conduitBridgeJS') && needs.publish-coreJS.result != 'failure'"
+    env:
+      PLAYWRIGHT_BROWSERS_PATH: ${{ github.workspace }}/target/ms-playwright
+      PGP_KEY_HEX: ${{ secrets.PGP_KEY_HEX }}
+      PGP_PASSPHRASE: ${{ secrets.PGP_PASSPHRASE }}
+      SONATYPE_PASSWORD: ${{ secrets.SONATYPE_PASSWORD }}
+      SONATYPE_USERNAME: ${{ secrets.SONATYPE_USERNAME }}
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          fetch-depth: "0"
+          fetch-tags: "true"
+      - name: zipx sbt setup
+        uses: ./.github/actions/zipx-sbt-setup
+        with:
+          java-version: "25"
+          runner-os: ubuntu-latest
+          cache-key-suffix: publish-conduitBridgeJS
+          node-version: ""
+          sbt-disk-cache: "false"
+          cache-mode: restore
+          cache-epoch: f2a8170a7461ec88
+      - name: Import signing key
+        run: |
+          mkdir -p ~/.gnupg && chmod 700 ~/.gnupg
+          echo "allow-loopback-pinentry" >> ~/.gnupg/gpg-agent.conf
+          echo "pinentry-mode loopback"   >> ~/.gnupg/gpg.conf
+          gpgconf --kill gpg-agent || true
+          echo "$PGP_SECRET" | base64 --decode | gpg --batch --import
+        env:
+          PGP_SECRET: ${{ secrets.PGP_SECRET }}
+      - name: cleanFull
+        run: sbt 'cleanFull'
+      - name: publish
+        run: sbt '+conduitBridgeJS/zipxModverPublishSigned'
+      - name: Upload sona staging
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: sona-staging-publish-conduitBridgeJS
+          path: target/sona-staging
+          if-no-files-found: error
+  publish-conduitBridgeNative:
+    name: publish conduitBridgeNative
+    runs-on: ubuntu-latest
+    needs:
+      - modver
+      - publish-coreNative
+    if: "!cancelled() && (((github.event_name == 'push') && ((github.ref == 'refs/heads/main'))) || (github.event_name == 'workflow_dispatch')) && contains(fromJson(needs.modver.outputs.modules), 'conduitBridgeNative') && needs.publish-coreNative.result != 'failure'"
+    env:
+      PLAYWRIGHT_BROWSERS_PATH: ${{ github.workspace }}/target/ms-playwright
+      PGP_KEY_HEX: ${{ secrets.PGP_KEY_HEX }}
+      PGP_PASSPHRASE: ${{ secrets.PGP_PASSPHRASE }}
+      SONATYPE_PASSWORD: ${{ secrets.SONATYPE_PASSWORD }}
+      SONATYPE_USERNAME: ${{ secrets.SONATYPE_USERNAME }}
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          fetch-depth: "0"
+          fetch-tags: "true"
+      - name: zipx sbt setup
+        uses: ./.github/actions/zipx-sbt-setup
+        with:
+          java-version: "25"
+          runner-os: ubuntu-latest
+          cache-key-suffix: publish-conduitBridgeNative
+          node-version: ""
+          sbt-disk-cache: "false"
+          cache-mode: restore
+          cache-epoch: f2a8170a7461ec88
+      - name: Import signing key
+        run: |
+          mkdir -p ~/.gnupg && chmod 700 ~/.gnupg
+          echo "allow-loopback-pinentry" >> ~/.gnupg/gpg-agent.conf
+          echo "pinentry-mode loopback"   >> ~/.gnupg/gpg.conf
+          gpgconf --kill gpg-agent || true
+          echo "$PGP_SECRET" | base64 --decode | gpg --batch --import
+        env:
+          PGP_SECRET: ${{ secrets.PGP_SECRET }}
+      - name: cleanFull
+        run: sbt 'cleanFull'
+      - name: publish
+        run: sbt '+conduitBridgeNative/zipxModverPublishSigned'
+      - name: Upload sona staging
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: sona-staging-publish-conduitBridgeNative
+          path: target/sona-staging
+          if-no-files-found: error
+  publish-css:
+    name: publish css
+    runs-on: ubuntu-latest
+    needs:
+      - modver
+      - publish-core
+    if: "!cancelled() && (((github.event_name == 'push') && ((github.ref == 'refs/heads/main'))) || (github.event_name == 'workflow_dispatch')) && contains(fromJson(needs.modver.outputs.modules), 'css') && needs.publish-core.result != 'failure'"
+    env:
+      PLAYWRIGHT_BROWSERS_PATH: ${{ github.workspace }}/target/ms-playwright
+      PGP_KEY_HEX: ${{ secrets.PGP_KEY_HEX }}
+      PGP_PASSPHRASE: ${{ secrets.PGP_PASSPHRASE }}
+      SONATYPE_PASSWORD: ${{ secrets.SONATYPE_PASSWORD }}
+      SONATYPE_USERNAME: ${{ secrets.SONATYPE_USERNAME }}
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          fetch-depth: "0"
+          fetch-tags: "true"
+      - name: zipx sbt setup
+        uses: ./.github/actions/zipx-sbt-setup
+        with:
+          java-version: "25"
+          runner-os: ubuntu-latest
+          cache-key-suffix: publish-css
+          node-version: ""
+          sbt-disk-cache: "false"
+          cache-mode: restore
+          cache-epoch: f2a8170a7461ec88
+      - name: Import signing key
+        run: |
+          mkdir -p ~/.gnupg && chmod 700 ~/.gnupg
+          echo "allow-loopback-pinentry" >> ~/.gnupg/gpg-agent.conf
+          echo "pinentry-mode loopback"   >> ~/.gnupg/gpg.conf
+          gpgconf --kill gpg-agent || true
+          echo "$PGP_SECRET" | base64 --decode | gpg --batch --import
+        env:
+          PGP_SECRET: ${{ secrets.PGP_SECRET }}
+      - name: cleanFull
+        run: sbt 'cleanFull'
+      - name: publish
+        run: sbt '+css/zipxModverPublishSigned'
+      - name: Upload sona staging
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: sona-staging-publish-css
+          path: target/sona-staging
+          if-no-files-found: error
+  publish-cssJS:
+    name: publish cssJS
+    runs-on: ubuntu-latest
+    needs:
+      - modver
+      - publish-coreJS
+    if: "!cancelled() && (((github.event_name == 'push') && ((github.ref == 'refs/heads/main'))) || (github.event_name == 'workflow_dispatch')) && contains(fromJson(needs.modver.outputs.modules), 'cssJS') && needs.publish-coreJS.result != 'failure'"
+    env:
+      PLAYWRIGHT_BROWSERS_PATH: ${{ github.workspace }}/target/ms-playwright
+      PGP_KEY_HEX: ${{ secrets.PGP_KEY_HEX }}
+      PGP_PASSPHRASE: ${{ secrets.PGP_PASSPHRASE }}
+      SONATYPE_PASSWORD: ${{ secrets.SONATYPE_PASSWORD }}
+      SONATYPE_USERNAME: ${{ secrets.SONATYPE_USERNAME }}
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          fetch-depth: "0"
+          fetch-tags: "true"
+      - name: zipx sbt setup
+        uses: ./.github/actions/zipx-sbt-setup
+        with:
+          java-version: "25"
+          runner-os: ubuntu-latest
+          cache-key-suffix: publish-cssJS
+          node-version: ""
+          sbt-disk-cache: "false"
+          cache-mode: restore
+          cache-epoch: f2a8170a7461ec88
+      - name: Import signing key
+        run: |
+          mkdir -p ~/.gnupg && chmod 700 ~/.gnupg
+          echo "allow-loopback-pinentry" >> ~/.gnupg/gpg-agent.conf
+          echo "pinentry-mode loopback"   >> ~/.gnupg/gpg.conf
+          gpgconf --kill gpg-agent || true
+          echo "$PGP_SECRET" | base64 --decode | gpg --batch --import
+        env:
+          PGP_SECRET: ${{ secrets.PGP_SECRET }}
+      - name: cleanFull
+        run: sbt 'cleanFull'
+      - name: publish
+        run: sbt '+cssJS/zipxModverPublishSigned'
+      - name: Upload sona staging
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: sona-staging-publish-cssJS
+          path: target/sona-staging
+          if-no-files-found: error
+  publish-cssNative:
+    name: publish cssNative
+    runs-on: ubuntu-latest
+    needs:
+      - modver
+      - publish-coreNative
+    if: "!cancelled() && (((github.event_name == 'push') && ((github.ref == 'refs/heads/main'))) || (github.event_name == 'workflow_dispatch')) && contains(fromJson(needs.modver.outputs.modules), 'cssNative') && needs.publish-coreNative.result != 'failure'"
+    env:
+      PLAYWRIGHT_BROWSERS_PATH: ${{ github.workspace }}/target/ms-playwright
+      PGP_KEY_HEX: ${{ secrets.PGP_KEY_HEX }}
+      PGP_PASSPHRASE: ${{ secrets.PGP_PASSPHRASE }}
+      SONATYPE_PASSWORD: ${{ secrets.SONATYPE_PASSWORD }}
+      SONATYPE_USERNAME: ${{ secrets.SONATYPE_USERNAME }}
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          fetch-depth: "0"
+          fetch-tags: "true"
+      - name: zipx sbt setup
+        uses: ./.github/actions/zipx-sbt-setup
+        with:
+          java-version: "25"
+          runner-os: ubuntu-latest
+          cache-key-suffix: publish-cssNative
+          node-version: ""
+          sbt-disk-cache: "false"
+          cache-mode: restore
+          cache-epoch: f2a8170a7461ec88
+      - name: Import signing key
+        run: |
+          mkdir -p ~/.gnupg && chmod 700 ~/.gnupg
+          echo "allow-loopback-pinentry" >> ~/.gnupg/gpg-agent.conf
+          echo "pinentry-mode loopback"   >> ~/.gnupg/gpg.conf
+          gpgconf --kill gpg-agent || true
+          echo "$PGP_SECRET" | base64 --decode | gpg --batch --import
+        env:
+          PGP_SECRET: ${{ secrets.PGP_SECRET }}
+      - name: cleanFull
+        run: sbt 'cleanFull'
+      - name: publish
+        run: sbt '+cssNative/zipxModverPublishSigned'
+      - name: Upload sona staging
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: sona-staging-publish-cssNative
+          path: target/sona-staging
+          if-no-files-found: error
+  publish-datastar:
+    name: publish datastar
+    runs-on: ubuntu-latest
+    needs:
+      - modver
+      - publish-core
+    if: "!cancelled() && (((github.event_name == 'push') && ((github.ref == 'refs/heads/main'))) || (github.event_name == 'workflow_dispatch')) && contains(fromJson(needs.modver.outputs.modules), 'datastar') && needs.publish-core.result != 'failure'"
+    env:
+      PLAYWRIGHT_BROWSERS_PATH: ${{ github.workspace }}/target/ms-playwright
+      PGP_KEY_HEX: ${{ secrets.PGP_KEY_HEX }}
+      PGP_PASSPHRASE: ${{ secrets.PGP_PASSPHRASE }}
+      SONATYPE_PASSWORD: ${{ secrets.SONATYPE_PASSWORD }}
+      SONATYPE_USERNAME: ${{ secrets.SONATYPE_USERNAME }}
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          fetch-depth: "0"
+          fetch-tags: "true"
+      - name: zipx sbt setup
+        uses: ./.github/actions/zipx-sbt-setup
+        with:
+          java-version: "25"
+          runner-os: ubuntu-latest
+          cache-key-suffix: publish-datastar
+          node-version: ""
+          sbt-disk-cache: "false"
+          cache-mode: restore
+          cache-epoch: f2a8170a7461ec88
+      - name: Import signing key
+        run: |
+          mkdir -p ~/.gnupg && chmod 700 ~/.gnupg
+          echo "allow-loopback-pinentry" >> ~/.gnupg/gpg-agent.conf
+          echo "pinentry-mode loopback"   >> ~/.gnupg/gpg.conf
+          gpgconf --kill gpg-agent || true
+          echo "$PGP_SECRET" | base64 --decode | gpg --batch --import
+        env:
+          PGP_SECRET: ${{ secrets.PGP_SECRET }}
+      - name: cleanFull
+        run: sbt 'cleanFull'
+      - name: publish
+        run: sbt '+datastar/zipxModverPublishSigned'
+      - name: Upload sona staging
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: sona-staging-publish-datastar
+          path: target/sona-staging
+          if-no-files-found: error
+  publish-datastarJS:
+    name: publish datastarJS
+    runs-on: ubuntu-latest
+    needs:
+      - modver
+      - publish-coreJS
+    if: "!cancelled() && (((github.event_name == 'push') && ((github.ref == 'refs/heads/main'))) || (github.event_name == 'workflow_dispatch')) && contains(fromJson(needs.modver.outputs.modules), 'datastarJS') && needs.publish-coreJS.result != 'failure'"
+    env:
+      PLAYWRIGHT_BROWSERS_PATH: ${{ github.workspace }}/target/ms-playwright
+      PGP_KEY_HEX: ${{ secrets.PGP_KEY_HEX }}
+      PGP_PASSPHRASE: ${{ secrets.PGP_PASSPHRASE }}
+      SONATYPE_PASSWORD: ${{ secrets.SONATYPE_PASSWORD }}
+      SONATYPE_USERNAME: ${{ secrets.SONATYPE_USERNAME }}
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          fetch-depth: "0"
+          fetch-tags: "true"
+      - name: zipx sbt setup
+        uses: ./.github/actions/zipx-sbt-setup
+        with:
+          java-version: "25"
+          runner-os: ubuntu-latest
+          cache-key-suffix: publish-datastarJS
+          node-version: ""
+          sbt-disk-cache: "false"
+          cache-mode: restore
+          cache-epoch: f2a8170a7461ec88
+      - name: Import signing key
+        run: |
+          mkdir -p ~/.gnupg && chmod 700 ~/.gnupg
+          echo "allow-loopback-pinentry" >> ~/.gnupg/gpg-agent.conf
+          echo "pinentry-mode loopback"   >> ~/.gnupg/gpg.conf
+          gpgconf --kill gpg-agent || true
+          echo "$PGP_SECRET" | base64 --decode | gpg --batch --import
+        env:
+          PGP_SECRET: ${{ secrets.PGP_SECRET }}
+      - name: cleanFull
+        run: sbt 'cleanFull'
+      - name: publish
+        run: sbt '+datastarJS/zipxModverPublishSigned'
+      - name: Upload sona staging
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: sona-staging-publish-datastarJS
+          path: target/sona-staging
+          if-no-files-found: error
+  publish-datastarNative:
+    name: publish datastarNative
+    runs-on: ubuntu-latest
+    needs:
+      - modver
+      - publish-coreNative
+    if: "!cancelled() && (((github.event_name == 'push') && ((github.ref == 'refs/heads/main'))) || (github.event_name == 'workflow_dispatch')) && contains(fromJson(needs.modver.outputs.modules), 'datastarNative') && needs.publish-coreNative.result != 'failure'"
+    env:
+      PLAYWRIGHT_BROWSERS_PATH: ${{ github.workspace }}/target/ms-playwright
+      PGP_KEY_HEX: ${{ secrets.PGP_KEY_HEX }}
+      PGP_PASSPHRASE: ${{ secrets.PGP_PASSPHRASE }}
+      SONATYPE_PASSWORD: ${{ secrets.SONATYPE_PASSWORD }}
+      SONATYPE_USERNAME: ${{ secrets.SONATYPE_USERNAME }}
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          fetch-depth: "0"
+          fetch-tags: "true"
+      - name: zipx sbt setup
+        uses: ./.github/actions/zipx-sbt-setup
+        with:
+          java-version: "25"
+          runner-os: ubuntu-latest
+          cache-key-suffix: publish-datastarNative
+          node-version: ""
+          sbt-disk-cache: "false"
+          cache-mode: restore
+          cache-epoch: f2a8170a7461ec88
+      - name: Import signing key
+        run: |
+          mkdir -p ~/.gnupg && chmod 700 ~/.gnupg
+          echo "allow-loopback-pinentry" >> ~/.gnupg/gpg-agent.conf
+          echo "pinentry-mode loopback"   >> ~/.gnupg/gpg.conf
+          gpgconf --kill gpg-agent || true
+          echo "$PGP_SECRET" | base64 --decode | gpg --batch --import
+        env:
+          PGP_SECRET: ${{ secrets.PGP_SECRET }}
+      - name: cleanFull
+        run: sbt 'cleanFull'
+      - name: publish
+        run: sbt '+datastarNative/zipxModverPublishSigned'
+      - name: Upload sona staging
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: sona-staging-publish-datastarNative
+          path: target/sona-staging
+          if-no-files-found: error
+  publish-history:
+    name: publish history
+    runs-on: ubuntu-latest
+    needs:
+      - modver
+      - publish-core
+    if: "!cancelled() && (((github.event_name == 'push') && ((github.ref == 'refs/heads/main'))) || (github.event_name == 'workflow_dispatch')) && contains(fromJson(needs.modver.outputs.modules), 'history') && needs.publish-core.result != 'failure'"
+    env:
+      PLAYWRIGHT_BROWSERS_PATH: ${{ github.workspace }}/target/ms-playwright
+      PGP_KEY_HEX: ${{ secrets.PGP_KEY_HEX }}
+      PGP_PASSPHRASE: ${{ secrets.PGP_PASSPHRASE }}
+      SONATYPE_PASSWORD: ${{ secrets.SONATYPE_PASSWORD }}
+      SONATYPE_USERNAME: ${{ secrets.SONATYPE_USERNAME }}
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          fetch-depth: "0"
+          fetch-tags: "true"
+      - name: zipx sbt setup
+        uses: ./.github/actions/zipx-sbt-setup
+        with:
+          java-version: "25"
+          runner-os: ubuntu-latest
+          cache-key-suffix: publish-history
+          node-version: ""
+          sbt-disk-cache: "false"
+          cache-mode: restore
+          cache-epoch: f2a8170a7461ec88
+      - name: Import signing key
+        run: |
+          mkdir -p ~/.gnupg && chmod 700 ~/.gnupg
+          echo "allow-loopback-pinentry" >> ~/.gnupg/gpg-agent.conf
+          echo "pinentry-mode loopback"   >> ~/.gnupg/gpg.conf
+          gpgconf --kill gpg-agent || true
+          echo "$PGP_SECRET" | base64 --decode | gpg --batch --import
+        env:
+          PGP_SECRET: ${{ secrets.PGP_SECRET }}
+      - name: cleanFull
+        run: sbt 'cleanFull'
+      - name: publish
+        run: sbt '+history/zipxModverPublishSigned'
+      - name: Upload sona staging
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: sona-staging-publish-history
+          path: target/sona-staging
+          if-no-files-found: error
+  publish-historyJS:
+    name: publish historyJS
+    runs-on: ubuntu-latest
+    needs:
+      - modver
+      - publish-coreJS
+      - publish-domFacadeJS
+    if: "!cancelled() && (((github.event_name == 'push') && ((github.ref == 'refs/heads/main'))) || (github.event_name == 'workflow_dispatch')) && contains(fromJson(needs.modver.outputs.modules), 'historyJS') && needs.publish-coreJS.result != 'failure' && needs.publish-domFacadeJS.result != 'failure'"
+    env:
+      PLAYWRIGHT_BROWSERS_PATH: ${{ github.workspace }}/target/ms-playwright
+      PGP_KEY_HEX: ${{ secrets.PGP_KEY_HEX }}
+      PGP_PASSPHRASE: ${{ secrets.PGP_PASSPHRASE }}
+      SONATYPE_PASSWORD: ${{ secrets.SONATYPE_PASSWORD }}
+      SONATYPE_USERNAME: ${{ secrets.SONATYPE_USERNAME }}
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          fetch-depth: "0"
+          fetch-tags: "true"
+      - name: zipx sbt setup
+        uses: ./.github/actions/zipx-sbt-setup
+        with:
+          java-version: "25"
+          runner-os: ubuntu-latest
+          cache-key-suffix: publish-historyJS
+          node-version: ""
+          sbt-disk-cache: "false"
+          cache-mode: restore
+          cache-epoch: f2a8170a7461ec88
+      - name: Import signing key
+        run: |
+          mkdir -p ~/.gnupg && chmod 700 ~/.gnupg
+          echo "allow-loopback-pinentry" >> ~/.gnupg/gpg-agent.conf
+          echo "pinentry-mode loopback"   >> ~/.gnupg/gpg.conf
+          gpgconf --kill gpg-agent || true
+          echo "$PGP_SECRET" | base64 --decode | gpg --batch --import
+        env:
+          PGP_SECRET: ${{ secrets.PGP_SECRET }}
+      - name: cleanFull
+        run: sbt 'cleanFull'
+      - name: publish
+        run: sbt '+historyJS/zipxModverPublishSigned'
+      - name: Upload sona staging
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: sona-staging-publish-historyJS
+          path: target/sona-staging
+          if-no-files-found: error
+  publish-historyNative:
+    name: publish historyNative
+    runs-on: ubuntu-latest
+    needs:
+      - modver
+      - publish-coreNative
+    if: "!cancelled() && (((github.event_name == 'push') && ((github.ref == 'refs/heads/main'))) || (github.event_name == 'workflow_dispatch')) && contains(fromJson(needs.modver.outputs.modules), 'historyNative') && needs.publish-coreNative.result != 'failure'"
+    env:
+      PLAYWRIGHT_BROWSERS_PATH: ${{ github.workspace }}/target/ms-playwright
+      PGP_KEY_HEX: ${{ secrets.PGP_KEY_HEX }}
+      PGP_PASSPHRASE: ${{ secrets.PGP_PASSPHRASE }}
+      SONATYPE_PASSWORD: ${{ secrets.SONATYPE_PASSWORD }}
+      SONATYPE_USERNAME: ${{ secrets.SONATYPE_USERNAME }}
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          fetch-depth: "0"
+          fetch-tags: "true"
+      - name: zipx sbt setup
+        uses: ./.github/actions/zipx-sbt-setup
+        with:
+          java-version: "25"
+          runner-os: ubuntu-latest
+          cache-key-suffix: publish-historyNative
+          node-version: ""
+          sbt-disk-cache: "false"
+          cache-mode: restore
+          cache-epoch: f2a8170a7461ec88
+      - name: Import signing key
+        run: |
+          mkdir -p ~/.gnupg && chmod 700 ~/.gnupg
+          echo "allow-loopback-pinentry" >> ~/.gnupg/gpg-agent.conf
+          echo "pinentry-mode loopback"   >> ~/.gnupg/gpg.conf
+          gpgconf --kill gpg-agent || true
+          echo "$PGP_SECRET" | base64 --decode | gpg --batch --import
+        env:
+          PGP_SECRET: ${{ secrets.PGP_SECRET }}
+      - name: cleanFull
+        run: sbt 'cleanFull'
+      - name: publish
+        run: sbt '+historyNative/zipxModverPublishSigned'
+      - name: Upload sona staging
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: sona-staging-publish-historyNative
+          path: target/sona-staging
+          if-no-files-found: error
+  publish-domCore:
+    name: publish domCore
+    runs-on: ubuntu-latest
+    needs:
+      - modver
+      - publish-core
+      - publish-css
+    if: "!cancelled() && (((github.event_name == 'push') && ((github.ref == 'refs/heads/main'))) || (github.event_name == 'workflow_dispatch')) && contains(fromJson(needs.modver.outputs.modules), 'domCore') && needs.publish-core.result != 'failure' && needs.publish-css.result != 'failure'"
+    env:
+      PLAYWRIGHT_BROWSERS_PATH: ${{ github.workspace }}/target/ms-playwright
+      PGP_KEY_HEX: ${{ secrets.PGP_KEY_HEX }}
+      PGP_PASSPHRASE: ${{ secrets.PGP_PASSPHRASE }}
+      SONATYPE_PASSWORD: ${{ secrets.SONATYPE_PASSWORD }}
+      SONATYPE_USERNAME: ${{ secrets.SONATYPE_USERNAME }}
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          fetch-depth: "0"
+          fetch-tags: "true"
+      - name: zipx sbt setup
+        uses: ./.github/actions/zipx-sbt-setup
+        with:
+          java-version: "25"
+          runner-os: ubuntu-latest
+          cache-key-suffix: publish-domCore
+          node-version: ""
+          sbt-disk-cache: "false"
+          cache-mode: restore
+          cache-epoch: f2a8170a7461ec88
+      - name: Import signing key
+        run: |
+          mkdir -p ~/.gnupg && chmod 700 ~/.gnupg
+          echo "allow-loopback-pinentry" >> ~/.gnupg/gpg-agent.conf
+          echo "pinentry-mode loopback"   >> ~/.gnupg/gpg.conf
+          gpgconf --kill gpg-agent || true
+          echo "$PGP_SECRET" | base64 --decode | gpg --batch --import
+        env:
+          PGP_SECRET: ${{ secrets.PGP_SECRET }}
+      - name: cleanFull
+        run: sbt 'cleanFull'
+      - name: publish
+        run: sbt '+domCore/zipxModverPublishSigned'
+      - name: Upload sona staging
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: sona-staging-publish-domCore
+          path: target/sona-staging
+          if-no-files-found: error
+  publish-domCoreJS:
+    name: publish domCoreJS
+    runs-on: ubuntu-latest
+    needs:
+      - modver
+      - publish-coreJS
+      - publish-cssJS
+      - publish-domFacadeJS
+    if: "!cancelled() && (((github.event_name == 'push') && ((github.ref == 'refs/heads/main'))) || (github.event_name == 'workflow_dispatch')) && contains(fromJson(needs.modver.outputs.modules), 'domCoreJS') && needs.publish-coreJS.result != 'failure' && needs.publish-cssJS.result != 'failure' && needs.publish-domFacadeJS.result != 'failure'"
+    env:
+      PLAYWRIGHT_BROWSERS_PATH: ${{ github.workspace }}/target/ms-playwright
+      PGP_KEY_HEX: ${{ secrets.PGP_KEY_HEX }}
+      PGP_PASSPHRASE: ${{ secrets.PGP_PASSPHRASE }}
+      SONATYPE_PASSWORD: ${{ secrets.SONATYPE_PASSWORD }}
+      SONATYPE_USERNAME: ${{ secrets.SONATYPE_USERNAME }}
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          fetch-depth: "0"
+          fetch-tags: "true"
+      - name: zipx sbt setup
+        uses: ./.github/actions/zipx-sbt-setup
+        with:
+          java-version: "25"
+          runner-os: ubuntu-latest
+          cache-key-suffix: publish-domCoreJS
+          node-version: ""
+          sbt-disk-cache: "false"
+          cache-mode: restore
+          cache-epoch: f2a8170a7461ec88
+      - name: Import signing key
+        run: |
+          mkdir -p ~/.gnupg && chmod 700 ~/.gnupg
+          echo "allow-loopback-pinentry" >> ~/.gnupg/gpg-agent.conf
+          echo "pinentry-mode loopback"   >> ~/.gnupg/gpg.conf
+          gpgconf --kill gpg-agent || true
+          echo "$PGP_SECRET" | base64 --decode | gpg --batch --import
+        env:
+          PGP_SECRET: ${{ secrets.PGP_SECRET }}
+      - name: cleanFull
+        run: sbt 'cleanFull'
+      - name: publish
+        run: sbt '+domCoreJS/zipxModverPublishSigned'
+      - name: Upload sona staging
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: sona-staging-publish-domCoreJS
+          path: target/sona-staging
+          if-no-files-found: error
+  publish-domCoreNative:
+    name: publish domCoreNative
+    runs-on: ubuntu-latest
+    needs:
+      - modver
+      - publish-coreNative
+      - publish-cssNative
+    if: "!cancelled() && (((github.event_name == 'push') && ((github.ref == 'refs/heads/main'))) || (github.event_name == 'workflow_dispatch')) && contains(fromJson(needs.modver.outputs.modules), 'domCoreNative') && needs.publish-coreNative.result != 'failure' && needs.publish-cssNative.result != 'failure'"
+    env:
+      PLAYWRIGHT_BROWSERS_PATH: ${{ github.workspace }}/target/ms-playwright
+      PGP_KEY_HEX: ${{ secrets.PGP_KEY_HEX }}
+      PGP_PASSPHRASE: ${{ secrets.PGP_PASSPHRASE }}
+      SONATYPE_PASSWORD: ${{ secrets.SONATYPE_PASSWORD }}
+      SONATYPE_USERNAME: ${{ secrets.SONATYPE_USERNAME }}
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          fetch-depth: "0"
+          fetch-tags: "true"
+      - name: zipx sbt setup
+        uses: ./.github/actions/zipx-sbt-setup
+        with:
+          java-version: "25"
+          runner-os: ubuntu-latest
+          cache-key-suffix: publish-domCoreNative
+          node-version: ""
+          sbt-disk-cache: "false"
+          cache-mode: restore
+          cache-epoch: f2a8170a7461ec88
+      - name: Import signing key
+        run: |
+          mkdir -p ~/.gnupg && chmod 700 ~/.gnupg
+          echo "allow-loopback-pinentry" >> ~/.gnupg/gpg-agent.conf
+          echo "pinentry-mode loopback"   >> ~/.gnupg/gpg.conf
+          gpgconf --kill gpg-agent || true
+          echo "$PGP_SECRET" | base64 --decode | gpg --batch --import
+        env:
+          PGP_SECRET: ${{ secrets.PGP_SECRET }}
+      - name: cleanFull
+        run: sbt 'cleanFull'
+      - name: publish
+        run: sbt '+domCoreNative/zipxModverPublishSigned'
+      - name: Upload sona staging
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: sona-staging-publish-domCoreNative
+          path: target/sona-staging
+          if-no-files-found: error
+  publish-mountEngine:
+    name: publish mountEngine
+    runs-on: ubuntu-latest
+    needs:
+      - modver
+      - publish-core
+      - publish-css
+      - publish-domCore
+    if: "!cancelled() && (((github.event_name == 'push') && ((github.ref == 'refs/heads/main'))) || (github.event_name == 'workflow_dispatch')) && contains(fromJson(needs.modver.outputs.modules), 'mountEngine') && needs.publish-core.result != 'failure' && needs.publish-css.result != 'failure' && needs.publish-domCore.result != 'failure'"
+    env:
+      PLAYWRIGHT_BROWSERS_PATH: ${{ github.workspace }}/target/ms-playwright
+      PGP_KEY_HEX: ${{ secrets.PGP_KEY_HEX }}
+      PGP_PASSPHRASE: ${{ secrets.PGP_PASSPHRASE }}
+      SONATYPE_PASSWORD: ${{ secrets.SONATYPE_PASSWORD }}
+      SONATYPE_USERNAME: ${{ secrets.SONATYPE_USERNAME }}
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          fetch-depth: "0"
+          fetch-tags: "true"
+      - name: zipx sbt setup
+        uses: ./.github/actions/zipx-sbt-setup
+        with:
+          java-version: "25"
+          runner-os: ubuntu-latest
+          cache-key-suffix: publish-mountEngine
+          node-version: ""
+          sbt-disk-cache: "false"
+          cache-mode: restore
+          cache-epoch: f2a8170a7461ec88
+      - name: Import signing key
+        run: |
+          mkdir -p ~/.gnupg && chmod 700 ~/.gnupg
+          echo "allow-loopback-pinentry" >> ~/.gnupg/gpg-agent.conf
+          echo "pinentry-mode loopback"   >> ~/.gnupg/gpg.conf
+          gpgconf --kill gpg-agent || true
+          echo "$PGP_SECRET" | base64 --decode | gpg --batch --import
+        env:
+          PGP_SECRET: ${{ secrets.PGP_SECRET }}
+      - name: cleanFull
+        run: sbt 'cleanFull'
+      - name: publish
+        run: sbt '+mountEngine/zipxModverPublishSigned'
+      - name: Upload sona staging
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: sona-staging-publish-mountEngine
+          path: target/sona-staging
+          if-no-files-found: error
+  publish-mountEngineJS:
+    name: publish mountEngineJS
+    runs-on: ubuntu-latest
+    needs:
+      - modver
+      - publish-coreJS
+      - publish-cssJS
+      - publish-domCoreJS
+    if: "!cancelled() && (((github.event_name == 'push') && ((github.ref == 'refs/heads/main'))) || (github.event_name == 'workflow_dispatch')) && contains(fromJson(needs.modver.outputs.modules), 'mountEngineJS') && needs.publish-coreJS.result != 'failure' && needs.publish-cssJS.result != 'failure' && needs.publish-domCoreJS.result != 'failure'"
+    env:
+      PLAYWRIGHT_BROWSERS_PATH: ${{ github.workspace }}/target/ms-playwright
+      PGP_KEY_HEX: ${{ secrets.PGP_KEY_HEX }}
+      PGP_PASSPHRASE: ${{ secrets.PGP_PASSPHRASE }}
+      SONATYPE_PASSWORD: ${{ secrets.SONATYPE_PASSWORD }}
+      SONATYPE_USERNAME: ${{ secrets.SONATYPE_USERNAME }}
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          fetch-depth: "0"
+          fetch-tags: "true"
+      - name: zipx sbt setup
+        uses: ./.github/actions/zipx-sbt-setup
+        with:
+          java-version: "25"
+          runner-os: ubuntu-latest
+          cache-key-suffix: publish-mountEngineJS
+          node-version: ""
+          sbt-disk-cache: "false"
+          cache-mode: restore
+          cache-epoch: f2a8170a7461ec88
+      - name: Import signing key
+        run: |
+          mkdir -p ~/.gnupg && chmod 700 ~/.gnupg
+          echo "allow-loopback-pinentry" >> ~/.gnupg/gpg-agent.conf
+          echo "pinentry-mode loopback"   >> ~/.gnupg/gpg.conf
+          gpgconf --kill gpg-agent || true
+          echo "$PGP_SECRET" | base64 --decode | gpg --batch --import
+        env:
+          PGP_SECRET: ${{ secrets.PGP_SECRET }}
+      - name: cleanFull
+        run: sbt 'cleanFull'
+      - name: publish
+        run: sbt '+mountEngineJS/zipxModverPublishSigned'
+      - name: Upload sona staging
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: sona-staging-publish-mountEngineJS
+          path: target/sona-staging
+          if-no-files-found: error
+  publish-mountEngineNative:
+    name: publish mountEngineNative
+    runs-on: ubuntu-latest
+    needs:
+      - modver
+      - publish-coreNative
+      - publish-cssNative
+      - publish-domCoreNative
+    if: "!cancelled() && (((github.event_name == 'push') && ((github.ref == 'refs/heads/main'))) || (github.event_name == 'workflow_dispatch')) && contains(fromJson(needs.modver.outputs.modules), 'mountEngineNative') && needs.publish-coreNative.result != 'failure' && needs.publish-cssNative.result != 'failure' && needs.publish-domCoreNative.result != 'failure'"
+    env:
+      PLAYWRIGHT_BROWSERS_PATH: ${{ github.workspace }}/target/ms-playwright
+      PGP_KEY_HEX: ${{ secrets.PGP_KEY_HEX }}
+      PGP_PASSPHRASE: ${{ secrets.PGP_PASSPHRASE }}
+      SONATYPE_PASSWORD: ${{ secrets.SONATYPE_PASSWORD }}
+      SONATYPE_USERNAME: ${{ secrets.SONATYPE_USERNAME }}
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          fetch-depth: "0"
+          fetch-tags: "true"
+      - name: zipx sbt setup
+        uses: ./.github/actions/zipx-sbt-setup
+        with:
+          java-version: "25"
+          runner-os: ubuntu-latest
+          cache-key-suffix: publish-mountEngineNative
+          node-version: ""
+          sbt-disk-cache: "false"
+          cache-mode: restore
+          cache-epoch: f2a8170a7461ec88
+      - name: Import signing key
+        run: |
+          mkdir -p ~/.gnupg && chmod 700 ~/.gnupg
+          echo "allow-loopback-pinentry" >> ~/.gnupg/gpg-agent.conf
+          echo "pinentry-mode loopback"   >> ~/.gnupg/gpg.conf
+          gpgconf --kill gpg-agent || true
+          echo "$PGP_SECRET" | base64 --decode | gpg --batch --import
+        env:
+          PGP_SECRET: ${{ secrets.PGP_SECRET }}
+      - name: cleanFull
+        run: sbt 'cleanFull'
+      - name: publish
+        run: sbt '+mountEngineNative/zipxModverPublishSigned'
+      - name: Upload sona staging
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: sona-staging-publish-mountEngineNative
+          path: target/sona-staging
+          if-no-files-found: error
+  publish-html:
+    name: publish html
+    runs-on: ubuntu-latest
+    needs:
+      - modver
+      - publish-core
+      - publish-css
+      - publish-mountEngine
+    if: "!cancelled() && (((github.event_name == 'push') && ((github.ref == 'refs/heads/main'))) || (github.event_name == 'workflow_dispatch')) && contains(fromJson(needs.modver.outputs.modules), 'html') && needs.publish-core.result != 'failure' && needs.publish-css.result != 'failure' && needs.publish-mountEngine.result != 'failure'"
+    env:
+      PLAYWRIGHT_BROWSERS_PATH: ${{ github.workspace }}/target/ms-playwright
+      PGP_KEY_HEX: ${{ secrets.PGP_KEY_HEX }}
+      PGP_PASSPHRASE: ${{ secrets.PGP_PASSPHRASE }}
+      SONATYPE_PASSWORD: ${{ secrets.SONATYPE_PASSWORD }}
+      SONATYPE_USERNAME: ${{ secrets.SONATYPE_USERNAME }}
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          fetch-depth: "0"
+          fetch-tags: "true"
+      - name: zipx sbt setup
+        uses: ./.github/actions/zipx-sbt-setup
+        with:
+          java-version: "25"
+          runner-os: ubuntu-latest
+          cache-key-suffix: publish-html
+          node-version: ""
+          sbt-disk-cache: "false"
+          cache-mode: restore
+          cache-epoch: f2a8170a7461ec88
+      - name: Import signing key
+        run: |
+          mkdir -p ~/.gnupg && chmod 700 ~/.gnupg
+          echo "allow-loopback-pinentry" >> ~/.gnupg/gpg-agent.conf
+          echo "pinentry-mode loopback"   >> ~/.gnupg/gpg.conf
+          gpgconf --kill gpg-agent || true
+          echo "$PGP_SECRET" | base64 --decode | gpg --batch --import
+        env:
+          PGP_SECRET: ${{ secrets.PGP_SECRET }}
+      - name: cleanFull
+        run: sbt 'cleanFull'
+      - name: publish
+        run: sbt '+html/zipxModverPublishSigned'
+      - name: Upload sona staging
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: sona-staging-publish-html
+          path: target/sona-staging
+          if-no-files-found: error
+  publish-htmlJS:
+    name: publish htmlJS
+    runs-on: ubuntu-latest
+    needs:
+      - modver
+      - publish-coreJS
+      - publish-cssJS
+      - publish-mountEngineJS
+    if: "!cancelled() && (((github.event_name == 'push') && ((github.ref == 'refs/heads/main'))) || (github.event_name == 'workflow_dispatch')) && contains(fromJson(needs.modver.outputs.modules), 'htmlJS') && needs.publish-coreJS.result != 'failure' && needs.publish-cssJS.result != 'failure' && needs.publish-mountEngineJS.result != 'failure'"
+    env:
+      PLAYWRIGHT_BROWSERS_PATH: ${{ github.workspace }}/target/ms-playwright
+      PGP_KEY_HEX: ${{ secrets.PGP_KEY_HEX }}
+      PGP_PASSPHRASE: ${{ secrets.PGP_PASSPHRASE }}
+      SONATYPE_PASSWORD: ${{ secrets.SONATYPE_PASSWORD }}
+      SONATYPE_USERNAME: ${{ secrets.SONATYPE_USERNAME }}
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          fetch-depth: "0"
+          fetch-tags: "true"
+      - name: zipx sbt setup
+        uses: ./.github/actions/zipx-sbt-setup
+        with:
+          java-version: "25"
+          runner-os: ubuntu-latest
+          cache-key-suffix: publish-htmlJS
+          node-version: ""
+          sbt-disk-cache: "false"
+          cache-mode: restore
+          cache-epoch: f2a8170a7461ec88
+      - name: Import signing key
+        run: |
+          mkdir -p ~/.gnupg && chmod 700 ~/.gnupg
+          echo "allow-loopback-pinentry" >> ~/.gnupg/gpg-agent.conf
+          echo "pinentry-mode loopback"   >> ~/.gnupg/gpg.conf
+          gpgconf --kill gpg-agent || true
+          echo "$PGP_SECRET" | base64 --decode | gpg --batch --import
+        env:
+          PGP_SECRET: ${{ secrets.PGP_SECRET }}
+      - name: cleanFull
+        run: sbt 'cleanFull'
+      - name: publish
+        run: sbt '+htmlJS/zipxModverPublishSigned'
+      - name: Upload sona staging
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: sona-staging-publish-htmlJS
+          path: target/sona-staging
+          if-no-files-found: error
+  publish-htmlNative:
+    name: publish htmlNative
+    runs-on: ubuntu-latest
+    needs:
+      - modver
+      - publish-coreNative
+      - publish-cssNative
+      - publish-mountEngineNative
+    if: "!cancelled() && (((github.event_name == 'push') && ((github.ref == 'refs/heads/main'))) || (github.event_name == 'workflow_dispatch')) && contains(fromJson(needs.modver.outputs.modules), 'htmlNative') && needs.publish-coreNative.result != 'failure' && needs.publish-cssNative.result != 'failure' && needs.publish-mountEngineNative.result != 'failure'"
+    env:
+      PLAYWRIGHT_BROWSERS_PATH: ${{ github.workspace }}/target/ms-playwright
+      PGP_KEY_HEX: ${{ secrets.PGP_KEY_HEX }}
+      PGP_PASSPHRASE: ${{ secrets.PGP_PASSPHRASE }}
+      SONATYPE_PASSWORD: ${{ secrets.SONATYPE_PASSWORD }}
+      SONATYPE_USERNAME: ${{ secrets.SONATYPE_USERNAME }}
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          fetch-depth: "0"
+          fetch-tags: "true"
+      - name: zipx sbt setup
+        uses: ./.github/actions/zipx-sbt-setup
+        with:
+          java-version: "25"
+          runner-os: ubuntu-latest
+          cache-key-suffix: publish-htmlNative
+          node-version: ""
+          sbt-disk-cache: "false"
+          cache-mode: restore
+          cache-epoch: f2a8170a7461ec88
+      - name: Import signing key
+        run: |
+          mkdir -p ~/.gnupg && chmod 700 ~/.gnupg
+          echo "allow-loopback-pinentry" >> ~/.gnupg/gpg-agent.conf
+          echo "pinentry-mode loopback"   >> ~/.gnupg/gpg.conf
+          gpgconf --kill gpg-agent || true
+          echo "$PGP_SECRET" | base64 --decode | gpg --batch --import
+        env:
+          PGP_SECRET: ${{ secrets.PGP_SECRET }}
+      - name: cleanFull
+        run: sbt 'cleanFull'
+      - name: publish
+        run: sbt '+htmlNative/zipxModverPublishSigned'
+      - name: Upload sona staging
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: sona-staging-publish-htmlNative
+          path: target/sona-staging
+          if-no-files-found: error
+  publish-jsJS:
+    name: publish jsJS
+    runs-on: ubuntu-latest
+    needs:
+      - modver
+      - publish-coreJS
+      - publish-cssJS
+      - publish-domFacadeJS
+      - publish-mountEngineJS
+    if: "!cancelled() && (((github.event_name == 'push') && ((github.ref == 'refs/heads/main'))) || (github.event_name == 'workflow_dispatch')) && contains(fromJson(needs.modver.outputs.modules), 'jsJS') && needs.publish-coreJS.result != 'failure' && needs.publish-cssJS.result != 'failure' && needs.publish-domFacadeJS.result != 'failure' && needs.publish-mountEngineJS.result != 'failure'"
+    env:
+      PLAYWRIGHT_BROWSERS_PATH: ${{ github.workspace }}/target/ms-playwright
+      PGP_KEY_HEX: ${{ secrets.PGP_KEY_HEX }}
+      PGP_PASSPHRASE: ${{ secrets.PGP_PASSPHRASE }}
+      SONATYPE_PASSWORD: ${{ secrets.SONATYPE_PASSWORD }}
+      SONATYPE_USERNAME: ${{ secrets.SONATYPE_USERNAME }}
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          fetch-depth: "0"
+          fetch-tags: "true"
+      - name: zipx sbt setup
+        uses: ./.github/actions/zipx-sbt-setup
+        with:
+          java-version: "25"
+          runner-os: ubuntu-latest
+          cache-key-suffix: publish-jsJS
+          node-version: ""
+          sbt-disk-cache: "false"
+          cache-mode: restore
+          cache-epoch: f2a8170a7461ec88
+      - name: Import signing key
+        run: |
+          mkdir -p ~/.gnupg && chmod 700 ~/.gnupg
+          echo "allow-loopback-pinentry" >> ~/.gnupg/gpg-agent.conf
+          echo "pinentry-mode loopback"   >> ~/.gnupg/gpg.conf
+          gpgconf --kill gpg-agent || true
+          echo "$PGP_SECRET" | base64 --decode | gpg --batch --import
+        env:
+          PGP_SECRET: ${{ secrets.PGP_SECRET }}
+      - name: cleanFull
+        run: sbt 'cleanFull'
+      - name: publish
+        run: sbt '+jsJS/zipxModverPublishSigned'
+      - name: Upload sona staging
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: sona-staging-publish-jsJS
+          path: target/sona-staging
+          if-no-files-found: error
+  publish-ascentChekhovJS:
+    name: publish ascentChekhovJS
+    runs-on: ubuntu-latest
+    needs:
+      - modver
+      - publish-coreJS
+      - publish-jsJS
+    if: "!cancelled() && (((github.event_name == 'push') && ((github.ref == 'refs/heads/main'))) || (github.event_name == 'workflow_dispatch')) && contains(fromJson(needs.modver.outputs.modules), 'ascentChekhovJS') && needs.publish-coreJS.result != 'failure' && needs.publish-jsJS.result != 'failure'"
+    env:
+      PLAYWRIGHT_BROWSERS_PATH: ${{ github.workspace }}/target/ms-playwright
+      PGP_KEY_HEX: ${{ secrets.PGP_KEY_HEX }}
+      PGP_PASSPHRASE: ${{ secrets.PGP_PASSPHRASE }}
+      SONATYPE_PASSWORD: ${{ secrets.SONATYPE_PASSWORD }}
+      SONATYPE_USERNAME: ${{ secrets.SONATYPE_USERNAME }}
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          fetch-depth: "0"
+          fetch-tags: "true"
+      - name: zipx sbt setup
+        uses: ./.github/actions/zipx-sbt-setup
+        with:
+          java-version: "25"
+          runner-os: ubuntu-latest
+          cache-key-suffix: publish-ascentChekhovJS
+          node-version: ""
+          sbt-disk-cache: "false"
+          cache-mode: restore
+          cache-epoch: f2a8170a7461ec88
+      - name: Import signing key
+        run: |
+          mkdir -p ~/.gnupg && chmod 700 ~/.gnupg
+          echo "allow-loopback-pinentry" >> ~/.gnupg/gpg-agent.conf
+          echo "pinentry-mode loopback"   >> ~/.gnupg/gpg.conf
+          gpgconf --kill gpg-agent || true
+          echo "$PGP_SECRET" | base64 --decode | gpg --batch --import
+        env:
+          PGP_SECRET: ${{ secrets.PGP_SECRET }}
+      - name: cleanFull
+        run: sbt 'cleanFull'
+      - name: publish
+        run: sbt '+ascentChekhovJS/zipxModverPublishSigned'
+      - name: Upload sona staging
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: sona-staging-publish-ascentChekhovJS
+          path: target/sona-staging
+          if-no-files-found: error
+  publish-datastarHttp:
+    name: publish datastarHttp
+    runs-on: ubuntu-latest
+    needs:
+      - modver
+      - publish-datastar
+      - publish-html
+    if: "!cancelled() && (((github.event_name == 'push') && ((github.ref == 'refs/heads/main'))) || (github.event_name == 'workflow_dispatch')) && contains(fromJson(needs.modver.outputs.modules), 'datastarHttp') && needs.publish-datastar.result != 'failure' && needs.publish-html.result != 'failure'"
+    env:
+      PLAYWRIGHT_BROWSERS_PATH: ${{ github.workspace }}/target/ms-playwright
+      PGP_KEY_HEX: ${{ secrets.PGP_KEY_HEX }}
+      PGP_PASSPHRASE: ${{ secrets.PGP_PASSPHRASE }}
+      SONATYPE_PASSWORD: ${{ secrets.SONATYPE_PASSWORD }}
+      SONATYPE_USERNAME: ${{ secrets.SONATYPE_USERNAME }}
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          fetch-depth: "0"
+          fetch-tags: "true"
+      - name: zipx sbt setup
+        uses: ./.github/actions/zipx-sbt-setup
+        with:
+          java-version: "25"
+          runner-os: ubuntu-latest
+          cache-key-suffix: publish-datastarHttp
+          node-version: ""
+          sbt-disk-cache: "false"
+          cache-mode: restore
+          cache-epoch: f2a8170a7461ec88
+      - name: Import signing key
+        run: |
+          mkdir -p ~/.gnupg && chmod 700 ~/.gnupg
+          echo "allow-loopback-pinentry" >> ~/.gnupg/gpg-agent.conf
+          echo "pinentry-mode loopback"   >> ~/.gnupg/gpg.conf
+          gpgconf --kill gpg-agent || true
+          echo "$PGP_SECRET" | base64 --decode | gpg --batch --import
+        env:
+          PGP_SECRET: ${{ secrets.PGP_SECRET }}
+      - name: cleanFull
+        run: sbt 'cleanFull'
+      - name: publish
+        run: sbt '+datastarHttp/zipxModverPublishSigned'
+      - name: Upload sona staging
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: sona-staging-publish-datastarHttp
+          path: target/sona-staging
+          if-no-files-found: error
+  publish-datastarJsJS:
+    name: publish datastarJsJS
+    runs-on: ubuntu-latest
+    needs:
+      - modver
+      - publish-datastarJS
+      - publish-domFacadeJS
+      - publish-jsJS
+    if: "!cancelled() && (((github.event_name == 'push') && ((github.ref == 'refs/heads/main'))) || (github.event_name == 'workflow_dispatch')) && contains(fromJson(needs.modver.outputs.modules), 'datastarJsJS') && needs.publish-datastarJS.result != 'failure' && needs.publish-domFacadeJS.result != 'failure' && needs.publish-jsJS.result != 'failure'"
+    env:
+      PLAYWRIGHT_BROWSERS_PATH: ${{ github.workspace }}/target/ms-playwright
+      PGP_KEY_HEX: ${{ secrets.PGP_KEY_HEX }}
+      PGP_PASSPHRASE: ${{ secrets.PGP_PASSPHRASE }}
+      SONATYPE_PASSWORD: ${{ secrets.SONATYPE_PASSWORD }}
+      SONATYPE_USERNAME: ${{ secrets.SONATYPE_USERNAME }}
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          fetch-depth: "0"
+          fetch-tags: "true"
+      - name: zipx sbt setup
+        uses: ./.github/actions/zipx-sbt-setup
+        with:
+          java-version: "25"
+          runner-os: ubuntu-latest
+          cache-key-suffix: publish-datastarJsJS
+          node-version: ""
+          sbt-disk-cache: "false"
+          cache-mode: restore
+          cache-epoch: f2a8170a7461ec88
+      - name: Import signing key
+        run: |
+          mkdir -p ~/.gnupg && chmod 700 ~/.gnupg
+          echo "allow-loopback-pinentry" >> ~/.gnupg/gpg-agent.conf
+          echo "pinentry-mode loopback"   >> ~/.gnupg/gpg.conf
+          gpgconf --kill gpg-agent || true
+          echo "$PGP_SECRET" | base64 --decode | gpg --batch --import
+        env:
+          PGP_SECRET: ${{ secrets.PGP_SECRET }}
+      - name: cleanFull
+        run: sbt 'cleanFull'
+      - name: publish
+        run: sbt '+datastarJsJS/zipxModverPublishSigned'
+      - name: Upload sona staging
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: sona-staging-publish-datastarJsJS
+          path: target/sona-staging
+          if-no-files-found: error
+  publish-elementJS:
+    name: publish elementJS
+    runs-on: ubuntu-latest
+    needs:
+      - modver
+      - publish-jsJS
+    if: "!cancelled() && (((github.event_name == 'push') && ((github.ref == 'refs/heads/main'))) || (github.event_name == 'workflow_dispatch')) && contains(fromJson(needs.modver.outputs.modules), 'elementJS') && needs.publish-jsJS.result != 'failure'"
+    env:
+      PLAYWRIGHT_BROWSERS_PATH: ${{ github.workspace }}/target/ms-playwright
+      PGP_KEY_HEX: ${{ secrets.PGP_KEY_HEX }}
+      PGP_PASSPHRASE: ${{ secrets.PGP_PASSPHRASE }}
+      SONATYPE_PASSWORD: ${{ secrets.SONATYPE_PASSWORD }}
+      SONATYPE_USERNAME: ${{ secrets.SONATYPE_USERNAME }}
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          fetch-depth: "0"
+          fetch-tags: "true"
+      - name: zipx sbt setup
+        uses: ./.github/actions/zipx-sbt-setup
+        with:
+          java-version: "25"
+          runner-os: ubuntu-latest
+          cache-key-suffix: publish-elementJS
+          node-version: ""
+          sbt-disk-cache: "false"
+          cache-mode: restore
+          cache-epoch: f2a8170a7461ec88
+      - name: Import signing key
+        run: |
+          mkdir -p ~/.gnupg && chmod 700 ~/.gnupg
+          echo "allow-loopback-pinentry" >> ~/.gnupg/gpg-agent.conf
+          echo "pinentry-mode loopback"   >> ~/.gnupg/gpg.conf
+          gpgconf --kill gpg-agent || true
+          echo "$PGP_SECRET" | base64 --decode | gpg --batch --import
+        env:
+          PGP_SECRET: ${{ secrets.PGP_SECRET }}
+      - name: cleanFull
+        run: sbt 'cleanFull'
+      - name: publish
+        run: sbt '+elementJS/zipxModverPublishSigned'
+      - name: Upload sona staging
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: sona-staging-publish-elementJS
+          path: target/sona-staging
+          if-no-files-found: error
+  publish-mcpAppJS:
+    name: publish mcpAppJS
+    runs-on: ubuntu-latest
+    needs:
+      - modver
+      - publish-jsJS
+    if: "!cancelled() && (((github.event_name == 'push') && ((github.ref == 'refs/heads/main'))) || (github.event_name == 'workflow_dispatch')) && contains(fromJson(needs.modver.outputs.modules), 'mcpAppJS') && needs.publish-jsJS.result != 'failure'"
+    env:
+      PLAYWRIGHT_BROWSERS_PATH: ${{ github.workspace }}/target/ms-playwright
+      PGP_KEY_HEX: ${{ secrets.PGP_KEY_HEX }}
+      PGP_PASSPHRASE: ${{ secrets.PGP_PASSPHRASE }}
+      SONATYPE_PASSWORD: ${{ secrets.SONATYPE_PASSWORD }}
+      SONATYPE_USERNAME: ${{ secrets.SONATYPE_USERNAME }}
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          fetch-depth: "0"
+          fetch-tags: "true"
+      - name: zipx sbt setup
+        uses: ./.github/actions/zipx-sbt-setup
+        with:
+          java-version: "25"
+          runner-os: ubuntu-latest
+          cache-key-suffix: publish-mcpAppJS
+          node-version: ""
+          sbt-disk-cache: "false"
+          cache-mode: restore
+          cache-epoch: f2a8170a7461ec88
+      - name: Import signing key
+        run: |
+          mkdir -p ~/.gnupg && chmod 700 ~/.gnupg
+          echo "allow-loopback-pinentry" >> ~/.gnupg/gpg-agent.conf
+          echo "pinentry-mode loopback"   >> ~/.gnupg/gpg.conf
+          gpgconf --kill gpg-agent || true
+          echo "$PGP_SECRET" | base64 --decode | gpg --batch --import
+        env:
+          PGP_SECRET: ${{ secrets.PGP_SECRET }}
+      - name: cleanFull
+        run: sbt 'cleanFull'
+      - name: publish
+        run: sbt '+mcpAppJS/zipxModverPublishSigned'
+      - name: Upload sona staging
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: sona-staging-publish-mcpAppJS
+          path: target/sona-staging
+          if-no-files-found: error
+  central-release:
+    name: central-release
+    runs-on: ubuntu-latest
+    needs:
+      - publish-ascentChekhov
+      - publish-ascentChekhovJS
+      - publish-conduitBridge
+      - publish-conduitBridgeJS
+      - publish-conduitBridgeNative
+      - publish-core
+      - publish-coreJS
+      - publish-coreNative
+      - publish-css
+      - publish-cssJS
+      - publish-cssNative
+      - publish-datastar
+      - publish-datastarHttp
+      - publish-datastarJS
+      - publish-datastarJsJS
+      - publish-datastarNative
+      - publish-domCore
+      - publish-domCoreJS
+      - publish-domCoreNative
+      - publish-domFacadeJS
+      - publish-domTypes
+      - publish-domTypesJS
+      - publish-domTypesNative
+      - publish-elementJS
+      - publish-history
+      - publish-historyJS
+      - publish-historyNative
+      - publish-html
+      - publish-htmlJS
+      - publish-htmlNative
+      - publish-jsJS
+      - publish-mcpAppJS
+      - publish-mountEngine
+      - publish-mountEngineJS
+      - publish-mountEngineNative
+      - publish-preview
+      - publish-sbtAscentPreview
+    if: (!cancelled() && needs.publish-ascentChekhov.result != 'failure' && needs.publish-ascentChekhovJS.result != 'failure' && needs.publish-conduitBridge.result != 'failure' && needs.publish-conduitBridgeJS.result != 'failure' && needs.publish-conduitBridgeNative.result != 'failure' && needs.publish-core.result != 'failure' && needs.publish-coreJS.result != 'failure' && needs.publish-coreNative.result != 'failure' && needs.publish-css.result != 'failure' && needs.publish-cssJS.result != 'failure' && needs.publish-cssNative.result != 'failure' && needs.publish-datastar.result != 'failure' && needs.publish-datastarHttp.result != 'failure' && needs.publish-datastarJS.result != 'failure' && needs.publish-datastarJsJS.result != 'failure' && needs.publish-datastarNative.result != 'failure' && needs.publish-domCore.result != 'failure' && needs.publish-domCoreJS.result != 'failure' && needs.publish-domCoreNative.result != 'failure' && needs.publish-domFacadeJS.result != 'failure' && needs.publish-domTypes.result != 'failure' && needs.publish-domTypesJS.result != 'failure' && needs.publish-domTypesNative.result != 'failure' && needs.publish-elementJS.result != 'failure' && needs.publish-history.result != 'failure' && needs.publish-historyJS.result != 'failure' && needs.publish-historyNative.result != 'failure' && needs.publish-html.result != 'failure' && needs.publish-htmlJS.result != 'failure' && needs.publish-htmlNative.result != 'failure' && needs.publish-jsJS.result != 'failure' && needs.publish-mcpAppJS.result != 'failure' && needs.publish-mountEngine.result != 'failure' && needs.publish-mountEngineJS.result != 'failure' && needs.publish-mountEngineNative.result != 'failure' && needs.publish-preview.result != 'failure' && needs.publish-sbtAscentPreview.result != 'failure') && ((((github.event_name == 'push') && ((github.ref == 'refs/heads/main'))) || (github.event_name == 'workflow_dispatch')))
+    env:
+      PLAYWRIGHT_BROWSERS_PATH: ${{ github.workspace }}/target/ms-playwright
+      PGP_KEY_HEX: ${{ secrets.PGP_KEY_HEX }}
+      PGP_PASSPHRASE: ${{ secrets.PGP_PASSPHRASE }}
+      SONATYPE_PASSWORD: ${{ secrets.SONATYPE_PASSWORD }}
+      SONATYPE_USERNAME: ${{ secrets.SONATYPE_USERNAME }}
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          fetch-depth: "0"
+          fetch-tags: "true"
+      - name: zipx sbt setup
+        uses: ./.github/actions/zipx-sbt-setup
+        with:
+          java-version: "25"
+          runner-os: ubuntu-latest
+          cache-key-suffix: central-release
+          node-version: ""
+          sbt-disk-cache: "false"
+          cache-mode: restore
+          cache-epoch: f2a8170a7461ec88
+      - name: Download sona staging
+        uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # v8.0.1
+        with:
+          pattern: sona-staging-*
+          path: target/sona-staging
+          merge-multiple: "true"
+      - name: Import signing key
+        run: |
+          mkdir -p ~/.gnupg && chmod 700 ~/.gnupg
+          echo "allow-loopback-pinentry" >> ~/.gnupg/gpg-agent.conf
+          echo "pinentry-mode loopback"   >> ~/.gnupg/gpg.conf
+          gpgconf --kill gpg-agent || true
+          echo "$PGP_SECRET" | base64 --decode | gpg --batch --import
+        env:
+          PGP_SECRET: ${{ secrets.PGP_SECRET }}
+      - name: central-release
+        run: sbt 'sonaRelease'
   docs:
     name: docs
-    if: (startsWith(github.ref, 'refs/tags/v')) || (github.event_name == 'workflow_dispatch')
+    if: ((github.event_name == 'push') && ((github.ref == 'refs/heads/main'))) || (github.event_name == 'workflow_dispatch')
     permissions:
       contents: read
       pages: write

@@ -3,7 +3,9 @@ import sbt.Keys.{dependencyOverrides, libraryDependencySchemes}
 import sbt.librarymanagement.syntax.*
 import zipx.*
 
-/** Typed catalog: every library and plugin this build may use. `zipxDepUpdate` rewrites constructors here.
+/** Typed catalog: every library and plugin this build may use, and the version each published module ships at.
+  * `zipxDepUpdate` rewrites `Lib` / `Plugin` constructors; `zipxModverBump <row> [kind]` rewrites a `Ship` /
+  * `ShipGroup`, and a merge to main that moves one releases exactly that row.
   *
   * sbt-zipx is not a row: generate emits it from the loaded plugin (`zipxSelfPlugins`). sbt-pgp is not a row: zipx
   * already brings it in. Action pins stay on jar defaults.
@@ -20,9 +22,10 @@ object MyVersions extends ZipxVersions:
   val zioTestSbt         = zio.mod("zio-test-sbt")
   val zioStreams         = zio.mod("zio-streams")
   val zioJson      = Lib("dev.zio", "zio-json", "1.1.0")
-  val heddle       = Lib("rocks.earlyeffect", "heddle", "0.7.1")
+  val heddle       = Lib("rocks.earlyeffect", "heddle", "0.8.0-SNAPSHOT")
   val heddleBrotli = heddle.mod("heddle-brotli")
   val heddleApps   = heddle.mod("heddle-mcp-apps")
+  val heddleFrame  = heddle.mod("heddle-mcp-apps-frame")
 
   val scalaJavaTime     = Lib("io.github.cquiroz", "scala-java-time", "2.7.0")
   val scalaJavaTimeTzdb = scalaJavaTime.mod("scala-java-time-tzdb")
@@ -47,11 +50,34 @@ object MyVersions extends ZipxVersions:
   val scalaNative    = Plugin("org.scala-native", "sbt-scala-native", "0.5.12")
   val scalafmt       = Plugin("org.scalameta", "sbt-scalafmt", "2.6.2")
   val scalafix       = Plugin("ch.epfl.scala", "sbt-scalafix", "0.14.9")
-  val dynverCi       = Plugin("rocks.earlyeffect", "sbt-dynver-ci", "0.2.3")
   val specularPlugin = Plugin("rocks.earlyeffect", "sbt-specular", "0.18.1")
   val sbtSplice      = Plugin("rocks.earlyeffect", "sbt-splice", "0.3.0")
   val sbtReload      = Plugin("com.jamesward", "sbt-reload", "0.0.8")
   val sbtChekhov     = Plugin("rocks.earlyeffect", "sbt-chekhov", "0.1.1")
+
+  // --- What ascent ships. One row per module a consumer can take alone; a group only where modules cannot move apart.
+  //   Every row started at 0.9.0, ascent's last lockstep release. A JS-only module has no bare project, so its row
+  //   names the JS one.
+
+  /** One generator and one webref snapshot produce all three, so they move together. */
+  val dom = ShipGroup("dom", "0.9.0")("domTypes", "domFacadeJS", "domCore")
+
+  val core          = Ship("core", "0.9.0")
+  val css           = Ship("css", "0.9.0")
+  val mountEngine   = Ship("mountEngine", "0.9.0")
+  val js            = Ship("jsJS", "0.9.0")
+  val element       = Ship("elementJS", "0.9.0")
+  val mcpApp        = Ship("mcpAppJS", "0.9.0")
+  val history       = Ship("history", "0.9.0")
+  val conduitBridge = Ship("conduitBridge", "0.9.0")
+  val html          = Ship("html", "0.9.0")
+  val datastar      = Ship("datastar", "0.9.0")
+  val datastarJs    = Ship("datastarJsJS", "0.9.0")
+  val datastarHttp  = Ship("datastarHttp", "0.9.0")
+  val ascentChekhov = Ship("ascentChekhov", "0.9.0")
+
+  /** sbt-ascent-preview adds ascent-preview at its own version, so the two ship together. */
+  val preview = ShipGroup("preview", "0.9.0")("preview", "sbtAscentPreview")
 
   def zioTests = library(zioTest.test, zioTestSbt.test)
   def zioLib   = library(zio)
@@ -73,6 +99,7 @@ object MyVersions extends ZipxVersions:
   def datastarHttpLib = library(heddle)
   def previewLib      = library(heddle)
   def mcpAppLib       = library(heddleApps)
+  def mcpHostLib      = library(heddleFrame)
   def brotli          = library(heddleBrotli)
   def domgenLib       = library(zioJson, fastparse)
   def docsJvm         = library(specularZioTest, specularTheme)

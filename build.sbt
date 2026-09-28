@@ -16,7 +16,7 @@ organization         := "rocks.earlyeffect"
 organizationName     := "Early Effect"
 organizationHomepage := Some(uri("https://www.earlyeffect.rocks"))
 versionScheme        := Some("early-semver")
-// No hardcoded version — sbt-dynver-ci: clean tag -> 0.1.0, else <last-tag>-ci (cache-stable).
+// No hardcoded version: each published module's comes from its Ship row in project/ZipxVersions.scala.
 
 homepage := Some(uri("https://github.com/early-effect/ascent"))
 licenses := Seq("Apache-2.0" -> uri("http://www.apache.org/licenses/LICENSE-2.0.txt"))
@@ -582,6 +582,13 @@ lazy val docs: ProjectMatrix = (projectMatrix in file("docs"))
     publish / skip := true,
     scalacOptions ++= commonScalacOptions,
     description := "Effect-native reactive UI for Scala 3; docs site",
+    // Each module releases on its own number, so install snippets name theirs from the Ship rows. Both rows compile
+    // the pages, so both generate it.
+    Compile / sourceGenerators += Def.task {
+      val out = (Compile / sourceManaged).value / "ascent" / "docs" / "Released.scala"
+      IO.write(out, ReleasedGen.source(zipxShips.value))
+      Seq(out)
+    }.taskValue,
   )
   .jvmPlatform(
     scalaVersions,
@@ -594,6 +601,8 @@ lazy val docs: ProjectMatrix = (projectMatrix in file("docs"))
           MyVersions.docsJvm,
           // specular-site (via the theme) may still declare an older zio-json; take catalog 1.1.0.
           dependencyOverrides += MyVersions.moduleID(MyVersions.zioJson),
+          // Local only, until heddle 0.8.0 releases: specular-site 0.18.1 still names heddle 0.7.1.
+          dependencyOverrides += MyVersions.moduleID(MyVersions.heddle),
           zioTestSettings,
           Compile / mainClass             := Some("ascent.docs.ServeSite"),
           run / mainClass                 := Some("ascent.docs.ServeSite"),
@@ -607,12 +616,6 @@ lazy val docs: ProjectMatrix = (projectMatrix in file("docs"))
           ascentPreviewAutoOpen           := true,
           ascentPreviewPort               := AscentPreviewPort.auto,
           ascentPreviewRebuild            := Def.uncached(specularSiteDev.value),
-          // Dynver `-ci` / SNAPSHOT: show the previous stable tag in install snippets.
-          specularDisplayVersion := {
-            val fallback = previousStableVersion.value.getOrElse("<version>")
-            (v: String) =>
-              if v.endsWith("-ci") || v.endsWith("-SNAPSHOT") then fallback else v
-          },
           // Link the JS client and write a marker path BuildSite copies into assets/client.js.
           specularJsLink := Def.uncached {
             (LocalProject("docsJS") / Compile / fastLinkJS).value
@@ -752,6 +755,12 @@ lazy val e2e = (project in file("e2e"))
     zioTestSettings,
     MyVersions.e2eTests,
     chekhovBrowsers := Seq(chekhov.ChekhovBrowser.Firefox),
+    // macOS 27 tags ~/Library/Application Support/Firefox with com.apple.macl, and Playwright's Firefox then cannot
+    // start (Mozilla 2060476). The Playwright Firefox MCP server in llm-config sets the same two variables.
+    Test / envVars ++= Map(
+      "TMPDIR"       -> "/tmp",
+      "MOZ_APP_DATA" -> (baseDirectory.value / "target" / "firefox-app-data").getAbsolutePath,
+    ),
     e2eStage := Def.uncached {
       Def
         .sequential(
