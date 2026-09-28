@@ -165,9 +165,12 @@ end Dom
   * className string at the call site.
   */
 extension (target: dom.EventTarget)
-  /** Ensure `cls`'s CSS is in `<head>`, then add its class token. */
+  /** Ensure `cls`'s CSS is where it styles `target` (its shadow root, or `<head>`), then add its class token. */
   def addCssClass(cls: ascent.css.CssClass): Unit =
-    cls.contributionBlocks.foreach((k, v) => DomStyleSink.appendSync(k, v))
+    val styles = target match
+      case node: dom.Node => StyleTarget.of(node)
+      case _              => StyleTarget.Head
+    cls.contributionBlocks.foreach((k, v) => DomStyleSink.appendSync(styles, k, v))
     Dom.addClass(target, cls.className)
 
   /** Remove `cls`'s class token. The CSS stays in `<head>` (harmless, and likely re-added next time). */

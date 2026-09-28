@@ -9,10 +9,11 @@ import zio.*
   *
   * The cross-platform [[Mount]] engine (in `ascent-mount-engine`) is generic over a node type `N` with a
   * `given DomOps[N]` and requires a per-render [[StyleRegistry]] in its environment. On the browser the node type is
-  * always [[JsDomOps]]'s `dom.Node` and the style sink is always [[DomStyleSink]] (which injects `<style>` into
-  * `<head>`). This object binds both once — and provides a FRESH scoped `StyleRegistry` over `DomStyleSink` per mount —
-  * so app code (and the js test suite) calls `AscentApp.mount(ui, parent)` / `AscentApp.mountBody(ui)` with no
-  * ceremony, and two mounts on one page never share a style catalog (they both dedup into the same `<head>` by key).
+  * always [[JsDomOps]]'s `dom.Node` and the style sink is always [[DomStyleSink]] (which injects `<style>` into the
+  * parent's shadow root, or `<head>`). This object binds both once — and provides a FRESH scoped `StyleRegistry` over
+  * `DomStyleSink` per mount — so app code (and the js test suite) calls `AscentApp.mount(ui, parent)` /
+  * `AscentApp.mountBody(ui)` with no ceremony, and two mounts on one page never share a style catalog (they both dedup
+  * into the same target by key).
   */
 object AscentApp:
 
@@ -23,7 +24,10 @@ object AscentApp:
     * `<head>` as the tree builds so nodes mount already styled.
     */
   def mount[R](ui: UI[R], parent: dom.Element, idMode: IdMode = IdMode.HashWithRegistry): URIO[R, Subscriptions] =
-    Mount.mount[R, dom.Node](ui, parent, idMode).provideSomeLayer[R](StyleRegistry.scoped(DomStyleSink))
+    // A parent inside a shadow root is styled there: the document's <head> does not reach it.
+    Mount
+      .mount[R, dom.Node](ui, parent, idMode)
+      .provideSomeLayer[R](StyleRegistry.scoped(DomStyleSink.into(StyleTarget.of(parent))))
 
   /** Mount `ui` as the document `<body>`, replacing the placeholder body the HTML shipped with. `ui`'s root should be
     * an `E.body(...)`. See [[Mount.mountBody]] for the lifecycle contract.
