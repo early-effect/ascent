@@ -7824,16 +7824,13 @@ class TaskAttributionTiming extends PerformanceEntry:
 @js.native
 @JSGlobal
 class CustomElementRegistry extends js.Object:
-  def define(
-      name: String,
-      constructor: scala.scalajs.js.Function0[HTMLElement],
-      options: ElementDefinitionOptions = js.native,
-  ): Unit                                                                                          = js.native
-  def get(name: String): scala.scalajs.js.Any                                                      = js.native
-  def getName(constructor: scala.scalajs.js.Function0[HTMLElement]): String                        = js.native
-  def whenDefined(name: String): scala.scalajs.js.Promise[scala.scalajs.js.Function0[HTMLElement]] = js.native
-  def upgrade(root: Node): Unit                                                                    = js.native
-  def initialize(root: Node): Unit                                                                 = js.native
+  def define(name: String, constructor: scala.scalajs.js.Any, options: ElementDefinitionOptions = js.native): Unit =
+    js.native
+  def get(name: String): scala.scalajs.js.Any                                   = js.native
+  def getName(constructor: scala.scalajs.js.Any): String                        = js.native
+  def whenDefined(name: String): scala.scalajs.js.Promise[scala.scalajs.js.Any] = js.native
+  def upgrade(root: Node): Unit                                                 = js.native
+  def initialize(root: Node): Unit                                              = js.native
 end CustomElementRegistry
 
 @js.native

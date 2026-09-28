@@ -314,17 +314,17 @@ object Renderer:
 
   // --- dom-facade/.../generated/Dictionaries.scala ---
 
-  /** Render every WebIDL dictionary as a `@js.native trait` with `var`-typed fields.
+  /** Render every WebIDL dictionary as a non-native JS trait whose fields are `js.UndefOr` and start `js.undefined`.
     *
-    * Inheritance via `extends` so users can pass a child where a parent is expected. Construction at the call site uses
-    * Scala 3's anonymous class literal:
+    * Scala.js lets code construct a non-native trait, and never a native one (a non-native type cannot extend a native
+    * trait), so this is what makes the literal at the call site compile:
     * {{{
-    *   button.addEventListener("click", handler, new AddEventListenerOptions { passive = true })
+    *   host.attachShadow(new ShadowRootInit { mode = "open" })
     * }}}
     *
-    * Required fields and optional fields both emit as `var` — JS-side they're identical (the `required` distinction is
-    * enforced by callers, not the runtime). The renderer doesn't currently emit a separate "constructor with all
-    * required args" helper; users build the literal at the call site.
+    * An absent field stays `undefined`, as the dictionary's default expects. Required fields emit the same way; the
+    * `required` distinction is the API's to enforce. Inheritance via `extends` lets a child pass where a parent is
+    * expected.
     */
   def dictionaries(defs: List[DictionaryDef]): String =
     val classes = defs.map(renderDictionary).mkString("\n\n")
@@ -333,10 +333,11 @@ object Renderer:
        |
        |import scala.scalajs.js
        |
-       |/** Generated `@js.native trait`s, one per WebIDL `dictionary` block.
+       |/** Generated non-native JS traits, one per WebIDL `dictionary` block.
        |  *
        |  * Dictionaries model JS option-objects passed to APIs that take a named-arg
-       |  * config (`AddEventListenerOptions`, `KeyboardEventInit`, etc.). Construct via:
+       |  * config (`AddEventListenerOptions`, `KeyboardEventInit`, etc.). Every field is
+       |  * `js.UndefOr` and starts `js.undefined`. Construct via:
        |  * {{{
        |  *   new MyDictionary { foo = "bar"; baz = 42 }
        |  * }}}
@@ -348,10 +349,10 @@ object Renderer:
 
   private def renderDictionary(d: DictionaryDef): String =
     val parent     = d.parent.getOrElse("js.Object")
-    val fieldLines = d.fields.map(f => s"  var ${safeId(f.name)}: ${f.scalaType} = js.native").mkString("\n")
-    val body       = if fieldLines.isEmpty then "" else s":\n$fieldLines\n"
-    s"""@js.native
-       |trait ${d.name} extends $parent$body""".stripMargin
+    val fieldLines =
+      d.fields.map(f => s"  var ${safeId(f.name)}: js.UndefOr[${f.scalaType}] = js.undefined").mkString("\n")
+    val body = if fieldLines.isEmpty then "" else s":\n$fieldLines\n"
+    s"trait ${d.name} extends $parent$body"
 
   // --- dom-types/.../generated/Enums.scala (real Scala 3 enums, platform-neutral) ---
 

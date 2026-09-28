@@ -767,7 +767,8 @@ object DefBuilder:
     */
   private[domgen] def scalaFacadeType(idlType: String, idl: Webref.Idl): String =
     idl.callbacks.find(_.name == idlType) match
-      case Some(cb) =>
+      case Some(cb) if constructorCallbacks.contains(cb.name) => "scala.scalajs.js.Any"
+      case Some(cb)                                           =>
         // Recursively resolve param/return types — a callback that takes an Event should
         // get `Function1[Event, Unit]`, not `Function1[js.Any, Unit]`.
         val args = cb.params.map(p => scalaFacadeType(p.idlType, idl))
@@ -785,6 +786,12 @@ object DefBuilder:
           else if idl.enums.exists(_.name == idlType) then "String"
           else baseScalaType(idlType)
         }
+
+  /** Callback typedefs the spec invokes with `new`, which WebIDL's `callback X = R ();` cannot say: the HTML spec's
+    * prose has `define` check `IsConstructor` and construct the element. A function value would pass the facade and
+    * fail at `define`, so these take a JS class (`js.constructorOf[C]`), and ascent's typed API bounds the class.
+    */
+  private val constructorCallbacks = Set("CustomElementConstructor")
 
   private def baseScalaType(idlType: String): String = idlType match
     case "boolean"                                                                                  => "Boolean"
