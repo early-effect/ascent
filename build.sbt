@@ -755,12 +755,6 @@ lazy val e2e = (project in file("e2e"))
     zioTestSettings,
     MyVersions.e2eTests,
     chekhovBrowsers := Seq(chekhov.ChekhovBrowser.Firefox),
-    // macOS 27 tags ~/Library/Application Support/Firefox with com.apple.macl, and Playwright's Firefox then cannot
-    // start (Mozilla 2060476). The Playwright Firefox MCP server in llm-config sets the same two variables.
-    Test / envVars ++= Map(
-      "TMPDIR"       -> "/tmp",
-      "MOZ_APP_DATA" -> (baseDirectory.value / "target" / "firefox-app-data").getAbsolutePath,
-    ),
     e2eStage := Def.uncached {
       Def
         .sequential(

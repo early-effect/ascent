@@ -40,7 +40,7 @@ object MyVersions extends ZipxVersions:
   val specularZioTest = specular.mod("specular-zio-test")
   val specularTheme   = specular.mod("early-effect-docs-theme")
 
-  val chekhovZioTest = Lib("rocks.earlyeffect", "chekhov-zio-test", "0.1.1")
+  val chekhovZioTest = Lib("rocks.earlyeffect", "chekhov-zio-test", "0.1.2")
   val chekhovDriver  = chekhovZioTest.mod("chekhov-driver")
   val chekhovCore    = chekhovZioTest.mod("chekhov-core")
   val chekhovDom     = chekhovZioTest.mod("chekhov-dom")
@@ -53,7 +53,7 @@ object MyVersions extends ZipxVersions:
   val specularPlugin = Plugin("rocks.earlyeffect", "sbt-specular", "0.18.1")
   val sbtSplice      = Plugin("rocks.earlyeffect", "sbt-splice", "0.3.0")
   val sbtReload      = Plugin("com.jamesward", "sbt-reload", "0.0.8")
-  val sbtChekhov     = Plugin("rocks.earlyeffect", "sbt-chekhov", "0.1.1")
+  val sbtChekhov     = Plugin("rocks.earlyeffect", "sbt-chekhov", "0.1.2")
 
   // --- What ascent ships. One row per module a consumer can take alone; a group only where modules cannot move apart.
   //   Every row started at 0.9.0, ascent's last lockstep release. A JS-only module has no bare project, so its row
