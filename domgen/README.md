@@ -43,7 +43,7 @@ Written into the `generated/` source trees of the consuming modules:
 | Target | Files |
 |--------|-------|
 | `dom-types/.../generated/` | `Elements`, `Attrs`, `Events`, `Enums`, `EnumAccessors`, `AriaAttrs` |
-| `dom-facade/.../generated/` | `Interfaces`, `Facades`, `Dictionaries`, `EnumAccessors`, `NullableAccessors` (js-only DOM facade) |
+| `dom-facade/.../generated/` | `Interfaces`, `Facades`, `Dictionaries`, `EnumAccessors`, `NullableAccessors`, `HtmlTag` (js-only DOM facade) |
 | `dom-core/.../generated/`  | `Elements`, `ElementsMemory`, `ElementFactory` |
 | `js/.../generated/`        | `TypedEvents` (typed event-handler DSL) |
 | `css/.../generated/`       | `StylesGenerated`, `StylesValueTraits`, `MediaFeatures`, `ContainerFeatures`, `FontFaceDescriptors`, `PageDescriptors`, `CounterStyleDescriptors`, `PseudoSelectors` |
@@ -59,8 +59,18 @@ hand-written `PlatformObject`, whose companion exports the accessors, so they re
 `import ascent.dom` with no extra import.
 
 A few operations have a result the spec's prose fixes by an argument's value, which IDL cannot say.
-`SpecTypedOp` replaces each one with members keyed by a hand-written type: `HTMLCanvasElement.getContext`
-takes a `CanvasContextId[C, O]`, which pins the context type `C` and its options dictionary `O`.
+`SpecTypedOp` gives each one members keyed by a type that pins the result: `HTMLCanvasElement.getContext`
+takes a `CanvasContextId[C, O]` (the context type `C` and its options dictionary `O`), and
+`Document.createElement` also takes an `HtmlTag[E]`, generated from HTML's element index, so
+`document.createElement(HtmlTag.iframe)` is an `HTMLIFrameElement`.
+
+## Overloads and optional arguments
+
+Scala 3 lets one overload of a name keep default arguments, inherited overloads included. When WebIDL
+declares a name more than once (or a subclass redeclares it), each optional trailing argument becomes
+an explicit overload per arity, so `window.postMessage(message, targetOrigin)` and
+`port.postMessage(message)` stay callable beside the forms that take a transfer list. A name declared
+once keeps its optional arguments as `= js.native` defaults.
 
 ## Inspecting the snapshot
 

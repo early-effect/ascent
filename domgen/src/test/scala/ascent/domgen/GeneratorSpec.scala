@@ -55,6 +55,7 @@ object GeneratorSpec extends ZIOSpecDefault:
           "dom-facade/Dictionaries.scala",
           "dom-facade/EnumAccessors.scala",
           "dom-facade/NullableAccessors.scala",
+          "dom-facade/HtmlTag.scala",
           "js/TypedEvents.scala",
           "dom-core/Elements.scala",
           "dom-core/ElementsMemory.scala",

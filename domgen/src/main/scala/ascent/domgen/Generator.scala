@@ -100,6 +100,7 @@ object Generator:
         "dom-facade/Dictionaries.scala"      -> Renderer.dictionaries(dictionaryDefs),
         "dom-facade/EnumAccessors.scala"     -> Renderer.enumAccessors(interfaceDefs, facadeDefs),
         "dom-facade/NullableAccessors.scala" -> Renderer.nullableAccessors(interfaceDefs, facadeDefs),
+        "dom-facade/HtmlTag.scala"           -> Renderer.htmlTags(elementDefs, interfaceDefs.map(_.name).toSet),
         "js/TypedEvents.scala"               -> Renderer.typedEvents(eventDefs),
         "dom-core/Elements.scala"            -> Renderer.structuralTraits(structuralDefs),
         "dom-core/ElementsMemory.scala"      -> Renderer.memoryImpls(

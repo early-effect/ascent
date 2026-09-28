@@ -331,6 +331,7 @@ class CSSViewTransitionRule extends CSSRule:
 @js.native
 @JSGlobal
 class ML extends PlatformObject:
+  def createContext(): scala.scalajs.js.Promise[MLContext]                          = js.native
   def createContext(options: MLContextOptions): scala.scalajs.js.Promise[MLContext] = js.native
   def createContext(gpuDevice: GPUDevice): scala.scalajs.js.Promise[MLContext]      = js.native
 
@@ -686,8 +687,18 @@ class WorkerGlobalScope extends EventTarget:
   def clearInterval(id: Int = js.native): Unit                         = js.native
   def queueMicrotask(callback: scala.scalajs.js.Function0[Unit]): Unit = js.native
   def createImageBitmap(
+      image: HTMLImageElement | SVGImageElement | HTMLVideoElement | HTMLCanvasElement | ImageBitmap | OffscreenCanvas | VideoFrame | Blob | ImageData
+  ): scala.scalajs.js.Promise[ImageBitmap] = js.native
+  def createImageBitmap(
       image: HTMLImageElement | SVGImageElement | HTMLVideoElement | HTMLCanvasElement | ImageBitmap | OffscreenCanvas | VideoFrame | Blob | ImageData,
       options: ImageBitmapOptions,
+  ): scala.scalajs.js.Promise[ImageBitmap] = js.native
+  def createImageBitmap(
+      image: HTMLImageElement | SVGImageElement | HTMLVideoElement | HTMLCanvasElement | ImageBitmap | OffscreenCanvas | VideoFrame | Blob | ImageData,
+      sx: Int,
+      sy: Int,
+      sw: Int,
+      sh: Int,
   ): scala.scalajs.js.Promise[ImageBitmap] = js.native
   def createImageBitmap(
       image: HTMLImageElement | SVGImageElement | HTMLVideoElement | HTMLCanvasElement | ImageBitmap | OffscreenCanvas | VideoFrame | Blob | ImageData,
@@ -752,6 +763,7 @@ class CanvasRenderingContext2D extends PlatformObject:
   def transform(a: Double, b: Double, c: Double, d: Double, e: Double, f: Double): Unit    = js.native
   def getTransform(): DOMMatrix                                                            = js.native
   def setTransform(a: Double, b: Double, c: Double, d: Double, e: Double, f: Double): Unit = js.native
+  def setTransform(): Unit                                                                 = js.native
   def setTransform(transform: DOMMatrix2DInit): Unit                                       = js.native
   def resetTransform(): Unit                                                               = js.native
   def createLinearGradient(x0: Double, y0: Double, x1: Double, y1: Double): CanvasGradient = js.native
@@ -767,13 +779,19 @@ class CanvasRenderingContext2D extends PlatformObject:
   def fillRect(x: Double, y: Double, w: Double, h: Double): Unit                         = js.native
   def strokeRect(x: Double, y: Double, w: Double, h: Double): Unit                       = js.native
   def beginPath(): Unit                                                                  = js.native
+  def fill(): Unit                                                                       = js.native
   def fill(fillRule: String): Unit                                                       = js.native
+  def fill(path: Path2D): Unit                                                           = js.native
   def fill(path: Path2D, fillRule: String): Unit                                         = js.native
   def stroke(): Unit                                                                     = js.native
   def stroke(path: Path2D): Unit                                                         = js.native
+  def clip(): Unit                                                                       = js.native
   def clip(fillRule: String): Unit                                                       = js.native
+  def clip(path: Path2D): Unit                                                           = js.native
   def clip(path: Path2D, fillRule: String): Unit                                         = js.native
+  def isPointInPath(x: Double, y: Double): Boolean                                       = js.native
   def isPointInPath(x: Double, y: Double, fillRule: String): Boolean                     = js.native
+  def isPointInPath(path: Path2D, x: Double, y: Double): Boolean                         = js.native
   def isPointInPath(path: Path2D, x: Double, y: Double, fillRule: String): Boolean       = js.native
   def isPointInStroke(x: Double, y: Double): Boolean                                     = js.native
   def isPointInStroke(path: Path2D, x: Double, y: Double): Boolean                       = js.native
@@ -805,6 +823,7 @@ class CanvasRenderingContext2D extends PlatformObject:
       dw: Double,
       dh: Double,
   ): Unit                                                                                                  = js.native
+  def createImageData(sw: Int, sh: Int): ImageData                                                         = js.native
   def createImageData(sw: Int, sh: Int, settings: ImageDataSettings): ImageData                            = js.native
   def createImageData(imageData: ImageData): ImageData                                                     = js.native
   def getImageData(sx: Int, sy: Int, sw: Int, sh: Int, settings: ImageDataSettings = js.native): ImageData = js.native
@@ -2344,10 +2363,13 @@ class Element extends Node:
   def getBoundingClientRect(): DOMRect                                                                 = js.native
   def checkVisibility(options: CheckVisibilityOptions = js.native): Boolean                            = js.native
   def scrollIntoView(arg: Boolean | ScrollIntoViewOptions = js.native): scala.scalajs.js.Promise[Unit] = js.native
+  def scroll(): scala.scalajs.js.Promise[Unit]                                                         = js.native
   def scroll(options: ScrollToOptions): scala.scalajs.js.Promise[Unit]                                 = js.native
   def scroll(x: Double, y: Double): scala.scalajs.js.Promise[Unit]                                     = js.native
+  def scrollTo(): scala.scalajs.js.Promise[Unit]                                                       = js.native
   def scrollTo(options: ScrollToOptions): scala.scalajs.js.Promise[Unit]                               = js.native
   def scrollTo(x: Double, y: Double): scala.scalajs.js.Promise[Unit]                                   = js.native
+  def scrollBy(): scala.scalajs.js.Promise[Unit]                                                       = js.native
   def scrollBy(options: ScrollToOptions): scala.scalajs.js.Promise[Unit]                               = js.native
   def scrollBy(x: Double, y: Double): scala.scalajs.js.Promise[Unit]                                   = js.native
   def hasAttributes(): Boolean                                                                         = js.native
@@ -3496,6 +3518,7 @@ class GPUComputePassEncoder extends PlatformObject:
   def pushDebugGroup(groupLabel: String): Unit                                                             = js.native
   def popDebugGroup(): Unit                                                                                = js.native
   def insertDebugMarker(markerLabel: String): Unit                                                         = js.native
+  def setBindGroup(index: Int, bindGroup: GPUBindGroup): Unit                                              = js.native
   def setBindGroup(index: Int, bindGroup: GPUBindGroup, dynamicOffsets: scala.scalajs.js.Array[Int]): Unit = js.native
   def setBindGroup(
       index: Int,
@@ -4684,6 +4707,7 @@ class DedicatedWorkerGlobalScope extends WorkerGlobalScope:
   var onmessageerrorOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
   def postMessage(message: scala.scalajs.js.Any, transfer: scala.scalajs.js.Array[scala.scalajs.js.Any]): Unit =
     js.native
+  def postMessage(message: scala.scalajs.js.Any): Unit                                      = js.native
   def postMessage(message: scala.scalajs.js.Any, options: StructuredSerializeOptions): Unit = js.native
   def close(): Unit                                                                         = js.native
   def requestAnimationFrame(callback: scala.scalajs.js.Function1[Double, Unit]): Int        = js.native
@@ -5199,15 +5223,23 @@ class RTCPeerConnection extends EventTarget:
   var ondatachannelOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null              = js.native
   def setIdentityProvider(provider: String, options: RTCIdentityProviderOptions = js.native): Unit     = js.native
   def getIdentityAssertion(): scala.scalajs.js.Promise[String]                                         = js.native
+  def createOffer(): scala.scalajs.js.Promise[RTCSessionDescriptionInit]                               = js.native
   def createOffer(options: RTCOfferOptions): scala.scalajs.js.Promise[RTCSessionDescriptionInit]       = js.native
+  def createAnswer(): scala.scalajs.js.Promise[RTCSessionDescriptionInit]                              = js.native
   def createAnswer(options: RTCAnswerOptions): scala.scalajs.js.Promise[RTCSessionDescriptionInit]     = js.native
+  def setLocalDescription(): scala.scalajs.js.Promise[Unit]                                            = js.native
   def setLocalDescription(description: RTCLocalSessionDescriptionInit): scala.scalajs.js.Promise[Unit] = js.native
   def setRemoteDescription(description: RTCSessionDescriptionInit): scala.scalajs.js.Promise[Unit]     = js.native
+  def addIceCandidate(): scala.scalajs.js.Promise[Unit]                                                = js.native
   def addIceCandidate(candidate: RTCIceCandidateInit): scala.scalajs.js.Promise[Unit]                  = js.native
   def restartIce(): Unit                                                                               = js.native
   def getConfiguration(): RTCConfiguration                                                             = js.native
   def setConfiguration(configuration: RTCConfiguration = js.native): Unit                              = js.native
   def close(): Unit                                                                                    = js.native
+  def createOffer(
+      successCallback: scala.scalajs.js.Function1[RTCSessionDescriptionInit, Unit],
+      failureCallback: scala.scalajs.js.Function1[DOMException, Unit],
+  ): scala.scalajs.js.Promise[Unit] = js.native
   def createOffer(
       successCallback: scala.scalajs.js.Function1[RTCSessionDescriptionInit, Unit],
       failureCallback: scala.scalajs.js.Function1[DOMException, Unit],
@@ -5824,6 +5856,7 @@ class AudioBufferSourceNode extends AudioScheduledSourceNode:
   var loop: Boolean                                               = js.native
   var loopStart: Double                                           = js.native
   var loopEnd: Double                                             = js.native
+  def start(when: Double, offset: Double): Unit                   = js.native
   def start(when: Double, offset: Double, duration: Double): Unit = js.native
 end AudioBufferSourceNode
 
@@ -5993,8 +6026,10 @@ class CookieStore extends EventTarget:
   @JSName("onchange")
   var onchangeOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null         = js.native
   def get(name: String): scala.scalajs.js.Promise[CookieListItem]                            = js.native
+  def get(): scala.scalajs.js.Promise[CookieListItem]                                        = js.native
   def get(options: CookieStoreGetOptions): scala.scalajs.js.Promise[CookieListItem]          = js.native
   def getAll(name: String): scala.scalajs.js.Promise[scala.scalajs.js.Array[CookieListItem]] = js.native
+  def getAll(): scala.scalajs.js.Promise[scala.scalajs.js.Array[CookieListItem]]             = js.native
   def getAll(options: CookieStoreGetOptions): scala.scalajs.js.Promise[scala.scalajs.js.Array[CookieListItem]] =
     js.native
   def set(name: String, value: String): scala.scalajs.js.Promise[Unit]          = js.native
@@ -6549,6 +6584,19 @@ class WebGL2RenderingContext extends PlatformObject:
       format: Int,
       `type`: Int,
       srcData: scala.scalajs.js.Any,
+  ): Unit = js.native
+  def texSubImage3D(
+      target: Int,
+      level: Int,
+      xoffset: Int,
+      yoffset: Int,
+      zoffset: Int,
+      width: Int,
+      height: Int,
+      depth: Int,
+      format: Int,
+      `type`: Int,
+      srcData: scala.scalajs.js.Any,
       srcOffset: Int,
   ): Unit = js.native
   def copyTexSubImage3D(
@@ -6582,6 +6630,27 @@ class WebGL2RenderingContext extends PlatformObject:
       depth: Int,
       border: Int,
       srcData: scala.scalajs.js.Any,
+  ): Unit = js.native
+  def compressedTexImage3D(
+      target: Int,
+      level: Int,
+      internalformat: Int,
+      width: Int,
+      height: Int,
+      depth: Int,
+      border: Int,
+      srcData: scala.scalajs.js.Any,
+      srcOffset: Int,
+  ): Unit = js.native
+  def compressedTexImage3D(
+      target: Int,
+      level: Int,
+      internalformat: Int,
+      width: Int,
+      height: Int,
+      depth: Int,
+      border: Int,
+      srcData: scala.scalajs.js.Any,
       srcOffset: Int,
       srcLengthOverride: Int,
   ): Unit = js.native
@@ -6597,6 +6666,31 @@ class WebGL2RenderingContext extends PlatformObject:
       format: Int,
       imageSize: Int,
       offset: Int,
+  ): Unit = js.native
+  def compressedTexSubImage3D(
+      target: Int,
+      level: Int,
+      xoffset: Int,
+      yoffset: Int,
+      zoffset: Int,
+      width: Int,
+      height: Int,
+      depth: Int,
+      format: Int,
+      srcData: scala.scalajs.js.Any,
+  ): Unit = js.native
+  def compressedTexSubImage3D(
+      target: Int,
+      level: Int,
+      xoffset: Int,
+      yoffset: Int,
+      zoffset: Int,
+      width: Int,
+      height: Int,
+      depth: Int,
+      format: Int,
+      srcData: scala.scalajs.js.Any,
+      srcOffset: Int,
   ): Unit = js.native
   def compressedTexSubImage3D(
       target: Int,
@@ -6763,7 +6857,9 @@ class WebGL2RenderingContext extends PlatformObject:
   def bufferData(target: Int, size: Int, usage: Int): Unit                                                  = js.native
   def bufferData(target: Int, srcData: scala.scalajs.js.Any, usage: Int): Unit                              = js.native
   def bufferSubData(target: Int, dstByteOffset: Int, srcData: scala.scalajs.js.Any): Unit                   = js.native
+  def bufferData(target: Int, srcData: scala.scalajs.js.Any, usage: Int, srcOffset: Int): Unit              = js.native
   def bufferData(target: Int, srcData: scala.scalajs.js.Any, usage: Int, srcOffset: Int, length: Int): Unit = js.native
+  def bufferSubData(target: Int, dstByteOffset: Int, srcData: scala.scalajs.js.Any, srcOffset: Int): Unit   = js.native
   def bufferSubData(target: Int, dstByteOffset: Int, srcData: scala.scalajs.js.Any, srcOffset: Int, length: Int): Unit =
     js.native
   def texImage2D(
@@ -6891,6 +6987,25 @@ class WebGL2RenderingContext extends PlatformObject:
       height: Int,
       border: Int,
       srcData: scala.scalajs.js.Any,
+  ): Unit = js.native
+  def compressedTexImage2D(
+      target: Int,
+      level: Int,
+      internalformat: Int,
+      width: Int,
+      height: Int,
+      border: Int,
+      srcData: scala.scalajs.js.Any,
+      srcOffset: Int,
+  ): Unit = js.native
+  def compressedTexImage2D(
+      target: Int,
+      level: Int,
+      internalformat: Int,
+      width: Int,
+      height: Int,
+      border: Int,
+      srcData: scala.scalajs.js.Any,
       srcOffset: Int,
       srcLengthOverride: Int,
   ): Unit = js.native
@@ -6904,6 +7019,27 @@ class WebGL2RenderingContext extends PlatformObject:
       format: Int,
       imageSize: Int,
       offset: Int,
+  ): Unit = js.native
+  def compressedTexSubImage2D(
+      target: Int,
+      level: Int,
+      xoffset: Int,
+      yoffset: Int,
+      width: Int,
+      height: Int,
+      format: Int,
+      srcData: scala.scalajs.js.Any,
+  ): Unit = js.native
+  def compressedTexSubImage2D(
+      target: Int,
+      level: Int,
+      xoffset: Int,
+      yoffset: Int,
+      width: Int,
+      height: Int,
+      format: Int,
+      srcData: scala.scalajs.js.Any,
+      srcOffset: Int,
   ): Unit = js.native
   def compressedTexSubImage2D(
       target: Int,
@@ -7113,6 +7249,7 @@ class GPURenderBundleEncoder extends PlatformObject:
   def pushDebugGroup(groupLabel: String): Unit                                                             = js.native
   def popDebugGroup(): Unit                                                                                = js.native
   def insertDebugMarker(markerLabel: String): Unit                                                         = js.native
+  def setBindGroup(index: Int, bindGroup: GPUBindGroup): Unit                                              = js.native
   def setBindGroup(index: Int, bindGroup: GPUBindGroup, dynamicOffsets: scala.scalajs.js.Array[Int]): Unit = js.native
   def setBindGroup(
       index: Int,
@@ -8569,6 +8706,7 @@ class HTMLTextAreaElement extends HTMLElement:
   def setCustomValidity(error: String): Unit                                               = js.native
   def select(): Unit                                                                       = js.native
   def setRangeText(replacement: String): Unit                                              = js.native
+  def setRangeText(replacement: String, start: Int, end: Int): Unit                        = js.native
   def setRangeText(replacement: String, start: Int, end: Int, selectionMode: String): Unit = js.native
   def setSelectionRange(start: Int, end: Int, direction: String = js.native): Unit         = js.native
 end HTMLTextAreaElement
@@ -9321,7 +9459,10 @@ class AudioNode extends EventTarget:
   var channelCount: Int                                                       = js.native
   var channelCountMode: String                                                = js.native
   var channelInterpretation: String                                           = js.native
+  def connect(destinationNode: AudioNode): AudioNode                          = js.native
+  def connect(destinationNode: AudioNode, output: Int): AudioNode             = js.native
   def connect(destinationNode: AudioNode, output: Int, input: Int): AudioNode = js.native
+  def connect(destinationParam: AudioParam): Unit                             = js.native
   def connect(destinationParam: AudioParam, output: Int): Unit                = js.native
   def disconnect(): Unit                                                      = js.native
   def disconnect(output: Int): Unit                                           = js.native
@@ -9397,6 +9538,7 @@ end MIDIOutputMap
 class FormData extends PlatformObject:
   def this(@unused form: HTMLFormElement = js.native, @unused submitter: HTMLElement = js.native) = this()
   def append(name: String, value: String): Unit                     = js.native
+  def append(name: String, blobValue: Blob): Unit                   = js.native
   def append(name: String, blobValue: Blob, filename: String): Unit = js.native
   def delete(name: String): Unit                                    = js.native
   @JSName("get")
@@ -9404,6 +9546,7 @@ class FormData extends PlatformObject:
   def getAll(name: String): scala.scalajs.js.Array[File | String] = js.native
   def has(name: String): Boolean                                  = js.native
   def set(name: String, value: String): Unit                      = js.native
+  def set(name: String, blobValue: Blob): Unit                    = js.native
   def set(name: String, blobValue: Blob, filename: String): Unit  = js.native
   @JSName(js.Symbol.iterator)
   def jsIterator(): scala.scalajs.js.Iterator[js.Tuple2[String, File | String]] = js.native
@@ -9802,7 +9945,10 @@ class GPUCommandEncoder extends PlatformObject:
   var label: String                                                                             = js.native
   def beginRenderPass(descriptor: GPURenderPassDescriptor): GPURenderPassEncoder                = js.native
   def beginComputePass(descriptor: GPUComputePassDescriptor = js.native): GPUComputePassEncoder = js.native
+  def copyBufferToBuffer(source: GPUBuffer, destination: GPUBuffer): Unit                       = js.native
   def copyBufferToBuffer(source: GPUBuffer, destination: GPUBuffer, size: Int): Unit            = js.native
+  def copyBufferToBuffer(source: GPUBuffer, sourceOffset: Int, destination: GPUBuffer, destinationOffset: Int): Unit =
+    js.native
   def copyBufferToBuffer(
       source: GPUBuffer,
       sourceOffset: Int,
@@ -10814,6 +10960,7 @@ class OffscreenCanvasRenderingContext2D extends PlatformObject:
   def transform(a: Double, b: Double, c: Double, d: Double, e: Double, f: Double): Unit    = js.native
   def getTransform(): DOMMatrix                                                            = js.native
   def setTransform(a: Double, b: Double, c: Double, d: Double, e: Double, f: Double): Unit = js.native
+  def setTransform(): Unit                                                                 = js.native
   def setTransform(transform: DOMMatrix2DInit): Unit                                       = js.native
   def resetTransform(): Unit                                                               = js.native
   def createLinearGradient(x0: Double, y0: Double, x1: Double, y1: Double): CanvasGradient = js.native
@@ -10829,13 +10976,19 @@ class OffscreenCanvasRenderingContext2D extends PlatformObject:
   def fillRect(x: Double, y: Double, w: Double, h: Double): Unit                         = js.native
   def strokeRect(x: Double, y: Double, w: Double, h: Double): Unit                       = js.native
   def beginPath(): Unit                                                                  = js.native
+  def fill(): Unit                                                                       = js.native
   def fill(fillRule: String): Unit                                                       = js.native
+  def fill(path: Path2D): Unit                                                           = js.native
   def fill(path: Path2D, fillRule: String): Unit                                         = js.native
   def stroke(): Unit                                                                     = js.native
   def stroke(path: Path2D): Unit                                                         = js.native
+  def clip(): Unit                                                                       = js.native
   def clip(fillRule: String): Unit                                                       = js.native
+  def clip(path: Path2D): Unit                                                           = js.native
   def clip(path: Path2D, fillRule: String): Unit                                         = js.native
+  def isPointInPath(x: Double, y: Double): Boolean                                       = js.native
   def isPointInPath(x: Double, y: Double, fillRule: String): Boolean                     = js.native
+  def isPointInPath(path: Path2D, x: Double, y: Double): Boolean                         = js.native
   def isPointInPath(path: Path2D, x: Double, y: Double, fillRule: String): Boolean       = js.native
   def isPointInStroke(x: Double, y: Double): Boolean                                     = js.native
   def isPointInStroke(path: Path2D, x: Double, y: Double): Boolean                       = js.native
@@ -10865,6 +11018,7 @@ class OffscreenCanvasRenderingContext2D extends PlatformObject:
       dw: Double,
       dh: Double,
   ): Unit                                                                                                  = js.native
+  def createImageData(sw: Int, sh: Int): ImageData                                                         = js.native
   def createImageData(sw: Int, sh: Int, settings: ImageDataSettings): ImageData                            = js.native
   def createImageData(imageData: ImageData): ImageData                                                     = js.native
   def getImageData(sx: Int, sy: Int, sw: Int, sh: Int, settings: ImageDataSettings = js.native): ImageData = js.native
@@ -12616,6 +12770,7 @@ class HTMLInputElement extends HTMLElement:
   def setCustomValidity(error: String): Unit                                               = js.native
   def select(): Unit                                                                       = js.native
   def setRangeText(replacement: String): Unit                                              = js.native
+  def setRangeText(replacement: String, start: Int, end: Int): Unit                        = js.native
   def setRangeText(replacement: String, start: Int, end: Int, selectionMode: String): Unit = js.native
   def setSelectionRange(start: Int, end: Int, direction: String = js.native): Unit         = js.native
   def showPicker(): Unit                                                                   = js.native
@@ -12658,6 +12813,7 @@ class Worker extends EventTarget:
   def terminate(): Unit                                                                    = js.native
   def postMessage(message: scala.scalajs.js.Any, transfer: scala.scalajs.js.Array[scala.scalajs.js.Any]): Unit =
     js.native
+  def postMessage(message: scala.scalajs.js.Any): Unit                                      = js.native
   def postMessage(message: scala.scalajs.js.Any, options: StructuredSerializeOptions): Unit = js.native
 end Worker
 
@@ -12900,6 +13056,7 @@ class GPURenderPassEncoder extends PlatformObject:
   def pushDebugGroup(groupLabel: String): Unit                                                             = js.native
   def popDebugGroup(): Unit                                                                                = js.native
   def insertDebugMarker(markerLabel: String): Unit                                                         = js.native
+  def setBindGroup(index: Int, bindGroup: GPUBindGroup): Unit                                              = js.native
   def setBindGroup(index: Int, bindGroup: GPUBindGroup, dynamicOffsets: scala.scalajs.js.Array[Int]): Unit = js.native
   def setBindGroup(
       index: Int,
@@ -13196,6 +13353,7 @@ class PaintRenderingContext2D extends PlatformObject:
   def transform(a: Double, b: Double, c: Double, d: Double, e: Double, f: Double): Unit    = js.native
   def getTransform(): DOMMatrix                                                            = js.native
   def setTransform(a: Double, b: Double, c: Double, d: Double, e: Double, f: Double): Unit = js.native
+  def setTransform(): Unit                                                                 = js.native
   def setTransform(transform: DOMMatrix2DInit): Unit                                       = js.native
   def resetTransform(): Unit                                                               = js.native
   def createLinearGradient(x0: Double, y0: Double, x1: Double, y1: Double): CanvasGradient = js.native
@@ -13211,13 +13369,19 @@ class PaintRenderingContext2D extends PlatformObject:
   def fillRect(x: Double, y: Double, w: Double, h: Double): Unit                   = js.native
   def strokeRect(x: Double, y: Double, w: Double, h: Double): Unit                 = js.native
   def beginPath(): Unit                                                            = js.native
+  def fill(): Unit                                                                 = js.native
   def fill(fillRule: String): Unit                                                 = js.native
+  def fill(path: Path2D): Unit                                                     = js.native
   def fill(path: Path2D, fillRule: String): Unit                                   = js.native
   def stroke(): Unit                                                               = js.native
   def stroke(path: Path2D): Unit                                                   = js.native
+  def clip(): Unit                                                                 = js.native
   def clip(fillRule: String): Unit                                                 = js.native
+  def clip(path: Path2D): Unit                                                     = js.native
   def clip(path: Path2D, fillRule: String): Unit                                   = js.native
+  def isPointInPath(x: Double, y: Double): Boolean                                 = js.native
   def isPointInPath(x: Double, y: Double, fillRule: String): Boolean               = js.native
+  def isPointInPath(path: Path2D, x: Double, y: Double): Boolean                   = js.native
   def isPointInPath(path: Path2D, x: Double, y: Double, fillRule: String): Boolean = js.native
   def isPointInStroke(x: Double, y: Double): Boolean                               = js.native
   def isPointInStroke(path: Path2D, x: Double, y: Double): Boolean                 = js.native
@@ -14088,10 +14252,13 @@ class Window extends EventTarget:
   def moveBy(x: Int, y: Int): Unit                                                                   = js.native
   def resizeTo(width: Int, height: Int): Unit                                                        = js.native
   def resizeBy(x: Int, y: Int): Unit                                                                 = js.native
+  def scroll(): scala.scalajs.js.Promise[Unit]                                                       = js.native
   def scroll(options: ScrollToOptions): scala.scalajs.js.Promise[Unit]                               = js.native
   def scroll(x: Double, y: Double): scala.scalajs.js.Promise[Unit]                                   = js.native
+  def scrollTo(): scala.scalajs.js.Promise[Unit]                                                     = js.native
   def scrollTo(options: ScrollToOptions): scala.scalajs.js.Promise[Unit]                             = js.native
   def scrollTo(x: Double, y: Double): scala.scalajs.js.Promise[Unit]                                 = js.native
+  def scrollBy(): scala.scalajs.js.Promise[Unit]                                                     = js.native
   def scrollBy(options: ScrollToOptions): scala.scalajs.js.Promise[Unit]                             = js.native
   def scrollBy(x: Double, y: Double): scala.scalajs.js.Promise[Unit]                                 = js.native
   def getDigitalGoodsService(serviceProvider: String): scala.scalajs.js.Promise[DigitalGoodsService] = js.native
@@ -14117,11 +14284,13 @@ class Window extends EventTarget:
   @JSName("prompt")
   def promptOrNull(message: String = js.native, default: String = js.native): String | Null = js.native
   def print(): Unit                                                                         = js.native
+  def postMessage(message: scala.scalajs.js.Any, targetOrigin: String): Unit                = js.native
   def postMessage(
       message: scala.scalajs.js.Any,
       targetOrigin: String,
       transfer: scala.scalajs.js.Array[scala.scalajs.js.Any],
   ): Unit                                                                                 = js.native
+  def postMessage(message: scala.scalajs.js.Any): Unit                                    = js.native
   def postMessage(message: scala.scalajs.js.Any, options: WindowPostMessageOptions): Unit = js.native
   def captureEvents(): Unit                                                               = js.native
   def releaseEvents(): Unit                                                               = js.native
@@ -14152,8 +14321,18 @@ class Window extends EventTarget:
   def clearInterval(id: Int = js.native): Unit                         = js.native
   def queueMicrotask(callback: scala.scalajs.js.Function0[Unit]): Unit = js.native
   def createImageBitmap(
+      image: HTMLImageElement | SVGImageElement | HTMLVideoElement | HTMLCanvasElement | ImageBitmap | OffscreenCanvas | VideoFrame | Blob | ImageData
+  ): scala.scalajs.js.Promise[ImageBitmap] = js.native
+  def createImageBitmap(
       image: HTMLImageElement | SVGImageElement | HTMLVideoElement | HTMLCanvasElement | ImageBitmap | OffscreenCanvas | VideoFrame | Blob | ImageData,
       options: ImageBitmapOptions,
+  ): scala.scalajs.js.Promise[ImageBitmap] = js.native
+  def createImageBitmap(
+      image: HTMLImageElement | SVGImageElement | HTMLVideoElement | HTMLCanvasElement | ImageBitmap | OffscreenCanvas | VideoFrame | Blob | ImageData,
+      sx: Int,
+      sy: Int,
+      sw: Int,
+      sh: Int,
   ): scala.scalajs.js.Promise[ImageBitmap] = js.native
   def createImageBitmap(
       image: HTMLImageElement | SVGImageElement | HTMLVideoElement | HTMLCanvasElement | ImageBitmap | OffscreenCanvas | VideoFrame | Blob | ImageData,
@@ -14326,6 +14505,7 @@ class Client extends PlatformObject:
   def `type`: String         = js.native
   def postMessage(message: scala.scalajs.js.Any, transfer: scala.scalajs.js.Array[scala.scalajs.js.Any]): Unit =
     js.native
+  def postMessage(message: scala.scalajs.js.Any): Unit                                      = js.native
   def postMessage(message: scala.scalajs.js.Any, options: StructuredSerializeOptions): Unit = js.native
 end Client
 
@@ -14348,6 +14528,8 @@ class XMLHttpRequest extends XMLHttpRequestEventTarget:
   def responseXMLOrNull: Document | Null                                                          = js.native
   def setPrivateToken(privateToken: PrivateToken): Unit                                           = js.native
   def open(method: String, url: String): Unit                                                     = js.native
+  def open(method: String, url: String, async: Boolean): Unit                                     = js.native
+  def open(method: String, url: String, async: Boolean, username: String): Unit                   = js.native
   def open(method: String, url: String, async: Boolean, username: String, password: String): Unit = js.native
   def setRequestHeader(name: String, value: String): Unit                                         = js.native
   def send(body: scala.scalajs.js.Any = js.native): Unit                                          = js.native
@@ -15415,6 +15597,7 @@ class MessagePort extends EventTarget:
   var onmessageerrorOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
   def postMessage(message: scala.scalajs.js.Any, transfer: scala.scalajs.js.Array[scala.scalajs.js.Any]): Unit =
     js.native
+  def postMessage(message: scala.scalajs.js.Any): Unit                                      = js.native
   def postMessage(message: scala.scalajs.js.Any, options: StructuredSerializeOptions): Unit = js.native
   def start(): Unit                                                                         = js.native
   def close(): Unit                                                                         = js.native
@@ -15441,8 +15624,8 @@ class FontFaceSet extends EventTarget:
   def ready: scala.scalajs.js.Promise[FontFaceSet]                                         = js.native
   def status: String                                                                       = js.native
   def size: Int                                                                            = js.native
-  def add(value: FontFace): Unit                                                           = js.native
-  def delete(value: FontFace): Boolean                                                     = js.native
+  def add(font: FontFace): FontFaceSet                                                     = js.native
+  def delete(font: FontFace): Boolean                                                      = js.native
   def clear(): Unit                                                                        = js.native
   def load(font: String, text: String = js.native): scala.scalajs.js.Any                   = js.native
   def check(font: String, text: String = js.native): Boolean                               = js.native
@@ -15594,6 +15777,7 @@ class ServiceWorker extends EventTarget:
   var onerrorOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
   def postMessage(message: scala.scalajs.js.Any, transfer: scala.scalajs.js.Array[scala.scalajs.js.Any]): Unit =
     js.native
+  def postMessage(message: scala.scalajs.js.Any): Unit                                      = js.native
   def postMessage(message: scala.scalajs.js.Any, options: StructuredSerializeOptions): Unit = js.native
 end ServiceWorker
 
@@ -16231,6 +16415,8 @@ class Document extends Node:
   @JSBracketAccess
   def apply(name: String): scala.scalajs.js.Any        = js.native
   def getElementsByName(elementName: String): NodeList = js.native
+  def open(): Document                                 = js.native
+  def open(unused1: String): Document                  = js.native
   def open(unused1: String, unused2: String): Document = js.native
   @JSName("open")
   def openOrNull(url: String, name: String, features: String): Window | Null                          = js.native
@@ -16295,6 +16481,7 @@ class Document extends Node:
       result: XPathResult = js.native,
   ): XPathResult                                                                           = js.native
   def ariaNotify(announcement: String, options: AriaNotificationOptions = js.native): Unit = js.native
+  def createElement[E <: HTMLElement](localName: HtmlTag[E]): E                            = js.native
 end Document
 
 @js.native

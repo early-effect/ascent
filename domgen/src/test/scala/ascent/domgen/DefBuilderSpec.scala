@@ -845,6 +845,63 @@ object DefBuilderSpec extends ZIOSpecDefault:
         },
       )
     }*),
+    suite("explicitArities: optional arguments on an overloaded name")({
+      def method(name: String, params: ParamDef*) = MethodDef(name, name, "Unit", params.toList)
+      val message                                 = ParamDef("message", "js.Any")
+      val transfer                                = ParamDef("transfer", "js.Array[js.Any]")
+      val options                                 = ParamDef("options", "Options", optional = true)
+      def sigs(ms: List[MethodDef])               = ms.map(m => m.scalaName -> m.params.map(_.name)).toSet
+      List(
+        test("an overload's optional tail becomes one explicit overload per arity, with no optional arguments") {
+          val out = DefBuilder.explicitArities(
+            List(method("postMessage", message, transfer), method("postMessage", message, options)),
+            Set.empty,
+          )
+          assertTrue(
+            sigs(out) == Set(
+              "postMessage" -> List("message", "transfer"),
+              "postMessage" -> List("message"),
+              "postMessage" -> List("message", "options"),
+            ),
+            out.forall(_.params.forall(!_.optional)),
+          )
+        },
+        test("a name declared once keeps its optional arguments, which render as defaults") {
+          val once = method("focus", options)
+          assertTrue(DefBuilder.explicitArities(List(once), Set.empty) == List(once))
+        },
+        test("an inherited name counts as an overload, and a signature an ancestor answers to is not redeclared") {
+          val out = DefBuilder.explicitArities(List(method("focus", options)), Set("focus" -> Nil))
+          assertTrue(sigs(out) == Set("focus" -> List("options")))
+        },
+        test("every arity of every overload stays callable, and no signature appears twice") {
+          val param = Gen.elements("A", "B").zip(Gen.boolean).map((t, opt) => (t, opt))
+          check(Gen.listOfBounded(1, 3)(Gen.listOfBounded(0, 3)(param))) { overloads =>
+            val methods = overloads.map { ps =>
+              val required = ps.takeWhile(!_._2).map(_._1)
+              val optional = ps.dropWhile(!_._2).map(_._1)
+              MethodDef(
+                "m",
+                "m",
+                "Unit",
+                required.zipWithIndex.map((t, i) => ParamDef(s"r$i", t)) ++
+                  optional.zipWithIndex.map((t, i) => ParamDef(s"o$i", t, optional = true)),
+              )
+            }
+            val out    = DefBuilder.explicitArities(methods, Set.empty)
+            val wanted = methods.flatMap { m =>
+              val req = m.params.count(!_.optional)
+              (req to m.params.size).map(n => m.params.take(n).map(_.scalaType))
+            }.toSet
+            val answered = out.map(_.params.map(_.scalaType))
+            assertTrue(
+              methods.size < 2 || answered.toSet == wanted,
+              answered.distinct.size == answered.size,
+            )
+          }
+        },
+      )
+    }*),
     suite("scalaFacadeType (typedefs, WindowProxy, unions)")({
       val any  = "scala.scalajs.js.Any"
       val base = Webref.Idl(

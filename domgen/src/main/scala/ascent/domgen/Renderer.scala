@@ -257,6 +257,30 @@ object Renderer:
        |""".stripMargin
   end facades
 
+  // --- dom-facade/.../generated/HtmlTag.scala ---
+
+  /** One typed key per HTML element whose interface the facade defines, from HTML's element index. */
+  def htmlTags(elements: List[ElementDef], interfaces: Set[String]): String =
+    val vals = elements
+      .filter(e => interfaces.contains(e.interface))
+      .distinctBy(_.domName)
+      .map(e => s"""  val ${safeId(e.scalaName)}: HtmlTag[${e.interface}] = "${e.domName}"""")
+      .mkString("\n")
+    s"""$header
+       |package ascent.dom
+       |
+       |/** An HTML element's tag, typed by the interface `document.createElement` answers for it (HTML's element index).
+       |  * `document.createElement(HtmlTag.iframe)` is an `HTMLIFrameElement`. A tag the index does not list, such as a
+       |  * custom element's, goes through the `String` form, which answers `Element`.
+       |  */
+       |opaque type HtmlTag[E <: HTMLElement] = String
+       |
+       |object HtmlTag:
+       |$vals
+       |end HtmlTag
+       |""".stripMargin
+  end htmlTags
+
   // --- dom-facade/.../generated/Interfaces.scala ---
 
   /** Render every non-mixin, non-element, non-event interface as a `@js.native` class.

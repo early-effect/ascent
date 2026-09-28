@@ -385,6 +385,30 @@ object RendererSpec extends ZIOSpecDefault:
         )
       }
     ),
+    suite("dom-facade: HtmlTag.scala (HTML's element index as typed keys)")(
+      test("each HTML element whose interface the facade defines gets a key typed by that interface") {
+        val src = Renderer.htmlTags(elements, Set("HTMLDivElement", "HTMLInputElement"))
+        assertTrue(
+          src.contains("opaque type HtmlTag[E <: HTMLElement] = String"),
+          src.contains("""val div: HtmlTag[HTMLDivElement] = "div""""),
+          src.contains("""val input: HtmlTag[HTMLInputElement] = "input""""),
+          !src.contains("val br:"),
+        )
+      },
+      test("Document gains a createElement keyed by HtmlTag beside the String one") {
+        val document = InterfaceDef(
+          "Document",
+          parent = None,
+          attributes = Nil,
+          methods = List(MethodDef("createElement", "createElement", "Element", List(ParamDef("localName", "String")))),
+        )
+        val src = Renderer.interfaces(List(document))
+        assertTrue(
+          src.contains("def createElement(localName: String): Element = js.native"),
+          src.contains("def createElement[E <: HTMLElement](localName: HtmlTag[E]): E = js.native"),
+        )
+      },
+    ),
     suite("arities: the argument lists a raw method accepts")({
       val params = for
         required <- Gen.listOfBounded(0, 3)(Gen.alphaNumericStringBounded(1, 6).map(n => ParamDef(n, "String")))

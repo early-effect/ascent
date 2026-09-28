@@ -64,17 +64,46 @@ object NullableAccessorsSpec extends ZIOSpecDefault:
     test("the document has a body and a root element") {
       ZIO.succeed(assertTrue(dom.document.body.isDefined, dom.document.documentElement.isDefined))
     },
+    suite("createElement keyed by HtmlTag")(
+      test("a tag answers the interface HTML's element index names, and the browser makes that element") {
+        ZIO.succeed {
+          val frame = dom.document.createElement(dom.HtmlTag.iframe)
+          frame.src = "about:blank"
+          assertTrue(
+            frame.tagName == "IFRAME",
+            frame.isInstanceOf[dom.HTMLIFrameElement],
+            frame.getAttribute("src").contains("about:blank"),
+          )
+        }
+      },
+      test("an unlisted tag still goes through the String form") {
+        ZIO.succeed(assertTrue(dom.document.createElement("my-widget").tagName == "MY-WIDGET"))
+      },
+    ),
+    test("window.postMessage takes a target origin with no transfer list, and the window hears it") {
+      for got <- ZIO.async[Any, Nothing, String] { done =>
+          lazy val onMessage: js.Function1[dom.Event, Unit] = {
+            case e: dom.MessageEvent =>
+              dom.window.removeEventListener("message", onMessage)
+              done(ZIO.succeed(e.data.toString))
+            case _ => ()
+          }
+          dom.window.addEventListener("message", onMessage)
+          dom.window.postMessage("hello", "*")
+        }
+      yield assertTrue(got == "hello")
+    },
     suite("getContext keyed by CanvasContextId")(
       test("TwoD answers a 2D context for the same canvas") {
         ZIO.succeed {
-          val canvas = dom.document.createElement("canvas").asInstanceOf[dom.HTMLCanvasElement]
+          val canvas = dom.document.createElement(dom.HtmlTag.canvas)
           val ctx    = canvas.getContext(dom.CanvasContextId.TwoD)
           assertTrue(ctx.exists(c => same(c.canvas, canvas)))
         }
       },
       test("TwoD takes its settings dictionary") {
         ZIO.succeed {
-          val canvas   = dom.document.createElement("canvas").asInstanceOf[dom.HTMLCanvasElement]
+          val canvas   = dom.document.createElement(dom.HtmlTag.canvas)
           val settings = new dom.CanvasRenderingContext2DSettings:
             alpha = false
           assertTrue(canvas.getContext(dom.CanvasContextId.TwoD, settings).isDefined)
@@ -82,7 +111,7 @@ object NullableAccessorsSpec extends ZIOSpecDefault:
       },
       test("a context the browser cannot make is None (jsdom has no WebGL)") {
         ZIO.succeed {
-          val canvas = dom.document.createElement("canvas").asInstanceOf[dom.HTMLCanvasElement]
+          val canvas = dom.document.createElement(dom.HtmlTag.canvas)
           assertTrue(canvas.getContext(dom.CanvasContextId.WebGL).isEmpty)
         }
       },

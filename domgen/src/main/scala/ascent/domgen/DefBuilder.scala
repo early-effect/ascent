@@ -296,8 +296,9 @@ object DefBuilder:
           if jsNative then collectionExtras(iface, idl, typeOf) else (Nil, Nil, Nil)
         collAttrs.filterNot(a => inheritedAttrNames.contains(a.name)).foreach(m => ownAttrsDedup(m.name) = m)
 
-        val ownMethods = (ownMethodsOf(name, idl, typeOf) ++ collMethods)
+        val declared = (ownMethodsOf(name, idl, typeOf) ++ collMethods)
           .filterNot(m => inheritedMethodSigs.contains((m.scalaName, m.params.map(_.scalaType))))
+        val ownMethods = if jsNative then explicitArities(declared, inheritedMethodSigs) else declared
         // Dedup by (name, paramTypes) so overloads survive (e.g. `stroke()` vs
         // `stroke(Path2D)`).
         val ownMethodsDedup = scala.collection.mutable.LinkedHashMap.empty[(String, List[String]), MethodDef]
@@ -358,9 +359,11 @@ object DefBuilder:
       if visited.contains(name) then ()
       else
         idl.interfaces.get(name).foreach { iface =>
-          ownMethodsOf(name, idl, typeOf).foreach(m => acc += ((m.scalaName, m.params.map(_.scalaType))))
-          if jsNative then
-            collectionExtras(iface, idl, typeOf)._2.foreach(m => acc += ((m.scalaName, m.params.map(_.scalaType))))
+          val methods =
+            ownMethodsOf(name, idl, typeOf) ++ (if jsNative then collectionExtras(iface, idl, typeOf)._2 else Nil)
+          methods.foreach(m =>
+            if jsNative then acc ++= arityPrefixes(m) else acc += ((m.scalaName, m.params.map(_.scalaType)))
+          )
           iface.inheritance.foreach(p => walk(p, visited + name))
         }
     idl.interfaces.get(interface).flatMap(_.inheritance).foreach(p => walk(p, Set.empty))
@@ -424,6 +427,35 @@ object DefBuilder:
   /** Whether a member may be `null`: its own type is WebIDL's `T?`, or it names a typedef that is (`EventHandler`). */
   private[domgen] def nullable(marked: Boolean, idlType: String, idl: Webref.Idl): Boolean =
     marked || idl.nullableTypedefs.contains(idlType)
+
+  /** Scala 3 lets one overload of a name keep default arguments, inherited overloads included. So on a JS facade, an
+    * overloaded name's optional trailing arguments become explicit overloads, one per arity, less any signature already
+    * declared or inherited: `postMessage(message)` stays callable beside `postMessage(message, transfer)`. A name with
+    * one declaration keeps its optional arguments, which render as defaults.
+    */
+  private[domgen] def explicitArities(
+      methods: List[MethodDef],
+      inherited: Set[(String, List[String])],
+  ): List[MethodDef] =
+    val overloaded =
+      methods.groupBy(_.scalaName).collect { case (n, ms) if ms.size > 1 => n }.toSet ++ inherited.map(_._1)
+    methods
+      .flatMap { m =>
+        if overloaded.contains(m.scalaName) then
+          (requiredCount(m) to m.params.size).map(n => m.copy(params = m.params.take(n).map(_.copy(optional = false))))
+        else List(m)
+      }
+      .distinctBy(m => (m.scalaName, m.params.map(_.scalaType)))
+      .filterNot(m => inherited.contains((m.scalaName, m.params.map(_.scalaType))))
+  end explicitArities
+
+  /** Every signature `m` answers to: its name with each argument list that stops inside its optional tail. */
+  private def arityPrefixes(m: MethodDef): List[(String, List[String])] =
+    (requiredCount(m) to m.params.size).map(n => (m.scalaName, m.params.take(n).map(_.scalaType))).toList
+
+  private def requiredCount(m: MethodDef): Int = m.params.indexWhere(_.optional) match
+    case -1 => m.params.size
+    case i  => i
 
   /** Same shape for methods — own ops plus mixin ops.
     *
@@ -698,11 +730,8 @@ object DefBuilder:
       // Operations are own-only — same logic as InterfaceDef. Drop any that would
       // override an inherited (name, sig) exactly. Different overloads of an inherited
       // name are fine and survive.
-      val parentMethodSigs =
-        iface.inheritance.toList
-          .flatMap(p => methodsFor(p, idl).map(m => (m.scalaName, m.params.map(_.scalaType))))
-          .toSet
-      val ownOps = iface.operations
+      val parentMethodSigs = iface.inheritance.toList.flatMap(p => methodsFor(p, idl).flatMap(arityPrefixes)).toSet
+      val declared         = iface.operations
         .map(o =>
           MethodDef(
             scalaName = scalaName(o.name),
@@ -717,7 +746,7 @@ object DefBuilder:
         interface = name,
         parent = iface.inheritance.filter(idl.interfaces.contains),
         members = facadeMembers(iface, idl),
-        methods = ownOps,
+        methods = explicitArities(declared, parentMethodSigs),
         constructors = constructorsOf(iface, idl, scalaFacadeType),
         constants = constantsOf(iface, idl, scalaFacadeType),
         staticMethods = staticMethodsOf(iface, idl, scalaFacadeType),

@@ -67,7 +67,7 @@ object EngineFacadeSpec extends ZIOSpecDefault:
     },
     test("HTMLInputElement value and checked are PROPERTIES (writable, reflect immediately)") {
       ZIO.succeed {
-        val input = document.createElement("input").asInstanceOf[HTMLInputElement]
+        val input = document.createElement(HtmlTag.input)
         input.value = "typed"
         input.checked = true
         assertTrue(input.value == "typed", input.checked == true)
@@ -104,7 +104,7 @@ object EngineFacadeSpec extends ZIOSpecDefault:
       ZIO.succeed {
         val parent = document.createElement("div")
         document.asInstanceOf[js.Dynamic].body.appendChild(parent)
-        val input = document.createElement("input").asInstanceOf[HTMLInputElement]
+        val input = document.createElement(HtmlTag.input)
         parent.appendChild(input)
         input.asInstanceOf[js.Dynamic].focus()
         val focused = document.activeElement.exists(js.special.strictEquals(_, input))
