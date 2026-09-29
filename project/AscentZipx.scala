@@ -134,6 +134,7 @@ object AscentZipx:
             LocalProject("e2e") / chekhovInstall,
             LocalProject("e2e") / Test / testFull,
             LocalProject("chekhovJs") / Test / testFull,
+            LocalProject("mcpHostJS") / Test / testFull,
           ),
         )
         .withNodeVersion(NodeVersion("24")),

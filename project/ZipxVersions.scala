@@ -68,6 +68,7 @@ object MyVersions extends ZipxVersions:
   val js            = Ship("jsJS", "0.10.0")
   val element       = Ship("elementJS", "0.9.0")
   val mcpApp        = Ship("mcpAppJS", "0.9.0")
+  val mcpHost       = Ship("mcpHostJS", "0.9.0")
   val history       = Ship("history", "0.9.0")
   val conduitBridge = Ship("conduitBridge", "0.9.0")
   val html          = Ship("html", "0.9.0")

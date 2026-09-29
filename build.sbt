@@ -142,7 +142,7 @@ lazy val root = (project in file("."))
   .disablePlugins(chekhov.sbt.ChekhovPlugin)
   .aggregate(
     (domTypes.projectRefs ++ core.projectRefs ++ domFacade.projectRefs ++ domCore.projectRefs ++
-      mountEngine.projectRefs ++ js.projectRefs ++ element.projectRefs ++ mcpApp.projectRefs ++
+      mountEngine.projectRefs ++ js.projectRefs ++ element.projectRefs ++ mcpApp.projectRefs ++ mcpHost.projectRefs ++
       domgen.projectRefs ++ css.projectRefs ++ conduitBridge.projectRefs ++ history.projectRefs ++
       html.projectRefs ++ datastar.projectRefs ++ datastarJs.projectRefs ++
       datastarHttp.projectRefs ++ datastarExample.projectRefs ++ datastarExampleServer.projectRefs ++
@@ -312,6 +312,30 @@ lazy val mcpApp = (projectMatrix in file("mcp-app"))
     jsdomTestEnv,
   )
   .jsPlatform(scalaVersions = scalaVersions)
+
+// --- ascent-mcp-host : a host page's <ascent-mcp-view>, wrapping heddle's relay frame in ascent chrome (a border,
+//   the view's state, the question for each call). The frame needs a real browser's sandbox and postMessage, so the
+//   suite runs in Firefox under ChekhovJSEnv and stays off testJS, like chekhovJs.
+lazy val mcpHost = (projectMatrix in file("mcp-host"))
+  .disablePlugins(chekhov.sbt.ChekhovPlugin)
+  .dependsOn(element)
+  .settings(
+    name := "ascent-mcp-host",
+    scalacOptions ++= commonScalacOptions,
+    MyVersions.mcpHostLib,
+    zioTestSettings,
+  )
+  .jsPlatform(
+    scalaVersions,
+    Nil,
+    (p: Project) =>
+      p.settings(
+        scalaJSLinkerConfig ~= (_.withModuleKind(ModuleKind.ESModule)),
+        Test / jsEnv := Def.uncached(
+          ChekhovJSEnv(browser = ChekhovBrowser.Firefox, headless = true, keepOpen = false)
+        ),
+      ),
+  )
 
 // --- ascent-history : OPTIONAL URL session bound to Squawk. Location is path+query+hash; History is
 //   push/replace/back/forward over a swappable backend (memory everywhere, window.history on JS).
