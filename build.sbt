@@ -147,7 +147,8 @@ lazy val root = (project in file("."))
       html.projectRefs ++ datastar.projectRefs ++ datastarJs.projectRefs ++
       datastarHttp.projectRefs ++ datastarExample.projectRefs ++ datastarExampleServer.projectRefs ++
       hybridChat.projectRefs ++ hybridChatServer.projectRefs ++
-      todoConduit.projectRefs ++ docs.projectRefs ++ preview.projectRefs ++
+      todoConduit.projectRefs ++ mcpHostDemo.projectRefs ++ mcpHostDemoView.projectRefs ++ docs.projectRefs ++
+      preview.projectRefs ++
       ascentChekhov.projectRefs :+
       LocalProject("chekhovJs") :+
       LocalProject("sbtAscentPreview")) *
@@ -517,6 +518,59 @@ lazy val todoConduit = (projectMatrix in file("example/todo-conduit"))
     scalaVersions,
     Nil,
     (p: Project) => p.enablePlugins(AscentPreviewPlugin).settings(examplePreviewSettings(autoServe = true)),
+  )
+
+// --- ascent example: mcp-host — a host page that frames MCP App views in <ascent-mcp-view> (js only) ---
+//   The counter server runs in the page, reached in memory, so the demo is one preview with nothing else to start.
+//   Its view is an ascent-mcp-app, linked on its own as a classic script, which the host serves as the view's
+//   document; ascentPreviewStage puts that bundle next to the page.
+val mcpHostDemoShared = Def.setting(
+  (ThisBuild / baseDirectory).value / "example" / "mcp-host" / "shared" / "src" / "main" / "scala"
+)
+
+lazy val mcpHostDemoView = (projectMatrix in file("example/mcp-host/view"))
+  .disablePlugins(chekhov.sbt.ChekhovPlugin)
+  .dependsOn(mcpApp)
+  .settings(
+    name           := "ascent-mcp-host-demo-view",
+    publish / skip := true,
+    test / skip    := true,
+    scalacOptions ++= commonScalacOptions,
+    scalaJSUseMainModuleInitializer := true,
+    Compile / unmanagedSourceDirectories += mcpHostDemoShared.value,
+  )
+  .jsPlatform(scalaVersions)
+
+lazy val mcpHostDemo = (projectMatrix in file("example/mcp-host/host"))
+  .disablePlugins(chekhov.sbt.ChekhovPlugin)
+  .dependsOn(mcpHost)
+  .settings(
+    name           := "ascent-mcp-host-demo",
+    publish / skip := true,
+    test / skip    := true,
+    scalacOptions ++= commonScalacOptions,
+    scalaJSUseMainModuleInitializer := true,
+    scalaJSLinkerConfig ~= (_.withModuleKind(ModuleKind.ESModule)),
+    Compile / unmanagedSourceDirectories += mcpHostDemoShared.value,
+  )
+  .jsPlatform(
+    scalaVersions,
+    Nil,
+    (p: Project) =>
+      val view = LocalProject("mcpHostDemoViewJS")
+      p.enablePlugins(AscentPreviewPlugin)
+        .settings(
+          examplePreviewSettings(autoServe = true),
+          ascentPreviewStage := Def.uncached {
+            val staged = ascentPreviewStage.value
+            val _      = (view / Compile / fastLinkJS).value
+            IO.copyFile((view / Compile / fastLinkJSOutput).value / "main.js", ascentPreviewRoot.value / "counter-view.js")
+            staged
+          },
+          ascentPreview / fileInputs ++= (view / Compile / unmanagedSources / fileInputs).value,
+          ascentPreviewRebuild / fileInputs ++= (view / Compile / unmanagedSources / fileInputs).value,
+        )
+    ,
   )
 
 // --- ascent example: datastar-app — server-driven counter proving the full datastar loop ---

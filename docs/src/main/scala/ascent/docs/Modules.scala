@@ -19,7 +19,9 @@ published so consumers resolve transitively.
 | `ascent-css` | Typed CSS-in-Scala |
 | `ascent-conduit` | Optional conduit `Ctx[M]` |
 | `ascent-history` | Optional URL session as a Squawk (`History` / `Location`) |
+| `ascent-element` | Custom elements (JS): define a name once per page, and follow each instance's connections as a stream |
 | `ascent-mcp-app` | An MCP App view (JS): renders the launch tool's `Run`, calls the shed's grants, follows the host |
+| `ascent-mcp-host` | An MCP App host page (JS): `<ascent-mcp-view>` frames a server's view in heddle's relay, asks the user about each call, and tears the view down |
 | `ascent-html` | SSR string renderer |
 | `ascent-datastar` | Datastar protocol + SignalStore |
 | `ascent-datastar-js` | Browser datastar runtime |
@@ -35,7 +37,7 @@ internals. Depend on them only if you are extending the platform; ordinary apps 
 transitively.
 
 - `domgen`: JVM generator; never a runtime dep
-- `example/*`: splice + preview apps (todo-conduit, datastar-app, hybrid-chat)
+- `example/*`: splice + preview apps (todo-conduit, datastar-app, hybrid-chat, mcp-host)
 """
   )
 end Modules

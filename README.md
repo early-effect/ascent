@@ -244,6 +244,17 @@ Try the TodoMVC: add todos, toggle and edit them (double-click a row), switch th
 Completed filters, clear completed. Notice that editing a row preserves caret position and that
 toggling one item doesn't rebuild the others — that's the surgical patching.
 
+`mcp-host` is an [MCP Apps](https://github.com/modelcontextprotocol/ext-apps) host page in one file. A counter server
+runs in the page, and each "Show a counter" frames its ascent-mcp-app view in an `<ascent-mcp-view>`
+([mcp-host/README.md](mcp-host/README.md)):
+
+```bash
+sbt mcpHostDemoJS/ascentPreview   # http://localhost:8765
+```
+
+Press +1 in the view: the element asks you before the call reaches the server, and the audit under it records each
+decision. "Close" asks the view to go before its frame is removed.
+
 ## Build & test
 
 ```bash
