@@ -601,8 +601,6 @@ lazy val docs: ProjectMatrix = (projectMatrix in file("docs"))
           MyVersions.docsJvm,
           // specular-site (via the theme) may still declare an older zio-json; take catalog 1.1.0.
           dependencyOverrides += MyVersions.moduleID(MyVersions.zioJson),
-          // Local only, until heddle 0.8.0 releases: specular-site 0.18.1 still names heddle 0.7.1.
-          dependencyOverrides += MyVersions.moduleID(MyVersions.heddle),
           zioTestSettings,
           Compile / mainClass             := Some("ascent.docs.ServeSite"),
           run / mainClass                 := Some("ascent.docs.ServeSite"),
