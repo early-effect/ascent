@@ -53,6 +53,7 @@ object DefBuilder:
             val ownAttrs   = iface.attributes
             val mixinAttrs = mixinsByTarget
               .getOrElse(name, Nil)
+              .filterNot(_ == ariaReflection)
               .flatMap(m => attrsAt(m, visited + name))
             ownAttrs ++ mixinAttrs
 
@@ -74,6 +75,13 @@ object DefBuilder:
     }
     seen.values.toList
   end attributesFor
+
+  /** WebIDL's `ARIAMixin` reflects the `aria-*` content attributes as camelCase properties (`ariaLabel` for
+    * `aria-label`), plus element-reference properties that are no content attribute at all. `AriaAttrs` types the real
+    * attributes from aria-query, so the attribute catalog leaves the mixin out: lowercasing its names would give keys
+    * like `arialabel`, which no browser reads.
+    */
+  private val ariaReflection = "ARIAMixin"
 
   /** Map a JS property name from the IDL to its HTML attribute name. The asymmetry exists for historical reasons; only
     * a small set need explicit renames (`class`, `for`). Everything else is lowercased — HTML attribute names are

@@ -793,6 +793,21 @@ object DefBuilderSpec extends ZIOSpecDefault:
         assertTrue(DefBuilder.structuralType("record<DOMString, long>", Set.empty, idl) == "Map[String, Int]")
       },
     ),
+    test("the attribute catalog leaves out ARIAMixin, whose aria-* attributes AriaAttrs types") {
+      val idl = Webref.Idl(
+        interfaces = Map(
+          "HTMLElement" -> Webref.IdlInterface("HTMLElement", None, List(Webref.IdlAttribute("title", "DOMString"))),
+          "ARIAMixin"   -> Webref.IdlInterface(
+            "ARIAMixin",
+            None,
+            List(Webref.IdlAttribute("ariaLabel", "DOMString"), Webref.IdlAttribute("role", "DOMString")),
+            isMixin = true,
+          ),
+        ),
+        includes = List(Webref.IdlIncludes("HTMLElement", "ARIAMixin")),
+      )
+      assertTrue(DefBuilder.attributesFor("HTMLElement", idl).map(_.domName) == List("title"))
+    },
     suite("nullability (WebIDL's T?, directly or through a typedef)")({
       val idl = Webref.Idl(
         interfaces = Map(
