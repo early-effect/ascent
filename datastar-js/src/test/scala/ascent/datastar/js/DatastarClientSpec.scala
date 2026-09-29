@@ -19,10 +19,10 @@ object DatastarClientSpec extends ZIOSpecDefault:
     ZIO.acquireReleaseWith(
       ZIO.succeed {
         val p = dom.document.createElement("div")
-        dom.document.asInstanceOf[js.Dynamic].body.appendChild(p)
+        dom.document.body.foreach(_.appendChild(p))
         p
       }
-    )(p => ZIO.succeed(p.parentNode.removeChild(p)).unit)(use)
+    )(p => ZIO.succeed(p.parentNode.foreach(_.removeChild(p))))(use)
 
   private def patchSignals(json: String) =
     Datastar.parse(Datastar.PatchSignals, s"signals $json").toOption.get
@@ -90,9 +90,9 @@ object DatastarClientSpec extends ZIOSpecDefault:
               child.setAttribute("id", "gone")
               parent.appendChild(child)
             }
-            present = dom.document.querySelector("#gone") != null
+            present = dom.document.querySelector("#gone").isDefined
             _ <- DatastarClient.applyEvent(patchElements("selector #gone\nmode remove"), store)
-            absent = dom.document.querySelector("#gone") == null
+            absent = dom.document.querySelector("#gone").isEmpty
           yield assertTrue(present, absent)
         }
       },

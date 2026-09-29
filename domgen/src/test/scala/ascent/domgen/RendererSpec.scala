@@ -139,7 +139,7 @@ object RendererSpec extends ZIOSpecDefault:
         assertTrue(
           src.contains("@js.native"),
           src.contains("@JSGlobal"),
-          src.contains("class Event extends js.Object"),
+          src.contains("class Event extends PlatformObject"),
           src.contains("class UIEvent extends Event"),
           src.contains("class MouseEvent extends UIEvent"),
         )
@@ -173,7 +173,7 @@ object RendererSpec extends ZIOSpecDefault:
         )
         val src = Renderer.facades(defs)
         assertTrue(
-          src.contains("class Event extends js.Object:"),
+          src.contains("class Event extends PlatformObject:"),
           src.contains("def this(@unused `type`: String, @unused eventInitDict: EventInit = js.native) = this()"),
           src.contains("def `type`: String = js.native"),
           src.contains("def bubbles: Boolean = js.native"),
@@ -251,6 +251,213 @@ object RendererSpec extends ZIOSpecDefault:
         )
       },
     ),
+    suite("dom-facade: nullable members read as Option")({
+      val node = InterfaceDef(
+        "Node",
+        parent = None,
+        attributes = List(
+          FacadeMember("parentNode", "Node", nullable = true),
+          FacadeMember("textContent", "String", readonly = false, nullable = true),
+          FacadeMember("nodeName", "String"),
+        ),
+        methods = List(
+          MethodDef(
+            "lookupPrefix",
+            "lookupPrefix",
+            "String",
+            List(ParamDef("namespace", "String")),
+            returnsNullable = true,
+          ),
+          MethodDef(
+            "open",
+            "open",
+            "Window",
+            List(ParamDef("url", "String", optional = true), ParamDef("target", "String", optional = true)),
+            returnsNullable = true,
+          ),
+          MethodDef("hasChildNodes", "hasChildNodes", "Boolean", Nil),
+        ),
+      )
+      val native    = Renderer.interfaces(List(node))
+      val accessors = Renderer.nullableAccessors(List(node), Nil)
+      List(
+        test("a nullable attribute's raw member keeps the DOM name under @JSName and is typed T | Null") {
+          assertTrue(
+            native.contains("@JSName(\"parentNode\")\n  def parentNodeOrNull: Node | Null = js.native"),
+            native.contains("@JSName(\"textContent\")\n  var textContentOrNull: String | Null = js.native"),
+            !native.contains("def parentNode:"),
+          )
+        },
+        test("a non-nullable member keeps its plain name and gets no accessor") {
+          assertTrue(native.contains("def nodeName: String = js.native"), !accessors.contains("nodeName"))
+        },
+        test("a nullable read is an Option, and a writable one takes an Option that writes null for None") {
+          assertTrue(
+            accessors.contains("def parentNode: Option[Node] = nullable(self.parentNodeOrNull)"),
+            !accessors.contains("def parentNode_="),
+            accessors.contains("def textContent_=(value: Option[String]): Unit = self.textContentOrNull = value.orNull"),
+          )
+        },
+        test("a nullable operation's raw member answers T | Null and its accessor answers Option[T]") {
+          assertTrue(
+            native.contains("@JSName(\"lookupPrefix\")\n  def lookupPrefixOrNull(namespace: String): String | Null"),
+            accessors.contains(
+              "def lookupPrefix(namespace: String): Option[String] = nullable(self.lookupPrefixOrNull(namespace))"
+            ),
+            native.contains("def hasChildNodes(): Boolean = js.native"),
+          )
+        },
+        test("optional trailing arguments give one accessor per arity the raw member accepts") {
+          assertTrue(
+            accessors.contains("def open(): Option[Window] = nullable(self.openOrNull())"),
+            accessors.contains("def open(url: String): Option[Window] = nullable(self.openOrNull(url))"),
+            accessors.contains(
+              "def open(url: String, target: String): Option[Window] = nullable(self.openOrNull(url, target))"
+            ),
+          )
+        },
+        test("an overload that keeps no defaults gets its full arity alone") {
+          val inherited = node.copy(inheritedMethodNames = Set("open"))
+          val src       = Renderer.nullableAccessors(List(inherited), Nil)
+          assertTrue(
+            src.contains("def open(url: String, target: String): Option[Window]"),
+            !src.contains("def open(): "),
+            !src.contains("def open(url: String): "),
+          )
+        },
+        test("an event facade's nullable member reads as an Option with no setter") {
+          val event =
+            FacadeDef("Event", None, List(FacadeMember("currentTarget", "EventTarget", false, nullable = true)))
+          val src = Renderer.nullableAccessors(Nil, List(event))
+          assertTrue(
+            src.contains("def currentTarget: Option[EventTarget] = nullable(self.currentTargetOrNull)"),
+            !src.contains("currentTarget_="),
+          )
+        },
+        test("a nullable enum-typed member's typed accessor reads through its Option") {
+          val iface = InterfaceDef(
+            "HTMLMediaElement",
+            parent = None,
+            attributes =
+              List(FacadeMember("crossOrigin", "String", enumType = Some("CrossOriginType"), nullable = true)),
+            methods = Nil,
+          )
+          assertTrue(
+            Renderer
+              .enumAccessors(List(iface), Nil)
+              .contains("self.crossOrigin.flatMap(ascent.domtypes.CrossOriginType.fromDom)")
+          )
+        },
+        test("an interface with no parent roots at PlatformObject, whose companion carries the accessors") {
+          assertTrue(
+            native.contains("class Node extends PlatformObject:"),
+            accessors.contains("object NullableAccessors:"),
+          )
+        },
+      )
+    }*),
+    suite("dom-facade: operations the spec types by argument value")(
+      test("HTMLCanvasElement.getContext is keyed by CanvasContextId, and its IDL string form is gone") {
+        val canvas = InterfaceDef(
+          "HTMLCanvasElement",
+          parent = Some("HTMLElement"),
+          attributes = Nil,
+          methods = List(
+            MethodDef(
+              "getContext",
+              "getContext",
+              "CanvasRenderingContext2D | WebGLRenderingContext",
+              List(ParamDef("contextId", "String"), ParamDef("options", "scala.scalajs.js.Any", optional = true)),
+              returnsNullable = true,
+            )
+          ),
+        )
+        val native    = Renderer.interfaces(List(canvas))
+        val accessors = Renderer.nullableAccessors(List(canvas), Nil)
+        assertTrue(
+          native.contains(
+            "def getContextOrNull[C, O](contextId: CanvasContextId[C, O], options: O = js.native): C | Null = js.native"
+          ),
+          !native.contains("contextId: String"),
+          accessors.contains("def getContext[C, O](contextId: CanvasContextId[C, O]): Option[C]"),
+          accessors.contains("def getContext[C, O](contextId: CanvasContextId[C, O], options: O): Option[C]"),
+          !accessors.contains("contextId: String"),
+        )
+      }
+    ),
+    suite("dom-facade: HtmlTag.scala (HTML's element index as typed keys)")(
+      test("each HTML element whose interface the facade defines gets a key typed by that interface") {
+        val src = Renderer.htmlTags(elements, Set("HTMLDivElement", "HTMLInputElement"))
+        assertTrue(
+          src.contains("opaque type HtmlTag[E <: HTMLElement] = String"),
+          src.contains("""val div: HtmlTag[HTMLDivElement] = "div""""),
+          src.contains("""val input: HtmlTag[HTMLInputElement] = "input""""),
+          !src.contains("val br:"),
+        )
+      },
+      test("OffscreenCanvas.getContext is keyed by OffscreenContextId, and its IDL string form is gone") {
+        val offscreen = InterfaceDef(
+          "OffscreenCanvas",
+          parent = Some("EventTarget"),
+          attributes = Nil,
+          methods = List(
+            MethodDef(
+              "getContext",
+              "getContext",
+              "OffscreenCanvasRenderingContext2D | WebGLRenderingContext",
+              List(ParamDef("contextId", "String"), ParamDef("options", "scala.scalajs.js.Any", optional = true)),
+              returnsNullable = true,
+            )
+          ),
+        )
+        val native    = Renderer.interfaces(List(offscreen))
+        val accessors = Renderer.nullableAccessors(List(offscreen), Nil)
+        assertTrue(
+          native.contains("def getContextOrNull[C, O](contextId: OffscreenContextId[C, O], options: O = js.native)"),
+          !native.contains("contextId: String"),
+          accessors.contains("def getContext[C, O](contextId: OffscreenContextId[C, O]): Option[C]"),
+          !accessors.contains("contextId: String"),
+        )
+      },
+      test("Document gains a createElement keyed by HtmlTag beside the String one") {
+        val document = InterfaceDef(
+          "Document",
+          parent = None,
+          attributes = Nil,
+          methods = List(MethodDef("createElement", "createElement", "Element", List(ParamDef("localName", "String")))),
+        )
+        val src = Renderer.interfaces(List(document))
+        assertTrue(
+          src.contains("def createElement(localName: String): Element = js.native"),
+          src.contains("def createElement[E <: HTMLElement](localName: HtmlTag[E]): E = js.native"),
+        )
+      },
+    ),
+    suite("arities: the argument lists a raw method accepts")({
+      val params = for
+        required <- Gen.listOfBounded(0, 3)(Gen.alphaNumericStringBounded(1, 6).map(n => ParamDef(n, "String")))
+        optional <- Gen.listOfBounded(0, 3)(
+          Gen.alphaNumericStringBounded(1, 6).map(n => ParamDef(n, "Int", optional = true))
+        )
+      yield (required, optional)
+      def method(ps: List[ParamDef]) = MethodDef("m", "m", "String", ps, returnsNullable = true)
+      List(
+        test("with defaults, every prefix from the required arguments through the whole list") {
+          check(params) { (required, optional) =>
+            val all = required ++ optional
+            assertTrue(
+              Renderer.arities(method(all), defaults = true) == (required.size to all.size).map(all.take).toList
+            )
+          }
+        },
+        test("without defaults, the whole list alone") {
+          check(params) { (required, optional) =>
+            val all = required ++ optional
+            assertTrue(Renderer.arities(method(all), defaults = false) == List(all))
+          }
+        },
+      )
+    }*),
     suite("safety: identifier escaping")(
       test("a scalaName that collides with a Scala keyword is backticked in the emitted val") {
         val keywordAttr = List(

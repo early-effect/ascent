@@ -4,5797 +4,4895 @@ package ascent.dom
 
 import scala.scalajs.js
 
-/** Generated `@js.native trait`s, one per WebIDL `dictionary` block.
+/** Generated non-native JS traits, one per WebIDL `dictionary` block.
   *
   * Dictionaries model JS option-objects passed to APIs that take a named-arg config (`AddEventListenerOptions`,
-  * `KeyboardEventInit`, etc.). Construct via:
+  * `KeyboardEventInit`, etc.). Every field is `js.UndefOr` and starts `js.undefined`. Construct via:
   * {{{
   *   new MyDictionary { foo = "bar"; baz = 42 }
   * }}}
   */
 
-@js.native
 trait CSPViolationReportBody extends ReportBody:
-  var documentURL: String        = js.native
-  var referrer: String           = js.native
-  var blockedURL: String         = js.native
-  var effectiveDirective: String = js.native
-  var originalPolicy: String     = js.native
-  var sourceFile: String         = js.native
-  var sample: String             = js.native
-  var disposition: String        = js.native
-  var statusCode: Int            = js.native
-  var lineNumber: Int            = js.native
-  var columnNumber: Int          = js.native
+  var documentURL: js.UndefOr[String]        = js.undefined
+  var referrer: js.UndefOr[String]           = js.undefined
+  var blockedURL: js.UndefOr[String]         = js.undefined
+  var effectiveDirective: js.UndefOr[String] = js.undefined
+  var originalPolicy: js.UndefOr[String]     = js.undefined
+  var sourceFile: js.UndefOr[String]         = js.undefined
+  var sample: js.UndefOr[String]             = js.undefined
+  var disposition: js.UndefOr[String]        = js.undefined
+  var statusCode: js.UndefOr[Int]            = js.undefined
+  var lineNumber: js.UndefOr[Int]            = js.undefined
+  var columnNumber: js.UndefOr[Int]          = js.undefined
 end CSPViolationReportBody
 
-@js.native
 trait SecurityPolicyViolationEventInit extends EventInit:
-  var documentURI: String        = js.native
-  var referrer: String           = js.native
-  var blockedURI: String         = js.native
-  var violatedDirective: String  = js.native
-  var effectiveDirective: String = js.native
-  var originalPolicy: String     = js.native
-  var sourceFile: String         = js.native
-  var sample: String             = js.native
-  var disposition: String        = js.native
-  var statusCode: Int            = js.native
-  var lineNumber: Int            = js.native
-  var columnNumber: Int          = js.native
+  var documentURI: js.UndefOr[String]        = js.undefined
+  var referrer: js.UndefOr[String]           = js.undefined
+  var blockedURI: js.UndefOr[String]         = js.undefined
+  var violatedDirective: js.UndefOr[String]  = js.undefined
+  var effectiveDirective: js.UndefOr[String] = js.undefined
+  var originalPolicy: js.UndefOr[String]     = js.undefined
+  var sourceFile: js.UndefOr[String]         = js.undefined
+  var sample: js.UndefOr[String]             = js.undefined
+  var disposition: js.UndefOr[String]        = js.undefined
+  var statusCode: js.UndefOr[Int]            = js.undefined
+  var lineNumber: js.UndefOr[Int]            = js.undefined
+  var columnNumber: js.UndefOr[Int]          = js.undefined
 end SecurityPolicyViolationEventInit
 
-@js.native
 trait BlobPropertyBag extends js.Object:
-  var `type`: String  = js.native
-  var endings: String = js.native
+  var `type`: js.UndefOr[String]  = js.undefined
+  var endings: js.UndefOr[String] = js.undefined
 
-@js.native
 trait FilePropertyBag extends BlobPropertyBag:
-  var lastModified: Int = js.native
+  var lastModified: js.UndefOr[Int] = js.undefined
 
-@js.native
 trait IDBGetAllOptions extends js.Object:
-  var query: scala.scalajs.js.Any = js.native
-  var count: Int                  = js.native
-  var direction: String           = js.native
+  var query: js.UndefOr[scala.scalajs.js.Any] = js.undefined
+  var count: js.UndefOr[Int]                  = js.undefined
+  var direction: js.UndefOr[String]           = js.undefined
 
-@js.native
 trait IDBIndexParameters extends js.Object:
-  var unique: Boolean     = js.native
-  var multiEntry: Boolean = js.native
+  var unique: js.UndefOr[Boolean]     = js.undefined
+  var multiEntry: js.UndefOr[Boolean] = js.undefined
 
-@js.native
 trait IDBTransactionOptions extends js.Object:
-  var durability: String = js.native
+  var durability: js.UndefOr[String] = js.undefined
 
-@js.native
 trait IDBVersionChangeEventInit extends EventInit:
-  var oldVersion: Int = js.native
-  var newVersion: Int = js.native
+  var oldVersion: js.UndefOr[Int] = js.undefined
+  var newVersion: js.UndefOr[Int] = js.undefined
 
-@js.native
 trait IDBDatabaseInfo extends js.Object:
-  var name: String = js.native
-  var version: Int = js.native
+  var name: js.UndefOr[String] = js.undefined
+  var version: js.UndefOr[Int] = js.undefined
 
-@js.native
 trait IDBObjectStoreParameters extends js.Object:
-  var keyPath: scala.scalajs.js.Any = js.native
-  var autoIncrement: Boolean        = js.native
+  var keyPath: js.UndefOr[scala.scalajs.js.Any] = js.undefined
+  var autoIncrement: js.UndefOr[Boolean]        = js.undefined
 
-@js.native
 trait SVGBoundingBoxOptions extends js.Object:
-  var fill: Boolean    = js.native
-  var stroke: Boolean  = js.native
-  var markers: Boolean = js.native
-  var clipped: Boolean = js.native
+  var fill: js.UndefOr[Boolean]    = js.undefined
+  var stroke: js.UndefOr[Boolean]  = js.undefined
+  var markers: js.UndefOr[Boolean] = js.undefined
+  var clipped: js.UndefOr[Boolean] = js.undefined
 
-@js.native
 trait AccelerometerSensorOptions extends SensorOptions:
-  var referenceFrame: String = js.native
+  var referenceFrame: js.UndefOr[String] = js.undefined
 
-@js.native
 trait AttributionConversionResult extends js.Object:
-  var report: scala.scalajs.js.Any = js.native
+  var report: js.UndefOr[scala.scalajs.js.Any] = js.undefined
 
-@js.native
 trait AttributionConversionOptions extends js.Object:
-  var aggregationService: String                        = js.native
-  var epsilon: Double                                   = js.native
-  var histogramSize: Int                                = js.native
-  var lookbackDays: Int                                 = js.native
-  var matchValues: scala.scalajs.js.Array[Int]          = js.native
-  var impressionSites: scala.scalajs.js.Array[String]   = js.native
-  var impressionCallers: scala.scalajs.js.Array[String] = js.native
-  var credit: scala.scalajs.js.Array[Double]            = js.native
-  var value: Int                                        = js.native
-  var maxValue: Int                                     = js.native
+  var aggregationService: js.UndefOr[String]                        = js.undefined
+  var epsilon: js.UndefOr[Double]                                   = js.undefined
+  var histogramSize: js.UndefOr[Int]                                = js.undefined
+  var lookbackDays: js.UndefOr[Int]                                 = js.undefined
+  var matchValues: js.UndefOr[scala.scalajs.js.Array[Int]]          = js.undefined
+  var impressionSites: js.UndefOr[scala.scalajs.js.Array[String]]   = js.undefined
+  var impressionCallers: js.UndefOr[scala.scalajs.js.Array[String]] = js.undefined
+  var credit: js.UndefOr[scala.scalajs.js.Array[Double]]            = js.undefined
+  var value: js.UndefOr[Int]                                        = js.undefined
+  var maxValue: js.UndefOr[Int]                                     = js.undefined
 end AttributionConversionOptions
 
-@js.native
 trait AttributionImpressionOptions extends js.Object:
-  var histogramIndex: Int                               = js.native
-  var matchValue: Int                                   = js.native
-  var conversionSites: scala.scalajs.js.Array[String]   = js.native
-  var conversionCallers: scala.scalajs.js.Array[String] = js.native
-  var lifetimeDays: Int                                 = js.native
-  var priority: Int                                     = js.native
+  var histogramIndex: js.UndefOr[Int]                               = js.undefined
+  var matchValue: js.UndefOr[Int]                                   = js.undefined
+  var conversionSites: js.UndefOr[scala.scalajs.js.Array[String]]   = js.undefined
+  var conversionCallers: js.UndefOr[scala.scalajs.js.Array[String]] = js.undefined
+  var lifetimeDays: js.UndefOr[Int]                                 = js.undefined
+  var priority: js.UndefOr[Int]                                     = js.undefined
 
-@js.native
 trait AttributionImpressionResult extends js.Object
 
-@js.native
 trait AttributionAggregationService extends js.Object:
-  var protocol: String = js.native
+  var protocol: js.UndefOr[String] = js.undefined
 
-@js.native
 trait AudioOutputOptions extends js.Object:
-  var deviceId: String = js.native
+  var deviceId: js.UndefOr[String] = js.undefined
 
-@js.native
 trait AutofillEventInit extends EventInit:
-  var autofillValues: scala.scalajs.js.Array[scala.scalajs.js.Any] = js.native
-  var allowRefill: Boolean                                         = js.native
+  var autofillValues: js.UndefOr[scala.scalajs.js.Array[scala.scalajs.js.Array[scala.scalajs.js.Any]]] = js.undefined
+  var allowRefill: js.UndefOr[Boolean]                                                                 = js.undefined
 
-@js.native
 trait BackgroundFetchEventInit extends ExtendableEventInit:
-  var registration: BackgroundFetchRegistration = js.native
+  var registration: js.UndefOr[BackgroundFetchRegistration] = js.undefined
 
-@js.native
 trait BackgroundFetchOptions extends BackgroundFetchUIOptions:
-  var downloadTotal: Int = js.native
+  var downloadTotal: js.UndefOr[Int] = js.undefined
 
-@js.native
 trait BackgroundFetchUIOptions extends js.Object:
-  var icons: scala.scalajs.js.Array[ImageResource] = js.native
-  var title: String                                = js.native
+  var icons: js.UndefOr[scala.scalajs.js.Array[ImageResource]] = js.undefined
+  var title: js.UndefOr[String]                                = js.undefined
 
-@js.native
 trait SyncEventInit extends ExtendableEventInit:
-  var tag: String         = js.native
-  var lastChance: Boolean = js.native
+  var tag: js.UndefOr[String]         = js.undefined
+  var lastChance: js.UndefOr[Boolean] = js.undefined
 
-@js.native
 trait CaptureHandleConfig extends js.Object:
-  var exposeOrigin: Boolean                            = js.native
-  var handle: String                                   = js.native
-  var permittedOrigins: scala.scalajs.js.Array[String] = js.native
+  var exposeOrigin: js.UndefOr[Boolean]                            = js.undefined
+  var handle: js.UndefOr[String]                                   = js.undefined
+  var permittedOrigins: js.UndefOr[scala.scalajs.js.Array[String]] = js.undefined
 
-@js.native
 trait CaptureHandle extends js.Object:
-  var origin: String = js.native
-  var handle: String = js.native
+  var origin: js.UndefOr[String] = js.undefined
+  var handle: js.UndefOr[String] = js.undefined
 
-@js.native
 trait CapturedMouseEventInit extends EventInit:
-  var surfaceX: Int = js.native
-  var surfaceY: Int = js.native
+  var surfaceX: js.UndefOr[Int] = js.undefined
+  var surfaceY: js.UndefOr[Int] = js.undefined
 
-@js.native
 trait ClipboardUnsanitizedFormats extends js.Object:
-  var unsanitized: scala.scalajs.js.Array[String] = js.native
+  var unsanitized: js.UndefOr[scala.scalajs.js.Array[String]] = js.undefined
 
-@js.native
 trait ClipboardChangeEventInit extends EventInit:
-  var types: scala.scalajs.js.Array[String] = js.native
-  var changeId: scala.scalajs.js.Any        = js.native
+  var types: js.UndefOr[scala.scalajs.js.Array[String]] = js.undefined
+  var changeId: js.UndefOr[scala.scalajs.js.Any]        = js.undefined
 
-@js.native
 trait ClipboardItemOptions extends js.Object:
-  var presentationStyle: String = js.native
+  var presentationStyle: js.UndefOr[String] = js.undefined
 
-@js.native
 trait ClipboardEventInit extends EventInit:
-  var clipboardData: DataTransfer = js.native
+  var clipboardData: js.UndefOr[DataTransfer] = js.undefined
 
-@js.native
 trait ClipboardPermissionDescriptor extends PermissionDescriptor:
-  var allowWithoutGesture: Boolean = js.native
+  var allowWithoutGesture: js.UndefOr[Boolean] = js.undefined
 
-@js.native
 trait PressureObserverOptions extends js.Object:
-  var sampleInterval: Int = js.native
+  var sampleInterval: js.UndefOr[Int] = js.undefined
 
-@js.native
 trait ConnectionAllowlistViolationReport extends ReportBody:
-  var url: String                               = js.native
-  var connection: String                        = js.native
-  var allowlist: scala.scalajs.js.Array[String] = js.native
-  var disposition: String                       = js.native
+  var url: js.UndefOr[String]                               = js.undefined
+  var connection: js.UndefOr[String]                        = js.undefined
+  var allowlist: js.UndefOr[scala.scalajs.js.Array[String]] = js.undefined
+  var disposition: js.UndefOr[String]                       = js.undefined
 
-@js.native
 trait ContactInfo extends js.Object:
-  var address: scala.scalajs.js.Array[ContactAddress] = js.native
-  var email: scala.scalajs.js.Array[String]           = js.native
-  var icon: scala.scalajs.js.Array[Blob]              = js.native
-  var name: scala.scalajs.js.Array[String]            = js.native
-  var tel: scala.scalajs.js.Array[String]             = js.native
+  var address: js.UndefOr[scala.scalajs.js.Array[ContactAddress]] = js.undefined
+  var email: js.UndefOr[scala.scalajs.js.Array[String]]           = js.undefined
+  var icon: js.UndefOr[scala.scalajs.js.Array[Blob]]              = js.undefined
+  var name: js.UndefOr[scala.scalajs.js.Array[String]]            = js.undefined
+  var tel: js.UndefOr[scala.scalajs.js.Array[String]]             = js.undefined
 
-@js.native
 trait ContactsSelectOptions extends js.Object:
-  var multiple: Boolean = js.native
+  var multiple: js.UndefOr[Boolean] = js.undefined
 
-@js.native
 trait ContentIndexEventInit extends ExtendableEventInit:
-  var id: String = js.native
+  var id: js.UndefOr[String] = js.undefined
 
-@js.native
 trait ContentDescription extends js.Object:
-  var id: String                                   = js.native
-  var title: String                                = js.native
-  var description: String                          = js.native
-  var category: String                             = js.native
-  var icons: scala.scalajs.js.Array[ImageResource] = js.native
-  var url: String                                  = js.native
+  var id: js.UndefOr[String]                                   = js.undefined
+  var title: js.UndefOr[String]                                = js.undefined
+  var description: js.UndefOr[String]                          = js.undefined
+  var category: js.UndefOr[String]                             = js.undefined
+  var icons: js.UndefOr[scala.scalajs.js.Array[ImageResource]] = js.undefined
+  var url: js.UndefOr[String]                                  = js.undefined
 
-@js.native
 trait CookieStoreDeleteOptions extends js.Object:
-  var name: String         = js.native
-  var domain: String       = js.native
-  var path: String         = js.native
-  var partitioned: Boolean = js.native
+  var name: js.UndefOr[String]         = js.undefined
+  var domain: js.UndefOr[String]       = js.undefined
+  var path: js.UndefOr[String]         = js.undefined
+  var partitioned: js.UndefOr[Boolean] = js.undefined
 
-@js.native
 trait CookieInit extends js.Object:
-  var name: String         = js.native
-  var value: String        = js.native
-  var expires: Double      = js.native
-  var domain: String       = js.native
-  var path: String         = js.native
-  var sameSite: String     = js.native
-  var partitioned: Boolean = js.native
-  var maxAge: Int          = js.native
-end CookieInit
+  var name: js.UndefOr[String]         = js.undefined
+  var value: js.UndefOr[String]        = js.undefined
+  var expires: js.UndefOr[Double]      = js.undefined
+  var domain: js.UndefOr[String]       = js.undefined
+  var path: js.UndefOr[String]         = js.undefined
+  var sameSite: js.UndefOr[String]     = js.undefined
+  var partitioned: js.UndefOr[Boolean] = js.undefined
+  var maxAge: js.UndefOr[Int]          = js.undefined
 
-@js.native
 trait CookieStoreGetOptions extends js.Object:
-  var name: String = js.native
-  var url: String  = js.native
+  var name: js.UndefOr[String] = js.undefined
+  var url: js.UndefOr[String]  = js.undefined
 
-@js.native
 trait CookieListItem extends js.Object:
-  var name: String  = js.native
-  var value: String = js.native
+  var name: js.UndefOr[String]  = js.undefined
+  var value: js.UndefOr[String] = js.undefined
 
-@js.native
 trait CookieChangeEventInit extends EventInit:
-  var changed: scala.scalajs.js.Any = js.native
-  var deleted: scala.scalajs.js.Any = js.native
+  var changed: js.UndefOr[scala.scalajs.js.Array[CookieListItem]] = js.undefined
+  var deleted: js.UndefOr[scala.scalajs.js.Array[CookieListItem]] = js.undefined
 
-@js.native
 trait ExtendableCookieChangeEventInit extends ExtendableEventInit:
-  var changed: scala.scalajs.js.Any = js.native
-  var deleted: scala.scalajs.js.Any = js.native
+  var changed: js.UndefOr[scala.scalajs.js.Array[CookieListItem]] = js.undefined
+  var deleted: js.UndefOr[scala.scalajs.js.Array[CookieListItem]] = js.undefined
 
-@js.native
 trait CrashReportBody extends ReportBody:
-  var reason: String                         = js.native
-  var stack: String                          = js.native
-  var is_top_level: Boolean                  = js.native
-  var visibility_state: String               = js.native
-  var crash_report_api: scala.scalajs.js.Any = js.native
+  var reason: js.UndefOr[String]                         = js.undefined
+  var stack: js.UndefOr[String]                          = js.undefined
+  var is_top_level: js.UndefOr[Boolean]                  = js.undefined
+  var visibility_state: js.UndefOr[String]               = js.undefined
+  var crash_report_api: js.UndefOr[scala.scalajs.js.Any] = js.undefined
 
-@js.native
 trait FederatedCredentialRequestOptions extends js.Object:
-  var providers: scala.scalajs.js.Array[String] = js.native
-  var protocols: scala.scalajs.js.Array[String] = js.native
+  var providers: js.UndefOr[scala.scalajs.js.Array[String]] = js.undefined
+  var protocols: js.UndefOr[scala.scalajs.js.Array[String]] = js.undefined
 
-@js.native
 trait PasswordCredentialData extends CredentialData:
-  var name: String     = js.native
-  var iconURL: String  = js.native
-  var origin: String   = js.native
-  var password: String = js.native
+  var name: js.UndefOr[String]     = js.undefined
+  var iconURL: js.UndefOr[String]  = js.undefined
+  var origin: js.UndefOr[String]   = js.undefined
+  var password: js.UndefOr[String] = js.undefined
 
-@js.native
 trait CredentialCreationOptions extends js.Object:
-  var mediation: String   = js.native
-  var signal: AbortSignal = js.native
+  var mediation: js.UndefOr[String]   = js.undefined
+  var signal: js.UndefOr[AbortSignal] = js.undefined
 
-@js.native
 trait CredentialData extends js.Object:
-  var id: String = js.native
+  var id: js.UndefOr[String] = js.undefined
 
-@js.native
 trait CredentialRequestOptions extends js.Object:
-  var mediation: String   = js.native
-  var uiMode: String      = js.native
-  var signal: AbortSignal = js.native
+  var mediation: js.UndefOr[String]   = js.undefined
+  var uiMode: js.UndefOr[String]      = js.undefined
+  var signal: js.UndefOr[AbortSignal] = js.undefined
 
-@js.native
 trait FederatedCredentialInit extends CredentialData:
-  var name: String     = js.native
-  var iconURL: String  = js.native
-  var origin: String   = js.native
-  var provider: String = js.native
-  var protocol: String = js.native
+  var name: js.UndefOr[String]     = js.undefined
+  var iconURL: js.UndefOr[String]  = js.undefined
+  var origin: js.UndefOr[String]   = js.undefined
+  var provider: js.UndefOr[String] = js.undefined
+  var protocol: js.UndefOr[String] = js.undefined
 
-@js.native
 trait ScriptingPolicyReportBody extends ReportBody:
-  var violationType: String   = js.native
-  var violationURL: String    = js.native
-  var violationSample: String = js.native
-  var lineno: Int             = js.native
-  var colno: Int              = js.native
+  var violationType: js.UndefOr[String]   = js.undefined
+  var violationURL: js.UndefOr[String]    = js.undefined
+  var violationSample: js.UndefOr[String] = js.undefined
+  var lineno: js.UndefOr[Int]             = js.undefined
+  var colno: js.UndefOr[Int]              = js.undefined
 
-@js.native
 trait AnimationEventInit extends EventInit:
-  var animationName: String = js.native
-  var elapsedTime: Double   = js.native
-  var pseudoElement: String = js.native
+  var animationName: js.UndefOr[String] = js.undefined
+  var elapsedTime: js.UndefOr[Double]   = js.undefined
+  var pseudoElement: js.UndefOr[String] = js.undefined
 
-@js.native
 trait CSSContainerCondition extends js.Object:
-  var name: String  = js.native
-  var query: String = js.native
+  var name: js.UndefOr[String]  = js.undefined
+  var query: js.UndefOr[String] = js.undefined
 
-@js.native
 trait ContentVisibilityAutoStateChangeEventInit extends EventInit:
-  var skipped: Boolean = js.native
+  var skipped: js.UndefOr[Boolean] = js.undefined
 
-@js.native
 trait FontFaceSetLoadEventInit extends EventInit:
-  var fontfaces: scala.scalajs.js.Array[FontFace] = js.native
+  var fontfaces: js.UndefOr[scala.scalajs.js.Array[FontFace]] = js.undefined
 
-@js.native
 trait FontFaceDescriptors extends js.Object:
-  var style: String             = js.native
-  var weight: String            = js.native
-  var stretch: String           = js.native
-  var unicodeRange: String      = js.native
-  var featureSettings: String   = js.native
-  var variationSettings: String = js.native
-  var display: String           = js.native
-  var ascentOverride: String    = js.native
-  var descentOverride: String   = js.native
-  var lineGapOverride: String   = js.native
+  var style: js.UndefOr[String]             = js.undefined
+  var weight: js.UndefOr[String]            = js.undefined
+  var stretch: js.UndefOr[String]           = js.undefined
+  var unicodeRange: js.UndefOr[String]      = js.undefined
+  var featureSettings: js.UndefOr[String]   = js.undefined
+  var variationSettings: js.UndefOr[String] = js.undefined
+  var display: js.UndefOr[String]           = js.undefined
+  var ascentOverride: js.UndefOr[String]    = js.undefined
+  var descentOverride: js.UndefOr[String]   = js.undefined
+  var lineGapOverride: js.UndefOr[String]   = js.undefined
 end FontFaceDescriptors
 
-@js.native
 trait HighlightHitResult extends js.Object:
-  var highlight: Highlight                          = js.native
-  var ranges: scala.scalajs.js.Array[AbstractRange] = js.native
+  var highlight: js.UndefOr[Highlight]                          = js.undefined
+  var ranges: js.UndefOr[scala.scalajs.js.Array[AbstractRange]] = js.undefined
 
-@js.native
 trait HighlightsFromPointOptions extends js.Object:
-  var shadowRoots: scala.scalajs.js.Array[ShadowRoot] = js.native
+  var shadowRoots: js.UndefOr[scala.scalajs.js.Array[ShadowRoot]] = js.undefined
 
-@js.native
 trait IntrinsicSizesResultOptions extends js.Object:
-  var maxContentSize: Double = js.native
-  var minContentSize: Double = js.native
+  var maxContentSize: js.UndefOr[Double] = js.undefined
+  var minContentSize: js.UndefOr[Double] = js.undefined
 
-@js.native
 trait LayoutConstraintsOptions extends js.Object:
-  var availableInlineSize: Double      = js.native
-  var availableBlockSize: Double       = js.native
-  var fixedInlineSize: Double          = js.native
-  var fixedBlockSize: Double           = js.native
-  var percentageInlineSize: Double     = js.native
-  var percentageBlockSize: Double      = js.native
-  var blockFragmentationOffset: Double = js.native
-  var blockFragmentationType: String   = js.native
-  var data: scala.scalajs.js.Any       = js.native
+  var availableInlineSize: js.UndefOr[Double]      = js.undefined
+  var availableBlockSize: js.UndefOr[Double]       = js.undefined
+  var fixedInlineSize: js.UndefOr[Double]          = js.undefined
+  var fixedBlockSize: js.UndefOr[Double]           = js.undefined
+  var percentageInlineSize: js.UndefOr[Double]     = js.undefined
+  var percentageBlockSize: js.UndefOr[Double]      = js.undefined
+  var blockFragmentationOffset: js.UndefOr[Double] = js.undefined
+  var blockFragmentationType: js.UndefOr[String]   = js.undefined
+  var data: js.UndefOr[scala.scalajs.js.Any]       = js.undefined
 end LayoutConstraintsOptions
 
-@js.native
 trait BreakTokenOptions extends js.Object:
-  var childBreakTokens: scala.scalajs.js.Array[ChildBreakToken] = js.native
-  var data: scala.scalajs.js.Any                                = js.native
+  var childBreakTokens: js.UndefOr[scala.scalajs.js.Array[ChildBreakToken]] = js.undefined
+  var data: js.UndefOr[scala.scalajs.js.Any]                                = js.undefined
 
-@js.native
 trait LayoutOptions extends js.Object:
-  var childDisplay: String = js.native
-  var sizing: String       = js.native
+  var childDisplay: js.UndefOr[String] = js.undefined
+  var sizing: js.UndefOr[String]       = js.undefined
 
-@js.native
 trait FragmentResultOptions extends js.Object:
-  var inlineSize: Double                                     = js.native
-  var blockSize: Double                                      = js.native
-  var autoBlockSize: Double                                  = js.native
-  var childFragments: scala.scalajs.js.Array[LayoutFragment] = js.native
-  var data: scala.scalajs.js.Any                             = js.native
-  var breakToken: BreakTokenOptions                          = js.native
+  var inlineSize: js.UndefOr[Double]                                     = js.undefined
+  var blockSize: js.UndefOr[Double]                                      = js.undefined
+  var autoBlockSize: js.UndefOr[Double]                                  = js.undefined
+  var childFragments: js.UndefOr[scala.scalajs.js.Array[LayoutFragment]] = js.undefined
+  var data: js.UndefOr[scala.scalajs.js.Any]                             = js.undefined
+  var breakToken: js.UndefOr[BreakTokenOptions]                          = js.undefined
 
-@js.native
 trait FunctionParameter extends js.Object:
-  var name: String         = js.native
-  var `type`: String       = js.native
-  var defaultValue: String = js.native
+  var name: js.UndefOr[String]         = js.undefined
+  var `type`: js.UndefOr[String]       = js.undefined
+  var defaultValue: js.UndefOr[String] = js.undefined
 
-@js.native
 trait SpatialNavigationSearchOptions extends js.Object:
-  var candidates: scala.scalajs.js.Array[Node] = js.native
-  var container: Node                          = js.native
+  var candidates: js.UndefOr[scala.scalajs.js.Array[Node]] = js.undefined
+  var container: js.UndefOr[Node]                          = js.undefined
 
-@js.native
 trait FocusableAreasOption extends js.Object:
-  var mode: String = js.native
+  var mode: js.UndefOr[String] = js.undefined
 
-@js.native
 trait NavigationEventInit extends UIEventInit:
-  var dir: String                = js.native
-  var relatedTarget: EventTarget = js.native
+  var dir: js.UndefOr[String]                = js.undefined
+  var relatedTarget: js.UndefOr[EventTarget] = js.undefined
 
-@js.native
 trait PaintRenderingContext2DSettings extends js.Object:
-  var alpha: Boolean = js.native
+  var alpha: js.UndefOr[Boolean] = js.undefined
 
-@js.native
 trait CSSParserOptions extends js.Object:
-  var atRules: scala.scalajs.js.Any = js.native
+  var atRules: js.UndefOr[scala.scalajs.js.Any] = js.undefined
 
-@js.native
 trait PropertyDefinition extends js.Object:
-  var name: String         = js.native
-  var syntax: String       = js.native
-  var inherits: Boolean    = js.native
-  var initialValue: String = js.native
+  var name: js.UndefOr[String]         = js.undefined
+  var syntax: js.UndefOr[String]       = js.undefined
+  var inherits: js.UndefOr[Boolean]    = js.undefined
+  var initialValue: js.UndefOr[String] = js.undefined
 
-@js.native
 trait SnapEventInit extends EventInit:
-  var snapTargetBlock: Node  = js.native
-  var snapTargetInline: Node = js.native
+  var snapTargetBlock: js.UndefOr[Node]  = js.undefined
+  var snapTargetInline: js.UndefOr[Node] = js.undefined
 
-@js.native
 trait TransitionEventInit extends EventInit:
-  var propertyName: String  = js.native
-  var elapsedTime: Double   = js.native
-  var pseudoElement: String = js.native
+  var propertyName: js.UndefOr[String]  = js.undefined
+  var elapsedTime: js.UndefOr[Double]   = js.undefined
+  var pseudoElement: js.UndefOr[String] = js.undefined
 
-@js.native
 trait CSSMatrixComponentOptions extends js.Object:
-  var is2D: Boolean = js.native
+  var is2D: js.UndefOr[Boolean] = js.undefined
 
-@js.native
 trait CSSNumericType extends js.Object:
-  var length: Int         = js.native
-  var angle: Int          = js.native
-  var time: Int           = js.native
-  var frequency: Int      = js.native
-  var resolution: Int     = js.native
-  var flex: Int           = js.native
-  var percent: Int        = js.native
-  var percentHint: String = js.native
-end CSSNumericType
+  var length: js.UndefOr[Int]         = js.undefined
+  var angle: js.UndefOr[Int]          = js.undefined
+  var time: js.UndefOr[Int]           = js.undefined
+  var frequency: js.UndefOr[Int]      = js.undefined
+  var resolution: js.UndefOr[Int]     = js.undefined
+  var flex: js.UndefOr[Int]           = js.undefined
+  var percent: js.UndefOr[Int]        = js.undefined
+  var percentHint: js.UndefOr[String] = js.undefined
 
-@js.native
 trait StartViewTransitionOptions extends js.Object:
-  var update: scala.scalajs.js.Function0[scala.scalajs.js.Promise[scala.scalajs.js.Any]] = js.native
-  var types: scala.scalajs.js.Array[String]                                              = js.native
+  var update: js.UndefOr[scala.scalajs.js.Function0[scala.scalajs.js.Promise[scala.scalajs.js.Any]]] = js.undefined
+  var types: js.UndefOr[scala.scalajs.js.Array[String]]                                              = js.undefined
 
-@js.native
 trait CSSStyleSheetInit extends js.Object:
-  var baseURL: String             = js.native
-  var media: scala.scalajs.js.Any = js.native
-  var disabled: Boolean           = js.native
+  var baseURL: js.UndefOr[String]           = js.undefined
+  var media: js.UndefOr[MediaList | String] = js.undefined
+  var disabled: js.UndefOr[Boolean]         = js.undefined
 
-@js.native
 trait ScrollOptions extends js.Object:
-  var behavior: String = js.native
+  var behavior: js.UndefOr[String] = js.undefined
 
-@js.native
 trait CheckVisibilityOptions extends js.Object:
-  var checkOpacity: Boolean          = js.native
-  var checkVisibilityCSS: Boolean    = js.native
-  var contentVisibilityAuto: Boolean = js.native
-  var opacityProperty: Boolean       = js.native
-  var visibilityProperty: Boolean    = js.native
+  var checkOpacity: js.UndefOr[Boolean]          = js.undefined
+  var checkVisibilityCSS: js.UndefOr[Boolean]    = js.undefined
+  var contentVisibilityAuto: js.UndefOr[Boolean] = js.undefined
+  var opacityProperty: js.UndefOr[Boolean]       = js.undefined
+  var visibilityProperty: js.UndefOr[Boolean]    = js.undefined
 
-@js.native
 trait CaretPositionFromPointOptions extends js.Object:
-  var shadowRoots: scala.scalajs.js.Array[ShadowRoot] = js.native
+  var shadowRoots: js.UndefOr[scala.scalajs.js.Array[ShadowRoot]] = js.undefined
 
-@js.native
 trait ScrollIntoViewOptions extends ScrollOptions:
-  var block: String     = js.native
-  var inline: String    = js.native
-  var container: String = js.native
+  var block: js.UndefOr[String]     = js.undefined
+  var inline: js.UndefOr[String]    = js.undefined
+  var container: js.UndefOr[String] = js.undefined
 
-@js.native
 trait BoxQuadOptions extends js.Object:
-  var box: String                      = js.native
-  var relativeTo: scala.scalajs.js.Any = js.native
+  var box: js.UndefOr[String]                                              = js.undefined
+  var relativeTo: js.UndefOr[Text | Element | CSSPseudoElement | Document] = js.undefined
 
-@js.native
 trait ScrollToOptions extends ScrollOptions:
-  var left: Double = js.native
-  var top: Double  = js.native
+  var left: js.UndefOr[Double] = js.undefined
+  var top: js.UndefOr[Double]  = js.undefined
 
-@js.native
 trait MediaQueryListEventInit extends EventInit:
-  var media: String    = js.native
-  var matches: Boolean = js.native
+  var media: js.UndefOr[String]    = js.undefined
+  var matches: js.UndefOr[Boolean] = js.undefined
 
-@js.native
 trait ConvertCoordinateOptions extends js.Object:
-  var fromBox: String = js.native
-  var toBox: String   = js.native
+  var fromBox: js.UndefOr[String] = js.undefined
+  var toBox: js.UndefOr[String]   = js.undefined
 
-@js.native
 trait DeprecationReportBody extends ReportBody:
-  var id: String                               = js.native
-  var anticipatedRemoval: scala.scalajs.js.Any = js.native
-  var message: String                          = js.native
-  var sourceFile: String                       = js.native
-  var lineNumber: Int                          = js.native
-  var columnNumber: Int                        = js.native
+  var id: js.UndefOr[String]                               = js.undefined
+  var anticipatedRemoval: js.UndefOr[scala.scalajs.js.Any] = js.undefined
+  var message: js.UndefOr[String]                          = js.undefined
+  var sourceFile: js.UndefOr[String]                       = js.undefined
+  var lineNumber: js.UndefOr[Int]                          = js.undefined
+  var columnNumber: js.UndefOr[Int]                        = js.undefined
 
-@js.native
 trait DigitalCredentialCreateRequest extends js.Object:
-  var protocol: String           = js.native
-  var data: scala.scalajs.js.Any = js.native
+  var protocol: js.UndefOr[String]           = js.undefined
+  var data: js.UndefOr[scala.scalajs.js.Any] = js.undefined
 
-@js.native
 trait DigitalCredentialRequestOptions extends js.Object:
-  var requests: scala.scalajs.js.Array[DigitalCredentialGetRequest] = js.native
+  var requests: js.UndefOr[scala.scalajs.js.Array[DigitalCredentialGetRequest]] = js.undefined
 
-@js.native
 trait DigitalCredentialGetRequest extends js.Object:
-  var protocol: String           = js.native
-  var data: scala.scalajs.js.Any = js.native
+  var protocol: js.UndefOr[String]           = js.undefined
+  var data: js.UndefOr[scala.scalajs.js.Any] = js.undefined
 
-@js.native
 trait DigitalCredentialCreationOptions extends js.Object:
-  var requests: scala.scalajs.js.Array[DigitalCredentialCreateRequest] = js.native
+  var requests: js.UndefOr[scala.scalajs.js.Array[DigitalCredentialCreateRequest]] = js.undefined
 
-@js.native
 trait ItemDetails extends js.Object:
-  var itemId: String                           = js.native
-  var title: String                            = js.native
-  var price: PaymentCurrencyAmount             = js.native
-  var `type`: String                           = js.native
-  var description: String                      = js.native
-  var iconURLs: scala.scalajs.js.Array[String] = js.native
-  var subscriptionPeriod: String               = js.native
-  var freeTrialPeriod: String                  = js.native
-  var introductoryPrice: PaymentCurrencyAmount = js.native
-  var introductoryPricePeriod: String          = js.native
-  var introductoryPriceCycles: Int             = js.native
+  var itemId: js.UndefOr[String]                           = js.undefined
+  var title: js.UndefOr[String]                            = js.undefined
+  var price: js.UndefOr[PaymentCurrencyAmount]             = js.undefined
+  var `type`: js.UndefOr[String]                           = js.undefined
+  var description: js.UndefOr[String]                      = js.undefined
+  var iconURLs: js.UndefOr[scala.scalajs.js.Array[String]] = js.undefined
+  var subscriptionPeriod: js.UndefOr[String]               = js.undefined
+  var freeTrialPeriod: js.UndefOr[String]                  = js.undefined
+  var introductoryPrice: js.UndefOr[PaymentCurrencyAmount] = js.undefined
+  var introductoryPricePeriod: js.UndefOr[String]          = js.undefined
+  var introductoryPriceCycles: js.UndefOr[Int]             = js.undefined
 end ItemDetails
 
-@js.native
 trait PurchaseDetails extends js.Object:
-  var itemId: String        = js.native
-  var purchaseToken: String = js.native
+  var itemId: js.UndefOr[String]        = js.undefined
+  var purchaseToken: js.UndefOr[String] = js.undefined
 
-@js.native
 trait DocumentPictureInPictureOptions extends js.Object:
-  var width: Int                            = js.native
-  var height: Int                           = js.native
-  var disallowReturnToOpener: Boolean       = js.native
-  var preferInitialWindowPlacement: Boolean = js.native
+  var width: js.UndefOr[Int]                            = js.undefined
+  var height: js.UndefOr[Int]                           = js.undefined
+  var disallowReturnToOpener: js.UndefOr[Boolean]       = js.undefined
+  var preferInitialWindowPlacement: js.UndefOr[Boolean] = js.undefined
 
-@js.native
 trait DocumentPictureInPictureEventInit extends EventInit:
-  var window: Window = js.native
+  var window: js.UndefOr[Window] = js.undefined
 
-@js.native
 trait StaticRangeInit extends js.Object:
-  var startContainer: Node = js.native
-  var startOffset: Int     = js.native
-  var endContainer: Node   = js.native
-  var endOffset: Int       = js.native
+  var startContainer: js.UndefOr[Node] = js.undefined
+  var startOffset: js.UndefOr[Int]     = js.undefined
+  var endContainer: js.UndefOr[Node]   = js.undefined
+  var endOffset: js.UndefOr[Int]       = js.undefined
 
-@js.native
 trait MutationObserverInit extends js.Object:
-  var childList: Boolean                              = js.native
-  var attributes: Boolean                             = js.native
-  var characterData: Boolean                          = js.native
-  var subtree: Boolean                                = js.native
-  var attributeOldValue: Boolean                      = js.native
-  var characterDataOldValue: Boolean                  = js.native
-  var attributeFilter: scala.scalajs.js.Array[String] = js.native
+  var childList: js.UndefOr[Boolean]                              = js.undefined
+  var attributes: js.UndefOr[Boolean]                             = js.undefined
+  var characterData: js.UndefOr[Boolean]                          = js.undefined
+  var subtree: js.UndefOr[Boolean]                                = js.undefined
+  var attributeOldValue: js.UndefOr[Boolean]                      = js.undefined
+  var characterDataOldValue: js.UndefOr[Boolean]                  = js.undefined
+  var attributeFilter: js.UndefOr[scala.scalajs.js.Array[String]] = js.undefined
 
-@js.native
 trait ElementCreationOptions extends js.Object:
-  var customElementRegistry: CustomElementRegistry = js.native
-  var is: String                                   = js.native
+  var customElementRegistry: js.UndefOr[CustomElementRegistry] = js.undefined
+  var is: js.UndefOr[String]                                   = js.undefined
 
-@js.native
 trait AddEventListenerOptions extends EventListenerOptions:
-  var passive: Boolean    = js.native
-  var once: Boolean       = js.native
-  var signal: AbortSignal = js.native
+  var passive: js.UndefOr[Boolean]    = js.undefined
+  var once: js.UndefOr[Boolean]       = js.undefined
+  var signal: js.UndefOr[AbortSignal] = js.undefined
 
-@js.native
 trait ImportNodeOptions extends js.Object:
-  var customElementRegistry: CustomElementRegistry = js.native
-  var selfOnly: Boolean                            = js.native
+  var customElementRegistry: js.UndefOr[CustomElementRegistry] = js.undefined
+  var selfOnly: js.UndefOr[Boolean]                            = js.undefined
 
-@js.native
 trait ShadowRootInit extends js.Object:
-  var mode: String                                 = js.native
-  var delegatesFocus: Boolean                      = js.native
-  var slotAssignment: String                       = js.native
-  var clonable: Boolean                            = js.native
-  var serializable: Boolean                        = js.native
-  var customElementRegistry: CustomElementRegistry = js.native
+  var mode: js.UndefOr[String]                                 = js.undefined
+  var delegatesFocus: js.UndefOr[Boolean]                      = js.undefined
+  var slotAssignment: js.UndefOr[String]                       = js.undefined
+  var clonable: js.UndefOr[Boolean]                            = js.undefined
+  var serializable: js.UndefOr[Boolean]                        = js.undefined
+  var customElementRegistry: js.UndefOr[CustomElementRegistry] = js.undefined
 
-@js.native
 trait GetRootNodeOptions extends js.Object:
-  var composed: Boolean = js.native
+  var composed: js.UndefOr[Boolean] = js.undefined
 
-@js.native
 trait EventInit extends js.Object:
-  var bubbles: Boolean    = js.native
-  var cancelable: Boolean = js.native
-  var composed: Boolean   = js.native
+  var bubbles: js.UndefOr[Boolean]    = js.undefined
+  var cancelable: js.UndefOr[Boolean] = js.undefined
+  var composed: js.UndefOr[Boolean]   = js.undefined
 
-@js.native
 trait EventListenerOptions extends js.Object:
-  var capture: Boolean = js.native
+  var capture: js.UndefOr[Boolean] = js.undefined
 
-@js.native
 trait CustomEventInit extends EventInit:
-  var detail: scala.scalajs.js.Any = js.native
+  var detail: js.UndefOr[scala.scalajs.js.Any] = js.undefined
 
-@js.native
 trait CharacterBoundsUpdateEventInit extends EventInit:
-  var rangeStart: Int = js.native
-  var rangeEnd: Int   = js.native
+  var rangeStart: js.UndefOr[Int] = js.undefined
+  var rangeEnd: js.UndefOr[Int]   = js.undefined
 
-@js.native
 trait EditContextInit extends js.Object:
-  var text: String        = js.native
-  var selectionStart: Int = js.native
-  var selectionEnd: Int   = js.native
+  var text: js.UndefOr[String]        = js.undefined
+  var selectionStart: js.UndefOr[Int] = js.undefined
+  var selectionEnd: js.UndefOr[Int]   = js.undefined
 
-@js.native
 trait TextFormatUpdateEventInit extends EventInit:
-  var textFormats: scala.scalajs.js.Array[TextFormat] = js.native
+  var textFormats: js.UndefOr[scala.scalajs.js.Array[TextFormat]] = js.undefined
 
-@js.native
 trait TextFormatInit extends js.Object:
-  var rangeStart: Int            = js.native
-  var rangeEnd: Int              = js.native
-  var underlineStyle: String     = js.native
-  var underlineThickness: String = js.native
+  var rangeStart: js.UndefOr[Int]            = js.undefined
+  var rangeEnd: js.UndefOr[Int]              = js.undefined
+  var underlineStyle: js.UndefOr[String]     = js.undefined
+  var underlineThickness: js.UndefOr[String] = js.undefined
 
-@js.native
 trait TextUpdateEventInit extends EventInit:
-  var updateRangeStart: Int = js.native
-  var updateRangeEnd: Int   = js.native
-  var text: String          = js.native
-  var selectionStart: Int   = js.native
-  var selectionEnd: Int     = js.native
-  var compositionStart: Int = js.native
-  var compositionEnd: Int   = js.native
+  var updateRangeStart: js.UndefOr[Int] = js.undefined
+  var updateRangeEnd: js.UndefOr[Int]   = js.undefined
+  var text: js.UndefOr[String]          = js.undefined
+  var selectionStart: js.UndefOr[Int]   = js.undefined
+  var selectionEnd: js.UndefOr[Int]     = js.undefined
+  var compositionStart: js.UndefOr[Int] = js.undefined
+  var compositionEnd: js.UndefOr[Int]   = js.undefined
 
-@js.native
 trait TextDecoderOptions extends js.Object:
-  var fatal: Boolean     = js.native
-  var ignoreBOM: Boolean = js.native
+  var fatal: js.UndefOr[Boolean]     = js.undefined
+  var ignoreBOM: js.UndefOr[Boolean] = js.undefined
 
-@js.native
 trait TextEncoderEncodeIntoResult extends js.Object:
-  var read: Int    = js.native
-  var written: Int = js.native
+  var read: js.UndefOr[Int]    = js.undefined
+  var written: js.UndefOr[Int] = js.undefined
 
-@js.native
 trait TextDecodeOptions extends js.Object:
-  var stream: Boolean = js.native
+  var stream: js.UndefOr[Boolean] = js.undefined
 
-@js.native
 trait MediaKeysPolicy extends js.Object:
-  var minHdcpVersion: String = js.native
+  var minHdcpVersion: js.UndefOr[String] = js.undefined
 
-@js.native
 trait MediaKeySystemMediaCapability extends js.Object:
-  var contentType: String      = js.native
-  var encryptionScheme: String = js.native
-  var robustness: String       = js.native
+  var contentType: js.UndefOr[String]      = js.undefined
+  var encryptionScheme: js.UndefOr[String] = js.undefined
+  var robustness: js.UndefOr[String]       = js.undefined
 
-@js.native
 trait MediaKeyMessageEventInit extends EventInit:
-  var messageType: String           = js.native
-  var message: scala.scalajs.js.Any = js.native
+  var messageType: js.UndefOr[String]           = js.undefined
+  var message: js.UndefOr[scala.scalajs.js.Any] = js.undefined
 
-@js.native
 trait MediaEncryptedEventInit extends EventInit:
-  var initDataType: String           = js.native
-  var initData: scala.scalajs.js.Any = js.native
+  var initDataType: js.UndefOr[String]           = js.undefined
+  var initData: js.UndefOr[scala.scalajs.js.Any] = js.undefined
 
-@js.native
 trait MediaKeySystemConfiguration extends js.Object:
-  var label: String                                                            = js.native
-  var initDataTypes: scala.scalajs.js.Array[String]                            = js.native
-  var audioCapabilities: scala.scalajs.js.Array[MediaKeySystemMediaCapability] = js.native
-  var videoCapabilities: scala.scalajs.js.Array[MediaKeySystemMediaCapability] = js.native
-  var distinctiveIdentifier: String                                            = js.native
-  var persistentState: String                                                  = js.native
-  var sessionTypes: scala.scalajs.js.Array[String]                             = js.native
+  var label: js.UndefOr[String]                                                            = js.undefined
+  var initDataTypes: js.UndefOr[scala.scalajs.js.Array[String]]                            = js.undefined
+  var audioCapabilities: js.UndefOr[scala.scalajs.js.Array[MediaKeySystemMediaCapability]] = js.undefined
+  var videoCapabilities: js.UndefOr[scala.scalajs.js.Array[MediaKeySystemMediaCapability]] = js.undefined
+  var distinctiveIdentifier: js.UndefOr[String]                                            = js.undefined
+  var persistentState: js.UndefOr[String]                                                  = js.undefined
+  var sessionTypes: js.UndefOr[scala.scalajs.js.Array[String]]                             = js.undefined
 
-@js.native
 trait FileSystemFlags extends js.Object:
-  var create: Boolean    = js.native
-  var exclusive: Boolean = js.native
+  var create: js.UndefOr[Boolean]    = js.undefined
+  var exclusive: js.UndefOr[Boolean] = js.undefined
 
-@js.native
 trait ColorSelectionResult extends js.Object:
-  var sRGBHex: String = js.native
+  var sRGBHex: js.UndefOr[String] = js.undefined
 
-@js.native
 trait ColorSelectionOptions extends js.Object:
-  var signal: AbortSignal = js.native
+  var signal: js.UndefOr[AbortSignal] = js.undefined
 
-@js.native
 trait IdentityProviderWellKnown extends js.Object:
-  var provider_urls: scala.scalajs.js.Array[String] = js.native
-  var accounts_endpoint: String                     = js.native
-  var login_url: String                             = js.native
+  var provider_urls: js.UndefOr[scala.scalajs.js.Array[String]] = js.undefined
+  var accounts_endpoint: js.UndefOr[String]                     = js.undefined
+  var login_url: js.UndefOr[String]                             = js.undefined
 
-@js.native
 trait IdentityCredentialDisconnectOptions extends IdentityProviderConfig:
-  var accountHint: String = js.native
+  var accountHint: js.UndefOr[String] = js.undefined
 
-@js.native
 trait IdentityProviderAPIConfig extends js.Object:
-  var accounts_endpoint: String           = js.native
-  var client_metadata_endpoint: String    = js.native
-  var id_assertion_endpoint: String       = js.native
-  var login_url: String                   = js.native
-  var disconnect_endpoint: String         = js.native
-  var branding: IdentityProviderBranding  = js.native
-  var supports_use_other_account: Boolean = js.native
-  var account_label: String               = js.native
-end IdentityProviderAPIConfig
+  var accounts_endpoint: js.UndefOr[String]           = js.undefined
+  var client_metadata_endpoint: js.UndefOr[String]    = js.undefined
+  var id_assertion_endpoint: js.UndefOr[String]       = js.undefined
+  var login_url: js.UndefOr[String]                   = js.undefined
+  var disconnect_endpoint: js.UndefOr[String]         = js.undefined
+  var branding: js.UndefOr[IdentityProviderBranding]  = js.undefined
+  var supports_use_other_account: js.UndefOr[Boolean] = js.undefined
+  var account_label: js.UndefOr[String]               = js.undefined
 
-@js.native
 trait IdentityProviderBranding extends js.Object:
-  var background_color: String                            = js.native
-  var color: String                                       = js.native
-  var icons: scala.scalajs.js.Array[IdentityProviderIcon] = js.native
-  var name: String                                        = js.native
+  var background_color: js.UndefOr[String]                            = js.undefined
+  var color: js.UndefOr[String]                                       = js.undefined
+  var icons: js.UndefOr[scala.scalajs.js.Array[IdentityProviderIcon]] = js.undefined
+  var name: js.UndefOr[String]                                        = js.undefined
 
-@js.native
 trait IdentityProviderAccount extends js.Object:
-  var id: String                                       = js.native
-  var name: String                                     = js.native
-  var email: String                                    = js.native
-  var tel: String                                      = js.native
-  var username: String                                 = js.native
-  var given_name: String                               = js.native
-  var picture: String                                  = js.native
-  var approved_clients: scala.scalajs.js.Array[String] = js.native
-  var login_hints: scala.scalajs.js.Array[String]      = js.native
-  var domain_hints: scala.scalajs.js.Array[String]     = js.native
-  var label_hints: scala.scalajs.js.Array[String]      = js.native
+  var id: js.UndefOr[String]                                       = js.undefined
+  var name: js.UndefOr[String]                                     = js.undefined
+  var email: js.UndefOr[String]                                    = js.undefined
+  var tel: js.UndefOr[String]                                      = js.undefined
+  var username: js.UndefOr[String]                                 = js.undefined
+  var given_name: js.UndefOr[String]                               = js.undefined
+  var picture: js.UndefOr[String]                                  = js.undefined
+  var approved_clients: js.UndefOr[scala.scalajs.js.Array[String]] = js.undefined
+  var login_hints: js.UndefOr[scala.scalajs.js.Array[String]]      = js.undefined
+  var domain_hints: js.UndefOr[scala.scalajs.js.Array[String]]     = js.undefined
+  var label_hints: js.UndefOr[scala.scalajs.js.Array[String]]      = js.undefined
 end IdentityProviderAccount
 
-@js.native
 trait IdentityAssertionResponse extends js.Object:
-  var token: scala.scalajs.js.Any        = js.native
-  var continue_on: String                = js.native
-  var error: IdentityCredentialErrorInit = js.native
+  var token: js.UndefOr[scala.scalajs.js.Any]        = js.undefined
+  var continue_on: js.UndefOr[String]                = js.undefined
+  var error: js.UndefOr[IdentityCredentialErrorInit] = js.undefined
 
-@js.native
 trait IdentityCredentialErrorInit extends js.Object:
-  var error: String = js.native
-  var url: String   = js.native
+  var error: js.UndefOr[String] = js.undefined
+  var url: js.UndefOr[String]   = js.undefined
 
-@js.native
 trait IdentityProviderIcon extends js.Object:
-  var url: String = js.native
-  var size: Int   = js.native
+  var url: js.UndefOr[String] = js.undefined
+  var size: js.UndefOr[Int]   = js.undefined
 
-@js.native
 trait IdentityUserInfo extends js.Object:
-  var email: String     = js.native
-  var name: String      = js.native
-  var givenName: String = js.native
-  var picture: String   = js.native
+  var email: js.UndefOr[String]     = js.undefined
+  var name: js.UndefOr[String]      = js.undefined
+  var givenName: js.UndefOr[String] = js.undefined
+  var picture: js.UndefOr[String]   = js.undefined
 
-@js.native
 trait IdentityProviderClientMetadata extends js.Object:
-  var privacy_policy_url: String                         = js.native
-  var terms_of_service_url: String                       = js.native
-  var client_is_third_party_to_top_frame_origin: Boolean = js.native
+  var privacy_policy_url: js.UndefOr[String]                         = js.undefined
+  var terms_of_service_url: js.UndefOr[String]                       = js.undefined
+  var client_is_third_party_to_top_frame_origin: js.UndefOr[Boolean] = js.undefined
 
-@js.native
 trait IdentityProviderConfig extends js.Object:
-  var configURL: String = js.native
-  var clientId: String  = js.native
+  var configURL: js.UndefOr[String] = js.undefined
+  var clientId: js.UndefOr[String]  = js.undefined
 
-@js.native
 trait DisconnectedAccount extends js.Object:
-  var account_id: String = js.native
+  var account_id: js.UndefOr[String] = js.undefined
 
-@js.native
 trait IdentityProviderRequestOptions extends IdentityProviderConfig:
-  var loginHint: String                      = js.native
-  var domainHint: String                     = js.native
-  var fields: scala.scalajs.js.Array[String] = js.native
-  var params: scala.scalajs.js.Any           = js.native
+  var loginHint: js.UndefOr[String]                      = js.undefined
+  var domainHint: js.UndefOr[String]                     = js.undefined
+  var fields: js.UndefOr[scala.scalajs.js.Array[String]] = js.undefined
+  var params: js.UndefOr[scala.scalajs.js.Any]           = js.undefined
 
-@js.native
 trait IdentityProviderAccountList extends js.Object:
-  var accounts: scala.scalajs.js.Array[IdentityProviderAccount] = js.native
+  var accounts: js.UndefOr[scala.scalajs.js.Array[IdentityProviderAccount]] = js.undefined
 
-@js.native
 trait IdentityResolveOptions extends js.Object:
-  var accountId: String = js.native
+  var accountId: js.UndefOr[String] = js.undefined
 
-@js.native
 trait IdentityCredentialRequestOptions extends js.Object:
-  var providers: scala.scalajs.js.Array[IdentityProviderRequestOptions] = js.native
-  var context: String                                                   = js.native
-  var mode: String                                                      = js.native
+  var providers: js.UndefOr[scala.scalajs.js.Array[IdentityProviderRequestOptions]] = js.undefined
+  var context: js.UndefOr[String]                                                   = js.undefined
+  var mode: js.UndefOr[String]                                                      = js.undefined
 
-@js.native
 trait FenceEvent extends js.Object:
-  var eventType: String                           = js.native
-  var eventData: String                           = js.native
-  var destination: scala.scalajs.js.Array[String] = js.native
-  var crossOriginExposed: Boolean                 = js.native
-  var once: Boolean                               = js.native
-  var destinationURL: String                      = js.native
+  var eventType: js.UndefOr[String]                           = js.undefined
+  var eventData: js.UndefOr[String]                           = js.undefined
+  var destination: js.UndefOr[scala.scalajs.js.Array[String]] = js.undefined
+  var crossOriginExposed: js.UndefOr[Boolean]                 = js.undefined
+  var once: js.UndefOr[Boolean]                               = js.undefined
+  var destinationURL: js.UndefOr[String]                      = js.undefined
 
-@js.native
 trait DeferredRequestInit extends RequestInit:
-  var activateAfter: Double = js.native
+  var activateAfter: js.UndefOr[Double] = js.undefined
 
-@js.native
 trait RequestInit extends js.Object:
-  var method: String                = js.native
-  var headers: scala.scalajs.js.Any = js.native
-  var body: scala.scalajs.js.Any    = js.native
-  var referrer: String              = js.native
-  var referrerPolicy: String        = js.native
-  var mode: String                  = js.native
-  var credentials: String           = js.native
-  var cache: String                 = js.native
-  var redirect: String              = js.native
-  var integrity: String             = js.native
-  var keepalive: Boolean            = js.native
-  var signal: AbortSignal           = js.native
-  var duplex: String                = js.native
-  var priority: String              = js.native
-  var window: scala.scalajs.js.Any  = js.native
+  var method: js.UndefOr[String]                = js.undefined
+  var headers: js.UndefOr[scala.scalajs.js.Any] = js.undefined
+  var body: js.UndefOr[scala.scalajs.js.Any]    = js.undefined
+  var referrer: js.UndefOr[String]              = js.undefined
+  var referrerPolicy: js.UndefOr[String]        = js.undefined
+  var mode: js.UndefOr[String]                  = js.undefined
+  var credentials: js.UndefOr[String]           = js.undefined
+  var cache: js.UndefOr[String]                 = js.undefined
+  var redirect: js.UndefOr[String]              = js.undefined
+  var integrity: js.UndefOr[String]             = js.undefined
+  var keepalive: js.UndefOr[Boolean]            = js.undefined
+  var signal: js.UndefOr[AbortSignal]           = js.undefined
+  var duplex: js.UndefOr[String]                = js.undefined
+  var priority: js.UndefOr[String]              = js.undefined
+  var window: js.UndefOr[scala.scalajs.js.Any]  = js.undefined
 end RequestInit
 
-@js.native
 trait ResponseInit extends js.Object:
-  var status: Int                   = js.native
-  var statusText: String            = js.native
-  var headers: scala.scalajs.js.Any = js.native
+  var status: js.UndefOr[Int]                   = js.undefined
+  var statusText: js.UndefOr[String]            = js.undefined
+  var headers: js.UndefOr[scala.scalajs.js.Any] = js.undefined
 
-@js.native
 trait HMACGetSecretInput extends js.Object:
-  var salt1: scala.scalajs.js.Any = js.native
-  var salt2: scala.scalajs.js.Any = js.native
+  var salt1: js.UndefOr[scala.scalajs.js.Any] = js.undefined
+  var salt2: js.UndefOr[scala.scalajs.js.Any] = js.undefined
 
-@js.native
 trait HMACGetSecretOutput extends js.Object:
-  var output1: scala.scalajs.js.Any = js.native
-  var output2: scala.scalajs.js.Any = js.native
+  var output1: js.UndefOr[scala.scalajs.js.Any] = js.undefined
+  var output2: js.UndefOr[scala.scalajs.js.Any] = js.undefined
 
-@js.native
 trait FileSystemPermissionDescriptor extends PermissionDescriptor:
-  var handle: FileSystemHandle = js.native
-  var mode: String             = js.native
+  var handle: js.UndefOr[FileSystemHandle] = js.undefined
+  var mode: js.UndefOr[String]             = js.undefined
 
-@js.native
 trait FilePickerAcceptType extends js.Object:
-  var description: String          = js.native
-  var accept: scala.scalajs.js.Any = js.native
+  var description: js.UndefOr[String]          = js.undefined
+  var accept: js.UndefOr[scala.scalajs.js.Any] = js.undefined
 
-@js.native
 trait FileSystemHandlePermissionDescriptor extends js.Object:
-  var mode: String = js.native
+  var mode: js.UndefOr[String] = js.undefined
 
-@js.native
 trait FilePickerOptions extends js.Object:
-  var types: scala.scalajs.js.Array[FilePickerAcceptType] = js.native
-  var excludeAcceptAllOption: Boolean                     = js.native
-  var id: String                                          = js.native
-  var startIn: scala.scalajs.js.Any                       = js.native
+  var types: js.UndefOr[scala.scalajs.js.Array[FilePickerAcceptType]] = js.undefined
+  var excludeAcceptAllOption: js.UndefOr[Boolean]                     = js.undefined
+  var id: js.UndefOr[String]                                          = js.undefined
+  var startIn: js.UndefOr[String | FileSystemHandle]                  = js.undefined
 
-@js.native
 trait SaveFilePickerOptions extends FilePickerOptions:
-  var suggestedName: String = js.native
+  var suggestedName: js.UndefOr[String] = js.undefined
 
-@js.native
 trait OpenFilePickerOptions extends FilePickerOptions:
-  var multiple: Boolean = js.native
+  var multiple: js.UndefOr[Boolean] = js.undefined
 
-@js.native
 trait DirectoryPickerOptions extends js.Object:
-  var id: String                    = js.native
-  var startIn: scala.scalajs.js.Any = js.native
-  var mode: String                  = js.native
+  var id: js.UndefOr[String]                         = js.undefined
+  var startIn: js.UndefOr[String | FileSystemHandle] = js.undefined
+  var mode: js.UndefOr[String]                       = js.undefined
 
-@js.native
 trait FileSystemCreateWritableOptions extends js.Object:
-  var keepExistingData: Boolean = js.native
+  var keepExistingData: js.UndefOr[Boolean] = js.undefined
 
-@js.native
 trait FileSystemGetFileOptions extends js.Object:
-  var create: Boolean = js.native
+  var create: js.UndefOr[Boolean] = js.undefined
 
-@js.native
 trait FileSystemGetDirectoryOptions extends js.Object:
-  var create: Boolean = js.native
+  var create: js.UndefOr[Boolean] = js.undefined
 
-@js.native
 trait FileSystemReadWriteOptions extends js.Object:
-  var at: Int = js.native
+  var at: js.UndefOr[Int] = js.undefined
 
-@js.native
 trait FileSystemRemoveOptions extends js.Object:
-  var recursive: Boolean = js.native
+  var recursive: js.UndefOr[Boolean] = js.undefined
 
-@js.native
 trait WriteParams extends js.Object:
-  var `type`: String             = js.native
-  var size: Int                  = js.native
-  var position: Int              = js.native
-  var data: scala.scalajs.js.Any = js.native
+  var `type`: js.UndefOr[String]             = js.undefined
+  var size: js.UndefOr[Int]                  = js.undefined
+  var position: js.UndefOr[Int]              = js.undefined
+  var data: js.UndefOr[scala.scalajs.js.Any] = js.undefined
 
-@js.native
 trait FullscreenOptions extends js.Object:
-  var keyboardLock: String = js.native
-  var navigationUI: String = js.native
+  var keyboardLock: js.UndefOr[String] = js.undefined
+  var navigationUI: js.UndefOr[String] = js.undefined
 
-@js.native
 trait GamepadEffectParameters extends js.Object:
-  var duration: Int           = js.native
-  var startDelay: Int         = js.native
-  var strongMagnitude: Double = js.native
-  var weakMagnitude: Double   = js.native
-  var leftTrigger: Double     = js.native
-  var rightTrigger: Double    = js.native
+  var duration: js.UndefOr[Int]           = js.undefined
+  var startDelay: js.UndefOr[Int]         = js.undefined
+  var strongMagnitude: js.UndefOr[Double] = js.undefined
+  var weakMagnitude: js.UndefOr[Double]   = js.undefined
+  var leftTrigger: js.UndefOr[Double]     = js.undefined
+  var rightTrigger: js.UndefOr[Double]    = js.undefined
 
-@js.native
 trait GamepadEventInit extends EventInit:
-  var gamepad: Gamepad = js.native
+  var gamepad: js.UndefOr[Gamepad] = js.undefined
 
-@js.native
 trait GamepadTouch extends js.Object:
-  var touchId: Int                       = js.native
-  var surfaceId: scala.scalajs.js.Any    = js.native
-  var position: DOMPointReadOnly         = js.native
-  var surfaceDimensions: DOMRectReadOnly = js.native
+  var touchId: js.UndefOr[Int]                       = js.undefined
+  var surfaceId: js.UndefOr[scala.scalajs.js.Any]    = js.undefined
+  var position: js.UndefOr[DOMPointReadOnly]         = js.undefined
+  var surfaceDimensions: js.UndefOr[DOMRectReadOnly] = js.undefined
 
-@js.native
 trait SensorOptions extends js.Object:
-  var frequency: Double = js.native
+  var frequency: js.UndefOr[Double] = js.undefined
 
-@js.native
 trait SensorErrorEventInit extends EventInit:
-  var error: DOMException = js.native
+  var error: js.UndefOr[DOMException] = js.undefined
 
-@js.native
 trait PositionOptions extends js.Object:
-  var enableHighAccuracy: Boolean = js.native
-  var timeout: Int                = js.native
-  var maximumAge: Int             = js.native
+  var enableHighAccuracy: js.UndefOr[Boolean] = js.undefined
+  var timeout: js.UndefOr[Int]                = js.undefined
+  var maximumAge: js.UndefOr[Int]             = js.undefined
 
-@js.native
 trait DOMRectInit extends js.Object:
-  var x: Double      = js.native
-  var y: Double      = js.native
-  var width: Double  = js.native
-  var height: Double = js.native
+  var x: js.UndefOr[Double]      = js.undefined
+  var y: js.UndefOr[Double]      = js.undefined
+  var width: js.UndefOr[Double]  = js.undefined
+  var height: js.UndefOr[Double] = js.undefined
 
-@js.native
 trait DOMMatrixInit extends DOMMatrix2DInit:
-  var m13: Double   = js.native
-  var m14: Double   = js.native
-  var m23: Double   = js.native
-  var m24: Double   = js.native
-  var m31: Double   = js.native
-  var m32: Double   = js.native
-  var m33: Double   = js.native
-  var m34: Double   = js.native
-  var m43: Double   = js.native
-  var m44: Double   = js.native
-  var is2D: Boolean = js.native
+  var m13: js.UndefOr[Double]   = js.undefined
+  var m14: js.UndefOr[Double]   = js.undefined
+  var m23: js.UndefOr[Double]   = js.undefined
+  var m24: js.UndefOr[Double]   = js.undefined
+  var m31: js.UndefOr[Double]   = js.undefined
+  var m32: js.UndefOr[Double]   = js.undefined
+  var m33: js.UndefOr[Double]   = js.undefined
+  var m34: js.UndefOr[Double]   = js.undefined
+  var m43: js.UndefOr[Double]   = js.undefined
+  var m44: js.UndefOr[Double]   = js.undefined
+  var is2D: js.UndefOr[Boolean] = js.undefined
 end DOMMatrixInit
 
-@js.native
 trait DOMMatrix2DInit extends js.Object:
-  var a: Double   = js.native
-  var b: Double   = js.native
-  var c: Double   = js.native
-  var d: Double   = js.native
-  var e: Double   = js.native
-  var f: Double   = js.native
-  var m11: Double = js.native
-  var m12: Double = js.native
-  var m21: Double = js.native
-  var m22: Double = js.native
-  var m41: Double = js.native
-  var m42: Double = js.native
+  var a: js.UndefOr[Double]   = js.undefined
+  var b: js.UndefOr[Double]   = js.undefined
+  var c: js.UndefOr[Double]   = js.undefined
+  var d: js.UndefOr[Double]   = js.undefined
+  var e: js.UndefOr[Double]   = js.undefined
+  var f: js.UndefOr[Double]   = js.undefined
+  var m11: js.UndefOr[Double] = js.undefined
+  var m12: js.UndefOr[Double] = js.undefined
+  var m21: js.UndefOr[Double] = js.undefined
+  var m22: js.UndefOr[Double] = js.undefined
+  var m41: js.UndefOr[Double] = js.undefined
+  var m42: js.UndefOr[Double] = js.undefined
 end DOMMatrix2DInit
 
-@js.native
 trait DOMQuadInit extends js.Object:
-  var p1: DOMPointInit = js.native
-  var p2: DOMPointInit = js.native
-  var p3: DOMPointInit = js.native
-  var p4: DOMPointInit = js.native
+  var p1: js.UndefOr[DOMPointInit] = js.undefined
+  var p2: js.UndefOr[DOMPointInit] = js.undefined
+  var p3: js.UndefOr[DOMPointInit] = js.undefined
+  var p4: js.UndefOr[DOMPointInit] = js.undefined
 
-@js.native
 trait DOMPointInit extends js.Object:
-  var x: Double = js.native
-  var y: Double = js.native
-  var z: Double = js.native
-  var w: Double = js.native
+  var x: js.UndefOr[Double] = js.undefined
+  var y: js.UndefOr[Double] = js.undefined
+  var z: js.UndefOr[Double] = js.undefined
+  var w: js.UndefOr[Double] = js.undefined
 
-@js.native
 trait RelatedApplication extends js.Object:
-  var platform: String = js.native
-  var url: String      = js.native
-  var id: String       = js.native
-  var version: String  = js.native
+  var platform: js.UndefOr[String] = js.undefined
+  var url: js.UndefOr[String]      = js.undefined
+  var id: js.UndefOr[String]       = js.undefined
+  var version: js.UndefOr[String]  = js.undefined
 
-@js.native
 trait GyroscopeSensorOptions extends SensorOptions:
-  var referenceFrame: String = js.native
+  var referenceFrame: js.UndefOr[String] = js.undefined
 
-@js.native
 trait HandwritingPrediction extends js.Object:
-  var text: String                                                   = js.native
-  var segmentationResult: scala.scalajs.js.Array[HandwritingSegment] = js.native
+  var text: js.UndefOr[String]                                                   = js.undefined
+  var segmentationResult: js.UndefOr[scala.scalajs.js.Array[HandwritingSegment]] = js.undefined
 
-@js.native
 trait HandwritingSegment extends js.Object:
-  var grapheme: String                                                   = js.native
-  var beginIndex: Int                                                    = js.native
-  var endIndex: Int                                                      = js.native
-  var drawingSegments: scala.scalajs.js.Array[HandwritingDrawingSegment] = js.native
+  var grapheme: js.UndefOr[String]                                                   = js.undefined
+  var beginIndex: js.UndefOr[Int]                                                    = js.undefined
+  var endIndex: js.UndefOr[Int]                                                      = js.undefined
+  var drawingSegments: js.UndefOr[scala.scalajs.js.Array[HandwritingDrawingSegment]] = js.undefined
 
-@js.native
 trait HandwritingRecognizerQueryResult extends js.Object:
-  var textAlternatives: Boolean          = js.native
-  var textSegmentation: Boolean          = js.native
-  var hints: HandwritingHintsQueryResult = js.native
+  var textAlternatives: js.UndefOr[Boolean]          = js.undefined
+  var textSegmentation: js.UndefOr[Boolean]          = js.undefined
+  var hints: js.UndefOr[HandwritingHintsQueryResult] = js.undefined
 
-@js.native
 trait HandwritingHints extends js.Object:
-  var recognitionType: String = js.native
-  var inputType: String       = js.native
-  var textContext: String     = js.native
-  var alternatives: Int       = js.native
+  var recognitionType: js.UndefOr[String] = js.undefined
+  var inputType: js.UndefOr[String]       = js.undefined
+  var textContext: js.UndefOr[String]     = js.undefined
+  var alternatives: js.UndefOr[Int]       = js.undefined
 
-@js.native
 trait HandwritingPoint extends js.Object:
-  var x: Double = js.native
-  var y: Double = js.native
-  var t: Double = js.native
+  var x: js.UndefOr[Double] = js.undefined
+  var y: js.UndefOr[Double] = js.undefined
+  var t: js.UndefOr[Double] = js.undefined
 
-@js.native
 trait HandwritingDrawingSegment extends js.Object:
-  var strokeIndex: Int     = js.native
-  var beginPointIndex: Int = js.native
-  var endPointIndex: Int   = js.native
+  var strokeIndex: js.UndefOr[Int]     = js.undefined
+  var beginPointIndex: js.UndefOr[Int] = js.undefined
+  var endPointIndex: js.UndefOr[Int]   = js.undefined
 
-@js.native
 trait HandwritingModelConstraint extends js.Object:
-  var languages: scala.scalajs.js.Array[String] = js.native
+  var languages: js.UndefOr[scala.scalajs.js.Array[String]] = js.undefined
 
-@js.native
 trait HandwritingHintsQueryResult extends js.Object:
-  var recognitionType: scala.scalajs.js.Array[String] = js.native
-  var inputType: scala.scalajs.js.Array[String]       = js.native
-  var textContext: Boolean                            = js.native
-  var alternatives: Boolean                           = js.native
+  var recognitionType: js.UndefOr[scala.scalajs.js.Array[String]] = js.undefined
+  var inputType: js.UndefOr[scala.scalajs.js.Array[String]]       = js.undefined
+  var textContext: js.UndefOr[Boolean]                            = js.undefined
+  var alternatives: js.UndefOr[Boolean]                           = js.undefined
 
-@js.native
 trait PromiseRejectionEventInit extends EventInit:
-  var promise: scala.scalajs.js.Any = js.native
-  var reason: scala.scalajs.js.Any  = js.native
+  var promise: js.UndefOr[scala.scalajs.js.Any] = js.undefined
+  var reason: js.UndefOr[scala.scalajs.js.Any]  = js.undefined
 
-@js.native
 trait NavigateEventInit extends EventInit:
-  var navigationType: String             = js.native
-  var destination: NavigationDestination = js.native
-  var canIntercept: Boolean              = js.native
-  var userInitiated: Boolean             = js.native
-  var hashChange: Boolean                = js.native
-  var signal: AbortSignal                = js.native
-  var formData: FormData                 = js.native
-  var downloadRequest: String            = js.native
-  var info: scala.scalajs.js.Any         = js.native
-  var hasUAVisualTransition: Boolean     = js.native
-  var sourceElement: Element             = js.native
+  var navigationType: js.UndefOr[String]             = js.undefined
+  var destination: js.UndefOr[NavigationDestination] = js.undefined
+  var canIntercept: js.UndefOr[Boolean]              = js.undefined
+  var userInitiated: js.UndefOr[Boolean]             = js.undefined
+  var hashChange: js.UndefOr[Boolean]                = js.undefined
+  var signal: js.UndefOr[AbortSignal]                = js.undefined
+  var formData: js.UndefOr[FormData]                 = js.undefined
+  var downloadRequest: js.UndefOr[String]            = js.undefined
+  var info: js.UndefOr[scala.scalajs.js.Any]         = js.undefined
+  var hasUAVisualTransition: js.UndefOr[Boolean]     = js.undefined
+  var sourceElement: js.UndefOr[Element]             = js.undefined
 end NavigateEventInit
 
-@js.native
 trait CommandEventInit extends EventInit:
-  var source: Element = js.native
-  var command: String = js.native
+  var source: js.UndefOr[Element] = js.undefined
+  var command: js.UndefOr[String] = js.undefined
 
-@js.native
 trait PageTransitionEventInit extends EventInit:
-  var persisted: Boolean = js.native
+  var persisted: js.UndefOr[Boolean] = js.undefined
 
-@js.native
 trait EventSourceInit extends js.Object:
-  var withCredentials: Boolean = js.native
+  var withCredentials: js.UndefOr[Boolean] = js.undefined
 
-@js.native
 trait FocusOptions extends js.Object:
-  var preventScroll: Boolean = js.native
-  var focusVisible: Boolean  = js.native
+  var preventScroll: js.UndefOr[Boolean] = js.undefined
+  var focusVisible: js.UndefOr[Boolean]  = js.undefined
 
-@js.native
 trait TogglePopoverOptions extends ShowPopoverOptions:
-  var force: Boolean = js.native
+  var force: js.UndefOr[Boolean] = js.undefined
 
-@js.native
 trait AssignedNodesOptions extends js.Object:
-  var flatten: Boolean = js.native
+  var flatten: js.UndefOr[Boolean] = js.undefined
 
-@js.native
 trait WorkerOptions extends js.Object:
-  var name: String        = js.native
-  var `type`: String      = js.native
-  var credentials: String = js.native
+  var name: js.UndefOr[String]        = js.undefined
+  var `type`: js.UndefOr[String]      = js.undefined
+  var credentials: js.UndefOr[String] = js.undefined
 
-@js.native
 trait NavigationOptions extends js.Object:
-  var info: scala.scalajs.js.Any = js.native
+  var info: js.UndefOr[scala.scalajs.js.Any] = js.undefined
 
-@js.native
 trait HashChangeEventInit extends EventInit:
-  var oldURL: String = js.native
-  var newURL: String = js.native
+  var oldURL: js.UndefOr[String] = js.undefined
+  var newURL: js.UndefOr[String] = js.undefined
 
-@js.native
 trait StructuredSerializeOptions extends js.Object:
-  var transfer: scala.scalajs.js.Array[scala.scalajs.js.Any] = js.native
+  var transfer: js.UndefOr[scala.scalajs.js.Array[scala.scalajs.js.Any]] = js.undefined
 
-@js.native
 trait PageSwapEventInit extends EventInit:
-  var activation: NavigationActivation = js.native
-  var viewTransition: ViewTransition   = js.native
+  var activation: js.UndefOr[NavigationActivation] = js.undefined
+  var viewTransition: js.UndefOr[ViewTransition]   = js.undefined
 
-@js.native
 trait ImageBitmapOptions extends js.Object:
-  var imageOrientation: String     = js.native
-  var premultiplyAlpha: String     = js.native
-  var colorSpaceConversion: String = js.native
-  var resizeWidth: Int             = js.native
-  var resizeHeight: Int            = js.native
-  var resizeQuality: String        = js.native
+  var imageOrientation: js.UndefOr[String]     = js.undefined
+  var premultiplyAlpha: js.UndefOr[String]     = js.undefined
+  var colorSpaceConversion: js.UndefOr[String] = js.undefined
+  var resizeWidth: js.UndefOr[Int]             = js.undefined
+  var resizeHeight: js.UndefOr[Int]            = js.undefined
+  var resizeQuality: js.UndefOr[String]        = js.undefined
 
-@js.native
 trait ValidityStateFlags extends js.Object:
-  var valueMissing: Boolean    = js.native
-  var typeMismatch: Boolean    = js.native
-  var patternMismatch: Boolean = js.native
-  var tooLong: Boolean         = js.native
-  var tooShort: Boolean        = js.native
-  var rangeUnderflow: Boolean  = js.native
-  var rangeOverflow: Boolean   = js.native
-  var stepMismatch: Boolean    = js.native
-  var badInput: Boolean        = js.native
-  var customError: Boolean     = js.native
+  var valueMissing: js.UndefOr[Boolean]    = js.undefined
+  var typeMismatch: js.UndefOr[Boolean]    = js.undefined
+  var patternMismatch: js.UndefOr[Boolean] = js.undefined
+  var tooLong: js.UndefOr[Boolean]         = js.undefined
+  var tooShort: js.UndefOr[Boolean]        = js.undefined
+  var rangeUnderflow: js.UndefOr[Boolean]  = js.undefined
+  var rangeOverflow: js.UndefOr[Boolean]   = js.undefined
+  var stepMismatch: js.UndefOr[Boolean]    = js.undefined
+  var badInput: js.UndefOr[Boolean]        = js.undefined
+  var customError: js.UndefOr[Boolean]     = js.undefined
 end ValidityStateFlags
 
-@js.native
 trait ImageDataSettings extends js.Object:
-  var colorSpace: String  = js.native
-  var pixelFormat: String = js.native
+  var colorSpace: js.UndefOr[String]  = js.undefined
+  var pixelFormat: js.UndefOr[String] = js.undefined
 
-@js.native
 trait NavigationReloadOptions extends NavigationOptions:
-  var state: scala.scalajs.js.Any = js.native
+  var state: js.UndefOr[scala.scalajs.js.Any] = js.undefined
 
-@js.native
 trait TrackEventInit extends EventInit:
-  var track: scala.scalajs.js.Any = js.native
+  var track: js.UndefOr[VideoTrack | AudioTrack | TextTrack] = js.undefined
 
-@js.native
 trait MessageEventInit extends EventInit:
-  var data: scala.scalajs.js.Any                 = js.native
-  var origin: String                             = js.native
-  var lastEventId: String                        = js.native
-  var source: scala.scalajs.js.Any               = js.native
-  var ports: scala.scalajs.js.Array[MessagePort] = js.native
+  var data: js.UndefOr[scala.scalajs.js.Any]                   = js.undefined
+  var origin: js.UndefOr[String]                               = js.undefined
+  var lastEventId: js.UndefOr[String]                          = js.undefined
+  var source: js.UndefOr[Window | MessagePort | ServiceWorker] = js.undefined
+  var ports: js.UndefOr[scala.scalajs.js.Array[MessagePort]]   = js.undefined
 
-@js.native
 trait StorageEventInit extends EventInit:
-  var key: String          = js.native
-  var oldValue: String     = js.native
-  var newValue: String     = js.native
-  var url: String          = js.native
-  var storageArea: Storage = js.native
+  var key: js.UndefOr[String]          = js.undefined
+  var oldValue: js.UndefOr[String]     = js.undefined
+  var newValue: js.UndefOr[String]     = js.undefined
+  var url: js.UndefOr[String]          = js.undefined
+  var storageArea: js.UndefOr[Storage] = js.undefined
 
-@js.native
 trait DragEventInit extends MouseEventInit:
-  var dataTransfer: DataTransfer = js.native
+  var dataTransfer: js.UndefOr[DataTransfer] = js.undefined
 
-@js.native
 trait FormDataEventInit extends EventInit:
-  var formData: FormData = js.native
+  var formData: js.UndefOr[FormData] = js.undefined
 
-@js.native
 trait SharedWorkerOptions extends WorkerOptions:
-  var extendedLifetime: Boolean = js.native
+  var extendedLifetime: js.UndefOr[Boolean] = js.undefined
 
-@js.native
 trait GetHTMLOptions extends js.Object:
-  var serializableShadowRoots: Boolean                = js.native
-  var shadowRoots: scala.scalajs.js.Array[ShadowRoot] = js.native
+  var serializableShadowRoots: js.UndefOr[Boolean]                = js.undefined
+  var shadowRoots: js.UndefOr[scala.scalajs.js.Array[ShadowRoot]] = js.undefined
 
-@js.native
 trait CanvasRenderingContext2DSettings extends js.Object:
-  var alpha: Boolean              = js.native
-  var desynchronized: Boolean     = js.native
-  var colorSpace: String          = js.native
-  var colorType: String           = js.native
-  var willReadFrequently: Boolean = js.native
+  var alpha: js.UndefOr[Boolean]              = js.undefined
+  var desynchronized: js.UndefOr[Boolean]     = js.undefined
+  var colorSpace: js.UndefOr[String]          = js.undefined
+  var colorType: js.UndefOr[String]           = js.undefined
+  var willReadFrequently: js.UndefOr[Boolean] = js.undefined
 
-@js.native
 trait CloseWatcherOptions extends js.Object:
-  var signal: AbortSignal = js.native
+  var signal: js.UndefOr[AbortSignal] = js.undefined
 
-@js.native
 trait WorkletOptions extends js.Object:
-  var credentials: String = js.native
+  var credentials: js.UndefOr[String] = js.undefined
 
-@js.native
 trait ToggleEventInit extends EventInit:
-  var oldState: String = js.native
-  var newState: String = js.native
-  var source: Element  = js.native
+  var oldState: js.UndefOr[String] = js.undefined
+  var newState: js.UndefOr[String] = js.undefined
+  var source: js.UndefOr[Element]  = js.undefined
 
-@js.native
 trait ShowPopoverOptions extends js.Object:
-  var source: HTMLElement = js.native
+  var source: js.UndefOr[HTMLElement] = js.undefined
 
-@js.native
 trait NavigationCurrentEntryChangeEventInit extends EventInit:
-  var navigationType: String       = js.native
-  var from: NavigationHistoryEntry = js.native
+  var navigationType: js.UndefOr[String]       = js.undefined
+  var from: js.UndefOr[NavigationHistoryEntry] = js.undefined
 
-@js.native
 trait NavigationNavigateOptions extends NavigationOptions:
-  var state: scala.scalajs.js.Any = js.native
-  var history: String             = js.native
+  var state: js.UndefOr[scala.scalajs.js.Any] = js.undefined
+  var history: js.UndefOr[String]             = js.undefined
 
-@js.native
 trait NavigationResult extends js.Object:
-  var committed: scala.scalajs.js.Promise[NavigationHistoryEntry] = js.native
-  var finished: scala.scalajs.js.Promise[NavigationHistoryEntry]  = js.native
+  var committed: js.UndefOr[scala.scalajs.js.Promise[NavigationHistoryEntry]] = js.undefined
+  var finished: js.UndefOr[scala.scalajs.js.Promise[NavigationHistoryEntry]]  = js.undefined
 
-@js.native
 trait PopStateEventInit extends EventInit:
-  var state: scala.scalajs.js.Any    = js.native
-  var hasUAVisualTransition: Boolean = js.native
+  var state: js.UndefOr[scala.scalajs.js.Any]    = js.undefined
+  var hasUAVisualTransition: js.UndefOr[Boolean] = js.undefined
 
-@js.native
 trait ElementDefinitionOptions extends js.Object:
-  var `extends`: String = js.native
+  var `extends`: js.UndefOr[String] = js.undefined
 
-@js.native
 trait SubmitEventInit extends EventInit:
-  var submitter: HTMLElement = js.native
+  var submitter: js.UndefOr[HTMLElement] = js.undefined
 
-@js.native
 trait ErrorEventInit extends EventInit:
-  var message: String             = js.native
-  var filename: String            = js.native
-  var lineno: Int                 = js.native
-  var colno: Int                  = js.native
-  var error: scala.scalajs.js.Any = js.native
+  var message: js.UndefOr[String]             = js.undefined
+  var filename: js.UndefOr[String]            = js.undefined
+  var lineno: js.UndefOr[Int]                 = js.undefined
+  var colno: js.UndefOr[Int]                  = js.undefined
+  var error: js.UndefOr[scala.scalajs.js.Any] = js.undefined
 
-@js.native
 trait NavigationUpdateCurrentEntryOptions extends js.Object:
-  var state: scala.scalajs.js.Any = js.native
+  var state: js.UndefOr[scala.scalajs.js.Any] = js.undefined
 
-@js.native
 trait ImageEncodeOptions extends js.Object:
-  var `type`: String  = js.native
-  var quality: Double = js.native
+  var `type`: js.UndefOr[String]  = js.undefined
+  var quality: js.UndefOr[Double] = js.undefined
 
-@js.native
 trait PageRevealEventInit extends EventInit:
-  var viewTransition: ViewTransition = js.native
+  var viewTransition: js.UndefOr[ViewTransition] = js.undefined
 
-@js.native
 trait NavigationInterceptOptions extends js.Object:
-  var precommitHandler: scala.scalajs.js.Function1[NavigationPrecommitController, scala.scalajs.js.Promise[Unit]] =
-    js.native
-  var handler: scala.scalajs.js.Function0[scala.scalajs.js.Promise[Unit]] = js.native
-  var focusReset: String                                                  = js.native
-  var scroll: String                                                      = js.native
+  var precommitHandler
+      : js.UndefOr[scala.scalajs.js.Function1[NavigationPrecommitController, scala.scalajs.js.Promise[Unit]]] =
+    js.undefined
+  var handler: js.UndefOr[scala.scalajs.js.Function0[scala.scalajs.js.Promise[Unit]]] = js.undefined
+  var focusReset: js.UndefOr[String]                                                  = js.undefined
+  var scroll: js.UndefOr[String]                                                      = js.undefined
 
-@js.native
 trait ImageBitmapRenderingContextSettings extends js.Object:
-  var alpha: Boolean = js.native
+  var alpha: js.UndefOr[Boolean] = js.undefined
 
-@js.native
 trait WindowPostMessageOptions extends StructuredSerializeOptions:
-  var targetOrigin: String = js.native
+  var targetOrigin: js.UndefOr[String] = js.undefined
 
-@js.native
 trait IdleOptions extends js.Object:
-  var threshold: Int      = js.native
-  var signal: AbortSignal = js.native
+  var threshold: js.UndefOr[Int]      = js.undefined
+  var signal: js.UndefOr[AbortSignal] = js.undefined
 
-@js.native
 trait MediaSettingsRange extends js.Object:
-  var max: Double  = js.native
-  var min: Double  = js.native
-  var step: Double = js.native
+  var max: js.UndefOr[Double]  = js.undefined
+  var min: js.UndefOr[Double]  = js.undefined
+  var step: js.UndefOr[Double] = js.undefined
 
-@js.native
 trait PhotoSettings extends js.Object:
-  var fillLightMode: String    = js.native
-  var imageHeight: Double      = js.native
-  var imageWidth: Double       = js.native
-  var redEyeReduction: Boolean = js.native
+  var fillLightMode: js.UndefOr[String]    = js.undefined
+  var imageHeight: js.UndefOr[Double]      = js.undefined
+  var imageWidth: js.UndefOr[Double]       = js.undefined
+  var redEyeReduction: js.UndefOr[Boolean] = js.undefined
 
-@js.native
 trait Point2D extends js.Object:
-  var x: Double = js.native
-  var y: Double = js.native
+  var x: js.UndefOr[Double] = js.undefined
+  var y: js.UndefOr[Double] = js.undefined
 
-@js.native
 trait ConstrainPoint2DParameters extends js.Object:
-  var exact: scala.scalajs.js.Array[Point2D] = js.native
-  var ideal: scala.scalajs.js.Array[Point2D] = js.native
+  var exact: js.UndefOr[scala.scalajs.js.Array[Point2D]] = js.undefined
+  var ideal: js.UndefOr[scala.scalajs.js.Array[Point2D]] = js.undefined
 
-@js.native
 trait PhotoCapabilities extends js.Object:
-  var redEyeReduction: String                       = js.native
-  var imageHeight: MediaSettingsRange               = js.native
-  var imageWidth: MediaSettingsRange                = js.native
-  var fillLightMode: scala.scalajs.js.Array[String] = js.native
+  var redEyeReduction: js.UndefOr[String]                       = js.undefined
+  var imageHeight: js.UndefOr[MediaSettingsRange]               = js.undefined
+  var imageWidth: js.UndefOr[MediaSettingsRange]                = js.undefined
+  var fillLightMode: js.UndefOr[scala.scalajs.js.Array[String]] = js.undefined
 
-@js.native
 trait ImageResource extends js.Object:
-  var src: String    = js.native
-  var sizes: String  = js.native
-  var `type`: String = js.native
-  var label: String  = js.native
+  var src: js.UndefOr[String]    = js.undefined
+  var sizes: js.UndefOr[String]  = js.undefined
+  var `type`: js.UndefOr[String] = js.undefined
+  var label: js.UndefOr[String]  = js.undefined
 
-@js.native
 trait InkPresenterParam extends js.Object:
-  var presentationArea: Element = js.native
+  var presentationArea: js.UndefOr[Element] = js.undefined
 
-@js.native
 trait InkTrailStyle extends js.Object:
-  var color: String    = js.native
-  var diameter: Double = js.native
+  var color: js.UndefOr[String]    = js.undefined
+  var diameter: js.UndefOr[Double] = js.undefined
 
-@js.native
 trait InputDeviceCapabilitiesInit extends js.Object:
-  var firesTouchEvents: Boolean       = js.native
-  var pointerMovementScrolls: Boolean = js.native
+  var firesTouchEvents: js.UndefOr[Boolean]       = js.undefined
+  var pointerMovementScrolls: js.UndefOr[Boolean] = js.undefined
 
-@js.native
 trait IntersectionObserverInit extends js.Object:
-  var root: scala.scalajs.js.Any      = js.native
-  var rootMargin: String              = js.native
-  var scrollMargin: String            = js.native
-  var threshold: scala.scalajs.js.Any = js.native
-  var delay: Int                      = js.native
-  var trackVisibility: Boolean        = js.native
+  var root: js.UndefOr[Element | Document]        = js.undefined
+  var rootMargin: js.UndefOr[String]              = js.undefined
+  var scrollMargin: js.UndefOr[String]            = js.undefined
+  var threshold: js.UndefOr[scala.scalajs.js.Any] = js.undefined
+  var delay: js.UndefOr[Int]                      = js.undefined
+  var trackVisibility: js.UndefOr[Boolean]        = js.undefined
 
-@js.native
 trait IntersectionObserverEntryInit extends js.Object:
-  var time: Double                    = js.native
-  var rootBounds: DOMRectInit         = js.native
-  var boundingClientRect: DOMRectInit = js.native
-  var intersectionRect: DOMRectInit   = js.native
-  var isIntersecting: Boolean         = js.native
-  var isVisible: Boolean              = js.native
-  var intersectionRatio: Double       = js.native
-  var target: Element                 = js.native
-end IntersectionObserverEntryInit
+  var time: js.UndefOr[Double]                    = js.undefined
+  var rootBounds: js.UndefOr[DOMRectInit]         = js.undefined
+  var boundingClientRect: js.UndefOr[DOMRectInit] = js.undefined
+  var intersectionRect: js.UndefOr[DOMRectInit]   = js.undefined
+  var isIntersecting: js.UndefOr[Boolean]         = js.undefined
+  var isVisible: js.UndefOr[Boolean]              = js.undefined
+  var intersectionRatio: js.UndefOr[Double]       = js.undefined
+  var target: js.UndefOr[Element]                 = js.undefined
 
-@js.native
 trait InterventionReportBody extends ReportBody:
-  var id: String         = js.native
-  var message: String    = js.native
-  var sourceFile: String = js.native
-  var lineNumber: Int    = js.native
-  var columnNumber: Int  = js.native
+  var id: js.UndefOr[String]         = js.undefined
+  var message: js.UndefOr[String]    = js.undefined
+  var sourceFile: js.UndefOr[String] = js.undefined
+  var lineNumber: js.UndefOr[Int]    = js.undefined
+  var columnNumber: js.UndefOr[Int]  = js.undefined
 
-@js.native
 trait IsInputPendingOptions extends js.Object:
-  var includeContinuous: Boolean = js.native
+  var includeContinuous: js.UndefOr[Boolean] = js.undefined
 
-@js.native
 trait ProfilerFrame extends js.Object:
-  var name: String    = js.native
-  var resourceId: Int = js.native
-  var line: Int       = js.native
-  var column: Int     = js.native
+  var name: js.UndefOr[String]    = js.undefined
+  var resourceId: js.UndefOr[Int] = js.undefined
+  var line: js.UndefOr[Int]       = js.undefined
+  var column: js.UndefOr[Int]     = js.undefined
 
-@js.native
 trait ProfilerSample extends js.Object:
-  var timestamp: Double = js.native
-  var stackId: Int      = js.native
+  var timestamp: js.UndefOr[Double] = js.undefined
+  var stackId: js.UndefOr[Int]      = js.undefined
 
-@js.native
 trait ProfilerStack extends js.Object:
-  var parentId: Int = js.native
-  var frameId: Int  = js.native
+  var parentId: js.UndefOr[Int] = js.undefined
+  var frameId: js.UndefOr[Int]  = js.undefined
 
-@js.native
 trait ProfilerTrace extends js.Object:
-  var resources: scala.scalajs.js.Array[scala.scalajs.js.Any] = js.native
-  var frames: scala.scalajs.js.Array[ProfilerFrame]           = js.native
-  var stacks: scala.scalajs.js.Array[ProfilerStack]           = js.native
-  var samples: scala.scalajs.js.Array[ProfilerSample]         = js.native
+  var resources: js.UndefOr[scala.scalajs.js.Array[String]]       = js.undefined
+  var frames: js.UndefOr[scala.scalajs.js.Array[ProfilerFrame]]   = js.undefined
+  var stacks: js.UndefOr[scala.scalajs.js.Array[ProfilerStack]]   = js.undefined
+  var samples: js.UndefOr[scala.scalajs.js.Array[ProfilerSample]] = js.undefined
 
-@js.native
 trait ProfilerInitOptions extends js.Object:
-  var sampleInterval: Double = js.native
-  var maxBufferSize: Int     = js.native
+  var sampleInterval: js.UndefOr[Double] = js.undefined
+  var maxBufferSize: js.UndefOr[Int]     = js.undefined
 
-@js.native
 trait JsonLdError extends js.Object:
-  var code: String    = js.native
-  var message: String = js.native
+  var code: js.UndefOr[String]    = js.undefined
+  var message: js.UndefOr[String] = js.undefined
 
-@js.native
 trait JsonLdOptions extends js.Object:
-  var base: String               = js.native
-  var compactArrays: Boolean     = js.native
-  var compactToRelative: Boolean = js.native
+  var base: js.UndefOr[String]               = js.undefined
+  var compactArrays: js.UndefOr[Boolean]     = js.undefined
+  var compactToRelative: js.UndefOr[Boolean] = js.undefined
   var documentLoader
-      : scala.scalajs.js.Function2[String, LoadDocumentOptions, scala.scalajs.js.Promise[RemoteDocument]] = js.native
-  var expandContext: scala.scalajs.js.Any                                                                 = js.native
-  var extractAllScripts: Boolean                                                                          = js.native
-  var frameExpansion: Boolean                                                                             = js.native
-  var ordered: Boolean                                                                                    = js.native
-  var processingMode: String                                                                              = js.native
-  var produceGeneralizedRdf: Boolean                                                                      = js.native
-  var rdfDirection: String                                                                                = js.native
-  var useNativeTypes: Boolean                                                                             = js.native
-  var useRdfType: Boolean                                                                                 = js.native
+      : js.UndefOr[scala.scalajs.js.Function2[String, LoadDocumentOptions, scala.scalajs.js.Promise[RemoteDocument]]] =
+    js.undefined
+  var expandContext: js.UndefOr[scala.scalajs.js.Dictionary[scala.scalajs.js.Any] | String] = js.undefined
+  var extractAllScripts: js.UndefOr[Boolean]                                                = js.undefined
+  var frameExpansion: js.UndefOr[Boolean]                                                   = js.undefined
+  var ordered: js.UndefOr[Boolean]                                                          = js.undefined
+  var processingMode: js.UndefOr[String]                                                    = js.undefined
+  var produceGeneralizedRdf: js.UndefOr[Boolean]                                            = js.undefined
+  var rdfDirection: js.UndefOr[String]                                                      = js.undefined
+  var useNativeTypes: js.UndefOr[Boolean]                                                   = js.undefined
+  var useRdfType: js.UndefOr[Boolean]                                                       = js.undefined
 end JsonLdOptions
 
-@js.native
 trait LoadDocumentOptions extends js.Object:
-  var extractAllScripts: Boolean           = js.native
-  var profile: String                      = js.native
-  var requestProfile: scala.scalajs.js.Any = js.native
+  var extractAllScripts: js.UndefOr[Boolean]           = js.undefined
+  var profile: js.UndefOr[String]                      = js.undefined
+  var requestProfile: js.UndefOr[scala.scalajs.js.Any] = js.undefined
 
-@js.native
 trait JsonLdFramingError extends js.Object:
-  var code: String    = js.native
-  var message: String = js.native
+  var code: js.UndefOr[String]    = js.undefined
+  var message: js.UndefOr[String] = js.undefined
 
-@js.native
 trait QueryOptions extends js.Object:
-  var postscriptNames: scala.scalajs.js.Array[String] = js.native
+  var postscriptNames: js.UndefOr[scala.scalajs.js.Array[String]] = js.undefined
 
-@js.native
 trait MagnetometerSensorOptions extends SensorOptions:
-  var referenceFrame: String = js.native
+  var referenceFrame: js.UndefOr[String] = js.undefined
 
-@js.native
 trait PromptResponseObject extends js.Object:
-  var userChoice: String = js.native
+  var userChoice: js.UndefOr[String] = js.undefined
 
-@js.native
 trait MediaCapabilitiesKeySystemConfiguration extends js.Object:
-  var keySystem: String                            = js.native
-  var initDataType: String                         = js.native
-  var distinctiveIdentifier: String                = js.native
-  var persistentState: String                      = js.native
-  var sessionTypes: scala.scalajs.js.Array[String] = js.native
-  var audio: KeySystemTrackConfiguration           = js.native
-  var video: KeySystemTrackConfiguration           = js.native
+  var keySystem: js.UndefOr[String]                            = js.undefined
+  var initDataType: js.UndefOr[String]                         = js.undefined
+  var distinctiveIdentifier: js.UndefOr[String]                = js.undefined
+  var persistentState: js.UndefOr[String]                      = js.undefined
+  var sessionTypes: js.UndefOr[scala.scalajs.js.Array[String]] = js.undefined
+  var audio: js.UndefOr[KeySystemTrackConfiguration]           = js.undefined
+  var video: js.UndefOr[KeySystemTrackConfiguration]           = js.undefined
 
-@js.native
 trait MediaCapabilitiesInfo extends js.Object:
-  var supported: Boolean      = js.native
-  var smooth: Boolean         = js.native
-  var powerEfficient: Boolean = js.native
+  var supported: js.UndefOr[Boolean]      = js.undefined
+  var smooth: js.UndefOr[Boolean]         = js.undefined
+  var powerEfficient: js.UndefOr[Boolean] = js.undefined
 
-@js.native
 trait KeySystemTrackConfiguration extends js.Object:
-  var robustness: String       = js.native
-  var encryptionScheme: String = js.native
+  var robustness: js.UndefOr[String]       = js.undefined
+  var encryptionScheme: js.UndefOr[String] = js.undefined
 
-@js.native
 trait MediaDecodingConfiguration extends MediaConfiguration:
-  var `type`: String                                                  = js.native
-  var keySystemConfiguration: MediaCapabilitiesKeySystemConfiguration = js.native
+  var `type`: js.UndefOr[String]                                                  = js.undefined
+  var keySystemConfiguration: js.UndefOr[MediaCapabilitiesKeySystemConfiguration] = js.undefined
 
-@js.native
 trait MediaEncodingConfiguration extends MediaConfiguration:
-  var `type`: String = js.native
+  var `type`: js.UndefOr[String] = js.undefined
 
-@js.native
 trait AudioConfiguration extends js.Object:
-  var contentType: String       = js.native
-  var channels: String          = js.native
-  var bitrate: Int              = js.native
-  var samplerate: Int           = js.native
-  var spatialRendering: Boolean = js.native
+  var contentType: js.UndefOr[String]       = js.undefined
+  var channels: js.UndefOr[String]          = js.undefined
+  var bitrate: js.UndefOr[Int]              = js.undefined
+  var samplerate: js.UndefOr[Int]           = js.undefined
+  var spatialRendering: js.UndefOr[Boolean] = js.undefined
 
-@js.native
 trait MediaCapabilitiesEncodingInfo extends MediaCapabilitiesInfo:
-  var configuration: MediaEncodingConfiguration = js.native
+  var configuration: js.UndefOr[MediaEncodingConfiguration] = js.undefined
 
-@js.native
 trait VideoConfiguration extends js.Object:
-  var contentType: String         = js.native
-  var width: Int                  = js.native
-  var height: Int                 = js.native
-  var bitrate: Int                = js.native
-  var framerate: Double           = js.native
-  var hasAlphaChannel: Boolean    = js.native
-  var hdrMetadataType: String     = js.native
-  var colorGamut: String          = js.native
-  var transferFunction: String    = js.native
-  var scalabilityMode: String     = js.native
-  var spatialScalability: Boolean = js.native
+  var contentType: js.UndefOr[String]         = js.undefined
+  var width: js.UndefOr[Int]                  = js.undefined
+  var height: js.UndefOr[Int]                 = js.undefined
+  var bitrate: js.UndefOr[Int]                = js.undefined
+  var framerate: js.UndefOr[Double]           = js.undefined
+  var hasAlphaChannel: js.UndefOr[Boolean]    = js.undefined
+  var hdrMetadataType: js.UndefOr[String]     = js.undefined
+  var colorGamut: js.UndefOr[String]          = js.undefined
+  var transferFunction: js.UndefOr[String]    = js.undefined
+  var scalabilityMode: js.UndefOr[String]     = js.undefined
+  var spatialScalability: js.UndefOr[Boolean] = js.undefined
 end VideoConfiguration
 
-@js.native
 trait MediaConfiguration extends js.Object:
-  var video: VideoConfiguration = js.native
-  var audio: AudioConfiguration = js.native
+  var video: js.UndefOr[VideoConfiguration] = js.undefined
+  var audio: js.UndefOr[AudioConfiguration] = js.undefined
 
-@js.native
 trait MediaCapabilitiesDecodingInfo extends MediaCapabilitiesInfo:
-  var keySystemAccess: MediaKeySystemAccess     = js.native
-  var configuration: MediaDecodingConfiguration = js.native
+  var keySystemAccess: js.UndefOr[MediaKeySystemAccess]     = js.undefined
+  var configuration: js.UndefOr[MediaDecodingConfiguration] = js.undefined
 
-@js.native
 trait BufferedChangeEventInit extends EventInit:
-  var addedRanges: TimeRanges   = js.native
-  var removedRanges: TimeRanges = js.native
+  var addedRanges: js.UndefOr[TimeRanges]   = js.undefined
+  var removedRanges: js.UndefOr[TimeRanges] = js.undefined
 
-@js.native
 trait MockCameraConfiguration extends MockCaptureDeviceConfiguration:
-  var defaultFrameRate: Double = js.native
-  var facingMode: String       = js.native
+  var defaultFrameRate: js.UndefOr[Double] = js.undefined
+  var facingMode: js.UndefOr[String]       = js.undefined
 
-@js.native
 trait MockCaptureDeviceConfiguration extends js.Object:
-  var label: String    = js.native
-  var deviceId: String = js.native
-  var groupId: String  = js.native
+  var label: js.UndefOr[String]    = js.undefined
+  var deviceId: js.UndefOr[String] = js.undefined
+  var groupId: js.UndefOr[String]  = js.undefined
 
-@js.native
 trait MockCapturePromptResultConfiguration extends js.Object:
-  var getUserMedia: String    = js.native
-  var getDisplayMedia: String = js.native
+  var getUserMedia: js.UndefOr[String]    = js.undefined
+  var getDisplayMedia: js.UndefOr[String] = js.undefined
 
-@js.native
 trait MockMicrophoneConfiguration extends MockCaptureDeviceConfiguration:
-  var defaultSampleRate: Int = js.native
+  var defaultSampleRate: js.UndefOr[Int] = js.undefined
 
-@js.native
 trait CaptureActionEventInit extends EventInit:
-  var action: String = js.native
+  var action: js.UndefOr[String] = js.undefined
 
-@js.native
 trait ULongRange extends js.Object:
-  var max: Int = js.native
-  var min: Int = js.native
+  var max: js.UndefOr[Int] = js.undefined
+  var min: js.UndefOr[Int] = js.undefined
 
-@js.native
 trait MediaTrackConstraintSet extends js.Object:
-  var width: scala.scalajs.js.Any            = js.native
-  var height: scala.scalajs.js.Any           = js.native
-  var aspectRatio: scala.scalajs.js.Any      = js.native
-  var frameRate: scala.scalajs.js.Any        = js.native
-  var facingMode: scala.scalajs.js.Any       = js.native
-  var resizeMode: scala.scalajs.js.Any       = js.native
-  var sampleRate: scala.scalajs.js.Any       = js.native
-  var sampleSize: scala.scalajs.js.Any       = js.native
-  var echoCancellation: scala.scalajs.js.Any = js.native
-  var autoGainControl: scala.scalajs.js.Any  = js.native
-  var noiseSuppression: scala.scalajs.js.Any = js.native
-  var latency: scala.scalajs.js.Any          = js.native
-  var channelCount: scala.scalajs.js.Any     = js.native
-  var deviceId: scala.scalajs.js.Any         = js.native
-  var groupId: scala.scalajs.js.Any          = js.native
-  var backgroundBlur: scala.scalajs.js.Any   = js.native
+  var width: js.UndefOr[Int | ConstrainULongRange]                                           = js.undefined
+  var height: js.UndefOr[Int | ConstrainULongRange]                                          = js.undefined
+  var aspectRatio: js.UndefOr[Double | ConstrainDoubleRange]                                 = js.undefined
+  var frameRate: js.UndefOr[Double | ConstrainDoubleRange]                                   = js.undefined
+  var facingMode: js.UndefOr[scala.scalajs.js.Any]                                           = js.undefined
+  var resizeMode: js.UndefOr[scala.scalajs.js.Any]                                           = js.undefined
+  var sampleRate: js.UndefOr[Int | ConstrainULongRange]                                      = js.undefined
+  var sampleSize: js.UndefOr[Int | ConstrainULongRange]                                      = js.undefined
+  var echoCancellation: js.UndefOr[Boolean | String | ConstrainBooleanOrDOMStringParameters] = js.undefined
+  var autoGainControl: js.UndefOr[Boolean | ConstrainBooleanParameters]                      = js.undefined
+  var noiseSuppression: js.UndefOr[Boolean | ConstrainBooleanParameters]                     = js.undefined
+  var latency: js.UndefOr[Double | ConstrainDoubleRange]                                     = js.undefined
+  var channelCount: js.UndefOr[Int | ConstrainULongRange]                                    = js.undefined
+  var deviceId: js.UndefOr[scala.scalajs.js.Any]                                             = js.undefined
+  var groupId: js.UndefOr[scala.scalajs.js.Any]                                              = js.undefined
+  var backgroundBlur: js.UndefOr[Boolean | ConstrainBooleanParameters]                       = js.undefined
 end MediaTrackConstraintSet
 
-@js.native
 trait MediaStreamConstraints extends js.Object:
-  var video: scala.scalajs.js.Any = js.native
-  var audio: scala.scalajs.js.Any = js.native
+  var video: js.UndefOr[Boolean | MediaTrackConstraints] = js.undefined
+  var audio: js.UndefOr[Boolean | MediaTrackConstraints] = js.undefined
 
-@js.native
 trait MediaTrackSupportedConstraints extends js.Object:
-  var width: Boolean            = js.native
-  var height: Boolean           = js.native
-  var aspectRatio: Boolean      = js.native
-  var frameRate: Boolean        = js.native
-  var facingMode: Boolean       = js.native
-  var resizeMode: Boolean       = js.native
-  var sampleRate: Boolean       = js.native
-  var sampleSize: Boolean       = js.native
-  var echoCancellation: Boolean = js.native
-  var autoGainControl: Boolean  = js.native
-  var noiseSuppression: Boolean = js.native
-  var latency: Boolean          = js.native
-  var channelCount: Boolean     = js.native
-  var deviceId: Boolean         = js.native
-  var groupId: Boolean          = js.native
-  var backgroundBlur: Boolean   = js.native
+  var width: js.UndefOr[Boolean]            = js.undefined
+  var height: js.UndefOr[Boolean]           = js.undefined
+  var aspectRatio: js.UndefOr[Boolean]      = js.undefined
+  var frameRate: js.UndefOr[Boolean]        = js.undefined
+  var facingMode: js.UndefOr[Boolean]       = js.undefined
+  var resizeMode: js.UndefOr[Boolean]       = js.undefined
+  var sampleRate: js.UndefOr[Boolean]       = js.undefined
+  var sampleSize: js.UndefOr[Boolean]       = js.undefined
+  var echoCancellation: js.UndefOr[Boolean] = js.undefined
+  var autoGainControl: js.UndefOr[Boolean]  = js.undefined
+  var noiseSuppression: js.UndefOr[Boolean] = js.undefined
+  var latency: js.UndefOr[Boolean]          = js.undefined
+  var channelCount: js.UndefOr[Boolean]     = js.undefined
+  var deviceId: js.UndefOr[Boolean]         = js.undefined
+  var groupId: js.UndefOr[Boolean]          = js.undefined
+  var backgroundBlur: js.UndefOr[Boolean]   = js.undefined
 end MediaTrackSupportedConstraints
 
-@js.native
 trait ConstrainULongRange extends ULongRange:
-  var exact: Int = js.native
-  var ideal: Int = js.native
+  var exact: js.UndefOr[Int] = js.undefined
+  var ideal: js.UndefOr[Int] = js.undefined
 
-@js.native
 trait MediaStreamTrackEventInit extends EventInit:
-  var track: MediaStreamTrack = js.native
+  var track: js.UndefOr[MediaStreamTrack] = js.undefined
 
-@js.native
 trait ConstrainBooleanOrDOMStringParameters extends js.Object:
-  var exact: scala.scalajs.js.Any = js.native
-  var ideal: scala.scalajs.js.Any = js.native
+  var exact: js.UndefOr[Boolean | String] = js.undefined
+  var ideal: js.UndefOr[Boolean | String] = js.undefined
 
-@js.native
 trait ConstrainDoubleRange extends DoubleRange:
-  var exact: Double = js.native
-  var ideal: Double = js.native
+  var exact: js.UndefOr[Double] = js.undefined
+  var ideal: js.UndefOr[Double] = js.undefined
 
-@js.native
 trait DoubleRange extends js.Object:
-  var max: Double = js.native
-  var min: Double = js.native
+  var max: js.UndefOr[Double] = js.undefined
+  var min: js.UndefOr[Double] = js.undefined
 
-@js.native
 trait DeviceChangeEventInit extends EventInit:
-  var devices: scala.scalajs.js.Array[MediaDeviceInfo] = js.native
+  var devices: js.UndefOr[scala.scalajs.js.Array[MediaDeviceInfo]] = js.undefined
 
-@js.native
 trait ConstrainDOMStringParameters extends js.Object:
-  var exact: scala.scalajs.js.Any = js.native
-  var ideal: scala.scalajs.js.Any = js.native
+  var exact: js.UndefOr[scala.scalajs.js.Any] = js.undefined
+  var ideal: js.UndefOr[scala.scalajs.js.Any] = js.undefined
 
-@js.native
 trait MediaTrackSettings extends js.Object:
-  var width: Int                             = js.native
-  var height: Int                            = js.native
-  var aspectRatio: Double                    = js.native
-  var frameRate: Double                      = js.native
-  var facingMode: String                     = js.native
-  var resizeMode: String                     = js.native
-  var sampleRate: Int                        = js.native
-  var sampleSize: Int                        = js.native
-  var echoCancellation: scala.scalajs.js.Any = js.native
-  var autoGainControl: Boolean               = js.native
-  var noiseSuppression: Boolean              = js.native
-  var latency: Double                        = js.native
-  var channelCount: Int                      = js.native
-  var deviceId: String                       = js.native
-  var groupId: String                        = js.native
-  var backgroundBlur: Boolean                = js.native
+  var width: js.UndefOr[Int]                         = js.undefined
+  var height: js.UndefOr[Int]                        = js.undefined
+  var aspectRatio: js.UndefOr[Double]                = js.undefined
+  var frameRate: js.UndefOr[Double]                  = js.undefined
+  var facingMode: js.UndefOr[String]                 = js.undefined
+  var resizeMode: js.UndefOr[String]                 = js.undefined
+  var sampleRate: js.UndefOr[Int]                    = js.undefined
+  var sampleSize: js.UndefOr[Int]                    = js.undefined
+  var echoCancellation: js.UndefOr[Boolean | String] = js.undefined
+  var autoGainControl: js.UndefOr[Boolean]           = js.undefined
+  var noiseSuppression: js.UndefOr[Boolean]          = js.undefined
+  var latency: js.UndefOr[Double]                    = js.undefined
+  var channelCount: js.UndefOr[Int]                  = js.undefined
+  var deviceId: js.UndefOr[String]                   = js.undefined
+  var groupId: js.UndefOr[String]                    = js.undefined
+  var backgroundBlur: js.UndefOr[Boolean]            = js.undefined
 end MediaTrackSettings
 
-@js.native
 trait MediaTrackConstraints extends MediaTrackConstraintSet:
-  var advanced: scala.scalajs.js.Array[MediaTrackConstraintSet] = js.native
+  var advanced: js.UndefOr[scala.scalajs.js.Array[MediaTrackConstraintSet]] = js.undefined
 
-@js.native
 trait MediaTrackCapabilities extends js.Object:
-  var width: ULongRange                                 = js.native
-  var height: ULongRange                                = js.native
-  var aspectRatio: DoubleRange                          = js.native
-  var frameRate: DoubleRange                            = js.native
-  var facingMode: scala.scalajs.js.Array[String]        = js.native
-  var resizeMode: scala.scalajs.js.Array[String]        = js.native
-  var sampleRate: ULongRange                            = js.native
-  var sampleSize: ULongRange                            = js.native
-  var echoCancellation: scala.scalajs.js.Any            = js.native
-  var autoGainControl: scala.scalajs.js.Array[Boolean]  = js.native
-  var noiseSuppression: scala.scalajs.js.Array[Boolean] = js.native
-  var latency: DoubleRange                              = js.native
-  var channelCount: ULongRange                          = js.native
-  var deviceId: String                                  = js.native
-  var groupId: String                                   = js.native
-  var backgroundBlur: scala.scalajs.js.Array[Boolean]   = js.native
+  var width: js.UndefOr[ULongRange]                                 = js.undefined
+  var height: js.UndefOr[ULongRange]                                = js.undefined
+  var aspectRatio: js.UndefOr[DoubleRange]                          = js.undefined
+  var frameRate: js.UndefOr[DoubleRange]                            = js.undefined
+  var facingMode: js.UndefOr[scala.scalajs.js.Array[String]]        = js.undefined
+  var resizeMode: js.UndefOr[scala.scalajs.js.Array[String]]        = js.undefined
+  var sampleRate: js.UndefOr[ULongRange]                            = js.undefined
+  var sampleSize: js.UndefOr[ULongRange]                            = js.undefined
+  var echoCancellation: js.UndefOr[scala.scalajs.js.Any]            = js.undefined
+  var autoGainControl: js.UndefOr[scala.scalajs.js.Array[Boolean]]  = js.undefined
+  var noiseSuppression: js.UndefOr[scala.scalajs.js.Array[Boolean]] = js.undefined
+  var latency: js.UndefOr[DoubleRange]                              = js.undefined
+  var channelCount: js.UndefOr[ULongRange]                          = js.undefined
+  var deviceId: js.UndefOr[String]                                  = js.undefined
+  var groupId: js.UndefOr[String]                                   = js.undefined
+  var backgroundBlur: js.UndefOr[scala.scalajs.js.Array[Boolean]]   = js.undefined
 end MediaTrackCapabilities
 
-@js.native
 trait ConstrainBooleanParameters extends js.Object:
-  var exact: Boolean = js.native
-  var ideal: Boolean = js.native
+  var exact: js.UndefOr[Boolean] = js.undefined
+  var ideal: js.UndefOr[Boolean] = js.undefined
 
-@js.native
 trait CameraDevicePermissionDescriptor extends PermissionDescriptor:
-  var panTiltZoom: Boolean = js.native
+  var panTiltZoom: js.UndefOr[Boolean] = js.undefined
 
-@js.native
 trait MediaStreamTrackProcessorInit extends js.Object:
-  var track: scala.scalajs.js.Any = js.native
-  var maxBufferSize: Int          = js.native
+  var track: js.UndefOr[MediaStreamTrack | MediaStreamTrackHandle] = js.undefined
+  var maxBufferSize: js.UndefOr[Int]                               = js.undefined
 
-@js.native
 trait MediaPositionState extends js.Object:
-  var duration: Double     = js.native
-  var playbackRate: Double = js.native
-  var position: Double     = js.native
+  var duration: js.UndefOr[Double]     = js.undefined
+  var playbackRate: js.UndefOr[Double] = js.undefined
+  var position: js.UndefOr[Double]     = js.undefined
 
-@js.native
 trait ChapterInformationInit extends js.Object:
-  var title: String                               = js.native
-  var startTime: Double                           = js.native
-  var artwork: scala.scalajs.js.Array[MediaImage] = js.native
+  var title: js.UndefOr[String]                               = js.undefined
+  var startTime: js.UndefOr[Double]                           = js.undefined
+  var artwork: js.UndefOr[scala.scalajs.js.Array[MediaImage]] = js.undefined
 
-@js.native
 trait MediaSessionActionDetails extends js.Object:
-  var action: String                      = js.native
-  var seekOffset: Double                  = js.native
-  var seekTime: Double                    = js.native
-  var fastSeek: Boolean                   = js.native
-  var isActivating: Boolean               = js.native
-  var enterPictureInPictureReason: String = js.native
+  var action: js.UndefOr[String]                      = js.undefined
+  var seekOffset: js.UndefOr[Double]                  = js.undefined
+  var seekTime: js.UndefOr[Double]                    = js.undefined
+  var fastSeek: js.UndefOr[Boolean]                   = js.undefined
+  var isActivating: js.UndefOr[Boolean]               = js.undefined
+  var enterPictureInPictureReason: js.UndefOr[String] = js.undefined
 
-@js.native
 trait MediaImage extends js.Object:
-  var src: String    = js.native
-  var sizes: String  = js.native
-  var `type`: String = js.native
+  var src: js.UndefOr[String]    = js.undefined
+  var sizes: js.UndefOr[String]  = js.undefined
+  var `type`: js.UndefOr[String] = js.undefined
 
-@js.native
 trait MediaMetadataInit extends js.Object:
-  var title: String                                               = js.native
-  var artist: String                                              = js.native
-  var album: String                                               = js.native
-  var artwork: scala.scalajs.js.Array[MediaImage]                 = js.native
-  var chapterInfo: scala.scalajs.js.Array[ChapterInformationInit] = js.native
+  var title: js.UndefOr[String]                                               = js.undefined
+  var artist: js.UndefOr[String]                                              = js.undefined
+  var album: js.UndefOr[String]                                               = js.undefined
+  var artwork: js.UndefOr[scala.scalajs.js.Array[MediaImage]]                 = js.undefined
+  var chapterInfo: js.UndefOr[scala.scalajs.js.Array[ChapterInformationInit]] = js.undefined
 
-@js.native
 trait BlobEventInit extends EventInit:
-  var data: Blob       = js.native
-  var timecode: Double = js.native
+  var data: js.UndefOr[Blob]       = js.undefined
+  var timecode: js.UndefOr[Double] = js.undefined
 
-@js.native
 trait MediaRecorderOptions extends js.Object:
-  var mimeType: String                      = js.native
-  var audioBitsPerSecond: Int               = js.native
-  var videoBitsPerSecond: Int               = js.native
-  var bitsPerSecond: Int                    = js.native
-  var audioBitrateMode: String              = js.native
-  var videoKeyFrameIntervalDuration: Double = js.native
-  var videoKeyFrameIntervalCount: Int       = js.native
+  var mimeType: js.UndefOr[String]                      = js.undefined
+  var audioBitsPerSecond: js.UndefOr[Int]               = js.undefined
+  var videoBitsPerSecond: js.UndefOr[Int]               = js.undefined
+  var bitsPerSecond: js.UndefOr[Int]                    = js.undefined
+  var audioBitrateMode: js.UndefOr[String]              = js.undefined
+  var videoKeyFrameIntervalDuration: js.UndefOr[Double] = js.undefined
+  var videoKeyFrameIntervalCount: js.UndefOr[Int]       = js.undefined
 
-@js.native
 trait NotificationAction extends js.Object:
-  var action: String   = js.native
-  var title: String    = js.native
-  var navigate: String = js.native
-  var icon: String     = js.native
+  var action: js.UndefOr[String]   = js.undefined
+  var title: js.UndefOr[String]    = js.undefined
+  var navigate: js.UndefOr[String] = js.undefined
+  var icon: js.UndefOr[String]     = js.undefined
 
-@js.native
 trait GetNotificationOptions extends js.Object:
-  var tag: String = js.native
+  var tag: js.UndefOr[String] = js.undefined
 
-@js.native
 trait NotificationOptions extends js.Object:
-  var dir: String                                         = js.native
-  var lang: String                                        = js.native
-  var body: String                                        = js.native
-  var navigate: String                                    = js.native
-  var tag: String                                         = js.native
-  var image: String                                       = js.native
-  var icon: String                                        = js.native
-  var badge: String                                       = js.native
-  var vibrate: scala.scalajs.js.Any                       = js.native
-  var timestamp: Double                                   = js.native
-  var renotify: Boolean                                   = js.native
-  var silent: Boolean                                     = js.native
-  var requireInteraction: Boolean                         = js.native
-  var data: scala.scalajs.js.Any                          = js.native
-  var actions: scala.scalajs.js.Array[NotificationAction] = js.native
+  var dir: js.UndefOr[String]                                         = js.undefined
+  var lang: js.UndefOr[String]                                        = js.undefined
+  var body: js.UndefOr[String]                                        = js.undefined
+  var navigate: js.UndefOr[String]                                    = js.undefined
+  var tag: js.UndefOr[String]                                         = js.undefined
+  var image: js.UndefOr[String]                                       = js.undefined
+  var icon: js.UndefOr[String]                                        = js.undefined
+  var badge: js.UndefOr[String]                                       = js.undefined
+  var vibrate: js.UndefOr[scala.scalajs.js.Any]                       = js.undefined
+  var timestamp: js.UndefOr[Int]                                      = js.undefined
+  var renotify: js.UndefOr[Boolean]                                   = js.undefined
+  var silent: js.UndefOr[Boolean]                                     = js.undefined
+  var requireInteraction: js.UndefOr[Boolean]                         = js.undefined
+  var data: js.UndefOr[scala.scalajs.js.Any]                          = js.undefined
+  var actions: js.UndefOr[scala.scalajs.js.Array[NotificationAction]] = js.undefined
 end NotificationOptions
 
-@js.native
 trait NotificationEventInit extends ExtendableEventInit:
-  var notification: Notification = js.native
-  var action: String             = js.native
+  var notification: js.UndefOr[Notification] = js.undefined
+  var action: js.UndefOr[String]             = js.undefined
 
-@js.native
 trait ObservableInspector extends js.Object:
-  var next: scala.scalajs.js.Function1[scala.scalajs.js.Any, Unit]  = js.native
-  var error: scala.scalajs.js.Function1[scala.scalajs.js.Any, Unit] = js.native
-  var complete: scala.scalajs.js.Function0[Unit]                    = js.native
-  var subscribe: scala.scalajs.js.Function0[Unit]                   = js.native
-  var abort: scala.scalajs.js.Function1[scala.scalajs.js.Any, Unit] = js.native
+  var next: js.UndefOr[scala.scalajs.js.Function1[scala.scalajs.js.Any, Unit]]  = js.undefined
+  var error: js.UndefOr[scala.scalajs.js.Function1[scala.scalajs.js.Any, Unit]] = js.undefined
+  var complete: js.UndefOr[scala.scalajs.js.Function0[Unit]]                    = js.undefined
+  var subscribe: js.UndefOr[scala.scalajs.js.Function0[Unit]]                   = js.undefined
+  var abort: js.UndefOr[scala.scalajs.js.Function1[scala.scalajs.js.Any, Unit]] = js.undefined
 
-@js.native
 trait SubscribeOptions extends js.Object:
-  var signal: AbortSignal = js.native
+  var signal: js.UndefOr[AbortSignal] = js.undefined
 
-@js.native
 trait ObservableEventListenerOptions extends js.Object:
-  var capture: Boolean = js.native
-  var passive: Boolean = js.native
+  var capture: js.UndefOr[Boolean] = js.undefined
+  var passive: js.UndefOr[Boolean] = js.undefined
 
-@js.native
 trait SubscriptionObserver extends js.Object:
-  var next: scala.scalajs.js.Function1[scala.scalajs.js.Any, Unit]  = js.native
-  var error: scala.scalajs.js.Function1[scala.scalajs.js.Any, Unit] = js.native
-  var complete: scala.scalajs.js.Function0[Unit]                    = js.native
+  var next: js.UndefOr[scala.scalajs.js.Function1[scala.scalajs.js.Any, Unit]]  = js.undefined
+  var error: js.UndefOr[scala.scalajs.js.Function1[scala.scalajs.js.Any, Unit]] = js.undefined
+  var complete: js.UndefOr[scala.scalajs.js.Function0[Unit]]                    = js.undefined
 
-@js.native
 trait DeviceMotionEventInit extends EventInit:
-  var acceleration: DeviceMotionEventAccelerationInit                 = js.native
-  var accelerationIncludingGravity: DeviceMotionEventAccelerationInit = js.native
-  var rotationRate: DeviceMotionEventRotationRateInit                 = js.native
-  var interval: Double                                                = js.native
+  var acceleration: js.UndefOr[DeviceMotionEventAccelerationInit]                 = js.undefined
+  var accelerationIncludingGravity: js.UndefOr[DeviceMotionEventAccelerationInit] = js.undefined
+  var rotationRate: js.UndefOr[DeviceMotionEventRotationRateInit]                 = js.undefined
+  var interval: js.UndefOr[Double]                                                = js.undefined
 
-@js.native
 trait DeviceOrientationEventInit extends EventInit:
-  var alpha: Double     = js.native
-  var beta: Double      = js.native
-  var gamma: Double     = js.native
-  var absolute: Boolean = js.native
+  var alpha: js.UndefOr[Double]     = js.undefined
+  var beta: js.UndefOr[Double]      = js.undefined
+  var gamma: js.UndefOr[Double]     = js.undefined
+  var absolute: js.UndefOr[Boolean] = js.undefined
 
-@js.native
 trait DeviceMotionEventRotationRateInit extends js.Object:
-  var alpha: Double = js.native
-  var beta: Double  = js.native
-  var gamma: Double = js.native
+  var alpha: js.UndefOr[Double] = js.undefined
+  var beta: js.UndefOr[Double]  = js.undefined
+  var gamma: js.UndefOr[Double] = js.undefined
 
-@js.native
 trait DeviceMotionEventAccelerationInit extends js.Object:
-  var x: Double = js.native
-  var y: Double = js.native
-  var z: Double = js.native
+  var x: js.UndefOr[Double] = js.undefined
+  var y: js.UndefOr[Double] = js.undefined
+  var z: js.UndefOr[Double] = js.undefined
 
-@js.native
 trait OrientationSensorOptions extends SensorOptions:
-  var referenceFrame: String = js.native
+  var referenceFrame: js.UndefOr[String] = js.undefined
 
-@js.native
 trait PaymentCompleteDetails extends js.Object:
-  var data: scala.scalajs.js.Any = js.native
+  var data: js.UndefOr[scala.scalajs.js.Any] = js.undefined
 
-@js.native
 trait PaymentMethodData extends js.Object:
-  var supportedMethods: String   = js.native
-  var data: scala.scalajs.js.Any = js.native
+  var supportedMethods: js.UndefOr[String]   = js.undefined
+  var data: js.UndefOr[scala.scalajs.js.Any] = js.undefined
 
-@js.native
 trait PaymentItem extends js.Object:
-  var label: String                 = js.native
-  var amount: PaymentCurrencyAmount = js.native
-  var pending: Boolean              = js.native
+  var label: js.UndefOr[String]                 = js.undefined
+  var amount: js.UndefOr[PaymentCurrencyAmount] = js.undefined
+  var pending: js.UndefOr[Boolean]              = js.undefined
 
-@js.native
 trait PaymentCurrencyAmount extends js.Object:
-  var currency: String = js.native
-  var value: String    = js.native
+  var currency: js.UndefOr[String] = js.undefined
+  var value: js.UndefOr[String]    = js.undefined
 
-@js.native
 trait AddressErrors extends js.Object:
-  var addressLine: String       = js.native
-  var city: String              = js.native
-  var country: String           = js.native
-  var dependentLocality: String = js.native
-  var organization: String      = js.native
-  var phone: String             = js.native
-  var postalCode: String        = js.native
-  var recipient: String         = js.native
-  var region: String            = js.native
-  var sortingCode: String       = js.native
+  var addressLine: js.UndefOr[String]       = js.undefined
+  var city: js.UndefOr[String]              = js.undefined
+  var country: js.UndefOr[String]           = js.undefined
+  var dependentLocality: js.UndefOr[String] = js.undefined
+  var organization: js.UndefOr[String]      = js.undefined
+  var phone: js.UndefOr[String]             = js.undefined
+  var postalCode: js.UndefOr[String]        = js.undefined
+  var recipient: js.UndefOr[String]         = js.undefined
+  var region: js.UndefOr[String]            = js.undefined
+  var sortingCode: js.UndefOr[String]       = js.undefined
 end AddressErrors
 
-@js.native
 trait PaymentShippingOption extends js.Object:
-  var id: String                    = js.native
-  var label: String                 = js.native
-  var amount: PaymentCurrencyAmount = js.native
-  var selected: Boolean             = js.native
+  var id: js.UndefOr[String]                    = js.undefined
+  var label: js.UndefOr[String]                 = js.undefined
+  var amount: js.UndefOr[PaymentCurrencyAmount] = js.undefined
+  var selected: js.UndefOr[Boolean]             = js.undefined
 
-@js.native
 trait PaymentDetailsUpdate extends PaymentDetailsBase:
-  var error: String                             = js.native
-  var total: PaymentItem                        = js.native
-  var shippingAddressErrors: AddressErrors      = js.native
-  var payerErrors: PayerErrors                  = js.native
-  var paymentMethodErrors: scala.scalajs.js.Any = js.native
+  var error: js.UndefOr[String]                             = js.undefined
+  var total: js.UndefOr[PaymentItem]                        = js.undefined
+  var shippingAddressErrors: js.UndefOr[AddressErrors]      = js.undefined
+  var payerErrors: js.UndefOr[PayerErrors]                  = js.undefined
+  var paymentMethodErrors: js.UndefOr[scala.scalajs.js.Any] = js.undefined
 
-@js.native
 trait PaymentRequestUpdateEventInit extends EventInit
 
-@js.native
 trait PaymentDetailsInit extends PaymentDetailsBase:
-  var id: String         = js.native
-  var total: PaymentItem = js.native
+  var id: js.UndefOr[String]         = js.undefined
+  var total: js.UndefOr[PaymentItem] = js.undefined
 
-@js.native
 trait PayerErrors extends js.Object:
-  var email: String = js.native
-  var name: String  = js.native
-  var phone: String = js.native
+  var email: js.UndefOr[String] = js.undefined
+  var name: js.UndefOr[String]  = js.undefined
+  var phone: js.UndefOr[String] = js.undefined
 
-@js.native
 trait PaymentDetailsBase extends js.Object:
-  var displayItems: scala.scalajs.js.Array[PaymentItem]              = js.native
-  var shippingOptions: scala.scalajs.js.Array[PaymentShippingOption] = js.native
-  var modifiers: scala.scalajs.js.Array[PaymentDetailsModifier]      = js.native
+  var displayItems: js.UndefOr[scala.scalajs.js.Array[PaymentItem]]              = js.undefined
+  var shippingOptions: js.UndefOr[scala.scalajs.js.Array[PaymentShippingOption]] = js.undefined
+  var modifiers: js.UndefOr[scala.scalajs.js.Array[PaymentDetailsModifier]]      = js.undefined
 
-@js.native
 trait PaymentOptions extends js.Object:
-  var requestPayerName: Boolean      = js.native
-  var requestBillingAddress: Boolean = js.native
-  var requestPayerEmail: Boolean     = js.native
-  var requestPayerPhone: Boolean     = js.native
-  var requestShipping: Boolean       = js.native
-  var shippingType: String           = js.native
+  var requestPayerName: js.UndefOr[Boolean]      = js.undefined
+  var requestBillingAddress: js.UndefOr[Boolean] = js.undefined
+  var requestPayerEmail: js.UndefOr[Boolean]     = js.undefined
+  var requestPayerPhone: js.UndefOr[Boolean]     = js.undefined
+  var requestShipping: js.UndefOr[Boolean]       = js.undefined
+  var shippingType: js.UndefOr[String]           = js.undefined
 
-@js.native
 trait PaymentMethodChangeEventInit extends PaymentRequestUpdateEventInit:
-  var methodName: String                  = js.native
-  var methodDetails: scala.scalajs.js.Any = js.native
+  var methodName: js.UndefOr[String]                  = js.undefined
+  var methodDetails: js.UndefOr[scala.scalajs.js.Any] = js.undefined
 
-@js.native
 trait PaymentValidationErrors extends js.Object:
-  var payer: PayerErrors                  = js.native
-  var shippingAddress: AddressErrors      = js.native
-  var error: String                       = js.native
-  var paymentMethod: scala.scalajs.js.Any = js.native
+  var payer: js.UndefOr[PayerErrors]                  = js.undefined
+  var shippingAddress: js.UndefOr[AddressErrors]      = js.undefined
+  var error: js.UndefOr[String]                       = js.undefined
+  var paymentMethod: js.UndefOr[scala.scalajs.js.Any] = js.undefined
 
-@js.native
 trait PaymentDetailsModifier extends js.Object:
-  var supportedMethods: String                                    = js.native
-  var total: PaymentItem                                          = js.native
-  var additionalDisplayItems: scala.scalajs.js.Array[PaymentItem] = js.native
-  var data: scala.scalajs.js.Any                                  = js.native
+  var supportedMethods: js.UndefOr[String]                                    = js.undefined
+  var total: js.UndefOr[PaymentItem]                                          = js.undefined
+  var additionalDisplayItems: js.UndefOr[scala.scalajs.js.Array[PaymentItem]] = js.undefined
+  var data: js.UndefOr[scala.scalajs.js.Any]                                  = js.undefined
 
-@js.native
 trait MemoryMeasurement extends js.Object:
-  var bytes: Int                                              = js.native
-  var breakdown: scala.scalajs.js.Array[MemoryBreakdownEntry] = js.native
+  var bytes: js.UndefOr[Int]                                              = js.undefined
+  var breakdown: js.UndefOr[scala.scalajs.js.Array[MemoryBreakdownEntry]] = js.undefined
 
-@js.native
 trait MemoryBreakdownEntry extends js.Object:
-  var bytes: Int                                             = js.native
-  var attribution: scala.scalajs.js.Array[MemoryAttribution] = js.native
-  var types: scala.scalajs.js.Array[String]                  = js.native
+  var bytes: js.UndefOr[Int]                                             = js.undefined
+  var attribution: js.UndefOr[scala.scalajs.js.Array[MemoryAttribution]] = js.undefined
+  var types: js.UndefOr[scala.scalajs.js.Array[String]]                  = js.undefined
 
-@js.native
 trait MemoryAttribution extends js.Object:
-  var url: String                           = js.native
-  var container: MemoryAttributionContainer = js.native
-  var scope: String                         = js.native
+  var url: js.UndefOr[String]                           = js.undefined
+  var container: js.UndefOr[MemoryAttributionContainer] = js.undefined
+  var scope: js.UndefOr[String]                         = js.undefined
 
-@js.native
 trait MemoryAttributionContainer extends js.Object:
-  var id: String  = js.native
-  var src: String = js.native
+  var id: js.UndefOr[String]  = js.undefined
+  var src: js.UndefOr[String] = js.undefined
 
-@js.native
 trait PerformanceObserverCallbackOptions extends js.Object:
-  var droppedEntriesCount: Int = js.native
+  var droppedEntriesCount: js.UndefOr[Int] = js.undefined
 
-@js.native
 trait PerformanceObserverInit extends js.Object:
-  var entryTypes: scala.scalajs.js.Array[String] = js.native
-  var `type`: String                             = js.native
-  var buffered: Boolean                          = js.native
+  var entryTypes: js.UndefOr[scala.scalajs.js.Array[String]] = js.undefined
+  var `type`: js.UndefOr[String]                             = js.undefined
+  var buffered: js.UndefOr[Boolean]                          = js.undefined
 
-@js.native
 trait BackgroundSyncOptions extends js.Object:
-  var minInterval: Int = js.native
+  var minInterval: js.UndefOr[Int] = js.undefined
 
-@js.native
 trait PeriodicSyncEventInit extends ExtendableEventInit:
-  var tag: String = js.native
+  var tag: js.UndefOr[String] = js.undefined
 
-@js.native
 trait PermissionsPolicyViolationReportBody extends ReportBody:
-  var featureId: String      = js.native
-  var sourceFile: String     = js.native
-  var lineNumber: Int        = js.native
-  var columnNumber: Int      = js.native
-  var disposition: String    = js.native
-  var allowAttribute: String = js.native
-  var srcAttribute: String   = js.native
+  var featureId: js.UndefOr[String]      = js.undefined
+  var sourceFile: js.UndefOr[String]     = js.undefined
+  var lineNumber: js.UndefOr[Int]        = js.undefined
+  var columnNumber: js.UndefOr[Int]      = js.undefined
+  var disposition: js.UndefOr[String]    = js.undefined
+  var allowAttribute: js.UndefOr[String] = js.undefined
+  var srcAttribute: js.UndefOr[String]   = js.undefined
 
-@js.native
 trait PermissionSetParameters extends js.Object:
-  var descriptor: scala.scalajs.js.Any = js.native
-  var state: String                    = js.native
+  var descriptor: js.UndefOr[scala.scalajs.js.Any] = js.undefined
+  var state: js.UndefOr[String]                    = js.undefined
 
-@js.native
 trait PermissionDescriptor extends js.Object:
-  var name: String = js.native
+  var name: js.UndefOr[String] = js.undefined
 
-@js.native
 trait PictureInPictureEventInit extends EventInit:
-  var pictureInPictureWindow: PictureInPictureWindow = js.native
+  var pictureInPictureWindow: js.UndefOr[PictureInPictureWindow] = js.undefined
 
-@js.native
 trait PointerTimelineOptions extends js.Object:
-  var source: Element = js.native
-  var axis: String    = js.native
+  var source: js.UndefOr[Element] = js.undefined
+  var axis: js.UndefOr[String]    = js.undefined
 
-@js.native
 trait MouseEventInit extends EventModifierInit:
-  var screenX: Int               = js.native
-  var screenY: Int               = js.native
-  var clientX: Int               = js.native
-  var clientY: Int               = js.native
-  var button: Int                = js.native
-  var buttons: Int               = js.native
-  var relatedTarget: EventTarget = js.native
+  var screenX: js.UndefOr[Int]               = js.undefined
+  var screenY: js.UndefOr[Int]               = js.undefined
+  var clientX: js.UndefOr[Int]               = js.undefined
+  var clientY: js.UndefOr[Int]               = js.undefined
+  var button: js.UndefOr[Int]                = js.undefined
+  var buttons: js.UndefOr[Int]               = js.undefined
+  var relatedTarget: js.UndefOr[EventTarget] = js.undefined
 
-@js.native
 trait PointerEventInit extends MouseEventInit:
-  var pointerId: Int                                        = js.native
-  var width: Double                                         = js.native
-  var height: Double                                        = js.native
-  var pressure: Double                                      = js.native
-  var tangentialPressure: Double                            = js.native
-  var tiltX: Int                                            = js.native
-  var tiltY: Int                                            = js.native
-  var twist: Int                                            = js.native
-  var altitudeAngle: Double                                 = js.native
-  var azimuthAngle: Double                                  = js.native
-  var pointerType: String                                   = js.native
-  var isPrimary: Boolean                                    = js.native
-  var persistentDeviceId: Int                               = js.native
-  var coalescedEvents: scala.scalajs.js.Array[PointerEvent] = js.native
-  var predictedEvents: scala.scalajs.js.Array[PointerEvent] = js.native
+  var pointerId: js.UndefOr[Int]                                        = js.undefined
+  var width: js.UndefOr[Double]                                         = js.undefined
+  var height: js.UndefOr[Double]                                        = js.undefined
+  var pressure: js.UndefOr[Double]                                      = js.undefined
+  var tangentialPressure: js.UndefOr[Double]                            = js.undefined
+  var tiltX: js.UndefOr[Int]                                            = js.undefined
+  var tiltY: js.UndefOr[Int]                                            = js.undefined
+  var twist: js.UndefOr[Int]                                            = js.undefined
+  var altitudeAngle: js.UndefOr[Double]                                 = js.undefined
+  var azimuthAngle: js.UndefOr[Double]                                  = js.undefined
+  var pointerType: js.UndefOr[String]                                   = js.undefined
+  var isPrimary: js.UndefOr[Boolean]                                    = js.undefined
+  var persistentDeviceId: js.UndefOr[Int]                               = js.undefined
+  var coalescedEvents: js.UndefOr[scala.scalajs.js.Array[PointerEvent]] = js.undefined
+  var predictedEvents: js.UndefOr[scala.scalajs.js.Array[PointerEvent]] = js.undefined
 end PointerEventInit
 
-@js.native
 trait WheelEventInit extends MouseEventInit:
-  var deltaX: Double = js.native
-  var deltaY: Double = js.native
-  var deltaZ: Double = js.native
-  var deltaMode: Int = js.native
+  var deltaX: js.UndefOr[Double] = js.undefined
+  var deltaY: js.UndefOr[Double] = js.undefined
+  var deltaZ: js.UndefOr[Double] = js.undefined
+  var deltaMode: js.UndefOr[Int] = js.undefined
 
-@js.native
 trait PointerLockOptions extends js.Object:
-  var unadjustedMovement: Boolean = js.native
+  var unadjustedMovement: js.UndefOr[Boolean] = js.undefined
 
-@js.native
 trait PortalActivateOptions extends StructuredSerializeOptions:
-  var data: scala.scalajs.js.Any = js.native
+  var data: js.UndefOr[scala.scalajs.js.Any] = js.undefined
 
-@js.native
 trait PortalActivateEventInit extends EventInit:
-  var data: scala.scalajs.js.Any = js.native
+  var data: js.UndefOr[scala.scalajs.js.Any] = js.undefined
 
-@js.native
 trait PresentationConnectionCloseEventInit extends EventInit:
-  var reason: String  = js.native
-  var message: String = js.native
+  var reason: js.UndefOr[String]  = js.undefined
+  var message: js.UndefOr[String] = js.undefined
 
-@js.native
 trait PresentationConnectionAvailableEventInit extends EventInit:
-  var connection: PresentationConnection = js.native
+  var connection: js.UndefOr[PresentationConnection] = js.undefined
 
-@js.native
 trait LanguageModelCreateCoreOptions extends js.Object:
-  var topK: Double                                                   = js.native
-  var temperature: Double                                            = js.native
-  var expectedInputs: scala.scalajs.js.Array[LanguageModelExpected]  = js.native
-  var expectedOutputs: scala.scalajs.js.Array[LanguageModelExpected] = js.native
-  var tools: scala.scalajs.js.Array[LanguageModelTool]               = js.native
+  var topK: js.UndefOr[Double]                                                   = js.undefined
+  var temperature: js.UndefOr[Double]                                            = js.undefined
+  var expectedInputs: js.UndefOr[scala.scalajs.js.Array[LanguageModelExpected]]  = js.undefined
+  var expectedOutputs: js.UndefOr[scala.scalajs.js.Array[LanguageModelExpected]] = js.undefined
+  var tools: js.UndefOr[scala.scalajs.js.Array[LanguageModelTool]]               = js.undefined
 
-@js.native
 trait LanguageModelAppendOptions extends js.Object:
-  var signal: AbortSignal = js.native
+  var signal: js.UndefOr[AbortSignal] = js.undefined
 
-@js.native
 trait LanguageModelExpected extends js.Object:
-  var `type`: String                            = js.native
-  var languages: scala.scalajs.js.Array[String] = js.native
+  var `type`: js.UndefOr[String]                            = js.undefined
+  var languages: js.UndefOr[scala.scalajs.js.Array[String]] = js.undefined
 
-@js.native
 trait LanguageModelTool extends js.Object:
-  var name: String                                                                                = js.native
-  var description: String                                                                         = js.native
-  var inputSchema: scala.scalajs.js.Any                                                           = js.native
-  var execute: scala.scalajs.js.Function1[scala.scalajs.js.Any, scala.scalajs.js.Promise[String]] = js.native
+  var name: js.UndefOr[String]                      = js.undefined
+  var description: js.UndefOr[String]               = js.undefined
+  var inputSchema: js.UndefOr[scala.scalajs.js.Any] = js.undefined
+  var execute: js.UndefOr[scala.scalajs.js.Function1[scala.scalajs.js.Any, scala.scalajs.js.Promise[String]]] =
+    js.undefined
 
-@js.native
 trait LanguageModelCloneOptions extends js.Object:
-  var signal: AbortSignal = js.native
+  var signal: js.UndefOr[AbortSignal] = js.undefined
 
-@js.native
 trait LanguageModelCreateOptions extends LanguageModelCreateCoreOptions:
-  var signal: AbortSignal                                          = js.native
-  var monitor: scala.scalajs.js.Function1[CreateMonitor, Unit]     = js.native
-  var initialPrompts: scala.scalajs.js.Array[LanguageModelMessage] = js.native
+  var signal: js.UndefOr[AbortSignal]                                          = js.undefined
+  var monitor: js.UndefOr[scala.scalajs.js.Function1[CreateMonitor, Unit]]     = js.undefined
+  var initialPrompts: js.UndefOr[scala.scalajs.js.Array[LanguageModelMessage]] = js.undefined
 
-@js.native
 trait LanguageModelMessage extends js.Object:
-  var role: String                  = js.native
-  var content: scala.scalajs.js.Any = js.native
-  var prefix: Boolean               = js.native
+  var role: js.UndefOr[String]                  = js.undefined
+  var content: js.UndefOr[scala.scalajs.js.Any] = js.undefined
+  var prefix: js.UndefOr[Boolean]               = js.undefined
 
-@js.native
 trait LanguageModelPromptOptions extends js.Object:
-  var responseConstraint: scala.scalajs.js.Any = js.native
-  var omitResponseConstraintInput: Boolean     = js.native
-  var signal: AbortSignal                      = js.native
+  var responseConstraint: js.UndefOr[scala.scalajs.js.Any] = js.undefined
+  var omitResponseConstraintInput: js.UndefOr[Boolean]     = js.undefined
+  var signal: js.UndefOr[AbortSignal]                      = js.undefined
 
-@js.native
 trait LanguageModelMessageContent extends js.Object:
-  var `type`: String              = js.native
-  var value: scala.scalajs.js.Any = js.native
+  var `type`: js.UndefOr[String]              = js.undefined
+  var value: js.UndefOr[scala.scalajs.js.Any] = js.undefined
 
-@js.native
 trait PushEventInit extends ExtendableEventInit:
-  var data: scala.scalajs.js.Any = js.native
-  var notification: Notification = js.native
+  var data: js.UndefOr[scala.scalajs.js.Any] = js.undefined
+  var notification: js.UndefOr[Notification] = js.undefined
 
-@js.native
 trait PushPermissionDescriptor extends PermissionDescriptor:
-  var userVisibleOnly: Boolean = js.native
+  var userVisibleOnly: js.UndefOr[Boolean] = js.undefined
 
-@js.native
 trait PushSubscriptionJSON extends js.Object:
-  var endpoint: String                          = js.native
-  var expirationTime: Double                    = js.native
-  var keys: scala.scalajs.js.Dictionary[String] = js.native
+  var endpoint: js.UndefOr[String]                          = js.undefined
+  var expirationTime: js.UndefOr[Int]                       = js.undefined
+  var keys: js.UndefOr[scala.scalajs.js.Dictionary[String]] = js.undefined
 
-@js.native
 trait PushSubscriptionOptionsInit extends js.Object:
-  var userVisibleOnly: Boolean                   = js.native
-  var applicationServerKey: scala.scalajs.js.Any = js.native
+  var userVisibleOnly: js.UndefOr[Boolean]                   = js.undefined
+  var applicationServerKey: js.UndefOr[scala.scalajs.js.Any] = js.undefined
 
-@js.native
 trait PushSubscriptionChangeEventInit extends ExtendableEventInit:
-  var newSubscription: PushSubscription = js.native
-  var oldSubscription: PushSubscription = js.native
+  var newSubscription: js.UndefOr[PushSubscription] = js.undefined
+  var oldSubscription: js.UndefOr[PushSubscription] = js.undefined
 
-@js.native
 trait GenerateTestReportParameters extends js.Object:
-  var message: String = js.native
-  var group: String   = js.native
+  var message: js.UndefOr[String] = js.undefined
+  var group: js.UndefOr[String]   = js.undefined
 
-@js.native
 trait Report extends js.Object:
-  var `type`: String   = js.native
-  var url: String      = js.native
-  var body: ReportBody = js.native
+  var `type`: js.UndefOr[String]   = js.undefined
+  var url: js.UndefOr[String]      = js.undefined
+  var body: js.UndefOr[ReportBody] = js.undefined
 
-@js.native
 trait ReportingObserverOptions extends js.Object:
-  var types: scala.scalajs.js.Array[String] = js.native
-  var buffered: Boolean                     = js.native
+  var types: js.UndefOr[scala.scalajs.js.Array[String]] = js.undefined
+  var buffered: js.UndefOr[Boolean]                     = js.undefined
 
-@js.native
 trait ReportBody extends js.Object
 
-@js.native
 trait IdleRequestOptions extends js.Object:
-  var timeout: Int = js.native
+  var timeout: js.UndefOr[Int] = js.undefined
 
-@js.native
 trait ResizeObserverOptions extends js.Object:
-  var box: String = js.native
+  var box: js.UndefOr[String] = js.undefined
 
-@js.native
 trait StorageAccessTypes extends js.Object:
-  var all: Boolean              = js.native
-  var cookies: Boolean          = js.native
-  var sessionStorage: Boolean   = js.native
-  var localStorage: Boolean     = js.native
-  var indexedDB: Boolean        = js.native
-  var locks: Boolean            = js.native
-  var caches: Boolean           = js.native
-  var getDirectory: Boolean     = js.native
-  var estimate: Boolean         = js.native
-  var createObjectURL: Boolean  = js.native
-  var revokeObjectURL: Boolean  = js.native
-  var BroadcastChannel: Boolean = js.native
-  var SharedWorker: Boolean     = js.native
+  var all: js.UndefOr[Boolean]              = js.undefined
+  var cookies: js.UndefOr[Boolean]          = js.undefined
+  var sessionStorage: js.UndefOr[Boolean]   = js.undefined
+  var localStorage: js.UndefOr[Boolean]     = js.undefined
+  var indexedDB: js.UndefOr[Boolean]        = js.undefined
+  var locks: js.UndefOr[Boolean]            = js.undefined
+  var caches: js.UndefOr[Boolean]           = js.undefined
+  var getDirectory: js.UndefOr[Boolean]     = js.undefined
+  var estimate: js.UndefOr[Boolean]         = js.undefined
+  var createObjectURL: js.UndefOr[Boolean]  = js.undefined
+  var revokeObjectURL: js.UndefOr[Boolean]  = js.undefined
+  var BroadcastChannel: js.UndefOr[Boolean] = js.undefined
+  var SharedWorker: js.UndefOr[Boolean]     = js.undefined
 end StorageAccessTypes
 
-@js.native
 trait SanitizerElementNamespaceWithAttributes extends SanitizerElementNamespace:
-  var attributes: scala.scalajs.js.Array[scala.scalajs.js.Any]       = js.native
-  var removeAttributes: scala.scalajs.js.Array[scala.scalajs.js.Any] = js.native
+  var attributes: js.UndefOr[scala.scalajs.js.Array[String | SanitizerAttributeNamespace]]       = js.undefined
+  var removeAttributes: js.UndefOr[scala.scalajs.js.Array[String | SanitizerAttributeNamespace]] = js.undefined
 
-@js.native
 trait SanitizerElementNamespace extends js.Object:
-  var name: String      = js.native
-  var namespace: String = js.native
+  var name: js.UndefOr[String]      = js.undefined
+  var namespace: js.UndefOr[String] = js.undefined
 
-@js.native
 trait SanitizerProcessingInstruction extends js.Object:
-  var target: String = js.native
+  var target: js.UndefOr[String] = js.undefined
 
-@js.native
 trait SetHTMLUnsafeOptions extends js.Object:
-  var sanitizer: scala.scalajs.js.Any = js.native
+  var sanitizer: js.UndefOr[Sanitizer | SanitizerConfig | String] = js.undefined
 
-@js.native
 trait SanitizerConfig extends js.Object:
-  var elements: scala.scalajs.js.Array[scala.scalajs.js.Any]                     = js.native
-  var removeElements: scala.scalajs.js.Array[scala.scalajs.js.Any]               = js.native
-  var replaceWithChildrenElements: scala.scalajs.js.Array[scala.scalajs.js.Any]  = js.native
-  var processingInstructions: scala.scalajs.js.Array[scala.scalajs.js.Any]       = js.native
-  var removeProcessingInstructions: scala.scalajs.js.Array[scala.scalajs.js.Any] = js.native
-  var attributes: scala.scalajs.js.Array[scala.scalajs.js.Any]                   = js.native
-  var removeAttributes: scala.scalajs.js.Array[scala.scalajs.js.Any]             = js.native
-  var comments: Boolean                                                          = js.native
-  var dataAttributes: Boolean                                                    = js.native
+  var elements: js.UndefOr[scala.scalajs.js.Array[String | SanitizerElementNamespaceWithAttributes]]      = js.undefined
+  var removeElements: js.UndefOr[scala.scalajs.js.Array[String | SanitizerElementNamespace]]              = js.undefined
+  var replaceWithChildrenElements: js.UndefOr[scala.scalajs.js.Array[String | SanitizerElementNamespace]] = js.undefined
+  var processingInstructions: js.UndefOr[scala.scalajs.js.Array[String | SanitizerProcessingInstruction]] = js.undefined
+  var removeProcessingInstructions: js.UndefOr[scala.scalajs.js.Array[String | SanitizerProcessingInstruction]] =
+    js.undefined
+  var attributes: js.UndefOr[scala.scalajs.js.Array[String | SanitizerAttributeNamespace]]       = js.undefined
+  var removeAttributes: js.UndefOr[scala.scalajs.js.Array[String | SanitizerAttributeNamespace]] = js.undefined
+  var comments: js.UndefOr[Boolean]                                                              = js.undefined
+  var dataAttributes: js.UndefOr[Boolean]                                                        = js.undefined
 end SanitizerConfig
 
-@js.native
 trait SetHTMLOptions extends js.Object:
-  var sanitizer: scala.scalajs.js.Any = js.native
+  var sanitizer: js.UndefOr[Sanitizer | SanitizerConfig | String] = js.undefined
 
-@js.native
 trait SanitizerAttributeNamespace extends js.Object:
-  var name: String      = js.native
-  var namespace: String = js.native
+  var name: js.UndefOr[String]      = js.undefined
+  var namespace: js.UndefOr[String] = js.undefined
 
-@js.native
 trait TaskControllerInit extends js.Object:
-  var priority: String = js.native
+  var priority: js.UndefOr[String] = js.undefined
 
-@js.native
 trait TaskPriorityChangeEventInit extends EventInit:
-  var previousPriority: String = js.native
+  var previousPriority: js.UndefOr[String] = js.undefined
 
-@js.native
 trait TaskSignalAnyInit extends js.Object:
-  var priority: scala.scalajs.js.Any = js.native
+  var priority: js.UndefOr[String | TaskSignal] = js.undefined
 
-@js.native
 trait SchedulerPostTaskOptions extends js.Object:
-  var signal: AbortSignal = js.native
-  var priority: String    = js.native
-  var delay: Int          = js.native
+  var signal: js.UndefOr[AbortSignal] = js.undefined
+  var priority: js.UndefOr[String]    = js.undefined
+  var delay: js.UndefOr[Int]          = js.undefined
 
-@js.native
 trait DisplayMediaStreamOptions extends js.Object:
-  var video: scala.scalajs.js.Any   = js.native
-  var audio: scala.scalajs.js.Any   = js.native
-  var controller: CaptureController = js.native
-  var selfBrowserSurface: String    = js.native
-  var systemAudio: String           = js.native
-  var windowAudio: String           = js.native
-  var surfaceSwitching: String      = js.native
-  var monitorTypeSurfaces: String   = js.native
-end DisplayMediaStreamOptions
+  var video: js.UndefOr[Boolean | MediaTrackConstraints] = js.undefined
+  var audio: js.UndefOr[Boolean | MediaTrackConstraints] = js.undefined
+  var controller: js.UndefOr[CaptureController]          = js.undefined
+  var selfBrowserSurface: js.UndefOr[String]             = js.undefined
+  var systemAudio: js.UndefOr[String]                    = js.undefined
+  var windowAudio: js.UndefOr[String]                    = js.undefined
+  var surfaceSwitching: js.UndefOr[String]               = js.undefined
+  var monitorTypeSurfaces: js.UndefOr[String]            = js.undefined
 
-@js.native
 trait ScrollTimelineOptions extends js.Object:
-  var source: Element = js.native
-  var axis: String    = js.native
+  var source: js.UndefOr[Element] = js.undefined
+  var axis: js.UndefOr[String]    = js.undefined
 
-@js.native
 trait ViewTimelineOptions extends js.Object:
-  var subject: Element            = js.native
-  var axis: String                = js.native
-  var inset: scala.scalajs.js.Any = js.native
+  var subject: js.UndefOr[Element]            = js.undefined
+  var axis: js.UndefOr[String]                = js.undefined
+  var inset: js.UndefOr[scala.scalajs.js.Any] = js.undefined
 
-@js.native
 trait SecurePaymentConfirmationRequest extends js.Object:
-  var challenge: scala.scalajs.js.Any                                                     = js.native
-  var rpId: String                                                                        = js.native
-  var credentialIds: scala.scalajs.js.Array[scala.scalajs.js.Any]                         = js.native
-  var instrument: PaymentCredentialInstrument                                             = js.native
-  var timeout: Int                                                                        = js.native
-  var payeeName: String                                                                   = js.native
-  var payeeOrigin: String                                                                 = js.native
-  var paymentEntitiesLogos: scala.scalajs.js.Array[PaymentEntityLogo]                     = js.native
-  var extensions: AuthenticationExtensionsClientInputs                                    = js.native
-  var browserBoundPubKeyCredParams: scala.scalajs.js.Array[PublicKeyCredentialParameters] = js.native
-  var locale: scala.scalajs.js.Array[String]                                              = js.native
-  var showOptOut: Boolean                                                                 = js.native
+  var challenge: js.UndefOr[scala.scalajs.js.Any]                                                     = js.undefined
+  var rpId: js.UndefOr[String]                                                                        = js.undefined
+  var credentialIds: js.UndefOr[scala.scalajs.js.Array[scala.scalajs.js.Any]]                         = js.undefined
+  var instrument: js.UndefOr[PaymentCredentialInstrument]                                             = js.undefined
+  var timeout: js.UndefOr[Int]                                                                        = js.undefined
+  var payeeName: js.UndefOr[String]                                                                   = js.undefined
+  var payeeOrigin: js.UndefOr[String]                                                                 = js.undefined
+  var paymentEntitiesLogos: js.UndefOr[scala.scalajs.js.Array[PaymentEntityLogo]]                     = js.undefined
+  var extensions: js.UndefOr[AuthenticationExtensionsClientInputs]                                    = js.undefined
+  var browserBoundPubKeyCredParams: js.UndefOr[scala.scalajs.js.Array[PublicKeyCredentialParameters]] = js.undefined
+  var locale: js.UndefOr[scala.scalajs.js.Array[String]]                                              = js.undefined
+  var showOptOut: js.UndefOr[Boolean]                                                                 = js.undefined
 end SecurePaymentConfirmationRequest
 
-@js.native
 trait CollectedClientAdditionalPaymentRegistrationData extends js.Object:
-  var browserBoundPublicKey: String = js.native
+  var browserBoundPublicKey: js.UndefOr[String] = js.undefined
 
-@js.native
 trait CollectedClientPaymentData extends CollectedClientData:
-  var payment: scala.scalajs.js.Any = js.native
+  var payment: js.UndefOr[CollectedClientAdditionalPaymentData | CollectedClientAdditionalPaymentRegistrationData] =
+    js.undefined
 
-@js.native
 trait PaymentEntityLogo extends js.Object:
-  var url: String   = js.native
-  var label: String = js.native
+  var url: js.UndefOr[String]   = js.undefined
+  var label: js.UndefOr[String] = js.undefined
 
-@js.native
 trait AuthenticationExtensionsPaymentOutputs extends js.Object:
-  var browserBoundSignature: BrowserBoundSignature = js.native
+  var browserBoundSignature: js.UndefOr[BrowserBoundSignature] = js.undefined
 
-@js.native
 trait BrowserBoundSignature extends js.Object:
-  var signature: scala.scalajs.js.Any = js.native
+  var signature: js.UndefOr[scala.scalajs.js.Any] = js.undefined
 
-@js.native
 trait PaymentCredentialInstrument extends js.Object:
-  var displayName: String      = js.native
-  var icon: String             = js.native
-  var iconMustBeShown: Boolean = js.native
-  var details: String          = js.native
+  var displayName: js.UndefOr[String]      = js.undefined
+  var icon: js.UndefOr[String]             = js.undefined
+  var iconMustBeShown: js.UndefOr[Boolean] = js.undefined
+  var details: js.UndefOr[String]          = js.undefined
 
-@js.native
 trait AuthenticationExtensionsPaymentInputs extends js.Object:
-  var isPayment: Boolean                                                                  = js.native
-  var browserBoundPubKeyCredParams: scala.scalajs.js.Array[PublicKeyCredentialParameters] = js.native
-  var rpId: String                                                                        = js.native
-  var topOrigin: String                                                                   = js.native
-  var payeeName: String                                                                   = js.native
-  var payeeOrigin: String                                                                 = js.native
-  var paymentEntitiesLogos: scala.scalajs.js.Array[PaymentEntityLogo]                     = js.native
-  var total: PaymentCurrencyAmount                                                        = js.native
-  var instrument: PaymentCredentialInstrument                                             = js.native
+  var isPayment: js.UndefOr[Boolean]                                                                  = js.undefined
+  var browserBoundPubKeyCredParams: js.UndefOr[scala.scalajs.js.Array[PublicKeyCredentialParameters]] = js.undefined
+  var rpId: js.UndefOr[String]                                                                        = js.undefined
+  var topOrigin: js.UndefOr[String]                                                                   = js.undefined
+  var payeeName: js.UndefOr[String]                                                                   = js.undefined
+  var payeeOrigin: js.UndefOr[String]                                                                 = js.undefined
+  var paymentEntitiesLogos: js.UndefOr[scala.scalajs.js.Array[PaymentEntityLogo]]                     = js.undefined
+  var total: js.UndefOr[PaymentCurrencyAmount]                                                        = js.undefined
+  var instrument: js.UndefOr[PaymentCredentialInstrument]                                             = js.undefined
 end AuthenticationExtensionsPaymentInputs
 
-@js.native
 trait CollectedClientAdditionalPaymentData extends js.Object:
-  var rpId: String                                                    = js.native
-  var topOrigin: String                                               = js.native
-  var payeeName: String                                               = js.native
-  var payeeOrigin: String                                             = js.native
-  var paymentEntitiesLogos: scala.scalajs.js.Array[PaymentEntityLogo] = js.native
-  var total: PaymentCurrencyAmount                                    = js.native
-  var instrument: PaymentCredentialInstrument                         = js.native
-  var browserBoundPublicKey: String                                   = js.native
-end CollectedClientAdditionalPaymentData
+  var rpId: js.UndefOr[String]                                                    = js.undefined
+  var topOrigin: js.UndefOr[String]                                               = js.undefined
+  var payeeName: js.UndefOr[String]                                               = js.undefined
+  var payeeOrigin: js.UndefOr[String]                                             = js.undefined
+  var paymentEntitiesLogos: js.UndefOr[scala.scalajs.js.Array[PaymentEntityLogo]] = js.undefined
+  var total: js.UndefOr[PaymentCurrencyAmount]                                    = js.undefined
+  var instrument: js.UndefOr[PaymentCredentialInstrument]                         = js.undefined
+  var browserBoundPublicKey: js.UndefOr[String]                                   = js.undefined
 
-@js.native
 trait GetComposedRangesOptions extends js.Object:
-  var shadowRoots: scala.scalajs.js.Array[ShadowRoot] = js.native
+  var shadowRoots: js.UndefOr[scala.scalajs.js.Array[ShadowRoot]] = js.undefined
 
-@js.native
 trait SerialPortInfo extends js.Object:
-  var usbVendorId: Int                              = js.native
-  var usbProductId: Int                             = js.native
-  var bluetoothServiceClassId: scala.scalajs.js.Any = js.native
+  var usbVendorId: js.UndefOr[Int]                      = js.undefined
+  var usbProductId: js.UndefOr[Int]                     = js.undefined
+  var bluetoothServiceClassId: js.UndefOr[String | Int] = js.undefined
 
-@js.native
 trait SerialOutputSignals extends js.Object:
-  var dataTerminalReady: Boolean = js.native
-  var requestToSend: Boolean     = js.native
-  var break: Boolean             = js.native
+  var dataTerminalReady: js.UndefOr[Boolean] = js.undefined
+  var requestToSend: js.UndefOr[Boolean]     = js.undefined
+  var break: js.UndefOr[Boolean]             = js.undefined
 
-@js.native
 trait SerialOptions extends js.Object:
-  var baudRate: Int                  = js.native
-  var dataBits: scala.scalajs.js.Any = js.native
-  var stopBits: scala.scalajs.js.Any = js.native
-  var parity: String                 = js.native
-  var bufferSize: Int                = js.native
-  var flowControl: String            = js.native
+  var baudRate: js.UndefOr[Int]                  = js.undefined
+  var dataBits: js.UndefOr[scala.scalajs.js.Any] = js.undefined
+  var stopBits: js.UndefOr[scala.scalajs.js.Any] = js.undefined
+  var parity: js.UndefOr[String]                 = js.undefined
+  var bufferSize: js.UndefOr[Int]                = js.undefined
+  var flowControl: js.UndefOr[String]            = js.undefined
 
-@js.native
 trait SerialInputSignals extends js.Object:
-  var dataCarrierDetect: Boolean = js.native
-  var clearToSend: Boolean       = js.native
-  var ringIndicator: Boolean     = js.native
-  var dataSetReady: Boolean      = js.native
+  var dataCarrierDetect: js.UndefOr[Boolean] = js.undefined
+  var clearToSend: js.UndefOr[Boolean]       = js.undefined
+  var ringIndicator: js.UndefOr[Boolean]     = js.undefined
+  var dataSetReady: js.UndefOr[Boolean]      = js.undefined
 
-@js.native
 trait SerialPortRequestOptions extends js.Object:
-  var filters: scala.scalajs.js.Array[SerialPortFilter]                             = js.native
-  var allowedBluetoothServiceClassIds: scala.scalajs.js.Array[scala.scalajs.js.Any] = js.native
+  var filters: js.UndefOr[scala.scalajs.js.Array[SerialPortFilter]]                     = js.undefined
+  var allowedBluetoothServiceClassIds: js.UndefOr[scala.scalajs.js.Array[String | Int]] = js.undefined
 
-@js.native
 trait SerialPortFilter extends js.Object:
-  var usbVendorId: Int                              = js.native
-  var usbProductId: Int                             = js.native
-  var bluetoothServiceClassId: scala.scalajs.js.Any = js.native
+  var usbVendorId: js.UndefOr[Int]                      = js.undefined
+  var usbProductId: js.UndefOr[Int]                     = js.undefined
+  var bluetoothServiceClassId: js.UndefOr[String | Int] = js.undefined
 
-@js.native
 trait ExtendableMessageEventInit extends ExtendableEventInit:
-  var data: scala.scalajs.js.Any                 = js.native
-  var origin: String                             = js.native
-  var lastEventId: String                        = js.native
-  var source: scala.scalajs.js.Any               = js.native
-  var ports: scala.scalajs.js.Array[MessagePort] = js.native
+  var data: js.UndefOr[scala.scalajs.js.Any]                   = js.undefined
+  var origin: js.UndefOr[String]                               = js.undefined
+  var lastEventId: js.UndefOr[String]                          = js.undefined
+  var source: js.UndefOr[Client | ServiceWorker | MessagePort] = js.undefined
+  var ports: js.UndefOr[scala.scalajs.js.Array[MessagePort]]   = js.undefined
 
-@js.native
 trait NavigationPreloadState extends js.Object:
-  var enabled: Boolean    = js.native
-  var headerValue: String = js.native
+  var enabled: js.UndefOr[Boolean]    = js.undefined
+  var headerValue: js.UndefOr[String] = js.undefined
 
-@js.native
 trait MultiCacheQueryOptions extends CacheQueryOptions:
-  var cacheName: String = js.native
+  var cacheName: js.UndefOr[String] = js.undefined
 
-@js.native
 trait RegistrationOptions extends js.Object:
-  var scope: String          = js.native
-  var `type`: String         = js.native
-  var updateViaCache: String = js.native
+  var scope: js.UndefOr[String]          = js.undefined
+  var `type`: js.UndefOr[String]         = js.undefined
+  var updateViaCache: js.UndefOr[String] = js.undefined
 
-@js.native
 trait CacheQueryOptions extends js.Object:
-  var ignoreSearch: Boolean = js.native
-  var ignoreMethod: Boolean = js.native
-  var ignoreVary: Boolean   = js.native
+  var ignoreSearch: js.UndefOr[Boolean] = js.undefined
+  var ignoreMethod: js.UndefOr[Boolean] = js.undefined
+  var ignoreVary: js.UndefOr[Boolean]   = js.undefined
 
-@js.native
 trait FetchEventInit extends ExtendableEventInit:
-  var request: Request                                                = js.native
-  var preloadResponse: scala.scalajs.js.Promise[scala.scalajs.js.Any] = js.native
-  var clientId: String                                                = js.native
-  var resultingClientId: String                                       = js.native
-  var replacesClientId: String                                        = js.native
-  var handled: scala.scalajs.js.Promise[Unit]                         = js.native
+  var request: js.UndefOr[Request]                                                = js.undefined
+  var preloadResponse: js.UndefOr[scala.scalajs.js.Promise[scala.scalajs.js.Any]] = js.undefined
+  var clientId: js.UndefOr[String]                                                = js.undefined
+  var resultingClientId: js.UndefOr[String]                                       = js.undefined
+  var replacesClientId: js.UndefOr[String]                                        = js.undefined
+  var handled: js.UndefOr[scala.scalajs.js.Promise[Unit]]                         = js.undefined
 
-@js.native
 trait ExtendableEventInit extends EventInit
 
-@js.native
 trait ClientQueryOptions extends js.Object:
-  var includeUncontrolled: Boolean = js.native
-  var `type`: String               = js.native
+  var includeUncontrolled: js.UndefOr[Boolean] = js.undefined
+  var `type`: js.UndefOr[String]               = js.undefined
 
-@js.native
 trait RouterSourceDict extends js.Object:
-  var cacheName: String = js.native
+  var cacheName: js.UndefOr[String] = js.undefined
 
-@js.native
 trait RouterCondition extends js.Object:
-  var urlPattern: scala.scalajs.js.Any            = js.native
-  var requestMethod: String                       = js.native
-  var requestMode: String                         = js.native
-  var requestDestination: String                  = js.native
-  var runningStatus: String                       = js.native
-  var or: scala.scalajs.js.Array[RouterCondition] = js.native
-  var not: RouterCondition                        = js.native
+  var urlPattern: js.UndefOr[String | URLPatternInit | URLPattern] = js.undefined
+  var requestMethod: js.UndefOr[String]                            = js.undefined
+  var requestMode: js.UndefOr[String]                              = js.undefined
+  var requestDestination: js.UndefOr[String]                       = js.undefined
+  var runningStatus: js.UndefOr[String]                            = js.undefined
+  var or: js.UndefOr[scala.scalajs.js.Array[RouterCondition]]      = js.undefined
+  var not: js.UndefOr[RouterCondition]                             = js.undefined
 
-@js.native
 trait RouterRule extends js.Object:
-  var condition: RouterCondition   = js.native
-  var source: scala.scalajs.js.Any = js.native
+  var condition: js.UndefOr[RouterCondition]        = js.undefined
+  var source: js.UndefOr[RouterSourceDict | String] = js.undefined
 
-@js.native
 trait DetectedBarcode extends js.Object:
-  var boundingBox: DOMRectReadOnly                  = js.native
-  var rawValue: String                              = js.native
-  var format: String                                = js.native
-  var cornerPoints: scala.scalajs.js.Array[Point2D] = js.native
+  var boundingBox: js.UndefOr[DOMRectReadOnly]                  = js.undefined
+  var rawValue: js.UndefOr[String]                              = js.undefined
+  var format: js.UndefOr[String]                                = js.undefined
+  var cornerPoints: js.UndefOr[scala.scalajs.js.Array[Point2D]] = js.undefined
 
-@js.native
 trait BarcodeDetectorOptions extends js.Object:
-  var formats: scala.scalajs.js.Array[String] = js.native
+  var formats: js.UndefOr[scala.scalajs.js.Array[String]] = js.undefined
 
-@js.native
 trait Landmark extends js.Object:
-  var locations: scala.scalajs.js.Array[Point2D] = js.native
-  var `type`: String                             = js.native
+  var locations: js.UndefOr[scala.scalajs.js.Array[Point2D]] = js.undefined
+  var `type`: js.UndefOr[String]                             = js.undefined
 
-@js.native
 trait DetectedFace extends js.Object:
-  var boundingBox: DOMRectReadOnly                = js.native
-  var landmarks: scala.scalajs.js.Array[Landmark] = js.native
+  var boundingBox: js.UndefOr[DOMRectReadOnly]                = js.undefined
+  var landmarks: js.UndefOr[scala.scalajs.js.Array[Landmark]] = js.undefined
 
-@js.native
 trait FaceDetectorOptions extends js.Object:
-  var maxDetectedFaces: Int = js.native
-  var fastMode: Boolean     = js.native
+  var maxDetectedFaces: js.UndefOr[Int] = js.undefined
+  var fastMode: js.UndefOr[Boolean]     = js.undefined
 
-@js.native
 trait SpeechRecognitionEventInit extends EventInit:
-  var resultIndex: Int                     = js.native
-  var results: SpeechRecognitionResultList = js.native
+  var resultIndex: js.UndefOr[Int]                     = js.undefined
+  var results: js.UndefOr[SpeechRecognitionResultList] = js.undefined
 
-@js.native
 trait SpeechRecognitionErrorEventInit extends EventInit:
-  var error: String   = js.native
-  var message: String = js.native
+  var error: js.UndefOr[String]   = js.undefined
+  var message: js.UndefOr[String] = js.undefined
 
-@js.native
 trait SpeechSynthesisErrorEventInit extends SpeechSynthesisEventInit:
-  var error: String = js.native
+  var error: js.UndefOr[String] = js.undefined
 
-@js.native
 trait SpeechRecognitionOptions extends js.Object:
-  var langs: scala.scalajs.js.Array[String] = js.native
-  var processLocally: Boolean               = js.native
-  var quality: String                       = js.native
+  var langs: js.UndefOr[scala.scalajs.js.Array[String]] = js.undefined
+  var processLocally: js.UndefOr[Boolean]               = js.undefined
+  var quality: js.UndefOr[String]                       = js.undefined
 
-@js.native
 trait SpeechSynthesisEventInit extends EventInit:
-  var utterance: SpeechSynthesisUtterance = js.native
-  var charIndex: Int                      = js.native
-  var charLength: Int                     = js.native
-  var elapsedTime: Double                 = js.native
-  var name: String                        = js.native
+  var utterance: js.UndefOr[SpeechSynthesisUtterance] = js.undefined
+  var charIndex: js.UndefOr[Int]                      = js.undefined
+  var charLength: js.UndefOr[Int]                     = js.undefined
+  var elapsedTime: js.UndefOr[Double]                 = js.undefined
+  var name: js.UndefOr[String]                        = js.undefined
 
-@js.native
 trait IntegrityViolationReportBody extends ReportBody:
-  var documentURL: String = js.native
-  var blockedURL: String  = js.native
-  var destination: String = js.native
-  var reportOnly: Boolean = js.native
+  var documentURL: js.UndefOr[String] = js.undefined
+  var blockedURL: js.UndefOr[String]  = js.undefined
+  var destination: js.UndefOr[String] = js.undefined
+  var reportOnly: js.UndefOr[Boolean] = js.undefined
 
-@js.native
 trait StorageBucketOptions extends js.Object:
-  var persisted: Boolean = js.native
-  var quota: Int         = js.native
-  var expires: Double    = js.native
+  var persisted: js.UndefOr[Boolean] = js.undefined
+  var quota: js.UndefOr[Int]         = js.undefined
+  var expires: js.UndefOr[Double]    = js.undefined
 
-@js.native
 trait StorageEstimate extends js.Object:
-  var usage: Int = js.native
-  var quota: Int = js.native
+  var usage: js.UndefOr[Int] = js.undefined
+  var quota: js.UndefOr[Int] = js.undefined
 
-@js.native
 trait ReadableStreamReadResult extends js.Object:
-  var value: scala.scalajs.js.Any = js.native
-  var done: Boolean               = js.native
+  var value: js.UndefOr[scala.scalajs.js.Any] = js.undefined
+  var done: js.UndefOr[Boolean]               = js.undefined
 
-@js.native
 trait ReadableStreamIteratorOptions extends js.Object:
-  var preventCancel: Boolean = js.native
+  var preventCancel: js.UndefOr[Boolean] = js.undefined
 
-@js.native
 trait ReadableStreamBYOBReaderReadOptions extends js.Object:
-  var min: Int = js.native
+  var min: js.UndefOr[Int] = js.undefined
 
-@js.native
 trait StreamPipeOptions extends js.Object:
-  var preventClose: Boolean  = js.native
-  var preventAbort: Boolean  = js.native
-  var preventCancel: Boolean = js.native
-  var signal: AbortSignal    = js.native
+  var preventClose: js.UndefOr[Boolean]  = js.undefined
+  var preventAbort: js.UndefOr[Boolean]  = js.undefined
+  var preventCancel: js.UndefOr[Boolean] = js.undefined
+  var signal: js.UndefOr[AbortSignal]    = js.undefined
 
-@js.native
 trait ReadableStreamGetReaderOptions extends js.Object:
-  var mode: String = js.native
+  var mode: js.UndefOr[String] = js.undefined
 
-@js.native
 trait UnderlyingSource extends js.Object:
-  var start: scala.scalajs.js.Function1[scala.scalajs.js.Any, scala.scalajs.js.Any]            = js.native
-  var pull: scala.scalajs.js.Function1[scala.scalajs.js.Any, scala.scalajs.js.Promise[Unit]]   = js.native
-  var cancel: scala.scalajs.js.Function1[scala.scalajs.js.Any, scala.scalajs.js.Promise[Unit]] = js.native
-  var `type`: String                                                                           = js.native
-  var autoAllocateChunkSize: Int                                                               = js.native
+  var start: js.UndefOr[
+    scala.scalajs.js.Function1[ReadableStreamDefaultController | ReadableByteStreamController, scala.scalajs.js.Any]
+  ] = js.undefined
+  var pull: js.UndefOr[scala.scalajs.js.Function1[
+    ReadableStreamDefaultController | ReadableByteStreamController,
+    scala.scalajs.js.Promise[Unit],
+  ]] = js.undefined
+  var cancel: js.UndefOr[scala.scalajs.js.Function1[scala.scalajs.js.Any, scala.scalajs.js.Promise[Unit]]] =
+    js.undefined
+  var `type`: js.UndefOr[String]             = js.undefined
+  var autoAllocateChunkSize: js.UndefOr[Int] = js.undefined
+end UnderlyingSource
 
-@js.native
 trait ReadableWritablePair extends js.Object:
-  var readable: ReadableStream = js.native
-  var writable: WritableStream = js.native
+  var readable: js.UndefOr[ReadableStream] = js.undefined
+  var writable: js.UndefOr[WritableStream] = js.undefined
 
-@js.native
 trait Transformer extends js.Object:
-  var start: scala.scalajs.js.Function1[TransformStreamDefaultController, scala.scalajs.js.Any] = js.native
-  var transform
-      : scala.scalajs.js.Function2[scala.scalajs.js.Any, TransformStreamDefaultController, scala.scalajs.js.Promise[
-        Unit
-      ]]                                                                                                  = js.native
-  var flush: scala.scalajs.js.Function1[TransformStreamDefaultController, scala.scalajs.js.Promise[Unit]] = js.native
-  var cancel: scala.scalajs.js.Function1[scala.scalajs.js.Any, scala.scalajs.js.Promise[Unit]]            = js.native
-  var readableType: scala.scalajs.js.Any                                                                  = js.native
-  var writableType: scala.scalajs.js.Any                                                                  = js.native
+  var start: js.UndefOr[scala.scalajs.js.Function1[TransformStreamDefaultController, scala.scalajs.js.Any]] =
+    js.undefined
+  var transform: js.UndefOr[
+    scala.scalajs.js.Function2[scala.scalajs.js.Any, TransformStreamDefaultController, scala.scalajs.js.Promise[Unit]]
+  ] = js.undefined
+  var flush: js.UndefOr[scala.scalajs.js.Function1[TransformStreamDefaultController, scala.scalajs.js.Promise[Unit]]] =
+    js.undefined
+  var cancel: js.UndefOr[scala.scalajs.js.Function1[scala.scalajs.js.Any, scala.scalajs.js.Promise[Unit]]] =
+    js.undefined
+  var readableType: js.UndefOr[scala.scalajs.js.Any] = js.undefined
+  var writableType: js.UndefOr[scala.scalajs.js.Any] = js.undefined
 end Transformer
 
-@js.native
 trait QueuingStrategyInit extends js.Object:
-  var highWaterMark: Double = js.native
+  var highWaterMark: js.UndefOr[Double] = js.undefined
 
-@js.native
 trait QueuingStrategy extends js.Object:
-  var highWaterMark: Double                                          = js.native
-  var size: scala.scalajs.js.Function1[scala.scalajs.js.Any, Double] = js.native
+  var highWaterMark: js.UndefOr[Double]                                          = js.undefined
+  var size: js.UndefOr[scala.scalajs.js.Function1[scala.scalajs.js.Any, Double]] = js.undefined
 
-@js.native
 trait UnderlyingSink extends js.Object:
-  var start: scala.scalajs.js.Function1[WritableStreamDefaultController, scala.scalajs.js.Any] = js.native
-  var write: scala.scalajs.js.Function2[scala.scalajs.js.Any, WritableStreamDefaultController, scala.scalajs.js.Promise[
-    Unit
-  ]]                                                                                          = js.native
-  var close: scala.scalajs.js.Function0[scala.scalajs.js.Promise[Unit]]                       = js.native
-  var abort: scala.scalajs.js.Function1[scala.scalajs.js.Any, scala.scalajs.js.Promise[Unit]] = js.native
-  var `type`: scala.scalajs.js.Any                                                            = js.native
+  var start: js.UndefOr[scala.scalajs.js.Function1[WritableStreamDefaultController, scala.scalajs.js.Any]] =
+    js.undefined
+  var write: js.UndefOr[
+    scala.scalajs.js.Function2[scala.scalajs.js.Any, WritableStreamDefaultController, scala.scalajs.js.Promise[Unit]]
+  ]                                                                                                       = js.undefined
+  var close: js.UndefOr[scala.scalajs.js.Function0[scala.scalajs.js.Promise[Unit]]]                       = js.undefined
+  var abort: js.UndefOr[scala.scalajs.js.Function1[scala.scalajs.js.Any, scala.scalajs.js.Promise[Unit]]] = js.undefined
+  var `type`: js.UndefOr[scala.scalajs.js.Any]                                                            = js.undefined
 
-@js.native
 trait SVGPathDataSettings extends js.Object:
-  var normalize: Boolean = js.native
+  var normalize: js.UndefOr[Boolean] = js.undefined
 
-@js.native
 trait TextDetectorOptions extends js.Object:
-  var languages: scala.scalajs.js.Array[String] = js.native
+  var languages: js.UndefOr[scala.scalajs.js.Array[String]] = js.undefined
 
-@js.native
 trait TextDetectorCreateOptions extends js.Object:
-  var signal: AbortSignal                       = js.native
-  var languages: scala.scalajs.js.Array[String] = js.native
+  var signal: js.UndefOr[AbortSignal]                       = js.undefined
+  var languages: js.UndefOr[scala.scalajs.js.Array[String]] = js.undefined
 
-@js.native
 trait DetectedText extends js.Object:
-  var boundingBox: DOMRectReadOnly                  = js.native
-  var rawValue: String                              = js.native
-  var cornerPoints: scala.scalajs.js.Array[Point2D] = js.native
+  var boundingBox: js.UndefOr[DOMRectReadOnly]                  = js.undefined
+  var rawValue: js.UndefOr[String]                              = js.undefined
+  var cornerPoints: js.UndefOr[scala.scalajs.js.Array[Point2D]] = js.undefined
 
-@js.native
 trait TouchEventInit extends EventModifierInit:
-  var touches: scala.scalajs.js.Array[Touch]        = js.native
-  var targetTouches: scala.scalajs.js.Array[Touch]  = js.native
-  var changedTouches: scala.scalajs.js.Array[Touch] = js.native
+  var touches: js.UndefOr[scala.scalajs.js.Array[Touch]]        = js.undefined
+  var targetTouches: js.UndefOr[scala.scalajs.js.Array[Touch]]  = js.undefined
+  var changedTouches: js.UndefOr[scala.scalajs.js.Array[Touch]] = js.undefined
 
-@js.native
 trait TouchInit extends js.Object:
-  var identifier: Int       = js.native
-  var target: EventTarget   = js.native
-  var clientX: Double       = js.native
-  var clientY: Double       = js.native
-  var screenX: Double       = js.native
-  var screenY: Double       = js.native
-  var pageX: Double         = js.native
-  var pageY: Double         = js.native
-  var radiusX: Double       = js.native
-  var radiusY: Double       = js.native
-  var rotationAngle: Double = js.native
-  var force: Double         = js.native
-  var altitudeAngle: Double = js.native
-  var azimuthAngle: Double  = js.native
-  var touchType: String     = js.native
+  var identifier: js.UndefOr[Int]       = js.undefined
+  var target: js.UndefOr[EventTarget]   = js.undefined
+  var clientX: js.UndefOr[Double]       = js.undefined
+  var clientY: js.UndefOr[Double]       = js.undefined
+  var screenX: js.UndefOr[Double]       = js.undefined
+  var screenY: js.UndefOr[Double]       = js.undefined
+  var pageX: js.UndefOr[Double]         = js.undefined
+  var pageY: js.UndefOr[Double]         = js.undefined
+  var radiusX: js.UndefOr[Double]       = js.undefined
+  var radiusY: js.UndefOr[Double]       = js.undefined
+  var rotationAngle: js.UndefOr[Double] = js.undefined
+  var force: js.UndefOr[Double]         = js.undefined
+  var altitudeAngle: js.UndefOr[Double] = js.undefined
+  var azimuthAngle: js.UndefOr[Double]  = js.undefined
+  var touchType: js.UndefOr[String]     = js.undefined
 end TouchInit
 
-@js.native
 trait LanguageDetectorCreateCoreOptions extends js.Object:
-  var expectedInputLanguages: scala.scalajs.js.Array[String] = js.native
+  var expectedInputLanguages: js.UndefOr[scala.scalajs.js.Array[String]] = js.undefined
 
-@js.native
 trait TranslatorCreateOptions extends TranslatorCreateCoreOptions:
-  var signal: AbortSignal                                      = js.native
-  var monitor: scala.scalajs.js.Function1[CreateMonitor, Unit] = js.native
+  var signal: js.UndefOr[AbortSignal]                                      = js.undefined
+  var monitor: js.UndefOr[scala.scalajs.js.Function1[CreateMonitor, Unit]] = js.undefined
 
-@js.native
 trait LanguageDetectionResult extends js.Object:
-  var detectedLanguage: String = js.native
-  var confidence: Double       = js.native
+  var detectedLanguage: js.UndefOr[String] = js.undefined
+  var confidence: js.UndefOr[Double]       = js.undefined
 
-@js.native
 trait LanguageDetectorCreateOptions extends LanguageDetectorCreateCoreOptions:
-  var signal: AbortSignal                                      = js.native
-  var monitor: scala.scalajs.js.Function1[CreateMonitor, Unit] = js.native
+  var signal: js.UndefOr[AbortSignal]                                      = js.undefined
+  var monitor: js.UndefOr[scala.scalajs.js.Function1[CreateMonitor, Unit]] = js.undefined
 
-@js.native
 trait TranslatorCreateCoreOptions extends js.Object:
-  var sourceLanguage: String = js.native
-  var targetLanguage: String = js.native
+  var sourceLanguage: js.UndefOr[String] = js.undefined
+  var targetLanguage: js.UndefOr[String] = js.undefined
 
-@js.native
 trait LanguageDetectorDetectOptions extends js.Object:
-  var signal: AbortSignal = js.native
+  var signal: js.UndefOr[AbortSignal] = js.undefined
 
-@js.native
 trait TranslatorTranslateOptions extends js.Object:
-  var signal: AbortSignal = js.native
+  var signal: js.UndefOr[AbortSignal] = js.undefined
 
-@js.native
 trait PrivateToken extends js.Object:
-  var version: String                         = js.native
-  var operation: String                       = js.native
-  var refreshPolicy: String                   = js.native
-  var issuers: scala.scalajs.js.Array[String] = js.native
+  var version: js.UndefOr[String]                         = js.undefined
+  var operation: js.UndefOr[String]                       = js.undefined
+  var refreshPolicy: js.UndefOr[String]                   = js.undefined
+  var issuers: js.UndefOr[scala.scalajs.js.Array[String]] = js.undefined
 
-@js.native
 trait TrustedTypePolicyOptions extends js.Object:
-  var createHTML: scala.scalajs.js.Function2[String, scala.scalajs.js.Any, String]      = js.native
-  var createScript: scala.scalajs.js.Function2[String, scala.scalajs.js.Any, String]    = js.native
-  var createScriptURL: scala.scalajs.js.Function2[String, scala.scalajs.js.Any, String] = js.native
+  var createHTML: js.UndefOr[scala.scalajs.js.Function2[String, scala.scalajs.js.Any, String]]      = js.undefined
+  var createScript: js.UndefOr[scala.scalajs.js.Function2[String, scala.scalajs.js.Any, String]]    = js.undefined
+  var createScriptURL: js.UndefOr[scala.scalajs.js.Function2[String, scala.scalajs.js.Any, String]] = js.undefined
 
-@js.native
 trait UADataValues extends js.Object:
-  var architecture: String                                             = js.native
-  var bitness: String                                                  = js.native
-  var brands: scala.scalajs.js.Array[NavigatorUABrandVersion]          = js.native
-  var formFactors: scala.scalajs.js.Array[String]                      = js.native
-  var fullVersionList: scala.scalajs.js.Array[NavigatorUABrandVersion] = js.native
-  var model: String                                                    = js.native
-  var mobile: Boolean                                                  = js.native
-  var platform: String                                                 = js.native
-  var platformVersion: String                                          = js.native
-  var uaFullVersion: String                                            = js.native
-  var wow64: Boolean                                                   = js.native
+  var architecture: js.UndefOr[String]                                             = js.undefined
+  var bitness: js.UndefOr[String]                                                  = js.undefined
+  var brands: js.UndefOr[scala.scalajs.js.Array[NavigatorUABrandVersion]]          = js.undefined
+  var formFactors: js.UndefOr[scala.scalajs.js.Array[String]]                      = js.undefined
+  var fullVersionList: js.UndefOr[scala.scalajs.js.Array[NavigatorUABrandVersion]] = js.undefined
+  var model: js.UndefOr[String]                                                    = js.undefined
+  var mobile: js.UndefOr[Boolean]                                                  = js.undefined
+  var platform: js.UndefOr[String]                                                 = js.undefined
+  var platformVersion: js.UndefOr[String]                                          = js.undefined
+  var uaFullVersion: js.UndefOr[String]                                            = js.undefined
+  var wow64: js.UndefOr[Boolean]                                                   = js.undefined
 end UADataValues
 
-@js.native
 trait NavigatorUABrandVersion extends js.Object:
-  var brand: String   = js.native
-  var version: String = js.native
+  var brand: js.UndefOr[String]   = js.undefined
+  var version: js.UndefOr[String] = js.undefined
 
-@js.native
 trait UALowEntropyJSON extends js.Object:
-  var brands: scala.scalajs.js.Array[NavigatorUABrandVersion] = js.native
-  var mobile: Boolean                                         = js.native
-  var platform: String                                        = js.native
+  var brands: js.UndefOr[scala.scalajs.js.Array[NavigatorUABrandVersion]] = js.undefined
+  var mobile: js.UndefOr[Boolean]                                         = js.undefined
+  var platform: js.UndefOr[String]                                        = js.undefined
 
-@js.native
 trait KeyboardEventInit extends EventModifierInit:
-  var key: String          = js.native
-  var code: String         = js.native
-  var location: Int        = js.native
-  var repeat: Boolean      = js.native
-  var isComposing: Boolean = js.native
+  var key: js.UndefOr[String]          = js.undefined
+  var code: js.UndefOr[String]         = js.undefined
+  var location: js.UndefOr[Int]        = js.undefined
+  var repeat: js.UndefOr[Boolean]      = js.undefined
+  var isComposing: js.UndefOr[Boolean] = js.undefined
 
-@js.native
 trait EventModifierInit extends UIEventInit:
-  var ctrlKey: Boolean            = js.native
-  var shiftKey: Boolean           = js.native
-  var altKey: Boolean             = js.native
-  var metaKey: Boolean            = js.native
-  var modifierAltGraph: Boolean   = js.native
-  var modifierCapsLock: Boolean   = js.native
-  var modifierFn: Boolean         = js.native
-  var modifierFnLock: Boolean     = js.native
-  var modifierHyper: Boolean      = js.native
-  var modifierNumLock: Boolean    = js.native
-  var modifierScrollLock: Boolean = js.native
-  var modifierSuper: Boolean      = js.native
-  var modifierSymbol: Boolean     = js.native
-  var modifierSymbolLock: Boolean = js.native
+  var ctrlKey: js.UndefOr[Boolean]            = js.undefined
+  var shiftKey: js.UndefOr[Boolean]           = js.undefined
+  var altKey: js.UndefOr[Boolean]             = js.undefined
+  var metaKey: js.UndefOr[Boolean]            = js.undefined
+  var modifierAltGraph: js.UndefOr[Boolean]   = js.undefined
+  var modifierCapsLock: js.UndefOr[Boolean]   = js.undefined
+  var modifierFn: js.UndefOr[Boolean]         = js.undefined
+  var modifierFnLock: js.UndefOr[Boolean]     = js.undefined
+  var modifierHyper: js.UndefOr[Boolean]      = js.undefined
+  var modifierNumLock: js.UndefOr[Boolean]    = js.undefined
+  var modifierScrollLock: js.UndefOr[Boolean] = js.undefined
+  var modifierSuper: js.UndefOr[Boolean]      = js.undefined
+  var modifierSymbol: js.UndefOr[Boolean]     = js.undefined
+  var modifierSymbolLock: js.UndefOr[Boolean] = js.undefined
 end EventModifierInit
 
-@js.native
 trait InputEventInit extends UIEventInit:
-  var data: String         = js.native
-  var isComposing: Boolean = js.native
-  var inputType: String    = js.native
+  var data: js.UndefOr[String]         = js.undefined
+  var isComposing: js.UndefOr[Boolean] = js.undefined
+  var inputType: js.UndefOr[String]    = js.undefined
 
-@js.native
 trait UIEventInit extends EventInit:
-  var view: Window = js.native
-  var detail: Int  = js.native
+  var view: js.UndefOr[Window] = js.undefined
+  var detail: js.UndefOr[Int]  = js.undefined
 
-@js.native
 trait FocusEventInit extends UIEventInit:
-  var relatedTarget: EventTarget = js.native
+  var relatedTarget: js.UndefOr[EventTarget] = js.undefined
 
-@js.native
 trait CompositionEventInit extends UIEventInit:
-  var data: String = js.native
+  var data: js.UndefOr[String] = js.undefined
 
-@js.native
 trait URLPatternResult extends js.Object:
-  var inputs: scala.scalajs.js.Array[scala.scalajs.js.Any] = js.native
-  var protocol: URLPatternComponentResult                  = js.native
-  var username: URLPatternComponentResult                  = js.native
-  var password: URLPatternComponentResult                  = js.native
-  var hostname: URLPatternComponentResult                  = js.native
-  var port: URLPatternComponentResult                      = js.native
-  var pathname: URLPatternComponentResult                  = js.native
-  var search: URLPatternComponentResult                    = js.native
-  var hash: URLPatternComponentResult                      = js.native
+  var inputs: js.UndefOr[scala.scalajs.js.Array[String | URLPatternInit]] = js.undefined
+  var protocol: js.UndefOr[URLPatternComponentResult]                     = js.undefined
+  var username: js.UndefOr[URLPatternComponentResult]                     = js.undefined
+  var password: js.UndefOr[URLPatternComponentResult]                     = js.undefined
+  var hostname: js.UndefOr[URLPatternComponentResult]                     = js.undefined
+  var port: js.UndefOr[URLPatternComponentResult]                         = js.undefined
+  var pathname: js.UndefOr[URLPatternComponentResult]                     = js.undefined
+  var search: js.UndefOr[URLPatternComponentResult]                       = js.undefined
+  var hash: js.UndefOr[URLPatternComponentResult]                         = js.undefined
 end URLPatternResult
 
-@js.native
 trait URLPatternOptions extends js.Object:
-  var ignoreCase: Boolean = js.native
+  var ignoreCase: js.UndefOr[Boolean] = js.undefined
 
-@js.native
 trait URLPatternComponentResult extends js.Object:
-  var input: String                = js.native
-  var groups: scala.scalajs.js.Any = js.native
+  var input: js.UndefOr[String]                = js.undefined
+  var groups: js.UndefOr[scala.scalajs.js.Any] = js.undefined
 
-@js.native
 trait URLPatternInit extends js.Object:
-  var protocol: String = js.native
-  var username: String = js.native
-  var password: String = js.native
-  var hostname: String = js.native
-  var port: String     = js.native
-  var pathname: String = js.native
-  var search: String   = js.native
-  var hash: String     = js.native
-  var baseURL: String  = js.native
+  var protocol: js.UndefOr[String] = js.undefined
+  var username: js.UndefOr[String] = js.undefined
+  var password: js.UndefOr[String] = js.undefined
+  var hostname: js.UndefOr[String] = js.undefined
+  var port: js.UndefOr[String]     = js.undefined
+  var pathname: js.UndefOr[String] = js.undefined
+  var search: js.UndefOr[String]   = js.undefined
+  var hash: js.UndefOr[String]     = js.undefined
+  var baseURL: js.UndefOr[String]  = js.undefined
 end URLPatternInit
 
-@js.native
 trait PerformanceMarkOptions extends js.Object:
-  var detail: scala.scalajs.js.Any = js.native
-  var startTime: Double            = js.native
+  var detail: js.UndefOr[scala.scalajs.js.Any] = js.undefined
+  var startTime: js.UndefOr[Double]            = js.undefined
 
-@js.native
 trait PerformanceMeasureOptions extends js.Object:
-  var detail: scala.scalajs.js.Any = js.native
-  var start: scala.scalajs.js.Any  = js.native
-  var duration: Double             = js.native
-  var end: scala.scalajs.js.Any    = js.native
+  var detail: js.UndefOr[scala.scalajs.js.Any] = js.undefined
+  var start: js.UndefOr[String | Double]       = js.undefined
+  var duration: js.UndefOr[Double]             = js.undefined
+  var end: js.UndefOr[String | Double]         = js.undefined
 
-@js.native
 trait VideoFrameCallbackMetadata extends js.Object:
-  var presentationTime: Double    = js.native
-  var expectedDisplayTime: Double = js.native
-  var width: Int                  = js.native
-  var height: Int                 = js.native
-  var mediaTime: Double           = js.native
-  var presentedFrames: Int        = js.native
-  var processingDuration: Double  = js.native
-  var captureTime: Double         = js.native
-  var receiveTime: Double         = js.native
-  var rtpTimestamp: Int           = js.native
+  var presentationTime: js.UndefOr[Double]    = js.undefined
+  var expectedDisplayTime: js.UndefOr[Double] = js.undefined
+  var width: js.UndefOr[Int]                  = js.undefined
+  var height: js.UndefOr[Int]                 = js.undefined
+  var mediaTime: js.UndefOr[Double]           = js.undefined
+  var presentedFrames: js.UndefOr[Int]        = js.undefined
+  var processingDuration: js.UndefOr[Double]  = js.undefined
+  var captureTime: js.UndefOr[Double]         = js.undefined
+  var receiveTime: js.UndefOr[Double]         = js.undefined
+  var rtpTimestamp: js.UndefOr[Int]           = js.undefined
 end VideoFrameCallbackMetadata
 
-@js.native
 trait AriaNotificationOptions extends js.Object:
-  var priority: String = js.native
+  var priority: js.UndefOr[String] = js.undefined
 
-@js.native
 trait ExceptionOptions extends js.Object:
-  var traceStack: Boolean = js.native
+  var traceStack: js.UndefOr[Boolean] = js.undefined
 
-@js.native
 trait GlobalDescriptor extends js.Object:
-  var value: String    = js.native
-  var mutable: Boolean = js.native
+  var value: js.UndefOr[String]    = js.undefined
+  var mutable: js.UndefOr[Boolean] = js.undefined
 
-@js.native
 trait ModuleExportDescriptor extends js.Object:
-  var name: String = js.native
-  var kind: String = js.native
+  var name: js.UndefOr[String] = js.undefined
+  var kind: js.UndefOr[String] = js.undefined
 
-@js.native
 trait WebAssemblyInstantiatedSource extends js.Object:
-  var module: Module     = js.native
-  var instance: Instance = js.native
+  var module: js.UndefOr[Module]     = js.undefined
+  var instance: js.UndefOr[Instance] = js.undefined
 
-@js.native
 trait TableDescriptor extends js.Object:
-  var element: String               = js.native
-  var initial: scala.scalajs.js.Any = js.native
-  var maximum: scala.scalajs.js.Any = js.native
-  var address: String               = js.native
+  var element: js.UndefOr[String]               = js.undefined
+  var initial: js.UndefOr[scala.scalajs.js.Any] = js.undefined
+  var maximum: js.UndefOr[scala.scalajs.js.Any] = js.undefined
+  var address: js.UndefOr[String]               = js.undefined
 
-@js.native
 trait WebAssemblyCompileOptions extends js.Object:
-  var importedStringConstants: String          = js.native
-  var builtins: scala.scalajs.js.Array[String] = js.native
+  var importedStringConstants: js.UndefOr[String]          = js.undefined
+  var builtins: js.UndefOr[scala.scalajs.js.Array[String]] = js.undefined
 
-@js.native
 trait MemoryDescriptor extends js.Object:
-  var initial: scala.scalajs.js.Any = js.native
-  var maximum: scala.scalajs.js.Any = js.native
-  var address: String               = js.native
+  var initial: js.UndefOr[scala.scalajs.js.Any] = js.undefined
+  var maximum: js.UndefOr[scala.scalajs.js.Any] = js.undefined
+  var address: js.UndefOr[String]               = js.undefined
 
-@js.native
 trait TagType extends js.Object:
-  var parameters: scala.scalajs.js.Array[String] = js.native
+  var parameters: js.UndefOr[scala.scalajs.js.Array[String]] = js.undefined
 
-@js.native
 trait ModuleImportDescriptor extends js.Object:
-  var module: String = js.native
-  var name: String   = js.native
-  var kind: String   = js.native
+  var module: js.UndefOr[String] = js.undefined
+  var name: js.UndefOr[String]   = js.undefined
+  var kind: js.UndefOr[String]   = js.undefined
 
-@js.native
 trait BasePropertyIndexedKeyframe extends js.Object:
-  var offset: scala.scalajs.js.Any    = js.native
-  var easing: scala.scalajs.js.Any    = js.native
-  var composite: scala.scalajs.js.Any = js.native
+  var offset: js.UndefOr[scala.scalajs.js.Any]    = js.undefined
+  var easing: js.UndefOr[scala.scalajs.js.Any]    = js.undefined
+  var composite: js.UndefOr[scala.scalajs.js.Any] = js.undefined
 
-@js.native
 trait KeyframeAnimationOptions extends KeyframeEffectOptions:
-  var id: String                  = js.native
-  var timeline: AnimationTimeline = js.native
+  var id: js.UndefOr[String]                  = js.undefined
+  var timeline: js.UndefOr[AnimationTimeline] = js.undefined
 
-@js.native
 trait BaseKeyframe extends js.Object:
-  var offset: Double    = js.native
-  var easing: String    = js.native
-  var composite: String = js.native
+  var offset: js.UndefOr[Double]    = js.undefined
+  var easing: js.UndefOr[String]    = js.undefined
+  var composite: js.UndefOr[String] = js.undefined
 
-@js.native
 trait GetAnimationsOptions extends js.Object:
-  var subtree: Boolean      = js.native
-  var pseudoElement: String = js.native
+  var subtree: js.UndefOr[Boolean]      = js.undefined
+  var pseudoElement: js.UndefOr[String] = js.undefined
 
-@js.native
 trait KeyframeEffectOptions extends EffectTiming:
-  var composite: String     = js.native
-  var pseudoElement: String = js.native
+  var composite: js.UndefOr[String]     = js.undefined
+  var pseudoElement: js.UndefOr[String] = js.undefined
 
-@js.native
 trait OptionalEffectTiming extends js.Object:
-  var delay: Double                  = js.native
-  var endDelay: Double               = js.native
-  var fill: String                   = js.native
-  var iterationStart: Double         = js.native
-  var iterations: Double             = js.native
-  var duration: scala.scalajs.js.Any = js.native
-  var direction: String              = js.native
-  var easing: String                 = js.native
-end OptionalEffectTiming
+  var delay: js.UndefOr[Double]             = js.undefined
+  var endDelay: js.UndefOr[Double]          = js.undefined
+  var fill: js.UndefOr[String]              = js.undefined
+  var iterationStart: js.UndefOr[Double]    = js.undefined
+  var iterations: js.UndefOr[Double]        = js.undefined
+  var duration: js.UndefOr[Double | String] = js.undefined
+  var direction: js.UndefOr[String]         = js.undefined
+  var easing: js.UndefOr[String]            = js.undefined
 
-@js.native
 trait EffectTiming extends js.Object:
-  var fill: String           = js.native
-  var iterationStart: Double = js.native
-  var iterations: Double     = js.native
-  var direction: String      = js.native
-  var easing: String         = js.native
+  var fill: js.UndefOr[String]           = js.undefined
+  var iterationStart: js.UndefOr[Double] = js.undefined
+  var iterations: js.UndefOr[Double]     = js.undefined
+  var direction: js.UndefOr[String]      = js.undefined
+  var easing: js.UndefOr[String]         = js.undefined
 
-@js.native
 trait DocumentTimelineOptions extends js.Object:
-  var originTime: Double = js.native
+  var originTime: js.UndefOr[Double] = js.undefined
 
-@js.native
 trait ComputedEffectTiming extends EffectTiming:
-  var progress: Double         = js.native
-  var currentIteration: Double = js.native
+  var progress: js.UndefOr[Double]         = js.undefined
+  var currentIteration: js.UndefOr[Double] = js.undefined
 
-@js.native
 trait BaseComputedKeyframe extends js.Object:
-  var offset: Double         = js.native
-  var computedOffset: Double = js.native
-  var easing: String         = js.native
-  var composite: String      = js.native
+  var offset: js.UndefOr[Double]         = js.undefined
+  var computedOffset: js.UndefOr[Double] = js.undefined
+  var easing: js.UndefOr[String]         = js.undefined
+  var composite: js.UndefOr[String]      = js.undefined
 
-@js.native
 trait TimelineRangeOffset extends js.Object:
-  var rangeName: String       = js.native
-  var offset: CSSNumericValue = js.native
+  var rangeName: js.UndefOr[String]       = js.undefined
+  var offset: js.UndefOr[CSSNumericValue] = js.undefined
 
-@js.native
 trait AnimationTriggerOptions extends js.Object:
-  var timeline: AnimationTimeline          = js.native
-  var behavior: String                     = js.native
-  var rangeStart: scala.scalajs.js.Any     = js.native
-  var rangeEnd: scala.scalajs.js.Any       = js.native
-  var exitRangeStart: scala.scalajs.js.Any = js.native
-  var exitRangeEnd: scala.scalajs.js.Any   = js.native
+  var timeline: js.UndefOr[AnimationTimeline]                                                      = js.undefined
+  var behavior: js.UndefOr[String]                                                                 = js.undefined
+  var rangeStart: js.UndefOr[TimelineRangeOffset | CSSNumericValue | CSSKeywordValue | String]     = js.undefined
+  var rangeEnd: js.UndefOr[TimelineRangeOffset | CSSNumericValue | CSSKeywordValue | String]       = js.undefined
+  var exitRangeStart: js.UndefOr[TimelineRangeOffset | CSSNumericValue | CSSKeywordValue | String] = js.undefined
+  var exitRangeEnd: js.UndefOr[TimelineRangeOffset | CSSNumericValue | CSSKeywordValue | String]   = js.undefined
 
-@js.native
 trait AnimationPlaybackEventInit extends EventInit:
-  var currentTime: scala.scalajs.js.Any  = js.native
-  var timelineTime: scala.scalajs.js.Any = js.native
+  var currentTime: js.UndefOr[Double | CSSNumericValue]  = js.undefined
+  var timelineTime: js.UndefOr[Double | CSSNumericValue] = js.undefined
 
-@js.native
 trait PaymentHandlerResponse extends js.Object:
-  var methodName: String            = js.native
-  var details: scala.scalajs.js.Any = js.native
-  var payerName: String             = js.native
-  var payerEmail: String            = js.native
-  var payerPhone: String            = js.native
-  var shippingAddress: AddressInit  = js.native
-  var shippingOption: String        = js.native
+  var methodName: js.UndefOr[String]            = js.undefined
+  var details: js.UndefOr[scala.scalajs.js.Any] = js.undefined
+  var payerName: js.UndefOr[String]             = js.undefined
+  var payerEmail: js.UndefOr[String]            = js.undefined
+  var payerPhone: js.UndefOr[String]            = js.undefined
+  var shippingAddress: js.UndefOr[AddressInit]  = js.undefined
+  var shippingOption: js.UndefOr[String]        = js.undefined
 
-@js.native
 trait PaymentRequestEventInit extends ExtendableEventInit:
-  var topOrigin: String                                              = js.native
-  var paymentRequestOrigin: String                                   = js.native
-  var paymentRequestId: String                                       = js.native
-  var methodData: scala.scalajs.js.Array[PaymentMethodData]          = js.native
-  var total: PaymentCurrencyAmount                                   = js.native
-  var modifiers: scala.scalajs.js.Array[PaymentDetailsModifier]      = js.native
-  var paymentOptions: PaymentOptions                                 = js.native
-  var shippingOptions: scala.scalajs.js.Array[PaymentShippingOption] = js.native
-end PaymentRequestEventInit
+  var topOrigin: js.UndefOr[String]                                              = js.undefined
+  var paymentRequestOrigin: js.UndefOr[String]                                   = js.undefined
+  var paymentRequestId: js.UndefOr[String]                                       = js.undefined
+  var methodData: js.UndefOr[scala.scalajs.js.Array[PaymentMethodData]]          = js.undefined
+  var total: js.UndefOr[PaymentCurrencyAmount]                                   = js.undefined
+  var modifiers: js.UndefOr[scala.scalajs.js.Array[PaymentDetailsModifier]]      = js.undefined
+  var paymentOptions: js.UndefOr[PaymentOptions]                                 = js.undefined
+  var shippingOptions: js.UndefOr[scala.scalajs.js.Array[PaymentShippingOption]] = js.undefined
 
-@js.native
 trait AddressInit extends js.Object:
-  var country: String                             = js.native
-  var addressLine: scala.scalajs.js.Array[String] = js.native
-  var region: String                              = js.native
-  var city: String                                = js.native
-  var dependentLocality: String                   = js.native
-  var postalCode: String                          = js.native
-  var sortingCode: String                         = js.native
-  var organization: String                        = js.native
-  var recipient: String                           = js.native
-  var phone: String                               = js.native
+  var country: js.UndefOr[String]                             = js.undefined
+  var addressLine: js.UndefOr[scala.scalajs.js.Array[String]] = js.undefined
+  var region: js.UndefOr[String]                              = js.undefined
+  var city: js.UndefOr[String]                                = js.undefined
+  var dependentLocality: js.UndefOr[String]                   = js.undefined
+  var postalCode: js.UndefOr[String]                          = js.undefined
+  var sortingCode: js.UndefOr[String]                         = js.undefined
+  var organization: js.UndefOr[String]                        = js.undefined
+  var recipient: js.UndefOr[String]                           = js.undefined
+  var phone: js.UndefOr[String]                               = js.undefined
 end AddressInit
 
-@js.native
 trait PaymentRequestDetailsUpdate extends js.Object:
-  var error: String                                                  = js.native
-  var total: PaymentCurrencyAmount                                   = js.native
-  var modifiers: scala.scalajs.js.Array[PaymentDetailsModifier]      = js.native
-  var shippingOptions: scala.scalajs.js.Array[PaymentShippingOption] = js.native
-  var paymentMethodErrors: scala.scalajs.js.Any                      = js.native
-  var shippingAddressErrors: AddressErrors                           = js.native
+  var error: js.UndefOr[String]                                                  = js.undefined
+  var total: js.UndefOr[PaymentCurrencyAmount]                                   = js.undefined
+  var modifiers: js.UndefOr[scala.scalajs.js.Array[PaymentDetailsModifier]]      = js.undefined
+  var shippingOptions: js.UndefOr[scala.scalajs.js.Array[PaymentShippingOption]] = js.undefined
+  var paymentMethodErrors: js.UndefOr[scala.scalajs.js.Any]                      = js.undefined
+  var shippingAddressErrors: js.UndefOr[AddressErrors]                           = js.undefined
 
-@js.native
 trait BluetoothLEScanOptions extends js.Object:
-  var filters: scala.scalajs.js.Array[BluetoothLEScanFilterInit] = js.native
-  var keepRepeatedDevices: Boolean                               = js.native
-  var acceptAllAdvertisements: Boolean                           = js.native
+  var filters: js.UndefOr[scala.scalajs.js.Array[BluetoothLEScanFilterInit]] = js.undefined
+  var keepRepeatedDevices: js.UndefOr[Boolean]                               = js.undefined
+  var acceptAllAdvertisements: js.UndefOr[Boolean]                           = js.undefined
 
-@js.native
 trait BluetoothLEScanPermissionDescriptor extends PermissionDescriptor:
-  var filters: scala.scalajs.js.Array[BluetoothLEScanFilterInit] = js.native
-  var keepRepeatedDevices: Boolean                               = js.native
-  var acceptAllAdvertisements: Boolean                           = js.native
+  var filters: js.UndefOr[scala.scalajs.js.Array[BluetoothLEScanFilterInit]] = js.undefined
+  var keepRepeatedDevices: js.UndefOr[Boolean]                               = js.undefined
+  var acceptAllAdvertisements: js.UndefOr[Boolean]                           = js.undefined
 
-@js.native
 trait BluetoothManufacturerDataFilterInit extends BluetoothDataFilterInit:
-  var companyIdentifier: Int = js.native
+  var companyIdentifier: js.UndefOr[Int] = js.undefined
 
-@js.native
 trait RequestDeviceOptions extends js.Object:
-  var filters: scala.scalajs.js.Array[BluetoothLEScanFilterInit]          = js.native
-  var exclusionFilters: scala.scalajs.js.Array[BluetoothLEScanFilterInit] = js.native
-  var optionalServices: scala.scalajs.js.Array[scala.scalajs.js.Any]      = js.native
-  var optionalManufacturerData: scala.scalajs.js.Array[Int]               = js.native
-  var acceptAllDevices: Boolean                                           = js.native
+  var filters: js.UndefOr[scala.scalajs.js.Array[BluetoothLEScanFilterInit]]          = js.undefined
+  var exclusionFilters: js.UndefOr[scala.scalajs.js.Array[BluetoothLEScanFilterInit]] = js.undefined
+  var optionalServices: js.UndefOr[scala.scalajs.js.Array[String | Int]]              = js.undefined
+  var optionalManufacturerData: js.UndefOr[scala.scalajs.js.Array[Int]]               = js.undefined
+  var acceptAllDevices: js.UndefOr[Boolean]                                           = js.undefined
 
-@js.native
 trait ValueEventInit extends EventInit:
-  var value: scala.scalajs.js.Any = js.native
+  var value: js.UndefOr[scala.scalajs.js.Any] = js.undefined
 
-@js.native
 trait AllowedBluetoothDevice extends js.Object:
-  var deviceId: String                                     = js.native
-  var mayUseGATT: Boolean                                  = js.native
-  var allowedServices: scala.scalajs.js.Any                = js.native
-  var allowedManufacturerData: scala.scalajs.js.Array[Int] = js.native
+  var deviceId: js.UndefOr[String]                                     = js.undefined
+  var mayUseGATT: js.UndefOr[Boolean]                                  = js.undefined
+  var allowedServices: js.UndefOr[scala.scalajs.js.Any]                = js.undefined
+  var allowedManufacturerData: js.UndefOr[scala.scalajs.js.Array[Int]] = js.undefined
 
-@js.native
 trait BluetoothPermissionDescriptor extends PermissionDescriptor:
-  var deviceId: String                                               = js.native
-  var filters: scala.scalajs.js.Array[BluetoothLEScanFilterInit]     = js.native
-  var optionalServices: scala.scalajs.js.Array[scala.scalajs.js.Any] = js.native
-  var optionalManufacturerData: scala.scalajs.js.Array[Int]          = js.native
-  var acceptAllDevices: Boolean                                      = js.native
+  var deviceId: js.UndefOr[String]                                           = js.undefined
+  var filters: js.UndefOr[scala.scalajs.js.Array[BluetoothLEScanFilterInit]] = js.undefined
+  var optionalServices: js.UndefOr[scala.scalajs.js.Array[String | Int]]     = js.undefined
+  var optionalManufacturerData: js.UndefOr[scala.scalajs.js.Array[Int]]      = js.undefined
+  var acceptAllDevices: js.UndefOr[Boolean]                                  = js.undefined
 
-@js.native
 trait WatchAdvertisementsOptions extends js.Object:
-  var signal: AbortSignal = js.native
+  var signal: js.UndefOr[AbortSignal] = js.undefined
 
-@js.native
 trait BluetoothServiceDataFilterInit extends BluetoothDataFilterInit:
-  var service: scala.scalajs.js.Any = js.native
+  var service: js.UndefOr[String | Int] = js.undefined
 
-@js.native
 trait BluetoothAdvertisingEventInit extends EventInit:
-  var device: BluetoothDevice                        = js.native
-  var uuids: scala.scalajs.js.Any                    = js.native
-  var name: String                                   = js.native
-  var appearance: Int                                = js.native
-  var txPower: scala.scalajs.js.Any                  = js.native
-  var rssi: scala.scalajs.js.Any                     = js.native
-  var manufacturerData: BluetoothManufacturerDataMap = js.native
-  var serviceData: BluetoothServiceDataMap           = js.native
-end BluetoothAdvertisingEventInit
+  var device: js.UndefOr[BluetoothDevice]                        = js.undefined
+  var uuids: js.UndefOr[scala.scalajs.js.Any]                    = js.undefined
+  var name: js.UndefOr[String]                                   = js.undefined
+  var appearance: js.UndefOr[Int]                                = js.undefined
+  var txPower: js.UndefOr[scala.scalajs.js.Any]                  = js.undefined
+  var rssi: js.UndefOr[scala.scalajs.js.Any]                     = js.undefined
+  var manufacturerData: js.UndefOr[BluetoothManufacturerDataMap] = js.undefined
+  var serviceData: js.UndefOr[BluetoothServiceDataMap]           = js.undefined
 
-@js.native
 trait BluetoothDataFilterInit extends js.Object:
-  var dataPrefix: scala.scalajs.js.Any = js.native
-  var mask: scala.scalajs.js.Any       = js.native
+  var dataPrefix: js.UndefOr[scala.scalajs.js.Any] = js.undefined
+  var mask: js.UndefOr[scala.scalajs.js.Any]       = js.undefined
 
-@js.native
 trait BluetoothLEScanFilterInit extends js.Object:
-  var services: scala.scalajs.js.Array[scala.scalajs.js.Any]                        = js.native
-  var name: String                                                                  = js.native
-  var namePrefix: String                                                            = js.native
-  var manufacturerData: scala.scalajs.js.Array[BluetoothManufacturerDataFilterInit] = js.native
-  var serviceData: scala.scalajs.js.Array[BluetoothServiceDataFilterInit]           = js.native
+  var services: js.UndefOr[scala.scalajs.js.Array[String | Int]]                                = js.undefined
+  var name: js.UndefOr[String]                                                                  = js.undefined
+  var namePrefix: js.UndefOr[String]                                                            = js.undefined
+  var manufacturerData: js.UndefOr[scala.scalajs.js.Array[BluetoothManufacturerDataFilterInit]] = js.undefined
+  var serviceData: js.UndefOr[scala.scalajs.js.Array[BluetoothServiceDataFilterInit]]           = js.undefined
 
-@js.native
 trait BluetoothPermissionStorage extends js.Object:
-  var allowedDevices: scala.scalajs.js.Array[AllowedBluetoothDevice] = js.native
+  var allowedDevices: js.UndefOr[scala.scalajs.js.Array[AllowedBluetoothDevice]] = js.undefined
 
-@js.native
 trait LockManagerSnapshot extends js.Object:
-  var held: scala.scalajs.js.Array[LockInfo]    = js.native
-  var pending: scala.scalajs.js.Array[LockInfo] = js.native
+  var held: js.UndefOr[scala.scalajs.js.Array[LockInfo]]    = js.undefined
+  var pending: js.UndefOr[scala.scalajs.js.Array[LockInfo]] = js.undefined
 
-@js.native
 trait LockOptions extends js.Object:
-  var mode: String         = js.native
-  var ifAvailable: Boolean = js.native
-  var steal: Boolean       = js.native
-  var signal: AbortSignal  = js.native
+  var mode: js.UndefOr[String]         = js.undefined
+  var ifAvailable: js.UndefOr[Boolean] = js.undefined
+  var steal: js.UndefOr[Boolean]       = js.undefined
+  var signal: js.UndefOr[AbortSignal]  = js.undefined
 
-@js.native
 trait LockInfo extends js.Object:
-  var name: String     = js.native
-  var mode: String     = js.native
-  var clientId: String = js.native
+  var name: js.UndefOr[String]     = js.undefined
+  var mode: js.UndefOr[String]     = js.undefined
+  var clientId: js.UndefOr[String] = js.undefined
 
-@js.native
 trait NDEFScanOptions extends js.Object:
-  var signal: AbortSignal = js.native
+  var signal: js.UndefOr[AbortSignal] = js.undefined
 
-@js.native
 trait NDEFReadingEventInit extends EventInit:
-  var serialNumber: String     = js.native
-  var message: NDEFMessageInit = js.native
+  var serialNumber: js.UndefOr[String]     = js.undefined
+  var message: js.UndefOr[NDEFMessageInit] = js.undefined
 
-@js.native
 trait NDEFRecordInit extends js.Object:
-  var recordType: String         = js.native
-  var mediaType: String          = js.native
-  var id: String                 = js.native
-  var encoding: String           = js.native
-  var lang: String               = js.native
-  var data: scala.scalajs.js.Any = js.native
+  var recordType: js.UndefOr[String]         = js.undefined
+  var mediaType: js.UndefOr[String]          = js.undefined
+  var id: js.UndefOr[String]                 = js.undefined
+  var encoding: js.UndefOr[String]           = js.undefined
+  var lang: js.UndefOr[String]               = js.undefined
+  var data: js.UndefOr[scala.scalajs.js.Any] = js.undefined
 
-@js.native
 trait NDEFMessageInit extends js.Object:
-  var records: scala.scalajs.js.Array[NDEFRecordInit] = js.native
+  var records: js.UndefOr[scala.scalajs.js.Array[NDEFRecordInit]] = js.undefined
 
-@js.native
 trait NDEFWriteOptions extends js.Object:
-  var overwrite: Boolean  = js.native
-  var signal: AbortSignal = js.native
+  var overwrite: js.UndefOr[Boolean]  = js.undefined
+  var signal: js.UndefOr[AbortSignal] = js.undefined
 
-@js.native
 trait NDEFMakeReadOnlyOptions extends js.Object:
-  var signal: AbortSignal = js.native
+  var signal: js.UndefOr[AbortSignal] = js.undefined
 
-@js.native
 trait OTPCredentialRequestOptions extends js.Object:
-  var transport: scala.scalajs.js.Array[String] = js.native
+  var transport: js.UndefOr[scala.scalajs.js.Array[String]] = js.undefined
 
-@js.native
 trait ShareData extends js.Object:
-  var files: scala.scalajs.js.Array[File] = js.native
-  var title: String                       = js.native
-  var text: String                        = js.native
-  var url: String                         = js.native
+  var files: js.UndefOr[scala.scalajs.js.Array[File]] = js.undefined
+  var title: js.UndefOr[String]                       = js.undefined
+  var text: js.UndefOr[String]                        = js.undefined
+  var url: js.UndefOr[String]                         = js.undefined
 
-@js.native
 trait OfflineAudioCompletionEventInit extends EventInit:
-  var renderedBuffer: AudioBuffer = js.native
+  var renderedBuffer: js.UndefOr[AudioBuffer] = js.undefined
 
-@js.native
 trait MediaStreamTrackAudioSourceOptions extends js.Object:
-  var mediaStreamTrack: MediaStreamTrack = js.native
+  var mediaStreamTrack: js.UndefOr[MediaStreamTrack] = js.undefined
 
-@js.native
 trait StereoPannerOptions extends AudioNodeOptions:
-  var pan: Double = js.native
+  var pan: js.UndefOr[Double] = js.undefined
 
-@js.native
 trait DynamicsCompressorOptions extends AudioNodeOptions:
-  var attack: Double    = js.native
-  var knee: Double      = js.native
-  var ratio: Double     = js.native
-  var release: Double   = js.native
-  var threshold: Double = js.native
+  var attack: js.UndefOr[Double]    = js.undefined
+  var knee: js.UndefOr[Double]      = js.undefined
+  var ratio: js.UndefOr[Double]     = js.undefined
+  var release: js.UndefOr[Double]   = js.undefined
+  var threshold: js.UndefOr[Double] = js.undefined
 
-@js.native
 trait GainOptions extends AudioNodeOptions:
-  var gain: Double = js.native
+  var gain: js.UndefOr[Double] = js.undefined
 
-@js.native
 trait AudioSinkOptions extends js.Object:
-  var `type`: String = js.native
+  var `type`: js.UndefOr[String] = js.undefined
 
-@js.native
 trait AudioParamDescriptor extends js.Object:
-  var name: String           = js.native
-  var defaultValue: Double   = js.native
-  var minValue: Double       = js.native
-  var maxValue: Double       = js.native
-  var automationRate: String = js.native
+  var name: js.UndefOr[String]           = js.undefined
+  var defaultValue: js.UndefOr[Double]   = js.undefined
+  var minValue: js.UndefOr[Double]       = js.undefined
+  var maxValue: js.UndefOr[Double]       = js.undefined
+  var automationRate: js.UndefOr[String] = js.undefined
 
-@js.native
 trait ConstantSourceOptions extends js.Object:
-  var offset: Double = js.native
+  var offset: js.UndefOr[Double] = js.undefined
 
-@js.native
 trait IIRFilterOptions extends AudioNodeOptions:
-  var feedforward: scala.scalajs.js.Array[Double] = js.native
-  var feedback: scala.scalajs.js.Array[Double]    = js.native
+  var feedforward: js.UndefOr[scala.scalajs.js.Array[Double]] = js.undefined
+  var feedback: js.UndefOr[scala.scalajs.js.Array[Double]]    = js.undefined
 
-@js.native
 trait ChannelMergerOptions extends AudioNodeOptions:
-  var numberOfInputs: Int = js.native
+  var numberOfInputs: js.UndefOr[Int] = js.undefined
 
-@js.native
 trait AudioBufferOptions extends js.Object:
-  var numberOfChannels: Int = js.native
-  var length: Int           = js.native
-  var sampleRate: Double    = js.native
+  var numberOfChannels: js.UndefOr[Int] = js.undefined
+  var length: js.UndefOr[Int]           = js.undefined
+  var sampleRate: js.UndefOr[Double]    = js.undefined
 
-@js.native
 trait OscillatorOptions extends AudioNodeOptions:
-  var `type`: String             = js.native
-  var frequency: Double          = js.native
-  var detune: Double             = js.native
-  var periodicWave: PeriodicWave = js.native
+  var `type`: js.UndefOr[String]             = js.undefined
+  var frequency: js.UndefOr[Double]          = js.undefined
+  var detune: js.UndefOr[Double]             = js.undefined
+  var periodicWave: js.UndefOr[PeriodicWave] = js.undefined
 
-@js.native
 trait ConvolverOptions extends AudioNodeOptions:
-  var buffer: AudioBuffer           = js.native
-  var disableNormalization: Boolean = js.native
+  var buffer: js.UndefOr[AudioBuffer]           = js.undefined
+  var disableNormalization: js.UndefOr[Boolean] = js.undefined
 
-@js.native
 trait AudioContextOptions extends js.Object:
-  var latencyHint: scala.scalajs.js.Any    = js.native
-  var sampleRate: Double                   = js.native
-  var sinkId: scala.scalajs.js.Any         = js.native
-  var renderSizeHint: scala.scalajs.js.Any = js.native
+  var latencyHint: js.UndefOr[String | Double]      = js.undefined
+  var sampleRate: js.UndefOr[Double]                = js.undefined
+  var sinkId: js.UndefOr[String | AudioSinkOptions] = js.undefined
+  var renderSizeHint: js.UndefOr[String | Int]      = js.undefined
 
-@js.native
 trait AudioTimestamp extends js.Object:
-  var contextTime: Double     = js.native
-  var performanceTime: Double = js.native
+  var contextTime: js.UndefOr[Double]     = js.undefined
+  var performanceTime: js.UndefOr[Double] = js.undefined
 
-@js.native
 trait DelayOptions extends AudioNodeOptions:
-  var maxDelayTime: Double = js.native
-  var delayTime: Double    = js.native
+  var maxDelayTime: js.UndefOr[Double] = js.undefined
+  var delayTime: js.UndefOr[Double]    = js.undefined
 
-@js.native
 trait OfflineAudioContextOptions extends js.Object:
-  var numberOfChannels: Int                = js.native
-  var length: Int                          = js.native
-  var sampleRate: Double                   = js.native
-  var renderSizeHint: scala.scalajs.js.Any = js.native
+  var numberOfChannels: js.UndefOr[Int]        = js.undefined
+  var length: js.UndefOr[Int]                  = js.undefined
+  var sampleRate: js.UndefOr[Double]           = js.undefined
+  var renderSizeHint: js.UndefOr[String | Int] = js.undefined
 
-@js.native
 trait PannerOptions extends AudioNodeOptions:
-  var panningModel: String   = js.native
-  var distanceModel: String  = js.native
-  var positionX: Double      = js.native
-  var positionY: Double      = js.native
-  var positionZ: Double      = js.native
-  var orientationX: Double   = js.native
-  var orientationY: Double   = js.native
-  var orientationZ: Double   = js.native
-  var refDistance: Double    = js.native
-  var maxDistance: Double    = js.native
-  var rolloffFactor: Double  = js.native
-  var coneInnerAngle: Double = js.native
-  var coneOuterAngle: Double = js.native
-  var coneOuterGain: Double  = js.native
+  var panningModel: js.UndefOr[String]   = js.undefined
+  var distanceModel: js.UndefOr[String]  = js.undefined
+  var positionX: js.UndefOr[Double]      = js.undefined
+  var positionY: js.UndefOr[Double]      = js.undefined
+  var positionZ: js.UndefOr[Double]      = js.undefined
+  var orientationX: js.UndefOr[Double]   = js.undefined
+  var orientationY: js.UndefOr[Double]   = js.undefined
+  var orientationZ: js.UndefOr[Double]   = js.undefined
+  var refDistance: js.UndefOr[Double]    = js.undefined
+  var maxDistance: js.UndefOr[Double]    = js.undefined
+  var rolloffFactor: js.UndefOr[Double]  = js.undefined
+  var coneInnerAngle: js.UndefOr[Double] = js.undefined
+  var coneOuterAngle: js.UndefOr[Double] = js.undefined
+  var coneOuterGain: js.UndefOr[Double]  = js.undefined
 end PannerOptions
 
-@js.native
 trait BiquadFilterOptions extends AudioNodeOptions:
-  var `type`: String    = js.native
-  var Q: Double         = js.native
-  var detune: Double    = js.native
-  var frequency: Double = js.native
-  var gain: Double      = js.native
+  var `type`: js.UndefOr[String]    = js.undefined
+  var Q: js.UndefOr[Double]         = js.undefined
+  var detune: js.UndefOr[Double]    = js.undefined
+  var frequency: js.UndefOr[Double] = js.undefined
+  var gain: js.UndefOr[Double]      = js.undefined
 
-@js.native
 trait PeriodicWaveConstraints extends js.Object:
-  var disableNormalization: Boolean = js.native
+  var disableNormalization: js.UndefOr[Boolean] = js.undefined
 
-@js.native
 trait WaveShaperOptions extends AudioNodeOptions:
-  var curve: scala.scalajs.js.Array[Double] = js.native
-  var oversample: String                    = js.native
+  var curve: js.UndefOr[scala.scalajs.js.Array[Double]] = js.undefined
+  var oversample: js.UndefOr[String]                    = js.undefined
 
-@js.native
 trait MediaElementAudioSourceOptions extends js.Object:
-  var mediaElement: HTMLMediaElement = js.native
+  var mediaElement: js.UndefOr[HTMLMediaElement] = js.undefined
 
-@js.native
 trait AudioBufferSourceOptions extends js.Object:
-  var buffer: AudioBuffer  = js.native
-  var detune: Double       = js.native
-  var loop: Boolean        = js.native
-  var loopEnd: Double      = js.native
-  var loopStart: Double    = js.native
-  var playbackRate: Double = js.native
+  var buffer: js.UndefOr[AudioBuffer]  = js.undefined
+  var detune: js.UndefOr[Double]       = js.undefined
+  var loop: js.UndefOr[Boolean]        = js.undefined
+  var loopEnd: js.UndefOr[Double]      = js.undefined
+  var loopStart: js.UndefOr[Double]    = js.undefined
+  var playbackRate: js.UndefOr[Double] = js.undefined
 
-@js.native
 trait PeriodicWaveOptions extends PeriodicWaveConstraints:
-  var real: scala.scalajs.js.Array[Double] = js.native
-  var imag: scala.scalajs.js.Array[Double] = js.native
+  var real: js.UndefOr[scala.scalajs.js.Array[Double]] = js.undefined
+  var imag: js.UndefOr[scala.scalajs.js.Array[Double]] = js.undefined
 
-@js.native
 trait ChannelSplitterOptions extends AudioNodeOptions:
-  var numberOfOutputs: Int = js.native
+  var numberOfOutputs: js.UndefOr[Int] = js.undefined
 
-@js.native
 trait AudioProcessingEventInit extends EventInit:
-  var playbackTime: Double      = js.native
-  var inputBuffer: AudioBuffer  = js.native
-  var outputBuffer: AudioBuffer = js.native
+  var playbackTime: js.UndefOr[Double]      = js.undefined
+  var inputBuffer: js.UndefOr[AudioBuffer]  = js.undefined
+  var outputBuffer: js.UndefOr[AudioBuffer] = js.undefined
 
-@js.native
 trait AudioWorkletNodeOptions extends AudioNodeOptions:
-  var numberOfInputs: Int                                = js.native
-  var numberOfOutputs: Int                               = js.native
-  var outputChannelCount: scala.scalajs.js.Array[Int]    = js.native
-  var parameterData: scala.scalajs.js.Dictionary[Double] = js.native
-  var processorOptions: scala.scalajs.js.Any             = js.native
+  var numberOfInputs: js.UndefOr[Int]                                = js.undefined
+  var numberOfOutputs: js.UndefOr[Int]                               = js.undefined
+  var outputChannelCount: js.UndefOr[scala.scalajs.js.Array[Int]]    = js.undefined
+  var parameterData: js.UndefOr[scala.scalajs.js.Dictionary[Double]] = js.undefined
+  var processorOptions: js.UndefOr[scala.scalajs.js.Any]             = js.undefined
 
-@js.native
 trait AudioNodeOptions extends js.Object:
-  var channelCount: Int             = js.native
-  var channelCountMode: String      = js.native
-  var channelInterpretation: String = js.native
+  var channelCount: js.UndefOr[Int]             = js.undefined
+  var channelCountMode: js.UndefOr[String]      = js.undefined
+  var channelInterpretation: js.UndefOr[String] = js.undefined
 
-@js.native
 trait AnalyserOptions extends AudioNodeOptions:
-  var fftSize: Int                  = js.native
-  var maxDecibels: Double           = js.native
-  var minDecibels: Double           = js.native
-  var smoothingTimeConstant: Double = js.native
+  var fftSize: js.UndefOr[Int]                  = js.undefined
+  var maxDecibels: js.UndefOr[Double]           = js.undefined
+  var minDecibels: js.UndefOr[Double]           = js.undefined
+  var smoothingTimeConstant: js.UndefOr[Double] = js.undefined
 
-@js.native
 trait MediaStreamAudioSourceOptions extends js.Object:
-  var mediaStream: MediaStream = js.native
+  var mediaStream: js.UndefOr[MediaStream] = js.undefined
 
-@js.native
 trait AuthenticationExtensionsLargeBlobInputsJSON extends js.Object:
-  var support: String             = js.native
-  var read: Boolean               = js.native
-  var write: scala.scalajs.js.Any = js.native
+  var support: js.UndefOr[String] = js.undefined
+  var read: js.UndefOr[Boolean]   = js.undefined
+  var write: js.UndefOr[String]   = js.undefined
 
-@js.native
 trait CurrentUserDetailsOptions extends js.Object:
-  var rpId: String                 = js.native
-  var userId: scala.scalajs.js.Any = js.native
-  var name: String                 = js.native
-  var displayName: String          = js.native
+  var rpId: js.UndefOr[String]        = js.undefined
+  var userId: js.UndefOr[String]      = js.undefined
+  var name: js.UndefOr[String]        = js.undefined
+  var displayName: js.UndefOr[String] = js.undefined
 
-@js.native
 trait AuthenticationExtensionsPRFOutputs extends js.Object:
-  var enabled: Boolean                           = js.native
-  var results: AuthenticationExtensionsPRFValues = js.native
+  var enabled: js.UndefOr[Boolean]                           = js.undefined
+  var results: js.UndefOr[AuthenticationExtensionsPRFValues] = js.undefined
 
-@js.native
 trait AuthenticationExtensionsClientOutputs extends js.Object
 
-@js.native
 trait AuthenticatorAssertionResponseJSON extends js.Object:
-  var clientDataJSON: scala.scalajs.js.Any    = js.native
-  var authenticatorData: scala.scalajs.js.Any = js.native
-  var signature: scala.scalajs.js.Any         = js.native
-  var userHandle: scala.scalajs.js.Any        = js.native
+  var clientDataJSON: js.UndefOr[String]    = js.undefined
+  var authenticatorData: js.UndefOr[String] = js.undefined
+  var signature: js.UndefOr[String]         = js.undefined
+  var userHandle: js.UndefOr[String]        = js.undefined
 
-@js.native
 trait PublicKeyCredentialDescriptor extends js.Object:
-  var `type`: String                             = js.native
-  var id: scala.scalajs.js.Any                   = js.native
-  var transports: scala.scalajs.js.Array[String] = js.native
+  var `type`: js.UndefOr[String]                             = js.undefined
+  var id: js.UndefOr[scala.scalajs.js.Any]                   = js.undefined
+  var transports: js.UndefOr[scala.scalajs.js.Array[String]] = js.undefined
 
-@js.native
 trait TokenBinding extends js.Object:
-  var status: String = js.native
-  var id: String     = js.native
+  var status: js.UndefOr[String] = js.undefined
+  var id: js.UndefOr[String]     = js.undefined
 
-@js.native
 trait AuthenticationExtensionsPRFInputsJSON extends js.Object:
-  var eval: AuthenticationExtensionsPRFValuesJSON                                          = js.native
-  var evalByCredential: scala.scalajs.js.Dictionary[AuthenticationExtensionsPRFValuesJSON] = js.native
+  var eval: js.UndefOr[AuthenticationExtensionsPRFValuesJSON]                                          = js.undefined
+  var evalByCredential: js.UndefOr[scala.scalajs.js.Dictionary[AuthenticationExtensionsPRFValuesJSON]] = js.undefined
 
-@js.native
 trait PublicKeyCredentialParameters extends js.Object:
-  var `type`: String            = js.native
-  var alg: scala.scalajs.js.Any = js.native
+  var `type`: js.UndefOr[String] = js.undefined
+  var alg: js.UndefOr[Int]       = js.undefined
 
-@js.native
 trait PublicKeyCredentialRequestOptions extends js.Object:
-  var challenge: scala.scalajs.js.Any                                         = js.native
-  var timeout: Int                                                            = js.native
-  var rpId: String                                                            = js.native
-  var allowCredentials: scala.scalajs.js.Array[PublicKeyCredentialDescriptor] = js.native
-  var userVerification: String                                                = js.native
-  var hints: scala.scalajs.js.Array[String]                                   = js.native
-  var extensions: AuthenticationExtensionsClientInputs                        = js.native
+  var challenge: js.UndefOr[scala.scalajs.js.Any]                                         = js.undefined
+  var timeout: js.UndefOr[Int]                                                            = js.undefined
+  var rpId: js.UndefOr[String]                                                            = js.undefined
+  var allowCredentials: js.UndefOr[scala.scalajs.js.Array[PublicKeyCredentialDescriptor]] = js.undefined
+  var userVerification: js.UndefOr[String]                                                = js.undefined
+  var hints: js.UndefOr[scala.scalajs.js.Array[String]]                                   = js.undefined
+  var extensions: js.UndefOr[AuthenticationExtensionsClientInputs]                        = js.undefined
 
-@js.native
 trait PublicKeyCredentialRpEntity extends PublicKeyCredentialEntity:
-  var id: String = js.native
+  var id: js.UndefOr[String] = js.undefined
 
-@js.native
 trait RegistrationResponseJSON extends js.Object:
-  var id: String                                                        = js.native
-  var rawId: scala.scalajs.js.Any                                       = js.native
-  var response: AuthenticatorAttestationResponseJSON                    = js.native
-  var authenticatorAttachment: String                                   = js.native
-  var clientExtensionResults: AuthenticationExtensionsClientOutputsJSON = js.native
-  var `type`: String                                                    = js.native
+  var id: js.UndefOr[String]                                                        = js.undefined
+  var rawId: js.UndefOr[String]                                                     = js.undefined
+  var response: js.UndefOr[AuthenticatorAttestationResponseJSON]                    = js.undefined
+  var authenticatorAttachment: js.UndefOr[String]                                   = js.undefined
+  var clientExtensionResults: js.UndefOr[AuthenticationExtensionsClientOutputsJSON] = js.undefined
+  var `type`: js.UndefOr[String]                                                    = js.undefined
 
-@js.native
 trait AuthenticationExtensionsLargeBlobOutputsJSON extends js.Object:
-  var supported: Boolean         = js.native
-  var blob: scala.scalajs.js.Any = js.native
-  var written: Boolean           = js.native
+  var supported: js.UndefOr[Boolean] = js.undefined
+  var blob: js.UndefOr[String]       = js.undefined
+  var written: js.UndefOr[Boolean]   = js.undefined
 
-@js.native
 trait PublicKeyCredentialDescriptorJSON extends js.Object:
-  var `type`: String                             = js.native
-  var id: scala.scalajs.js.Any                   = js.native
-  var transports: scala.scalajs.js.Array[String] = js.native
+  var `type`: js.UndefOr[String]                             = js.undefined
+  var id: js.UndefOr[String]                                 = js.undefined
+  var transports: js.UndefOr[scala.scalajs.js.Array[String]] = js.undefined
 
-@js.native
 trait AuthenticationExtensionsPRFValues extends js.Object:
-  var first: scala.scalajs.js.Any  = js.native
-  var second: scala.scalajs.js.Any = js.native
+  var first: js.UndefOr[scala.scalajs.js.Any]  = js.undefined
+  var second: js.UndefOr[scala.scalajs.js.Any] = js.undefined
 
-@js.native
 trait UnknownCredentialOptions extends js.Object:
-  var rpId: String                       = js.native
-  var credentialId: scala.scalajs.js.Any = js.native
+  var rpId: js.UndefOr[String]         = js.undefined
+  var credentialId: js.UndefOr[String] = js.undefined
 
-@js.native
 trait CredentialPropertiesOutput extends js.Object:
-  var rk: Boolean = js.native
+  var rk: js.UndefOr[Boolean] = js.undefined
 
-@js.native
 trait PublicKeyCredentialUserEntityJSON extends js.Object:
-  var id: scala.scalajs.js.Any = js.native
-  var name: String             = js.native
-  var displayName: String      = js.native
+  var id: js.UndefOr[String]          = js.undefined
+  var name: js.UndefOr[String]        = js.undefined
+  var displayName: js.UndefOr[String] = js.undefined
 
-@js.native
 trait PublicKeyCredentialCreationOptionsJSON extends js.Object:
-  var rp: PublicKeyCredentialRpEntity                                               = js.native
-  var user: PublicKeyCredentialUserEntityJSON                                       = js.native
-  var challenge: scala.scalajs.js.Any                                               = js.native
-  var pubKeyCredParams: scala.scalajs.js.Array[PublicKeyCredentialParameters]       = js.native
-  var timeout: Int                                                                  = js.native
-  var excludeCredentials: scala.scalajs.js.Array[PublicKeyCredentialDescriptorJSON] = js.native
-  var authenticatorSelection: AuthenticatorSelectionCriteria                        = js.native
-  var hints: scala.scalajs.js.Array[String]                                         = js.native
-  var attestation: String                                                           = js.native
-  var attestationFormats: scala.scalajs.js.Array[String]                            = js.native
-  var extensions: AuthenticationExtensionsClientInputsJSON                          = js.native
+  var rp: js.UndefOr[PublicKeyCredentialRpEntity]                                               = js.undefined
+  var user: js.UndefOr[PublicKeyCredentialUserEntityJSON]                                       = js.undefined
+  var challenge: js.UndefOr[String]                                                             = js.undefined
+  var pubKeyCredParams: js.UndefOr[scala.scalajs.js.Array[PublicKeyCredentialParameters]]       = js.undefined
+  var timeout: js.UndefOr[Int]                                                                  = js.undefined
+  var excludeCredentials: js.UndefOr[scala.scalajs.js.Array[PublicKeyCredentialDescriptorJSON]] = js.undefined
+  var authenticatorSelection: js.UndefOr[AuthenticatorSelectionCriteria]                        = js.undefined
+  var hints: js.UndefOr[scala.scalajs.js.Array[String]]                                         = js.undefined
+  var attestation: js.UndefOr[String]                                                           = js.undefined
+  var attestationFormats: js.UndefOr[scala.scalajs.js.Array[String]]                            = js.undefined
+  var extensions: js.UndefOr[AuthenticationExtensionsClientInputsJSON]                          = js.undefined
 end PublicKeyCredentialCreationOptionsJSON
 
-@js.native
 trait AuthenticatorSelectionCriteria extends js.Object:
-  var authenticatorAttachment: String = js.native
-  var residentKey: String             = js.native
-  var requireResidentKey: Boolean     = js.native
-  var userVerification: String        = js.native
+  var authenticatorAttachment: js.UndefOr[String] = js.undefined
+  var residentKey: js.UndefOr[String]             = js.undefined
+  var requireResidentKey: js.UndefOr[Boolean]     = js.undefined
+  var userVerification: js.UndefOr[String]        = js.undefined
 
-@js.native
 trait AuthenticationExtensionsLargeBlobInputs extends js.Object:
-  var support: String             = js.native
-  var read: Boolean               = js.native
-  var write: scala.scalajs.js.Any = js.native
+  var support: js.UndefOr[String]             = js.undefined
+  var read: js.UndefOr[Boolean]               = js.undefined
+  var write: js.UndefOr[scala.scalajs.js.Any] = js.undefined
 
-@js.native
 trait PublicKeyCredentialCreationOptions extends js.Object:
-  var rp: PublicKeyCredentialRpEntity                                           = js.native
-  var user: PublicKeyCredentialUserEntity                                       = js.native
-  var challenge: scala.scalajs.js.Any                                           = js.native
-  var pubKeyCredParams: scala.scalajs.js.Array[PublicKeyCredentialParameters]   = js.native
-  var timeout: Int                                                              = js.native
-  var excludeCredentials: scala.scalajs.js.Array[PublicKeyCredentialDescriptor] = js.native
-  var authenticatorSelection: AuthenticatorSelectionCriteria                    = js.native
-  var hints: scala.scalajs.js.Array[String]                                     = js.native
-  var attestation: String                                                       = js.native
-  var attestationFormats: scala.scalajs.js.Array[String]                        = js.native
-  var extensions: AuthenticationExtensionsClientInputs                          = js.native
+  var rp: js.UndefOr[PublicKeyCredentialRpEntity]                                           = js.undefined
+  var user: js.UndefOr[PublicKeyCredentialUserEntity]                                       = js.undefined
+  var challenge: js.UndefOr[scala.scalajs.js.Any]                                           = js.undefined
+  var pubKeyCredParams: js.UndefOr[scala.scalajs.js.Array[PublicKeyCredentialParameters]]   = js.undefined
+  var timeout: js.UndefOr[Int]                                                              = js.undefined
+  var excludeCredentials: js.UndefOr[scala.scalajs.js.Array[PublicKeyCredentialDescriptor]] = js.undefined
+  var authenticatorSelection: js.UndefOr[AuthenticatorSelectionCriteria]                    = js.undefined
+  var hints: js.UndefOr[scala.scalajs.js.Array[String]]                                     = js.undefined
+  var attestation: js.UndefOr[String]                                                       = js.undefined
+  var attestationFormats: js.UndefOr[scala.scalajs.js.Array[String]]                        = js.undefined
+  var extensions: js.UndefOr[AuthenticationExtensionsClientInputs]                          = js.undefined
 end PublicKeyCredentialCreationOptions
 
-@js.native
 trait PublicKeyCredentialRequestOptionsJSON extends js.Object:
-  var challenge: scala.scalajs.js.Any                                             = js.native
-  var timeout: Int                                                                = js.native
-  var rpId: String                                                                = js.native
-  var allowCredentials: scala.scalajs.js.Array[PublicKeyCredentialDescriptorJSON] = js.native
-  var userVerification: String                                                    = js.native
-  var hints: scala.scalajs.js.Array[String]                                       = js.native
-  var extensions: AuthenticationExtensionsClientInputsJSON                        = js.native
+  var challenge: js.UndefOr[String]                                                           = js.undefined
+  var timeout: js.UndefOr[Int]                                                                = js.undefined
+  var rpId: js.UndefOr[String]                                                                = js.undefined
+  var allowCredentials: js.UndefOr[scala.scalajs.js.Array[PublicKeyCredentialDescriptorJSON]] = js.undefined
+  var userVerification: js.UndefOr[String]                                                    = js.undefined
+  var hints: js.UndefOr[scala.scalajs.js.Array[String]]                                       = js.undefined
+  var extensions: js.UndefOr[AuthenticationExtensionsClientInputsJSON]                        = js.undefined
 
-@js.native
 trait AllAcceptedCredentialsOptions extends js.Object:
-  var rpId: String                                                           = js.native
-  var userId: scala.scalajs.js.Any                                           = js.native
-  var allAcceptedCredentialIds: scala.scalajs.js.Array[scala.scalajs.js.Any] = js.native
+  var rpId: js.UndefOr[String]                                             = js.undefined
+  var userId: js.UndefOr[String]                                           = js.undefined
+  var allAcceptedCredentialIds: js.UndefOr[scala.scalajs.js.Array[String]] = js.undefined
 
-@js.native
 trait AuthenticationResponseJSON extends js.Object:
-  var id: String                                                        = js.native
-  var rawId: scala.scalajs.js.Any                                       = js.native
-  var response: AuthenticatorAssertionResponseJSON                      = js.native
-  var authenticatorAttachment: String                                   = js.native
-  var clientExtensionResults: AuthenticationExtensionsClientOutputsJSON = js.native
-  var `type`: String                                                    = js.native
+  var id: js.UndefOr[String]                                                        = js.undefined
+  var rawId: js.UndefOr[String]                                                     = js.undefined
+  var response: js.UndefOr[AuthenticatorAssertionResponseJSON]                      = js.undefined
+  var authenticatorAttachment: js.UndefOr[String]                                   = js.undefined
+  var clientExtensionResults: js.UndefOr[AuthenticationExtensionsClientOutputsJSON] = js.undefined
+  var `type`: js.UndefOr[String]                                                    = js.undefined
 
-@js.native
 trait AuthenticationExtensionsPRFValuesJSON extends js.Object:
-  var first: scala.scalajs.js.Any  = js.native
-  var second: scala.scalajs.js.Any = js.native
+  var first: js.UndefOr[String]  = js.undefined
+  var second: js.UndefOr[String] = js.undefined
 
-@js.native
 trait CollectedClientData extends js.Object:
-  var `type`: String       = js.native
-  var challenge: String    = js.native
-  var origin: String       = js.native
-  var crossOrigin: Boolean = js.native
-  var topOrigin: String    = js.native
+  var `type`: js.UndefOr[String]       = js.undefined
+  var challenge: js.UndefOr[String]    = js.undefined
+  var origin: js.UndefOr[String]       = js.undefined
+  var crossOrigin: js.UndefOr[Boolean] = js.undefined
+  var topOrigin: js.UndefOr[String]    = js.undefined
 
-@js.native
 trait PublicKeyCredentialEntity extends js.Object:
-  var name: String = js.native
+  var name: js.UndefOr[String] = js.undefined
 
-@js.native
 trait AuthenticationExtensionsClientInputsJSON extends js.Object
 
-@js.native
 trait PublicKeyCredentialUserEntity extends PublicKeyCredentialEntity:
-  var id: scala.scalajs.js.Any = js.native
-  var displayName: String      = js.native
+  var id: js.UndefOr[scala.scalajs.js.Any] = js.undefined
+  var displayName: js.UndefOr[String]      = js.undefined
 
-@js.native
 trait AuthenticationExtensionsPRFInputs extends js.Object:
-  var eval: AuthenticationExtensionsPRFValues                                          = js.native
-  var evalByCredential: scala.scalajs.js.Dictionary[AuthenticationExtensionsPRFValues] = js.native
+  var eval: js.UndefOr[AuthenticationExtensionsPRFValues]                                          = js.undefined
+  var evalByCredential: js.UndefOr[scala.scalajs.js.Dictionary[AuthenticationExtensionsPRFValues]] = js.undefined
 
-@js.native
 trait AuthenticationExtensionsClientInputs extends js.Object
 
-@js.native
 trait AuthenticatorAttestationResponseJSON extends js.Object:
-  var clientDataJSON: scala.scalajs.js.Any       = js.native
-  var authenticatorData: scala.scalajs.js.Any    = js.native
-  var transports: scala.scalajs.js.Array[String] = js.native
-  var publicKey: scala.scalajs.js.Any            = js.native
-  var publicKeyAlgorithm: scala.scalajs.js.Any   = js.native
-  var attestationObject: scala.scalajs.js.Any    = js.native
+  var clientDataJSON: js.UndefOr[String]                     = js.undefined
+  var authenticatorData: js.UndefOr[String]                  = js.undefined
+  var transports: js.UndefOr[scala.scalajs.js.Array[String]] = js.undefined
+  var publicKey: js.UndefOr[String]                          = js.undefined
+  var publicKeyAlgorithm: js.UndefOr[Int]                    = js.undefined
+  var attestationObject: js.UndefOr[String]                  = js.undefined
 
-@js.native
 trait AuthenticationExtensionsLargeBlobOutputs extends js.Object:
-  var supported: Boolean         = js.native
-  var blob: scala.scalajs.js.Any = js.native
-  var written: Boolean           = js.native
+  var supported: js.UndefOr[Boolean]         = js.undefined
+  var blob: js.UndefOr[scala.scalajs.js.Any] = js.undefined
+  var written: js.UndefOr[Boolean]           = js.undefined
 
-@js.native
 trait AuthenticationExtensionsPRFOutputsJSON extends js.Object:
-  var enabled: Boolean                               = js.native
-  var results: AuthenticationExtensionsPRFValuesJSON = js.native
+  var enabled: js.UndefOr[Boolean]                               = js.undefined
+  var results: js.UndefOr[AuthenticationExtensionsPRFValuesJSON] = js.undefined
 
-@js.native
 trait AuthenticationExtensionsClientOutputsJSON extends js.Object
 
-@js.native
 trait AacEncoderConfig extends js.Object:
-  var format: String = js.native
+  var format: js.UndefOr[String] = js.undefined
 
-@js.native
 trait VideoEncoderEncodeOptionsForAv1 extends js.Object:
-  var quantizer: Int = js.native
+  var quantizer: js.UndefOr[Int] = js.undefined
 
-@js.native
 trait AvcEncoderConfig extends js.Object:
-  var format: String = js.native
+  var format: js.UndefOr[String] = js.undefined
 
-@js.native
 trait VideoEncoderEncodeOptionsForAvc extends js.Object:
-  var quantizer: Int = js.native
+  var quantizer: js.UndefOr[Int] = js.undefined
 
-@js.native
 trait FlacEncoderConfig extends js.Object:
-  var blockSize: Int     = js.native
-  var compressLevel: Int = js.native
+  var blockSize: js.UndefOr[Int]     = js.undefined
+  var compressLevel: js.UndefOr[Int] = js.undefined
 
-@js.native
 trait HevcEncoderConfig extends js.Object:
-  var format: String = js.native
+  var format: js.UndefOr[String] = js.undefined
 
-@js.native
 trait VideoEncoderEncodeOptionsForHevc extends js.Object:
-  var quantizer: Int = js.native
+  var quantizer: js.UndefOr[Int] = js.undefined
 
-@js.native
 trait OpusEncoderConfig extends js.Object:
-  var format: String        = js.native
-  var signal: String        = js.native
-  var application: String   = js.native
-  var frameDuration: Int    = js.native
-  var complexity: Int       = js.native
-  var packetlossperc: Int   = js.native
-  var useinbandfec: Boolean = js.native
-  var usedtx: Boolean       = js.native
-end OpusEncoderConfig
+  var format: js.UndefOr[String]        = js.undefined
+  var signal: js.UndefOr[String]        = js.undefined
+  var application: js.UndefOr[String]   = js.undefined
+  var frameDuration: js.UndefOr[Int]    = js.undefined
+  var complexity: js.UndefOr[Int]       = js.undefined
+  var packetlossperc: js.UndefOr[Int]   = js.undefined
+  var useinbandfec: js.UndefOr[Boolean] = js.undefined
+  var usedtx: js.UndefOr[Boolean]       = js.undefined
 
-@js.native
 trait VideoEncoderEncodeOptionsForVp9 extends js.Object:
-  var quantizer: Int = js.native
+  var quantizer: js.UndefOr[Int] = js.undefined
 
-@js.native
 trait EncodedVideoChunkMetadata extends js.Object:
-  var decoderConfig: VideoDecoderConfig   = js.native
-  var svc: SvcOutputMetadata              = js.native
-  var alphaSideData: scala.scalajs.js.Any = js.native
+  var decoderConfig: js.UndefOr[VideoDecoderConfig]   = js.undefined
+  var svc: js.UndefOr[SvcOutputMetadata]              = js.undefined
+  var alphaSideData: js.UndefOr[scala.scalajs.js.Any] = js.undefined
 
-@js.native
 trait ImageDecodeResult extends js.Object:
-  var image: VideoFrame = js.native
-  var complete: Boolean = js.native
+  var image: js.UndefOr[VideoFrame] = js.undefined
+  var complete: js.UndefOr[Boolean] = js.undefined
 
-@js.native
 trait SvcOutputMetadata extends js.Object:
-  var temporalLayerId: Int = js.native
+  var temporalLayerId: js.UndefOr[Int] = js.undefined
 
-@js.native
 trait VideoEncoderInit extends js.Object:
-  var output: scala.scalajs.js.Function2[EncodedVideoChunk, EncodedVideoChunkMetadata, Unit] = js.native
-  var error: scala.scalajs.js.Function1[DOMException, Unit]                                  = js.native
+  var output: js.UndefOr[scala.scalajs.js.Function2[EncodedVideoChunk, EncodedVideoChunkMetadata, Unit]] = js.undefined
+  var error: js.UndefOr[scala.scalajs.js.Function1[DOMException, Unit]]                                  = js.undefined
 
-@js.native
 trait VideoFrameCopyToOptions extends js.Object:
-  var rect: DOMRectInit                           = js.native
-  var layout: scala.scalajs.js.Array[PlaneLayout] = js.native
-  var format: String                              = js.native
-  var colorSpace: String                          = js.native
+  var rect: js.UndefOr[DOMRectInit]                           = js.undefined
+  var layout: js.UndefOr[scala.scalajs.js.Array[PlaneLayout]] = js.undefined
+  var format: js.UndefOr[String]                              = js.undefined
+  var colorSpace: js.UndefOr[String]                          = js.undefined
 
-@js.native
 trait AudioDataInit extends js.Object:
-  var format: String                                         = js.native
-  var sampleRate: Double                                     = js.native
-  var numberOfFrames: Int                                    = js.native
-  var numberOfChannels: Int                                  = js.native
-  var timestamp: Int                                         = js.native
-  var data: scala.scalajs.js.Any                             = js.native
-  var transfer: scala.scalajs.js.Array[scala.scalajs.js.Any] = js.native
+  var format: js.UndefOr[String]                                         = js.undefined
+  var sampleRate: js.UndefOr[Double]                                     = js.undefined
+  var numberOfFrames: js.UndefOr[Int]                                    = js.undefined
+  var numberOfChannels: js.UndefOr[Int]                                  = js.undefined
+  var timestamp: js.UndefOr[Int]                                         = js.undefined
+  var data: js.UndefOr[scala.scalajs.js.Any]                             = js.undefined
+  var transfer: js.UndefOr[scala.scalajs.js.Array[scala.scalajs.js.Any]] = js.undefined
 
-@js.native
 trait AudioDecoderSupport extends js.Object:
-  var supported: Boolean         = js.native
-  var config: AudioDecoderConfig = js.native
+  var supported: js.UndefOr[Boolean]         = js.undefined
+  var config: js.UndefOr[AudioDecoderConfig] = js.undefined
 
-@js.native
 trait ImageDecoderInit extends js.Object:
-  var `type`: String                                         = js.native
-  var data: scala.scalajs.js.Any                             = js.native
-  var colorSpaceConversion: String                           = js.native
-  var desiredWidth: Int                                      = js.native
-  var desiredHeight: Int                                     = js.native
-  var preferAnimation: Boolean                               = js.native
-  var transfer: scala.scalajs.js.Array[scala.scalajs.js.Any] = js.native
+  var `type`: js.UndefOr[String]                                         = js.undefined
+  var data: js.UndefOr[scala.scalajs.js.Any]                             = js.undefined
+  var colorSpaceConversion: js.UndefOr[String]                           = js.undefined
+  var desiredWidth: js.UndefOr[Int]                                      = js.undefined
+  var desiredHeight: js.UndefOr[Int]                                     = js.undefined
+  var preferAnimation: js.UndefOr[Boolean]                               = js.undefined
+  var transfer: js.UndefOr[scala.scalajs.js.Array[scala.scalajs.js.Any]] = js.undefined
 
-@js.native
 trait VideoFrameBufferInit extends js.Object:
-  var format: String                                         = js.native
-  var codedWidth: Int                                        = js.native
-  var codedHeight: Int                                       = js.native
-  var timestamp: Int                                         = js.native
-  var duration: Int                                          = js.native
-  var layout: scala.scalajs.js.Array[PlaneLayout]            = js.native
-  var visibleRect: DOMRectInit                               = js.native
-  var rotation: Double                                       = js.native
-  var flip: Boolean                                          = js.native
-  var displayWidth: Int                                      = js.native
-  var displayHeight: Int                                     = js.native
-  var colorSpace: VideoColorSpaceInit                        = js.native
-  var transfer: scala.scalajs.js.Array[scala.scalajs.js.Any] = js.native
-  var metadata: VideoFrameMetadata                           = js.native
+  var format: js.UndefOr[String]                                         = js.undefined
+  var codedWidth: js.UndefOr[Int]                                        = js.undefined
+  var codedHeight: js.UndefOr[Int]                                       = js.undefined
+  var timestamp: js.UndefOr[Int]                                         = js.undefined
+  var duration: js.UndefOr[Int]                                          = js.undefined
+  var layout: js.UndefOr[scala.scalajs.js.Array[PlaneLayout]]            = js.undefined
+  var visibleRect: js.UndefOr[DOMRectInit]                               = js.undefined
+  var rotation: js.UndefOr[Double]                                       = js.undefined
+  var flip: js.UndefOr[Boolean]                                          = js.undefined
+  var displayWidth: js.UndefOr[Int]                                      = js.undefined
+  var displayHeight: js.UndefOr[Int]                                     = js.undefined
+  var colorSpace: js.UndefOr[VideoColorSpaceInit]                        = js.undefined
+  var transfer: js.UndefOr[scala.scalajs.js.Array[scala.scalajs.js.Any]] = js.undefined
+  var metadata: js.UndefOr[VideoFrameMetadata]                           = js.undefined
 end VideoFrameBufferInit
 
-@js.native
 trait EncodedVideoChunkInit extends js.Object:
-  var `type`: String                                         = js.native
-  var timestamp: Int                                         = js.native
-  var duration: Int                                          = js.native
-  var data: scala.scalajs.js.Any                             = js.native
-  var transfer: scala.scalajs.js.Array[scala.scalajs.js.Any] = js.native
+  var `type`: js.UndefOr[String]                                         = js.undefined
+  var timestamp: js.UndefOr[Int]                                         = js.undefined
+  var duration: js.UndefOr[Int]                                          = js.undefined
+  var data: js.UndefOr[scala.scalajs.js.Any]                             = js.undefined
+  var transfer: js.UndefOr[scala.scalajs.js.Array[scala.scalajs.js.Any]] = js.undefined
 
-@js.native
 trait VideoFrameInit extends js.Object:
-  var duration: Int                = js.native
-  var timestamp: Int               = js.native
-  var alpha: String                = js.native
-  var visibleRect: DOMRectInit     = js.native
-  var rotation: Double             = js.native
-  var flip: Boolean                = js.native
-  var displayWidth: Int            = js.native
-  var displayHeight: Int           = js.native
-  var metadata: VideoFrameMetadata = js.native
+  var duration: js.UndefOr[Int]                = js.undefined
+  var timestamp: js.UndefOr[Int]               = js.undefined
+  var alpha: js.UndefOr[String]                = js.undefined
+  var visibleRect: js.UndefOr[DOMRectInit]     = js.undefined
+  var rotation: js.UndefOr[Double]             = js.undefined
+  var flip: js.UndefOr[Boolean]                = js.undefined
+  var displayWidth: js.UndefOr[Int]            = js.undefined
+  var displayHeight: js.UndefOr[Int]           = js.undefined
+  var metadata: js.UndefOr[VideoFrameMetadata] = js.undefined
 end VideoFrameInit
 
-@js.native
 trait EncodedAudioChunkMetadata extends js.Object:
-  var decoderConfig: AudioDecoderConfig = js.native
+  var decoderConfig: js.UndefOr[AudioDecoderConfig] = js.undefined
 
-@js.native
 trait AudioEncoderConfig extends js.Object:
-  var codec: String         = js.native
-  var sampleRate: Int       = js.native
-  var numberOfChannels: Int = js.native
-  var bitrate: Int          = js.native
-  var bitrateMode: String   = js.native
+  var codec: js.UndefOr[String]         = js.undefined
+  var sampleRate: js.UndefOr[Int]       = js.undefined
+  var numberOfChannels: js.UndefOr[Int] = js.undefined
+  var bitrate: js.UndefOr[Int]          = js.undefined
+  var bitrateMode: js.UndefOr[String]   = js.undefined
 
-@js.native
 trait ImageDecodeOptions extends js.Object:
-  var frameIndex: Int             = js.native
-  var completeFramesOnly: Boolean = js.native
+  var frameIndex: js.UndefOr[Int]             = js.undefined
+  var completeFramesOnly: js.UndefOr[Boolean] = js.undefined
 
-@js.native
 trait EncodedAudioChunkInit extends js.Object:
-  var `type`: String                                         = js.native
-  var timestamp: Int                                         = js.native
-  var duration: Int                                          = js.native
-  var data: scala.scalajs.js.Any                             = js.native
-  var transfer: scala.scalajs.js.Array[scala.scalajs.js.Any] = js.native
+  var `type`: js.UndefOr[String]                                         = js.undefined
+  var timestamp: js.UndefOr[Int]                                         = js.undefined
+  var duration: js.UndefOr[Int]                                          = js.undefined
+  var data: js.UndefOr[scala.scalajs.js.Any]                             = js.undefined
+  var transfer: js.UndefOr[scala.scalajs.js.Array[scala.scalajs.js.Any]] = js.undefined
 
-@js.native
 trait PlaneLayout extends js.Object:
-  var offset: Int = js.native
-  var stride: Int = js.native
+  var offset: js.UndefOr[Int] = js.undefined
+  var stride: js.UndefOr[Int] = js.undefined
 
-@js.native
 trait AudioDataCopyToOptions extends js.Object:
-  var planeIndex: Int  = js.native
-  var frameOffset: Int = js.native
-  var frameCount: Int  = js.native
-  var format: String   = js.native
+  var planeIndex: js.UndefOr[Int]  = js.undefined
+  var frameOffset: js.UndefOr[Int] = js.undefined
+  var frameCount: js.UndefOr[Int]  = js.undefined
+  var format: js.UndefOr[String]   = js.undefined
 
-@js.native
 trait VideoDecoderInit extends js.Object:
-  var output: scala.scalajs.js.Function1[VideoFrame, Unit]  = js.native
-  var error: scala.scalajs.js.Function1[DOMException, Unit] = js.native
+  var output: js.UndefOr[scala.scalajs.js.Function1[VideoFrame, Unit]]  = js.undefined
+  var error: js.UndefOr[scala.scalajs.js.Function1[DOMException, Unit]] = js.undefined
 
-@js.native
 trait VideoColorSpaceInit extends js.Object:
-  var primaries: String  = js.native
-  var transfer: String   = js.native
-  var matrix: String     = js.native
-  var fullRange: Boolean = js.native
+  var primaries: js.UndefOr[String]  = js.undefined
+  var transfer: js.UndefOr[String]   = js.undefined
+  var matrix: js.UndefOr[String]     = js.undefined
+  var fullRange: js.UndefOr[Boolean] = js.undefined
 
-@js.native
 trait VideoEncoderEncodeOptions extends js.Object:
-  var keyFrame: Boolean = js.native
+  var keyFrame: js.UndefOr[Boolean] = js.undefined
 
-@js.native
 trait AudioEncoderSupport extends js.Object:
-  var supported: Boolean         = js.native
-  var config: AudioEncoderConfig = js.native
+  var supported: js.UndefOr[Boolean]         = js.undefined
+  var config: js.UndefOr[AudioEncoderConfig] = js.undefined
 
-@js.native
 trait VideoEncoderSupport extends js.Object:
-  var supported: Boolean         = js.native
-  var config: VideoEncoderConfig = js.native
+  var supported: js.UndefOr[Boolean]         = js.undefined
+  var config: js.UndefOr[VideoEncoderConfig] = js.undefined
 
-@js.native
 trait VideoDecoderSupport extends js.Object:
-  var supported: Boolean         = js.native
-  var config: VideoDecoderConfig = js.native
+  var supported: js.UndefOr[Boolean]         = js.undefined
+  var config: js.UndefOr[VideoDecoderConfig] = js.undefined
 
-@js.native
 trait VideoDecoderConfig extends js.Object:
-  var codec: String                     = js.native
-  var description: scala.scalajs.js.Any = js.native
-  var codedWidth: Int                   = js.native
-  var codedHeight: Int                  = js.native
-  var displayAspectWidth: Int           = js.native
-  var displayAspectHeight: Int          = js.native
-  var colorSpace: VideoColorSpaceInit   = js.native
-  var hardwareAcceleration: String      = js.native
-  var optimizeForLatency: Boolean       = js.native
-  var rotation: Double                  = js.native
-  var flip: Boolean                     = js.native
+  var codec: js.UndefOr[String]                     = js.undefined
+  var description: js.UndefOr[scala.scalajs.js.Any] = js.undefined
+  var codedWidth: js.UndefOr[Int]                   = js.undefined
+  var codedHeight: js.UndefOr[Int]                  = js.undefined
+  var displayAspectWidth: js.UndefOr[Int]           = js.undefined
+  var displayAspectHeight: js.UndefOr[Int]          = js.undefined
+  var colorSpace: js.UndefOr[VideoColorSpaceInit]   = js.undefined
+  var hardwareAcceleration: js.UndefOr[String]      = js.undefined
+  var optimizeForLatency: js.UndefOr[Boolean]       = js.undefined
+  var rotation: js.UndefOr[Double]                  = js.undefined
+  var flip: js.UndefOr[Boolean]                     = js.undefined
 end VideoDecoderConfig
 
-@js.native
 trait AudioDecoderConfig extends js.Object:
-  var codec: String                     = js.native
-  var sampleRate: Int                   = js.native
-  var numberOfChannels: Int             = js.native
-  var description: scala.scalajs.js.Any = js.native
+  var codec: js.UndefOr[String]                     = js.undefined
+  var sampleRate: js.UndefOr[Int]                   = js.undefined
+  var numberOfChannels: js.UndefOr[Int]             = js.undefined
+  var description: js.UndefOr[scala.scalajs.js.Any] = js.undefined
 
-@js.native
 trait AudioDecoderInit extends js.Object:
-  var output: scala.scalajs.js.Function1[AudioData, Unit]   = js.native
-  var error: scala.scalajs.js.Function1[DOMException, Unit] = js.native
+  var output: js.UndefOr[scala.scalajs.js.Function1[AudioData, Unit]]   = js.undefined
+  var error: js.UndefOr[scala.scalajs.js.Function1[DOMException, Unit]] = js.undefined
 
-@js.native
 trait VideoEncoderConfig extends js.Object:
-  var codec: String                = js.native
-  var width: Int                   = js.native
-  var height: Int                  = js.native
-  var displayWidth: Int            = js.native
-  var displayHeight: Int           = js.native
-  var bitrate: Int                 = js.native
-  var framerate: Double            = js.native
-  var hardwareAcceleration: String = js.native
-  var alpha: String                = js.native
-  var scalabilityMode: String      = js.native
-  var bitrateMode: String          = js.native
-  var latencyMode: String          = js.native
-  var contentHint: String          = js.native
+  var codec: js.UndefOr[String]                = js.undefined
+  var width: js.UndefOr[Int]                   = js.undefined
+  var height: js.UndefOr[Int]                  = js.undefined
+  var displayWidth: js.UndefOr[Int]            = js.undefined
+  var displayHeight: js.UndefOr[Int]           = js.undefined
+  var bitrate: js.UndefOr[Int]                 = js.undefined
+  var framerate: js.UndefOr[Double]            = js.undefined
+  var hardwareAcceleration: js.UndefOr[String] = js.undefined
+  var alpha: js.UndefOr[String]                = js.undefined
+  var scalabilityMode: js.UndefOr[String]      = js.undefined
+  var bitrateMode: js.UndefOr[String]          = js.undefined
+  var latencyMode: js.UndefOr[String]          = js.undefined
+  var contentHint: js.UndefOr[String]          = js.undefined
 end VideoEncoderConfig
 
-@js.native
 trait VideoFrameMetadata extends js.Object
 
-@js.native
 trait AudioEncoderInit extends js.Object:
-  var output: scala.scalajs.js.Function2[EncodedAudioChunk, EncodedAudioChunkMetadata, Unit] = js.native
-  var error: scala.scalajs.js.Function1[DOMException, Unit]                                  = js.native
+  var output: js.UndefOr[scala.scalajs.js.Function2[EncodedAudioChunk, EncodedAudioChunkMetadata, Unit]] = js.undefined
+  var error: js.UndefOr[scala.scalajs.js.Function1[DOMException, Unit]]                                  = js.undefined
 
-@js.native
 trait CryptoKeyPair extends js.Object:
-  var publicKey: CryptoKey  = js.native
-  var privateKey: CryptoKey = js.native
+  var publicKey: js.UndefOr[CryptoKey]  = js.undefined
+  var privateKey: js.UndefOr[CryptoKey] = js.undefined
 
-@js.native
 trait HmacKeyGenParams extends Algorithm:
-  var hash: scala.scalajs.js.Any = js.native
-  var length: Int                = js.native
+  var hash: js.UndefOr[scala.scalajs.js.Any] = js.undefined
+  var length: js.UndefOr[Int]                = js.undefined
 
-@js.native
 trait AesCtrParams extends Algorithm:
-  var counter: scala.scalajs.js.Any = js.native
-  var length: scala.scalajs.js.Any  = js.native
+  var counter: js.UndefOr[scala.scalajs.js.Any] = js.undefined
+  var length: js.UndefOr[scala.scalajs.js.Any]  = js.undefined
 
-@js.native
 trait HmacImportParams extends Algorithm:
-  var hash: scala.scalajs.js.Any = js.native
-  var length: Int                = js.native
+  var hash: js.UndefOr[scala.scalajs.js.Any] = js.undefined
+  var length: js.UndefOr[Int]                = js.undefined
 
-@js.native
 trait RsaHashedImportParams extends Algorithm:
-  var hash: scala.scalajs.js.Any = js.native
+  var hash: js.UndefOr[scala.scalajs.js.Any] = js.undefined
 
-@js.native
 trait EcKeyAlgorithm extends KeyAlgorithm:
-  var namedCurve: scala.scalajs.js.Any = js.native
+  var namedCurve: js.UndefOr[String] = js.undefined
 
-@js.native
 trait AesKeyAlgorithm extends KeyAlgorithm:
-  var length: Int = js.native
+  var length: js.UndefOr[Int] = js.undefined
 
-@js.native
 trait AesKeyGenParams extends Algorithm:
-  var length: Int = js.native
+  var length: js.UndefOr[Int] = js.undefined
 
-@js.native
 trait EcKeyGenParams extends Algorithm:
-  var namedCurve: scala.scalajs.js.Any = js.native
+  var namedCurve: js.UndefOr[String] = js.undefined
 
-@js.native
 trait HmacKeyAlgorithm extends KeyAlgorithm:
-  var hash: KeyAlgorithm = js.native
-  var length: Int        = js.native
+  var hash: js.UndefOr[KeyAlgorithm] = js.undefined
+  var length: js.UndefOr[Int]        = js.undefined
 
-@js.native
 trait KeyAlgorithm extends js.Object:
-  var name: String = js.native
+  var name: js.UndefOr[String] = js.undefined
 
-@js.native
 trait RsaHashedKeyAlgorithm extends RsaKeyAlgorithm:
-  var hash: KeyAlgorithm = js.native
+  var hash: js.UndefOr[KeyAlgorithm] = js.undefined
 
-@js.native
 trait RsaOaepParams extends Algorithm:
-  var label: scala.scalajs.js.Any = js.native
+  var label: js.UndefOr[scala.scalajs.js.Any] = js.undefined
 
-@js.native
 trait RsaPssParams extends Algorithm:
-  var saltLength: Int = js.native
+  var saltLength: js.UndefOr[Int] = js.undefined
 
-@js.native
 trait EcdhKeyDeriveParams extends Algorithm:
-  var public: CryptoKey = js.native
+  var public: js.UndefOr[CryptoKey] = js.undefined
 
-@js.native
 trait AesDerivedKeyParams extends Algorithm:
-  var length: Int = js.native
+  var length: js.UndefOr[Int] = js.undefined
 
-@js.native
 trait AesCbcParams extends Algorithm:
-  var iv: scala.scalajs.js.Any = js.native
+  var iv: js.UndefOr[scala.scalajs.js.Any] = js.undefined
 
-@js.native
 trait RsaKeyGenParams extends Algorithm:
-  var modulusLength: Int                   = js.native
-  var publicExponent: scala.scalajs.js.Any = js.native
+  var modulusLength: js.UndefOr[Int]                   = js.undefined
+  var publicExponent: js.UndefOr[scala.scalajs.js.Any] = js.undefined
 
-@js.native
 trait JsonWebKey extends js.Object:
-  var kty: String                                     = js.native
-  var use: String                                     = js.native
-  var key_ops: scala.scalajs.js.Array[String]         = js.native
-  var alg: String                                     = js.native
-  var ext: Boolean                                    = js.native
-  var crv: String                                     = js.native
-  var x: String                                       = js.native
-  var y: String                                       = js.native
-  var d: String                                       = js.native
-  var n: String                                       = js.native
-  var e: String                                       = js.native
-  var p: String                                       = js.native
-  var q: String                                       = js.native
-  var dp: String                                      = js.native
-  var dq: String                                      = js.native
-  var qi: String                                      = js.native
-  var oth: scala.scalajs.js.Array[RsaOtherPrimesInfo] = js.native
-  var k: String                                       = js.native
+  var kty: js.UndefOr[String]                                     = js.undefined
+  var use: js.UndefOr[String]                                     = js.undefined
+  var key_ops: js.UndefOr[scala.scalajs.js.Array[String]]         = js.undefined
+  var alg: js.UndefOr[String]                                     = js.undefined
+  var ext: js.UndefOr[Boolean]                                    = js.undefined
+  var crv: js.UndefOr[String]                                     = js.undefined
+  var x: js.UndefOr[String]                                       = js.undefined
+  var y: js.UndefOr[String]                                       = js.undefined
+  var d: js.UndefOr[String]                                       = js.undefined
+  var n: js.UndefOr[String]                                       = js.undefined
+  var e: js.UndefOr[String]                                       = js.undefined
+  var p: js.UndefOr[String]                                       = js.undefined
+  var q: js.UndefOr[String]                                       = js.undefined
+  var dp: js.UndefOr[String]                                      = js.undefined
+  var dq: js.UndefOr[String]                                      = js.undefined
+  var qi: js.UndefOr[String]                                      = js.undefined
+  var oth: js.UndefOr[scala.scalajs.js.Array[RsaOtherPrimesInfo]] = js.undefined
+  var k: js.UndefOr[String]                                       = js.undefined
 end JsonWebKey
 
-@js.native
 trait RsaHashedKeyGenParams extends RsaKeyGenParams:
-  var hash: scala.scalajs.js.Any = js.native
+  var hash: js.UndefOr[scala.scalajs.js.Any] = js.undefined
 
-@js.native
 trait Algorithm extends js.Object:
-  var name: String = js.native
+  var name: js.UndefOr[String] = js.undefined
 
-@js.native
 trait EcdsaParams extends Algorithm:
-  var hash: scala.scalajs.js.Any = js.native
+  var hash: js.UndefOr[scala.scalajs.js.Any] = js.undefined
 
-@js.native
 trait AesGcmParams extends Algorithm:
-  var iv: scala.scalajs.js.Any             = js.native
-  var additionalData: scala.scalajs.js.Any = js.native
-  var tagLength: scala.scalajs.js.Any      = js.native
+  var iv: js.UndefOr[scala.scalajs.js.Any]             = js.undefined
+  var additionalData: js.UndefOr[scala.scalajs.js.Any] = js.undefined
+  var tagLength: js.UndefOr[scala.scalajs.js.Any]      = js.undefined
 
-@js.native
 trait Pbkdf2Params extends Algorithm:
-  var salt: scala.scalajs.js.Any = js.native
-  var iterations: Int            = js.native
-  var hash: scala.scalajs.js.Any = js.native
+  var salt: js.UndefOr[scala.scalajs.js.Any] = js.undefined
+  var iterations: js.UndefOr[Int]            = js.undefined
+  var hash: js.UndefOr[scala.scalajs.js.Any] = js.undefined
 
-@js.native
 trait HkdfParams extends Algorithm:
-  var hash: scala.scalajs.js.Any = js.native
-  var salt: scala.scalajs.js.Any = js.native
-  var info: scala.scalajs.js.Any = js.native
+  var hash: js.UndefOr[scala.scalajs.js.Any] = js.undefined
+  var salt: js.UndefOr[scala.scalajs.js.Any] = js.undefined
+  var info: js.UndefOr[scala.scalajs.js.Any] = js.undefined
 
-@js.native
 trait RsaKeyAlgorithm extends KeyAlgorithm:
-  var modulusLength: Int                   = js.native
-  var publicExponent: scala.scalajs.js.Any = js.native
+  var modulusLength: js.UndefOr[Int]                   = js.undefined
+  var publicExponent: js.UndefOr[scala.scalajs.js.Any] = js.undefined
 
-@js.native
 trait RsaOtherPrimesInfo extends js.Object:
-  var r: String = js.native
-  var d: String = js.native
-  var t: String = js.native
+  var r: js.UndefOr[String] = js.undefined
+  var d: js.UndefOr[String] = js.undefined
+  var t: js.UndefOr[String] = js.undefined
 
-@js.native
 trait EcKeyImportParams extends Algorithm:
-  var namedCurve: scala.scalajs.js.Any = js.native
+  var namedCurve: js.UndefOr[String] = js.undefined
 
-@js.native
 trait KmacKeyGenParams extends Algorithm:
-  var length: Int = js.native
+  var length: js.UndefOr[Int] = js.undefined
 
-@js.native
 trait KmacParams extends Algorithm:
-  var outputLength: Int                   = js.native
-  var customization: scala.scalajs.js.Any = js.native
+  var outputLength: js.UndefOr[Int]                   = js.undefined
+  var customization: js.UndefOr[scala.scalajs.js.Any] = js.undefined
 
-@js.native
 trait KmacKeyAlgorithm extends KeyAlgorithm:
-  var length: Int = js.native
+  var length: js.UndefOr[Int] = js.undefined
 
-@js.native
 trait AeadParams extends Algorithm:
-  var iv: scala.scalajs.js.Any             = js.native
-  var additionalData: scala.scalajs.js.Any = js.native
-  var tagLength: scala.scalajs.js.Any      = js.native
+  var iv: js.UndefOr[scala.scalajs.js.Any]             = js.undefined
+  var additionalData: js.UndefOr[scala.scalajs.js.Any] = js.undefined
+  var tagLength: js.UndefOr[scala.scalajs.js.Any]      = js.undefined
 
-@js.native
 trait CShakeParams extends Algorithm:
-  var outputLength: Int                   = js.native
-  var functionName: scala.scalajs.js.Any  = js.native
-  var customization: scala.scalajs.js.Any = js.native
+  var outputLength: js.UndefOr[Int]                   = js.undefined
+  var functionName: js.UndefOr[scala.scalajs.js.Any]  = js.undefined
+  var customization: js.UndefOr[scala.scalajs.js.Any] = js.undefined
 
-@js.native
 trait TurboShakeParams extends Algorithm:
-  var outputLength: Int                      = js.native
-  var domainSeparation: scala.scalajs.js.Any = js.native
+  var outputLength: js.UndefOr[Int]                      = js.undefined
+  var domainSeparation: js.UndefOr[scala.scalajs.js.Any] = js.undefined
 
-@js.native
 trait KmacImportParams extends Algorithm:
-  var length: Int = js.native
+  var length: js.UndefOr[Int] = js.undefined
 
-@js.native
 trait EncapsulatedBits extends js.Object:
-  var sharedKey: scala.scalajs.js.Any  = js.native
-  var ciphertext: scala.scalajs.js.Any = js.native
+  var sharedKey: js.UndefOr[scala.scalajs.js.Any]  = js.undefined
+  var ciphertext: js.UndefOr[scala.scalajs.js.Any] = js.undefined
 
-@js.native
 trait ContextParams extends Algorithm:
-  var context: scala.scalajs.js.Any = js.native
+  var context: js.UndefOr[scala.scalajs.js.Any] = js.undefined
 
-@js.native
 trait KangarooTwelveParams extends Algorithm:
-  var outputLength: Int                   = js.native
-  var customization: scala.scalajs.js.Any = js.native
+  var outputLength: js.UndefOr[Int]                   = js.undefined
+  var customization: js.UndefOr[scala.scalajs.js.Any] = js.undefined
 
-@js.native
 trait EncapsulatedKey extends js.Object:
-  var sharedKey: CryptoKey             = js.native
-  var ciphertext: scala.scalajs.js.Any = js.native
+  var sharedKey: js.UndefOr[CryptoKey]             = js.undefined
+  var ciphertext: js.UndefOr[scala.scalajs.js.Any] = js.undefined
 
-@js.native
 trait Argon2Params extends Algorithm:
-  var nonce: scala.scalajs.js.Any          = js.native
-  var parallelism: Int                     = js.native
-  var memory: Int                          = js.native
-  var passes: Int                          = js.native
-  var version: scala.scalajs.js.Any        = js.native
-  var secretValue: scala.scalajs.js.Any    = js.native
-  var associatedData: scala.scalajs.js.Any = js.native
+  var nonce: js.UndefOr[scala.scalajs.js.Any]          = js.undefined
+  var parallelism: js.UndefOr[Int]                     = js.undefined
+  var memory: js.UndefOr[Int]                          = js.undefined
+  var passes: js.UndefOr[Int]                          = js.undefined
+  var version: js.UndefOr[scala.scalajs.js.Any]        = js.undefined
+  var secretValue: js.UndefOr[scala.scalajs.js.Any]    = js.undefined
+  var associatedData: js.UndefOr[scala.scalajs.js.Any] = js.undefined
 
-@js.native
 trait Ed448Params extends Algorithm:
-  var context: scala.scalajs.js.Any = js.native
+  var context: js.UndefOr[scala.scalajs.js.Any] = js.undefined
 
-@js.native
 trait WebGLContextAttributes extends js.Object:
-  var alpha: Boolean                        = js.native
-  var depth: Boolean                        = js.native
-  var stencil: Boolean                      = js.native
-  var antialias: Boolean                    = js.native
-  var premultipliedAlpha: Boolean           = js.native
-  var preserveDrawingBuffer: Boolean        = js.native
-  var powerPreference: String               = js.native
-  var failIfMajorPerformanceCaveat: Boolean = js.native
-  var desynchronized: Boolean               = js.native
+  var alpha: js.UndefOr[Boolean]                        = js.undefined
+  var depth: js.UndefOr[Boolean]                        = js.undefined
+  var stencil: js.UndefOr[Boolean]                      = js.undefined
+  var antialias: js.UndefOr[Boolean]                    = js.undefined
+  var premultipliedAlpha: js.UndefOr[Boolean]           = js.undefined
+  var preserveDrawingBuffer: js.UndefOr[Boolean]        = js.undefined
+  var powerPreference: js.UndefOr[String]               = js.undefined
+  var failIfMajorPerformanceCaveat: js.UndefOr[Boolean] = js.undefined
+  var desynchronized: js.UndefOr[Boolean]               = js.undefined
 end WebGLContextAttributes
 
-@js.native
 trait WebGLContextEventInit extends EventInit:
-  var statusMessage: String = js.native
+  var statusMessage: js.UndefOr[String] = js.undefined
 
-@js.native
 trait GPURequestAdapterOptions extends js.Object:
-  var featureLevel: String          = js.native
-  var powerPreference: String       = js.native
-  var forceFallbackAdapter: Boolean = js.native
-  var xrCompatible: Boolean         = js.native
+  var featureLevel: js.UndefOr[String]          = js.undefined
+  var powerPreference: js.UndefOr[String]       = js.undefined
+  var forceFallbackAdapter: js.UndefOr[Boolean] = js.undefined
+  var xrCompatible: js.UndefOr[Boolean]         = js.undefined
 
-@js.native
 trait GPURenderBundleDescriptor extends GPUObjectDescriptorBase
 
-@js.native
 trait GPUBindGroupLayoutEntry extends js.Object:
-  var binding: scala.scalajs.js.Any                    = js.native
-  var visibility: scala.scalajs.js.Any                 = js.native
-  var buffer: GPUBufferBindingLayout                   = js.native
-  var sampler: GPUSamplerBindingLayout                 = js.native
-  var texture: GPUTextureBindingLayout                 = js.native
-  var storageTexture: GPUStorageTextureBindingLayout   = js.native
-  var externalTexture: GPUExternalTextureBindingLayout = js.native
+  var binding: js.UndefOr[Int]                                     = js.undefined
+  var visibility: js.UndefOr[Int]                                  = js.undefined
+  var buffer: js.UndefOr[GPUBufferBindingLayout]                   = js.undefined
+  var sampler: js.UndefOr[GPUSamplerBindingLayout]                 = js.undefined
+  var texture: js.UndefOr[GPUTextureBindingLayout]                 = js.undefined
+  var storageTexture: js.UndefOr[GPUStorageTextureBindingLayout]   = js.undefined
+  var externalTexture: js.UndefOr[GPUExternalTextureBindingLayout] = js.undefined
 
-@js.native
 trait GPUColorDict extends js.Object:
-  var r: Double = js.native
-  var g: Double = js.native
-  var b: Double = js.native
-  var a: Double = js.native
+  var r: js.UndefOr[Double] = js.undefined
+  var g: js.UndefOr[Double] = js.undefined
+  var b: js.UndefOr[Double] = js.undefined
+  var a: js.UndefOr[Double] = js.undefined
 
-@js.native
 trait GPUShaderModuleDescriptor extends GPUObjectDescriptorBase:
-  var code: String                                                             = js.native
-  var compilationHints: scala.scalajs.js.Array[GPUShaderModuleCompilationHint] = js.native
+  var code: js.UndefOr[String]                                                             = js.undefined
+  var compilationHints: js.UndefOr[scala.scalajs.js.Array[GPUShaderModuleCompilationHint]] = js.undefined
 
-@js.native
 trait GPURenderBundleEncoderDescriptor extends GPURenderPassLayout:
-  var depthReadOnly: Boolean   = js.native
-  var stencilReadOnly: Boolean = js.native
+  var depthReadOnly: js.UndefOr[Boolean]   = js.undefined
+  var stencilReadOnly: js.UndefOr[Boolean] = js.undefined
 
-@js.native
 trait GPUFragmentState extends GPUProgrammableStage:
-  var targets: scala.scalajs.js.Array[GPUColorTargetState] = js.native
+  var targets: js.UndefOr[scala.scalajs.js.Array[GPUColorTargetState]] = js.undefined
 
-@js.native
 trait GPUExternalTextureBindingLayout extends js.Object
 
-@js.native
 trait GPURenderPipelineDescriptor extends GPUPipelineDescriptorBase:
-  var vertex: GPUVertexState             = js.native
-  var primitive: GPUPrimitiveState       = js.native
-  var depthStencil: GPUDepthStencilState = js.native
-  var multisample: GPUMultisampleState   = js.native
-  var fragment: GPUFragmentState         = js.native
+  var vertex: js.UndefOr[GPUVertexState]             = js.undefined
+  var primitive: js.UndefOr[GPUPrimitiveState]       = js.undefined
+  var depthStencil: js.UndefOr[GPUDepthStencilState] = js.undefined
+  var multisample: js.UndefOr[GPUMultisampleState]   = js.undefined
+  var fragment: js.UndefOr[GPUFragmentState]         = js.undefined
 
-@js.native
 trait GPUStorageTextureBindingLayout extends js.Object:
-  var access: String        = js.native
-  var format: String        = js.native
-  var viewDimension: String = js.native
+  var access: js.UndefOr[String]        = js.undefined
+  var format: js.UndefOr[String]        = js.undefined
+  var viewDimension: js.UndefOr[String] = js.undefined
 
-@js.native
 trait GPURenderPassTimestampWrites extends js.Object:
-  var querySet: GPUQuerySet                           = js.native
-  var beginningOfPassWriteIndex: scala.scalajs.js.Any = js.native
-  var endOfPassWriteIndex: scala.scalajs.js.Any       = js.native
+  var querySet: js.UndefOr[GPUQuerySet]          = js.undefined
+  var beginningOfPassWriteIndex: js.UndefOr[Int] = js.undefined
+  var endOfPassWriteIndex: js.UndefOr[Int]       = js.undefined
 
-@js.native
 trait GPUQuerySetDescriptor extends GPUObjectDescriptorBase:
-  var `type`: String              = js.native
-  var count: scala.scalajs.js.Any = js.native
+  var `type`: js.UndefOr[String] = js.undefined
+  var count: js.UndefOr[Int]     = js.undefined
 
-@js.native
 trait GPUCanvasToneMapping extends js.Object:
-  var mode: String = js.native
+  var mode: js.UndefOr[String] = js.undefined
 
-@js.native
 trait GPUPipelineErrorInit extends js.Object:
-  var reason: String = js.native
+  var reason: js.UndefOr[String] = js.undefined
 
-@js.native
 trait GPUExtent3DDict extends js.Object:
-  var width: scala.scalajs.js.Any              = js.native
-  var height: scala.scalajs.js.Any             = js.native
-  var depthOrArrayLayers: scala.scalajs.js.Any = js.native
+  var width: js.UndefOr[Int]              = js.undefined
+  var height: js.UndefOr[Int]             = js.undefined
+  var depthOrArrayLayers: js.UndefOr[Int] = js.undefined
 
-@js.native
 trait GPUShaderModuleCompilationHint extends js.Object:
-  var entryPoint: String           = js.native
-  var layout: scala.scalajs.js.Any = js.native
+  var entryPoint: js.UndefOr[String]                 = js.undefined
+  var layout: js.UndefOr[GPUPipelineLayout | String] = js.undefined
 
-@js.native
 trait GPUOrigin2DDict extends js.Object:
-  var x: scala.scalajs.js.Any = js.native
-  var y: scala.scalajs.js.Any = js.native
+  var x: js.UndefOr[Int] = js.undefined
+  var y: js.UndefOr[Int] = js.undefined
 
-@js.native
 trait GPUBufferBinding extends js.Object:
-  var buffer: GPUBuffer            = js.native
-  var offset: scala.scalajs.js.Any = js.native
-  var size: scala.scalajs.js.Any   = js.native
+  var buffer: js.UndefOr[GPUBuffer] = js.undefined
+  var offset: js.UndefOr[Int]       = js.undefined
+  var size: js.UndefOr[Int]         = js.undefined
 
-@js.native
 trait GPUVertexBufferLayout extends js.Object:
-  var arrayStride: scala.scalajs.js.Any                      = js.native
-  var stepMode: String                                       = js.native
-  var attributes: scala.scalajs.js.Array[GPUVertexAttribute] = js.native
+  var arrayStride: js.UndefOr[Int]                                       = js.undefined
+  var stepMode: js.UndefOr[String]                                       = js.undefined
+  var attributes: js.UndefOr[scala.scalajs.js.Array[GPUVertexAttribute]] = js.undefined
 
-@js.native
 trait GPUTextureDescriptor extends GPUObjectDescriptorBase:
-  var size: scala.scalajs.js.Any                  = js.native
-  var mipLevelCount: scala.scalajs.js.Any         = js.native
-  var sampleCount: scala.scalajs.js.Any           = js.native
-  var dimension: String                           = js.native
-  var format: String                              = js.native
-  var usage: scala.scalajs.js.Any                 = js.native
-  var viewFormats: scala.scalajs.js.Array[String] = js.native
-  var textureBindingViewDimension: String         = js.native
-end GPUTextureDescriptor
+  var size: js.UndefOr[scala.scalajs.js.Any]                  = js.undefined
+  var mipLevelCount: js.UndefOr[Int]                          = js.undefined
+  var sampleCount: js.UndefOr[Int]                            = js.undefined
+  var dimension: js.UndefOr[String]                           = js.undefined
+  var format: js.UndefOr[String]                              = js.undefined
+  var usage: js.UndefOr[Int]                                  = js.undefined
+  var viewFormats: js.UndefOr[scala.scalajs.js.Array[String]] = js.undefined
+  var textureBindingViewDimension: js.UndefOr[String]         = js.undefined
 
-@js.native
 trait GPUBlendState extends js.Object:
-  var color: GPUBlendComponent = js.native
-  var alpha: GPUBlendComponent = js.native
+  var color: js.UndefOr[GPUBlendComponent] = js.undefined
+  var alpha: js.UndefOr[GPUBlendComponent] = js.undefined
 
-@js.native
 trait GPUTexelCopyBufferInfo extends GPUTexelCopyBufferLayout:
-  var buffer: GPUBuffer = js.native
+  var buffer: js.UndefOr[GPUBuffer] = js.undefined
 
-@js.native
 trait GPURenderPassDescriptor extends GPUObjectDescriptorBase:
-  var colorAttachments: scala.scalajs.js.Array[GPURenderPassColorAttachment] = js.native
-  var depthStencilAttachment: GPURenderPassDepthStencilAttachment            = js.native
-  var occlusionQuerySet: GPUQuerySet                                         = js.native
-  var timestampWrites: GPURenderPassTimestampWrites                          = js.native
-  var maxDrawCount: scala.scalajs.js.Any                                     = js.native
+  var colorAttachments: js.UndefOr[scala.scalajs.js.Array[GPURenderPassColorAttachment]] = js.undefined
+  var depthStencilAttachment: js.UndefOr[GPURenderPassDepthStencilAttachment]            = js.undefined
+  var occlusionQuerySet: js.UndefOr[GPUQuerySet]                                         = js.undefined
+  var timestampWrites: js.UndefOr[GPURenderPassTimestampWrites]                          = js.undefined
+  var maxDrawCount: js.UndefOr[Int]                                                      = js.undefined
 
-@js.native
 trait GPUBufferBindingLayout extends js.Object:
-  var `type`: String                       = js.native
-  var hasDynamicOffset: Boolean            = js.native
-  var minBindingSize: scala.scalajs.js.Any = js.native
+  var `type`: js.UndefOr[String]            = js.undefined
+  var hasDynamicOffset: js.UndefOr[Boolean] = js.undefined
+  var minBindingSize: js.UndefOr[Int]       = js.undefined
 
-@js.native
 trait GPUBlendComponent extends js.Object:
-  var operation: String = js.native
-  var srcFactor: String = js.native
-  var dstFactor: String = js.native
+  var operation: js.UndefOr[String] = js.undefined
+  var srcFactor: js.UndefOr[String] = js.undefined
+  var dstFactor: js.UndefOr[String] = js.undefined
 
-@js.native
 trait GPUTextureViewDescriptor extends GPUObjectDescriptorBase:
-  var format: String                        = js.native
-  var dimension: String                     = js.native
-  var usage: scala.scalajs.js.Any           = js.native
-  var aspect: String                        = js.native
-  var baseMipLevel: scala.scalajs.js.Any    = js.native
-  var mipLevelCount: scala.scalajs.js.Any   = js.native
-  var baseArrayLayer: scala.scalajs.js.Any  = js.native
-  var arrayLayerCount: scala.scalajs.js.Any = js.native
-  var swizzle: String                       = js.native
+  var format: js.UndefOr[String]       = js.undefined
+  var dimension: js.UndefOr[String]    = js.undefined
+  var usage: js.UndefOr[Int]           = js.undefined
+  var aspect: js.UndefOr[String]       = js.undefined
+  var baseMipLevel: js.UndefOr[Int]    = js.undefined
+  var mipLevelCount: js.UndefOr[Int]   = js.undefined
+  var baseArrayLayer: js.UndefOr[Int]  = js.undefined
+  var arrayLayerCount: js.UndefOr[Int] = js.undefined
+  var swizzle: js.UndefOr[String]      = js.undefined
 end GPUTextureViewDescriptor
 
-@js.native
 trait GPUPipelineDescriptorBase extends GPUObjectDescriptorBase:
-  var layout: scala.scalajs.js.Any = js.native
+  var layout: js.UndefOr[GPUPipelineLayout | String] = js.undefined
 
-@js.native
 trait GPUDepthStencilState extends js.Object:
-  var format: String                         = js.native
-  var depthWriteEnabled: Boolean             = js.native
-  var depthCompare: String                   = js.native
-  var stencilFront: GPUStencilFaceState      = js.native
-  var stencilBack: GPUStencilFaceState       = js.native
-  var stencilReadMask: scala.scalajs.js.Any  = js.native
-  var stencilWriteMask: scala.scalajs.js.Any = js.native
-  var depthBias: scala.scalajs.js.Any        = js.native
-  var depthBiasSlopeScale: Double            = js.native
-  var depthBiasClamp: Double                 = js.native
+  var format: js.UndefOr[String]                    = js.undefined
+  var depthWriteEnabled: js.UndefOr[Boolean]        = js.undefined
+  var depthCompare: js.UndefOr[String]              = js.undefined
+  var stencilFront: js.UndefOr[GPUStencilFaceState] = js.undefined
+  var stencilBack: js.UndefOr[GPUStencilFaceState]  = js.undefined
+  var stencilReadMask: js.UndefOr[Int]              = js.undefined
+  var stencilWriteMask: js.UndefOr[Int]             = js.undefined
+  var depthBias: js.UndefOr[Int]                    = js.undefined
+  var depthBiasSlopeScale: js.UndefOr[Double]       = js.undefined
+  var depthBiasClamp: js.UndefOr[Double]            = js.undefined
 end GPUDepthStencilState
 
-@js.native
 trait GPUExternalTextureDescriptor extends GPUObjectDescriptorBase:
-  var source: scala.scalajs.js.Any = js.native
-  var colorSpace: String           = js.native
+  var source: js.UndefOr[HTMLVideoElement | VideoFrame] = js.undefined
+  var colorSpace: js.UndefOr[String]                    = js.undefined
 
-@js.native
 trait GPURenderPassColorAttachment extends js.Object:
-  var view: scala.scalajs.js.Any          = js.native
-  var depthSlice: scala.scalajs.js.Any    = js.native
-  var resolveTarget: scala.scalajs.js.Any = js.native
-  var clearValue: scala.scalajs.js.Any    = js.native
-  var loadOp: String                      = js.native
-  var storeOp: String                     = js.native
+  var view: js.UndefOr[GPUTexture | GPUTextureView]          = js.undefined
+  var depthSlice: js.UndefOr[Int]                            = js.undefined
+  var resolveTarget: js.UndefOr[GPUTexture | GPUTextureView] = js.undefined
+  var clearValue: js.UndefOr[scala.scalajs.js.Any]           = js.undefined
+  var loadOp: js.UndefOr[String]                             = js.undefined
+  var storeOp: js.UndefOr[String]                            = js.undefined
 
-@js.native
 trait GPUSamplerBindingLayout extends js.Object:
-  var `type`: String = js.native
+  var `type`: js.UndefOr[String] = js.undefined
 
-@js.native
 trait GPUTexelCopyTextureInfo extends js.Object:
-  var texture: GPUTexture            = js.native
-  var mipLevel: scala.scalajs.js.Any = js.native
-  var origin: scala.scalajs.js.Any   = js.native
-  var aspect: String                 = js.native
+  var texture: js.UndefOr[GPUTexture]          = js.undefined
+  var mipLevel: js.UndefOr[Int]                = js.undefined
+  var origin: js.UndefOr[scala.scalajs.js.Any] = js.undefined
+  var aspect: js.UndefOr[String]               = js.undefined
 
-@js.native
 trait GPUVertexState extends GPUProgrammableStage:
-  var buffers: scala.scalajs.js.Array[GPUVertexBufferLayout] = js.native
+  var buffers: js.UndefOr[scala.scalajs.js.Array[GPUVertexBufferLayout]] = js.undefined
 
-@js.native
 trait GPUComputePassTimestampWrites extends js.Object:
-  var querySet: GPUQuerySet                           = js.native
-  var beginningOfPassWriteIndex: scala.scalajs.js.Any = js.native
-  var endOfPassWriteIndex: scala.scalajs.js.Any       = js.native
+  var querySet: js.UndefOr[GPUQuerySet]          = js.undefined
+  var beginningOfPassWriteIndex: js.UndefOr[Int] = js.undefined
+  var endOfPassWriteIndex: js.UndefOr[Int]       = js.undefined
 
-@js.native
 trait GPUComputePassDescriptor extends GPUObjectDescriptorBase:
-  var timestampWrites: GPUComputePassTimestampWrites = js.native
+  var timestampWrites: js.UndefOr[GPUComputePassTimestampWrites] = js.undefined
 
-@js.native
 trait GPUOrigin3DDict extends js.Object:
-  var x: scala.scalajs.js.Any = js.native
-  var y: scala.scalajs.js.Any = js.native
-  var z: scala.scalajs.js.Any = js.native
+  var x: js.UndefOr[Int] = js.undefined
+  var y: js.UndefOr[Int] = js.undefined
+  var z: js.UndefOr[Int] = js.undefined
 
-@js.native
 trait GPURenderPassLayout extends GPUObjectDescriptorBase:
-  var colorFormats: scala.scalajs.js.Array[String] = js.native
-  var depthStencilFormat: String                   = js.native
-  var sampleCount: scala.scalajs.js.Any            = js.native
+  var colorFormats: js.UndefOr[scala.scalajs.js.Array[String]] = js.undefined
+  var depthStencilFormat: js.UndefOr[String]                   = js.undefined
+  var sampleCount: js.UndefOr[Int]                             = js.undefined
 
-@js.native
 trait GPUSamplerDescriptor extends GPUObjectDescriptorBase:
-  var addressModeU: String = js.native
-  var addressModeV: String = js.native
-  var addressModeW: String = js.native
-  var magFilter: String    = js.native
-  var minFilter: String    = js.native
-  var mipmapFilter: String = js.native
-  var lodMinClamp: Double  = js.native
-  var lodMaxClamp: Double  = js.native
-  var compare: String      = js.native
-  var maxAnisotropy: Int   = js.native
+  var addressModeU: js.UndefOr[String] = js.undefined
+  var addressModeV: js.UndefOr[String] = js.undefined
+  var addressModeW: js.UndefOr[String] = js.undefined
+  var magFilter: js.UndefOr[String]    = js.undefined
+  var minFilter: js.UndefOr[String]    = js.undefined
+  var mipmapFilter: js.UndefOr[String] = js.undefined
+  var lodMinClamp: js.UndefOr[Double]  = js.undefined
+  var lodMaxClamp: js.UndefOr[Double]  = js.undefined
+  var compare: js.UndefOr[String]      = js.undefined
+  var maxAnisotropy: js.UndefOr[Int]   = js.undefined
 end GPUSamplerDescriptor
 
-@js.native
 trait GPUProgrammableStage extends js.Object:
-  var module: GPUShaderModule                                      = js.native
-  var entryPoint: String                                           = js.native
-  var constants: scala.scalajs.js.Dictionary[scala.scalajs.js.Any] = js.native
+  var module: js.UndefOr[GPUShaderModule]                        = js.undefined
+  var entryPoint: js.UndefOr[String]                             = js.undefined
+  var constants: js.UndefOr[scala.scalajs.js.Dictionary[Double]] = js.undefined
 
-@js.native
 trait GPURenderPassDepthStencilAttachment extends js.Object:
-  var view: scala.scalajs.js.Any              = js.native
-  var depthClearValue: Double                 = js.native
-  var depthLoadOp: String                     = js.native
-  var depthStoreOp: String                    = js.native
-  var depthReadOnly: Boolean                  = js.native
-  var stencilClearValue: scala.scalajs.js.Any = js.native
-  var stencilLoadOp: String                   = js.native
-  var stencilStoreOp: String                  = js.native
-  var stencilReadOnly: Boolean                = js.native
+  var view: js.UndefOr[GPUTexture | GPUTextureView] = js.undefined
+  var depthClearValue: js.UndefOr[Double]           = js.undefined
+  var depthLoadOp: js.UndefOr[String]               = js.undefined
+  var depthStoreOp: js.UndefOr[String]              = js.undefined
+  var depthReadOnly: js.UndefOr[Boolean]            = js.undefined
+  var stencilClearValue: js.UndefOr[Int]            = js.undefined
+  var stencilLoadOp: js.UndefOr[String]             = js.undefined
+  var stencilStoreOp: js.UndefOr[String]            = js.undefined
+  var stencilReadOnly: js.UndefOr[Boolean]          = js.undefined
 end GPURenderPassDepthStencilAttachment
 
-@js.native
 trait GPUDeviceDescriptor extends GPUObjectDescriptorBase:
-  var requiredFeatures: scala.scalajs.js.Array[String] = js.native
-  var requiredLimits: scala.scalajs.js.Any             = js.native
-  var defaultQueue: GPUQueueDescriptor                 = js.native
+  var requiredFeatures: js.UndefOr[scala.scalajs.js.Array[String]] = js.undefined
+  var requiredLimits: js.UndefOr[scala.scalajs.js.Any]             = js.undefined
+  var defaultQueue: js.UndefOr[GPUQueueDescriptor]                 = js.undefined
 
-@js.native
 trait GPUBufferDescriptor extends GPUObjectDescriptorBase:
-  var size: scala.scalajs.js.Any  = js.native
-  var usage: scala.scalajs.js.Any = js.native
-  var mappedAtCreation: Boolean   = js.native
+  var size: js.UndefOr[Int]                 = js.undefined
+  var usage: js.UndefOr[Int]                = js.undefined
+  var mappedAtCreation: js.UndefOr[Boolean] = js.undefined
 
-@js.native
 trait GPUBindGroupDescriptor extends GPUObjectDescriptorBase:
-  var layout: GPUBindGroupLayout                         = js.native
-  var entries: scala.scalajs.js.Array[GPUBindGroupEntry] = js.native
+  var layout: js.UndefOr[GPUBindGroupLayout]                         = js.undefined
+  var entries: js.UndefOr[scala.scalajs.js.Array[GPUBindGroupEntry]] = js.undefined
 
-@js.native
 trait GPUVertexAttribute extends js.Object:
-  var format: String                       = js.native
-  var offset: scala.scalajs.js.Any         = js.native
-  var shaderLocation: scala.scalajs.js.Any = js.native
+  var format: js.UndefOr[String]      = js.undefined
+  var offset: js.UndefOr[Int]         = js.undefined
+  var shaderLocation: js.UndefOr[Int] = js.undefined
 
-@js.native
 trait GPUCopyExternalImageSourceInfo extends js.Object:
-  var source: scala.scalajs.js.Any = js.native
-  var origin: scala.scalajs.js.Any = js.native
-  var flipY: Boolean               = js.native
+  var source: js.UndefOr[
+    ImageBitmap | ImageData | HTMLImageElement | HTMLVideoElement | VideoFrame | HTMLCanvasElement | OffscreenCanvas
+  ]                                            = js.undefined
+  var origin: js.UndefOr[scala.scalajs.js.Any] = js.undefined
+  var flipY: js.UndefOr[Boolean]               = js.undefined
 
-@js.native
 trait GPUTexelCopyBufferLayout extends js.Object:
-  var offset: scala.scalajs.js.Any       = js.native
-  var bytesPerRow: scala.scalajs.js.Any  = js.native
-  var rowsPerImage: scala.scalajs.js.Any = js.native
+  var offset: js.UndefOr[Int]       = js.undefined
+  var bytesPerRow: js.UndefOr[Int]  = js.undefined
+  var rowsPerImage: js.UndefOr[Int] = js.undefined
 
-@js.native
 trait GPUTextureBindingLayout extends js.Object:
-  var sampleType: String    = js.native
-  var viewDimension: String = js.native
-  var multisampled: Boolean = js.native
+  var sampleType: js.UndefOr[String]    = js.undefined
+  var viewDimension: js.UndefOr[String] = js.undefined
+  var multisampled: js.UndefOr[Boolean] = js.undefined
 
-@js.native
 trait GPUCopyExternalImageDestInfo extends GPUTexelCopyTextureInfo:
-  var colorSpace: String          = js.native
-  var premultipliedAlpha: Boolean = js.native
+  var colorSpace: js.UndefOr[String]          = js.undefined
+  var premultipliedAlpha: js.UndefOr[Boolean] = js.undefined
 
-@js.native
 trait GPUColorTargetState extends js.Object:
-  var format: String                  = js.native
-  var blend: GPUBlendState            = js.native
-  var writeMask: scala.scalajs.js.Any = js.native
+  var format: js.UndefOr[String]       = js.undefined
+  var blend: js.UndefOr[GPUBlendState] = js.undefined
+  var writeMask: js.UndefOr[Int]       = js.undefined
 
-@js.native
 trait GPUUncapturedErrorEventInit extends EventInit:
-  var error: GPUError = js.native
+  var error: js.UndefOr[GPUError] = js.undefined
 
-@js.native
 trait GPUPrimitiveState extends js.Object:
-  var topology: String         = js.native
-  var stripIndexFormat: String = js.native
-  var frontFace: String        = js.native
-  var cullMode: String         = js.native
-  var unclippedDepth: Boolean  = js.native
+  var topology: js.UndefOr[String]         = js.undefined
+  var stripIndexFormat: js.UndefOr[String] = js.undefined
+  var frontFace: js.UndefOr[String]        = js.undefined
+  var cullMode: js.UndefOr[String]         = js.undefined
+  var unclippedDepth: js.UndefOr[Boolean]  = js.undefined
 
-@js.native
 trait GPUCommandBufferDescriptor extends GPUObjectDescriptorBase
 
-@js.native
 trait GPUComputePipelineDescriptor extends GPUPipelineDescriptorBase:
-  var compute: GPUProgrammableStage = js.native
+  var compute: js.UndefOr[GPUProgrammableStage] = js.undefined
 
-@js.native
 trait GPUCommandEncoderDescriptor extends GPUObjectDescriptorBase
 
-@js.native
 trait GPUStencilFaceState extends js.Object:
-  var compare: String     = js.native
-  var failOp: String      = js.native
-  var depthFailOp: String = js.native
-  var passOp: String      = js.native
+  var compare: js.UndefOr[String]     = js.undefined
+  var failOp: js.UndefOr[String]      = js.undefined
+  var depthFailOp: js.UndefOr[String] = js.undefined
+  var passOp: js.UndefOr[String]      = js.undefined
 
-@js.native
 trait GPUObjectDescriptorBase extends js.Object:
-  var label: String = js.native
+  var label: js.UndefOr[String] = js.undefined
 
-@js.native
 trait GPUPipelineLayoutDescriptor extends GPUObjectDescriptorBase:
-  var bindGroupLayouts: scala.scalajs.js.Array[GPUBindGroupLayout] = js.native
-  var immediateSize: scala.scalajs.js.Any                          = js.native
+  var bindGroupLayouts: js.UndefOr[scala.scalajs.js.Array[GPUBindGroupLayout]] = js.undefined
+  var immediateSize: js.UndefOr[Int]                                           = js.undefined
 
-@js.native
 trait GPUQueueDescriptor extends GPUObjectDescriptorBase
 
-@js.native
 trait GPUCanvasConfiguration extends js.Object:
-  var device: GPUDevice                           = js.native
-  var format: String                              = js.native
-  var usage: scala.scalajs.js.Any                 = js.native
-  var viewFormats: scala.scalajs.js.Array[String] = js.native
-  var colorSpace: String                          = js.native
-  var toneMapping: GPUCanvasToneMapping           = js.native
-  var alphaMode: String                           = js.native
+  var device: js.UndefOr[GPUDevice]                           = js.undefined
+  var format: js.UndefOr[String]                              = js.undefined
+  var usage: js.UndefOr[Int]                                  = js.undefined
+  var viewFormats: js.UndefOr[scala.scalajs.js.Array[String]] = js.undefined
+  var colorSpace: js.UndefOr[String]                          = js.undefined
+  var toneMapping: js.UndefOr[GPUCanvasToneMapping]           = js.undefined
+  var alphaMode: js.UndefOr[String]                           = js.undefined
 
-@js.native
 trait GPUBindGroupEntry extends js.Object:
-  var binding: scala.scalajs.js.Any  = js.native
-  var resource: scala.scalajs.js.Any = js.native
+  var binding: js.UndefOr[Int] = js.undefined
+  var resource
+      : js.UndefOr[GPUSampler | GPUTexture | GPUTextureView | GPUBuffer | GPUBufferBinding | GPUExternalTexture] =
+    js.undefined
 
-@js.native
 trait GPUBindGroupLayoutDescriptor extends GPUObjectDescriptorBase:
-  var entries: scala.scalajs.js.Array[GPUBindGroupLayoutEntry] = js.native
+  var entries: js.UndefOr[scala.scalajs.js.Array[GPUBindGroupLayoutEntry]] = js.undefined
 
-@js.native
 trait GPUMultisampleState extends js.Object:
-  var count: scala.scalajs.js.Any     = js.native
-  var mask: scala.scalajs.js.Any      = js.native
-  var alphaToCoverageEnabled: Boolean = js.native
+  var count: js.UndefOr[Int]                      = js.undefined
+  var mask: js.UndefOr[Int]                       = js.undefined
+  var alphaToCoverageEnabled: js.UndefOr[Boolean] = js.undefined
 
-@js.native
 trait HIDDeviceRequestOptions extends js.Object:
-  var filters: scala.scalajs.js.Array[HIDDeviceFilter]          = js.native
-  var exclusionFilters: scala.scalajs.js.Array[HIDDeviceFilter] = js.native
+  var filters: js.UndefOr[scala.scalajs.js.Array[HIDDeviceFilter]]          = js.undefined
+  var exclusionFilters: js.UndefOr[scala.scalajs.js.Array[HIDDeviceFilter]] = js.undefined
 
-@js.native
 trait HIDConnectionEventInit extends EventInit:
-  var device: HIDDevice = js.native
+  var device: js.UndefOr[HIDDevice] = js.undefined
 
-@js.native
 trait HIDInputReportEventInit extends EventInit:
-  var device: HIDDevice              = js.native
-  var reportId: scala.scalajs.js.Any = js.native
-  var data: scala.scalajs.js.Any     = js.native
+  var device: js.UndefOr[HIDDevice]              = js.undefined
+  var reportId: js.UndefOr[scala.scalajs.js.Any] = js.undefined
+  var data: js.UndefOr[scala.scalajs.js.Any]     = js.undefined
 
-@js.native
 trait HIDCollectionInfo extends js.Object:
-  var usagePage: Int                                        = js.native
-  var usage: Int                                            = js.native
-  var `type`: scala.scalajs.js.Any                          = js.native
-  var children: scala.scalajs.js.Array[HIDCollectionInfo]   = js.native
-  var inputReports: scala.scalajs.js.Array[HIDReportInfo]   = js.native
-  var outputReports: scala.scalajs.js.Array[HIDReportInfo]  = js.native
-  var featureReports: scala.scalajs.js.Array[HIDReportInfo] = js.native
+  var usagePage: js.UndefOr[Int]                                        = js.undefined
+  var usage: js.UndefOr[Int]                                            = js.undefined
+  var `type`: js.UndefOr[scala.scalajs.js.Any]                          = js.undefined
+  var children: js.UndefOr[scala.scalajs.js.Array[HIDCollectionInfo]]   = js.undefined
+  var inputReports: js.UndefOr[scala.scalajs.js.Array[HIDReportInfo]]   = js.undefined
+  var outputReports: js.UndefOr[scala.scalajs.js.Array[HIDReportInfo]]  = js.undefined
+  var featureReports: js.UndefOr[scala.scalajs.js.Array[HIDReportInfo]] = js.undefined
 
-@js.native
 trait HIDDeviceFilter extends js.Object:
-  var vendorId: Int  = js.native
-  var productId: Int = js.native
-  var usagePage: Int = js.native
-  var usage: Int     = js.native
+  var vendorId: js.UndefOr[Int]  = js.undefined
+  var productId: js.UndefOr[Int] = js.undefined
+  var usagePage: js.UndefOr[Int] = js.undefined
+  var usage: js.UndefOr[Int]     = js.undefined
 
-@js.native
 trait HIDReportInfo extends js.Object:
-  var reportId: scala.scalajs.js.Any               = js.native
-  var items: scala.scalajs.js.Array[HIDReportItem] = js.native
+  var reportId: js.UndefOr[scala.scalajs.js.Any]               = js.undefined
+  var items: js.UndefOr[scala.scalajs.js.Array[HIDReportItem]] = js.undefined
 
-@js.native
 trait HIDReportItem extends js.Object:
-  var isAbsolute: Boolean                                       = js.native
-  var isArray: Boolean                                          = js.native
-  var isBufferedBytes: Boolean                                  = js.native
-  var isConstant: Boolean                                       = js.native
-  var isLinear: Boolean                                         = js.native
-  var isRange: Boolean                                          = js.native
-  var isVolatile: Boolean                                       = js.native
-  var hasNull: Boolean                                          = js.native
-  var hasPreferredState: Boolean                                = js.native
-  var wrap: Boolean                                             = js.native
-  var usages: scala.scalajs.js.Array[Int]                       = js.native
-  var usageMinimum: Int                                         = js.native
-  var usageMaximum: Int                                         = js.native
-  var reportSize: Int                                           = js.native
-  var reportCount: Int                                          = js.native
-  var unitExponent: scala.scalajs.js.Any                        = js.native
-  var unitSystem: String                                        = js.native
-  var unitFactorLengthExponent: scala.scalajs.js.Any            = js.native
-  var unitFactorMassExponent: scala.scalajs.js.Any              = js.native
-  var unitFactorTimeExponent: scala.scalajs.js.Any              = js.native
-  var unitFactorTemperatureExponent: scala.scalajs.js.Any       = js.native
-  var unitFactorCurrentExponent: scala.scalajs.js.Any           = js.native
-  var unitFactorLuminousIntensityExponent: scala.scalajs.js.Any = js.native
-  var logicalMinimum: Int                                       = js.native
-  var logicalMaximum: Int                                       = js.native
-  var physicalMinimum: Int                                      = js.native
-  var physicalMaximum: Int                                      = js.native
-  var strings: scala.scalajs.js.Array[String]                   = js.native
+  var isAbsolute: js.UndefOr[Boolean]                                       = js.undefined
+  var isArray: js.UndefOr[Boolean]                                          = js.undefined
+  var isBufferedBytes: js.UndefOr[Boolean]                                  = js.undefined
+  var isConstant: js.UndefOr[Boolean]                                       = js.undefined
+  var isLinear: js.UndefOr[Boolean]                                         = js.undefined
+  var isRange: js.UndefOr[Boolean]                                          = js.undefined
+  var isVolatile: js.UndefOr[Boolean]                                       = js.undefined
+  var hasNull: js.UndefOr[Boolean]                                          = js.undefined
+  var hasPreferredState: js.UndefOr[Boolean]                                = js.undefined
+  var wrap: js.UndefOr[Boolean]                                             = js.undefined
+  var usages: js.UndefOr[scala.scalajs.js.Array[Int]]                       = js.undefined
+  var usageMinimum: js.UndefOr[Int]                                         = js.undefined
+  var usageMaximum: js.UndefOr[Int]                                         = js.undefined
+  var reportSize: js.UndefOr[Int]                                           = js.undefined
+  var reportCount: js.UndefOr[Int]                                          = js.undefined
+  var unitExponent: js.UndefOr[scala.scalajs.js.Any]                        = js.undefined
+  var unitSystem: js.UndefOr[String]                                        = js.undefined
+  var unitFactorLengthExponent: js.UndefOr[scala.scalajs.js.Any]            = js.undefined
+  var unitFactorMassExponent: js.UndefOr[scala.scalajs.js.Any]              = js.undefined
+  var unitFactorTimeExponent: js.UndefOr[scala.scalajs.js.Any]              = js.undefined
+  var unitFactorTemperatureExponent: js.UndefOr[scala.scalajs.js.Any]       = js.undefined
+  var unitFactorCurrentExponent: js.UndefOr[scala.scalajs.js.Any]           = js.undefined
+  var unitFactorLuminousIntensityExponent: js.UndefOr[scala.scalajs.js.Any] = js.undefined
+  var logicalMinimum: js.UndefOr[Int]                                       = js.undefined
+  var logicalMaximum: js.UndefOr[Int]                                       = js.undefined
+  var physicalMinimum: js.UndefOr[Int]                                      = js.undefined
+  var physicalMaximum: js.UndefOr[Int]                                      = js.undefined
+  var strings: js.UndefOr[scala.scalajs.js.Array[String]]                   = js.undefined
 end HIDReportItem
 
-@js.native
 trait QuotaExceededErrorOptions extends js.Object:
-  var quota: Double     = js.native
-  var requested: Double = js.native
+  var quota: js.UndefOr[Double]     = js.undefined
+  var requested: js.UndefOr[Double] = js.undefined
 
-@js.native
 trait ModelContextTool extends js.Object:
-  var name: String                      = js.native
-  var title: String                     = js.native
-  var description: String               = js.native
-  var inputSchema: scala.scalajs.js.Any = js.native
-  var execute: scala.scalajs.js.Function2[scala.scalajs.js.Any, ModelContextClient, scala.scalajs.js.Promise[
-    scala.scalajs.js.Any
-  ]]                               = js.native
-  var annotations: ToolAnnotations = js.native
-end ModelContextTool
+  var name: js.UndefOr[String]                      = js.undefined
+  var title: js.UndefOr[String]                     = js.undefined
+  var description: js.UndefOr[String]               = js.undefined
+  var inputSchema: js.UndefOr[scala.scalajs.js.Any] = js.undefined
+  var execute: js.UndefOr[
+    scala.scalajs.js.Function2[scala.scalajs.js.Any, ModelContextClient, scala.scalajs.js.Promise[scala.scalajs.js.Any]]
+  ]                                            = js.undefined
+  var annotations: js.UndefOr[ToolAnnotations] = js.undefined
 
-@js.native
 trait ModelContextRegisterToolOptions extends js.Object:
-  var signal: AbortSignal                       = js.native
-  var exposedTo: scala.scalajs.js.Array[String] = js.native
+  var signal: js.UndefOr[AbortSignal]                       = js.undefined
+  var exposedTo: js.UndefOr[scala.scalajs.js.Array[String]] = js.undefined
 
-@js.native
 trait ToolAnnotations extends js.Object:
-  var readOnlyHint: Boolean         = js.native
-  var untrustedContentHint: Boolean = js.native
+  var readOnlyHint: js.UndefOr[Boolean]         = js.undefined
+  var untrustedContentHint: js.UndefOr[Boolean] = js.undefined
 
-@js.native
 trait MidiPermissionDescriptor extends PermissionDescriptor:
-  var sysex: Boolean = js.native
+  var sysex: js.UndefOr[Boolean] = js.undefined
 
-@js.native
 trait MIDIMessageEventInit extends EventInit:
-  var data: scala.scalajs.js.Any = js.native
+  var data: js.UndefOr[scala.scalajs.js.Any] = js.undefined
 
-@js.native
 trait MIDIConnectionEventInit extends EventInit:
-  var port: MIDIPort = js.native
+  var port: js.UndefOr[MIDIPort] = js.undefined
 
-@js.native
 trait MIDIOptions extends js.Object:
-  var sysex: Boolean    = js.native
-  var software: Boolean = js.native
+  var sysex: js.UndefOr[Boolean]    = js.undefined
+  var software: js.UndefOr[Boolean] = js.undefined
 
-@js.native
 trait MLBatchNormalizationOptions extends MLOperatorOptions:
-  var scale: MLOperand = js.native
-  var bias: MLOperand  = js.native
-  var axis: Int        = js.native
-  var epsilon: Double  = js.native
+  var scale: js.UndefOr[MLOperand] = js.undefined
+  var bias: js.UndefOr[MLOperand]  = js.undefined
+  var axis: js.UndefOr[Int]        = js.undefined
+  var epsilon: js.UndefOr[Double]  = js.undefined
 
-@js.native
 trait MLTriangularOptions extends MLOperatorOptions:
-  var upper: Boolean = js.native
-  var diagonal: Int  = js.native
+  var upper: js.UndefOr[Boolean] = js.undefined
+  var diagonal: js.UndefOr[Int]  = js.undefined
 
-@js.native
 trait MLGatherSupportLimits extends js.Object:
-  var input: MLTensorLimits   = js.native
-  var indices: MLTensorLimits = js.native
-  var output: MLTensorLimits  = js.native
+  var input: js.UndefOr[MLTensorLimits]   = js.undefined
+  var indices: js.UndefOr[MLTensorLimits] = js.undefined
+  var output: js.UndefOr[MLTensorLimits]  = js.undefined
 
-@js.native
 trait MLLstmSupportLimits extends js.Object:
-  var input: MLTensorLimits              = js.native
-  var weight: MLTensorLimits             = js.native
-  var recurrentWeight: MLTensorLimits    = js.native
-  var bias: MLTensorLimits               = js.native
-  var recurrentBias: MLTensorLimits      = js.native
-  var peepholeWeight: MLTensorLimits     = js.native
-  var initialHiddenState: MLTensorLimits = js.native
-  var initialCellState: MLTensorLimits   = js.native
-  var output0: MLTensorLimits            = js.native
-  var output1: MLTensorLimits            = js.native
-  var output2: MLTensorLimits            = js.native
+  var input: js.UndefOr[MLTensorLimits]              = js.undefined
+  var weight: js.UndefOr[MLTensorLimits]             = js.undefined
+  var recurrentWeight: js.UndefOr[MLTensorLimits]    = js.undefined
+  var bias: js.UndefOr[MLTensorLimits]               = js.undefined
+  var recurrentBias: js.UndefOr[MLTensorLimits]      = js.undefined
+  var peepholeWeight: js.UndefOr[MLTensorLimits]     = js.undefined
+  var initialHiddenState: js.UndefOr[MLTensorLimits] = js.undefined
+  var initialCellState: js.UndefOr[MLTensorLimits]   = js.undefined
+  var output0: js.UndefOr[MLTensorLimits]            = js.undefined
+  var output1: js.UndefOr[MLTensorLimits]            = js.undefined
+  var output2: js.UndefOr[MLTensorLimits]            = js.undefined
 end MLLstmSupportLimits
 
-@js.native
 trait MLLayerNormalizationOptions extends MLOperatorOptions:
-  var scale: MLOperand                  = js.native
-  var bias: MLOperand                   = js.native
-  var axes: scala.scalajs.js.Array[Int] = js.native
-  var epsilon: Double                   = js.native
+  var scale: js.UndefOr[MLOperand]                  = js.undefined
+  var bias: js.UndefOr[MLOperand]                   = js.undefined
+  var axes: js.UndefOr[scala.scalajs.js.Array[Int]] = js.undefined
+  var epsilon: js.UndefOr[Double]                   = js.undefined
 
-@js.native
 trait MLSplitSupportLimits extends js.Object:
-  var input: MLTensorLimits   = js.native
-  var outputs: MLTensorLimits = js.native
+  var input: js.UndefOr[MLTensorLimits]   = js.undefined
+  var outputs: js.UndefOr[MLTensorLimits] = js.undefined
 
-@js.native
 trait MLGatherOptions extends MLOperatorOptions:
-  var axis: Int = js.native
+  var axis: js.UndefOr[Int] = js.undefined
 
-@js.native
 trait MLReverseOptions extends MLOperatorOptions:
-  var axes: scala.scalajs.js.Array[Int] = js.native
+  var axes: js.UndefOr[scala.scalajs.js.Array[Int]] = js.undefined
 
-@js.native
 trait MLTransposeOptions extends MLOperatorOptions:
-  var permutation: scala.scalajs.js.Array[Int] = js.native
+  var permutation: js.UndefOr[scala.scalajs.js.Array[Int]] = js.undefined
 
-@js.native
 trait MLQuantizeDequantizeLinearSupportLimits extends js.Object:
-  var input: MLTensorLimits     = js.native
-  var scale: MLTensorLimits     = js.native
-  var zeroPoint: MLTensorLimits = js.native
-  var output: MLTensorLimits    = js.native
+  var input: js.UndefOr[MLTensorLimits]     = js.undefined
+  var scale: js.UndefOr[MLTensorLimits]     = js.undefined
+  var zeroPoint: js.UndefOr[MLTensorLimits] = js.undefined
+  var output: js.UndefOr[MLTensorLimits]    = js.undefined
 
-@js.native
 trait MLHardSigmoidOptions extends MLOperatorOptions:
-  var alpha: Double = js.native
-  var beta: Double  = js.native
+  var alpha: js.UndefOr[Double] = js.undefined
+  var beta: js.UndefOr[Double]  = js.undefined
 
-@js.native
 trait MLSingleInputSupportLimits extends js.Object:
-  var input: MLTensorLimits  = js.native
-  var output: MLTensorLimits = js.native
+  var input: js.UndefOr[MLTensorLimits]  = js.undefined
+  var output: js.UndefOr[MLTensorLimits] = js.undefined
 
-@js.native
 trait MLContextLostInfo extends js.Object:
-  var message: String = js.native
+  var message: js.UndefOr[String] = js.undefined
 
-@js.native
 trait MLClampOptions extends MLOperatorOptions:
-  var minValue: scala.scalajs.js.Any = js.native
-  var maxValue: scala.scalajs.js.Any = js.native
+  var minValue: js.UndefOr[scala.scalajs.js.Any] = js.undefined
+  var maxValue: js.UndefOr[scala.scalajs.js.Any] = js.undefined
 
-@js.native
 trait MLReduceOptions extends MLOperatorOptions:
-  var axes: scala.scalajs.js.Array[Int] = js.native
-  var keepDimensions: Boolean           = js.native
+  var axes: js.UndefOr[scala.scalajs.js.Array[Int]] = js.undefined
+  var keepDimensions: js.UndefOr[Boolean]           = js.undefined
 
-@js.native
 trait MLConcatSupportLimits extends js.Object:
-  var inputs: MLTensorLimits = js.native
-  var output: MLTensorLimits = js.native
+  var inputs: js.UndefOr[MLTensorLimits] = js.undefined
+  var output: js.UndefOr[MLTensorLimits] = js.undefined
 
-@js.native
 trait MLPadOptions extends MLOperatorOptions:
-  var mode: String                = js.native
-  var value: scala.scalajs.js.Any = js.native
+  var mode: js.UndefOr[String]                = js.undefined
+  var value: js.UndefOr[scala.scalajs.js.Any] = js.undefined
 
-@js.native
 trait MLPreluSupportLimits extends js.Object:
-  var input: MLTensorLimits  = js.native
-  var slope: MLTensorLimits  = js.native
-  var output: MLTensorLimits = js.native
+  var input: js.UndefOr[MLTensorLimits]  = js.undefined
+  var slope: js.UndefOr[MLTensorLimits]  = js.undefined
+  var output: js.UndefOr[MLTensorLimits] = js.undefined
 
-@js.native
 trait MLCumulativeSumOptions extends MLOperatorOptions:
-  var exclusive: Boolean = js.native
-  var reversed: Boolean  = js.native
+  var exclusive: js.UndefOr[Boolean] = js.undefined
+  var reversed: js.UndefOr[Boolean]  = js.undefined
 
-@js.native
 trait MLLstmOptions extends MLOperatorOptions:
-  var bias: MLOperand                             = js.native
-  var recurrentBias: MLOperand                    = js.native
-  var peepholeWeight: MLOperand                   = js.native
-  var initialHiddenState: MLOperand               = js.native
-  var initialCellState: MLOperand                 = js.native
-  var returnSequence: Boolean                     = js.native
-  var direction: String                           = js.native
-  var layout: String                              = js.native
-  var activations: scala.scalajs.js.Array[String] = js.native
+  var bias: js.UndefOr[MLOperand]                             = js.undefined
+  var recurrentBias: js.UndefOr[MLOperand]                    = js.undefined
+  var peepholeWeight: js.UndefOr[MLOperand]                   = js.undefined
+  var initialHiddenState: js.UndefOr[MLOperand]               = js.undefined
+  var initialCellState: js.UndefOr[MLOperand]                 = js.undefined
+  var returnSequence: js.UndefOr[Boolean]                     = js.undefined
+  var direction: js.UndefOr[String]                           = js.undefined
+  var layout: js.UndefOr[String]                              = js.undefined
+  var activations: js.UndefOr[scala.scalajs.js.Array[String]] = js.undefined
 end MLLstmOptions
 
-@js.native
 trait MLEluOptions extends MLOperatorOptions:
-  var alpha: Double = js.native
+  var alpha: js.UndefOr[Double] = js.undefined
 
-@js.native
 trait MLOperatorOptions extends js.Object:
-  var label: String = js.native
+  var label: js.UndefOr[String] = js.undefined
 
-@js.native
 trait MLPool2dOptions extends MLOperatorOptions:
-  var windowDimensions: scala.scalajs.js.Array[Int] = js.native
-  var padding: scala.scalajs.js.Array[Int]          = js.native
-  var strides: scala.scalajs.js.Array[Int]          = js.native
-  var dilations: scala.scalajs.js.Array[Int]        = js.native
-  var layout: String                                = js.native
-  var outputShapeRounding: String                   = js.native
-  var outputSizes: scala.scalajs.js.Array[Int]      = js.native
+  var windowDimensions: js.UndefOr[scala.scalajs.js.Array[Int]] = js.undefined
+  var padding: js.UndefOr[scala.scalajs.js.Array[Int]]          = js.undefined
+  var strides: js.UndefOr[scala.scalajs.js.Array[Int]]          = js.undefined
+  var dilations: js.UndefOr[scala.scalajs.js.Array[Int]]        = js.undefined
+  var layout: js.UndefOr[String]                                = js.undefined
+  var outputShapeRounding: js.UndefOr[String]                   = js.undefined
+  var outputSizes: js.UndefOr[scala.scalajs.js.Array[Int]]      = js.undefined
 
-@js.native
 trait MLLogicalNotSupportLimits extends js.Object:
-  var a: MLTensorLimits      = js.native
-  var output: MLTensorLimits = js.native
+  var a: js.UndefOr[MLTensorLimits]      = js.undefined
+  var output: js.UndefOr[MLTensorLimits] = js.undefined
 
-@js.native
 trait MLBatchNormalizationSupportLimits extends js.Object:
-  var input: MLTensorLimits    = js.native
-  var mean: MLTensorLimits     = js.native
-  var variance: MLTensorLimits = js.native
-  var scale: MLTensorLimits    = js.native
-  var bias: MLTensorLimits     = js.native
-  var output: MLTensorLimits   = js.native
+  var input: js.UndefOr[MLTensorLimits]    = js.undefined
+  var mean: js.UndefOr[MLTensorLimits]     = js.undefined
+  var variance: js.UndefOr[MLTensorLimits] = js.undefined
+  var scale: js.UndefOr[MLTensorLimits]    = js.undefined
+  var bias: js.UndefOr[MLTensorLimits]     = js.undefined
+  var output: js.UndefOr[MLTensorLimits]   = js.undefined
 
-@js.native
 trait MLBinarySupportLimits extends js.Object:
-  var a: MLTensorLimits      = js.native
-  var b: MLTensorLimits      = js.native
-  var output: MLTensorLimits = js.native
+  var a: js.UndefOr[MLTensorLimits]      = js.undefined
+  var b: js.UndefOr[MLTensorLimits]      = js.undefined
+  var output: js.UndefOr[MLTensorLimits] = js.undefined
 
-@js.native
 trait MLContextOptions extends js.Object:
-  var powerPreference: String = js.native
-  var accelerated: Boolean    = js.native
+  var powerPreference: js.UndefOr[String] = js.undefined
+  var accelerated: js.UndefOr[Boolean]    = js.undefined
 
-@js.native
 trait MLScatterOptions extends MLOperatorOptions:
-  var axis: Int = js.native
+  var axis: js.UndefOr[Int] = js.undefined
 
-@js.native
 trait MLGruOptions extends MLOperatorOptions:
-  var bias: MLOperand                             = js.native
-  var recurrentBias: MLOperand                    = js.native
-  var initialHiddenState: MLOperand               = js.native
-  var resetAfter: Boolean                         = js.native
-  var returnSequence: Boolean                     = js.native
-  var direction: String                           = js.native
-  var layout: String                              = js.native
-  var activations: scala.scalajs.js.Array[String] = js.native
-end MLGruOptions
+  var bias: js.UndefOr[MLOperand]                             = js.undefined
+  var recurrentBias: js.UndefOr[MLOperand]                    = js.undefined
+  var initialHiddenState: js.UndefOr[MLOperand]               = js.undefined
+  var resetAfter: js.UndefOr[Boolean]                         = js.undefined
+  var returnSequence: js.UndefOr[Boolean]                     = js.undefined
+  var direction: js.UndefOr[String]                           = js.undefined
+  var layout: js.UndefOr[String]                              = js.undefined
+  var activations: js.UndefOr[scala.scalajs.js.Array[String]] = js.undefined
 
-@js.native
 trait MLLinearOptions extends MLOperatorOptions:
-  var alpha: Double = js.native
-  var beta: Double  = js.native
+  var alpha: js.UndefOr[Double] = js.undefined
+  var beta: js.UndefOr[Double]  = js.undefined
 
-@js.native
 trait MLTensorDescriptor extends MLOperandDescriptor:
-  var readable: Boolean = js.native
-  var writable: Boolean = js.native
+  var readable: js.UndefOr[Boolean] = js.undefined
+  var writable: js.UndefOr[Boolean] = js.undefined
 
-@js.native
 trait MLSliceOptions extends MLOperatorOptions:
-  var strides: scala.scalajs.js.Array[Int] = js.native
+  var strides: js.UndefOr[scala.scalajs.js.Array[Int]] = js.undefined
 
-@js.native
 trait MLLeakyReluOptions extends MLOperatorOptions:
-  var alpha: Double = js.native
+  var alpha: js.UndefOr[Double] = js.undefined
 
-@js.native
 trait MLConvTranspose2dOptions extends MLOperatorOptions:
-  var padding: scala.scalajs.js.Array[Int]       = js.native
-  var strides: scala.scalajs.js.Array[Int]       = js.native
-  var dilations: scala.scalajs.js.Array[Int]     = js.native
-  var outputPadding: scala.scalajs.js.Array[Int] = js.native
-  var outputSizes: scala.scalajs.js.Array[Int]   = js.native
-  var groups: Int                                = js.native
-  var inputLayout: String                        = js.native
-  var filterLayout: String                       = js.native
-  var bias: MLOperand                            = js.native
+  var padding: js.UndefOr[scala.scalajs.js.Array[Int]]       = js.undefined
+  var strides: js.UndefOr[scala.scalajs.js.Array[Int]]       = js.undefined
+  var dilations: js.UndefOr[scala.scalajs.js.Array[Int]]     = js.undefined
+  var outputPadding: js.UndefOr[scala.scalajs.js.Array[Int]] = js.undefined
+  var outputSizes: js.UndefOr[scala.scalajs.js.Array[Int]]   = js.undefined
+  var groups: js.UndefOr[Int]                                = js.undefined
+  var inputLayout: js.UndefOr[String]                        = js.undefined
+  var filterLayout: js.UndefOr[String]                       = js.undefined
+  var bias: js.UndefOr[MLOperand]                            = js.undefined
 end MLConvTranspose2dOptions
 
-@js.native
 trait MLSplitOptions extends MLOperatorOptions:
-  var axis: Int = js.native
+  var axis: js.UndefOr[Int] = js.undefined
 
-@js.native
 trait MLWhereSupportLimits extends js.Object:
-  var condition: MLTensorLimits  = js.native
-  var trueValue: MLTensorLimits  = js.native
-  var falseValue: MLTensorLimits = js.native
-  var output: MLTensorLimits     = js.native
+  var condition: js.UndefOr[MLTensorLimits]  = js.undefined
+  var trueValue: js.UndefOr[MLTensorLimits]  = js.undefined
+  var falseValue: js.UndefOr[MLTensorLimits] = js.undefined
+  var output: js.UndefOr[MLTensorLimits]     = js.undefined
 
-@js.native
 trait MLInstanceNormalizationOptions extends MLOperatorOptions:
-  var scale: MLOperand = js.native
-  var bias: MLOperand  = js.native
-  var epsilon: Double  = js.native
-  var layout: String   = js.native
+  var scale: js.UndefOr[MLOperand] = js.undefined
+  var bias: js.UndefOr[MLOperand]  = js.undefined
+  var epsilon: js.UndefOr[Double]  = js.undefined
+  var layout: js.UndefOr[String]   = js.undefined
 
-@js.native
 trait MLLstmCellOptions extends MLOperatorOptions:
-  var bias: MLOperand                             = js.native
-  var recurrentBias: MLOperand                    = js.native
-  var peepholeWeight: MLOperand                   = js.native
-  var layout: String                              = js.native
-  var activations: scala.scalajs.js.Array[String] = js.native
+  var bias: js.UndefOr[MLOperand]                             = js.undefined
+  var recurrentBias: js.UndefOr[MLOperand]                    = js.undefined
+  var peepholeWeight: js.UndefOr[MLOperand]                   = js.undefined
+  var layout: js.UndefOr[String]                              = js.undefined
+  var activations: js.UndefOr[scala.scalajs.js.Array[String]] = js.undefined
 
-@js.native
 trait MLGemmSupportLimits extends js.Object:
-  var a: MLTensorLimits      = js.native
-  var b: MLTensorLimits      = js.native
-  var c: MLTensorLimits      = js.native
-  var output: MLTensorLimits = js.native
+  var a: js.UndefOr[MLTensorLimits]      = js.undefined
+  var b: js.UndefOr[MLTensorLimits]      = js.undefined
+  var c: js.UndefOr[MLTensorLimits]      = js.undefined
+  var output: js.UndefOr[MLTensorLimits] = js.undefined
 
-@js.native
 trait MLGruSupportLimits extends js.Object:
-  var input: MLTensorLimits              = js.native
-  var weight: MLTensorLimits             = js.native
-  var recurrentWeight: MLTensorLimits    = js.native
-  var bias: MLTensorLimits               = js.native
-  var recurrentBias: MLTensorLimits      = js.native
-  var initialHiddenState: MLTensorLimits = js.native
-  var output0: MLTensorLimits            = js.native
-  var output1: MLTensorLimits            = js.native
-end MLGruSupportLimits
+  var input: js.UndefOr[MLTensorLimits]              = js.undefined
+  var weight: js.UndefOr[MLTensorLimits]             = js.undefined
+  var recurrentWeight: js.UndefOr[MLTensorLimits]    = js.undefined
+  var bias: js.UndefOr[MLTensorLimits]               = js.undefined
+  var recurrentBias: js.UndefOr[MLTensorLimits]      = js.undefined
+  var initialHiddenState: js.UndefOr[MLTensorLimits] = js.undefined
+  var output0: js.UndefOr[MLTensorLimits]            = js.undefined
+  var output1: js.UndefOr[MLTensorLimits]            = js.undefined
 
-@js.native
 trait MLGemmOptions extends MLOperatorOptions:
-  var c: MLOperand        = js.native
-  var alpha: Double       = js.native
-  var beta: Double        = js.native
-  var aTranspose: Boolean = js.native
-  var bTranspose: Boolean = js.native
+  var c: js.UndefOr[MLOperand]        = js.undefined
+  var alpha: js.UndefOr[Double]       = js.undefined
+  var beta: js.UndefOr[Double]        = js.undefined
+  var aTranspose: js.UndefOr[Boolean] = js.undefined
+  var bTranspose: js.UndefOr[Boolean] = js.undefined
 
-@js.native
 trait MLGruCellOptions extends MLOperatorOptions:
-  var bias: MLOperand                             = js.native
-  var recurrentBias: MLOperand                    = js.native
-  var resetAfter: Boolean                         = js.native
-  var layout: String                              = js.native
-  var activations: scala.scalajs.js.Array[String] = js.native
+  var bias: js.UndefOr[MLOperand]                             = js.undefined
+  var recurrentBias: js.UndefOr[MLOperand]                    = js.undefined
+  var resetAfter: js.UndefOr[Boolean]                         = js.undefined
+  var layout: js.UndefOr[String]                              = js.undefined
+  var activations: js.UndefOr[scala.scalajs.js.Array[String]] = js.undefined
 
-@js.native
 trait MLNormalizationSupportLimits extends js.Object:
-  var input: MLTensorLimits  = js.native
-  var scale: MLTensorLimits  = js.native
-  var bias: MLTensorLimits   = js.native
-  var output: MLTensorLimits = js.native
+  var input: js.UndefOr[MLTensorLimits]  = js.undefined
+  var scale: js.UndefOr[MLTensorLimits]  = js.undefined
+  var bias: js.UndefOr[MLTensorLimits]   = js.undefined
+  var output: js.UndefOr[MLTensorLimits] = js.undefined
 
-@js.native
 trait MLLstmCellSupportLimits extends js.Object:
-  var input: MLTensorLimits           = js.native
-  var weight: MLTensorLimits          = js.native
-  var recurrentWeight: MLTensorLimits = js.native
-  var hiddenState: MLTensorLimits     = js.native
-  var cellState: MLTensorLimits       = js.native
-  var bias: MLTensorLimits            = js.native
-  var recurrentBias: MLTensorLimits   = js.native
-  var peepholeWeight: MLTensorLimits  = js.native
-  var output0: MLTensorLimits         = js.native
-  var output1: MLTensorLimits         = js.native
+  var input: js.UndefOr[MLTensorLimits]           = js.undefined
+  var weight: js.UndefOr[MLTensorLimits]          = js.undefined
+  var recurrentWeight: js.UndefOr[MLTensorLimits] = js.undefined
+  var hiddenState: js.UndefOr[MLTensorLimits]     = js.undefined
+  var cellState: js.UndefOr[MLTensorLimits]       = js.undefined
+  var bias: js.UndefOr[MLTensorLimits]            = js.undefined
+  var recurrentBias: js.UndefOr[MLTensorLimits]   = js.undefined
+  var peepholeWeight: js.UndefOr[MLTensorLimits]  = js.undefined
+  var output0: js.UndefOr[MLTensorLimits]         = js.undefined
+  var output1: js.UndefOr[MLTensorLimits]         = js.undefined
 end MLLstmCellSupportLimits
 
-@js.native
 trait MLOpSupportLimits extends js.Object:
-  var preferredInputLayout: String = js.native
-  var maxTensorByteLength: Int     = js.native
-  var input: MLTensorLimits        = js.native
-  var constant: MLTensorLimits     = js.native
-  var output: MLTensorLimits       = js.native
+  var preferredInputLayout: js.UndefOr[String] = js.undefined
+  var maxTensorByteLength: js.UndefOr[Int]     = js.undefined
+  var input: js.UndefOr[MLTensorLimits]        = js.undefined
+  var constant: js.UndefOr[MLTensorLimits]     = js.undefined
+  var output: js.UndefOr[MLTensorLimits]       = js.undefined
 
-@js.native
 trait MLRankRange extends js.Object:
-  var min: Int = js.native
-  var max: Int = js.native
+  var min: js.UndefOr[Int] = js.undefined
+  var max: js.UndefOr[Int] = js.undefined
 
-@js.native
 trait MLTensorLimits extends js.Object:
-  var dataTypes: scala.scalajs.js.Any = js.native
-  var rankRange: MLRankRange          = js.native
+  var dataTypes: js.UndefOr[scala.scalajs.js.Array[String]] = js.undefined
+  var rankRange: js.UndefOr[MLRankRange]                    = js.undefined
 
-@js.native
 trait MLOperandDescriptor extends js.Object:
-  var dataType: String                   = js.native
-  var shape: scala.scalajs.js.Array[Int] = js.native
+  var dataType: js.UndefOr[String]                   = js.undefined
+  var shape: js.UndefOr[scala.scalajs.js.Array[Int]] = js.undefined
 
-@js.native
 trait MLArgMinMaxOptions extends MLOperatorOptions:
-  var keepDimensions: Boolean = js.native
-  var outputDataType: String  = js.native
+  var keepDimensions: js.UndefOr[Boolean] = js.undefined
+  var outputDataType: js.UndefOr[String]  = js.undefined
 
-@js.native
 trait MLConv2dOptions extends MLOperatorOptions:
-  var padding: scala.scalajs.js.Array[Int]   = js.native
-  var strides: scala.scalajs.js.Array[Int]   = js.native
-  var dilations: scala.scalajs.js.Array[Int] = js.native
-  var groups: Int                            = js.native
-  var inputLayout: String                    = js.native
-  var filterLayout: String                   = js.native
-  var bias: MLOperand                        = js.native
+  var padding: js.UndefOr[scala.scalajs.js.Array[Int]]   = js.undefined
+  var strides: js.UndefOr[scala.scalajs.js.Array[Int]]   = js.undefined
+  var dilations: js.UndefOr[scala.scalajs.js.Array[Int]] = js.undefined
+  var groups: js.UndefOr[Int]                            = js.undefined
+  var inputLayout: js.UndefOr[String]                    = js.undefined
+  var filterLayout: js.UndefOr[String]                   = js.undefined
+  var bias: js.UndefOr[MLOperand]                        = js.undefined
 
-@js.native
 trait MLScatterSupportLimits extends js.Object:
-  var input: MLTensorLimits   = js.native
-  var indices: MLTensorLimits = js.native
-  var updates: MLTensorLimits = js.native
-  var output: MLTensorLimits  = js.native
+  var input: js.UndefOr[MLTensorLimits]   = js.undefined
+  var indices: js.UndefOr[MLTensorLimits] = js.undefined
+  var updates: js.UndefOr[MLTensorLimits] = js.undefined
+  var output: js.UndefOr[MLTensorLimits]  = js.undefined
 
-@js.native
 trait MLGruCellSupportLimits extends js.Object:
-  var input: MLTensorLimits           = js.native
-  var weight: MLTensorLimits          = js.native
-  var recurrentWeight: MLTensorLimits = js.native
-  var hiddenState: MLTensorLimits     = js.native
-  var bias: MLTensorLimits            = js.native
-  var recurrentBias: MLTensorLimits   = js.native
-  var output: MLTensorLimits          = js.native
+  var input: js.UndefOr[MLTensorLimits]           = js.undefined
+  var weight: js.UndefOr[MLTensorLimits]          = js.undefined
+  var recurrentWeight: js.UndefOr[MLTensorLimits] = js.undefined
+  var hiddenState: js.UndefOr[MLTensorLimits]     = js.undefined
+  var bias: js.UndefOr[MLTensorLimits]            = js.undefined
+  var recurrentBias: js.UndefOr[MLTensorLimits]   = js.undefined
+  var output: js.UndefOr[MLTensorLimits]          = js.undefined
 
-@js.native
 trait MLConv2dSupportLimits extends js.Object:
-  var input: MLTensorLimits  = js.native
-  var filter: MLTensorLimits = js.native
-  var bias: MLTensorLimits   = js.native
-  var output: MLTensorLimits = js.native
+  var input: js.UndefOr[MLTensorLimits]  = js.undefined
+  var filter: js.UndefOr[MLTensorLimits] = js.undefined
+  var bias: js.UndefOr[MLTensorLimits]   = js.undefined
+  var output: js.UndefOr[MLTensorLimits] = js.undefined
 
-@js.native
 trait MLResample2dOptions extends MLOperatorOptions:
-  var mode: String                           = js.native
-  var scales: scala.scalajs.js.Array[Double] = js.native
-  var sizes: scala.scalajs.js.Array[Int]     = js.native
-  var axes: scala.scalajs.js.Array[Int]      = js.native
+  var mode: js.UndefOr[String]                           = js.undefined
+  var scales: js.UndefOr[scala.scalajs.js.Array[Double]] = js.undefined
+  var sizes: js.UndefOr[scala.scalajs.js.Array[Int]]     = js.undefined
+  var axes: js.UndefOr[scala.scalajs.js.Array[Int]]      = js.undefined
 
-@js.native
 trait RTCEncodedVideoFrameOptions extends js.Object:
-  var metadata: RTCEncodedVideoFrameMetadata = js.native
+  var metadata: js.UndefOr[RTCEncodedVideoFrameMetadata] = js.undefined
 
-@js.native
 trait WorkerAndParameters extends js.Object:
-  var worker: Worker = js.native
-  var `type`: String = js.native
+  var worker: js.UndefOr[Worker] = js.undefined
+  var `type`: js.UndefOr[String] = js.undefined
 
-@js.native
 trait RTCEncodedFrameMetadata extends js.Object:
-  var synchronizationSource: Int                       = js.native
-  var payloadType: scala.scalajs.js.Any                = js.native
-  var contributingSources: scala.scalajs.js.Array[Int] = js.native
-  var rtpTimestamp: Int                                = js.native
-  var receiveTime: Double                              = js.native
-  var captureTime: Double                              = js.native
-  var senderCaptureTimeOffset: Double                  = js.native
-  var mimeType: String                                 = js.native
-end RTCEncodedFrameMetadata
+  var synchronizationSource: js.UndefOr[Int]                       = js.undefined
+  var payloadType: js.UndefOr[scala.scalajs.js.Any]                = js.undefined
+  var contributingSources: js.UndefOr[scala.scalajs.js.Array[Int]] = js.undefined
+  var rtpTimestamp: js.UndefOr[Int]                                = js.undefined
+  var receiveTime: js.UndefOr[Double]                              = js.undefined
+  var captureTime: js.UndefOr[Double]                              = js.undefined
+  var senderCaptureTimeOffset: js.UndefOr[Double]                  = js.undefined
+  var mimeType: js.UndefOr[String]                                 = js.undefined
 
-@js.native
 trait SFrameTransformErrorEventInit extends EventInit:
-  var errorType: String           = js.native
-  var frame: scala.scalajs.js.Any = js.native
-  var keyID: scala.scalajs.js.Any = js.native
+  var errorType: js.UndefOr[String]           = js.undefined
+  var frame: js.UndefOr[scala.scalajs.js.Any] = js.undefined
+  var keyID: js.UndefOr[scala.scalajs.js.Any] = js.undefined
 
-@js.native
 trait RTCRtpSFrameEncrypterOptions extends SFrameTransformOptions:
-  var `type`: String = js.native
+  var `type`: js.UndefOr[String] = js.undefined
 
-@js.native
 trait RTCEncodedVideoFrameMetadata extends RTCEncodedFrameMetadata:
-  var frameId: Int                              = js.native
-  var dependencies: scala.scalajs.js.Array[Int] = js.native
-  var width: Int                                = js.native
-  var height: Int                               = js.native
-  var spatialIndex: Int                         = js.native
-  var temporalIndex: Int                        = js.native
-  var timestamp: Int                            = js.native
+  var frameId: js.UndefOr[Int]                              = js.undefined
+  var dependencies: js.UndefOr[scala.scalajs.js.Array[Int]] = js.undefined
+  var width: js.UndefOr[Int]                                = js.undefined
+  var height: js.UndefOr[Int]                               = js.undefined
+  var spatialIndex: js.UndefOr[Int]                         = js.undefined
+  var temporalIndex: js.UndefOr[Int]                        = js.undefined
+  var timestamp: js.UndefOr[Int]                            = js.undefined
 
-@js.native
 trait RTCEncodedAudioFrameMetadata extends RTCEncodedFrameMetadata:
-  var sequenceNumber: Int = js.native
-  var audioLevel: Double  = js.native
+  var sequenceNumber: js.UndefOr[Int] = js.undefined
+  var audioLevel: js.UndefOr[Double]  = js.undefined
 
-@js.native
 trait SFrameTransformOptions extends js.Object:
-  var cipherSuite: String = js.native
+  var cipherSuite: js.UndefOr[String] = js.undefined
 
-@js.native
 trait RTCEncodedAudioFrameOptions extends js.Object:
-  var metadata: RTCEncodedAudioFrameMetadata = js.native
+  var metadata: js.UndefOr[RTCEncodedAudioFrameMetadata] = js.undefined
 
-@js.native
 trait RTCIceGatherOptions extends js.Object:
-  var gatherPolicy: String                             = js.native
-  var iceServers: scala.scalajs.js.Array[RTCIceServer] = js.native
+  var gatherPolicy: js.UndefOr[String]                             = js.undefined
+  var iceServers: js.UndefOr[scala.scalajs.js.Array[RTCIceServer]] = js.undefined
 
-@js.native
 trait RTCIdentityValidationResult extends js.Object:
-  var identity: String = js.native
-  var contents: String = js.native
+  var identity: js.UndefOr[String] = js.undefined
+  var contents: js.UndefOr[String] = js.undefined
 
-@js.native
 trait RTCIdentityProviderOptions extends js.Object:
-  var protocol: String     = js.native
-  var usernameHint: String = js.native
-  var peerIdentity: String = js.native
+  var protocol: js.UndefOr[String]     = js.undefined
+  var usernameHint: js.UndefOr[String] = js.undefined
+  var peerIdentity: js.UndefOr[String] = js.undefined
 
-@js.native
 trait RTCIdentityAssertionResult extends js.Object:
-  var idp: RTCIdentityProviderDetails = js.native
-  var assertion: String               = js.native
+  var idp: js.UndefOr[RTCIdentityProviderDetails] = js.undefined
+  var assertion: js.UndefOr[String]               = js.undefined
 
-@js.native
 trait RTCIdentityProvider extends js.Object:
   var generateAssertion
-      : scala.scalajs.js.Function3[String, String, RTCIdentityProviderOptions, scala.scalajs.js.Promise[
+      : js.UndefOr[scala.scalajs.js.Function3[String, String, RTCIdentityProviderOptions, scala.scalajs.js.Promise[
         RTCIdentityAssertionResult
-      ]] = js.native
+      ]]] = js.undefined
   var validateAssertion
-      : scala.scalajs.js.Function2[String, String, scala.scalajs.js.Promise[RTCIdentityValidationResult]] = js.native
+      : js.UndefOr[scala.scalajs.js.Function2[String, String, scala.scalajs.js.Promise[RTCIdentityValidationResult]]] =
+    js.undefined
 
-@js.native
 trait RTCIdentityProviderDetails extends js.Object:
-  var domain: String   = js.native
-  var protocol: String = js.native
+  var domain: js.UndefOr[String]   = js.undefined
+  var protocol: js.UndefOr[String] = js.undefined
 
-@js.native
 trait RTCRemoteInboundRtpStreamStats extends RTCReceivedRtpStreamStats:
-  var localId: String                     = js.native
-  var roundTripTime: Double               = js.native
-  var totalRoundTripTime: Double          = js.native
-  var fractionLost: Double                = js.native
-  var roundTripTimeMeasurements: Int      = js.native
-  var packetsWithBleachedEct1Marking: Int = js.native
+  var localId: js.UndefOr[String]                     = js.undefined
+  var roundTripTime: js.UndefOr[Double]               = js.undefined
+  var totalRoundTripTime: js.UndefOr[Double]          = js.undefined
+  var fractionLost: js.UndefOr[Double]                = js.undefined
+  var roundTripTimeMeasurements: js.UndefOr[Int]      = js.undefined
+  var packetsWithBleachedEct1Marking: js.UndefOr[Int] = js.undefined
 
-@js.native
 trait RTCIceCandidateStats extends RTCStats:
-  var transportId: String      = js.native
-  var address: String          = js.native
-  var port: Int                = js.native
-  var protocol: String         = js.native
-  var candidateType: String    = js.native
-  var priority: Int            = js.native
-  var url: String              = js.native
-  var relayProtocol: String    = js.native
-  var foundation: String       = js.native
-  var relatedAddress: String   = js.native
-  var relatedPort: Int         = js.native
-  var usernameFragment: String = js.native
-  var tcpType: String          = js.native
+  var transportId: js.UndefOr[String]      = js.undefined
+  var address: js.UndefOr[String]          = js.undefined
+  var port: js.UndefOr[Int]                = js.undefined
+  var protocol: js.UndefOr[String]         = js.undefined
+  var candidateType: js.UndefOr[String]    = js.undefined
+  var priority: js.UndefOr[Int]            = js.undefined
+  var url: js.UndefOr[String]              = js.undefined
+  var relayProtocol: js.UndefOr[String]    = js.undefined
+  var foundation: js.UndefOr[String]       = js.undefined
+  var relatedAddress: js.UndefOr[String]   = js.undefined
+  var relatedPort: js.UndefOr[Int]         = js.undefined
+  var usernameFragment: js.UndefOr[String] = js.undefined
+  var tcpType: js.UndefOr[String]          = js.undefined
 end RTCIceCandidateStats
 
-@js.native
 trait RTCVideoSourceStats extends RTCMediaSourceStats:
-  var width: Int              = js.native
-  var height: Int             = js.native
-  var frames: Int             = js.native
-  var framesPerSecond: Double = js.native
+  var width: js.UndefOr[Int]              = js.undefined
+  var height: js.UndefOr[Int]             = js.undefined
+  var frames: js.UndefOr[Int]             = js.undefined
+  var framesPerSecond: js.UndefOr[Double] = js.undefined
 
-@js.native
 trait RTCMediaSourceStats extends RTCStats:
-  var trackIdentifier: String = js.native
-  var kind: String            = js.native
+  var trackIdentifier: js.UndefOr[String] = js.undefined
+  var kind: js.UndefOr[String]            = js.undefined
 
-@js.native
 trait RTCCodecStats extends RTCStats:
-  var payloadType: Int    = js.native
-  var transportId: String = js.native
-  var mimeType: String    = js.native
-  var clockRate: Int      = js.native
-  var channels: Int       = js.native
-  var sdpFmtpLine: String = js.native
+  var payloadType: js.UndefOr[Int]    = js.undefined
+  var transportId: js.UndefOr[String] = js.undefined
+  var mimeType: js.UndefOr[String]    = js.undefined
+  var clockRate: js.UndefOr[Int]      = js.undefined
+  var channels: js.UndefOr[Int]       = js.undefined
+  var sdpFmtpLine: js.UndefOr[String] = js.undefined
 
-@js.native
 trait RTCReceivedRtpStreamStats extends RTCRtpStreamStats:
-  var packetsReceived: Int                   = js.native
-  var packetsReceivedWithEct1: Int           = js.native
-  var packetsReceivedWithCe: Int             = js.native
-  var packetsReportedAsLost: Int             = js.native
-  var packetsReportedAsLostButRecovered: Int = js.native
-  var packetsLost: Int                       = js.native
-  var jitter: Double                         = js.native
+  var packetsReceived: js.UndefOr[Int]                   = js.undefined
+  var packetsReceivedWithEct1: js.UndefOr[Int]           = js.undefined
+  var packetsReceivedWithCe: js.UndefOr[Int]             = js.undefined
+  var packetsReportedAsLost: js.UndefOr[Int]             = js.undefined
+  var packetsReportedAsLostButRecovered: js.UndefOr[Int] = js.undefined
+  var packetsLost: js.UndefOr[Int]                       = js.undefined
+  var jitter: js.UndefOr[Double]                         = js.undefined
 
-@js.native
 trait RTCOutboundRtpStreamStats extends RTCSentRtpStreamStats:
-  var mid: String                                                     = js.native
-  var mediaSourceId: String                                           = js.native
-  var remoteId: String                                                = js.native
-  var rid: String                                                     = js.native
-  var encodingIndex: Int                                              = js.native
-  var headerBytesSent: Int                                            = js.native
-  var retransmittedPacketsSent: Int                                   = js.native
-  var retransmittedBytesSent: Int                                     = js.native
-  var rtxSsrc: Int                                                    = js.native
-  var targetBitrate: Double                                           = js.native
-  var totalEncodedBytesTarget: Int                                    = js.native
-  var frameWidth: Int                                                 = js.native
-  var frameHeight: Int                                                = js.native
-  var framesPerSecond: Double                                         = js.native
-  var framesSent: Int                                                 = js.native
-  var hugeFramesSent: Int                                             = js.native
-  var framesEncoded: Int                                              = js.native
-  var keyFramesEncoded: Int                                           = js.native
-  var qpSum: Int                                                      = js.native
-  var psnrSum: scala.scalajs.js.Dictionary[Double]                    = js.native
-  var psnrMeasurements: Int                                           = js.native
-  var totalEncodeTime: Double                                         = js.native
-  var totalPacketSendDelay: Double                                    = js.native
-  var qualityLimitationReason: String                                 = js.native
-  var qualityLimitationDurations: scala.scalajs.js.Dictionary[Double] = js.native
-  var qualityLimitationResolutionChanges: Int                         = js.native
-  var nackCount: Int                                                  = js.native
-  var firCount: Int                                                   = js.native
-  var pliCount: Int                                                   = js.native
-  var encoderImplementation: String                                   = js.native
-  var powerEfficientEncoder: Boolean                                  = js.native
-  var active: Boolean                                                 = js.native
-  var scalabilityMode: String                                         = js.native
-  var packetsSentWithEct1: Int                                        = js.native
+  var mid: js.UndefOr[String]                                                     = js.undefined
+  var mediaSourceId: js.UndefOr[String]                                           = js.undefined
+  var remoteId: js.UndefOr[String]                                                = js.undefined
+  var rid: js.UndefOr[String]                                                     = js.undefined
+  var encodingIndex: js.UndefOr[Int]                                              = js.undefined
+  var headerBytesSent: js.UndefOr[Int]                                            = js.undefined
+  var retransmittedPacketsSent: js.UndefOr[Int]                                   = js.undefined
+  var retransmittedBytesSent: js.UndefOr[Int]                                     = js.undefined
+  var rtxSsrc: js.UndefOr[Int]                                                    = js.undefined
+  var targetBitrate: js.UndefOr[Double]                                           = js.undefined
+  var totalEncodedBytesTarget: js.UndefOr[Int]                                    = js.undefined
+  var frameWidth: js.UndefOr[Int]                                                 = js.undefined
+  var frameHeight: js.UndefOr[Int]                                                = js.undefined
+  var framesPerSecond: js.UndefOr[Double]                                         = js.undefined
+  var framesSent: js.UndefOr[Int]                                                 = js.undefined
+  var hugeFramesSent: js.UndefOr[Int]                                             = js.undefined
+  var framesEncoded: js.UndefOr[Int]                                              = js.undefined
+  var keyFramesEncoded: js.UndefOr[Int]                                           = js.undefined
+  var qpSum: js.UndefOr[Int]                                                      = js.undefined
+  var psnrSum: js.UndefOr[scala.scalajs.js.Dictionary[Double]]                    = js.undefined
+  var psnrMeasurements: js.UndefOr[Int]                                           = js.undefined
+  var totalEncodeTime: js.UndefOr[Double]                                         = js.undefined
+  var totalPacketSendDelay: js.UndefOr[Double]                                    = js.undefined
+  var qualityLimitationReason: js.UndefOr[String]                                 = js.undefined
+  var qualityLimitationDurations: js.UndefOr[scala.scalajs.js.Dictionary[Double]] = js.undefined
+  var qualityLimitationResolutionChanges: js.UndefOr[Int]                         = js.undefined
+  var nackCount: js.UndefOr[Int]                                                  = js.undefined
+  var firCount: js.UndefOr[Int]                                                   = js.undefined
+  var pliCount: js.UndefOr[Int]                                                   = js.undefined
+  var encoderImplementation: js.UndefOr[String]                                   = js.undefined
+  var powerEfficientEncoder: js.UndefOr[Boolean]                                  = js.undefined
+  var active: js.UndefOr[Boolean]                                                 = js.undefined
+  var scalabilityMode: js.UndefOr[String]                                         = js.undefined
+  var packetsSentWithEct1: js.UndefOr[Int]                                        = js.undefined
 end RTCOutboundRtpStreamStats
 
-@js.native
 trait RTCRemoteOutboundRtpStreamStats extends RTCSentRtpStreamStats:
-  var localId: String                = js.native
-  var remoteTimestamp: Double        = js.native
-  var reportsSent: Int               = js.native
-  var roundTripTime: Double          = js.native
-  var totalRoundTripTime: Double     = js.native
-  var roundTripTimeMeasurements: Int = js.native
+  var localId: js.UndefOr[String]                = js.undefined
+  var remoteTimestamp: js.UndefOr[Double]        = js.undefined
+  var reportsSent: js.UndefOr[Int]               = js.undefined
+  var roundTripTime: js.UndefOr[Double]          = js.undefined
+  var totalRoundTripTime: js.UndefOr[Double]     = js.undefined
+  var roundTripTimeMeasurements: js.UndefOr[Int] = js.undefined
 
-@js.native
 trait RTCCertificateStats extends RTCStats:
-  var fingerprint: String          = js.native
-  var fingerprintAlgorithm: String = js.native
-  var base64Certificate: String    = js.native
-  var issuerCertificateId: String  = js.native
+  var fingerprint: js.UndefOr[String]          = js.undefined
+  var fingerprintAlgorithm: js.UndefOr[String] = js.undefined
+  var base64Certificate: js.UndefOr[String]    = js.undefined
+  var issuerCertificateId: js.UndefOr[String]  = js.undefined
 
-@js.native
 trait RTCDataChannelStats extends RTCStats:
-  var label: String              = js.native
-  var protocol: String           = js.native
-  var dataChannelIdentifier: Int = js.native
-  var state: String              = js.native
-  var messagesSent: Int          = js.native
-  var bytesSent: Int             = js.native
-  var messagesReceived: Int      = js.native
-  var bytesReceived: Int         = js.native
-end RTCDataChannelStats
+  var label: js.UndefOr[String]              = js.undefined
+  var protocol: js.UndefOr[String]           = js.undefined
+  var dataChannelIdentifier: js.UndefOr[Int] = js.undefined
+  var state: js.UndefOr[String]              = js.undefined
+  var messagesSent: js.UndefOr[Int]          = js.undefined
+  var bytesSent: js.UndefOr[Int]             = js.undefined
+  var messagesReceived: js.UndefOr[Int]      = js.undefined
+  var bytesReceived: js.UndefOr[Int]         = js.undefined
 
-@js.native
 trait RTCPeerConnectionStats extends RTCStats:
-  var dataChannelsOpened: Int = js.native
-  var dataChannelsClosed: Int = js.native
+  var dataChannelsOpened: js.UndefOr[Int] = js.undefined
+  var dataChannelsClosed: js.UndefOr[Int] = js.undefined
 
-@js.native
 trait RTCSentRtpStreamStats extends RTCRtpStreamStats:
-  var packetsSent: Int = js.native
-  var bytesSent: Int   = js.native
+  var packetsSent: js.UndefOr[Int] = js.undefined
+  var bytesSent: js.UndefOr[Int]   = js.undefined
 
-@js.native
 trait RTCRtpStreamStats extends RTCStats:
-  var ssrc: Int           = js.native
-  var kind: String        = js.native
-  var transportId: String = js.native
-  var codecId: String     = js.native
+  var ssrc: js.UndefOr[Int]           = js.undefined
+  var kind: js.UndefOr[String]        = js.undefined
+  var transportId: js.UndefOr[String] = js.undefined
+  var codecId: js.UndefOr[String]     = js.undefined
 
-@js.native
 trait RTCTransportStats extends RTCStats:
-  var packetsSent: Int                  = js.native
-  var packetsReceived: Int              = js.native
-  var bytesSent: Int                    = js.native
-  var bytesReceived: Int                = js.native
-  var iceRole: String                   = js.native
-  var iceLocalUsernameFragment: String  = js.native
-  var dtlsState: String                 = js.native
-  var iceState: String                  = js.native
-  var selectedCandidatePairId: String   = js.native
-  var localCertificateId: String        = js.native
-  var remoteCertificateId: String       = js.native
-  var tlsVersion: String                = js.native
-  var dtlsCipher: String                = js.native
-  var dtlsRole: String                  = js.native
-  var srtpCipher: String                = js.native
-  var selectedCandidatePairChanges: Int = js.native
-  var ccfbMessagesSent: Int             = js.native
-  var ccfbMessagesReceived: Int         = js.native
+  var packetsSent: js.UndefOr[Int]                  = js.undefined
+  var packetsReceived: js.UndefOr[Int]              = js.undefined
+  var bytesSent: js.UndefOr[Int]                    = js.undefined
+  var bytesReceived: js.UndefOr[Int]                = js.undefined
+  var iceRole: js.UndefOr[String]                   = js.undefined
+  var iceLocalUsernameFragment: js.UndefOr[String]  = js.undefined
+  var dtlsState: js.UndefOr[String]                 = js.undefined
+  var iceState: js.UndefOr[String]                  = js.undefined
+  var selectedCandidatePairId: js.UndefOr[String]   = js.undefined
+  var localCertificateId: js.UndefOr[String]        = js.undefined
+  var remoteCertificateId: js.UndefOr[String]       = js.undefined
+  var tlsVersion: js.UndefOr[String]                = js.undefined
+  var dtlsCipher: js.UndefOr[String]                = js.undefined
+  var dtlsRole: js.UndefOr[String]                  = js.undefined
+  var srtpCipher: js.UndefOr[String]                = js.undefined
+  var selectedCandidatePairChanges: js.UndefOr[Int] = js.undefined
+  var ccfbMessagesSent: js.UndefOr[Int]             = js.undefined
+  var ccfbMessagesReceived: js.UndefOr[Int]         = js.undefined
 end RTCTransportStats
 
-@js.native
 trait RTCInboundRtpStreamStats extends RTCReceivedRtpStreamStats:
-  var trackIdentifier: String                   = js.native
-  var mid: String                               = js.native
-  var remoteId: String                          = js.native
-  var framesDecoded: Int                        = js.native
-  var keyFramesDecoded: Int                     = js.native
-  var framesRendered: Int                       = js.native
-  var framesDropped: Int                        = js.native
-  var frameWidth: Int                           = js.native
-  var frameHeight: Int                          = js.native
-  var framesPerSecond: Double                   = js.native
-  var qpSum: Int                                = js.native
-  var totalDecodeTime: Double                   = js.native
-  var totalInterFrameDelay: Double              = js.native
-  var totalSquaredInterFrameDelay: Double       = js.native
-  var pauseCount: Int                           = js.native
-  var totalPausesDuration: Double               = js.native
-  var freezeCount: Int                          = js.native
-  var totalFreezesDuration: Double              = js.native
-  var lastPacketReceivedTimestamp: Double       = js.native
-  var headerBytesReceived: Int                  = js.native
-  var packetsDiscarded: Int                     = js.native
-  var fecBytesReceived: Int                     = js.native
-  var fecPacketsReceived: Int                   = js.native
-  var fecPacketsDiscarded: Int                  = js.native
-  var bytesReceived: Int                        = js.native
-  var nackCount: Int                            = js.native
-  var firCount: Int                             = js.native
-  var pliCount: Int                             = js.native
-  var totalProcessingDelay: Double              = js.native
-  var estimatedPlayoutTimestamp: Double         = js.native
-  var jitterBufferDelay: Double                 = js.native
-  var jitterBufferTargetDelay: Double           = js.native
-  var jitterBufferEmittedCount: Int             = js.native
-  var jitterBufferMinimumDelay: Double          = js.native
-  var totalSamplesReceived: Int                 = js.native
-  var concealedSamples: Int                     = js.native
-  var silentConcealedSamples: Int               = js.native
-  var concealmentEvents: Int                    = js.native
-  var insertedSamplesForDeceleration: Int       = js.native
-  var removedSamplesForAcceleration: Int        = js.native
-  var audioLevel: Double                        = js.native
-  var totalAudioEnergy: Double                  = js.native
-  var totalSamplesDuration: Double              = js.native
-  var framesReceived: Int                       = js.native
-  var decoderImplementation: String             = js.native
-  var playoutId: String                         = js.native
-  var powerEfficientDecoder: Boolean            = js.native
-  var framesAssembledFromMultiplePackets: Int   = js.native
-  var totalAssemblyTime: Double                 = js.native
-  var retransmittedPacketsReceived: Int         = js.native
-  var retransmittedBytesReceived: Int           = js.native
-  var rtxSsrc: Int                              = js.native
-  var fecSsrc: Int                              = js.native
-  var totalCorruptionProbability: Double        = js.native
-  var totalSquaredCorruptionProbability: Double = js.native
-  var corruptionMeasurements: Int               = js.native
+  var trackIdentifier: js.UndefOr[String]                   = js.undefined
+  var mid: js.UndefOr[String]                               = js.undefined
+  var remoteId: js.UndefOr[String]                          = js.undefined
+  var framesDecoded: js.UndefOr[Int]                        = js.undefined
+  var keyFramesDecoded: js.UndefOr[Int]                     = js.undefined
+  var framesRendered: js.UndefOr[Int]                       = js.undefined
+  var framesDropped: js.UndefOr[Int]                        = js.undefined
+  var frameWidth: js.UndefOr[Int]                           = js.undefined
+  var frameHeight: js.UndefOr[Int]                          = js.undefined
+  var framesPerSecond: js.UndefOr[Double]                   = js.undefined
+  var qpSum: js.UndefOr[Int]                                = js.undefined
+  var totalDecodeTime: js.UndefOr[Double]                   = js.undefined
+  var totalInterFrameDelay: js.UndefOr[Double]              = js.undefined
+  var totalSquaredInterFrameDelay: js.UndefOr[Double]       = js.undefined
+  var pauseCount: js.UndefOr[Int]                           = js.undefined
+  var totalPausesDuration: js.UndefOr[Double]               = js.undefined
+  var freezeCount: js.UndefOr[Int]                          = js.undefined
+  var totalFreezesDuration: js.UndefOr[Double]              = js.undefined
+  var lastPacketReceivedTimestamp: js.UndefOr[Double]       = js.undefined
+  var headerBytesReceived: js.UndefOr[Int]                  = js.undefined
+  var packetsDiscarded: js.UndefOr[Int]                     = js.undefined
+  var fecBytesReceived: js.UndefOr[Int]                     = js.undefined
+  var fecPacketsReceived: js.UndefOr[Int]                   = js.undefined
+  var fecPacketsDiscarded: js.UndefOr[Int]                  = js.undefined
+  var bytesReceived: js.UndefOr[Int]                        = js.undefined
+  var nackCount: js.UndefOr[Int]                            = js.undefined
+  var firCount: js.UndefOr[Int]                             = js.undefined
+  var pliCount: js.UndefOr[Int]                             = js.undefined
+  var totalProcessingDelay: js.UndefOr[Double]              = js.undefined
+  var estimatedPlayoutTimestamp: js.UndefOr[Double]         = js.undefined
+  var jitterBufferDelay: js.UndefOr[Double]                 = js.undefined
+  var jitterBufferTargetDelay: js.UndefOr[Double]           = js.undefined
+  var jitterBufferEmittedCount: js.UndefOr[Int]             = js.undefined
+  var jitterBufferMinimumDelay: js.UndefOr[Double]          = js.undefined
+  var totalSamplesReceived: js.UndefOr[Int]                 = js.undefined
+  var concealedSamples: js.UndefOr[Int]                     = js.undefined
+  var silentConcealedSamples: js.UndefOr[Int]               = js.undefined
+  var concealmentEvents: js.UndefOr[Int]                    = js.undefined
+  var insertedSamplesForDeceleration: js.UndefOr[Int]       = js.undefined
+  var removedSamplesForAcceleration: js.UndefOr[Int]        = js.undefined
+  var audioLevel: js.UndefOr[Double]                        = js.undefined
+  var totalAudioEnergy: js.UndefOr[Double]                  = js.undefined
+  var totalSamplesDuration: js.UndefOr[Double]              = js.undefined
+  var framesReceived: js.UndefOr[Int]                       = js.undefined
+  var decoderImplementation: js.UndefOr[String]             = js.undefined
+  var playoutId: js.UndefOr[String]                         = js.undefined
+  var powerEfficientDecoder: js.UndefOr[Boolean]            = js.undefined
+  var framesAssembledFromMultiplePackets: js.UndefOr[Int]   = js.undefined
+  var totalAssemblyTime: js.UndefOr[Double]                 = js.undefined
+  var retransmittedPacketsReceived: js.UndefOr[Int]         = js.undefined
+  var retransmittedBytesReceived: js.UndefOr[Int]           = js.undefined
+  var rtxSsrc: js.UndefOr[Int]                              = js.undefined
+  var fecSsrc: js.UndefOr[Int]                              = js.undefined
+  var totalCorruptionProbability: js.UndefOr[Double]        = js.undefined
+  var totalSquaredCorruptionProbability: js.UndefOr[Double] = js.undefined
+  var corruptionMeasurements: js.UndefOr[Int]               = js.undefined
 end RTCInboundRtpStreamStats
 
-@js.native
 trait RTCIceCandidatePairStats extends RTCStats:
-  var transportId: String                 = js.native
-  var localCandidateId: String            = js.native
-  var remoteCandidateId: String           = js.native
-  var state: String                       = js.native
-  var nominated: Boolean                  = js.native
-  var packetsSent: Int                    = js.native
-  var packetsReceived: Int                = js.native
-  var bytesSent: Int                      = js.native
-  var bytesReceived: Int                  = js.native
-  var lastPacketSentTimestamp: Double     = js.native
-  var lastPacketReceivedTimestamp: Double = js.native
-  var totalRoundTripTime: Double          = js.native
-  var currentRoundTripTime: Double        = js.native
-  var availableOutgoingBitrate: Double    = js.native
-  var availableIncomingBitrate: Double    = js.native
-  var requestsReceived: Int               = js.native
-  var requestsSent: Int                   = js.native
-  var responsesReceived: Int              = js.native
-  var responsesSent: Int                  = js.native
-  var consentRequestsSent: Int            = js.native
-  var packetsDiscardedOnSend: Int         = js.native
-  var bytesDiscardedOnSend: Int           = js.native
+  var transportId: js.UndefOr[String]                 = js.undefined
+  var localCandidateId: js.UndefOr[String]            = js.undefined
+  var remoteCandidateId: js.UndefOr[String]           = js.undefined
+  var state: js.UndefOr[String]                       = js.undefined
+  var nominated: js.UndefOr[Boolean]                  = js.undefined
+  var packetsSent: js.UndefOr[Int]                    = js.undefined
+  var packetsReceived: js.UndefOr[Int]                = js.undefined
+  var bytesSent: js.UndefOr[Int]                      = js.undefined
+  var bytesReceived: js.UndefOr[Int]                  = js.undefined
+  var lastPacketSentTimestamp: js.UndefOr[Double]     = js.undefined
+  var lastPacketReceivedTimestamp: js.UndefOr[Double] = js.undefined
+  var totalRoundTripTime: js.UndefOr[Double]          = js.undefined
+  var currentRoundTripTime: js.UndefOr[Double]        = js.undefined
+  var availableOutgoingBitrate: js.UndefOr[Double]    = js.undefined
+  var availableIncomingBitrate: js.UndefOr[Double]    = js.undefined
+  var requestsReceived: js.UndefOr[Int]               = js.undefined
+  var requestsSent: js.UndefOr[Int]                   = js.undefined
+  var responsesReceived: js.UndefOr[Int]              = js.undefined
+  var responsesSent: js.UndefOr[Int]                  = js.undefined
+  var consentRequestsSent: js.UndefOr[Int]            = js.undefined
+  var packetsDiscardedOnSend: js.UndefOr[Int]         = js.undefined
+  var bytesDiscardedOnSend: js.UndefOr[Int]           = js.undefined
 end RTCIceCandidatePairStats
 
-@js.native
 trait RTCAudioPlayoutStats extends RTCStats:
-  var kind: String                       = js.native
-  var synthesizedSamplesDuration: Double = js.native
-  var synthesizedSamplesEvents: Int      = js.native
-  var totalSamplesDuration: Double       = js.native
-  var totalPlayoutDelay: Double          = js.native
-  var totalSamplesCount: Int             = js.native
+  var kind: js.UndefOr[String]                       = js.undefined
+  var synthesizedSamplesDuration: js.UndefOr[Double] = js.undefined
+  var synthesizedSamplesEvents: js.UndefOr[Int]      = js.undefined
+  var totalSamplesDuration: js.UndefOr[Double]       = js.undefined
+  var totalPlayoutDelay: js.UndefOr[Double]          = js.undefined
+  var totalSamplesCount: js.UndefOr[Int]             = js.undefined
 
-@js.native
 trait RTCAudioSourceStats extends RTCMediaSourceStats:
-  var audioLevel: Double                = js.native
-  var totalAudioEnergy: Double          = js.native
-  var totalSamplesDuration: Double      = js.native
-  var echoReturnLoss: Double            = js.native
-  var echoReturnLossEnhancement: Double = js.native
+  var audioLevel: js.UndefOr[Double]                = js.undefined
+  var totalAudioEnergy: js.UndefOr[Double]          = js.undefined
+  var totalSamplesDuration: js.UndefOr[Double]      = js.undefined
+  var echoReturnLoss: js.UndefOr[Double]            = js.undefined
+  var echoReturnLossEnhancement: js.UndefOr[Double] = js.undefined
 
-@js.native
 trait RTCErrorEventInit extends EventInit:
-  var error: RTCError = js.native
+  var error: js.UndefOr[RTCError] = js.undefined
 
-@js.native
 trait RTCSetParameterOptions extends js.Object
 
-@js.native
 trait RTCErrorInit extends js.Object:
-  var errorDetail: String = js.native
-  var sdpLineNumber: Int  = js.native
-  var sctpCauseCode: Int  = js.native
-  var receivedAlert: Int  = js.native
-  var sentAlert: Int      = js.native
+  var errorDetail: js.UndefOr[String] = js.undefined
+  var sdpLineNumber: js.UndefOr[Int]  = js.undefined
+  var sctpCauseCode: js.UndefOr[Int]  = js.undefined
+  var receivedAlert: js.UndefOr[Int]  = js.undefined
+  var sentAlert: js.UndefOr[Int]      = js.undefined
 
-@js.native
 trait RTCRtpParameters extends js.Object:
-  var headerExtensions: scala.scalajs.js.Array[RTCRtpHeaderExtensionParameters] = js.native
-  var rtcp: RTCRtcpParameters                                                   = js.native
-  var codecs: scala.scalajs.js.Array[RTCRtpCodecParameters]                     = js.native
+  var headerExtensions: js.UndefOr[scala.scalajs.js.Array[RTCRtpHeaderExtensionParameters]] = js.undefined
+  var rtcp: js.UndefOr[RTCRtcpParameters]                                                   = js.undefined
+  var codecs: js.UndefOr[scala.scalajs.js.Array[RTCRtpCodecParameters]]                     = js.undefined
 
-@js.native
 trait RTCLocalIceCandidateInit extends RTCIceCandidateInit:
-  var relayProtocol: String = js.native
-  var url: String           = js.native
+  var relayProtocol: js.UndefOr[String] = js.undefined
+  var url: js.UndefOr[String]           = js.undefined
 
-@js.native
 trait RTCOfferAnswerOptions extends js.Object
 
-@js.native
 trait RTCPeerConnectionIceErrorEventInit extends EventInit:
-  var address: String   = js.native
-  var port: Int         = js.native
-  var url: String       = js.native
-  var errorCode: Int    = js.native
-  var errorText: String = js.native
+  var address: js.UndefOr[String]   = js.undefined
+  var port: js.UndefOr[Int]         = js.undefined
+  var url: js.UndefOr[String]       = js.undefined
+  var errorCode: js.UndefOr[Int]    = js.undefined
+  var errorText: js.UndefOr[String] = js.undefined
 
-@js.native
 trait RTCPeerConnectionIceEventInit extends EventInit:
-  var candidate: RTCIceCandidate = js.native
-  var url: String                = js.native
+  var candidate: js.UndefOr[RTCIceCandidate] = js.undefined
+  var url: js.UndefOr[String]                = js.undefined
 
-@js.native
 trait RTCRtpContributingSource extends js.Object:
-  var timestamp: Double  = js.native
-  var source: Int        = js.native
-  var audioLevel: Double = js.native
-  var rtpTimestamp: Int  = js.native
+  var timestamp: js.UndefOr[Double]  = js.undefined
+  var source: js.UndefOr[Int]        = js.undefined
+  var audioLevel: js.UndefOr[Double] = js.undefined
+  var rtpTimestamp: js.UndefOr[Int]  = js.undefined
 
-@js.native
 trait RTCRtpReceiveParameters extends RTCRtpParameters
 
-@js.native
 trait RTCIceCandidateInit extends js.Object:
-  var candidate: String        = js.native
-  var sdpMid: String           = js.native
-  var sdpMLineIndex: Int       = js.native
-  var usernameFragment: String = js.native
+  var candidate: js.UndefOr[String]        = js.undefined
+  var sdpMid: js.UndefOr[String]           = js.undefined
+  var sdpMLineIndex: js.UndefOr[Int]       = js.undefined
+  var usernameFragment: js.UndefOr[String] = js.undefined
 
-@js.native
 trait RTCCertificateExpiration extends js.Object:
-  var expires: Int = js.native
+  var expires: js.UndefOr[Int] = js.undefined
 
-@js.native
 trait RTCOfferOptions extends RTCOfferAnswerOptions:
-  var iceRestart: Boolean = js.native
+  var iceRestart: js.UndefOr[Boolean] = js.undefined
 
-@js.native
 trait RTCConfiguration extends js.Object:
-  var iceServers: scala.scalajs.js.Array[RTCIceServer]     = js.native
-  var iceTransportPolicy: String                           = js.native
-  var bundlePolicy: String                                 = js.native
-  var rtcpMuxPolicy: String                                = js.native
-  var certificates: scala.scalajs.js.Array[RTCCertificate] = js.native
-  var iceCandidatePoolSize: scala.scalajs.js.Any           = js.native
+  var iceServers: js.UndefOr[scala.scalajs.js.Array[RTCIceServer]]     = js.undefined
+  var iceTransportPolicy: js.UndefOr[String]                           = js.undefined
+  var bundlePolicy: js.UndefOr[String]                                 = js.undefined
+  var rtcpMuxPolicy: js.UndefOr[String]                                = js.undefined
+  var certificates: js.UndefOr[scala.scalajs.js.Array[RTCCertificate]] = js.undefined
+  var iceCandidatePoolSize: js.UndefOr[scala.scalajs.js.Any]           = js.undefined
 
-@js.native
 trait RTCSessionDescriptionInit extends js.Object:
-  var `type`: String = js.native
-  var sdp: String    = js.native
+  var `type`: js.UndefOr[String] = js.undefined
+  var sdp: js.UndefOr[String]    = js.undefined
 
-@js.native
 trait RTCRtpSynchronizationSource extends RTCRtpContributingSource
 
-@js.native
 trait RTCRtpCodecParameters extends RTCRtpCodec:
-  var payloadType: scala.scalajs.js.Any = js.native
+  var payloadType: js.UndefOr[scala.scalajs.js.Any] = js.undefined
 
-@js.native
 trait RTCTrackEventInit extends EventInit:
-  var receiver: RTCRtpReceiver                     = js.native
-  var track: MediaStreamTrack                      = js.native
-  var streams: scala.scalajs.js.Array[MediaStream] = js.native
-  var transceiver: RTCRtpTransceiver               = js.native
+  var receiver: js.UndefOr[RTCRtpReceiver]                     = js.undefined
+  var track: js.UndefOr[MediaStreamTrack]                      = js.undefined
+  var streams: js.UndefOr[scala.scalajs.js.Array[MediaStream]] = js.undefined
+  var transceiver: js.UndefOr[RTCRtpTransceiver]               = js.undefined
 
-@js.native
 trait RTCAnswerOptions extends RTCOfferAnswerOptions
 
-@js.native
 trait RTCDTMFToneChangeEventInit extends EventInit:
-  var tone: String = js.native
+  var tone: js.UndefOr[String] = js.undefined
 
-@js.native
 trait RTCRtpHeaderExtensionCapability extends js.Object:
-  var uri: String = js.native
+  var uri: js.UndefOr[String] = js.undefined
 
-@js.native
 trait RTCIceParameters extends js.Object:
-  var usernameFragment: String = js.native
-  var password: String         = js.native
+  var usernameFragment: js.UndefOr[String] = js.undefined
+  var password: js.UndefOr[String]         = js.undefined
 
-@js.native
 trait RTCRtcpParameters extends js.Object:
-  var cname: String        = js.native
-  var reducedSize: Boolean = js.native
+  var cname: js.UndefOr[String]        = js.undefined
+  var reducedSize: js.UndefOr[Boolean] = js.undefined
 
-@js.native
 trait RTCRtpHeaderExtensionParameters extends js.Object:
-  var uri: String        = js.native
-  var id: Int            = js.native
-  var encrypted: Boolean = js.native
+  var uri: js.UndefOr[String]        = js.undefined
+  var id: js.UndefOr[Int]            = js.undefined
+  var encrypted: js.UndefOr[Boolean] = js.undefined
 
-@js.native
 trait RTCRtpSendParameters extends RTCRtpParameters:
-  var transactionId: String                                       = js.native
-  var encodings: scala.scalajs.js.Array[RTCRtpEncodingParameters] = js.native
+  var transactionId: js.UndefOr[String]                                       = js.undefined
+  var encodings: js.UndefOr[scala.scalajs.js.Array[RTCRtpEncodingParameters]] = js.undefined
 
-@js.native
 trait RTCDataChannelEventInit extends EventInit:
-  var channel: RTCDataChannel = js.native
+  var channel: js.UndefOr[RTCDataChannel] = js.undefined
 
-@js.native
 trait RTCIceServer extends js.Object:
-  var urls: scala.scalajs.js.Any = js.native
-  var username: String           = js.native
-  var credential: String         = js.native
+  var urls: js.UndefOr[scala.scalajs.js.Any] = js.undefined
+  var username: js.UndefOr[String]           = js.undefined
+  var credential: js.UndefOr[String]         = js.undefined
 
-@js.native
 trait RTCRtpEncodingParameters extends RTCRtpCodingParameters:
-  var active: Boolean               = js.native
-  var codec: RTCRtpCodec            = js.native
-  var maxBitrate: Int               = js.native
-  var maxFramerate: Double          = js.native
-  var scaleResolutionDownBy: Double = js.native
+  var active: js.UndefOr[Boolean]               = js.undefined
+  var codec: js.UndefOr[RTCRtpCodec]            = js.undefined
+  var maxBitrate: js.UndefOr[Int]               = js.undefined
+  var maxFramerate: js.UndefOr[Double]          = js.undefined
+  var scaleResolutionDownBy: js.UndefOr[Double] = js.undefined
 
-@js.native
 trait RTCRtpCodec extends js.Object:
-  var mimeType: String    = js.native
-  var clockRate: Int      = js.native
-  var channels: Int       = js.native
-  var sdpFmtpLine: String = js.native
+  var mimeType: js.UndefOr[String]    = js.undefined
+  var clockRate: js.UndefOr[Int]      = js.undefined
+  var channels: js.UndefOr[Int]       = js.undefined
+  var sdpFmtpLine: js.UndefOr[String] = js.undefined
 
-@js.native
 trait RTCDtlsFingerprint extends js.Object:
-  var algorithm: String = js.native
-  var value: String     = js.native
+  var algorithm: js.UndefOr[String] = js.undefined
+  var value: js.UndefOr[String]     = js.undefined
 
-@js.native
 trait RTCRtpTransceiverInit extends js.Object:
-  var direction: String                                               = js.native
-  var streams: scala.scalajs.js.Array[MediaStream]                    = js.native
-  var sendEncodings: scala.scalajs.js.Array[RTCRtpEncodingParameters] = js.native
+  var direction: js.UndefOr[String]                                               = js.undefined
+  var streams: js.UndefOr[scala.scalajs.js.Array[MediaStream]]                    = js.undefined
+  var sendEncodings: js.UndefOr[scala.scalajs.js.Array[RTCRtpEncodingParameters]] = js.undefined
 
-@js.native
 trait RTCDataChannelInit extends js.Object:
-  var ordered: Boolean       = js.native
-  var maxPacketLifeTime: Int = js.native
-  var maxRetransmits: Int    = js.native
-  var protocol: String       = js.native
-  var negotiated: Boolean    = js.native
-  var id: Int                = js.native
+  var ordered: js.UndefOr[Boolean]       = js.undefined
+  var maxPacketLifeTime: js.UndefOr[Int] = js.undefined
+  var maxRetransmits: js.UndefOr[Int]    = js.undefined
+  var protocol: js.UndefOr[String]       = js.undefined
+  var negotiated: js.UndefOr[Boolean]    = js.undefined
+  var id: js.UndefOr[Int]                = js.undefined
 
-@js.native
 trait RTCLocalSessionDescriptionInit extends js.Object:
-  var `type`: String = js.native
-  var sdp: String    = js.native
+  var `type`: js.UndefOr[String] = js.undefined
+  var sdp: js.UndefOr[String]    = js.undefined
 
-@js.native
 trait RTCRtpCapabilities extends js.Object:
-  var codecs: scala.scalajs.js.Array[RTCRtpCodec]                               = js.native
-  var headerExtensions: scala.scalajs.js.Array[RTCRtpHeaderExtensionCapability] = js.native
+  var codecs: js.UndefOr[scala.scalajs.js.Array[RTCRtpCodec]]                               = js.undefined
+  var headerExtensions: js.UndefOr[scala.scalajs.js.Array[RTCRtpHeaderExtensionCapability]] = js.undefined
 
-@js.native
 trait RTCRtpCodingParameters extends js.Object:
-  var rid: String = js.native
+  var rid: js.UndefOr[String] = js.undefined
 
-@js.native
 trait RTCStats extends js.Object:
-  var timestamp: Double = js.native
-  var `type`: String    = js.native
-  var id: String        = js.native
+  var timestamp: js.UndefOr[Double] = js.undefined
+  var `type`: js.UndefOr[String]    = js.undefined
+  var id: js.UndefOr[String]        = js.undefined
 
-@js.native
 trait CloseEventInit extends EventInit:
-  var wasClean: Boolean = js.native
-  var code: Int         = js.native
-  var reason: String    = js.native
+  var wasClean: js.UndefOr[Boolean] = js.undefined
+  var code: js.UndefOr[Int]         = js.undefined
+  var reason: js.UndefOr[String]    = js.undefined
 
-@js.native
 trait WebTransportSendStreamOptions extends WebTransportSendOptions:
-  var waitUntilAvailable: Boolean = js.native
+  var waitUntilAvailable: js.UndefOr[Boolean] = js.undefined
 
-@js.native
 trait WebTransportErrorOptions extends js.Object:
-  var source: String       = js.native
-  var streamErrorCode: Int = js.native
+  var source: js.UndefOr[String]       = js.undefined
+  var streamErrorCode: js.UndefOr[Int] = js.undefined
 
-@js.native
 trait WebTransportReceiveStreamStats extends js.Object:
-  var bytesReceived: Int = js.native
-  var bytesRead: Int     = js.native
+  var bytesReceived: js.UndefOr[Int] = js.undefined
+  var bytesRead: js.UndefOr[Int]     = js.undefined
 
-@js.native
 trait WebTransportDatagramStats extends js.Object:
-  var droppedIncoming: Int = js.native
-  var expiredIncoming: Int = js.native
-  var expiredOutgoing: Int = js.native
-  var lostOutgoing: Int    = js.native
+  var droppedIncoming: js.UndefOr[Int] = js.undefined
+  var expiredIncoming: js.UndefOr[Int] = js.undefined
+  var expiredOutgoing: js.UndefOr[Int] = js.undefined
+  var lostOutgoing: js.UndefOr[Int]    = js.undefined
 
-@js.native
 trait WebTransportHash extends js.Object:
-  var algorithm: String           = js.native
-  var value: scala.scalajs.js.Any = js.native
+  var algorithm: js.UndefOr[String]           = js.undefined
+  var value: js.UndefOr[scala.scalajs.js.Any] = js.undefined
 
-@js.native
 trait WebTransportSendOptions extends js.Object:
-  var sendGroup: WebTransportSendGroup = js.native
-  var sendOrder: Int                   = js.native
+  var sendGroup: js.UndefOr[WebTransportSendGroup] = js.undefined
+  var sendOrder: js.UndefOr[Int]                   = js.undefined
 
-@js.native
 trait WebTransportOptions extends js.Object:
-  var allowPooling: Boolean                                             = js.native
-  var requireUnreliable: Boolean                                        = js.native
-  var headers: scala.scalajs.js.Any                                     = js.native
-  var serverCertificateHashes: scala.scalajs.js.Array[WebTransportHash] = js.native
-  var congestionControl: String                                         = js.native
-  var anticipatedConcurrentIncomingUnidirectionalStreams: Int           = js.native
-  var anticipatedConcurrentIncomingBidirectionalStreams: Int            = js.native
-  var protocols: scala.scalajs.js.Array[String]                         = js.native
-  var datagramsReadableType: String                                     = js.native
+  var allowPooling: js.UndefOr[Boolean]                                             = js.undefined
+  var requireUnreliable: js.UndefOr[Boolean]                                        = js.undefined
+  var headers: js.UndefOr[scala.scalajs.js.Any]                                     = js.undefined
+  var serverCertificateHashes: js.UndefOr[scala.scalajs.js.Array[WebTransportHash]] = js.undefined
+  var congestionControl: js.UndefOr[String]                                         = js.undefined
+  var anticipatedConcurrentIncomingUnidirectionalStreams: js.UndefOr[Int]           = js.undefined
+  var anticipatedConcurrentIncomingBidirectionalStreams: js.UndefOr[Int]            = js.undefined
+  var protocols: js.UndefOr[scala.scalajs.js.Array[String]]                         = js.undefined
+  var datagramsReadableType: js.UndefOr[String]                                     = js.undefined
 end WebTransportOptions
 
-@js.native
 trait WebTransportCloseInfo extends js.Object:
-  var closeCode: Int = js.native
-  var reason: String = js.native
+  var closeCode: js.UndefOr[Int] = js.undefined
+  var reason: js.UndefOr[String] = js.undefined
 
-@js.native
 trait WebTransportConnectionStats extends js.Object:
-  var bytesSent: Int                       = js.native
-  var bytesSentOverhead: Int               = js.native
-  var bytesAcknowledged: Int               = js.native
-  var packetsSent: Int                     = js.native
-  var bytesLost: Int                       = js.native
-  var packetsLost: Int                     = js.native
-  var bytesReceived: Int                   = js.native
-  var packetsReceived: Int                 = js.native
-  var smoothedRtt: Double                  = js.native
-  var rttVariation: Double                 = js.native
-  var minRtt: Double                       = js.native
-  var datagrams: WebTransportDatagramStats = js.native
-  var estimatedSendRate: Int               = js.native
-  var atSendCapacity: Boolean              = js.native
+  var bytesSent: js.UndefOr[Int]                       = js.undefined
+  var bytesSentOverhead: js.UndefOr[Int]               = js.undefined
+  var bytesAcknowledged: js.UndefOr[Int]               = js.undefined
+  var packetsSent: js.UndefOr[Int]                     = js.undefined
+  var bytesLost: js.UndefOr[Int]                       = js.undefined
+  var packetsLost: js.UndefOr[Int]                     = js.undefined
+  var bytesReceived: js.UndefOr[Int]                   = js.undefined
+  var packetsReceived: js.UndefOr[Int]                 = js.undefined
+  var smoothedRtt: js.UndefOr[Double]                  = js.undefined
+  var rttVariation: js.UndefOr[Double]                 = js.undefined
+  var minRtt: js.UndefOr[Double]                       = js.undefined
+  var datagrams: js.UndefOr[WebTransportDatagramStats] = js.undefined
+  var estimatedSendRate: js.UndefOr[Int]               = js.undefined
+  var atSendCapacity: js.UndefOr[Boolean]              = js.undefined
 end WebTransportConnectionStats
 
-@js.native
 trait WebTransportSendStreamStats extends js.Object:
-  var bytesWritten: Int      = js.native
-  var bytesSent: Int         = js.native
-  var bytesAcknowledged: Int = js.native
+  var bytesWritten: js.UndefOr[Int]      = js.undefined
+  var bytesSent: js.UndefOr[Int]         = js.undefined
+  var bytesAcknowledged: js.UndefOr[Int] = js.undefined
 
-@js.native
 trait USBPermissionDescriptor extends PermissionDescriptor:
-  var filters: scala.scalajs.js.Array[USBDeviceFilter]          = js.native
-  var exclusionFilters: scala.scalajs.js.Array[USBDeviceFilter] = js.native
+  var filters: js.UndefOr[scala.scalajs.js.Array[USBDeviceFilter]]          = js.undefined
+  var exclusionFilters: js.UndefOr[scala.scalajs.js.Array[USBDeviceFilter]] = js.undefined
 
-@js.native
 trait USBDeviceRequestOptions extends js.Object:
-  var filters: scala.scalajs.js.Array[USBDeviceFilter]          = js.native
-  var exclusionFilters: scala.scalajs.js.Array[USBDeviceFilter] = js.native
+  var filters: js.UndefOr[scala.scalajs.js.Array[USBDeviceFilter]]          = js.undefined
+  var exclusionFilters: js.UndefOr[scala.scalajs.js.Array[USBDeviceFilter]] = js.undefined
 
-@js.native
 trait USBBlocklistEntry extends js.Object:
-  var idVendor: Int  = js.native
-  var idProduct: Int = js.native
-  var bcdDevice: Int = js.native
+  var idVendor: js.UndefOr[Int]  = js.undefined
+  var idProduct: js.UndefOr[Int] = js.undefined
+  var bcdDevice: js.UndefOr[Int] = js.undefined
 
-@js.native
 trait USBDeviceFilter extends js.Object:
-  var vendorId: Int                      = js.native
-  var productId: Int                     = js.native
-  var classCode: scala.scalajs.js.Any    = js.native
-  var subclassCode: scala.scalajs.js.Any = js.native
-  var protocolCode: scala.scalajs.js.Any = js.native
-  var serialNumber: String               = js.native
+  var vendorId: js.UndefOr[Int]                      = js.undefined
+  var productId: js.UndefOr[Int]                     = js.undefined
+  var classCode: js.UndefOr[scala.scalajs.js.Any]    = js.undefined
+  var subclassCode: js.UndefOr[scala.scalajs.js.Any] = js.undefined
+  var protocolCode: js.UndefOr[scala.scalajs.js.Any] = js.undefined
+  var serialNumber: js.UndefOr[String]               = js.undefined
 
-@js.native
 trait USBConnectionEventInit extends EventInit:
-  var device: USBDevice = js.native
+  var device: js.UndefOr[USBDevice] = js.undefined
 
-@js.native
 trait USBControlTransferParameters extends js.Object:
-  var requestType: String           = js.native
-  var recipient: String             = js.native
-  var request: scala.scalajs.js.Any = js.native
-  var value: Int                    = js.native
-  var index: Int                    = js.native
+  var requestType: js.UndefOr[String]           = js.undefined
+  var recipient: js.UndefOr[String]             = js.undefined
+  var request: js.UndefOr[scala.scalajs.js.Any] = js.undefined
+  var value: js.UndefOr[Int]                    = js.undefined
+  var index: js.UndefOr[Int]                    = js.undefined
 
-@js.native
 trait AllowedUSBDevice extends js.Object:
-  var vendorId: scala.scalajs.js.Any  = js.native
-  var productId: scala.scalajs.js.Any = js.native
-  var serialNumber: String            = js.native
+  var vendorId: js.UndefOr[scala.scalajs.js.Any]  = js.undefined
+  var productId: js.UndefOr[scala.scalajs.js.Any] = js.undefined
+  var serialNumber: js.UndefOr[String]            = js.undefined
 
-@js.native
 trait USBPermissionStorage extends js.Object:
-  var allowedDevices: scala.scalajs.js.Array[AllowedUSBDevice] = js.native
+  var allowedDevices: js.UndefOr[scala.scalajs.js.Array[AllowedUSBDevice]] = js.undefined
 
-@js.native
 trait XRDepthStateInit extends js.Object:
-  var usagePreference: scala.scalajs.js.Array[String]      = js.native
-  var dataFormatPreference: scala.scalajs.js.Array[String] = js.native
-  var depthTypeRequest: scala.scalajs.js.Array[String]     = js.native
-  var matchDepthView: Boolean                              = js.native
+  var usagePreference: js.UndefOr[scala.scalajs.js.Array[String]]      = js.undefined
+  var dataFormatPreference: js.UndefOr[scala.scalajs.js.Array[String]] = js.undefined
+  var depthTypeRequest: js.UndefOr[scala.scalajs.js.Array[String]]     = js.undefined
+  var matchDepthView: js.UndefOr[Boolean]                              = js.undefined
 
-@js.native
 trait XRDOMOverlayInit extends js.Object:
-  var root: Element = js.native
+  var root: js.UndefOr[Element] = js.undefined
 
-@js.native
 trait XRDOMOverlayState extends js.Object:
-  var `type`: String = js.native
+  var `type`: js.UndefOr[String] = js.undefined
 
-@js.native
 trait XRHitTestOptionsInit extends js.Object:
-  var space: XRSpace                              = js.native
-  var entityTypes: scala.scalajs.js.Array[String] = js.native
-  var offsetRay: XRRay                            = js.native
+  var space: js.UndefOr[XRSpace]                              = js.undefined
+  var entityTypes: js.UndefOr[scala.scalajs.js.Array[String]] = js.undefined
+  var offsetRay: js.UndefOr[XRRay]                            = js.undefined
 
-@js.native
 trait XRTransientInputHitTestOptionsInit extends js.Object:
-  var profile: String                             = js.native
-  var entityTypes: scala.scalajs.js.Array[String] = js.native
-  var offsetRay: XRRay                            = js.native
+  var profile: js.UndefOr[String]                             = js.undefined
+  var entityTypes: js.UndefOr[scala.scalajs.js.Array[String]] = js.undefined
+  var offsetRay: js.UndefOr[XRRay]                            = js.undefined
 
-@js.native
 trait XRRayDirectionInit extends js.Object:
-  var x: Double = js.native
-  var y: Double = js.native
-  var z: Double = js.native
-  var w: Double = js.native
+  var x: js.UndefOr[Double] = js.undefined
+  var y: js.UndefOr[Double] = js.undefined
+  var z: js.UndefOr[Double] = js.undefined
+  var w: js.UndefOr[Double] = js.undefined
 
-@js.native
 trait XRLightProbeInit extends js.Object:
-  var reflectionFormat: String = js.native
+  var reflectionFormat: js.UndefOr[String] = js.undefined
 
-@js.native
 trait XRSessionEventInit extends EventInit:
-  var session: XRSession = js.native
+  var session: js.UndefOr[XRSession] = js.undefined
 
-@js.native
 trait XRSessionInit extends js.Object:
-  var requiredFeatures: scala.scalajs.js.Array[String] = js.native
-  var optionalFeatures: scala.scalajs.js.Array[String] = js.native
+  var requiredFeatures: js.UndefOr[scala.scalajs.js.Array[String]] = js.undefined
+  var optionalFeatures: js.UndefOr[scala.scalajs.js.Array[String]] = js.undefined
 
-@js.native
 trait XRVisibilityMaskChangeEventInit extends EventInit:
-  var session: XRSession             = js.native
-  var eye: String                    = js.native
-  var index: Int                     = js.native
-  var vertices: scala.scalajs.js.Any = js.native
-  var indices: scala.scalajs.js.Any  = js.native
+  var session: js.UndefOr[XRSession]             = js.undefined
+  var eye: js.UndefOr[String]                    = js.undefined
+  var index: js.UndefOr[Int]                     = js.undefined
+  var vertices: js.UndefOr[scala.scalajs.js.Any] = js.undefined
+  var indices: js.UndefOr[scala.scalajs.js.Any]  = js.undefined
 
-@js.native
 trait XRRenderStateInit extends js.Object:
-  var depthNear: Double                       = js.native
-  var depthFar: Double                        = js.native
-  var passthroughFullyObscured: Boolean       = js.native
-  var inlineVerticalFieldOfView: Double       = js.native
-  var baseLayer: XRWebGLLayer                 = js.native
-  var layers: scala.scalajs.js.Array[XRLayer] = js.native
+  var depthNear: js.UndefOr[Double]                       = js.undefined
+  var depthFar: js.UndefOr[Double]                        = js.undefined
+  var passthroughFullyObscured: js.UndefOr[Boolean]       = js.undefined
+  var inlineVerticalFieldOfView: js.UndefOr[Double]       = js.undefined
+  var baseLayer: js.UndefOr[XRWebGLLayer]                 = js.undefined
+  var layers: js.UndefOr[scala.scalajs.js.Array[XRLayer]] = js.undefined
 
-@js.native
 trait XRInputSourcesChangeEventInit extends EventInit:
-  var session: XRSession                             = js.native
-  var added: scala.scalajs.js.Array[XRInputSource]   = js.native
-  var removed: scala.scalajs.js.Array[XRInputSource] = js.native
+  var session: js.UndefOr[XRSession]                             = js.undefined
+  var added: js.UndefOr[scala.scalajs.js.Array[XRInputSource]]   = js.undefined
+  var removed: js.UndefOr[scala.scalajs.js.Array[XRInputSource]] = js.undefined
 
-@js.native
 trait XRPermissionDescriptor extends PermissionDescriptor:
-  var mode: String                                     = js.native
-  var requiredFeatures: scala.scalajs.js.Array[String] = js.native
-  var optionalFeatures: scala.scalajs.js.Array[String] = js.native
+  var mode: js.UndefOr[String]                                     = js.undefined
+  var requiredFeatures: js.UndefOr[scala.scalajs.js.Array[String]] = js.undefined
+  var optionalFeatures: js.UndefOr[scala.scalajs.js.Array[String]] = js.undefined
 
-@js.native
 trait XRWebGLLayerInit extends js.Object:
-  var antialias: Boolean             = js.native
-  var depth: Boolean                 = js.native
-  var stencil: Boolean               = js.native
-  var alpha: Boolean                 = js.native
-  var ignoreDepthValues: Boolean     = js.native
-  var framebufferScaleFactor: Double = js.native
+  var antialias: js.UndefOr[Boolean]             = js.undefined
+  var depth: js.UndefOr[Boolean]                 = js.undefined
+  var stencil: js.UndefOr[Boolean]               = js.undefined
+  var alpha: js.UndefOr[Boolean]                 = js.undefined
+  var ignoreDepthValues: js.UndefOr[Boolean]     = js.undefined
+  var framebufferScaleFactor: js.UndefOr[Double] = js.undefined
 
-@js.native
 trait XRReferenceSpaceEventInit extends EventInit:
-  var referenceSpace: XRReferenceSpace = js.native
-  var transform: XRRigidTransform      = js.native
+  var referenceSpace: js.UndefOr[XRReferenceSpace] = js.undefined
+  var transform: js.UndefOr[XRRigidTransform]      = js.undefined
 
-@js.native
 trait XRInputSourceEventInit extends EventInit:
-  var frame: XRFrame             = js.native
-  var inputSource: XRInputSource = js.native
+  var frame: js.UndefOr[XRFrame]             = js.undefined
+  var inputSource: js.UndefOr[XRInputSource] = js.undefined
 
-@js.native
 trait XRSessionSupportedPermissionDescriptor extends PermissionDescriptor:
-  var mode: String = js.native
+  var mode: js.UndefOr[String] = js.undefined
 
-@js.native
 trait XRMediaCylinderLayerInit extends XRMediaLayerInit:
-  var transform: XRRigidTransform = js.native
-  var radius: Double              = js.native
-  var centralAngle: Double        = js.native
-  var aspectRatio: Double         = js.native
+  var transform: js.UndefOr[XRRigidTransform] = js.undefined
+  var radius: js.UndefOr[Double]              = js.undefined
+  var centralAngle: js.UndefOr[Double]        = js.undefined
+  var aspectRatio: js.UndefOr[Double]         = js.undefined
 
-@js.native
 trait XRMediaLayerInit extends js.Object:
-  var space: XRSpace        = js.native
-  var layout: String        = js.native
-  var invertStereo: Boolean = js.native
+  var space: js.UndefOr[XRSpace]        = js.undefined
+  var layout: js.UndefOr[String]        = js.undefined
+  var invertStereo: js.UndefOr[Boolean] = js.undefined
 
-@js.native
 trait XRCubeLayerInit extends XRLayerInit:
-  var orientation: DOMPointReadOnly = js.native
+  var orientation: js.UndefOr[DOMPointReadOnly] = js.undefined
 
-@js.native
 trait XRLayerEventInit extends EventInit:
-  var layer: XRLayer = js.native
+  var layer: js.UndefOr[XRLayer] = js.undefined
 
-@js.native
 trait XRMediaQuadLayerInit extends XRMediaLayerInit:
-  var transform: XRRigidTransform = js.native
-  var width: Double               = js.native
-  var height: Double              = js.native
+  var transform: js.UndefOr[XRRigidTransform] = js.undefined
+  var width: js.UndefOr[Double]               = js.undefined
+  var height: js.UndefOr[Double]              = js.undefined
 
-@js.native
 trait XRLayerInit extends js.Object:
-  var space: XRSpace                    = js.native
-  var textureType: String               = js.native
-  var colorFormat: scala.scalajs.js.Any = js.native
-  var depthFormat: scala.scalajs.js.Any = js.native
-  var mipLevels: Int                    = js.native
-  var viewPixelWidth: Int               = js.native
-  var viewPixelHeight: Int              = js.native
-  var layout: String                    = js.native
-  var isStatic: Boolean                 = js.native
-  var clearOnAccess: Boolean            = js.native
+  var space: js.UndefOr[XRSpace]         = js.undefined
+  var textureType: js.UndefOr[String]    = js.undefined
+  var colorFormat: js.UndefOr[Int]       = js.undefined
+  var depthFormat: js.UndefOr[Int]       = js.undefined
+  var mipLevels: js.UndefOr[Int]         = js.undefined
+  var viewPixelWidth: js.UndefOr[Int]    = js.undefined
+  var viewPixelHeight: js.UndefOr[Int]   = js.undefined
+  var layout: js.UndefOr[String]         = js.undefined
+  var isStatic: js.UndefOr[Boolean]      = js.undefined
+  var clearOnAccess: js.UndefOr[Boolean] = js.undefined
 end XRLayerInit
 
-@js.native
 trait XRQuadLayerInit extends XRLayerInit:
-  var transform: XRRigidTransform = js.native
-  var width: Double               = js.native
-  var height: Double              = js.native
+  var transform: js.UndefOr[XRRigidTransform] = js.undefined
+  var width: js.UndefOr[Double]               = js.undefined
+  var height: js.UndefOr[Double]              = js.undefined
 
-@js.native
 trait XREquirectLayerInit extends XRLayerInit:
-  var transform: XRRigidTransform    = js.native
-  var radius: Double                 = js.native
-  var centralHorizontalAngle: Double = js.native
-  var upperVerticalAngle: Double     = js.native
-  var lowerVerticalAngle: Double     = js.native
+  var transform: js.UndefOr[XRRigidTransform]    = js.undefined
+  var radius: js.UndefOr[Double]                 = js.undefined
+  var centralHorizontalAngle: js.UndefOr[Double] = js.undefined
+  var upperVerticalAngle: js.UndefOr[Double]     = js.undefined
+  var lowerVerticalAngle: js.UndefOr[Double]     = js.undefined
 
-@js.native
 trait XRMediaEquirectLayerInit extends XRMediaLayerInit:
-  var transform: XRRigidTransform    = js.native
-  var radius: Double                 = js.native
-  var centralHorizontalAngle: Double = js.native
-  var upperVerticalAngle: Double     = js.native
-  var lowerVerticalAngle: Double     = js.native
+  var transform: js.UndefOr[XRRigidTransform]    = js.undefined
+  var radius: js.UndefOr[Double]                 = js.undefined
+  var centralHorizontalAngle: js.UndefOr[Double] = js.undefined
+  var upperVerticalAngle: js.UndefOr[Double]     = js.undefined
+  var lowerVerticalAngle: js.UndefOr[Double]     = js.undefined
 
-@js.native
 trait XRCylinderLayerInit extends XRLayerInit:
-  var transform: XRRigidTransform = js.native
-  var radius: Double              = js.native
-  var centralAngle: Double        = js.native
-  var aspectRatio: Double         = js.native
+  var transform: js.UndefOr[XRRigidTransform] = js.undefined
+  var radius: js.UndefOr[Double]              = js.undefined
+  var centralAngle: js.UndefOr[Double]        = js.undefined
+  var aspectRatio: js.UndefOr[Double]         = js.undefined
 
-@js.native
 trait XRProjectionLayerInit extends js.Object:
-  var textureType: String               = js.native
-  var colorFormat: scala.scalajs.js.Any = js.native
-  var depthFormat: scala.scalajs.js.Any = js.native
-  var scaleFactor: Double               = js.native
-  var clearOnAccess: Boolean            = js.native
+  var textureType: js.UndefOr[String]    = js.undefined
+  var colorFormat: js.UndefOr[Int]       = js.undefined
+  var depthFormat: js.UndefOr[Int]       = js.undefined
+  var scaleFactor: js.UndefOr[Double]    = js.undefined
+  var clearOnAccess: js.UndefOr[Boolean] = js.undefined
 
-@js.native
 trait WindowControlsOverlayGeometryChangeEventInit extends EventInit:
-  var titlebarAreaRect: DOMRect = js.native
-  var visible: Boolean          = js.native
+  var titlebarAreaRect: js.UndefOr[DOMRect] = js.undefined
+  var visible: js.UndefOr[Boolean]          = js.undefined
 
-@js.native
 trait WriterCreateOptions extends WriterCreateCoreOptions:
-  var signal: AbortSignal                                      = js.native
-  var monitor: scala.scalajs.js.Function1[CreateMonitor, Unit] = js.native
-  var sharedContext: String                                    = js.native
+  var signal: js.UndefOr[AbortSignal]                                      = js.undefined
+  var monitor: js.UndefOr[scala.scalajs.js.Function1[CreateMonitor, Unit]] = js.undefined
+  var sharedContext: js.UndefOr[String]                                    = js.undefined
 
-@js.native
 trait WriterWriteOptions extends js.Object:
-  var context: String     = js.native
-  var signal: AbortSignal = js.native
+  var context: js.UndefOr[String]     = js.undefined
+  var signal: js.UndefOr[AbortSignal] = js.undefined
 
-@js.native
 trait WriterCreateCoreOptions extends js.Object:
-  var tone: String                                             = js.native
-  var format: String                                           = js.native
-  var length: String                                           = js.native
-  var expectedInputLanguages: scala.scalajs.js.Array[String]   = js.native
-  var expectedContextLanguages: scala.scalajs.js.Array[String] = js.native
-  var outputLanguage: String                                   = js.native
+  var tone: js.UndefOr[String]                                             = js.undefined
+  var format: js.UndefOr[String]                                           = js.undefined
+  var length: js.UndefOr[String]                                           = js.undefined
+  var expectedInputLanguages: js.UndefOr[scala.scalajs.js.Array[String]]   = js.undefined
+  var expectedContextLanguages: js.UndefOr[scala.scalajs.js.Array[String]] = js.undefined
+  var outputLanguage: js.UndefOr[String]                                   = js.undefined
 
-@js.native
 trait RewriterRewriteOptions extends js.Object:
-  var context: String     = js.native
-  var signal: AbortSignal = js.native
+  var context: js.UndefOr[String]     = js.undefined
+  var signal: js.UndefOr[AbortSignal] = js.undefined
 
-@js.native
 trait RewriterCreateOptions extends RewriterCreateCoreOptions:
-  var signal: AbortSignal                                      = js.native
-  var monitor: scala.scalajs.js.Function1[CreateMonitor, Unit] = js.native
-  var sharedContext: String                                    = js.native
+  var signal: js.UndefOr[AbortSignal]                                      = js.undefined
+  var monitor: js.UndefOr[scala.scalajs.js.Function1[CreateMonitor, Unit]] = js.undefined
+  var sharedContext: js.UndefOr[String]                                    = js.undefined
 
-@js.native
 trait SummarizerSummarizeOptions extends js.Object:
-  var signal: AbortSignal = js.native
-  var context: String     = js.native
+  var signal: js.UndefOr[AbortSignal] = js.undefined
+  var context: js.UndefOr[String]     = js.undefined
 
-@js.native
 trait RewriterCreateCoreOptions extends js.Object:
-  var tone: String                                             = js.native
-  var format: String                                           = js.native
-  var length: String                                           = js.native
-  var expectedInputLanguages: scala.scalajs.js.Array[String]   = js.native
-  var expectedContextLanguages: scala.scalajs.js.Array[String] = js.native
-  var outputLanguage: String                                   = js.native
+  var tone: js.UndefOr[String]                                             = js.undefined
+  var format: js.UndefOr[String]                                           = js.undefined
+  var length: js.UndefOr[String]                                           = js.undefined
+  var expectedInputLanguages: js.UndefOr[scala.scalajs.js.Array[String]]   = js.undefined
+  var expectedContextLanguages: js.UndefOr[scala.scalajs.js.Array[String]] = js.undefined
+  var outputLanguage: js.UndefOr[String]                                   = js.undefined
 
-@js.native
 trait SummarizerCreateOptions extends SummarizerCreateCoreOptions:
-  var signal: AbortSignal                                      = js.native
-  var monitor: scala.scalajs.js.Function1[CreateMonitor, Unit] = js.native
-  var sharedContext: String                                    = js.native
+  var signal: js.UndefOr[AbortSignal]                                      = js.undefined
+  var monitor: js.UndefOr[scala.scalajs.js.Function1[CreateMonitor, Unit]] = js.undefined
+  var sharedContext: js.UndefOr[String]                                    = js.undefined
 
-@js.native
 trait SummarizerCreateCoreOptions extends js.Object:
-  var `type`: String                                           = js.native
-  var format: String                                           = js.native
-  var length: String                                           = js.native
-  var preference: String                                       = js.native
-  var expectedInputLanguages: scala.scalajs.js.Array[String]   = js.native
-  var expectedContextLanguages: scala.scalajs.js.Array[String] = js.native
-  var outputLanguage: String                                   = js.native
+  var `type`: js.UndefOr[String]                                           = js.undefined
+  var format: js.UndefOr[String]                                           = js.undefined
+  var length: js.UndefOr[String]                                           = js.undefined
+  var preference: js.UndefOr[String]                                       = js.undefined
+  var expectedInputLanguages: js.UndefOr[scala.scalajs.js.Array[String]]   = js.undefined
+  var expectedContextLanguages: js.UndefOr[scala.scalajs.js.Array[String]] = js.undefined
+  var outputLanguage: js.UndefOr[String]                                   = js.undefined
 
-@js.native
 trait ProgressEventInit extends EventInit:
-  var lengthComputable: Boolean = js.native
-  var loaded: Double            = js.native
-  var total: Double             = js.native
+  var lengthComputable: js.UndefOr[Boolean] = js.undefined
+  var loaded: js.UndefOr[Double]            = js.undefined
+  var total: js.UndefOr[Double]             = js.undefined

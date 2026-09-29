@@ -46,10 +46,10 @@ object ElementPatching:
               case Some(el) => applyTo(el.asInstanceOf[dom.Element], patch)
               case None     => reportMissingTarget(sel, id, status)
           case _ =>
-            val target = dom.document.querySelector(sel)
-            if target == null || js.isUndefined(target) then
-              reportMissingTarget(sel, regionId.getOrElse(sel), ascent.js.ServerRegionRegistry.Status.Unknown)
-            else applyTo(target, patch)
+            dom.document.querySelector(sel) match
+              case Some(target) => applyTo(target, patch)
+              case None         =>
+                reportMissingTarget(sel, regionId.getOrElse(sel), ascent.js.ServerRegionRegistry.Status.Unknown)
         end match
 
   /** Report a patch whose target didn't resolve, with the precise reason from the region registry. */

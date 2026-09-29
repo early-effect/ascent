@@ -18,12 +18,12 @@ object ServerRegionMountSpec extends ZIOSpecDefault:
         ServerRegionRegistry.clearForTest()
         Diagnostics.resetHandler()
         val p = dom.document.createElement("div")
-        dom.document.asInstanceOf[js.Dynamic].body.appendChild(p)
+        dom.document.body.foreach(_.appendChild(p))
         p
       }
     )(p =>
       ZIO.succeed {
-        p.parentNode.removeChild(p)
+        p.parentNode.foreach(_.removeChild(p))
         ServerRegionRegistry.clearForTest()
         Diagnostics.resetHandler()
       }.unit

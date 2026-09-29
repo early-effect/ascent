@@ -110,6 +110,82 @@ object WebrefParseSpec extends ZIOSpecDefault:
         }""")
         yield assertTrue(idl.interfaces("X").attributes.head.idlType == "TrustedType | DOMString")
       },
+      test("a typedef decodes to the type it names, a union's members joined by ' | '") {
+        for idl <- Webref.parseIdl("""{
+          "idlparsed": { "idlNames": {
+            "GLenum": { "type": "typedef", "name": "GLenum", "idlType": { "idlType": "unsigned long" } },
+            "MessageEventSource": { "type": "typedef", "name": "MessageEventSource", "idlType": {
+              "type": "typedef-type", "union": true,
+              "idlType": [ { "idlType": "WindowProxy" }, { "idlType": "MessagePort" }, { "idlType": "ServiceWorker" } ]
+            } }
+          } }
+        }""")
+        yield assertTrue(
+          idl.typedefs == Map(
+            "GLenum"             -> "unsigned long",
+            "MessageEventSource" -> "WindowProxy | MessagePort | ServiceWorker",
+          ),
+          idl.interfaces.isEmpty,
+        )
+      },
+      test("merged specs keep every typedef, and the earlier file wins a name both define") {
+        val a = Webref.Idl(Map.empty, typedefs = Map("A" -> "long", "Shared" -> "DOMString"))
+        val b = Webref.Idl(Map.empty, typedefs = Map("B" -> "double", "Shared" -> "boolean"))
+        assertTrue(Webref.mergeIdl(a, b).typedefs == Map("A" -> "long", "B" -> "double", "Shared" -> "DOMString"))
+      },
+      test("WebIDL's T? marks an attribute nullable and an operation's result nullable, and T alone marks neither") {
+        for idl <- Webref.parseIdl("""{
+          "idlparsed": { "idlNames": { "Node": { "type": "interface", "name": "Node", "members": [
+            { "type": "attribute", "name": "parentNode", "readonly": true,
+              "idlType": { "type": "attribute-type", "nullable": true, "idlType": "Node" } },
+            { "type": "attribute", "name": "nodeName", "readonly": true,
+              "idlType": { "type": "attribute-type", "nullable": false, "idlType": "DOMString" } },
+            { "type": "operation", "name": "lookupPrefix",
+              "idlType": { "type": "return-type", "nullable": true, "idlType": "DOMString" }, "arguments": [] },
+            { "type": "operation", "name": "hasChildNodes",
+              "idlType": { "type": "return-type", "idlType": "boolean" }, "arguments": [] }
+          ] } } }
+        }""")
+        yield
+          val node = idl.interfaces("Node")
+          assertTrue(
+            node.attributes.map(a => a.name -> a.nullable) == List("parentNode" -> true, "nodeName" -> false),
+            node.operations
+              .map(o => o.name -> o.returnsNullable) == List("lookupPrefix" -> true, "hasChildNodes" -> false),
+            node.attributes.head.idlType == "Node",
+          )
+      },
+      test("a nullable union attribute keeps its members and is nullable") {
+        for idl <- Webref.parseIdl("""{
+          "idlparsed": { "idlNames": { "MessageEvent": { "type": "interface", "name": "MessageEvent", "members": [
+            { "type": "attribute", "name": "source", "readonly": true, "idlType": {
+              "type": "attribute-type", "union": true, "nullable": true,
+              "idlType": [ { "idlType": "WindowProxy" }, { "idlType": "MessagePort" } ]
+            } }
+          ] } } }
+        }""")
+        yield
+          val source = idl.interfaces("MessageEvent").attributes.head
+          assertTrue(source.nullable, source.idlType == "WindowProxy | MessagePort")
+      },
+      test("a typedef whose own type is T? is a nullable typedef; a plain one is not") {
+        for idl <- Webref.parseIdl("""{
+          "idlparsed": { "idlNames": {
+            "EventHandler": { "type": "typedef", "name": "EventHandler",
+              "idlType": { "type": "typedef-type", "nullable": true, "idlType": "EventHandlerNonNull" } },
+            "GLenum": { "type": "typedef", "name": "GLenum", "idlType": { "idlType": "unsigned long" } }
+          } }
+        }""")
+        yield assertTrue(
+          idl.nullableTypedefs == Set("EventHandler"),
+          idl.typedefs == Map("EventHandler" -> "EventHandlerNonNull", "GLenum" -> "unsigned long"),
+        )
+      },
+      test("merged specs keep every nullable typedef") {
+        val a = Webref.Idl(Map.empty, nullableTypedefs = Set("EventHandler"))
+        val b = Webref.Idl(Map.empty, nullableTypedefs = Set("OnErrorEventHandler"))
+        assertTrue(Webref.mergeIdl(a, b).nullableTypedefs == Set("EventHandler", "OnErrorEventHandler"))
+      },
       test("a union-typed operation parameter decodes the same way as a union-typed attribute") {
         for idl <- Webref.parseIdl("""{
           "idlparsed": { "idlNames": { "X": { "type": "interface", "name": "X", "members": [

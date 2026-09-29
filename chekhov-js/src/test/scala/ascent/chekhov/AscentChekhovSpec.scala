@@ -9,6 +9,8 @@ import ascent.chekhov.AscentChekhov.withMounted
 import zio.*
 import zio.test.*
 
+import scala.scalajs.js
+
 /** Live `withMounted` + typed handles under ChekhovJSEnv. */
 object AscentChekhovSpec extends ZIOSpecDefault:
 
@@ -49,7 +51,7 @@ object AscentChekhovSpec extends ZIOSpecDefault:
         for
           ref    <- Ref.make[Option[dom.Element]](None)
           during <- withMounted(E.div(testId("x"), "hi")) { root =>
-            ref.set(Some(root.element)).as(root.element.getAttribute("data-chekhov-root") == "true")
+            ref.set(Some(root.element)).as(root.element.getAttribute("data-chekhov-root").contains("true"))
           }
           detached <- ref.get.map(_.exists(el => !el.isConnected))
         yield assertTrue(during, detached)
@@ -68,10 +70,10 @@ object AscentChekhovSpec extends ZIOSpecDefault:
               _  <- ready.succeed(())
               _  <- otherReady.await
               ok <- ZIO.succeed(
-                root.element.getAttribute("data-chekhov-root") == "true" &&
-                  !root.element.ownerDocument.eq(dom.document) &&
-                  Option(root.element.querySelector(s"""[data-testid="$other"]""")).isEmpty &&
-                  Option(dom.document.querySelector(s"""[data-testid="$tag"]""")).isEmpty
+                root.element.getAttribute("data-chekhov-root").contains("true") &&
+                  root.element.ownerDocument.exists(doc => !js.special.strictEquals(doc, dom.document)) &&
+                  root.element.querySelector(s"""[data-testid="$other"]""").isEmpty &&
+                  dom.document.querySelector(s"""[data-testid="$tag"]""").isEmpty
               )
             yield ok
           }
@@ -89,8 +91,9 @@ object AscentChekhovSpec extends ZIOSpecDefault:
           okA,
           okB,
           (a, b) match
-            case (Some(x), Some(y)) => !x.ownerDocument.eq(y.ownerDocument)
-            case _                  => false
+            case (Some(x), Some(y)) =>
+              x.ownerDocument.zip(y.ownerDocument).exists((dx, dy) => !js.special.strictEquals(dx, dy))
+            case _ => false
           ,
           a.forall(!_.isConnected),
           b.forall(!_.isConnected),

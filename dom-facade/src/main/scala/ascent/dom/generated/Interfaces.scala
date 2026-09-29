@@ -24,21 +24,26 @@ import scala.scalajs.js.annotation.{JSGlobal, JSBracketAccess, JSName}
 @JSGlobal
 class QuotaExceededError extends DOMException:
   def this(@unused message: String = js.native, @unused options: QuotaExceededErrorOptions = js.native) = this()
-  def quota: Double     = js.native
-  def requested: Double = js.native
+  @JSName("quota")
+  def quotaOrNull: Double | Null = js.native
+  @JSName("requested")
+  def requestedOrNull: Double | Null = js.native
 
 @js.native
 @JSGlobal
-class Summarizer extends js.Object:
-  def sharedContext: String                                    = js.native
-  def `type`: String                                           = js.native
-  def format: String                                           = js.native
-  def length: String                                           = js.native
-  def preference: String                                       = js.native
-  def expectedInputLanguages: scala.scalajs.js.Array[String]   = js.native
-  def expectedContextLanguages: scala.scalajs.js.Array[String] = js.native
-  def outputLanguage: String                                   = js.native
-  def inputQuota: Double                                       = js.native
+class Summarizer extends PlatformObject:
+  def sharedContext: String = js.native
+  def `type`: String        = js.native
+  def format: String        = js.native
+  def length: String        = js.native
+  def preference: String    = js.native
+  @JSName("expectedInputLanguages")
+  def expectedInputLanguagesOrNull: scala.scalajs.js.Array[String] | Null = js.native
+  @JSName("expectedContextLanguages")
+  def expectedContextLanguagesOrNull: scala.scalajs.js.Array[String] | Null = js.native
+  @JSName("outputLanguage")
+  def outputLanguageOrNull: String | Null = js.native
+  def inputQuota: Double                  = js.native
   def summarize(input: String, options: SummarizerSummarizeOptions = js.native): scala.scalajs.js.Promise[String] =
     js.native
   def summarizeStreaming(input: String, options: SummarizerSummarizeOptions = js.native): ReadableStream = js.native
@@ -61,16 +66,17 @@ class AuthenticatorAttestationResponse extends AuthenticatorResponse:
   def attestationObject: scala.scalajs.js.Any         = js.native
   def getTransports(): scala.scalajs.js.Array[String] = js.native
   def getAuthenticatorData(): scala.scalajs.js.Any    = js.native
-  def getPublicKey(): scala.scalajs.js.Any            = js.native
-  def getPublicKeyAlgorithm(): scala.scalajs.js.Any   = js.native
+  @JSName("getPublicKey")
+  def getPublicKeyOrNull(): scala.scalajs.js.Any | Null = js.native
+  def getPublicKeyAlgorithm(): Int                      = js.native
 
 @js.native
 @JSGlobal
 class CSSMathClamp extends CSSMathValue:
   def this(
-      @unused lower: scala.scalajs.js.Any,
-      @unused value: scala.scalajs.js.Any,
-      @unused upper: scala.scalajs.js.Any,
+      @unused lower: Double | CSSNumericValue,
+      @unused value: Double | CSSNumericValue,
+      @unused upper: Double | CSSNumericValue,
   ) = this()
   def lower: CSSNumericValue = js.native
   def value: CSSNumericValue = js.native
@@ -79,78 +85,104 @@ end CSSMathClamp
 
 @js.native
 @JSGlobal
-class Global extends js.Object:
+class Global extends PlatformObject:
   def this(@unused descriptor: GlobalDescriptor, @unused v: scala.scalajs.js.Any = js.native) = this()
   var value: scala.scalajs.js.Any = js.native
 
 @js.native
 @JSGlobal
-class RTCIceCandidate extends js.Object:
+class RTCIceCandidate extends PlatformObject:
   def this(@unused candidateInitDict: RTCLocalIceCandidateInit = js.native) = this()
-  def candidate: String             = js.native
-  def sdpMid: String                = js.native
-  def sdpMLineIndex: Int            = js.native
-  def foundation: String            = js.native
-  def component: String             = js.native
-  def priority: Int                 = js.native
-  def address: String               = js.native
-  def protocol: String              = js.native
-  def port: Int                     = js.native
-  def `type`: String                = js.native
-  def tcpType: String               = js.native
-  def relatedAddress: String        = js.native
-  def relatedPort: Int              = js.native
-  def usernameFragment: String      = js.native
-  def relayProtocol: String         = js.native
-  def url: String                   = js.native
+  def candidate: String = js.native
+  @JSName("sdpMid")
+  def sdpMidOrNull: String | Null = js.native
+  @JSName("sdpMLineIndex")
+  def sdpMLineIndexOrNull: Int | Null = js.native
+  @JSName("foundation")
+  def foundationOrNull: String | Null = js.native
+  @JSName("component")
+  def componentOrNull: String | Null = js.native
+  @JSName("priority")
+  def priorityOrNull: Int | Null = js.native
+  @JSName("address")
+  def addressOrNull: String | Null = js.native
+  @JSName("protocol")
+  def protocolOrNull: String | Null = js.native
+  @JSName("port")
+  def portOrNull: Int | Null = js.native
+  @JSName("type")
+  def typeOrNull: String | Null = js.native
+  @JSName("tcpType")
+  def tcpTypeOrNull: String | Null = js.native
+  @JSName("relatedAddress")
+  def relatedAddressOrNull: String | Null = js.native
+  @JSName("relatedPort")
+  def relatedPortOrNull: Int | Null = js.native
+  @JSName("usernameFragment")
+  def usernameFragmentOrNull: String | Null = js.native
+  @JSName("relayProtocol")
+  def relayProtocolOrNull: String | Null = js.native
+  @JSName("url")
+  def urlOrNull: String | Null      = js.native
   def toJSON(): RTCIceCandidateInit = js.native
 end RTCIceCandidate
 
 @js.native
 @JSGlobal
-class EpubReadingSystem extends js.Object:
+class EpubReadingSystem extends PlatformObject:
   def hasFeature(feature: String, version: String = js.native): Boolean = js.native
 
 @js.native
 @JSGlobal
 class CloseWatcher extends EventTarget:
   def this(@unused options: CloseWatcherOptions = js.native) = this()
-  var oncancel: scala.scalajs.js.Any = js.native
-  var onclose: scala.scalajs.js.Any  = js.native
-  def requestClose(): Unit           = js.native
-  def close(): Unit                  = js.native
-  def destroy(): Unit                = js.native
+  @JSName("oncancel")
+  var oncancelOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("onclose")
+  var oncloseOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  def requestClose(): Unit                                                          = js.native
+  def close(): Unit                                                                 = js.native
+  def destroy(): Unit                                                               = js.native
+end CloseWatcher
 
 @js.native
 @JSGlobal
 class RTCError extends DOMException:
   def this(@unused init: RTCErrorInit, @unused message: String = js.native) = this()
-  def httpRequestStatusCode: Int = js.native
-  def errorDetail: String        = js.native
-  def sdpLineNumber: Int         = js.native
-  def sctpCauseCode: Int         = js.native
-  def receivedAlert: Int         = js.native
-  def sentAlert: Int             = js.native
+  @JSName("httpRequestStatusCode")
+  def httpRequestStatusCodeOrNull: Int | Null = js.native
+  def errorDetail: String                     = js.native
+  @JSName("sdpLineNumber")
+  def sdpLineNumberOrNull: Int | Null = js.native
+  @JSName("sctpCauseCode")
+  def sctpCauseCodeOrNull: Int | Null = js.native
+  @JSName("receivedAlert")
+  def receivedAlertOrNull: Int | Null = js.native
+  @JSName("sentAlert")
+  def sentAlertOrNull: Int | Null = js.native
 end RTCError
 
 @js.native
 @JSGlobal
 class VisualViewport extends EventTarget:
-  def offsetLeft: Double                = js.native
-  def offsetTop: Double                 = js.native
-  def pageLeft: Double                  = js.native
-  def pageTop: Double                   = js.native
-  def width: Double                     = js.native
-  def height: Double                    = js.native
-  def scale: Double                     = js.native
-  var onresize: scala.scalajs.js.Any    = js.native
-  var onscroll: scala.scalajs.js.Any    = js.native
-  var onscrollend: scala.scalajs.js.Any = js.native
+  def offsetLeft: Double = js.native
+  def offsetTop: Double  = js.native
+  def pageLeft: Double   = js.native
+  def pageTop: Double    = js.native
+  def width: Double      = js.native
+  def height: Double     = js.native
+  def scale: Double      = js.native
+  @JSName("onresize")
+  var onresizeOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("onscroll")
+  var onscrollOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("onscrollend")
+  var onscrollendOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
 end VisualViewport
 
 @js.native
 @JSGlobal
-class VideoTrackGenerator extends js.Object:
+class VideoTrackGenerator extends PlatformObject:
   def writable: WritableStream = js.native
   var muted: Boolean           = js.native
   def track: MediaStreamTrack  = js.native
@@ -158,23 +190,28 @@ class VideoTrackGenerator extends js.Object:
 @js.native
 @JSGlobal
 class SourceBufferList extends EventTarget:
-  def length: Int                                = js.native
-  var onaddsourcebuffer: scala.scalajs.js.Any    = js.native
-  var onremovesourcebuffer: scala.scalajs.js.Any = js.native
+  def length: Int = js.native
+  @JSName("onaddsourcebuffer")
+  var onaddsourcebufferOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("onremovesourcebuffer")
+  var onremovesourcebufferOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
   @JSBracketAccess
   def apply(index: Int): SourceBuffer = js.native
+end SourceBufferList
 
 @js.native
 @JSGlobal
 class LanguageModel extends EventTarget:
-  def contextUsage: Double                    = js.native
-  def contextWindow: Double                   = js.native
-  var oncontextoverflow: scala.scalajs.js.Any = js.native
-  def inputUsage: Double                      = js.native
-  def inputQuota: Double                      = js.native
-  var onquotaoverflow: scala.scalajs.js.Any   = js.native
-  def topK: Int                               = js.native
-  def temperature: Double                     = js.native
+  def contextUsage: Double  = js.native
+  def contextWindow: Double = js.native
+  @JSName("oncontextoverflow")
+  var oncontextoverflowOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  def inputUsage: Double                                                                      = js.native
+  def inputQuota: Double                                                                      = js.native
+  @JSName("onquotaoverflow")
+  var onquotaoverflowOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  def topK: Int                                                                             = js.native
+  def temperature: Double                                                                   = js.native
   def prompt(
       input: scala.scalajs.js.Any,
       options: LanguageModelPromptOptions = js.native,
@@ -205,7 +242,7 @@ object LanguageModel extends js.Object:
 
 @js.native
 @JSGlobal
-class Translator extends js.Object:
+class Translator extends PlatformObject:
   def sourceLanguage: String = js.native
   def targetLanguage: String = js.native
   def inputQuota: Double     = js.native
@@ -228,11 +265,14 @@ object Translator extends js.Object:
 @js.native
 @JSGlobal
 class RTCDtlsTransport extends EventTarget:
-  def iceTransport: RTCIceTransport                                         = js.native
-  def state: String                                                         = js.native
-  var onstatechange: scala.scalajs.js.Any                                   = js.native
-  var onerror: scala.scalajs.js.Any                                         = js.native
-  def getRemoteCertificates(): scala.scalajs.js.Array[scala.scalajs.js.Any] = js.native
+  def iceTransport: RTCIceTransport = js.native
+  def state: String                 = js.native
+  @JSName("onstatechange")
+  var onstatechangeOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("onerror")
+  var onerrorOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  def getRemoteCertificates(): scala.scalajs.js.Array[scala.scalajs.js.Any]         = js.native
+end RTCDtlsTransport
 
 @js.native
 @JSGlobal
@@ -254,7 +294,7 @@ class CSSAnimation extends Animation:
 
 @js.native
 @JSGlobal
-class SVGPointList extends js.Object:
+class SVGPointList extends PlatformObject:
   def length: Int                                               = js.native
   def numberOfItems: Int                                        = js.native
   def clear(): Unit                                             = js.native
@@ -270,14 +310,15 @@ end SVGPointList
 
 @js.native
 @JSGlobal
-class USBInTransferResult extends js.Object:
+class USBInTransferResult extends PlatformObject:
   def this(@unused status: String, @unused data: scala.scalajs.js.Any = js.native) = this()
-  def data: scala.scalajs.js.Any = js.native
-  def status: String             = js.native
+  @JSName("data")
+  def dataOrNull: scala.scalajs.js.Any | Null = js.native
+  def status: String                          = js.native
 
 @js.native
 @JSGlobal
-class IntrinsicSizes extends js.Object:
+class IntrinsicSizes extends PlatformObject:
   def minContentSize: Double = js.native
   def maxContentSize: Double = js.native
 
@@ -289,23 +330,27 @@ class CSSViewTransitionRule extends CSSRule:
 
 @js.native
 @JSGlobal
-class ML extends js.Object:
+class ML extends PlatformObject:
+  def createContext(): scala.scalajs.js.Promise[MLContext]                          = js.native
   def createContext(options: MLContextOptions): scala.scalajs.js.Promise[MLContext] = js.native
   def createContext(gpuDevice: GPUDevice): scala.scalajs.js.Promise[MLContext]      = js.native
 
 @js.native
 @JSGlobal
-class Storage extends js.Object:
-  def length: Int                               = js.native
-  def key(index: Int): String                   = js.native
-  def getItem(key: String): String              = js.native
+class Storage extends PlatformObject:
+  def length: Int = js.native
+  @JSName("key")
+  def keyOrNull(index: Int): String | Null = js.native
+  @JSName("getItem")
+  def getItemOrNull(key: String): String | Null = js.native
   def setItem(key: String, value: String): Unit = js.native
   def removeItem(key: String): Unit             = js.native
   def clear(): Unit                             = js.native
+end Storage
 
 @js.native
 @JSGlobal
-class IDBObjectStore extends js.Object:
+class IDBObjectStore extends PlatformObject:
   var name: String                                                                                      = js.native
   def keyPath: scala.scalajs.js.Any                                                                     = js.native
   def indexNames: DOMStringList                                                                         = js.native
@@ -331,21 +376,23 @@ end IDBObjectStore
 
 @js.native
 @JSGlobal
-class MediaList extends js.Object:
-  var mediaText: String                  = js.native
-  def length: Int                        = js.native
-  def item(index: Int): String           = js.native
-  def appendMedium(medium: String): Unit = js.native
-  def deleteMedium(medium: String): Unit = js.native
+class MediaList extends PlatformObject:
+  var mediaText: String = js.native
+  def length: Int       = js.native
+  @JSName("item")
+  def itemOrNull(index: Int): String | Null = js.native
+  def appendMedium(medium: String): Unit    = js.native
+  def deleteMedium(medium: String): Unit    = js.native
 
 @js.native
 @JSGlobal
-class XRMesh extends js.Object:
+class XRMesh extends PlatformObject:
   def meshSpace: XRSpace             = js.native
   def vertices: scala.scalajs.js.Any = js.native
   def indices: scala.scalajs.js.Any  = js.native
   def lastChangedTime: Double        = js.native
-  def semanticLabel: String          = js.native
+  @JSName("semanticLabel")
+  def semanticLabelOrNull: String | Null = js.native
 
 @js.native
 @JSGlobal
@@ -384,72 +431,76 @@ class CSSApplyStatementRule extends CSSRule:
 
 @js.native
 @JSGlobal
-class EXT_disjoint_timer_query extends js.Object:
-  def createQueryEXT(): WebGLTimerQueryEXT                                                            = js.native
-  def deleteQueryEXT(query: WebGLTimerQueryEXT): Unit                                                 = js.native
-  def isQueryEXT(query: WebGLTimerQueryEXT): Boolean                                                  = js.native
-  def beginQueryEXT(target: scala.scalajs.js.Any, query: WebGLTimerQueryEXT): Unit                    = js.native
-  def endQueryEXT(target: scala.scalajs.js.Any): Unit                                                 = js.native
-  def queryCounterEXT(query: WebGLTimerQueryEXT, target: scala.scalajs.js.Any): Unit                  = js.native
-  def getQueryEXT(target: scala.scalajs.js.Any, pname: scala.scalajs.js.Any): scala.scalajs.js.Any    = js.native
-  def getQueryObjectEXT(query: WebGLTimerQueryEXT, pname: scala.scalajs.js.Any): scala.scalajs.js.Any = js.native
+class EXT_disjoint_timer_query extends PlatformObject:
+  def createQueryEXT(): WebGLTimerQueryEXT                                           = js.native
+  def deleteQueryEXT(query: WebGLTimerQueryEXT): Unit                                = js.native
+  def isQueryEXT(query: WebGLTimerQueryEXT): Boolean                                 = js.native
+  def beginQueryEXT(target: Int, query: WebGLTimerQueryEXT): Unit                    = js.native
+  def endQueryEXT(target: Int): Unit                                                 = js.native
+  def queryCounterEXT(query: WebGLTimerQueryEXT, target: Int): Unit                  = js.native
+  def getQueryEXT(target: Int, pname: Int): scala.scalajs.js.Any                     = js.native
+  def getQueryObjectEXT(query: WebGLTimerQueryEXT, pname: Int): scala.scalajs.js.Any = js.native
 end EXT_disjoint_timer_query
 
 @js.native
 @JSGlobal
 object EXT_disjoint_timer_query extends js.Object:
-  val QUERY_COUNTER_BITS_EXT: scala.scalajs.js.Any     = js.native
-  val CURRENT_QUERY_EXT: scala.scalajs.js.Any          = js.native
-  val QUERY_RESULT_EXT: scala.scalajs.js.Any           = js.native
-  val QUERY_RESULT_AVAILABLE_EXT: scala.scalajs.js.Any = js.native
-  val TIME_ELAPSED_EXT: scala.scalajs.js.Any           = js.native
-  val TIMESTAMP_EXT: scala.scalajs.js.Any              = js.native
-  val GPU_DISJOINT_EXT: scala.scalajs.js.Any           = js.native
+  val QUERY_COUNTER_BITS_EXT: Int     = js.native
+  val CURRENT_QUERY_EXT: Int          = js.native
+  val QUERY_RESULT_EXT: Int           = js.native
+  val QUERY_RESULT_AVAILABLE_EXT: Int = js.native
+  val TIME_ELAPSED_EXT: Int           = js.native
+  val TIMESTAMP_EXT: Int              = js.native
+  val GPU_DISJOINT_EXT: Int           = js.native
 end EXT_disjoint_timer_query
 
 @js.native
 @JSGlobal
-class CaretPosition extends js.Object:
-  def offsetNode: Node         = js.native
-  def offset: Int              = js.native
-  def getClientRect(): DOMRect = js.native
+class CaretPosition extends PlatformObject:
+  def offsetNode: Node = js.native
+  def offset: Int      = js.native
+  @JSName("getClientRect")
+  def getClientRectOrNull(): DOMRect | Null = js.native
 
 @js.native
 @JSGlobal
-class EncodedAudioChunk extends js.Object:
+class EncodedAudioChunk extends PlatformObject:
   def this(@unused init: EncodedAudioChunkInit) = this()
-  def `type`: String                                  = js.native
-  def timestamp: Int                                  = js.native
-  def duration: Int                                   = js.native
+  def `type`: String = js.native
+  def timestamp: Int = js.native
+  @JSName("duration")
+  def durationOrNull: Int | Null                      = js.native
   def byteLength: Int                                 = js.native
   def copyTo(destination: scala.scalajs.js.Any): Unit = js.native
+end EncodedAudioChunk
 
 @js.native
 @JSGlobal
-class OES_element_index_uint extends js.Object
+class OES_element_index_uint extends PlatformObject
 
 @js.native
 @JSGlobal
-class Request extends js.Object:
-  def this(@unused input: scala.scalajs.js.Any, @unused init: RequestInit = js.native) = this()
-  def method: String                                                = js.native
-  def url: String                                                   = js.native
-  def headers: Headers                                              = js.native
-  def destination: String                                           = js.native
-  def referrer: String                                              = js.native
-  def referrerPolicy: String                                        = js.native
-  def mode: String                                                  = js.native
-  def credentials: String                                           = js.native
-  def cache: String                                                 = js.native
-  def redirect: String                                              = js.native
-  def integrity: String                                             = js.native
-  def keepalive: Boolean                                            = js.native
-  def isReloadNavigation: Boolean                                   = js.native
-  def isHistoryNavigation: Boolean                                  = js.native
-  def signal: AbortSignal                                           = js.native
-  def duplex: String                                                = js.native
-  def targetAddressSpace: String                                    = js.native
-  def body: ReadableStream                                          = js.native
+class Request extends PlatformObject:
+  def this(@unused input: Request | String, @unused init: RequestInit = js.native) = this()
+  def method: String               = js.native
+  def url: String                  = js.native
+  def headers: Headers             = js.native
+  def destination: String          = js.native
+  def referrer: String             = js.native
+  def referrerPolicy: String       = js.native
+  def mode: String                 = js.native
+  def credentials: String          = js.native
+  def cache: String                = js.native
+  def redirect: String             = js.native
+  def integrity: String            = js.native
+  def keepalive: Boolean           = js.native
+  def isReloadNavigation: Boolean  = js.native
+  def isHistoryNavigation: Boolean = js.native
+  def signal: AbortSignal          = js.native
+  def duplex: String               = js.native
+  def targetAddressSpace: String   = js.native
+  @JSName("body")
+  def bodyOrNull: ReadableStream | Null                             = js.native
   def bodyUsed: Boolean                                             = js.native
   def arrayBuffer(): scala.scalajs.js.Promise[scala.scalajs.js.Any] = js.native
   def blob(): scala.scalajs.js.Promise[Blob]                        = js.native
@@ -462,30 +513,36 @@ end Request
 @js.native
 @JSGlobal
 class PerformancePaintTiming extends PerformanceEntry:
-  def paintTime: Double        = js.native
-  def presentationTime: Double = js.native
+  def paintTime: Double = js.native
+  @JSName("presentationTime")
+  def presentationTimeOrNull: Double | Null = js.native
 
 @js.native
 @JSGlobal
 class Notification extends EventTarget:
   def this(@unused title: String, @unused options: NotificationOptions = js.native) = this()
-  var onclick: scala.scalajs.js.Any                       = js.native
-  var onshow: scala.scalajs.js.Any                        = js.native
-  var onerror: scala.scalajs.js.Any                       = js.native
-  var onclose: scala.scalajs.js.Any                       = js.native
-  def title: String                                       = js.native
-  def dir: String                                         = js.native
-  def lang: String                                        = js.native
-  def body: String                                        = js.native
-  def navigate: String                                    = js.native
-  def tag: String                                         = js.native
-  def image: String                                       = js.native
-  def icon: String                                        = js.native
-  def badge: String                                       = js.native
-  def vibrate: scala.scalajs.js.Array[Int]                = js.native
-  def timestamp: Double                                   = js.native
-  def renotify: Boolean                                   = js.native
-  def silent: Boolean                                     = js.native
+  @JSName("onclick")
+  var onclickOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("onshow")
+  var onshowOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("onerror")
+  var onerrorOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("onclose")
+  var oncloseOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  def title: String                                                                 = js.native
+  def dir: String                                                                   = js.native
+  def lang: String                                                                  = js.native
+  def body: String                                                                  = js.native
+  def navigate: String                                                              = js.native
+  def tag: String                                                                   = js.native
+  def image: String                                                                 = js.native
+  def icon: String                                                                  = js.native
+  def badge: String                                                                 = js.native
+  def vibrate: scala.scalajs.js.Array[Int]                                          = js.native
+  def timestamp: Int                                                                = js.native
+  def renotify: Boolean                                                             = js.native
+  @JSName("silent")
+  def silentOrNull: Boolean | Null                        = js.native
   def requireInteraction: Boolean                         = js.native
   def data: scala.scalajs.js.Any                          = js.native
   def actions: scala.scalajs.js.Array[NotificationAction] = js.native
@@ -503,14 +560,15 @@ object Notification extends js.Object:
 
 @js.native
 @JSGlobal
-class LayoutShiftAttribution extends js.Object:
-  def node: Node                    = js.native
+class LayoutShiftAttribution extends PlatformObject:
+  @JSName("node")
+  def nodeOrNull: Node | Null       = js.native
   def previousRect: DOMRectReadOnly = js.native
   def currentRect: DOMRectReadOnly  = js.native
 
 @js.native
 @JSGlobal
-class MIDIInputMap extends js.Object:
+class MIDIInputMap extends PlatformObject:
   def size: Int                                                                        = js.native
   def get(key: String): scala.scalajs.js.UndefOr[MIDIInput]                            = js.native
   def has(key: String): Boolean                                                        = js.native
@@ -530,13 +588,16 @@ class SVGFEDistantLightElement extends SVGElement:
 
 @js.native
 @JSGlobal
-class XRWebGLBinding extends js.Object:
-  def this(@unused session: XRSession, @unused context: scala.scalajs.js.Any) = this()
-  def nativeProjectionScaleFactor: Double                                                              = js.native
-  def usesDepthValues: Boolean                                                                         = js.native
-  def getCameraImage(camera: XRCamera): WebGLTexture                                                   = js.native
-  def getDepthInformation(view: XRView): XRWebGLDepthInformation                                       = js.native
-  def getReflectionCubeMap(lightProbe: XRLightProbe): WebGLTexture                                     = js.native
+class XRWebGLBinding extends PlatformObject:
+  def this(@unused session: XRSession, @unused context: WebGLRenderingContext | WebGL2RenderingContext) = this()
+  def nativeProjectionScaleFactor: Double = js.native
+  def usesDepthValues: Boolean            = js.native
+  @JSName("getCameraImage")
+  def getCameraImageOrNull(camera: XRCamera): WebGLTexture | Null = js.native
+  @JSName("getDepthInformation")
+  def getDepthInformationOrNull(view: XRView): XRWebGLDepthInformation | Null = js.native
+  @JSName("getReflectionCubeMap")
+  def getReflectionCubeMapOrNull(lightProbe: XRLightProbe): WebGLTexture | Null                        = js.native
   def createProjectionLayer(init: XRProjectionLayerInit = js.native): XRProjectionLayer                = js.native
   def createQuadLayer(init: XRQuadLayerInit = js.native): XRQuadLayer                                  = js.native
   def createCylinderLayer(init: XRCylinderLayerInit = js.native): XRCylinderLayer                      = js.native
@@ -544,7 +605,7 @@ class XRWebGLBinding extends js.Object:
   def createCubeLayer(init: XRCubeLayerInit = js.native): XRCubeLayer                                  = js.native
   def getSubImage(layer: XRCompositionLayer, frame: XRFrame, eye: String = js.native): XRWebGLSubImage = js.native
   def getViewSubImage(layer: XRProjectionLayer, view: XRView): XRWebGLSubImage                         = js.native
-  def foveateBoundTexture(target: scala.scalajs.js.Any, fixed_foveation: Double): Unit                 = js.native
+  def foveateBoundTexture(target: Int, fixed_foveation: Double): Unit                                  = js.native
 end XRWebGLBinding
 
 @js.native
@@ -554,23 +615,25 @@ class WebGLSync extends WebGLObject
 @js.native
 @JSGlobal
 class RTCRtpScriptTransformer extends EventTarget:
-  def readable: ReadableStream                                                  = js.native
-  def writable: WritableStream                                                  = js.native
-  var onkeyframerequest: scala.scalajs.js.Any                                   = js.native
-  def options: scala.scalajs.js.Any                                             = js.native
-  def generateKeyFrame(rid: String = js.native): scala.scalajs.js.Promise[Unit] = js.native
-  def sendKeyFrameRequest(): scala.scalajs.js.Promise[Unit]                     = js.native
+  def readable: ReadableStream = js.native
+  def writable: WritableStream = js.native
+  @JSName("onkeyframerequest")
+  var onkeyframerequestOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  def options: scala.scalajs.js.Any                                                           = js.native
+  def generateKeyFrame(rid: String = js.native): scala.scalajs.js.Promise[Unit]               = js.native
+  def sendKeyFrameRequest(): scala.scalajs.js.Promise[Unit]                                   = js.native
+end RTCRtpScriptTransformer
 
 @js.native
 @JSGlobal
-class ImageBitmap extends js.Object:
+class ImageBitmap extends PlatformObject:
   def width: Int    = js.native
   def height: Int   = js.native
   def close(): Unit = js.native
 
 @js.native
 @JSGlobal
-class PreferenceManager extends js.Object:
+class PreferenceManager extends PlatformObject:
   def colorScheme: PreferenceObject         = js.native
   def contrast: PreferenceObject            = js.native
   def reducedMotion: PreferenceObject       = js.native
@@ -580,43 +643,65 @@ class PreferenceManager extends js.Object:
 @js.native
 @JSGlobal
 class WorkerGlobalScope extends EventTarget:
-  def self: WorkerGlobalScope                                                                               = js.native
-  def location: WorkerLocation                                                                              = js.native
-  def navigator: WorkerNavigator                                                                            = js.native
-  var onerror: scala.scalajs.js.Any                                                                         = js.native
-  var onlanguagechange: scala.scalajs.js.Any                                                                = js.native
-  var onoffline: scala.scalajs.js.Any                                                                       = js.native
-  var ononline: scala.scalajs.js.Any                                                                        = js.native
-  var onrejectionhandled: scala.scalajs.js.Any                                                              = js.native
-  var onunhandledrejection: scala.scalajs.js.Any                                                            = js.native
-  def fonts: FontFaceSet                                                                                    = js.native
-  def indexedDB: IDBFactory                                                                                 = js.native
-  def performance: Performance                                                                              = js.native
-  def origin: String                                                                                        = js.native
-  def isSecureContext: Boolean                                                                              = js.native
-  def crossOriginIsolated: Boolean                                                                          = js.native
-  def scheduler: Scheduler                                                                                  = js.native
-  def caches: CacheStorage                                                                                  = js.native
-  def trustedTypes: TrustedTypePolicyFactory                                                                = js.native
-  def crypto: Crypto                                                                                        = js.native
-  def importScripts(urls: scala.scalajs.js.Any): Unit                                                       = js.native
-  def fetch(input: scala.scalajs.js.Any, init: RequestInit = js.native): scala.scalajs.js.Promise[Response] = js.native
-  def reportError(e: scala.scalajs.js.Any): Unit                                                            = js.native
-  def btoa(data: String): String                                                                            = js.native
-  def atob(data: String): String                                                                            = js.native
-  def setTimeout(handler: scala.scalajs.js.Any, timeout: Int = js.native, arguments: scala.scalajs.js.Any): Int =
-    js.native
+  def self: WorkerGlobalScope    = js.native
+  def location: WorkerLocation   = js.native
+  def navigator: WorkerNavigator = js.native
+  @JSName("onerror")
+  var onerrorOrNull: scala.scalajs.js.Function | Null = js.native
+  @JSName("onlanguagechange")
+  var onlanguagechangeOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("onoffline")
+  var onofflineOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("ononline")
+  var ononlineOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("onrejectionhandled")
+  var onrejectionhandledOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("onunhandledrejection")
+  var onunhandledrejectionOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null        = js.native
+  def fonts: FontFaceSet                                                                                = js.native
+  def indexedDB: IDBFactory                                                                             = js.native
+  def performance: Performance                                                                          = js.native
+  def origin: String                                                                                    = js.native
+  def isSecureContext: Boolean                                                                          = js.native
+  def crossOriginIsolated: Boolean                                                                      = js.native
+  def scheduler: Scheduler                                                                              = js.native
+  def caches: CacheStorage                                                                              = js.native
+  def trustedTypes: TrustedTypePolicyFactory                                                            = js.native
+  def crypto: Crypto                                                                                    = js.native
+  def importScripts(urls: TrustedScriptURL | String): Unit                                              = js.native
+  def fetch(input: Request | String, init: RequestInit = js.native): scala.scalajs.js.Promise[Response] = js.native
+  def reportError(e: scala.scalajs.js.Any): Unit                                                        = js.native
+  def btoa(data: String): String                                                                        = js.native
+  def atob(data: String): String                                                                        = js.native
+  def setTimeout(
+      handler: String | scala.scalajs.js.Function1[scala.scalajs.js.Any, scala.scalajs.js.Any] | TrustedScript,
+      timeout: Int = js.native,
+      arguments: scala.scalajs.js.Any,
+  ): Int                                      = js.native
   def clearTimeout(id: Int = js.native): Unit = js.native
-  def setInterval(handler: scala.scalajs.js.Any, timeout: Int = js.native, arguments: scala.scalajs.js.Any): Int =
-    js.native
+  def setInterval(
+      handler: String | scala.scalajs.js.Function1[scala.scalajs.js.Any, scala.scalajs.js.Any] | TrustedScript,
+      timeout: Int = js.native,
+      arguments: scala.scalajs.js.Any,
+  ): Int                                                               = js.native
   def clearInterval(id: Int = js.native): Unit                         = js.native
   def queueMicrotask(callback: scala.scalajs.js.Function0[Unit]): Unit = js.native
   def createImageBitmap(
-      image: scala.scalajs.js.Any,
+      image: HTMLImageElement | SVGImageElement | HTMLVideoElement | HTMLCanvasElement | ImageBitmap | OffscreenCanvas | VideoFrame | Blob | ImageData
+  ): scala.scalajs.js.Promise[ImageBitmap] = js.native
+  def createImageBitmap(
+      image: HTMLImageElement | SVGImageElement | HTMLVideoElement | HTMLCanvasElement | ImageBitmap | OffscreenCanvas | VideoFrame | Blob | ImageData,
       options: ImageBitmapOptions,
   ): scala.scalajs.js.Promise[ImageBitmap] = js.native
   def createImageBitmap(
-      image: scala.scalajs.js.Any,
+      image: HTMLImageElement | SVGImageElement | HTMLVideoElement | HTMLCanvasElement | ImageBitmap | OffscreenCanvas | VideoFrame | Blob | ImageData,
+      sx: Int,
+      sy: Int,
+      sw: Int,
+      sh: Int,
+  ): scala.scalajs.js.Promise[ImageBitmap] = js.native
+  def createImageBitmap(
+      image: HTMLImageElement | SVGImageElement | HTMLVideoElement | HTMLCanvasElement | ImageBitmap | OffscreenCanvas | VideoFrame | Blob | ImageData,
       sx: Int,
       sy: Int,
       sw: Int,
@@ -631,21 +716,21 @@ end WorkerGlobalScope
 
 @js.native
 @JSGlobal
-class GeolocationPosition extends js.Object:
+class GeolocationPosition extends PlatformObject:
   def coords: GeolocationCoordinates = js.native
-  def timestamp: Double              = js.native
+  def timestamp: Int                 = js.native
   def toJSON(): scala.scalajs.js.Any = js.native
 
 @js.native
 @JSGlobal
-class CanvasRenderingContext2D extends js.Object:
+class CanvasRenderingContext2D extends PlatformObject:
   def canvas: HTMLCanvasElement                                                            = js.native
   var globalAlpha: Double                                                                  = js.native
   var globalCompositeOperation: String                                                     = js.native
   var imageSmoothingEnabled: Boolean                                                       = js.native
   var imageSmoothingQuality: String                                                        = js.native
-  var strokeStyle: scala.scalajs.js.Any                                                    = js.native
-  var fillStyle: scala.scalajs.js.Any                                                      = js.native
+  var strokeStyle: String | CanvasGradient | CanvasPattern                                 = js.native
+  var fillStyle: String | CanvasGradient | CanvasPattern                                   = js.native
   var shadowOffsetX: Double                                                                = js.native
   var shadowOffsetY: Double                                                                = js.native
   var shadowBlur: Double                                                                   = js.native
@@ -678,36 +763,57 @@ class CanvasRenderingContext2D extends js.Object:
   def transform(a: Double, b: Double, c: Double, d: Double, e: Double, f: Double): Unit    = js.native
   def getTransform(): DOMMatrix                                                            = js.native
   def setTransform(a: Double, b: Double, c: Double, d: Double, e: Double, f: Double): Unit = js.native
+  def setTransform(): Unit                                                                 = js.native
   def setTransform(transform: DOMMatrix2DInit): Unit                                       = js.native
   def resetTransform(): Unit                                                               = js.native
   def createLinearGradient(x0: Double, y0: Double, x1: Double, y1: Double): CanvasGradient = js.native
   def createRadialGradient(x0: Double, y0: Double, r0: Double, x1: Double, y1: Double, r1: Double): CanvasGradient =
     js.native
-  def createConicGradient(startAngle: Double, x: Double, y: Double): CanvasGradient                = js.native
-  def createPattern(image: scala.scalajs.js.Any, repetition: String): CanvasPattern                = js.native
-  def clearRect(x: Double, y: Double, w: Double, h: Double): Unit                                  = js.native
-  def fillRect(x: Double, y: Double, w: Double, h: Double): Unit                                   = js.native
-  def strokeRect(x: Double, y: Double, w: Double, h: Double): Unit                                 = js.native
-  def beginPath(): Unit                                                                            = js.native
-  def fill(fillRule: String): Unit                                                                 = js.native
-  def fill(path: Path2D, fillRule: String): Unit                                                   = js.native
-  def stroke(): Unit                                                                               = js.native
-  def stroke(path: Path2D): Unit                                                                   = js.native
-  def clip(fillRule: String): Unit                                                                 = js.native
-  def clip(path: Path2D, fillRule: String): Unit                                                   = js.native
-  def isPointInPath(x: Double, y: Double, fillRule: String): Boolean                               = js.native
-  def isPointInPath(path: Path2D, x: Double, y: Double, fillRule: String): Boolean                 = js.native
-  def isPointInStroke(x: Double, y: Double): Boolean                                               = js.native
-  def isPointInStroke(path: Path2D, x: Double, y: Double): Boolean                                 = js.native
-  def drawFocusIfNeeded(element: Element): Unit                                                    = js.native
-  def drawFocusIfNeeded(path: Path2D, element: Element): Unit                                      = js.native
-  def fillText(text: String, x: Double, y: Double, maxWidth: Double = js.native): Unit             = js.native
-  def strokeText(text: String, x: Double, y: Double, maxWidth: Double = js.native): Unit           = js.native
-  def measureText(text: String): TextMetrics                                                       = js.native
-  def drawImage(image: scala.scalajs.js.Any, dx: Double, dy: Double): Unit                         = js.native
-  def drawImage(image: scala.scalajs.js.Any, dx: Double, dy: Double, dw: Double, dh: Double): Unit = js.native
+  def createConicGradient(startAngle: Double, x: Double, y: Double): CanvasGradient = js.native
+  @JSName("createPattern")
+  def createPatternOrNull(
+      image: HTMLImageElement | SVGImageElement | HTMLVideoElement | HTMLCanvasElement | ImageBitmap | OffscreenCanvas | VideoFrame,
+      repetition: String,
+  ): CanvasPattern | Null                                                                = js.native
+  def clearRect(x: Double, y: Double, w: Double, h: Double): Unit                        = js.native
+  def fillRect(x: Double, y: Double, w: Double, h: Double): Unit                         = js.native
+  def strokeRect(x: Double, y: Double, w: Double, h: Double): Unit                       = js.native
+  def beginPath(): Unit                                                                  = js.native
+  def fill(): Unit                                                                       = js.native
+  def fill(fillRule: String): Unit                                                       = js.native
+  def fill(path: Path2D): Unit                                                           = js.native
+  def fill(path: Path2D, fillRule: String): Unit                                         = js.native
+  def stroke(): Unit                                                                     = js.native
+  def stroke(path: Path2D): Unit                                                         = js.native
+  def clip(): Unit                                                                       = js.native
+  def clip(fillRule: String): Unit                                                       = js.native
+  def clip(path: Path2D): Unit                                                           = js.native
+  def clip(path: Path2D, fillRule: String): Unit                                         = js.native
+  def isPointInPath(x: Double, y: Double): Boolean                                       = js.native
+  def isPointInPath(x: Double, y: Double, fillRule: String): Boolean                     = js.native
+  def isPointInPath(path: Path2D, x: Double, y: Double): Boolean                         = js.native
+  def isPointInPath(path: Path2D, x: Double, y: Double, fillRule: String): Boolean       = js.native
+  def isPointInStroke(x: Double, y: Double): Boolean                                     = js.native
+  def isPointInStroke(path: Path2D, x: Double, y: Double): Boolean                       = js.native
+  def drawFocusIfNeeded(element: Element): Unit                                          = js.native
+  def drawFocusIfNeeded(path: Path2D, element: Element): Unit                            = js.native
+  def fillText(text: String, x: Double, y: Double, maxWidth: Double = js.native): Unit   = js.native
+  def strokeText(text: String, x: Double, y: Double, maxWidth: Double = js.native): Unit = js.native
+  def measureText(text: String): TextMetrics                                             = js.native
   def drawImage(
-      image: scala.scalajs.js.Any,
+      image: HTMLImageElement | SVGImageElement | HTMLVideoElement | HTMLCanvasElement | ImageBitmap | OffscreenCanvas | VideoFrame,
+      dx: Double,
+      dy: Double,
+  ): Unit = js.native
+  def drawImage(
+      image: HTMLImageElement | SVGImageElement | HTMLVideoElement | HTMLCanvasElement | ImageBitmap | OffscreenCanvas | VideoFrame,
+      dx: Double,
+      dy: Double,
+      dw: Double,
+      dh: Double,
+  ): Unit = js.native
+  def drawImage(
+      image: HTMLImageElement | SVGImageElement | HTMLVideoElement | HTMLCanvasElement | ImageBitmap | OffscreenCanvas | VideoFrame,
       sx: Double,
       sy: Double,
       sw: Double,
@@ -717,6 +823,7 @@ class CanvasRenderingContext2D extends js.Object:
       dw: Double,
       dh: Double,
   ): Unit                                                                                                  = js.native
+  def createImageData(sw: Int, sh: Int): ImageData                                                         = js.native
   def createImageData(sw: Int, sh: Int, settings: ImageDataSettings): ImageData                            = js.native
   def createImageData(imageData: ImageData): ImageData                                                     = js.native
   def getImageData(sx: Int, sy: Int, sw: Int, sh: Int, settings: ImageDataSettings = js.native): ImageData = js.native
@@ -762,20 +869,25 @@ end CanvasRenderingContext2D
 
 @js.native
 @JSGlobal
-class Presentation extends js.Object:
-  var defaultRequest: PresentationRequest = js.native
-  def receiver: PresentationReceiver      = js.native
+class Presentation extends PlatformObject:
+  @JSName("defaultRequest")
+  var defaultRequestOrNull: PresentationRequest | Null = js.native
+  @JSName("receiver")
+  def receiverOrNull: PresentationReceiver | Null = js.native
 
 @js.native
 @JSGlobal
-class DeviceMotionEventRotationRate extends js.Object:
-  def alpha: Double = js.native
-  def beta: Double  = js.native
-  def gamma: Double = js.native
+class DeviceMotionEventRotationRate extends PlatformObject:
+  @JSName("alpha")
+  def alphaOrNull: Double | Null = js.native
+  @JSName("beta")
+  def betaOrNull: Double | Null = js.native
+  @JSName("gamma")
+  def gammaOrNull: Double | Null = js.native
 
 @js.native
 @JSGlobal
-class Worklet extends js.Object:
+class Worklet extends PlatformObject:
   def addModule(moduleURL: String, options: WorkletOptions = js.native): scala.scalajs.js.Promise[Unit] = js.native
 
 @js.native
@@ -787,21 +899,21 @@ class CSSParserFunction extends CSSParserValue:
 
 @js.native
 @JSGlobal
-class EXT_texture_compression_rgtc extends js.Object
+class EXT_texture_compression_rgtc extends PlatformObject
 
 @js.native
 @JSGlobal
 object EXT_texture_compression_rgtc extends js.Object:
-  val COMPRESSED_RED_RGTC1_EXT: scala.scalajs.js.Any              = js.native
-  val COMPRESSED_SIGNED_RED_RGTC1_EXT: scala.scalajs.js.Any       = js.native
-  val COMPRESSED_RED_GREEN_RGTC2_EXT: scala.scalajs.js.Any        = js.native
-  val COMPRESSED_SIGNED_RED_GREEN_RGTC2_EXT: scala.scalajs.js.Any = js.native
+  val COMPRESSED_RED_RGTC1_EXT: Int              = js.native
+  val COMPRESSED_SIGNED_RED_RGTC1_EXT: Int       = js.native
+  val COMPRESSED_RED_GREEN_RGTC2_EXT: Int        = js.native
+  val COMPRESSED_SIGNED_RED_GREEN_RGTC2_EXT: Int = js.native
 
 @js.native
 @JSGlobal
 class CSSParserQualifiedRule extends CSSParserRule:
   def this(
-      @unused prelude: scala.scalajs.js.Array[scala.scalajs.js.Any],
+      @unused prelude: scala.scalajs.js.Array[String | CSSStyleValue | CSSParserValue],
       @unused body: scala.scalajs.js.Array[CSSParserRule] = js.native,
   ) = this()
   def prelude: scala.scalajs.js.Array[CSSParserValue] = js.native
@@ -809,43 +921,52 @@ class CSSParserQualifiedRule extends CSSParserRule:
 
 @js.native
 @JSGlobal
-class WEBGL_compressed_texture_etc extends js.Object
+class WEBGL_compressed_texture_etc extends PlatformObject
 
 @js.native
 @JSGlobal
 object WEBGL_compressed_texture_etc extends js.Object:
-  val COMPRESSED_R11_EAC: scala.scalajs.js.Any                        = js.native
-  val COMPRESSED_SIGNED_R11_EAC: scala.scalajs.js.Any                 = js.native
-  val COMPRESSED_RG11_EAC: scala.scalajs.js.Any                       = js.native
-  val COMPRESSED_SIGNED_RG11_EAC: scala.scalajs.js.Any                = js.native
-  val COMPRESSED_RGB8_ETC2: scala.scalajs.js.Any                      = js.native
-  val COMPRESSED_SRGB8_ETC2: scala.scalajs.js.Any                     = js.native
-  val COMPRESSED_RGB8_PUNCHTHROUGH_ALPHA1_ETC2: scala.scalajs.js.Any  = js.native
-  val COMPRESSED_SRGB8_PUNCHTHROUGH_ALPHA1_ETC2: scala.scalajs.js.Any = js.native
-  val COMPRESSED_RGBA8_ETC2_EAC: scala.scalajs.js.Any                 = js.native
-  val COMPRESSED_SRGB8_ALPHA8_ETC2_EAC: scala.scalajs.js.Any          = js.native
+  val COMPRESSED_R11_EAC: Int                        = js.native
+  val COMPRESSED_SIGNED_R11_EAC: Int                 = js.native
+  val COMPRESSED_RG11_EAC: Int                       = js.native
+  val COMPRESSED_SIGNED_RG11_EAC: Int                = js.native
+  val COMPRESSED_RGB8_ETC2: Int                      = js.native
+  val COMPRESSED_SRGB8_ETC2: Int                     = js.native
+  val COMPRESSED_RGB8_PUNCHTHROUGH_ALPHA1_ETC2: Int  = js.native
+  val COMPRESSED_SRGB8_PUNCHTHROUGH_ALPHA1_ETC2: Int = js.native
+  val COMPRESSED_RGBA8_ETC2_EAC: Int                 = js.native
+  val COMPRESSED_SRGB8_ALPHA8_ETC2_EAC: Int          = js.native
 end WEBGL_compressed_texture_etc
 
 @js.native
 @JSGlobal
 class Animation extends EventTarget:
   def this(@unused effect: AnimationEffect = js.native, @unused timeline: AnimationTimeline = js.native) = this()
-  var id: String                                     = js.native
-  var effect: AnimationEffect                        = js.native
-  var timeline: AnimationTimeline                    = js.native
-  var playbackRate: Double                           = js.native
-  def playState: String                              = js.native
-  def replaceState: String                           = js.native
-  def pending: Boolean                               = js.native
-  def ready: scala.scalajs.js.Promise[Animation]     = js.native
-  def finished: scala.scalajs.js.Promise[Animation]  = js.native
-  var onfinish: scala.scalajs.js.Any                 = js.native
-  var oncancel: scala.scalajs.js.Any                 = js.native
-  var onremove: scala.scalajs.js.Any                 = js.native
-  var startTime: scala.scalajs.js.Any                = js.native
-  var currentTime: scala.scalajs.js.Any              = js.native
-  var trigger: AnimationTrigger                      = js.native
-  def overallProgress: Double                        = js.native
+  var id: String = js.native
+  @JSName("effect")
+  var effectOrNull: AnimationEffect | Null = js.native
+  @JSName("timeline")
+  var timelineOrNull: AnimationTimeline | Null      = js.native
+  var playbackRate: Double                          = js.native
+  def playState: String                             = js.native
+  def replaceState: String                          = js.native
+  def pending: Boolean                              = js.native
+  def ready: scala.scalajs.js.Promise[Animation]    = js.native
+  def finished: scala.scalajs.js.Promise[Animation] = js.native
+  @JSName("onfinish")
+  var onfinishOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("oncancel")
+  var oncancelOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("onremove")
+  var onremoveOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("startTime")
+  var startTimeOrNull: Double | CSSNumericValue | Null = js.native
+  @JSName("currentTime")
+  var currentTimeOrNull: Double | CSSNumericValue | Null = js.native
+  @JSName("trigger")
+  var triggerOrNull: AnimationTrigger | Null = js.native
+  @JSName("overallProgress")
+  def overallProgressOrNull: Double | Null           = js.native
   def cancel(): Unit                                 = js.native
   def finish(): Unit                                 = js.native
   def play(): Unit                                   = js.native
@@ -866,8 +987,9 @@ class CSSGroupingRule extends CSSRule:
 @js.native
 @JSGlobal
 class XRReferenceSpace extends XRSpace:
-  var onreset: scala.scalajs.js.Any                                             = js.native
-  def getOffsetReferenceSpace(originOffset: XRRigidTransform): XRReferenceSpace = js.native
+  @JSName("onreset")
+  var onresetOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  def getOffsetReferenceSpace(originOffset: XRRigidTransform): XRReferenceSpace     = js.native
 
 @js.native
 @JSGlobal
@@ -878,9 +1000,10 @@ class SVGMetadataElement extends SVGElement
 class FederatedCredential extends Credential:
   def this(@unused data: FederatedCredentialInit) = this()
   def provider: String = js.native
-  def protocol: String = js.native
-  def name: String     = js.native
-  def iconURL: String  = js.native
+  @JSName("protocol")
+  def protocolOrNull: String | Null = js.native
+  def name: String                  = js.native
+  def iconURL: String               = js.native
 
 @js.native
 @JSGlobal
@@ -898,26 +1021,27 @@ class HTMLDirectoryElement extends HTMLElement:
 
 @js.native
 @JSGlobal
-class CSSPseudoElement extends js.Object:
-  def `type`: String                                                                    = js.native
-  def element: Element                                                                  = js.native
-  def parent: scala.scalajs.js.Any                                                      = js.native
-  def selectorText: String                                                              = js.native
-  def pseudo(`type`: String): CSSPseudoElement                                          = js.native
+class CSSPseudoElement extends PlatformObject:
+  def `type`: String                     = js.native
+  def element: Element                   = js.native
+  def parent: Element | CSSPseudoElement = js.native
+  def selectorText: String               = js.native
+  @JSName("pseudo")
+  def pseudoOrNull(`type`: String): CSSPseudoElement | Null                             = js.native
   def getBoxQuads(options: BoxQuadOptions = js.native): scala.scalajs.js.Array[DOMQuad] = js.native
   def convertQuadFromNode(
       quad: DOMQuadInit,
-      from: scala.scalajs.js.Any,
+      from: Text | Element | CSSPseudoElement | Document,
       options: ConvertCoordinateOptions = js.native,
   ): DOMQuad = js.native
   def convertRectFromNode(
       rect: DOMRectReadOnly,
-      from: scala.scalajs.js.Any,
+      from: Text | Element | CSSPseudoElement | Document,
       options: ConvertCoordinateOptions = js.native,
   ): DOMQuad = js.native
   def convertPointFromNode(
       point: DOMPointInit,
-      from: scala.scalajs.js.Any,
+      from: Text | Element | CSSPseudoElement | Document,
       options: ConvertCoordinateOptions = js.native,
   ): DOMPoint = js.native
 end CSSPseudoElement
@@ -925,21 +1049,24 @@ end CSSPseudoElement
 @js.native
 @JSGlobal
 class ManagedMediaSource extends MediaSource:
-  def streaming: Boolean                     = js.native
-  var onstartstreaming: scala.scalajs.js.Any = js.native
-  var onendstreaming: scala.scalajs.js.Any   = js.native
+  def streaming: Boolean = js.native
+  @JSName("onstartstreaming")
+  var onstartstreamingOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("onendstreaming")
+  var onendstreamingOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
 
 @js.native
 @JSGlobal
-class ReadableStreamBYOBRequest extends js.Object:
-  def view: scala.scalajs.js.Any                           = js.native
+class ReadableStreamBYOBRequest extends PlatformObject:
+  @JSName("view")
+  def viewOrNull: scala.scalajs.js.Any | Null              = js.native
   def respond(bytesWritten: Int): Unit                     = js.native
   def respondWithNewView(view: scala.scalajs.js.Any): Unit = js.native
 
 @js.native
 @JSGlobal
-class RTCCertificate extends js.Object:
-  def expires: Double                                               = js.native
+class RTCCertificate extends PlatformObject:
+  def expires: Int                                                  = js.native
   def getFingerprints(): scala.scalajs.js.Array[RTCDtlsFingerprint] = js.native
 
 @js.native
@@ -950,7 +1077,7 @@ class HTMLMapElement extends HTMLElement:
 
 @js.native
 @JSGlobal
-class IDBIndex extends js.Object:
+class IDBIndex extends PlatformObject:
   var name: String                                                                                      = js.native
   def objectStore: IDBObjectStore                                                                       = js.native
   def keyPath: scala.scalajs.js.Any                                                                     = js.native
@@ -968,7 +1095,7 @@ end IDBIndex
 
 @js.native
 @JSGlobal
-class Location extends js.Object:
+class Location extends PlatformObject:
   var href: String                   = js.native
   def origin: String                 = js.native
   var protocol: String               = js.native
@@ -996,24 +1123,25 @@ class SVGFEFloodElement extends SVGElement:
 @js.native
 @JSGlobal
 class GPUDevice extends EventTarget:
-  def features: GPUSupportedFeatures                                                      = js.native
-  def limits: GPUSupportedLimits                                                          = js.native
-  def adapterInfo: GPUAdapterInfo                                                         = js.native
-  def queue: GPUQueue                                                                     = js.native
-  def lost: scala.scalajs.js.Promise[GPUDeviceLostInfo]                                   = js.native
-  var onuncapturederror: scala.scalajs.js.Any                                             = js.native
-  var label: String                                                                       = js.native
-  def destroy(): Unit                                                                     = js.native
-  def createBuffer(descriptor: GPUBufferDescriptor): GPUBuffer                            = js.native
-  def createTexture(descriptor: GPUTextureDescriptor): GPUTexture                         = js.native
-  def createSampler(descriptor: GPUSamplerDescriptor = js.native): GPUSampler             = js.native
-  def importExternalTexture(descriptor: GPUExternalTextureDescriptor): GPUExternalTexture = js.native
-  def createBindGroupLayout(descriptor: GPUBindGroupLayoutDescriptor): GPUBindGroupLayout = js.native
-  def createPipelineLayout(descriptor: GPUPipelineLayoutDescriptor): GPUPipelineLayout    = js.native
-  def createBindGroup(descriptor: GPUBindGroupDescriptor): GPUBindGroup                   = js.native
-  def createShaderModule(descriptor: GPUShaderModuleDescriptor): GPUShaderModule          = js.native
-  def createComputePipeline(descriptor: GPUComputePipelineDescriptor): GPUComputePipeline = js.native
-  def createRenderPipeline(descriptor: GPURenderPipelineDescriptor): GPURenderPipeline    = js.native
+  def features: GPUSupportedFeatures                    = js.native
+  def limits: GPUSupportedLimits                        = js.native
+  def adapterInfo: GPUAdapterInfo                       = js.native
+  def queue: GPUQueue                                   = js.native
+  def lost: scala.scalajs.js.Promise[GPUDeviceLostInfo] = js.native
+  @JSName("onuncapturederror")
+  var onuncapturederrorOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  var label: String                                                                           = js.native
+  def destroy(): Unit                                                                         = js.native
+  def createBuffer(descriptor: GPUBufferDescriptor): GPUBuffer                                = js.native
+  def createTexture(descriptor: GPUTextureDescriptor): GPUTexture                             = js.native
+  def createSampler(descriptor: GPUSamplerDescriptor = js.native): GPUSampler                 = js.native
+  def importExternalTexture(descriptor: GPUExternalTextureDescriptor): GPUExternalTexture     = js.native
+  def createBindGroupLayout(descriptor: GPUBindGroupLayoutDescriptor): GPUBindGroupLayout     = js.native
+  def createPipelineLayout(descriptor: GPUPipelineLayoutDescriptor): GPUPipelineLayout        = js.native
+  def createBindGroup(descriptor: GPUBindGroupDescriptor): GPUBindGroup                       = js.native
+  def createShaderModule(descriptor: GPUShaderModuleDescriptor): GPUShaderModule              = js.native
+  def createComputePipeline(descriptor: GPUComputePipelineDescriptor): GPUComputePipeline     = js.native
+  def createRenderPipeline(descriptor: GPURenderPipelineDescriptor): GPURenderPipeline        = js.native
   def createComputePipelineAsync(
       descriptor: GPUComputePipelineDescriptor
   ): scala.scalajs.js.Promise[GPUComputePipeline] = js.native
@@ -1029,16 +1157,18 @@ end GPUDevice
 @js.native
 @JSGlobal
 class HTMLFrameElement extends HTMLElement:
-  var name: String                        = js.native
-  var scrolling: String                   = js.native
-  var src: String                         = js.native
-  var frameBorder: String                 = js.native
-  var longDesc: String                    = js.native
-  var noResize: Boolean                   = js.native
-  def contentDocument: Document           = js.native
-  def contentWindow: scala.scalajs.js.Any = js.native
-  var marginHeight: String                = js.native
-  var marginWidth: String                 = js.native
+  var name: String        = js.native
+  var scrolling: String   = js.native
+  var src: String         = js.native
+  var frameBorder: String = js.native
+  var longDesc: String    = js.native
+  var noResize: Boolean   = js.native
+  @JSName("contentDocument")
+  def contentDocumentOrNull: Document | Null = js.native
+  @JSName("contentWindow")
+  def contentWindowOrNull: Window | Null = js.native
+  var marginHeight: String               = js.native
+  var marginWidth: String                = js.native
 end HTMLFrameElement
 
 @js.native
@@ -1064,18 +1194,20 @@ object SVGFEMorphologyElement extends js.Object:
 
 @js.native
 @JSGlobal
-class XRCamera extends js.Object:
+class XRCamera extends PlatformObject:
   def width: Int  = js.native
   def height: Int = js.native
 
 @js.native
 @JSGlobal
-class ReadableStream extends js.Object:
+class ReadableStream extends PlatformObject:
   def this(@unused underlyingSource: scala.scalajs.js.Any = js.native, @unused strategy: QueuingStrategy = js.native) =
     this()
-  def locked: Boolean                                                                                      = js.native
-  def cancel(reason: scala.scalajs.js.Any = js.native): scala.scalajs.js.Promise[Unit]                     = js.native
-  def getReader(options: ReadableStreamGetReaderOptions = js.native): scala.scalajs.js.Any                 = js.native
+  def locked: Boolean                                                                  = js.native
+  def cancel(reason: scala.scalajs.js.Any = js.native): scala.scalajs.js.Promise[Unit] = js.native
+  def getReader(
+      options: ReadableStreamGetReaderOptions = js.native
+  ): ReadableStreamDefaultReader | ReadableStreamBYOBReader                                                = js.native
   def pipeThrough(transform: ReadableWritablePair, options: StreamPipeOptions = js.native): ReadableStream = js.native
   def pipeTo(destination: WritableStream, options: StreamPipeOptions = js.native): scala.scalajs.js.Promise[Unit] =
     js.native
@@ -1098,7 +1230,7 @@ class SVGStopElement extends SVGElement:
 
 @js.native
 @JSGlobal
-class SpeechRecognitionResultList extends js.Object:
+class SpeechRecognitionResultList extends PlatformObject:
   def length: Int                               = js.native
   def item(index: Int): SpeechRecognitionResult = js.native
 
@@ -1115,13 +1247,16 @@ class HTMLMetaElement extends HTMLElement:
 @JSGlobal
 class EventSource extends EventTarget:
   def this(@unused url: String, @unused eventSourceInitDict: EventSourceInit = js.native) = this()
-  def url: String                     = js.native
-  def withCredentials: Boolean        = js.native
-  def readyState: Int                 = js.native
-  var onopen: scala.scalajs.js.Any    = js.native
-  var onmessage: scala.scalajs.js.Any = js.native
-  var onerror: scala.scalajs.js.Any   = js.native
-  def close(): Unit                   = js.native
+  def url: String              = js.native
+  def withCredentials: Boolean = js.native
+  def readyState: Int          = js.native
+  @JSName("onopen")
+  var onopenOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("onmessage")
+  var onmessageOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("onerror")
+  var onerrorOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  def close(): Unit                                                                 = js.native
 end EventSource
 
 @js.native
@@ -1139,30 +1274,29 @@ class CSSSkewY extends CSSTransformComponent:
 
 @js.native
 @JSGlobal
-class WEBGL_compressed_texture_s3tc_srgb extends js.Object
+class WEBGL_compressed_texture_s3tc_srgb extends PlatformObject
 
 @js.native
 @JSGlobal
 object WEBGL_compressed_texture_s3tc_srgb extends js.Object:
-  val COMPRESSED_SRGB_S3TC_DXT1_EXT: scala.scalajs.js.Any       = js.native
-  val COMPRESSED_SRGB_ALPHA_S3TC_DXT1_EXT: scala.scalajs.js.Any = js.native
-  val COMPRESSED_SRGB_ALPHA_S3TC_DXT3_EXT: scala.scalajs.js.Any = js.native
-  val COMPRESSED_SRGB_ALPHA_S3TC_DXT5_EXT: scala.scalajs.js.Any = js.native
+  val COMPRESSED_SRGB_S3TC_DXT1_EXT: Int       = js.native
+  val COMPRESSED_SRGB_ALPHA_S3TC_DXT1_EXT: Int = js.native
+  val COMPRESSED_SRGB_ALPHA_S3TC_DXT3_EXT: Int = js.native
+  val COMPRESSED_SRGB_ALPHA_S3TC_DXT5_EXT: Int = js.native
 
 @js.native
 @JSGlobal
-class BluetoothServiceDataFilter extends js.Object:
+class BluetoothServiceDataFilter extends PlatformObject:
   def this(@unused init: scala.scalajs.js.Any = js.native) = this()
-  def size: Int                                                                     = js.native
-  def get(key: scala.scalajs.js.Any): scala.scalajs.js.UndefOr[BluetoothDataFilter] = js.native
-  def has(key: scala.scalajs.js.Any): Boolean                                       = js.native
-  def keys(): scala.scalajs.js.Iterator[scala.scalajs.js.Any]                       = js.native
-  def values(): scala.scalajs.js.Iterator[BluetoothDataFilter]                      = js.native
-  def entries(): scala.scalajs.js.Iterator[scala.scalajs.js.Tuple2[scala.scalajs.js.Any, BluetoothDataFilter]] =
-    js.native
-  def forEach(callback: scala.scalajs.js.Function2[BluetoothDataFilter, scala.scalajs.js.Any, Unit]): Unit = js.native
+  def size: Int                                                                                  = js.native
+  def get(key: String): scala.scalajs.js.UndefOr[BluetoothDataFilter]                            = js.native
+  def has(key: String): Boolean                                                                  = js.native
+  def keys(): scala.scalajs.js.Iterator[String]                                                  = js.native
+  def values(): scala.scalajs.js.Iterator[BluetoothDataFilter]                                   = js.native
+  def entries(): scala.scalajs.js.Iterator[scala.scalajs.js.Tuple2[String, BluetoothDataFilter]] = js.native
+  def forEach(callback: scala.scalajs.js.Function2[BluetoothDataFilter, String, Unit]): Unit     = js.native
   @JSName(js.Symbol.iterator)
-  def jsIterator(): scala.scalajs.js.Iterator[js.Tuple2[scala.scalajs.js.Any, BluetoothDataFilter]] = js.native
+  def jsIterator(): scala.scalajs.js.Iterator[js.Tuple2[String, BluetoothDataFilter]] = js.native
 end BluetoothServiceDataFilter
 
 @js.native
@@ -1174,14 +1308,15 @@ class HTMLScriptElement extends HTMLElement:
   var async: Boolean         = js.native
   var defer: Boolean         = js.native
   def blocking: DOMTokenList = js.native
-  var crossOrigin: String    = js.native
-  var referrerPolicy: String = js.native
-  var integrity: String      = js.native
-  var fetchPriority: String  = js.native
-  var text: String           = js.native
-  var charset: String        = js.native
-  var event: String          = js.native
-  var htmlFor: String        = js.native
+  @JSName("crossOrigin")
+  var crossOriginOrNull: String | Null = js.native
+  var referrerPolicy: String           = js.native
+  var integrity: String                = js.native
+  var fetchPriority: String            = js.native
+  var text: String                     = js.native
+  var charset: String                  = js.native
+  var event: String                    = js.native
+  var htmlFor: String                  = js.native
 end HTMLScriptElement
 
 @js.native
@@ -1195,7 +1330,7 @@ class HTMLUnknownElement extends HTMLElement
 
 @js.native
 @JSGlobal
-class GamepadHapticActuator extends js.Object:
+class GamepadHapticActuator extends PlatformObject:
   def effects: scala.scalajs.js.Array[String]                                   = js.native
   def pulse(value: Double, duration: Double): scala.scalajs.js.Promise[Boolean] = js.native
   def playEffect(`type`: String, params: GamepadEffectParameters = js.native): scala.scalajs.js.Promise[String] =
@@ -1206,23 +1341,29 @@ class GamepadHapticActuator extends js.Object:
 @JSGlobal
 class MediaRecorder extends EventTarget:
   def this(@unused stream: MediaStream, @unused options: MediaRecorderOptions = js.native) = this()
-  def stream: MediaStream                     = js.native
-  def mimeType: String                        = js.native
-  def state: String                           = js.native
-  var onstart: scala.scalajs.js.Any           = js.native
-  var onstop: scala.scalajs.js.Any            = js.native
-  var ondataavailable: scala.scalajs.js.Any   = js.native
-  var onpause: scala.scalajs.js.Any           = js.native
-  var onresume: scala.scalajs.js.Any          = js.native
-  var onerror: scala.scalajs.js.Any           = js.native
-  def videoBitsPerSecond: Int                 = js.native
-  def audioBitsPerSecond: Int                 = js.native
-  def audioBitrateMode: String                = js.native
-  def start(timeslice: Int = js.native): Unit = js.native
-  def stop(): Unit                            = js.native
-  def pause(): Unit                           = js.native
-  def resume(): Unit                          = js.native
-  def requestData(): Unit                     = js.native
+  def stream: MediaStream = js.native
+  def mimeType: String    = js.native
+  def state: String       = js.native
+  @JSName("onstart")
+  var onstartOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("onstop")
+  var onstopOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("ondataavailable")
+  var ondataavailableOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("onpause")
+  var onpauseOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("onresume")
+  var onresumeOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("onerror")
+  var onerrorOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  def videoBitsPerSecond: Int                                                       = js.native
+  def audioBitsPerSecond: Int                                                       = js.native
+  def audioBitrateMode: String                                                      = js.native
+  def start(timeslice: Int = js.native): Unit                                       = js.native
+  def stop(): Unit                                                                  = js.native
+  def pause(): Unit                                                                 = js.native
+  def resume(): Unit                                                                = js.native
+  def requestData(): Unit                                                           = js.native
 end MediaRecorder
 
 @js.native
@@ -1232,37 +1373,42 @@ object MediaRecorder extends js.Object:
 
 @js.native
 @JSGlobal
-class SVGAnimatedInteger extends js.Object:
+class SVGAnimatedInteger extends PlatformObject:
   var baseVal: Int = js.native
   def animVal: Int = js.native
 
 @js.native
 @JSGlobal
-class GPUSampler extends js.Object:
+class GPUSampler extends PlatformObject:
   var label: String = js.native
 
 @js.native
 @JSGlobal
 class XRProjectionLayer extends XRCompositionLayer:
-  def textureWidth: Int           = js.native
-  def textureHeight: Int          = js.native
-  def textureArrayLength: Int     = js.native
-  def ignoreDepthValues: Boolean  = js.native
-  var fixedFoveation: Double      = js.native
-  var deltaPose: XRRigidTransform = js.native
+  def textureWidth: Int          = js.native
+  def textureHeight: Int         = js.native
+  def textureArrayLength: Int    = js.native
+  def ignoreDepthValues: Boolean = js.native
+  @JSName("fixedFoveation")
+  var fixedFoveationOrNull: Double | Null = js.native
+  @JSName("deltaPose")
+  var deltaPoseOrNull: XRRigidTransform | Null = js.native
+end XRProjectionLayer
 
 @js.native
 @JSGlobal
-class USBIsochronousInTransferPacket extends js.Object:
+class USBIsochronousInTransferPacket extends PlatformObject:
   def this(@unused status: String, @unused data: scala.scalajs.js.Any = js.native) = this()
-  def data: scala.scalajs.js.Any = js.native
-  def status: String             = js.native
+  @JSName("data")
+  def dataOrNull: scala.scalajs.js.Any | Null = js.native
+  def status: String                          = js.native
 
 @js.native
 @JSGlobal
-class TouchList extends js.Object:
-  def length: Int             = js.native
-  def item(index: Int): Touch = js.native
+class TouchList extends PlatformObject:
+  def length: Int = js.native
+  @JSName("item")
+  def itemOrNull(index: Int): Touch | Null = js.native
 
 @js.native
 @JSGlobal
@@ -1272,37 +1418,37 @@ class SVGPolylineElement extends SVGGeometryElement:
 
 @js.native
 @JSGlobal
-class EXT_texture_filter_anisotropic extends js.Object
+class EXT_texture_filter_anisotropic extends PlatformObject
 
 @js.native
 @JSGlobal
 object EXT_texture_filter_anisotropic extends js.Object:
-  val TEXTURE_MAX_ANISOTROPY_EXT: scala.scalajs.js.Any     = js.native
-  val MAX_TEXTURE_MAX_ANISOTROPY_EXT: scala.scalajs.js.Any = js.native
+  val TEXTURE_MAX_ANISOTROPY_EXT: Int     = js.native
+  val MAX_TEXTURE_MAX_ANISOTROPY_EXT: Int = js.native
 
 @js.native
 @JSGlobal
 class CSSLCH extends CSSColorValue:
   def this(
-      @unused l: scala.scalajs.js.Any,
-      @unused c: scala.scalajs.js.Any,
-      @unused h: scala.scalajs.js.Any,
-      @unused alpha: scala.scalajs.js.Any = js.native,
+      @unused l: Double | CSSNumericValue | String | CSSKeywordValue,
+      @unused c: Double | CSSNumericValue | String | CSSKeywordValue,
+      @unused h: Double | CSSNumericValue | String | CSSKeywordValue,
+      @unused alpha: Double | CSSNumericValue | String | CSSKeywordValue = js.native,
   ) = this()
-  var l: scala.scalajs.js.Any     = js.native
-  var c: scala.scalajs.js.Any     = js.native
-  var h: scala.scalajs.js.Any     = js.native
-  var alpha: scala.scalajs.js.Any = js.native
+  var l: Double | CSSNumericValue | String | CSSKeywordValue     = js.native
+  var c: Double | CSSNumericValue | String | CSSKeywordValue     = js.native
+  var h: Double | CSSNumericValue | String | CSSKeywordValue     = js.native
+  var alpha: Double | CSSNumericValue | String | CSSKeywordValue = js.native
 end CSSLCH
 
 @js.native
 @JSGlobal
-class OES_texture_half_float extends js.Object
+class OES_texture_half_float extends PlatformObject
 
 @js.native
 @JSGlobal
 object OES_texture_half_float extends js.Object:
-  val HALF_FLOAT_OES: scala.scalajs.js.Any = js.native
+  val HALF_FLOAT_OES: Int = js.native
 
 @js.native
 @JSGlobal
@@ -1312,8 +1458,9 @@ class GravitySensor extends Accelerometer:
 @js.native
 @JSGlobal
 class HTMLOutputElement extends HTMLElement:
-  def htmlFor: DOMTokenList                  = js.native
-  def form: HTMLFormElement                  = js.native
+  def htmlFor: DOMTokenList = js.native
+  @JSName("form")
+  def formOrNull: HTMLFormElement | Null     = js.native
   var name: String                           = js.native
   def `type`: String                         = js.native
   var defaultValue: String                   = js.native
@@ -1329,7 +1476,7 @@ end HTMLOutputElement
 
 @js.native
 @JSGlobal
-class MediaError extends js.Object:
+class MediaError extends PlatformObject:
   def code: Int       = js.native
   def message: String = js.native
 
@@ -1343,15 +1490,19 @@ object MediaError extends js.Object:
 
 @js.native
 @JSGlobal
-class CSSParserRule extends js.Object
+class CSSParserRule extends PlatformObject
 
 @js.native
 @JSGlobal
 class IdleDetector extends EventTarget:
-  def userState: String                                                       = js.native
-  def screenState: String                                                     = js.native
-  var onchange: scala.scalajs.js.Any                                          = js.native
-  def start(options: IdleOptions = js.native): scala.scalajs.js.Promise[Unit] = js.native
+  @JSName("userState")
+  def userStateOrNull: String | Null = js.native
+  @JSName("screenState")
+  def screenStateOrNull: String | Null = js.native
+  @JSName("onchange")
+  var onchangeOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  def start(options: IdleOptions = js.native): scala.scalajs.js.Promise[Unit]        = js.native
+end IdleDetector
 
 @js.native
 @JSGlobal
@@ -1360,7 +1511,7 @@ object IdleDetector extends js.Object:
 
 @js.native
 @JSGlobal
-class SVGPreserveAspectRatio extends js.Object:
+class SVGPreserveAspectRatio extends PlatformObject:
   var align: Int       = js.native
   var meetOrSlice: Int = js.native
 
@@ -1385,7 +1536,7 @@ end SVGPreserveAspectRatio
 
 @js.native
 @JSGlobal
-class MediaMetadata extends js.Object:
+class MediaMetadata extends PlatformObject:
   def this(@unused init: MediaMetadataInit = js.native) = this()
   var title: String                                           = js.native
   var artist: String                                          = js.native
@@ -1395,332 +1546,239 @@ class MediaMetadata extends js.Object:
 
 @js.native
 @JSGlobal
-class WebGLRenderingContext extends js.Object:
-  def canvas: scala.scalajs.js.Any                                                               = js.native
-  def drawingBufferWidth: scala.scalajs.js.Any                                                   = js.native
-  def drawingBufferHeight: scala.scalajs.js.Any                                                  = js.native
-  def drawingBufferFormat: scala.scalajs.js.Any                                                  = js.native
-  var drawingBufferColorSpace: String                                                            = js.native
-  var unpackColorSpace: String                                                                   = js.native
-  def getContextAttributes(): WebGLContextAttributes                                             = js.native
-  def isContextLost(): Boolean                                                                   = js.native
-  def getSupportedExtensions(): scala.scalajs.js.Array[String]                                   = js.native
-  def getExtension(name: String): scala.scalajs.js.Any                                           = js.native
-  def drawingBufferStorage(sizedFormat: scala.scalajs.js.Any, width: Int, height: Int): Unit     = js.native
-  def activeTexture(texture: scala.scalajs.js.Any): Unit                                         = js.native
-  def attachShader(program: WebGLProgram, shader: WebGLShader): Unit                             = js.native
-  def bindAttribLocation(program: WebGLProgram, index: scala.scalajs.js.Any, name: String): Unit = js.native
-  def bindBuffer(target: scala.scalajs.js.Any, buffer: WebGLBuffer): Unit                        = js.native
-  def bindFramebuffer(target: scala.scalajs.js.Any, framebuffer: WebGLFramebuffer): Unit         = js.native
-  def bindRenderbuffer(target: scala.scalajs.js.Any, renderbuffer: WebGLRenderbuffer): Unit      = js.native
-  def bindTexture(target: scala.scalajs.js.Any, texture: WebGLTexture): Unit                     = js.native
-  def blendColor(
-      red: scala.scalajs.js.Any,
-      green: scala.scalajs.js.Any,
-      blue: scala.scalajs.js.Any,
-      alpha: scala.scalajs.js.Any,
-  ): Unit                                                                                         = js.native
-  def blendEquation(mode: scala.scalajs.js.Any): Unit                                             = js.native
-  def blendEquationSeparate(modeRGB: scala.scalajs.js.Any, modeAlpha: scala.scalajs.js.Any): Unit = js.native
-  def blendFunc(sfactor: scala.scalajs.js.Any, dfactor: scala.scalajs.js.Any): Unit               = js.native
-  def blendFuncSeparate(
-      srcRGB: scala.scalajs.js.Any,
-      dstRGB: scala.scalajs.js.Any,
-      srcAlpha: scala.scalajs.js.Any,
-      dstAlpha: scala.scalajs.js.Any,
-  ): Unit                                                                        = js.native
-  def checkFramebufferStatus(target: scala.scalajs.js.Any): scala.scalajs.js.Any = js.native
-  def clear(mask: scala.scalajs.js.Any): Unit                                    = js.native
-  def clearColor(
-      red: scala.scalajs.js.Any,
-      green: scala.scalajs.js.Any,
-      blue: scala.scalajs.js.Any,
-      alpha: scala.scalajs.js.Any,
-  ): Unit                                           = js.native
-  def clearDepth(depth: scala.scalajs.js.Any): Unit = js.native
-  def clearStencil(s: scala.scalajs.js.Any): Unit   = js.native
-  def colorMask(
-      red: scala.scalajs.js.Any,
-      green: scala.scalajs.js.Any,
-      blue: scala.scalajs.js.Any,
-      alpha: scala.scalajs.js.Any,
-  ): Unit                                      = js.native
-  def compileShader(shader: WebGLShader): Unit = js.native
+class WebGLRenderingContext extends PlatformObject:
+  def canvas: HTMLCanvasElement | OffscreenCanvas = js.native
+  def drawingBufferWidth: Int                     = js.native
+  def drawingBufferHeight: Int                    = js.native
+  def drawingBufferFormat: Int                    = js.native
+  var drawingBufferColorSpace: String             = js.native
+  var unpackColorSpace: String                    = js.native
+  @JSName("getContextAttributes")
+  def getContextAttributesOrNull(): WebGLContextAttributes | Null = js.native
+  def isContextLost(): Boolean                                    = js.native
+  @JSName("getSupportedExtensions")
+  def getSupportedExtensionsOrNull(): scala.scalajs.js.Array[String] | Null = js.native
+  @JSName("getExtension")
+  def getExtensionOrNull(name: String): scala.scalajs.js.Any | Null                   = js.native
+  def drawingBufferStorage(sizedFormat: Int, width: Int, height: Int): Unit           = js.native
+  def activeTexture(texture: Int): Unit                                               = js.native
+  def attachShader(program: WebGLProgram, shader: WebGLShader): Unit                  = js.native
+  def bindAttribLocation(program: WebGLProgram, index: Int, name: String): Unit       = js.native
+  def bindBuffer(target: Int, buffer: WebGLBuffer): Unit                              = js.native
+  def bindFramebuffer(target: Int, framebuffer: WebGLFramebuffer): Unit               = js.native
+  def bindRenderbuffer(target: Int, renderbuffer: WebGLRenderbuffer): Unit            = js.native
+  def bindTexture(target: Int, texture: WebGLTexture): Unit                           = js.native
+  def blendColor(red: Double, green: Double, blue: Double, alpha: Double): Unit       = js.native
+  def blendEquation(mode: Int): Unit                                                  = js.native
+  def blendEquationSeparate(modeRGB: Int, modeAlpha: Int): Unit                       = js.native
+  def blendFunc(sfactor: Int, dfactor: Int): Unit                                     = js.native
+  def blendFuncSeparate(srcRGB: Int, dstRGB: Int, srcAlpha: Int, dstAlpha: Int): Unit = js.native
+  def checkFramebufferStatus(target: Int): Int                                        = js.native
+  def clear(mask: Int): Unit                                                          = js.native
+  def clearColor(red: Double, green: Double, blue: Double, alpha: Double): Unit       = js.native
+  def clearDepth(depth: Double): Unit                                                 = js.native
+  def clearStencil(s: Int): Unit                                                      = js.native
+  def colorMask(red: Boolean, green: Boolean, blue: Boolean, alpha: Boolean): Unit    = js.native
+  def compileShader(shader: WebGLShader): Unit                                        = js.native
   def copyTexImage2D(
-      target: scala.scalajs.js.Any,
-      level: scala.scalajs.js.Any,
-      internalformat: scala.scalajs.js.Any,
-      x: scala.scalajs.js.Any,
-      y: scala.scalajs.js.Any,
-      width: scala.scalajs.js.Any,
-      height: scala.scalajs.js.Any,
-      border: scala.scalajs.js.Any,
+      target: Int,
+      level: Int,
+      internalformat: Int,
+      x: Int,
+      y: Int,
+      width: Int,
+      height: Int,
+      border: Int,
   ): Unit = js.native
   def copyTexSubImage2D(
-      target: scala.scalajs.js.Any,
-      level: scala.scalajs.js.Any,
-      xoffset: scala.scalajs.js.Any,
-      yoffset: scala.scalajs.js.Any,
-      x: scala.scalajs.js.Any,
-      y: scala.scalajs.js.Any,
-      width: scala.scalajs.js.Any,
-      height: scala.scalajs.js.Any,
-  ): Unit                                                                                                    = js.native
-  def createBuffer(): WebGLBuffer                                                                            = js.native
-  def createFramebuffer(): WebGLFramebuffer                                                                  = js.native
-  def createProgram(): WebGLProgram                                                                          = js.native
-  def createRenderbuffer(): WebGLRenderbuffer                                                                = js.native
-  def createShader(`type`: scala.scalajs.js.Any): WebGLShader                                                = js.native
-  def createTexture(): WebGLTexture                                                                          = js.native
-  def cullFace(mode: scala.scalajs.js.Any): Unit                                                             = js.native
-  def deleteBuffer(buffer: WebGLBuffer): Unit                                                                = js.native
-  def deleteFramebuffer(framebuffer: WebGLFramebuffer): Unit                                                 = js.native
-  def deleteProgram(program: WebGLProgram): Unit                                                             = js.native
-  def deleteRenderbuffer(renderbuffer: WebGLRenderbuffer): Unit                                              = js.native
-  def deleteShader(shader: WebGLShader): Unit                                                                = js.native
-  def deleteTexture(texture: WebGLTexture): Unit                                                             = js.native
-  def depthFunc(func: scala.scalajs.js.Any): Unit                                                            = js.native
-  def depthMask(flag: scala.scalajs.js.Any): Unit                                                            = js.native
-  def depthRange(zNear: scala.scalajs.js.Any, zFar: scala.scalajs.js.Any): Unit                              = js.native
-  def detachShader(program: WebGLProgram, shader: WebGLShader): Unit                                         = js.native
-  def disable(cap: scala.scalajs.js.Any): Unit                                                               = js.native
-  def disableVertexAttribArray(index: scala.scalajs.js.Any): Unit                                            = js.native
-  def drawArrays(mode: scala.scalajs.js.Any, first: scala.scalajs.js.Any, count: scala.scalajs.js.Any): Unit = js.native
-  def drawElements(
-      mode: scala.scalajs.js.Any,
-      count: scala.scalajs.js.Any,
-      `type`: scala.scalajs.js.Any,
-      offset: scala.scalajs.js.Any,
-  ): Unit                                                        = js.native
-  def enable(cap: scala.scalajs.js.Any): Unit                    = js.native
-  def enableVertexAttribArray(index: scala.scalajs.js.Any): Unit = js.native
-  def finish(): Unit                                             = js.native
-  def flush(): Unit                                              = js.native
+      target: Int,
+      level: Int,
+      xoffset: Int,
+      yoffset: Int,
+      x: Int,
+      y: Int,
+      width: Int,
+      height: Int,
+  ): Unit                                     = js.native
+  def createBuffer(): WebGLBuffer             = js.native
+  def createFramebuffer(): WebGLFramebuffer   = js.native
+  def createProgram(): WebGLProgram           = js.native
+  def createRenderbuffer(): WebGLRenderbuffer = js.native
+  @JSName("createShader")
+  def createShaderOrNull(`type`: Int): WebGLShader | Null                 = js.native
+  def createTexture(): WebGLTexture                                       = js.native
+  def cullFace(mode: Int): Unit                                           = js.native
+  def deleteBuffer(buffer: WebGLBuffer): Unit                             = js.native
+  def deleteFramebuffer(framebuffer: WebGLFramebuffer): Unit              = js.native
+  def deleteProgram(program: WebGLProgram): Unit                          = js.native
+  def deleteRenderbuffer(renderbuffer: WebGLRenderbuffer): Unit           = js.native
+  def deleteShader(shader: WebGLShader): Unit                             = js.native
+  def deleteTexture(texture: WebGLTexture): Unit                          = js.native
+  def depthFunc(func: Int): Unit                                          = js.native
+  def depthMask(flag: Boolean): Unit                                      = js.native
+  def depthRange(zNear: Double, zFar: Double): Unit                       = js.native
+  def detachShader(program: WebGLProgram, shader: WebGLShader): Unit      = js.native
+  def disable(cap: Int): Unit                                             = js.native
+  def disableVertexAttribArray(index: Int): Unit                          = js.native
+  def drawArrays(mode: Int, first: Int, count: Int): Unit                 = js.native
+  def drawElements(mode: Int, count: Int, `type`: Int, offset: Int): Unit = js.native
+  def enable(cap: Int): Unit                                              = js.native
+  def enableVertexAttribArray(index: Int): Unit                           = js.native
+  def finish(): Unit                                                      = js.native
+  def flush(): Unit                                                       = js.native
   def framebufferRenderbuffer(
-      target: scala.scalajs.js.Any,
-      attachment: scala.scalajs.js.Any,
-      renderbuffertarget: scala.scalajs.js.Any,
+      target: Int,
+      attachment: Int,
+      renderbuffertarget: Int,
       renderbuffer: WebGLRenderbuffer,
   ): Unit = js.native
-  def framebufferTexture2D(
-      target: scala.scalajs.js.Any,
-      attachment: scala.scalajs.js.Any,
-      textarget: scala.scalajs.js.Any,
-      texture: WebGLTexture,
-      level: scala.scalajs.js.Any,
-  ): Unit                                                                                                 = js.native
-  def frontFace(mode: scala.scalajs.js.Any): Unit                                                         = js.native
-  def generateMipmap(target: scala.scalajs.js.Any): Unit                                                  = js.native
-  def getActiveAttrib(program: WebGLProgram, index: scala.scalajs.js.Any): WebGLActiveInfo                = js.native
-  def getActiveUniform(program: WebGLProgram, index: scala.scalajs.js.Any): WebGLActiveInfo               = js.native
-  def getAttachedShaders(program: WebGLProgram): scala.scalajs.js.Array[WebGLShader]                      = js.native
-  def getAttribLocation(program: WebGLProgram, name: String): scala.scalajs.js.Any                        = js.native
-  def getBufferParameter(target: scala.scalajs.js.Any, pname: scala.scalajs.js.Any): scala.scalajs.js.Any = js.native
-  def getParameter(pname: scala.scalajs.js.Any): scala.scalajs.js.Any                                     = js.native
-  def getError(): scala.scalajs.js.Any                                                                    = js.native
-  def getFramebufferAttachmentParameter(
-      target: scala.scalajs.js.Any,
-      attachment: scala.scalajs.js.Any,
-      pname: scala.scalajs.js.Any,
-  ): scala.scalajs.js.Any                                                                           = js.native
-  def getProgramParameter(program: WebGLProgram, pname: scala.scalajs.js.Any): scala.scalajs.js.Any = js.native
-  def getProgramInfoLog(program: WebGLProgram): String                                              = js.native
-  def getRenderbufferParameter(target: scala.scalajs.js.Any, pname: scala.scalajs.js.Any): scala.scalajs.js.Any =
+  def framebufferTexture2D(target: Int, attachment: Int, textarget: Int, texture: WebGLTexture, level: Int): Unit =
     js.native
-  def getShaderParameter(shader: WebGLShader, pname: scala.scalajs.js.Any): scala.scalajs.js.Any = js.native
-  def getShaderPrecisionFormat(
-      shadertype: scala.scalajs.js.Any,
-      precisiontype: scala.scalajs.js.Any,
-  ): WebGLShaderPrecisionFormat                                                                             = js.native
-  def getShaderInfoLog(shader: WebGLShader): String                                                         = js.native
-  def getShaderSource(shader: WebGLShader): String                                                          = js.native
-  def getTexParameter(target: scala.scalajs.js.Any, pname: scala.scalajs.js.Any): scala.scalajs.js.Any      = js.native
-  def getUniform(program: WebGLProgram, location: WebGLUniformLocation): scala.scalajs.js.Any               = js.native
-  def getUniformLocation(program: WebGLProgram, name: String): WebGLUniformLocation                         = js.native
-  def getVertexAttrib(index: scala.scalajs.js.Any, pname: scala.scalajs.js.Any): scala.scalajs.js.Any       = js.native
-  def getVertexAttribOffset(index: scala.scalajs.js.Any, pname: scala.scalajs.js.Any): scala.scalajs.js.Any = js.native
-  def hint(target: scala.scalajs.js.Any, mode: scala.scalajs.js.Any): Unit                                  = js.native
-  def isBuffer(buffer: WebGLBuffer): scala.scalajs.js.Any                                                   = js.native
-  def isEnabled(cap: scala.scalajs.js.Any): scala.scalajs.js.Any                                            = js.native
-  def isFramebuffer(framebuffer: WebGLFramebuffer): scala.scalajs.js.Any                                    = js.native
-  def isProgram(program: WebGLProgram): scala.scalajs.js.Any                                                = js.native
-  def isRenderbuffer(renderbuffer: WebGLRenderbuffer): scala.scalajs.js.Any                                 = js.native
-  def isShader(shader: WebGLShader): scala.scalajs.js.Any                                                   = js.native
-  def isTexture(texture: WebGLTexture): scala.scalajs.js.Any                                                = js.native
-  def lineWidth(width: scala.scalajs.js.Any): Unit                                                          = js.native
-  def linkProgram(program: WebGLProgram): Unit                                                              = js.native
-  def pixelStorei(pname: scala.scalajs.js.Any, param: scala.scalajs.js.Any): Unit                           = js.native
-  def polygonOffset(factor: scala.scalajs.js.Any, units: scala.scalajs.js.Any): Unit                        = js.native
-  def renderbufferStorage(
-      target: scala.scalajs.js.Any,
-      internalformat: scala.scalajs.js.Any,
-      width: scala.scalajs.js.Any,
-      height: scala.scalajs.js.Any,
-  ): Unit                                                                             = js.native
-  def sampleCoverage(value: scala.scalajs.js.Any, invert: scala.scalajs.js.Any): Unit = js.native
-  def scissor(
-      x: scala.scalajs.js.Any,
-      y: scala.scalajs.js.Any,
-      width: scala.scalajs.js.Any,
-      height: scala.scalajs.js.Any,
-  ): Unit                                                                                                  = js.native
-  def shaderSource(shader: WebGLShader, source: String): Unit                                              = js.native
-  def stencilFunc(func: scala.scalajs.js.Any, ref: scala.scalajs.js.Any, mask: scala.scalajs.js.Any): Unit = js.native
-  def stencilFuncSeparate(
-      face: scala.scalajs.js.Any,
-      func: scala.scalajs.js.Any,
-      ref: scala.scalajs.js.Any,
-      mask: scala.scalajs.js.Any,
-  ): Unit                                                                                                   = js.native
-  def stencilMask(mask: scala.scalajs.js.Any): Unit                                                         = js.native
-  def stencilMaskSeparate(face: scala.scalajs.js.Any, mask: scala.scalajs.js.Any): Unit                     = js.native
-  def stencilOp(fail: scala.scalajs.js.Any, zfail: scala.scalajs.js.Any, zpass: scala.scalajs.js.Any): Unit = js.native
-  def stencilOpSeparate(
-      face: scala.scalajs.js.Any,
-      fail: scala.scalajs.js.Any,
-      zfail: scala.scalajs.js.Any,
-      zpass: scala.scalajs.js.Any,
-  ): Unit = js.native
-  def texParameterf(target: scala.scalajs.js.Any, pname: scala.scalajs.js.Any, param: scala.scalajs.js.Any): Unit =
+  def frontFace(mode: Int): Unit        = js.native
+  def generateMipmap(target: Int): Unit = js.native
+  @JSName("getActiveAttrib")
+  def getActiveAttribOrNull(program: WebGLProgram, index: Int): WebGLActiveInfo | Null = js.native
+  @JSName("getActiveUniform")
+  def getActiveUniformOrNull(program: WebGLProgram, index: Int): WebGLActiveInfo | Null = js.native
+  @JSName("getAttachedShaders")
+  def getAttachedShadersOrNull(program: WebGLProgram): scala.scalajs.js.Array[WebGLShader] | Null       = js.native
+  def getAttribLocation(program: WebGLProgram, name: String): Int                                       = js.native
+  def getBufferParameter(target: Int, pname: Int): scala.scalajs.js.Any                                 = js.native
+  def getParameter(pname: Int): scala.scalajs.js.Any                                                    = js.native
+  def getError(): Int                                                                                   = js.native
+  def getFramebufferAttachmentParameter(target: Int, attachment: Int, pname: Int): scala.scalajs.js.Any = js.native
+  def getProgramParameter(program: WebGLProgram, pname: Int): scala.scalajs.js.Any                      = js.native
+  @JSName("getProgramInfoLog")
+  def getProgramInfoLogOrNull(program: WebGLProgram): String | Null             = js.native
+  def getRenderbufferParameter(target: Int, pname: Int): scala.scalajs.js.Any   = js.native
+  def getShaderParameter(shader: WebGLShader, pname: Int): scala.scalajs.js.Any = js.native
+  @JSName("getShaderPrecisionFormat")
+  def getShaderPrecisionFormatOrNull(shadertype: Int, precisiontype: Int): WebGLShaderPrecisionFormat | Null = js.native
+  @JSName("getShaderInfoLog")
+  def getShaderInfoLogOrNull(shader: WebGLShader): String | Null = js.native
+  @JSName("getShaderSource")
+  def getShaderSourceOrNull(shader: WebGLShader): String | Null                               = js.native
+  def getTexParameter(target: Int, pname: Int): scala.scalajs.js.Any                          = js.native
+  def getUniform(program: WebGLProgram, location: WebGLUniformLocation): scala.scalajs.js.Any = js.native
+  @JSName("getUniformLocation")
+  def getUniformLocationOrNull(program: WebGLProgram, name: String): WebGLUniformLocation | Null  = js.native
+  def getVertexAttrib(index: Int, pname: Int): scala.scalajs.js.Any                               = js.native
+  def getVertexAttribOffset(index: Int, pname: Int): Int                                          = js.native
+  def hint(target: Int, mode: Int): Unit                                                          = js.native
+  def isBuffer(buffer: WebGLBuffer): Boolean                                                      = js.native
+  def isEnabled(cap: Int): Boolean                                                                = js.native
+  def isFramebuffer(framebuffer: WebGLFramebuffer): Boolean                                       = js.native
+  def isProgram(program: WebGLProgram): Boolean                                                   = js.native
+  def isRenderbuffer(renderbuffer: WebGLRenderbuffer): Boolean                                    = js.native
+  def isShader(shader: WebGLShader): Boolean                                                      = js.native
+  def isTexture(texture: WebGLTexture): Boolean                                                   = js.native
+  def lineWidth(width: Double): Unit                                                              = js.native
+  def linkProgram(program: WebGLProgram): Unit                                                    = js.native
+  def pixelStorei(pname: Int, param: Int): Unit                                                   = js.native
+  def polygonOffset(factor: Double, units: Double): Unit                                          = js.native
+  def renderbufferStorage(target: Int, internalformat: Int, width: Int, height: Int): Unit        = js.native
+  def sampleCoverage(value: Double, invert: Boolean): Unit                                        = js.native
+  def scissor(x: Int, y: Int, width: Int, height: Int): Unit                                      = js.native
+  def shaderSource(shader: WebGLShader, source: String): Unit                                     = js.native
+  def stencilFunc(func: Int, ref: Int, mask: Int): Unit                                           = js.native
+  def stencilFuncSeparate(face: Int, func: Int, ref: Int, mask: Int): Unit                        = js.native
+  def stencilMask(mask: Int): Unit                                                                = js.native
+  def stencilMaskSeparate(face: Int, mask: Int): Unit                                             = js.native
+  def stencilOp(fail: Int, zfail: Int, zpass: Int): Unit                                          = js.native
+  def stencilOpSeparate(face: Int, fail: Int, zfail: Int, zpass: Int): Unit                       = js.native
+  def texParameterf(target: Int, pname: Int, param: Double): Unit                                 = js.native
+  def texParameteri(target: Int, pname: Int, param: Int): Unit                                    = js.native
+  def uniform1f(location: WebGLUniformLocation, x: Double): Unit                                  = js.native
+  def uniform2f(location: WebGLUniformLocation, x: Double, y: Double): Unit                       = js.native
+  def uniform3f(location: WebGLUniformLocation, x: Double, y: Double, z: Double): Unit            = js.native
+  def uniform4f(location: WebGLUniformLocation, x: Double, y: Double, z: Double, w: Double): Unit = js.native
+  def uniform1i(location: WebGLUniformLocation, x: Int): Unit                                     = js.native
+  def uniform2i(location: WebGLUniformLocation, x: Int, y: Int): Unit                             = js.native
+  def uniform3i(location: WebGLUniformLocation, x: Int, y: Int, z: Int): Unit                     = js.native
+  def uniform4i(location: WebGLUniformLocation, x: Int, y: Int, z: Int, w: Int): Unit             = js.native
+  def useProgram(program: WebGLProgram): Unit                                                     = js.native
+  def validateProgram(program: WebGLProgram): Unit                                                = js.native
+  def vertexAttrib1f(index: Int, x: Double): Unit                                                 = js.native
+  def vertexAttrib2f(index: Int, x: Double, y: Double): Unit                                      = js.native
+  def vertexAttrib3f(index: Int, x: Double, y: Double, z: Double): Unit                           = js.native
+  def vertexAttrib4f(index: Int, x: Double, y: Double, z: Double, w: Double): Unit                = js.native
+  def vertexAttrib1fv(index: Int, values: scala.scalajs.js.Any): Unit                             = js.native
+  def vertexAttrib2fv(index: Int, values: scala.scalajs.js.Any): Unit                             = js.native
+  def vertexAttrib3fv(index: Int, values: scala.scalajs.js.Any): Unit                             = js.native
+  def vertexAttrib4fv(index: Int, values: scala.scalajs.js.Any): Unit                             = js.native
+  def vertexAttribPointer(index: Int, size: Int, `type`: Int, normalized: Boolean, stride: Int, offset: Int): Unit =
     js.native
-  def texParameteri(target: scala.scalajs.js.Any, pname: scala.scalajs.js.Any, param: scala.scalajs.js.Any): Unit =
-    js.native
-  def uniform1f(location: WebGLUniformLocation, x: scala.scalajs.js.Any): Unit                          = js.native
-  def uniform2f(location: WebGLUniformLocation, x: scala.scalajs.js.Any, y: scala.scalajs.js.Any): Unit = js.native
-  def uniform3f(
-      location: WebGLUniformLocation,
-      x: scala.scalajs.js.Any,
-      y: scala.scalajs.js.Any,
-      z: scala.scalajs.js.Any,
-  ): Unit = js.native
-  def uniform4f(
-      location: WebGLUniformLocation,
-      x: scala.scalajs.js.Any,
-      y: scala.scalajs.js.Any,
-      z: scala.scalajs.js.Any,
-      w: scala.scalajs.js.Any,
-  ): Unit                                                                                               = js.native
-  def uniform1i(location: WebGLUniformLocation, x: scala.scalajs.js.Any): Unit                          = js.native
-  def uniform2i(location: WebGLUniformLocation, x: scala.scalajs.js.Any, y: scala.scalajs.js.Any): Unit = js.native
-  def uniform3i(
-      location: WebGLUniformLocation,
-      x: scala.scalajs.js.Any,
-      y: scala.scalajs.js.Any,
-      z: scala.scalajs.js.Any,
-  ): Unit = js.native
-  def uniform4i(
-      location: WebGLUniformLocation,
-      x: scala.scalajs.js.Any,
-      y: scala.scalajs.js.Any,
-      z: scala.scalajs.js.Any,
-      w: scala.scalajs.js.Any,
-  ): Unit                                                                                                 = js.native
-  def useProgram(program: WebGLProgram): Unit                                                             = js.native
-  def validateProgram(program: WebGLProgram): Unit                                                        = js.native
-  def vertexAttrib1f(index: scala.scalajs.js.Any, x: scala.scalajs.js.Any): Unit                          = js.native
-  def vertexAttrib2f(index: scala.scalajs.js.Any, x: scala.scalajs.js.Any, y: scala.scalajs.js.Any): Unit = js.native
-  def vertexAttrib3f(
-      index: scala.scalajs.js.Any,
-      x: scala.scalajs.js.Any,
-      y: scala.scalajs.js.Any,
-      z: scala.scalajs.js.Any,
-  ): Unit = js.native
-  def vertexAttrib4f(
-      index: scala.scalajs.js.Any,
-      x: scala.scalajs.js.Any,
-      y: scala.scalajs.js.Any,
-      z: scala.scalajs.js.Any,
-      w: scala.scalajs.js.Any,
-  ): Unit                                                                              = js.native
-  def vertexAttrib1fv(index: scala.scalajs.js.Any, values: scala.scalajs.js.Any): Unit = js.native
-  def vertexAttrib2fv(index: scala.scalajs.js.Any, values: scala.scalajs.js.Any): Unit = js.native
-  def vertexAttrib3fv(index: scala.scalajs.js.Any, values: scala.scalajs.js.Any): Unit = js.native
-  def vertexAttrib4fv(index: scala.scalajs.js.Any, values: scala.scalajs.js.Any): Unit = js.native
-  def vertexAttribPointer(
-      index: scala.scalajs.js.Any,
-      size: scala.scalajs.js.Any,
-      `type`: scala.scalajs.js.Any,
-      normalized: scala.scalajs.js.Any,
-      stride: scala.scalajs.js.Any,
-      offset: scala.scalajs.js.Any,
-  ): Unit = js.native
-  def viewport(
-      x: scala.scalajs.js.Any,
-      y: scala.scalajs.js.Any,
-      width: scala.scalajs.js.Any,
-      height: scala.scalajs.js.Any,
-  ): Unit                                                = js.native
-  def makeXRCompatible(): scala.scalajs.js.Promise[Unit] = js.native
-  def bufferData(target: scala.scalajs.js.Any, data: scala.scalajs.js.Any, usage: scala.scalajs.js.Any): Unit =
-    js.native
-  def bufferSubData(target: scala.scalajs.js.Any, offset: scala.scalajs.js.Any, data: scala.scalajs.js.Any): Unit =
-    js.native
+  def viewport(x: Int, y: Int, width: Int, height: Int): Unit                   = js.native
+  def makeXRCompatible(): scala.scalajs.js.Promise[Unit]                        = js.native
+  def bufferData(target: Int, size: Int, usage: Int): Unit                      = js.native
+  def bufferData(target: Int, data: scala.scalajs.js.Any, usage: Int): Unit     = js.native
+  def bufferSubData(target: Int, offset: Int, data: scala.scalajs.js.Any): Unit = js.native
   def compressedTexImage2D(
-      target: scala.scalajs.js.Any,
-      level: scala.scalajs.js.Any,
-      internalformat: scala.scalajs.js.Any,
-      width: scala.scalajs.js.Any,
-      height: scala.scalajs.js.Any,
-      border: scala.scalajs.js.Any,
+      target: Int,
+      level: Int,
+      internalformat: Int,
+      width: Int,
+      height: Int,
+      border: Int,
       data: scala.scalajs.js.Any,
   ): Unit = js.native
   def compressedTexSubImage2D(
-      target: scala.scalajs.js.Any,
-      level: scala.scalajs.js.Any,
-      xoffset: scala.scalajs.js.Any,
-      yoffset: scala.scalajs.js.Any,
-      width: scala.scalajs.js.Any,
-      height: scala.scalajs.js.Any,
-      format: scala.scalajs.js.Any,
+      target: Int,
+      level: Int,
+      xoffset: Int,
+      yoffset: Int,
+      width: Int,
+      height: Int,
+      format: Int,
       data: scala.scalajs.js.Any,
   ): Unit = js.native
   def readPixels(
-      x: scala.scalajs.js.Any,
-      y: scala.scalajs.js.Any,
-      width: scala.scalajs.js.Any,
-      height: scala.scalajs.js.Any,
-      format: scala.scalajs.js.Any,
-      `type`: scala.scalajs.js.Any,
+      x: Int,
+      y: Int,
+      width: Int,
+      height: Int,
+      format: Int,
+      `type`: Int,
       pixels: scala.scalajs.js.Any,
   ): Unit = js.native
   def texImage2D(
-      target: scala.scalajs.js.Any,
-      level: scala.scalajs.js.Any,
-      internalformat: scala.scalajs.js.Any,
-      width: scala.scalajs.js.Any,
-      height: scala.scalajs.js.Any,
-      border: scala.scalajs.js.Any,
-      format: scala.scalajs.js.Any,
-      `type`: scala.scalajs.js.Any,
+      target: Int,
+      level: Int,
+      internalformat: Int,
+      width: Int,
+      height: Int,
+      border: Int,
+      format: Int,
+      `type`: Int,
       pixels: scala.scalajs.js.Any,
   ): Unit = js.native
   def texImage2D(
-      target: scala.scalajs.js.Any,
-      level: scala.scalajs.js.Any,
-      internalformat: scala.scalajs.js.Any,
-      format: scala.scalajs.js.Any,
-      `type`: scala.scalajs.js.Any,
-      source: scala.scalajs.js.Any,
+      target: Int,
+      level: Int,
+      internalformat: Int,
+      format: Int,
+      `type`: Int,
+      source: ImageBitmap | ImageData | HTMLImageElement | HTMLCanvasElement | HTMLVideoElement | OffscreenCanvas | VideoFrame,
   ): Unit = js.native
   def texSubImage2D(
-      target: scala.scalajs.js.Any,
-      level: scala.scalajs.js.Any,
-      xoffset: scala.scalajs.js.Any,
-      yoffset: scala.scalajs.js.Any,
-      width: scala.scalajs.js.Any,
-      height: scala.scalajs.js.Any,
-      format: scala.scalajs.js.Any,
-      `type`: scala.scalajs.js.Any,
+      target: Int,
+      level: Int,
+      xoffset: Int,
+      yoffset: Int,
+      width: Int,
+      height: Int,
+      format: Int,
+      `type`: Int,
       pixels: scala.scalajs.js.Any,
   ): Unit = js.native
   def texSubImage2D(
-      target: scala.scalajs.js.Any,
-      level: scala.scalajs.js.Any,
-      xoffset: scala.scalajs.js.Any,
-      yoffset: scala.scalajs.js.Any,
-      format: scala.scalajs.js.Any,
-      `type`: scala.scalajs.js.Any,
-      source: scala.scalajs.js.Any,
+      target: Int,
+      level: Int,
+      xoffset: Int,
+      yoffset: Int,
+      format: Int,
+      `type`: Int,
+      source: ImageBitmap | ImageData | HTMLImageElement | HTMLCanvasElement | HTMLVideoElement | OffscreenCanvas | VideoFrame,
   ): Unit                                                                       = js.native
   def uniform1fv(location: WebGLUniformLocation, v: scala.scalajs.js.Any): Unit = js.native
   def uniform2fv(location: WebGLUniformLocation, v: scala.scalajs.js.Any): Unit = js.native
@@ -1730,30 +1788,25 @@ class WebGLRenderingContext extends js.Object:
   def uniform2iv(location: WebGLUniformLocation, v: scala.scalajs.js.Any): Unit = js.native
   def uniform3iv(location: WebGLUniformLocation, v: scala.scalajs.js.Any): Unit = js.native
   def uniform4iv(location: WebGLUniformLocation, v: scala.scalajs.js.Any): Unit = js.native
-  def uniformMatrix2fv(
-      location: WebGLUniformLocation,
-      transpose: scala.scalajs.js.Any,
-      value: scala.scalajs.js.Any,
-  ): Unit = js.native
-  def uniformMatrix3fv(
-      location: WebGLUniformLocation,
-      transpose: scala.scalajs.js.Any,
-      value: scala.scalajs.js.Any,
-  ): Unit = js.native
-  def uniformMatrix4fv(
-      location: WebGLUniformLocation,
-      transpose: scala.scalajs.js.Any,
-      value: scala.scalajs.js.Any,
-  ): Unit = js.native
+  def uniformMatrix2fv(location: WebGLUniformLocation, transpose: Boolean, value: scala.scalajs.js.Any): Unit =
+    js.native
+  def uniformMatrix3fv(location: WebGLUniformLocation, transpose: Boolean, value: scala.scalajs.js.Any): Unit =
+    js.native
+  def uniformMatrix4fv(location: WebGLUniformLocation, transpose: Boolean, value: scala.scalajs.js.Any): Unit =
+    js.native
 end WebGLRenderingContext
 
 @js.native
 @JSGlobal
 class ProximitySensor extends Sensor:
   def this(@unused sensorOptions: SensorOptions = js.native) = this()
-  def distance: Double = js.native
-  def max: Double      = js.native
-  def near: Boolean    = js.native
+  @JSName("distance")
+  def distanceOrNull: Double | Null = js.native
+  @JSName("max")
+  def maxOrNull: Double | Null = js.native
+  @JSName("near")
+  def nearOrNull: Boolean | Null = js.native
+end ProximitySensor
 
 @js.native
 @JSGlobal
@@ -1765,12 +1818,12 @@ class FileSystemFileEntry extends FileSystemEntry:
 
 @js.native
 @JSGlobal
-class Scheduling extends js.Object:
+class Scheduling extends PlatformObject:
   def isInputPending(isInputPendingOptions: IsInputPendingOptions = js.native): Boolean = js.native
 
 @js.native
 @JSGlobal
-class OES_fbo_render_mipmap extends js.Object
+class OES_fbo_render_mipmap extends PlatformObject
 
 @js.native
 @JSGlobal
@@ -1780,44 +1833,44 @@ class OverconstrainedError extends DOMException:
 
 @js.native
 @JSGlobal
-class Baseline extends js.Object:
+class Baseline extends PlatformObject:
   def name: String  = js.native
   def value: Double = js.native
 
 @js.native
 @JSGlobal
-class WEBGL_debug_renderer_info extends js.Object
+class WEBGL_debug_renderer_info extends PlatformObject
 
 @js.native
 @JSGlobal
 object WEBGL_debug_renderer_info extends js.Object:
-  val UNMASKED_VENDOR_WEBGL: scala.scalajs.js.Any   = js.native
-  val UNMASKED_RENDERER_WEBGL: scala.scalajs.js.Any = js.native
+  val UNMASKED_VENDOR_WEBGL: Int   = js.native
+  val UNMASKED_RENDERER_WEBGL: Int = js.native
 
 @js.native
 @JSGlobal
-class WEBGL_draw_instanced_base_vertex_base_instance extends js.Object:
+class WEBGL_draw_instanced_base_vertex_base_instance extends PlatformObject:
   def drawArraysInstancedBaseInstanceWEBGL(
-      mode: scala.scalajs.js.Any,
-      first: scala.scalajs.js.Any,
-      count: scala.scalajs.js.Any,
-      instanceCount: scala.scalajs.js.Any,
-      baseInstance: scala.scalajs.js.Any,
+      mode: Int,
+      first: Int,
+      count: Int,
+      instanceCount: Int,
+      baseInstance: Int,
   ): Unit = js.native
   def drawElementsInstancedBaseVertexBaseInstanceWEBGL(
-      mode: scala.scalajs.js.Any,
-      count: scala.scalajs.js.Any,
-      `type`: scala.scalajs.js.Any,
-      offset: scala.scalajs.js.Any,
-      instanceCount: scala.scalajs.js.Any,
-      baseVertex: scala.scalajs.js.Any,
-      baseInstance: scala.scalajs.js.Any,
+      mode: Int,
+      count: Int,
+      `type`: Int,
+      offset: Int,
+      instanceCount: Int,
+      baseVertex: Int,
+      baseInstance: Int,
   ): Unit = js.native
 end WEBGL_draw_instanced_base_vertex_base_instance
 
 @js.native
 @JSGlobal
-class CredentialsContainer extends js.Object:
+class CredentialsContainer extends PlatformObject:
   def get(options: CredentialRequestOptions = js.native): scala.scalajs.js.Promise[Credential]     = js.native
   def store(credential: Credential): scala.scalajs.js.Promise[Unit]                                = js.native
   def create(options: CredentialCreationOptions = js.native): scala.scalajs.js.Promise[Credential] = js.native
@@ -1825,7 +1878,7 @@ class CredentialsContainer extends js.Object:
 
 @js.native
 @JSGlobal
-class USBInterface extends js.Object:
+class USBInterface extends PlatformObject:
   def this(@unused configuration: USBConfiguration, @unused interfaceNumber: scala.scalajs.js.Any) = this()
   def interfaceNumber: scala.scalajs.js.Any                     = js.native
   def alternate: USBAlternateInterface                          = js.native
@@ -1834,20 +1887,21 @@ class USBInterface extends js.Object:
 
 @js.native
 @JSGlobal
-class RTCIdentityProviderRegistrar extends js.Object:
+class RTCIdentityProviderRegistrar extends PlatformObject:
   def register(idp: RTCIdentityProvider): Unit = js.native
 
 @js.native
 @JSGlobal
-class TransformStreamDefaultController extends js.Object:
-  def desiredSize: Double                                    = js.native
+class TransformStreamDefaultController extends PlatformObject:
+  @JSName("desiredSize")
+  def desiredSizeOrNull: Double | Null                       = js.native
   def enqueue(chunk: scala.scalajs.js.Any = js.native): Unit = js.native
   def error(reason: scala.scalajs.js.Any = js.native): Unit  = js.native
   def terminate(): Unit                                      = js.native
 
 @js.native
 @JSGlobal
-class KeyboardLayoutMap extends js.Object:
+class KeyboardLayoutMap extends PlatformObject:
   def size: Int                                                                     = js.native
   def get(key: String): scala.scalajs.js.UndefOr[String]                            = js.native
   def has(key: String): Boolean                                                     = js.native
@@ -1862,9 +1916,10 @@ end KeyboardLayoutMap
 @js.native
 @JSGlobal
 class SharedWorkerGlobalScope extends WorkerGlobalScope:
-  def name: String                    = js.native
-  var onconnect: scala.scalajs.js.Any = js.native
-  def close(): Unit                   = js.native
+  def name: String = js.native
+  @JSName("onconnect")
+  var onconnectOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  def close(): Unit                                                                   = js.native
 
 @js.native
 @JSGlobal
@@ -1873,14 +1928,16 @@ class HTMLSelectedContentElement extends HTMLElement
 @js.native
 @JSGlobal
 class DocumentPictureInPicture extends EventTarget:
-  def window: Window                                                                                        = js.native
-  var onenter: scala.scalajs.js.Any                                                                         = js.native
+  def window: Window = js.native
+  @JSName("onenter")
+  var onenterOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null                         = js.native
   def requestWindow(options: DocumentPictureInPictureOptions = js.native): scala.scalajs.js.Promise[Window] = js.native
 
 @js.native
 @JSGlobal
-class LanguageDetector extends js.Object:
-  def expectedInputLanguages: scala.scalajs.js.Array[String]                                          = js.native
+class LanguageDetector extends PlatformObject:
+  @JSName("expectedInputLanguages")
+  def expectedInputLanguagesOrNull: scala.scalajs.js.Array[String] | Null                             = js.native
   def inputQuota: Double                                                                              = js.native
   def detect(input: String, options: LanguageDetectorDetectOptions = js.native): scala.scalajs.js.Any = js.native
   def measureInputUsage(
@@ -1898,7 +1955,7 @@ object LanguageDetector extends js.Object:
 
 @js.native
 @JSGlobal
-class NavigatorUAData extends js.Object:
+class NavigatorUAData extends PlatformObject:
   def brands: scala.scalajs.js.Array[NavigatorUABrandVersion]                                             = js.native
   def mobile: Boolean                                                                                     = js.native
   def platform: String                                                                                    = js.native
@@ -1913,25 +1970,27 @@ class GPUPipelineError extends DOMException:
 
 @js.native
 @JSGlobal
-class ContentIndex extends js.Object:
+class ContentIndex extends PlatformObject:
   def add(description: ContentDescription): scala.scalajs.js.Promise[Unit] = js.native
   def delete(id: String): scala.scalajs.js.Promise[Unit]                   = js.native
   def getAll(): scala.scalajs.js.Any                                       = js.native
 
 @js.native
 @JSGlobal
-class NavigatorLogin extends js.Object:
+class NavigatorLogin extends PlatformObject:
   def setStatus(status: String): scala.scalajs.js.Promise[Unit] = js.native
 
 @js.native
 @JSGlobal
-class ImageTrackList extends js.Object:
+class ImageTrackList extends PlatformObject:
   def ready: scala.scalajs.js.Promise[Unit] = js.native
   def length: Int                           = js.native
   def selectedIndex: Int                    = js.native
-  def selectedTrack: ImageTrack             = js.native
+  @JSName("selectedTrack")
+  def selectedTrackOrNull: ImageTrack | Null = js.native
   @JSBracketAccess
   def apply(index: Int): ImageTrack = js.native
+end ImageTrackList
 
 @js.native
 @JSGlobal
@@ -1939,12 +1998,12 @@ class CSSContentsBlockRule extends CSSGroupingRule
 
 @js.native
 @JSGlobal
-class WorkletGroupEffect extends js.Object:
+class WorkletGroupEffect extends PlatformObject:
   def getChildren(): scala.scalajs.js.Array[WorkletAnimationEffect] = js.native
 
 @js.native
 @JSGlobal
-class InputDeviceCapabilities extends js.Object:
+class InputDeviceCapabilities extends PlatformObject:
   def this(@unused deviceInitDict: InputDeviceCapabilitiesInit = js.native) = this()
   def firesTouchEvents: Boolean       = js.native
   def pointerMovementScrolls: Boolean = js.native
@@ -1987,26 +2046,26 @@ end SVGFEBlendElement
 @js.native
 @JSGlobal
 class CSSUnparsedValue extends CSSStyleValue:
-  def this(@unused members: scala.scalajs.js.Array[scala.scalajs.js.Any]) = this()
+  def this(@unused members: scala.scalajs.js.Array[String | CSSVariableReferenceValue]) = this()
   def length: Int = js.native
   @JSBracketAccess
-  def apply(index: Int): scala.scalajs.js.Any = js.native
+  def apply(index: Int): String | CSSVariableReferenceValue = js.native
   @JSBracketAccess
-  def update(index: Int, `val`: scala.scalajs.js.Any): Unit = js.native
+  def update(index: Int, `val`: String | CSSVariableReferenceValue): Unit = js.native
   @JSName(js.Symbol.iterator)
-  def jsIterator(): scala.scalajs.js.Iterator[scala.scalajs.js.Any] = js.native
+  def jsIterator(): scala.scalajs.js.Iterator[String | CSSVariableReferenceValue] = js.native
 end CSSUnparsedValue
 
 @js.native
 @JSGlobal
-class CountQueuingStrategy extends js.Object:
+class CountQueuingStrategy extends PlatformObject:
   def this(@unused init: QueuingStrategyInit) = this()
   def highWaterMark: Double                                                        = js.native
   def size: scala.scalajs.js.Function1[scala.scalajs.js.Any, scala.scalajs.js.Any] = js.native
 
 @js.native
 @JSGlobal
-class BluetoothManufacturerDataFilter extends js.Object:
+class BluetoothManufacturerDataFilter extends PlatformObject:
   def this(@unused init: scala.scalajs.js.Any = js.native) = this()
   def size: Int                                                                               = js.native
   def get(key: Int): scala.scalajs.js.UndefOr[BluetoothDataFilter]                            = js.native
@@ -2022,36 +2081,39 @@ end BluetoothManufacturerDataFilter
 @js.native
 @JSGlobal
 class StylePropertyMap extends StylePropertyMapReadOnly:
-  def set(property: String, values: scala.scalajs.js.Any): Unit    = js.native
-  def append(property: String, values: scala.scalajs.js.Any): Unit = js.native
-  def delete(property: String): Unit                               = js.native
-  def clear(): Unit                                                = js.native
+  def set(property: String, values: CSSStyleValue | String): Unit    = js.native
+  def append(property: String, values: CSSStyleValue | String): Unit = js.native
+  def delete(property: String): Unit                                 = js.native
+  def clear(): Unit                                                  = js.native
 
 @js.native
 @JSGlobal
 class PerformanceNavigationTiming extends PerformanceResourceTiming:
-  def unloadEventStart: Double                = js.native
-  def unloadEventEnd: Double                  = js.native
-  def domInteractive: Double                  = js.native
-  def domContentLoadedEventStart: Double      = js.native
-  def domContentLoadedEventEnd: Double        = js.native
-  def domComplete: Double                     = js.native
-  def loadEventStart: Double                  = js.native
-  def loadEventEnd: Double                    = js.native
-  def `type`: String                          = js.native
-  def redirectCount: Int                      = js.native
-  def criticalCHRestart: Double               = js.native
-  def notRestoredReasons: NotRestoredReasons  = js.native
-  def confidence: PerformanceTimingConfidence = js.native
-  def activationStart: Double                 = js.native
+  def unloadEventStart: Double           = js.native
+  def unloadEventEnd: Double             = js.native
+  def domInteractive: Double             = js.native
+  def domContentLoadedEventStart: Double = js.native
+  def domContentLoadedEventEnd: Double   = js.native
+  def domComplete: Double                = js.native
+  def loadEventStart: Double             = js.native
+  def loadEventEnd: Double               = js.native
+  def `type`: String                     = js.native
+  def redirectCount: Int                 = js.native
+  def criticalCHRestart: Double          = js.native
+  @JSName("notRestoredReasons")
+  def notRestoredReasonsOrNull: NotRestoredReasons | Null = js.native
+  def confidence: PerformanceTimingConfidence             = js.native
+  def activationStart: Double                             = js.native
 end PerformanceNavigationTiming
 
 @js.native
 @JSGlobal
 class HTMLLabelElement extends HTMLElement:
-  def form: HTMLFormElement = js.native
-  var htmlFor: String       = js.native
-  def control: HTMLElement  = js.native
+  @JSName("form")
+  def formOrNull: HTMLFormElement | Null = js.native
+  var htmlFor: String                    = js.native
+  @JSName("control")
+  def controlOrNull: HTMLElement | Null = js.native
 
 @js.native
 @JSGlobal
@@ -2066,23 +2128,23 @@ class SVGGElement extends SVGGraphicsElement
 
 @js.native
 @JSGlobal
-class StorageAccessHandle extends js.Object:
-  def sessionStorage: Storage                                                                  = js.native
-  def localStorage: Storage                                                                    = js.native
-  def indexedDB: IDBFactory                                                                    = js.native
-  def locks: LockManager                                                                       = js.native
-  def caches: CacheStorage                                                                     = js.native
-  def getDirectory(): scala.scalajs.js.Promise[FileSystemDirectoryHandle]                      = js.native
-  def estimate(): scala.scalajs.js.Promise[StorageEstimate]                                    = js.native
-  def createObjectURL(obj: scala.scalajs.js.Any): String                                       = js.native
-  def revokeObjectURL(url: String): Unit                                                       = js.native
-  def BroadcastChannel(name: String): BroadcastChannel                                         = js.native
-  def SharedWorker(scriptURL: String, options: scala.scalajs.js.Any = js.native): SharedWorker = js.native
+class StorageAccessHandle extends PlatformObject:
+  def sessionStorage: Storage                                                                          = js.native
+  def localStorage: Storage                                                                            = js.native
+  def indexedDB: IDBFactory                                                                            = js.native
+  def locks: LockManager                                                                               = js.native
+  def caches: CacheStorage                                                                             = js.native
+  def getDirectory(): scala.scalajs.js.Promise[FileSystemDirectoryHandle]                              = js.native
+  def estimate(): scala.scalajs.js.Promise[StorageEstimate]                                            = js.native
+  def createObjectURL(obj: Blob | MediaSource): String                                                 = js.native
+  def revokeObjectURL(url: String): Unit                                                               = js.native
+  def BroadcastChannel(name: String): BroadcastChannel                                                 = js.native
+  def SharedWorker(scriptURL: String, options: String | SharedWorkerOptions = js.native): SharedWorker = js.native
 end StorageAccessHandle
 
 @js.native
 @JSGlobal
-class RdfDataset extends js.Object:
+class RdfDataset extends PlatformObject:
   def defaultGraph: RdfGraph                        = js.native
   def add(graphName: String, graph: RdfGraph): Unit = js.native
   @JSName(js.Symbol.iterator)
@@ -2091,17 +2153,21 @@ class RdfDataset extends js.Object:
 @js.native
 @JSGlobal
 class DocumentFragment extends Node:
-  def children: HTMLCollection                           = js.native
-  def firstElementChild: Element                         = js.native
-  def lastElementChild: Element                          = js.native
-  def childElementCount: Int                             = js.native
-  def getElementById(elementId: String): Element         = js.native
-  def prepend(nodes: scala.scalajs.js.Any): Unit         = js.native
-  def append(nodes: scala.scalajs.js.Any): Unit          = js.native
-  def replaceChildren(nodes: scala.scalajs.js.Any): Unit = js.native
-  def moveBefore(node: Node, child: Node): Unit          = js.native
-  def querySelector(selectors: String): Element          = js.native
-  def querySelectorAll(selectors: String): NodeList      = js.native
+  def children: HTMLCollection = js.native
+  @JSName("firstElementChild")
+  def firstElementChildOrNull: Element | Null = js.native
+  @JSName("lastElementChild")
+  def lastElementChildOrNull: Element | Null = js.native
+  def childElementCount: Int                 = js.native
+  @JSName("getElementById")
+  def getElementByIdOrNull(elementId: String): Element | Null = js.native
+  def prepend(nodes: Node | String): Unit                     = js.native
+  def append(nodes: Node | String): Unit                      = js.native
+  def replaceChildren(nodes: Node | String): Unit             = js.native
+  def moveBefore(node: Node, child: Node): Unit               = js.native
+  @JSName("querySelector")
+  def querySelectorOrNull(selectors: String): Element | Null = js.native
+  def querySelectorAll(selectors: String): NodeList          = js.native
 end DocumentFragment
 
 @js.native
@@ -2118,187 +2184,279 @@ class USBPermissionResult extends PermissionStatus:
 @js.native
 @JSGlobal
 class AudioScheduledSourceNode extends AudioNode:
-  var onended: scala.scalajs.js.Any         = js.native
-  def start(when: Double = js.native): Unit = js.native
-  def stop(when: Double = js.native): Unit  = js.native
+  @JSName("onended")
+  var onendedOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  def start(when: Double = js.native): Unit                                         = js.native
+  def stop(when: Double = js.native): Unit                                          = js.native
 
 @js.native
 @JSGlobal
 class Element extends Node:
-  var containertiming: String                                                                         = js.native
-  var containertimingIgnore: String                                                                   = js.native
-  def part: DOMTokenList                                                                              = js.native
-  def activeViewTransition: ViewTransition                                                            = js.native
-  var scrollTop: Double                                                                               = js.native
-  var scrollLeft: Double                                                                              = js.native
-  def scrollWidth: Int                                                                                = js.native
-  def scrollHeight: Int                                                                               = js.native
-  def clientTop: Int                                                                                  = js.native
-  def clientLeft: Int                                                                                 = js.native
-  def clientWidth: Int                                                                                = js.native
-  def clientHeight: Int                                                                               = js.native
-  def currentCSSZoom: Double                                                                          = js.native
-  def namespaceURI: String                                                                            = js.native
-  def prefix: String                                                                                  = js.native
-  def localName: String                                                                               = js.native
-  def tagName: String                                                                                 = js.native
-  var id: String                                                                                      = js.native
-  var className: String                                                                               = js.native
-  def classList: DOMTokenList                                                                         = js.native
-  var slot: String                                                                                    = js.native
-  def attributes: NamedNodeMap                                                                        = js.native
-  def shadowRoot: ShadowRoot                                                                          = js.native
-  def customElementRegistry: CustomElementRegistry                                                    = js.native
-  var elementTiming: String                                                                           = js.native
-  var onfullscreenchange: scala.scalajs.js.Any                                                        = js.native
-  var onfullscreenerror: scala.scalajs.js.Any                                                         = js.native
-  var innerHTML: scala.scalajs.js.Any                                                                 = js.native
-  var outerHTML: scala.scalajs.js.Any                                                                 = js.native
-  def regionOverset: String                                                                           = js.native
-  def children: HTMLCollection                                                                        = js.native
-  def firstElementChild: Element                                                                      = js.native
-  def lastElementChild: Element                                                                       = js.native
-  def childElementCount: Int                                                                          = js.native
-  def previousElementSibling: Element                                                                 = js.native
-  def nextElementSibling: Element                                                                     = js.native
-  def assignedSlot: HTMLSlotElement                                                                   = js.native
-  var role: String                                                                                    = js.native
-  var ariaActiveDescendantElement: Element                                                            = js.native
-  var ariaAtomic: String                                                                              = js.native
-  var ariaAutoComplete: String                                                                        = js.native
-  var ariaBrailleLabel: String                                                                        = js.native
-  var ariaBrailleRoleDescription: String                                                              = js.native
-  var ariaBusy: String                                                                                = js.native
-  var ariaChecked: String                                                                             = js.native
-  var ariaColCount: String                                                                            = js.native
-  var ariaColIndex: String                                                                            = js.native
-  var ariaColIndexText: String                                                                        = js.native
-  var ariaColSpan: String                                                                             = js.native
-  var ariaControlsElements: scala.scalajs.js.Array[Element]                                           = js.native
-  var ariaCurrent: String                                                                             = js.native
-  var ariaDescribedByElements: scala.scalajs.js.Array[Element]                                        = js.native
-  var ariaDescription: String                                                                         = js.native
-  var ariaDetailsElements: scala.scalajs.js.Array[Element]                                            = js.native
-  var ariaDisabled: String                                                                            = js.native
-  var ariaErrorMessageElements: scala.scalajs.js.Array[Element]                                       = js.native
-  var ariaExpanded: String                                                                            = js.native
-  var ariaFlowToElements: scala.scalajs.js.Array[Element]                                             = js.native
-  var ariaHasPopup: String                                                                            = js.native
-  var ariaHidden: String                                                                              = js.native
-  var ariaInvalid: String                                                                             = js.native
-  var ariaKeyShortcuts: String                                                                        = js.native
-  var ariaLabel: String                                                                               = js.native
-  var ariaLabelledByElements: scala.scalajs.js.Array[Element]                                         = js.native
-  var ariaLevel: String                                                                               = js.native
-  var ariaLive: String                                                                                = js.native
-  var ariaModal: String                                                                               = js.native
-  var ariaMultiLine: String                                                                           = js.native
-  var ariaMultiSelectable: String                                                                     = js.native
-  var ariaOrientation: String                                                                         = js.native
-  var ariaOwnsElements: scala.scalajs.js.Array[Element]                                               = js.native
-  var ariaPlaceholder: String                                                                         = js.native
-  var ariaPosInSet: String                                                                            = js.native
-  var ariaPressed: String                                                                             = js.native
-  var ariaReadOnly: String                                                                            = js.native
-  var ariaRelevant: String                                                                            = js.native
-  var ariaRequired: String                                                                            = js.native
-  var ariaRoleDescription: String                                                                     = js.native
-  var ariaRowCount: String                                                                            = js.native
-  var ariaRowIndex: String                                                                            = js.native
-  var ariaRowIndexText: String                                                                        = js.native
-  var ariaRowSpan: String                                                                             = js.native
-  var ariaSelected: String                                                                            = js.native
-  var ariaSetSize: String                                                                             = js.native
-  var ariaSort: String                                                                                = js.native
-  var ariaValueMax: String                                                                            = js.native
-  var ariaValueMin: String                                                                            = js.native
-  var ariaValueNow: String                                                                            = js.native
-  var ariaValueText: String                                                                           = js.native
-  def getSpatialNavigationContainer(): Node                                                           = js.native
-  def focusableAreas(option: FocusableAreasOption = js.native): scala.scalajs.js.Array[Node]          = js.native
-  def spatialNavigationSearch(dir: String, options: SpatialNavigationSearchOptions = js.native): Node = js.native
-  def pseudo(`type`: String): CSSPseudoElement                                                        = js.native
-  def computedStyleMap(): StylePropertyMapReadOnly                                                    = js.native
-  def startViewTransition(callbackOptions: scala.scalajs.js.Any = js.native): ViewTransition          = js.native
-  def getClientRects(): DOMRectList                                                                   = js.native
-  def getBoundingClientRect(): DOMRect                                                                = js.native
-  def checkVisibility(options: CheckVisibilityOptions = js.native): Boolean                           = js.native
-  def scrollIntoView(arg: scala.scalajs.js.Any = js.native): scala.scalajs.js.Promise[Unit]           = js.native
-  def scroll(options: ScrollToOptions): scala.scalajs.js.Promise[Unit]                                = js.native
-  def scroll(x: Double, y: Double): scala.scalajs.js.Promise[Unit]                                    = js.native
-  def scrollTo(options: ScrollToOptions): scala.scalajs.js.Promise[Unit]                              = js.native
-  def scrollTo(x: Double, y: Double): scala.scalajs.js.Promise[Unit]                                  = js.native
-  def scrollBy(options: ScrollToOptions): scala.scalajs.js.Promise[Unit]                              = js.native
-  def scrollBy(x: Double, y: Double): scala.scalajs.js.Promise[Unit]                                  = js.native
-  def hasAttributes(): Boolean                                                                        = js.native
-  def getAttributeNames(): scala.scalajs.js.Array[String]                                             = js.native
-  def getAttribute(qualifiedName: String): String                                                     = js.native
-  def getAttributeNS(namespace: String, localName: String): String                                    = js.native
-  def setAttribute(qualifiedName: String, value: scala.scalajs.js.Any): Unit                          = js.native
-  def setAttributeNS(namespace: String, qualifiedName: String, value: scala.scalajs.js.Any): Unit     = js.native
-  def removeAttribute(qualifiedName: String): Unit                                                    = js.native
-  def removeAttributeNS(namespace: String, localName: String): Unit                                   = js.native
-  def toggleAttribute(qualifiedName: String, force: Boolean = js.native): Boolean                     = js.native
-  def hasAttribute(qualifiedName: String): Boolean                                                    = js.native
-  def hasAttributeNS(namespace: String, localName: String): Boolean                                   = js.native
-  def getAttributeNode(qualifiedName: String): Attr                                                   = js.native
-  def getAttributeNodeNS(namespace: String, localName: String): Attr                                  = js.native
-  def setAttributeNode(attr: Attr): Attr                                                              = js.native
-  def setAttributeNodeNS(attr: Attr): Attr                                                            = js.native
-  def removeAttributeNode(attr: Attr): Attr                                                           = js.native
-  def attachShadow(init: ShadowRootInit): ShadowRoot                                                  = js.native
-  def closest(selectors: String): Element                                                             = js.native
-  def matches(selectors: String): Boolean                                                             = js.native
-  def webkitMatchesSelector(selectors: String): Boolean                                               = js.native
-  def getElementsByTagName(qualifiedName: String): HTMLCollection                                     = js.native
-  def getElementsByTagNameNS(namespace: String, localName: String): HTMLCollection                    = js.native
-  def getElementsByClassName(classNames: String): HTMLCollection                                      = js.native
-  def insertAdjacentElement(where: String, element: Element): Element                                 = js.native
-  def insertAdjacentText(where: String, data: String): Unit                                           = js.native
-  def requestFullscreen(options: FullscreenOptions = js.native): scala.scalajs.js.Promise[Unit]       = js.native
-  def setHTMLUnsafe(html: scala.scalajs.js.Any): Unit                                                 = js.native
-  def getHTML(options: GetHTMLOptions = js.native): String                                            = js.native
-  def insertAdjacentHTML(position: String, string: scala.scalajs.js.Any): Unit                        = js.native
-  def setPointerCapture(pointerId: Int): Unit                                                         = js.native
-  def releasePointerCapture(pointerId: Int): Unit                                                     = js.native
-  def hasPointerCapture(pointerId: Int): Boolean                                                      = js.native
-  def requestPointerLock(options: PointerLockOptions = js.native): scala.scalajs.js.Promise[Unit]     = js.native
-  def setHTML(html: String, options: SetHTMLOptions = js.native): Unit                                = js.native
-  def getRegionFlowRanges(): scala.scalajs.js.Array[Range]                                            = js.native
-  def getBoxQuads(options: BoxQuadOptions = js.native): scala.scalajs.js.Array[DOMQuad]               = js.native
+  var containertiming: String = js.native
+  @JSName("containertimingIgnore")
+  var containertimingIgnoreOrNull: String | Null = js.native
+  def part: DOMTokenList                         = js.native
+  @JSName("activeViewTransition")
+  def activeViewTransitionOrNull: ViewTransition | Null = js.native
+  var scrollTop: Double                                 = js.native
+  var scrollLeft: Double                                = js.native
+  def scrollWidth: Int                                  = js.native
+  def scrollHeight: Int                                 = js.native
+  def clientTop: Int                                    = js.native
+  def clientLeft: Int                                   = js.native
+  def clientWidth: Int                                  = js.native
+  def clientHeight: Int                                 = js.native
+  def currentCSSZoom: Double                            = js.native
+  @JSName("namespaceURI")
+  def namespaceURIOrNull: String | Null = js.native
+  @JSName("prefix")
+  def prefixOrNull: String | Null = js.native
+  def localName: String           = js.native
+  def tagName: String             = js.native
+  var id: String                  = js.native
+  var className: String           = js.native
+  def classList: DOMTokenList     = js.native
+  var slot: String                = js.native
+  def attributes: NamedNodeMap    = js.native
+  @JSName("shadowRoot")
+  def shadowRootOrNull: ShadowRoot | Null = js.native
+  @JSName("customElementRegistry")
+  def customElementRegistryOrNull: CustomElementRegistry | Null = js.native
+  var elementTiming: String                                     = js.native
+  @JSName("onfullscreenchange")
+  var onfullscreenchangeOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("onfullscreenerror")
+  var onfullscreenerrorOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  var innerHTML: TrustedHTML | String                                                         = js.native
+  var outerHTML: TrustedHTML | String                                                         = js.native
+  def regionOverset: String                                                                   = js.native
+  def children: HTMLCollection                                                                = js.native
+  @JSName("firstElementChild")
+  def firstElementChildOrNull: Element | Null = js.native
+  @JSName("lastElementChild")
+  def lastElementChildOrNull: Element | Null = js.native
+  def childElementCount: Int                 = js.native
+  @JSName("previousElementSibling")
+  def previousElementSiblingOrNull: Element | Null = js.native
+  @JSName("nextElementSibling")
+  def nextElementSiblingOrNull: Element | Null = js.native
+  @JSName("assignedSlot")
+  def assignedSlotOrNull: HTMLSlotElement | Null = js.native
+  @JSName("role")
+  var roleOrNull: String | Null = js.native
+  @JSName("ariaActiveDescendantElement")
+  var ariaActiveDescendantElementOrNull: Element | Null = js.native
+  @JSName("ariaAtomic")
+  var ariaAtomicOrNull: String | Null = js.native
+  @JSName("ariaAutoComplete")
+  var ariaAutoCompleteOrNull: String | Null = js.native
+  @JSName("ariaBrailleLabel")
+  var ariaBrailleLabelOrNull: String | Null = js.native
+  @JSName("ariaBrailleRoleDescription")
+  var ariaBrailleRoleDescriptionOrNull: String | Null = js.native
+  @JSName("ariaBusy")
+  var ariaBusyOrNull: String | Null = js.native
+  @JSName("ariaChecked")
+  var ariaCheckedOrNull: String | Null = js.native
+  @JSName("ariaColCount")
+  var ariaColCountOrNull: String | Null = js.native
+  @JSName("ariaColIndex")
+  var ariaColIndexOrNull: String | Null = js.native
+  @JSName("ariaColIndexText")
+  var ariaColIndexTextOrNull: String | Null = js.native
+  @JSName("ariaColSpan")
+  var ariaColSpanOrNull: String | Null = js.native
+  @JSName("ariaControlsElements")
+  var ariaControlsElementsOrNull: scala.scalajs.js.Array[Element] | Null = js.native
+  @JSName("ariaCurrent")
+  var ariaCurrentOrNull: String | Null = js.native
+  @JSName("ariaDescribedByElements")
+  var ariaDescribedByElementsOrNull: scala.scalajs.js.Array[Element] | Null = js.native
+  @JSName("ariaDescription")
+  var ariaDescriptionOrNull: String | Null = js.native
+  @JSName("ariaDetailsElements")
+  var ariaDetailsElementsOrNull: scala.scalajs.js.Array[Element] | Null = js.native
+  @JSName("ariaDisabled")
+  var ariaDisabledOrNull: String | Null = js.native
+  @JSName("ariaErrorMessageElements")
+  var ariaErrorMessageElementsOrNull: scala.scalajs.js.Array[Element] | Null = js.native
+  @JSName("ariaExpanded")
+  var ariaExpandedOrNull: String | Null = js.native
+  @JSName("ariaFlowToElements")
+  var ariaFlowToElementsOrNull: scala.scalajs.js.Array[Element] | Null = js.native
+  @JSName("ariaHasPopup")
+  var ariaHasPopupOrNull: String | Null = js.native
+  @JSName("ariaHidden")
+  var ariaHiddenOrNull: String | Null = js.native
+  @JSName("ariaInvalid")
+  var ariaInvalidOrNull: String | Null = js.native
+  @JSName("ariaKeyShortcuts")
+  var ariaKeyShortcutsOrNull: String | Null = js.native
+  @JSName("ariaLabel")
+  var ariaLabelOrNull: String | Null = js.native
+  @JSName("ariaLabelledByElements")
+  var ariaLabelledByElementsOrNull: scala.scalajs.js.Array[Element] | Null = js.native
+  @JSName("ariaLevel")
+  var ariaLevelOrNull: String | Null = js.native
+  @JSName("ariaLive")
+  var ariaLiveOrNull: String | Null = js.native
+  @JSName("ariaModal")
+  var ariaModalOrNull: String | Null = js.native
+  @JSName("ariaMultiLine")
+  var ariaMultiLineOrNull: String | Null = js.native
+  @JSName("ariaMultiSelectable")
+  var ariaMultiSelectableOrNull: String | Null = js.native
+  @JSName("ariaOrientation")
+  var ariaOrientationOrNull: String | Null = js.native
+  @JSName("ariaOwnsElements")
+  var ariaOwnsElementsOrNull: scala.scalajs.js.Array[Element] | Null = js.native
+  @JSName("ariaPlaceholder")
+  var ariaPlaceholderOrNull: String | Null = js.native
+  @JSName("ariaPosInSet")
+  var ariaPosInSetOrNull: String | Null = js.native
+  @JSName("ariaPressed")
+  var ariaPressedOrNull: String | Null = js.native
+  @JSName("ariaReadOnly")
+  var ariaReadOnlyOrNull: String | Null = js.native
+  @JSName("ariaRelevant")
+  var ariaRelevantOrNull: String | Null = js.native
+  @JSName("ariaRequired")
+  var ariaRequiredOrNull: String | Null = js.native
+  @JSName("ariaRoleDescription")
+  var ariaRoleDescriptionOrNull: String | Null = js.native
+  @JSName("ariaRowCount")
+  var ariaRowCountOrNull: String | Null = js.native
+  @JSName("ariaRowIndex")
+  var ariaRowIndexOrNull: String | Null = js.native
+  @JSName("ariaRowIndexText")
+  var ariaRowIndexTextOrNull: String | Null = js.native
+  @JSName("ariaRowSpan")
+  var ariaRowSpanOrNull: String | Null = js.native
+  @JSName("ariaSelected")
+  var ariaSelectedOrNull: String | Null = js.native
+  @JSName("ariaSetSize")
+  var ariaSetSizeOrNull: String | Null = js.native
+  @JSName("ariaSort")
+  var ariaSortOrNull: String | Null = js.native
+  @JSName("ariaValueMax")
+  var ariaValueMaxOrNull: String | Null = js.native
+  @JSName("ariaValueMin")
+  var ariaValueMinOrNull: String | Null = js.native
+  @JSName("ariaValueNow")
+  var ariaValueNowOrNull: String | Null = js.native
+  @JSName("ariaValueText")
+  var ariaValueTextOrNull: String | Null                                                     = js.native
+  def getSpatialNavigationContainer(): Node                                                  = js.native
+  def focusableAreas(option: FocusableAreasOption = js.native): scala.scalajs.js.Array[Node] = js.native
+  @JSName("spatialNavigationSearch")
+  def spatialNavigationSearchOrNull(dir: String, options: SpatialNavigationSearchOptions = js.native): Node | Null =
+    js.native
+  @JSName("pseudo")
+  def pseudoOrNull(`type`: String): CSSPseudoElement | Null = js.native
+  def computedStyleMap(): StylePropertyMapReadOnly          = js.native
+  def startViewTransition(
+      callbackOptions: scala.scalajs.js.Function0[
+        scala.scalajs.js.Promise[scala.scalajs.js.Any]
+      ] | StartViewTransitionOptions = js.native
+  ): ViewTransition                                                                                    = js.native
+  def getClientRects(): DOMRectList                                                                    = js.native
+  def getBoundingClientRect(): DOMRect                                                                 = js.native
+  def checkVisibility(options: CheckVisibilityOptions = js.native): Boolean                            = js.native
+  def scrollIntoView(arg: Boolean | ScrollIntoViewOptions = js.native): scala.scalajs.js.Promise[Unit] = js.native
+  def scroll(): scala.scalajs.js.Promise[Unit]                                                         = js.native
+  def scroll(options: ScrollToOptions): scala.scalajs.js.Promise[Unit]                                 = js.native
+  def scroll(x: Double, y: Double): scala.scalajs.js.Promise[Unit]                                     = js.native
+  def scrollTo(): scala.scalajs.js.Promise[Unit]                                                       = js.native
+  def scrollTo(options: ScrollToOptions): scala.scalajs.js.Promise[Unit]                               = js.native
+  def scrollTo(x: Double, y: Double): scala.scalajs.js.Promise[Unit]                                   = js.native
+  def scrollBy(): scala.scalajs.js.Promise[Unit]                                                       = js.native
+  def scrollBy(options: ScrollToOptions): scala.scalajs.js.Promise[Unit]                               = js.native
+  def scrollBy(x: Double, y: Double): scala.scalajs.js.Promise[Unit]                                   = js.native
+  def hasAttributes(): Boolean                                                                         = js.native
+  def getAttributeNames(): scala.scalajs.js.Array[String]                                              = js.native
+  @JSName("getAttribute")
+  def getAttributeOrNull(qualifiedName: String): String | Null = js.native
+  @JSName("getAttributeNS")
+  def getAttributeNSOrNull(namespace: String, localName: String): String | Null = js.native
+  def setAttribute(qualifiedName: String, value: TrustedHTML | TrustedScript | TrustedScriptURL | String): Unit =
+    js.native
+  def setAttributeNS(
+      namespace: String,
+      qualifiedName: String,
+      value: TrustedHTML | TrustedScript | TrustedScriptURL | String,
+  ): Unit                                                                         = js.native
+  def removeAttribute(qualifiedName: String): Unit                                = js.native
+  def removeAttributeNS(namespace: String, localName: String): Unit               = js.native
+  def toggleAttribute(qualifiedName: String, force: Boolean = js.native): Boolean = js.native
+  def hasAttribute(qualifiedName: String): Boolean                                = js.native
+  def hasAttributeNS(namespace: String, localName: String): Boolean               = js.native
+  @JSName("getAttributeNode")
+  def getAttributeNodeOrNull(qualifiedName: String): Attr | Null = js.native
+  @JSName("getAttributeNodeNS")
+  def getAttributeNodeNSOrNull(namespace: String, localName: String): Attr | Null = js.native
+  @JSName("setAttributeNode")
+  def setAttributeNodeOrNull(attr: Attr): Attr | Null = js.native
+  @JSName("setAttributeNodeNS")
+  def setAttributeNodeNSOrNull(attr: Attr): Attr | Null = js.native
+  def removeAttributeNode(attr: Attr): Attr             = js.native
+  def attachShadow(init: ShadowRootInit): ShadowRoot    = js.native
+  @JSName("closest")
+  def closestOrNull(selectors: String): Element | Null                             = js.native
+  def matches(selectors: String): Boolean                                          = js.native
+  def webkitMatchesSelector(selectors: String): Boolean                            = js.native
+  def getElementsByTagName(qualifiedName: String): HTMLCollection                  = js.native
+  def getElementsByTagNameNS(namespace: String, localName: String): HTMLCollection = js.native
+  def getElementsByClassName(classNames: String): HTMLCollection                   = js.native
+  @JSName("insertAdjacentElement")
+  def insertAdjacentElementOrNull(where: String, element: Element): Element | Null                = js.native
+  def insertAdjacentText(where: String, data: String): Unit                                       = js.native
+  def requestFullscreen(options: FullscreenOptions = js.native): scala.scalajs.js.Promise[Unit]   = js.native
+  def setHTMLUnsafe(html: TrustedHTML | String): Unit                                             = js.native
+  def getHTML(options: GetHTMLOptions = js.native): String                                        = js.native
+  def insertAdjacentHTML(position: String, string: TrustedHTML | String): Unit                    = js.native
+  def setPointerCapture(pointerId: Int): Unit                                                     = js.native
+  def releasePointerCapture(pointerId: Int): Unit                                                 = js.native
+  def hasPointerCapture(pointerId: Int): Boolean                                                  = js.native
+  def requestPointerLock(options: PointerLockOptions = js.native): scala.scalajs.js.Promise[Unit] = js.native
+  def setHTML(html: String, options: SetHTMLOptions = js.native): Unit                            = js.native
+  @JSName("getRegionFlowRanges")
+  def getRegionFlowRangesOrNull(): scala.scalajs.js.Array[Range] | Null                 = js.native
+  def getBoxQuads(options: BoxQuadOptions = js.native): scala.scalajs.js.Array[DOMQuad] = js.native
   def convertQuadFromNode(
       quad: DOMQuadInit,
-      from: scala.scalajs.js.Any,
+      from: Text | Element | CSSPseudoElement | Document,
       options: ConvertCoordinateOptions = js.native,
   ): DOMQuad = js.native
   def convertRectFromNode(
       rect: DOMRectReadOnly,
-      from: scala.scalajs.js.Any,
+      from: Text | Element | CSSPseudoElement | Document,
       options: ConvertCoordinateOptions = js.native,
   ): DOMQuad = js.native
   def convertPointFromNode(
       point: DOMPointInit,
-      from: scala.scalajs.js.Any,
+      from: Text | Element | CSSPseudoElement | Document,
       options: ConvertCoordinateOptions = js.native,
-  ): DOMPoint                                                                                        = js.native
-  def prepend(nodes: scala.scalajs.js.Any): Unit                                                     = js.native
-  def append(nodes: scala.scalajs.js.Any): Unit                                                      = js.native
-  def replaceChildren(nodes: scala.scalajs.js.Any): Unit                                             = js.native
-  def moveBefore(node: Node, child: Node): Unit                                                      = js.native
-  def querySelector(selectors: String): Element                                                      = js.native
-  def querySelectorAll(selectors: String): NodeList                                                  = js.native
-  def before(nodes: scala.scalajs.js.Any): Unit                                                      = js.native
-  def after(nodes: scala.scalajs.js.Any): Unit                                                       = js.native
-  def replaceWith(nodes: scala.scalajs.js.Any): Unit                                                 = js.native
-  def remove(): Unit                                                                                 = js.native
-  def ariaNotify(announcement: String, options: AriaNotificationOptions = js.native): Unit           = js.native
-  def animate(keyframes: scala.scalajs.js.Any, options: scala.scalajs.js.Any = js.native): Animation = js.native
-  def getAnimations(options: GetAnimationsOptions = js.native): scala.scalajs.js.Array[Animation]    = js.native
+  ): DOMPoint                                     = js.native
+  def prepend(nodes: Node | String): Unit         = js.native
+  def append(nodes: Node | String): Unit          = js.native
+  def replaceChildren(nodes: Node | String): Unit = js.native
+  def moveBefore(node: Node, child: Node): Unit   = js.native
+  @JSName("querySelector")
+  def querySelectorOrNull(selectors: String): Element | Null                               = js.native
+  def querySelectorAll(selectors: String): NodeList                                        = js.native
+  def before(nodes: Node | String): Unit                                                   = js.native
+  def after(nodes: Node | String): Unit                                                    = js.native
+  def replaceWith(nodes: Node | String): Unit                                              = js.native
+  def remove(): Unit                                                                       = js.native
+  def ariaNotify(announcement: String, options: AriaNotificationOptions = js.native): Unit = js.native
+  def animate(keyframes: scala.scalajs.js.Any, options: Double | KeyframeAnimationOptions = js.native): Animation =
+    js.native
+  def getAnimations(options: GetAnimationsOptions = js.native): scala.scalajs.js.Array[Animation] = js.native
 end Element
 
 @js.native
 @JSGlobal
-class XRTransientInputHitTestResult extends js.Object:
+class XRTransientInputHitTestResult extends PlatformObject:
   def inputSource: XRInputSource                       = js.native
   def results: scala.scalajs.js.Array[XRHitTestResult] = js.native
 
@@ -2311,7 +2469,7 @@ class SVGCircleElement extends SVGGeometryElement:
 
 @js.native
 @JSGlobal
-class Memory extends js.Object:
+class Memory extends PlatformObject:
   def this(@unused descriptor: MemoryDescriptor) = this()
   def buffer: scala.scalajs.js.Any                            = js.native
   def grow(delta: scala.scalajs.js.Any): scala.scalajs.js.Any = js.native
@@ -2320,15 +2478,17 @@ class Memory extends js.Object:
 
 @js.native
 @JSGlobal
-class HTMLCollection extends js.Object:
-  def length: Int                      = js.native
-  def item(index: Int): Element        = js.native
-  def namedItem(name: String): Element = js.native
+class HTMLCollection extends PlatformObject:
+  def length: Int = js.native
+  @JSName("item")
+  def itemOrNull(index: Int): Element | Null = js.native
+  @JSName("namedItem")
+  def namedItemOrNull(name: String): Element | Null = js.native
 
 @js.native
 @JSGlobal
-class Path2D extends js.Object:
-  def this(@unused path: scala.scalajs.js.Any = js.native) = this()
+class Path2D extends PlatformObject:
+  def this(@unused path: Path2D | String = js.native) = this()
   def addPath(path: Path2D, transform: DOMMatrix2DInit = js.native): Unit                                  = js.native
   def closePath(): Unit                                                                                    = js.native
   def moveTo(x: Double, y: Double): Unit                                                                   = js.native
@@ -2370,14 +2530,15 @@ class WebTransportReceiveStream extends ReadableStream:
 
 @js.native
 @JSGlobal
-class IntersectionObserver extends js.Object:
+class IntersectionObserver extends PlatformObject:
   def this(
       @unused callback: scala.scalajs.js.Function2[scala.scalajs.js.Array[
         IntersectionObserverEntry
       ], IntersectionObserver, Unit],
       @unused options: IntersectionObserverInit = js.native,
   ) = this()
-  def root: scala.scalajs.js.Any                                       = js.native
+  @JSName("root")
+  def rootOrNull: Element | Document | Null                            = js.native
   def rootMargin: String                                               = js.native
   def scrollMargin: String                                             = js.native
   def thresholds: scala.scalajs.js.Array[Double]                       = js.native
@@ -2391,24 +2552,22 @@ end IntersectionObserver
 
 @js.native
 @JSGlobal
-class Cache extends js.Object:
-  def `match`(request: scala.scalajs.js.Any, options: CacheQueryOptions = js.native): scala.scalajs.js.Any = js.native
-  def matchAll(
-      request: scala.scalajs.js.Any = js.native,
-      options: CacheQueryOptions = js.native,
-  ): scala.scalajs.js.Any                                                                            = js.native
-  def add(request: scala.scalajs.js.Any): scala.scalajs.js.Promise[Unit]                             = js.native
-  def addAll(requests: scala.scalajs.js.Array[scala.scalajs.js.Any]): scala.scalajs.js.Promise[Unit] = js.native
-  def put(request: scala.scalajs.js.Any, response: Response): scala.scalajs.js.Promise[Unit]         = js.native
-  def delete(request: scala.scalajs.js.Any, options: CacheQueryOptions = js.native): scala.scalajs.js.Promise[Boolean] =
+class Cache extends PlatformObject:
+  def `match`(request: Request | String, options: CacheQueryOptions = js.native): scala.scalajs.js.Any = js.native
+  def matchAll(request: Request | String = js.native, options: CacheQueryOptions = js.native): scala.scalajs.js.Any =
     js.native
-  def keys(request: scala.scalajs.js.Any = js.native, options: CacheQueryOptions = js.native): scala.scalajs.js.Any =
+  def add(request: Request | String): scala.scalajs.js.Promise[Unit]                             = js.native
+  def addAll(requests: scala.scalajs.js.Array[Request | String]): scala.scalajs.js.Promise[Unit] = js.native
+  def put(request: Request | String, response: Response): scala.scalajs.js.Promise[Unit]         = js.native
+  def delete(request: Request | String, options: CacheQueryOptions = js.native): scala.scalajs.js.Promise[Boolean] =
+    js.native
+  def keys(request: Request | String = js.native, options: CacheQueryOptions = js.native): scala.scalajs.js.Any =
     js.native
 end Cache
 
 @js.native
 @JSGlobal
-class FragmentResult extends js.Object:
+class FragmentResult extends PlatformObject:
   def this(@unused options: FragmentResultOptions = js.native) = this()
   def inlineSize: Double = js.native
   def blockSize: Double  = js.native
@@ -2419,11 +2578,13 @@ class KeyframeEffect extends AnimationEffect:
   def this(
       @unused target: Element,
       @unused keyframes: scala.scalajs.js.Any,
-      @unused options: scala.scalajs.js.Any = js.native,
+      @unused options: Double | KeyframeEffectOptions = js.native,
   ) = this()
   def this(@unused source: KeyframeEffect) = this()
-  var target: Element                                              = js.native
-  var pseudoElement: String                                        = js.native
+  @JSName("target")
+  var targetOrNull: Element | Null = js.native
+  @JSName("pseudoElement")
+  var pseudoElementOrNull: String | Null                           = js.native
   var composite: String                                            = js.native
   var iterationComposite: String                                   = js.native
   def getKeyframes(): scala.scalajs.js.Array[scala.scalajs.js.Any] = js.native
@@ -2444,7 +2605,7 @@ end HTMLTemplateElement
 
 @js.native
 @JSGlobal
-class AudioBuffer extends js.Object:
+class AudioBuffer extends PlatformObject:
   def this(@unused options: AudioBufferOptions) = this()
   def sampleRate: Double                                 = js.native
   def length: Int                                        = js.native
@@ -2458,43 +2619,48 @@ end AudioBuffer
 
 @js.native
 @JSGlobal
-class OES_texture_half_float_linear extends js.Object
+class OES_texture_half_float_linear extends PlatformObject
 
 @js.native
 @JSGlobal
 class CSSOKLCH extends CSSColorValue:
   def this(
-      @unused l: scala.scalajs.js.Any,
-      @unused c: scala.scalajs.js.Any,
-      @unused h: scala.scalajs.js.Any,
-      @unused alpha: scala.scalajs.js.Any = js.native,
+      @unused l: Double | CSSNumericValue | String | CSSKeywordValue,
+      @unused c: Double | CSSNumericValue | String | CSSKeywordValue,
+      @unused h: Double | CSSNumericValue | String | CSSKeywordValue,
+      @unused alpha: Double | CSSNumericValue | String | CSSKeywordValue = js.native,
   ) = this()
-  var l: scala.scalajs.js.Any     = js.native
-  var c: scala.scalajs.js.Any     = js.native
-  var h: scala.scalajs.js.Any     = js.native
-  var alpha: scala.scalajs.js.Any = js.native
+  var l: Double | CSSNumericValue | String | CSSKeywordValue     = js.native
+  var c: Double | CSSNumericValue | String | CSSKeywordValue     = js.native
+  var h: Double | CSSNumericValue | String | CSSKeywordValue     = js.native
+  var alpha: Double | CSSNumericValue | String | CSSKeywordValue = js.native
 end CSSOKLCH
 
 @js.native
 @JSGlobal
 class VideoTrackList extends EventTarget:
-  def length: Int                         = js.native
-  def selectedIndex: Int                  = js.native
-  var onchange: scala.scalajs.js.Any      = js.native
-  var onaddtrack: scala.scalajs.js.Any    = js.native
-  var onremovetrack: scala.scalajs.js.Any = js.native
+  def length: Int        = js.native
+  def selectedIndex: Int = js.native
+  @JSName("onchange")
+  var onchangeOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("onaddtrack")
+  var onaddtrackOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("onremovetrack")
+  var onremovetrackOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
   @JSBracketAccess
-  def apply(index: Int): VideoTrack        = js.native
-  def getTrackById(id: String): VideoTrack = js.native
+  def apply(index: Int): VideoTrack = js.native
+  @JSName("getTrackById")
+  def getTrackByIdOrNull(id: String): VideoTrack | Null = js.native
 end VideoTrackList
 
 @js.native
 @JSGlobal
 class CSSPropertyRule extends CSSRule:
-  def name: String         = js.native
-  def syntax: String       = js.native
-  def inherits: Boolean    = js.native
-  def initialValue: String = js.native
+  def name: String      = js.native
+  def syntax: String    = js.native
+  def inherits: Boolean = js.native
+  @JSName("initialValue")
+  def initialValueOrNull: String | Null = js.native
 
 @js.native
 @JSGlobal
@@ -2557,19 +2723,19 @@ object SVGFEConvolveMatrixElement extends js.Object:
 
 @js.native
 @JSGlobal
-class ReportingObserver extends js.Object:
+class ReportingObserver extends PlatformObject:
   def this(
       @unused callback: scala.scalajs.js.Function2[scala.scalajs.js.Array[Report], ReportingObserver, Unit],
       @unused options: ReportingObserverOptions = js.native,
   ) = this()
-  def observe(): Unit                     = js.native
-  def disconnect(): Unit                  = js.native
-  def takeRecords(): scala.scalajs.js.Any = js.native
+  def observe(): Unit                               = js.native
+  def disconnect(): Unit                            = js.native
+  def takeRecords(): scala.scalajs.js.Array[Report] = js.native
 end ReportingObserver
 
 @js.native
 @JSGlobal
-class SFrameEncrypterStream extends js.Object:
+class SFrameEncrypterStream extends PlatformObject:
   def this(@unused options: SFrameTransformOptions) = this()
   def readable: ReadableStream                                                                      = js.native
   def writable: WritableStream                                                                      = js.native
@@ -2577,9 +2743,10 @@ class SFrameEncrypterStream extends js.Object:
 
 @js.native
 @JSGlobal
-class AudioData extends js.Object:
+class AudioData extends PlatformObject:
   def this(@unused init: AudioDataInit) = this()
-  def format: String                                                                   = js.native
+  @JSName("format")
+  def formatOrNull: String | Null                                                      = js.native
   def sampleRate: Double                                                               = js.native
   def numberOfFrames: Int                                                              = js.native
   def numberOfChannels: Int                                                            = js.native
@@ -2594,24 +2761,29 @@ end AudioData
 @JSGlobal
 class Magnetometer extends Sensor:
   def this(@unused sensorOptions: MagnetometerSensorOptions = js.native) = this()
-  def x: Double = js.native
-  def y: Double = js.native
-  def z: Double = js.native
+  @JSName("x")
+  def xOrNull: Double | Null = js.native
+  @JSName("y")
+  def yOrNull: Double | Null = js.native
+  @JSName("z")
+  def zOrNull: Double | Null = js.native
+end Magnetometer
 
 @js.native
 @JSGlobal
-class CSSParserValue extends js.Object
+class CSSParserValue extends PlatformObject
 
 @js.native
 @JSGlobal
-class CSSVariableReferenceValue extends js.Object:
+class CSSVariableReferenceValue extends PlatformObject:
   def this(@unused variable: String, @unused fallback: CSSUnparsedValue = js.native) = this()
-  var variable: String           = js.native
-  def fallback: CSSUnparsedValue = js.native
+  var variable: String = js.native
+  @JSName("fallback")
+  def fallbackOrNull: CSSUnparsedValue | Null = js.native
 
 @js.native
 @JSGlobal
-class ReadableStreamDefaultReader extends js.Object:
+class ReadableStreamDefaultReader extends PlatformObject:
   def this(@unused stream: ReadableStream) = this()
   def closed: scala.scalajs.js.Promise[Unit]                                           = js.native
   def read(): scala.scalajs.js.Promise[ReadableStreamReadResult]                       = js.native
@@ -2635,7 +2807,7 @@ object DOMRect extends js.Object:
 
 @js.native
 @JSGlobal
-class JsonLdProcessor extends js.Object
+class JsonLdProcessor extends PlatformObject
 
 @js.native
 @JSGlobal
@@ -2644,13 +2816,13 @@ object JsonLdProcessor extends js.Object:
       input: scala.scalajs.js.Any,
       context: scala.scalajs.js.Any = js.native,
       options: JsonLdOptions = js.native,
-  ): scala.scalajs.js.Promise[scala.scalajs.js.Any]                                                 = js.native
+  ): scala.scalajs.js.Promise[scala.scalajs.js.Dictionary[scala.scalajs.js.Any]]                    = js.native
   def expand(input: scala.scalajs.js.Any, options: JsonLdOptions = js.native): scala.scalajs.js.Any = js.native
   def flatten(
       input: scala.scalajs.js.Any,
       context: scala.scalajs.js.Any = js.native,
       options: JsonLdOptions = js.native,
-  ): scala.scalajs.js.Promise[scala.scalajs.js.Any]                                        = js.native
+  ): scala.scalajs.js.Promise[scala.scalajs.js.Dictionary[scala.scalajs.js.Any]]           = js.native
   def fromRdf(input: RdfDataset, options: JsonLdOptions = js.native): scala.scalajs.js.Any = js.native
   def toRdf(input: scala.scalajs.js.Any, options: JsonLdOptions = js.native): scala.scalajs.js.Promise[RdfDataset] =
     js.native
@@ -2658,23 +2830,28 @@ object JsonLdProcessor extends js.Object:
       input: scala.scalajs.js.Any,
       frame: scala.scalajs.js.Any,
       options: JsonLdOptions = js.native,
-  ): scala.scalajs.js.Promise[scala.scalajs.js.Any] = js.native
+  ): scala.scalajs.js.Promise[scala.scalajs.js.Dictionary[scala.scalajs.js.Any]] = js.native
 end JsonLdProcessor
 
 @js.native
 @JSGlobal
 class CSSImportRule extends CSSRule:
-  def href: String              = js.native
-  def media: MediaList          = js.native
-  def styleSheet: CSSStyleSheet = js.native
-  def layerName: String         = js.native
-  def supportsText: String      = js.native
+  def href: String     = js.native
+  def media: MediaList = js.native
+  @JSName("styleSheet")
+  def styleSheetOrNull: CSSStyleSheet | Null = js.native
+  @JSName("layerName")
+  def layerNameOrNull: String | Null = js.native
+  @JSName("supportsText")
+  def supportsTextOrNull: String | Null = js.native
+end CSSImportRule
 
 @js.native
 @JSGlobal
 class PresentationAvailability extends EventTarget:
-  def value: Boolean                 = js.native
-  var onchange: scala.scalajs.js.Any = js.native
+  def value: Boolean = js.native
+  @JSName("onchange")
+  var onchangeOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
 
 @js.native
 @JSGlobal
@@ -2687,159 +2864,269 @@ class HTMLParamElement extends HTMLElement:
 @js.native
 @JSGlobal
 class HTMLElement extends Element:
-  def scrollParent: Element                                             = js.native
-  def offsetParent: Element                                             = js.native
-  def offsetTop: Int                                                    = js.native
-  def offsetLeft: Int                                                   = js.native
-  def offsetWidth: Int                                                  = js.native
-  def offsetHeight: Int                                                 = js.native
-  var editContext: EditContext                                          = js.native
-  var title: String                                                     = js.native
-  var lang: String                                                      = js.native
-  var translate: Boolean                                                = js.native
-  var dir: String                                                       = js.native
-  var hidden: scala.scalajs.js.Any                                      = js.native
-  var inert: Boolean                                                    = js.native
-  var accessKey: String                                                 = js.native
-  def accessKeyLabel: String                                            = js.native
-  var draggable: Boolean                                                = js.native
-  var spellcheck: Boolean                                               = js.native
-  var writingSuggestions: String                                        = js.native
-  var autocapitalize: String                                            = js.native
-  var autocorrect: Boolean                                              = js.native
-  var innerText: String                                                 = js.native
-  var outerText: String                                                 = js.native
-  var popover: String                                                   = js.native
-  var headingOffset: Int                                                = js.native
-  var headingReset: Boolean                                             = js.native
-  def attributeStyleMap: StylePropertyMap                               = js.native
-  def style: CSSStyleProperties                                         = js.native
-  var onanimationstart: scala.scalajs.js.Any                            = js.native
-  var onanimationiteration: scala.scalajs.js.Any                        = js.native
-  var onanimationend: scala.scalajs.js.Any                              = js.native
-  var onanimationcancel: scala.scalajs.js.Any                           = js.native
-  var onsnapchanged: scala.scalajs.js.Any                               = js.native
-  var onsnapchanging: scala.scalajs.js.Any                              = js.native
-  var ontransitionrun: scala.scalajs.js.Any                             = js.native
-  var ontransitionstart: scala.scalajs.js.Any                           = js.native
-  var ontransitionend: scala.scalajs.js.Any                             = js.native
-  var ontransitioncancel: scala.scalajs.js.Any                          = js.native
-  var onfencedtreeclick: scala.scalajs.js.Any                           = js.native
-  var onabort: scala.scalajs.js.Any                                     = js.native
-  var onauxclick: scala.scalajs.js.Any                                  = js.native
-  var onbeforeinput: scala.scalajs.js.Any                               = js.native
-  var onbeforematch: scala.scalajs.js.Any                               = js.native
-  var onbeforetoggle: scala.scalajs.js.Any                              = js.native
-  var onblur: scala.scalajs.js.Any                                      = js.native
-  var oncancel: scala.scalajs.js.Any                                    = js.native
-  var oncanplay: scala.scalajs.js.Any                                   = js.native
-  var oncanplaythrough: scala.scalajs.js.Any                            = js.native
-  var onchange: scala.scalajs.js.Any                                    = js.native
-  var onclick: scala.scalajs.js.Any                                     = js.native
-  var onclose: scala.scalajs.js.Any                                     = js.native
-  var oncommand: scala.scalajs.js.Any                                   = js.native
-  var oncontextlost: scala.scalajs.js.Any                               = js.native
-  var oncontextmenu: scala.scalajs.js.Any                               = js.native
-  var oncontextrestored: scala.scalajs.js.Any                           = js.native
-  var oncopy: scala.scalajs.js.Any                                      = js.native
-  var oncuechange: scala.scalajs.js.Any                                 = js.native
-  var oncut: scala.scalajs.js.Any                                       = js.native
-  var ondblclick: scala.scalajs.js.Any                                  = js.native
-  var ondrag: scala.scalajs.js.Any                                      = js.native
-  var ondragend: scala.scalajs.js.Any                                   = js.native
-  var ondragenter: scala.scalajs.js.Any                                 = js.native
-  var ondragleave: scala.scalajs.js.Any                                 = js.native
-  var ondragover: scala.scalajs.js.Any                                  = js.native
-  var ondragstart: scala.scalajs.js.Any                                 = js.native
-  var ondrop: scala.scalajs.js.Any                                      = js.native
-  var ondurationchange: scala.scalajs.js.Any                            = js.native
-  var onemptied: scala.scalajs.js.Any                                   = js.native
-  var onended: scala.scalajs.js.Any                                     = js.native
-  var onerror: scala.scalajs.js.Any                                     = js.native
-  var onfocus: scala.scalajs.js.Any                                     = js.native
-  var onformdata: scala.scalajs.js.Any                                  = js.native
-  var oninput: scala.scalajs.js.Any                                     = js.native
-  var oninvalid: scala.scalajs.js.Any                                   = js.native
-  var onkeydown: scala.scalajs.js.Any                                   = js.native
-  var onkeypress: scala.scalajs.js.Any                                  = js.native
-  var onkeyup: scala.scalajs.js.Any                                     = js.native
-  var onload: scala.scalajs.js.Any                                      = js.native
-  var onloadeddata: scala.scalajs.js.Any                                = js.native
-  var onloadedmetadata: scala.scalajs.js.Any                            = js.native
-  var onloadstart: scala.scalajs.js.Any                                 = js.native
-  var onmousedown: scala.scalajs.js.Any                                 = js.native
-  var onmouseenter: scala.scalajs.js.Any                                = js.native
-  var onmouseleave: scala.scalajs.js.Any                                = js.native
-  var onmousemove: scala.scalajs.js.Any                                 = js.native
-  var onmouseout: scala.scalajs.js.Any                                  = js.native
-  var onmouseover: scala.scalajs.js.Any                                 = js.native
-  var onmouseup: scala.scalajs.js.Any                                   = js.native
-  var onpaste: scala.scalajs.js.Any                                     = js.native
-  var onpause: scala.scalajs.js.Any                                     = js.native
-  var onplay: scala.scalajs.js.Any                                      = js.native
-  var onplaying: scala.scalajs.js.Any                                   = js.native
-  var onprogress: scala.scalajs.js.Any                                  = js.native
-  var onratechange: scala.scalajs.js.Any                                = js.native
-  var onreset: scala.scalajs.js.Any                                     = js.native
-  var onresize: scala.scalajs.js.Any                                    = js.native
-  var onscroll: scala.scalajs.js.Any                                    = js.native
-  var onscrollend: scala.scalajs.js.Any                                 = js.native
-  var onsecuritypolicyviolation: scala.scalajs.js.Any                   = js.native
-  var onseeked: scala.scalajs.js.Any                                    = js.native
-  var onseeking: scala.scalajs.js.Any                                   = js.native
-  var onselect: scala.scalajs.js.Any                                    = js.native
-  var onslotchange: scala.scalajs.js.Any                                = js.native
-  var onstalled: scala.scalajs.js.Any                                   = js.native
-  var onsubmit: scala.scalajs.js.Any                                    = js.native
-  var onsuspend: scala.scalajs.js.Any                                   = js.native
-  var ontimeupdate: scala.scalajs.js.Any                                = js.native
-  var ontoggle: scala.scalajs.js.Any                                    = js.native
-  var onvolumechange: scala.scalajs.js.Any                              = js.native
-  var onwaiting: scala.scalajs.js.Any                                   = js.native
-  var onwebkitanimationend: scala.scalajs.js.Any                        = js.native
-  var onwebkitanimationiteration: scala.scalajs.js.Any                  = js.native
-  var onwebkitanimationstart: scala.scalajs.js.Any                      = js.native
-  var onwebkittransitionend: scala.scalajs.js.Any                       = js.native
-  var onwheel: scala.scalajs.js.Any                                     = js.native
-  var onpointerover: scala.scalajs.js.Any                               = js.native
-  var onpointerenter: scala.scalajs.js.Any                              = js.native
-  var onpointerdown: scala.scalajs.js.Any                               = js.native
-  var onpointermove: scala.scalajs.js.Any                               = js.native
-  var onpointerrawupdate: scala.scalajs.js.Any                          = js.native
-  var onpointerup: scala.scalajs.js.Any                                 = js.native
-  var onpointercancel: scala.scalajs.js.Any                             = js.native
-  var onpointerout: scala.scalajs.js.Any                                = js.native
-  var onpointerleave: scala.scalajs.js.Any                              = js.native
-  var ongotpointercapture: scala.scalajs.js.Any                         = js.native
-  var onlostpointercapture: scala.scalajs.js.Any                        = js.native
-  var onselectstart: scala.scalajs.js.Any                               = js.native
-  var onselectionchange: scala.scalajs.js.Any                           = js.native
-  var ontouchstart: scala.scalajs.js.Any                                = js.native
-  var ontouchend: scala.scalajs.js.Any                                  = js.native
-  var ontouchmove: scala.scalajs.js.Any                                 = js.native
-  var ontouchcancel: scala.scalajs.js.Any                               = js.native
-  var onbeforexrselect: scala.scalajs.js.Any                            = js.native
-  var contentEditable: String                                           = js.native
-  var enterKeyHint: String                                              = js.native
-  def isContentEditable: Boolean                                        = js.native
-  var inputMode: String                                                 = js.native
-  var virtualKeyboardPolicy: String                                     = js.native
-  def dataset: DOMStringMap                                             = js.native
-  var nonce: String                                                     = js.native
-  var autofocus: Boolean                                                = js.native
-  var tabIndex: Int                                                     = js.native
-  def click(): Unit                                                     = js.native
-  def attachInternals(): ElementInternals                               = js.native
-  def showPopover(options: ShowPopoverOptions = js.native): Unit        = js.native
-  def hidePopover(): Unit                                               = js.native
-  def togglePopover(options: scala.scalajs.js.Any = js.native): Boolean = js.native
-  def focus(options: FocusOptions = js.native): Unit                    = js.native
-  def blur(): Unit                                                      = js.native
+  @JSName("scrollParent")
+  def scrollParentOrNull: Element | Null = js.native
+  @JSName("offsetParent")
+  def offsetParentOrNull: Element | Null = js.native
+  def offsetTop: Int                     = js.native
+  def offsetLeft: Int                    = js.native
+  def offsetWidth: Int                   = js.native
+  def offsetHeight: Int                  = js.native
+  @JSName("editContext")
+  var editContextOrNull: EditContext | Null = js.native
+  var title: String                         = js.native
+  var lang: String                          = js.native
+  var translate: Boolean                    = js.native
+  var dir: String                           = js.native
+  @JSName("hidden")
+  var hiddenOrNull: Boolean | Double | String | Null = js.native
+  var inert: Boolean                                 = js.native
+  var accessKey: String                              = js.native
+  def accessKeyLabel: String                         = js.native
+  var draggable: Boolean                             = js.native
+  var spellcheck: Boolean                            = js.native
+  var writingSuggestions: String                     = js.native
+  var autocapitalize: String                         = js.native
+  var autocorrect: Boolean                           = js.native
+  var innerText: String                              = js.native
+  var outerText: String                              = js.native
+  @JSName("popover")
+  var popoverOrNull: String | Null        = js.native
+  var headingOffset: Int                  = js.native
+  var headingReset: Boolean               = js.native
+  def attributeStyleMap: StylePropertyMap = js.native
+  def style: CSSStyleProperties           = js.native
+  @JSName("onanimationstart")
+  var onanimationstartOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("onanimationiteration")
+  var onanimationiterationOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("onanimationend")
+  var onanimationendOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("onanimationcancel")
+  var onanimationcancelOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("onsnapchanged")
+  var onsnapchangedOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("onsnapchanging")
+  var onsnapchangingOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("ontransitionrun")
+  var ontransitionrunOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("ontransitionstart")
+  var ontransitionstartOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("ontransitionend")
+  var ontransitionendOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("ontransitioncancel")
+  var ontransitioncancelOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("onfencedtreeclick")
+  var onfencedtreeclickOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("onabort")
+  var onabortOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("onauxclick")
+  var onauxclickOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("onbeforeinput")
+  var onbeforeinputOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("onbeforematch")
+  var onbeforematchOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("onbeforetoggle")
+  var onbeforetoggleOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("onblur")
+  var onblurOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("oncancel")
+  var oncancelOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("oncanplay")
+  var oncanplayOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("oncanplaythrough")
+  var oncanplaythroughOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("onchange")
+  var onchangeOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("onclick")
+  var onclickOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("onclose")
+  var oncloseOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("oncommand")
+  var oncommandOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("oncontextlost")
+  var oncontextlostOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("oncontextmenu")
+  var oncontextmenuOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("oncontextrestored")
+  var oncontextrestoredOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("oncopy")
+  var oncopyOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("oncuechange")
+  var oncuechangeOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("oncut")
+  var oncutOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("ondblclick")
+  var ondblclickOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("ondrag")
+  var ondragOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("ondragend")
+  var ondragendOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("ondragenter")
+  var ondragenterOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("ondragleave")
+  var ondragleaveOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("ondragover")
+  var ondragoverOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("ondragstart")
+  var ondragstartOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("ondrop")
+  var ondropOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("ondurationchange")
+  var ondurationchangeOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("onemptied")
+  var onemptiedOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("onended")
+  var onendedOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("onerror")
+  var onerrorOrNull: scala.scalajs.js.Function | Null = js.native
+  @JSName("onfocus")
+  var onfocusOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("onformdata")
+  var onformdataOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("oninput")
+  var oninputOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("oninvalid")
+  var oninvalidOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("onkeydown")
+  var onkeydownOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("onkeypress")
+  var onkeypressOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("onkeyup")
+  var onkeyupOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("onload")
+  var onloadOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("onloadeddata")
+  var onloadeddataOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("onloadedmetadata")
+  var onloadedmetadataOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("onloadstart")
+  var onloadstartOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("onmousedown")
+  var onmousedownOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("onmouseenter")
+  var onmouseenterOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("onmouseleave")
+  var onmouseleaveOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("onmousemove")
+  var onmousemoveOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("onmouseout")
+  var onmouseoutOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("onmouseover")
+  var onmouseoverOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("onmouseup")
+  var onmouseupOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("onpaste")
+  var onpasteOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("onpause")
+  var onpauseOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("onplay")
+  var onplayOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("onplaying")
+  var onplayingOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("onprogress")
+  var onprogressOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("onratechange")
+  var onratechangeOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("onreset")
+  var onresetOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("onresize")
+  var onresizeOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("onscroll")
+  var onscrollOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("onscrollend")
+  var onscrollendOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("onsecuritypolicyviolation")
+  var onsecuritypolicyviolationOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("onseeked")
+  var onseekedOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("onseeking")
+  var onseekingOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("onselect")
+  var onselectOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("onslotchange")
+  var onslotchangeOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("onstalled")
+  var onstalledOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("onsubmit")
+  var onsubmitOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("onsuspend")
+  var onsuspendOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("ontimeupdate")
+  var ontimeupdateOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("ontoggle")
+  var ontoggleOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("onvolumechange")
+  var onvolumechangeOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("onwaiting")
+  var onwaitingOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("onwebkitanimationend")
+  var onwebkitanimationendOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("onwebkitanimationiteration")
+  var onwebkitanimationiterationOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("onwebkitanimationstart")
+  var onwebkitanimationstartOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("onwebkittransitionend")
+  var onwebkittransitionendOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("onwheel")
+  var onwheelOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("onpointerover")
+  var onpointeroverOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("onpointerenter")
+  var onpointerenterOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("onpointerdown")
+  var onpointerdownOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("onpointermove")
+  var onpointermoveOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("onpointerrawupdate")
+  var onpointerrawupdateOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("onpointerup")
+  var onpointerupOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("onpointercancel")
+  var onpointercancelOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("onpointerout")
+  var onpointeroutOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("onpointerleave")
+  var onpointerleaveOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("ongotpointercapture")
+  var ongotpointercaptureOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("onlostpointercapture")
+  var onlostpointercaptureOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("onselectstart")
+  var onselectstartOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("onselectionchange")
+  var onselectionchangeOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("ontouchstart")
+  var ontouchstartOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("ontouchend")
+  var ontouchendOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("ontouchmove")
+  var ontouchmoveOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("ontouchcancel")
+  var ontouchcancelOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("onbeforexrselect")
+  var onbeforexrselectOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  var contentEditable: String                                                                = js.native
+  var enterKeyHint: String                                                                   = js.native
+  def isContentEditable: Boolean                                                             = js.native
+  var inputMode: String                                                                      = js.native
+  var virtualKeyboardPolicy: String                                                          = js.native
+  def dataset: DOMStringMap                                                                  = js.native
+  var nonce: String                                                                          = js.native
+  var autofocus: Boolean                                                                     = js.native
+  var tabIndex: Int                                                                          = js.native
+  def click(): Unit                                                                          = js.native
+  def attachInternals(): ElementInternals                                                    = js.native
+  def showPopover(options: ShowPopoverOptions = js.native): Unit                             = js.native
+  def hidePopover(): Unit                                                                    = js.native
+  def togglePopover(options: TogglePopoverOptions | Boolean = js.native): Boolean            = js.native
+  def focus(options: FocusOptions = js.native): Unit                                         = js.native
+  def blur(): Unit                                                                           = js.native
 end HTMLElement
 
 @js.native
 @JSGlobal
-class ContactsManager extends js.Object:
+class ContactsManager extends PlatformObject:
   def getProperties(): scala.scalajs.js.Any = js.native
   def select(
       properties: scala.scalajs.js.Array[String],
@@ -2848,9 +3135,10 @@ class ContactsManager extends js.Object:
 
 @js.native
 @JSGlobal
-class CSSRuleList extends js.Object:
-  def length: Int               = js.native
-  def item(index: Int): CSSRule = js.native
+class CSSRuleList extends PlatformObject:
+  def length: Int = js.native
+  @JSName("item")
+  def itemOrNull(index: Int): CSSRule | Null = js.native
 
 @js.native
 @JSGlobal
@@ -2866,14 +3154,14 @@ end SVGFilterElement
 
 @js.native
 @JSGlobal
-class IDBRecord extends js.Object:
+class IDBRecord extends PlatformObject:
   def key: scala.scalajs.js.Any        = js.native
   def primaryKey: scala.scalajs.js.Any = js.native
   def value: scala.scalajs.js.Any      = js.native
 
 @js.native
 @JSGlobal
-class TextMetrics extends js.Object:
+class TextMetrics extends PlatformObject:
   def width: Double                    = js.native
   def actualBoundingBoxLeft: Double    = js.native
   def actualBoundingBoxRight: Double   = js.native
@@ -2895,141 +3183,174 @@ class PerformanceContainerTiming extends PerformanceEntry:
   def intersectionRect: DOMRectReadOnly = js.native
   def size: Int                         = js.native
   def firstRenderTime: Double           = js.native
-  def lastPaintedElement: Element       = js.native
-  def rootElement: Element              = js.native
+  @JSName("lastPaintedElement")
+  def lastPaintedElementOrNull: Element | Null = js.native
+  @JSName("rootElement")
+  def rootElementOrNull: Element | Null = js.native
   def paintTime: Double                 = js.native
-  def presentationTime: Double          = js.native
+  @JSName("presentationTime")
+  def presentationTimeOrNull: Double | Null = js.native
 end PerformanceContainerTiming
 
 @js.native
 @JSGlobal
-class WEBGL_clip_cull_distance extends js.Object
+class WEBGL_clip_cull_distance extends PlatformObject
 
 @js.native
 @JSGlobal
 object WEBGL_clip_cull_distance extends js.Object:
-  val MAX_CLIP_DISTANCES_WEBGL: scala.scalajs.js.Any                   = js.native
-  val MAX_CULL_DISTANCES_WEBGL: scala.scalajs.js.Any                   = js.native
-  val MAX_COMBINED_CLIP_AND_CULL_DISTANCES_WEBGL: scala.scalajs.js.Any = js.native
-  val CLIP_DISTANCE0_WEBGL: scala.scalajs.js.Any                       = js.native
-  val CLIP_DISTANCE1_WEBGL: scala.scalajs.js.Any                       = js.native
-  val CLIP_DISTANCE2_WEBGL: scala.scalajs.js.Any                       = js.native
-  val CLIP_DISTANCE3_WEBGL: scala.scalajs.js.Any                       = js.native
-  val CLIP_DISTANCE4_WEBGL: scala.scalajs.js.Any                       = js.native
-  val CLIP_DISTANCE5_WEBGL: scala.scalajs.js.Any                       = js.native
-  val CLIP_DISTANCE6_WEBGL: scala.scalajs.js.Any                       = js.native
-  val CLIP_DISTANCE7_WEBGL: scala.scalajs.js.Any                       = js.native
+  val MAX_CLIP_DISTANCES_WEBGL: Int                   = js.native
+  val MAX_CULL_DISTANCES_WEBGL: Int                   = js.native
+  val MAX_COMBINED_CLIP_AND_CULL_DISTANCES_WEBGL: Int = js.native
+  val CLIP_DISTANCE0_WEBGL: Int                       = js.native
+  val CLIP_DISTANCE1_WEBGL: Int                       = js.native
+  val CLIP_DISTANCE2_WEBGL: Int                       = js.native
+  val CLIP_DISTANCE3_WEBGL: Int                       = js.native
+  val CLIP_DISTANCE4_WEBGL: Int                       = js.native
+  val CLIP_DISTANCE5_WEBGL: Int                       = js.native
+  val CLIP_DISTANCE6_WEBGL: Int                       = js.native
+  val CLIP_DISTANCE7_WEBGL: Int                       = js.native
 end WEBGL_clip_cull_distance
 
 @js.native
 @JSGlobal
-class NotRestoredReasons extends js.Object:
-  def src: String                                               = js.native
-  def id: String                                                = js.native
-  def name: String                                              = js.native
-  def url: String                                               = js.native
-  def reasons: scala.scalajs.js.Array[NotRestoredReasonDetails] = js.native
-  def children: scala.scalajs.js.Array[NotRestoredReasons]      = js.native
-  def toJSON(): scala.scalajs.js.Any                            = js.native
+class NotRestoredReasons extends PlatformObject:
+  @JSName("src")
+  def srcOrNull: String | Null = js.native
+  @JSName("id")
+  def idOrNull: String | Null = js.native
+  @JSName("name")
+  def nameOrNull: String | Null = js.native
+  @JSName("url")
+  def urlOrNull: String | Null = js.native
+  @JSName("reasons")
+  def reasonsOrNull: scala.scalajs.js.Array[NotRestoredReasonDetails] | Null = js.native
+  @JSName("children")
+  def childrenOrNull: scala.scalajs.js.Array[NotRestoredReasons] | Null = js.native
+  def toJSON(): scala.scalajs.js.Any                                    = js.native
 end NotRestoredReasons
 
 @js.native
 @JSGlobal
-class WakeLock extends js.Object:
+class WakeLock extends PlatformObject:
   def request(`type`: String = js.native): scala.scalajs.js.Promise[WakeLockSentinel] = js.native
 
 @js.native
 @JSGlobal
 class SVGSVGElement extends SVGGraphicsElement:
-  def x: SVGAnimatedLength                                                               = js.native
-  def y: SVGAnimatedLength                                                               = js.native
-  def width: SVGAnimatedLength                                                           = js.native
-  def height: SVGAnimatedLength                                                          = js.native
-  var currentScale: Double                                                               = js.native
-  def currentTranslate: DOMPointReadOnly                                                 = js.native
-  def viewBox: SVGAnimatedRect                                                           = js.native
-  def preserveAspectRatio: SVGAnimatedPreserveAspectRatio                                = js.native
-  var ongamepadconnected: scala.scalajs.js.Any                                           = js.native
-  var ongamepaddisconnected: scala.scalajs.js.Any                                        = js.native
-  var onafterprint: scala.scalajs.js.Any                                                 = js.native
-  var onbeforeprint: scala.scalajs.js.Any                                                = js.native
-  var onbeforeunload: scala.scalajs.js.Any                                               = js.native
-  var onhashchange: scala.scalajs.js.Any                                                 = js.native
-  var onlanguagechange: scala.scalajs.js.Any                                             = js.native
-  var onmessage: scala.scalajs.js.Any                                                    = js.native
-  var onmessageerror: scala.scalajs.js.Any                                               = js.native
-  var onoffline: scala.scalajs.js.Any                                                    = js.native
-  var ononline: scala.scalajs.js.Any                                                     = js.native
-  var onpagehide: scala.scalajs.js.Any                                                   = js.native
-  var onpagereveal: scala.scalajs.js.Any                                                 = js.native
-  var onpageshow: scala.scalajs.js.Any                                                   = js.native
-  var onpageswap: scala.scalajs.js.Any                                                   = js.native
-  var onpopstate: scala.scalajs.js.Any                                                   = js.native
-  var onrejectionhandled: scala.scalajs.js.Any                                           = js.native
-  var onstorage: scala.scalajs.js.Any                                                    = js.native
-  var onunhandledrejection: scala.scalajs.js.Any                                         = js.native
-  var onunload: scala.scalajs.js.Any                                                     = js.native
-  var onportalactivate: scala.scalajs.js.Any                                             = js.native
-  def getIntersectionList(rect: DOMRectReadOnly, referenceElement: SVGElement): NodeList = js.native
-  def getEnclosureList(rect: DOMRectReadOnly, referenceElement: SVGElement): NodeList    = js.native
-  def checkIntersection(element: SVGElement, rect: DOMRectReadOnly): Boolean             = js.native
-  def checkEnclosure(element: SVGElement, rect: DOMRectReadOnly): Boolean                = js.native
-  def deselectAll(): Unit                                                                = js.native
-  def createSVGNumber(): SVGNumber                                                       = js.native
-  def createSVGLength(): SVGLength                                                       = js.native
-  def createSVGAngle(): SVGAngle                                                         = js.native
-  def createSVGPoint(): DOMPoint                                                         = js.native
-  def createSVGMatrix(): DOMMatrix                                                       = js.native
-  def createSVGRect(): DOMRect                                                           = js.native
-  def createSVGTransform(): SVGTransform                                                 = js.native
-  def createSVGTransformFromMatrix(matrix: DOMMatrix2DInit = js.native): SVGTransform    = js.native
-  def getElementById(elementId: String): Element                                         = js.native
-  def suspendRedraw(maxWaitMilliseconds: Int): Int                                       = js.native
-  def unsuspendRedraw(suspendHandleID: Int): Unit                                        = js.native
-  def unsuspendRedrawAll(): Unit                                                         = js.native
-  def forceRedraw(): Unit                                                                = js.native
-  def pauseAnimations(): Unit                                                            = js.native
-  def unpauseAnimations(): Unit                                                          = js.native
-  def animationsPaused(): Boolean                                                        = js.native
-  def getCurrentTime(): Double                                                           = js.native
-  def setCurrentTime(seconds: Double): Unit                                              = js.native
+  def x: SVGAnimatedLength                                = js.native
+  def y: SVGAnimatedLength                                = js.native
+  def width: SVGAnimatedLength                            = js.native
+  def height: SVGAnimatedLength                           = js.native
+  var currentScale: Double                                = js.native
+  def currentTranslate: DOMPointReadOnly                  = js.native
+  def viewBox: SVGAnimatedRect                            = js.native
+  def preserveAspectRatio: SVGAnimatedPreserveAspectRatio = js.native
+  @JSName("ongamepadconnected")
+  var ongamepadconnectedOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("ongamepaddisconnected")
+  var ongamepaddisconnectedOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("onafterprint")
+  var onafterprintOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("onbeforeprint")
+  var onbeforeprintOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("onbeforeunload")
+  var onbeforeunloadOrNull: scala.scalajs.js.Function1[Event, String] | Null = js.native
+  @JSName("onhashchange")
+  var onhashchangeOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("onlanguagechange")
+  var onlanguagechangeOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("onmessage")
+  var onmessageOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("onmessageerror")
+  var onmessageerrorOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("onoffline")
+  var onofflineOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("ononline")
+  var ononlineOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("onpagehide")
+  var onpagehideOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("onpagereveal")
+  var onpagerevealOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("onpageshow")
+  var onpageshowOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("onpageswap")
+  var onpageswapOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("onpopstate")
+  var onpopstateOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("onrejectionhandled")
+  var onrejectionhandledOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("onstorage")
+  var onstorageOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("onunhandledrejection")
+  var onunhandledrejectionOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("onunload")
+  var onunloadOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("onportalactivate")
+  var onportalactivateOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  def getIntersectionList(rect: DOMRectReadOnly, referenceElement: SVGElement): NodeList     = js.native
+  def getEnclosureList(rect: DOMRectReadOnly, referenceElement: SVGElement): NodeList        = js.native
+  def checkIntersection(element: SVGElement, rect: DOMRectReadOnly): Boolean                 = js.native
+  def checkEnclosure(element: SVGElement, rect: DOMRectReadOnly): Boolean                    = js.native
+  def deselectAll(): Unit                                                                    = js.native
+  def createSVGNumber(): SVGNumber                                                           = js.native
+  def createSVGLength(): SVGLength                                                           = js.native
+  def createSVGAngle(): SVGAngle                                                             = js.native
+  def createSVGPoint(): DOMPoint                                                             = js.native
+  def createSVGMatrix(): DOMMatrix                                                           = js.native
+  def createSVGRect(): DOMRect                                                               = js.native
+  def createSVGTransform(): SVGTransform                                                     = js.native
+  def createSVGTransformFromMatrix(matrix: DOMMatrix2DInit = js.native): SVGTransform        = js.native
+  @JSName("getElementById")
+  def getElementByIdOrNull(elementId: String): Element | Null = js.native
+  def suspendRedraw(maxWaitMilliseconds: Int): Int            = js.native
+  def unsuspendRedraw(suspendHandleID: Int): Unit             = js.native
+  def unsuspendRedrawAll(): Unit                              = js.native
+  def forceRedraw(): Unit                                     = js.native
+  def pauseAnimations(): Unit                                 = js.native
+  def unpauseAnimations(): Unit                               = js.native
+  def animationsPaused(): Boolean                             = js.native
+  def getCurrentTime(): Double                                = js.native
+  def setCurrentTime(seconds: Double): Unit                   = js.native
 end SVGSVGElement
 
 @js.native
 @JSGlobal
-class EXT_blend_minmax extends js.Object
+class EXT_blend_minmax extends PlatformObject
 
 @js.native
 @JSGlobal
 object EXT_blend_minmax extends js.Object:
-  val MIN_EXT: scala.scalajs.js.Any = js.native
-  val MAX_EXT: scala.scalajs.js.Any = js.native
+  val MIN_EXT: Int = js.native
+  val MAX_EXT: Int = js.native
 
 @js.native
 @JSGlobal
-class GPUError extends js.Object:
+class GPUError extends PlatformObject:
   def message: String = js.native
 
 @js.native
 @JSGlobal
 class XRCylinderLayer extends XRCompositionLayer:
-  var space: XRSpace                 = js.native
-  var transform: XRRigidTransform    = js.native
-  var radius: Double                 = js.native
-  var centralAngle: Double           = js.native
-  var aspectRatio: Double            = js.native
-  var onredraw: scala.scalajs.js.Any = js.native
+  var space: XRSpace              = js.native
+  var transform: XRRigidTransform = js.native
+  var radius: Double              = js.native
+  var centralAngle: Double        = js.native
+  var aspectRatio: Double         = js.native
+  @JSName("onredraw")
+  var onredrawOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+end XRCylinderLayer
 
 @js.native
 @JSGlobal
-class RTCIdentityAssertion extends js.Object:
+class RTCIdentityAssertion extends PlatformObject:
   def this(@unused idp: String, @unused name: String) = this()
   var idp: String  = js.native
   var name: String = js.native
 
 @js.native
 @JSGlobal
-class Subscriber extends js.Object:
+class Subscriber extends PlatformObject:
   def active: Boolean                                               = js.native
   def signal: AbortSignal                                           = js.native
   def next(value: scala.scalajs.js.Any): Unit                       = js.native
@@ -3040,40 +3361,44 @@ class Subscriber extends js.Object:
 @js.native
 @JSGlobal
 class HTMLButtonElement extends HTMLElement:
-  var command: String                        = js.native
-  var commandForElement: Element             = js.native
-  var disabled: Boolean                      = js.native
-  def form: HTMLFormElement                  = js.native
-  var formAction: String                     = js.native
-  var formEnctype: String                    = js.native
-  var formMethod: String                     = js.native
-  var formNoValidate: Boolean                = js.native
-  var formTarget: String                     = js.native
-  var name: String                           = js.native
-  var `type`: String                         = js.native
-  var value: String                          = js.native
-  def willValidate: Boolean                  = js.native
-  def validity: ValidityState                = js.native
-  def validationMessage: String              = js.native
-  def labels: NodeList                       = js.native
-  var popoverTargetElement: Element          = js.native
-  var popoverTargetAction: String            = js.native
-  def checkValidity(): Boolean               = js.native
-  def reportValidity(): Boolean              = js.native
-  def setCustomValidity(error: String): Unit = js.native
+  var command: String = js.native
+  @JSName("commandForElement")
+  var commandForElementOrNull: Element | Null = js.native
+  var disabled: Boolean                       = js.native
+  @JSName("form")
+  def formOrNull: HTMLFormElement | Null = js.native
+  var formAction: String                 = js.native
+  var formEnctype: String                = js.native
+  var formMethod: String                 = js.native
+  var formNoValidate: Boolean            = js.native
+  var formTarget: String                 = js.native
+  var name: String                       = js.native
+  var `type`: String                     = js.native
+  var value: String                      = js.native
+  def willValidate: Boolean              = js.native
+  def validity: ValidityState            = js.native
+  def validationMessage: String          = js.native
+  def labels: NodeList                   = js.native
+  @JSName("popoverTargetElement")
+  var popoverTargetElementOrNull: Element | Null = js.native
+  var popoverTargetAction: String                = js.native
+  def checkValidity(): Boolean                   = js.native
+  def reportValidity(): Boolean                  = js.native
+  def setCustomValidity(error: String): Unit     = js.native
 end HTMLButtonElement
 
 @js.native
 @JSGlobal
-class TextTrackCueList extends js.Object:
+class TextTrackCueList extends PlatformObject:
   def length: Int = js.native
   @JSBracketAccess
-  def apply(index: Int): TextTrackCue      = js.native
-  def getCueById(id: String): TextTrackCue = js.native
+  def apply(index: Int): TextTrackCue = js.native
+  @JSName("getCueById")
+  def getCueByIdOrNull(id: String): TextTrackCue | Null = js.native
 
 @js.native
 @JSGlobal
-class BreakToken extends js.Object:
+class BreakToken extends PlatformObject:
   def childBreakTokens: scala.scalajs.js.Array[ChildBreakToken] = js.native
   def data: scala.scalajs.js.Any                                = js.native
 
@@ -3081,14 +3406,15 @@ class BreakToken extends js.Object:
 @JSGlobal
 class AudioDecoder extends EventTarget:
   def this(@unused init: AudioDecoderInit) = this()
-  def state: String                               = js.native
-  def decodeQueueSize: Int                        = js.native
-  var ondequeue: scala.scalajs.js.Any             = js.native
-  def configure(config: AudioDecoderConfig): Unit = js.native
-  def decode(chunk: EncodedAudioChunk): Unit      = js.native
-  def flush(): scala.scalajs.js.Promise[Unit]     = js.native
-  def reset(): Unit                               = js.native
-  def close(): Unit                               = js.native
+  def state: String        = js.native
+  def decodeQueueSize: Int = js.native
+  @JSName("ondequeue")
+  var ondequeueOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  def configure(config: AudioDecoderConfig): Unit                                     = js.native
+  def decode(chunk: EncodedAudioChunk): Unit                                          = js.native
+  def flush(): scala.scalajs.js.Promise[Unit]                                         = js.native
+  def reset(): Unit                                                                   = js.native
+  def close(): Unit                                                                   = js.native
 end AudioDecoder
 
 @js.native
@@ -3098,7 +3424,7 @@ object AudioDecoder extends js.Object:
 
 @js.native
 @JSGlobal
-class GPU extends js.Object:
+class GPU extends PlatformObject:
   def wgslLanguageFeatures: WGSLLanguageFeatures                                                          = js.native
   def requestAdapter(options: GPURequestAdapterOptions = js.native): scala.scalajs.js.Promise[GPUAdapter] = js.native
   def getPreferredCanvasFormat(): String                                                                  = js.native
@@ -3115,17 +3441,20 @@ class SVGFEComponentTransferElement extends SVGElement:
 
 @js.native
 @JSGlobal
-class Plugin extends js.Object:
-  def name: String                      = js.native
-  def description: String               = js.native
-  def filename: String                  = js.native
-  def length: Int                       = js.native
-  def item(index: Int): MimeType        = js.native
-  def namedItem(name: String): MimeType = js.native
+class Plugin extends PlatformObject:
+  def name: String        = js.native
+  def description: String = js.native
+  def filename: String    = js.native
+  def length: Int         = js.native
+  @JSName("item")
+  def itemOrNull(index: Int): MimeType | Null = js.native
+  @JSName("namedItem")
+  def namedItemOrNull(name: String): MimeType | Null = js.native
+end Plugin
 
 @js.native
 @JSGlobal
-class PressureObserver extends js.Object:
+class PressureObserver extends PlatformObject:
   def this(
       @unused callback: scala.scalajs.js.Function2[scala.scalajs.js.Array[PressureRecord], PressureObserver, Unit]
   ) = this()
@@ -3159,7 +3488,7 @@ class CSSFontFaceRule extends CSSRule:
 
 @js.native
 @JSGlobal
-class XRSubImage extends js.Object:
+class XRSubImage extends PlatformObject:
   def viewport: XRViewport = js.native
 
 @js.native
@@ -3170,41 +3499,39 @@ class GPUInternalError extends GPUError:
 @js.native
 @JSGlobal
 class DevicePosture extends EventTarget:
-  def `type`: String                 = js.native
-  var onchange: scala.scalajs.js.Any = js.native
+  def `type`: String = js.native
+  @JSName("onchange")
+  var onchangeOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
 
 @js.native
 @JSGlobal
-class GPUComputePassEncoder extends js.Object:
+class GPUComputePassEncoder extends PlatformObject:
   var label: String                                   = js.native
   def setPipeline(pipeline: GPUComputePipeline): Unit = js.native
   def dispatchWorkgroups(
-      workgroupCountX: scala.scalajs.js.Any,
-      workgroupCountY: scala.scalajs.js.Any = js.native,
-      workgroupCountZ: scala.scalajs.js.Any = js.native,
-  ): Unit                                                                                               = js.native
-  def dispatchWorkgroupsIndirect(indirectBuffer: GPUBuffer, indirectOffset: scala.scalajs.js.Any): Unit = js.native
-  def end(): Unit                                                                                       = js.native
-  def pushDebugGroup(groupLabel: String): Unit                                                          = js.native
-  def popDebugGroup(): Unit                                                                             = js.native
-  def insertDebugMarker(markerLabel: String): Unit                                                      = js.native
+      workgroupCountX: Int,
+      workgroupCountY: Int = js.native,
+      workgroupCountZ: Int = js.native,
+  ): Unit                                                                                                  = js.native
+  def dispatchWorkgroupsIndirect(indirectBuffer: GPUBuffer, indirectOffset: Int): Unit                     = js.native
+  def end(): Unit                                                                                          = js.native
+  def pushDebugGroup(groupLabel: String): Unit                                                             = js.native
+  def popDebugGroup(): Unit                                                                                = js.native
+  def insertDebugMarker(markerLabel: String): Unit                                                         = js.native
+  def setBindGroup(index: Int, bindGroup: GPUBindGroup): Unit                                              = js.native
+  def setBindGroup(index: Int, bindGroup: GPUBindGroup, dynamicOffsets: scala.scalajs.js.Array[Int]): Unit = js.native
   def setBindGroup(
-      index: scala.scalajs.js.Any,
-      bindGroup: GPUBindGroup,
-      dynamicOffsets: scala.scalajs.js.Array[scala.scalajs.js.Any],
-  ): Unit = js.native
-  def setBindGroup(
-      index: scala.scalajs.js.Any,
+      index: Int,
       bindGroup: GPUBindGroup,
       dynamicOffsetsData: scala.scalajs.js.Any,
-      dynamicOffsetsDataStart: scala.scalajs.js.Any,
-      dynamicOffsetsDataLength: scala.scalajs.js.Any,
+      dynamicOffsetsDataStart: Int,
+      dynamicOffsetsDataLength: Int,
   ): Unit = js.native
   def setImmediates(
-      rangeOffset: scala.scalajs.js.Any,
+      rangeOffset: Int,
       data: scala.scalajs.js.Any,
-      dataOffset: scala.scalajs.js.Any = js.native,
-      dataSize: scala.scalajs.js.Any = js.native,
+      dataOffset: Int = js.native,
+      dataSize: Int = js.native,
   ): Unit = js.native
 end GPUComputePassEncoder
 
@@ -3216,34 +3543,38 @@ class HTMLDataElement extends HTMLElement:
 @js.native
 @JSGlobal
 class WebTransportDatagramsWritable extends WritableStream:
-  var sendGroup: WebTransportSendGroup = js.native
-  var sendOrder: Int                   = js.native
+  @JSName("sendGroup")
+  var sendGroupOrNull: WebTransportSendGroup | Null = js.native
+  var sendOrder: Int                                = js.native
 
 @js.native
 @JSGlobal
 class PresentationConnectionList extends EventTarget:
   def connections: scala.scalajs.js.Array[PresentationConnection] = js.native
-  var onconnectionavailable: scala.scalajs.js.Any                 = js.native
+  @JSName("onconnectionavailable")
+  var onconnectionavailableOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
 
 @js.native
 @JSGlobal
-class NodeList extends js.Object:
-  def length: Int            = js.native
-  def item(index: Int): Node = js.native
+class NodeList extends PlatformObject:
+  def length: Int = js.native
+  @JSName("item")
+  def itemOrNull(index: Int): Node | Null = js.native
   @JSName(js.Symbol.iterator)
   def jsIterator(): scala.scalajs.js.Iterator[Node] = js.native
 
 @js.native
 @JSGlobal
 class ShadowAnimation extends Animation:
-  def this(@unused source: Animation, @unused newTarget: scala.scalajs.js.Any) = this()
+  def this(@unused source: Animation, @unused newTarget: Element | CSSPseudoElement) = this()
   def sourceAnimation: Animation = js.native
 
 @js.native
 @JSGlobal
 class CSSStyleSheet extends StyleSheet:
   def this(@unused options: CSSStyleSheetInit = js.native) = this()
-  def ownerRule: CSSRule                                                                            = js.native
+  @JSName("ownerRule")
+  def ownerRuleOrNull: CSSRule | Null                                                               = js.native
   def cssRules: CSSRuleList                                                                         = js.native
   def rules: CSSRuleList                                                                            = js.native
   def insertRule(rule: String, index: Int = js.native): Int                                         = js.native
@@ -3258,13 +3589,17 @@ end CSSStyleSheet
 @JSGlobal
 class Gyroscope extends Sensor:
   def this(@unused sensorOptions: GyroscopeSensorOptions = js.native) = this()
-  def x: Double = js.native
-  def y: Double = js.native
-  def z: Double = js.native
+  @JSName("x")
+  def xOrNull: Double | Null = js.native
+  @JSName("y")
+  def yOrNull: Double | Null = js.native
+  @JSName("z")
+  def zOrNull: Double | Null = js.native
+end Gyroscope
 
 @js.native
 @JSGlobal
-class CustomStateSet extends js.Object:
+class CustomStateSet extends PlatformObject:
   def size: Int                                                                     = js.native
   def has(value: String): Boolean                                                   = js.native
   def keys(): scala.scalajs.js.Iterator[String]                                     = js.native
@@ -3280,13 +3615,13 @@ end CustomStateSet
 
 @js.native
 @JSGlobal
-class GPUDeviceLostInfo extends js.Object:
+class GPUDeviceLostInfo extends PlatformObject:
   def reason: String  = js.native
   def message: String = js.native
 
 @js.native
 @JSGlobal
-class PerformanceTiming extends js.Object:
+class PerformanceTiming extends PlatformObject:
   def navigationStart: Int            = js.native
   def unloadEventStart: Int           = js.native
   def unloadEventEnd: Int             = js.native
@@ -3314,50 +3649,58 @@ end PerformanceTiming
 @js.native
 @JSGlobal
 class TextTrackCue extends EventTarget:
-  def track: TextTrack              = js.native
+  @JSName("track")
+  def trackOrNull: TextTrack | Null = js.native
   var id: String                    = js.native
   var startTime: Double             = js.native
   var endTime: Double               = js.native
   var pauseOnExit: Boolean          = js.native
-  var onenter: scala.scalajs.js.Any = js.native
-  var onexit: scala.scalajs.js.Any  = js.native
+  @JSName("onenter")
+  var onenterOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("onexit")
+  var onexitOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
 end TextTrackCue
 
 @js.native
 @JSGlobal
-class GPUPipelineLayout extends js.Object:
+class GPUPipelineLayout extends PlatformObject:
   var label: String = js.native
 
 @js.native
 @JSGlobal
-class PushSubscription extends js.Object:
-  def endpoint: String                                 = js.native
-  def expirationTime: Double                           = js.native
-  def options: PushSubscriptionOptions                 = js.native
-  def getKey(name: String): scala.scalajs.js.Any       = js.native
-  def unsubscribe(): scala.scalajs.js.Promise[Boolean] = js.native
-  def toJSON(): PushSubscriptionJSON                   = js.native
+class PushSubscription extends PlatformObject:
+  def endpoint: String = js.native
+  @JSName("expirationTime")
+  def expirationTimeOrNull: Int | Null = js.native
+  def options: PushSubscriptionOptions = js.native
+  @JSName("getKey")
+  def getKeyOrNull(name: String): scala.scalajs.js.Any | Null = js.native
+  def unsubscribe(): scala.scalajs.js.Promise[Boolean]        = js.native
+  def toJSON(): PushSubscriptionJSON                          = js.native
+end PushSubscription
 
 @js.native
 @JSGlobal
-class URLPattern extends js.Object:
+class URLPattern extends PlatformObject:
   def this(
-      @unused input: scala.scalajs.js.Any,
+      @unused input: String | URLPatternInit,
       @unused baseURL: String,
       @unused options: URLPatternOptions = js.native,
   ) = this()
-  def this(@unused input: scala.scalajs.js.Any, @unused options: URLPatternOptions) = this()
-  def protocol: String                                                                             = js.native
-  def username: String                                                                             = js.native
-  def password: String                                                                             = js.native
-  def hostname: String                                                                             = js.native
-  def port: String                                                                                 = js.native
-  def pathname: String                                                                             = js.native
-  def search: String                                                                               = js.native
-  def hash: String                                                                                 = js.native
-  def hasRegExpGroups: Boolean                                                                     = js.native
-  def test(input: scala.scalajs.js.Any = js.native, baseURL: String = js.native): Boolean          = js.native
-  def exec(input: scala.scalajs.js.Any = js.native, baseURL: String = js.native): URLPatternResult = js.native
+  def this(@unused input: String | URLPatternInit, @unused options: URLPatternOptions) = this()
+  def protocol: String                                                                       = js.native
+  def username: String                                                                       = js.native
+  def password: String                                                                       = js.native
+  def hostname: String                                                                       = js.native
+  def port: String                                                                           = js.native
+  def pathname: String                                                                       = js.native
+  def search: String                                                                         = js.native
+  def hash: String                                                                           = js.native
+  def hasRegExpGroups: Boolean                                                               = js.native
+  def test(input: String | URLPatternInit = js.native, baseURL: String = js.native): Boolean = js.native
+  @JSName("exec")
+  def execOrNull(input: String | URLPatternInit = js.native, baseURL: String = js.native): URLPatternResult | Null =
+    js.native
 end URLPattern
 
 @js.native
@@ -3366,35 +3709,36 @@ class WebGLVertexArrayObject extends WebGLObject
 
 @js.native
 @JSGlobal
-class ChildBreakToken extends js.Object:
+class ChildBreakToken extends PlatformObject:
   def breakType: String  = js.native
   def child: LayoutChild = js.native
 
 @js.native
 @JSGlobal
 class SpeechSynthesis extends EventTarget:
-  def pending: Boolean                                          = js.native
-  def speaking: Boolean                                         = js.native
-  def paused: Boolean                                           = js.native
-  var onvoiceschanged: scala.scalajs.js.Any                     = js.native
-  def speak(utterance: SpeechSynthesisUtterance): Unit          = js.native
-  def cancel(): Unit                                            = js.native
-  def pause(): Unit                                             = js.native
-  def resume(): Unit                                            = js.native
-  def getVoices(): scala.scalajs.js.Array[SpeechSynthesisVoice] = js.native
+  def pending: Boolean  = js.native
+  def speaking: Boolean = js.native
+  def paused: Boolean   = js.native
+  @JSName("onvoiceschanged")
+  var onvoiceschangedOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  def speak(utterance: SpeechSynthesisUtterance): Unit                                      = js.native
+  def cancel(): Unit                                                                        = js.native
+  def pause(): Unit                                                                         = js.native
+  def resume(): Unit                                                                        = js.native
+  def getVoices(): scala.scalajs.js.Array[SpeechSynthesisVoice]                             = js.native
 end SpeechSynthesis
 
 @js.native
 @JSGlobal
-class GPUQuerySet extends js.Object:
-  def `type`: String              = js.native
-  def count: scala.scalajs.js.Any = js.native
-  var label: String               = js.native
-  def destroy(): Unit             = js.native
+class GPUQuerySet extends PlatformObject:
+  def `type`: String  = js.native
+  def count: Int      = js.native
+  var label: String   = js.native
+  def destroy(): Unit = js.native
 
 @js.native
 @JSGlobal
-class WGSLLanguageFeatures extends js.Object:
+class WGSLLanguageFeatures extends PlatformObject:
   def size: Int                                                                     = js.native
   def has(value: String): Boolean                                                   = js.native
   def keys(): scala.scalajs.js.Iterator[String]                                     = js.native
@@ -3407,7 +3751,7 @@ end WGSLLanguageFeatures
 
 @js.native
 @JSGlobal
-class MediaCapabilities extends js.Object:
+class MediaCapabilities extends PlatformObject:
   def decodingInfo(configuration: MediaDecodingConfiguration): scala.scalajs.js.Promise[MediaCapabilitiesDecodingInfo] =
     js.native
   def encodingInfo(configuration: MediaEncodingConfiguration): scala.scalajs.js.Promise[MediaCapabilitiesEncodingInfo] =
@@ -3415,7 +3759,7 @@ class MediaCapabilities extends js.Object:
 
 @js.native
 @JSGlobal
-class FileSystemEntry extends js.Object:
+class FileSystemEntry extends PlatformObject:
   def isFile: Boolean        = js.native
   def isDirectory: Boolean   = js.native
   def name: String           = js.native
@@ -3429,7 +3773,7 @@ end FileSystemEntry
 
 @js.native
 @JSGlobal
-class RTCIceCandidatePair extends js.Object:
+class RTCIceCandidatePair extends PlatformObject:
   def local: RTCIceCandidate  = js.native
   def remote: RTCIceCandidate = js.native
 
@@ -3437,12 +3781,13 @@ class RTCIceCandidatePair extends js.Object:
 @JSGlobal
 class ScrollTimeline extends AnimationTimeline:
   def this(@unused options: ScrollTimelineOptions = js.native) = this()
-  def source: Element = js.native
-  def axis: String    = js.native
+  @JSName("source")
+  def sourceOrNull: Element | Null = js.native
+  def axis: String                 = js.native
 
 @js.native
 @JSGlobal
-class DOMMatrixReadOnly extends js.Object:
+class DOMMatrixReadOnly extends PlatformObject:
   def this(@unused init: scala.scalajs.js.Any = js.native) = this()
   def a: Double                                                                                    = js.native
   def b: Double                                                                                    = js.native
@@ -3513,7 +3858,7 @@ object DOMMatrixReadOnly extends js.Object:
 
 @js.native
 @JSGlobal
-class SVGUnitTypes extends js.Object
+class SVGUnitTypes extends PlatformObject
 
 @js.native
 @JSGlobal
@@ -3524,33 +3869,22 @@ object SVGUnitTypes extends js.Object:
 
 @js.native
 @JSGlobal
-class FileList extends js.Object:
-  def length: Int            = js.native
-  def item(index: Int): File = js.native
+class FileList extends PlatformObject:
+  def length: Int = js.native
+  @JSName("item")
+  def itemOrNull(index: Int): File | Null = js.native
 
 @js.native
 @JSGlobal
-class ANGLE_instanced_arrays extends js.Object:
-  def drawArraysInstancedANGLE(
-      mode: scala.scalajs.js.Any,
-      first: scala.scalajs.js.Any,
-      count: scala.scalajs.js.Any,
-      primcount: scala.scalajs.js.Any,
-  ): Unit = js.native
-  def drawElementsInstancedANGLE(
-      mode: scala.scalajs.js.Any,
-      count: scala.scalajs.js.Any,
-      `type`: scala.scalajs.js.Any,
-      offset: scala.scalajs.js.Any,
-      primcount: scala.scalajs.js.Any,
-  ): Unit                                                                                        = js.native
-  def vertexAttribDivisorANGLE(index: scala.scalajs.js.Any, divisor: scala.scalajs.js.Any): Unit = js.native
-end ANGLE_instanced_arrays
+class ANGLE_instanced_arrays extends PlatformObject:
+  def drawArraysInstancedANGLE(mode: Int, first: Int, count: Int, primcount: Int): Unit                 = js.native
+  def drawElementsInstancedANGLE(mode: Int, count: Int, `type`: Int, offset: Int, primcount: Int): Unit = js.native
+  def vertexAttribDivisorANGLE(index: Int, divisor: Int): Unit                                          = js.native
 
 @js.native
 @JSGlobal
 object ANGLE_instanced_arrays extends js.Object:
-  val VERTEX_ATTRIB_ARRAY_DIVISOR_ANGLE: scala.scalajs.js.Any = js.native
+  val VERTEX_ATTRIB_ARRAY_DIVISOR_ANGLE: Int = js.native
 
 @js.native
 @JSGlobal
@@ -3593,7 +3927,7 @@ object SVGFETurbulenceElement extends js.Object:
 
 @js.native
 @JSGlobal
-class GPUBindGroup extends js.Object:
+class GPUBindGroup extends PlatformObject:
   var label: String = js.native
 
 @js.native
@@ -3603,38 +3937,43 @@ class SVGTextElement extends SVGTextPositioningElement
 @js.native
 @JSGlobal
 class MIDIPort extends EventTarget:
-  def id: String                                  = js.native
-  def manufacturer: String                        = js.native
-  def name: String                                = js.native
-  def `type`: String                              = js.native
-  def version: String                             = js.native
-  def state: String                               = js.native
-  def connection: String                          = js.native
-  var onstatechange: scala.scalajs.js.Any         = js.native
-  def open(): scala.scalajs.js.Promise[MIDIPort]  = js.native
-  def close(): scala.scalajs.js.Promise[MIDIPort] = js.native
+  def id: String = js.native
+  @JSName("manufacturer")
+  def manufacturerOrNull: String | Null = js.native
+  @JSName("name")
+  def nameOrNull: String | Null = js.native
+  def `type`: String            = js.native
+  @JSName("version")
+  def versionOrNull: String | Null = js.native
+  def state: String                = js.native
+  def connection: String           = js.native
+  @JSName("onstatechange")
+  var onstatechangeOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  def open(): scala.scalajs.js.Promise[MIDIPort]                                          = js.native
+  def close(): scala.scalajs.js.Promise[MIDIPort]                                         = js.native
 end MIDIPort
 
 @js.native
 @JSGlobal
-class OES_texture_float_linear extends js.Object
+class OES_texture_float_linear extends PlatformObject
 
 @js.native
 @JSGlobal
 class HTMLOptionElement extends HTMLElement:
-  var disabled: Boolean        = js.native
-  def form: HTMLFormElement    = js.native
-  var label: String            = js.native
-  var defaultSelected: Boolean = js.native
-  var selected: Boolean        = js.native
-  var value: String            = js.native
-  var text: String             = js.native
-  def index: Int               = js.native
+  var disabled: Boolean = js.native
+  @JSName("form")
+  def formOrNull: HTMLFormElement | Null = js.native
+  var label: String                      = js.native
+  var defaultSelected: Boolean           = js.native
+  var selected: Boolean                  = js.native
+  var value: String                      = js.native
+  var text: String                       = js.native
+  def index: Int                         = js.native
 end HTMLOptionElement
 
 @js.native
 @JSGlobal
-class AudioParam extends js.Object:
+class AudioParam extends PlatformObject:
   var value: Double                                                                        = js.native
   var automationRate: String                                                               = js.native
   def defaultValue: Double                                                                 = js.native
@@ -3665,8 +4004,8 @@ end CSSFontFeatureValuesRule
 
 @js.native
 @JSGlobal
-class Fence extends js.Object:
-  def reportEvent(event: scala.scalajs.js.Any = js.native): Unit                 = js.native
+class Fence extends PlatformObject:
+  def reportEvent(event: FenceEvent | String = js.native): Unit                  = js.native
   def setReportEventDataForAutomaticBeacons(event: FenceEvent = js.native): Unit = js.native
   def getNestedConfigs(): scala.scalajs.js.Array[FencedFrameConfig]              = js.native
   def disableUntrustedNetwork(): scala.scalajs.js.Promise[Unit]                  = js.native
@@ -3674,35 +4013,19 @@ class Fence extends js.Object:
 
 @js.native
 @JSGlobal
-class OES_draw_buffers_indexed extends js.Object:
-  def enableiOES(target: scala.scalajs.js.Any, index: scala.scalajs.js.Any): Unit    = js.native
-  def disableiOES(target: scala.scalajs.js.Any, index: scala.scalajs.js.Any): Unit   = js.native
-  def blendEquationiOES(buf: scala.scalajs.js.Any, mode: scala.scalajs.js.Any): Unit = js.native
-  def blendEquationSeparateiOES(
-      buf: scala.scalajs.js.Any,
-      modeRGB: scala.scalajs.js.Any,
-      modeAlpha: scala.scalajs.js.Any,
-  ): Unit                                                                                                  = js.native
-  def blendFunciOES(buf: scala.scalajs.js.Any, src: scala.scalajs.js.Any, dst: scala.scalajs.js.Any): Unit = js.native
-  def blendFuncSeparateiOES(
-      buf: scala.scalajs.js.Any,
-      srcRGB: scala.scalajs.js.Any,
-      dstRGB: scala.scalajs.js.Any,
-      srcAlpha: scala.scalajs.js.Any,
-      dstAlpha: scala.scalajs.js.Any,
-  ): Unit = js.native
-  def colorMaskiOES(
-      buf: scala.scalajs.js.Any,
-      r: scala.scalajs.js.Any,
-      g: scala.scalajs.js.Any,
-      b: scala.scalajs.js.Any,
-      a: scala.scalajs.js.Any,
-  ): Unit = js.native
+class OES_draw_buffers_indexed extends PlatformObject:
+  def enableiOES(target: Int, index: Int): Unit                                                     = js.native
+  def disableiOES(target: Int, index: Int): Unit                                                    = js.native
+  def blendEquationiOES(buf: Int, mode: Int): Unit                                                  = js.native
+  def blendEquationSeparateiOES(buf: Int, modeRGB: Int, modeAlpha: Int): Unit                       = js.native
+  def blendFunciOES(buf: Int, src: Int, dst: Int): Unit                                             = js.native
+  def blendFuncSeparateiOES(buf: Int, srcRGB: Int, dstRGB: Int, srcAlpha: Int, dstAlpha: Int): Unit = js.native
+  def colorMaskiOES(buf: Int, r: Boolean, g: Boolean, b: Boolean, a: Boolean): Unit                 = js.native
 end OES_draw_buffers_indexed
 
 @js.native
 @JSGlobal
-class URL extends js.Object:
+class URL extends PlatformObject:
   def this(@unused url: String, @unused base: String = js.native) = this()
   var href: String                  = js.native
   def origin: String                = js.native
@@ -3722,20 +4045,20 @@ end URL
 @js.native
 @JSGlobal
 object URL extends js.Object:
-  def createObjectURL(obj: scala.scalajs.js.Any): String       = js.native
+  def createObjectURL(obj: Blob | MediaSource): String         = js.native
   def revokeObjectURL(url: String): Unit                       = js.native
   def parse(url: String, base: String = js.native): URL        = js.native
   def canParse(url: String, base: String = js.native): Boolean = js.native
 
 @js.native
 @JSGlobal
-class SVGAnimatedString extends js.Object:
-  var baseVal: scala.scalajs.js.Any = js.native
-  def animVal: String               = js.native
+class SVGAnimatedString extends PlatformObject:
+  var baseVal: String | TrustedScriptURL = js.native
+  def animVal: String                    = js.native
 
 @js.native
 @JSGlobal
-class BluetoothManufacturerDataMap extends js.Object:
+class BluetoothManufacturerDataMap extends PlatformObject:
   def size: Int                                                                                = js.native
   def get(key: Int): scala.scalajs.js.UndefOr[scala.scalajs.js.Any]                            = js.native
   def has(key: Int): Boolean                                                                   = js.native
@@ -3764,14 +4087,15 @@ object DOMPoint extends js.Object:
 
 @js.native
 @JSGlobal
-class NotRestoredReasonDetails extends js.Object:
+class NotRestoredReasonDetails extends PlatformObject:
   def reason: String                 = js.native
   def toJSON(): scala.scalajs.js.Any = js.native
 
 @js.native
 @JSGlobal
-class Viewport extends js.Object:
-  def segments: scala.scalajs.js.Array[DOMRect] = js.native
+class Viewport extends PlatformObject:
+  @JSName("segments")
+  def segmentsOrNull: scala.scalajs.js.Array[DOMRect] | Null = js.native
 
 @js.native
 @JSGlobal
@@ -3806,7 +4130,8 @@ class PerformanceLongAnimationFrameTiming extends PerformanceEntry:
   def firstUIEventTimestamp: Double                            = js.native
   def scripts: scala.scalajs.js.Array[PerformanceScriptTiming] = js.native
   def paintTime: Double                                        = js.native
-  def presentationTime: Double                                 = js.native
+  @JSName("presentationTime")
+  def presentationTimeOrNull: Double | Null = js.native
 end PerformanceLongAnimationFrameTiming
 
 @js.native
@@ -3818,7 +4143,7 @@ class CSSContainerRule extends CSSConditionRule:
 
 @js.native
 @JSGlobal
-class HandwritingDrawing extends js.Object:
+class HandwritingDrawing extends PlatformObject:
   def addStroke(stroke: HandwritingStroke): Unit              = js.native
   def removeStroke(stroke: HandwritingStroke): Unit           = js.native
   def clear(): Unit                                           = js.native
@@ -3827,7 +4152,7 @@ class HandwritingDrawing extends js.Object:
 
 @js.native
 @JSGlobal
-class GPUComputePipeline extends js.Object:
+class GPUComputePipeline extends PlatformObject:
   var label: String                                      = js.native
   def getBindGroupLayout(index: Int): GPUBindGroupLayout = js.native
 
@@ -3839,7 +4164,7 @@ class XRCPUDepthInformation extends XRDepthInformation:
 
 @js.native
 @JSGlobal
-class IdleDeadline extends js.Object:
+class IdleDeadline extends PlatformObject:
   def didTimeout: Boolean     = js.native
   def timeRemaining(): Double = js.native
 
@@ -3878,7 +4203,8 @@ class HTMLHeadingElement extends HTMLElement:
 @js.native
 @JSGlobal
 class SVGPathElement extends SVGGeometryElement:
-  def getPathSegmentAtLength(distance: Double): SVGPathSegment                                       = js.native
+  @JSName("getPathSegmentAtLength")
+  def getPathSegmentAtLengthOrNull(distance: Double): SVGPathSegment | Null                          = js.native
   def getPathData(settings: SVGPathDataSettings = js.native): scala.scalajs.js.Array[SVGPathSegment] = js.native
   def setPathData(pathData: scala.scalajs.js.Array[SVGPathSegment]): Unit                            = js.native
 
@@ -3889,11 +4215,12 @@ class HTMLStyleElement extends HTMLElement:
   var media: String          = js.native
   def blocking: DOMTokenList = js.native
   var `type`: String         = js.native
-  def sheet: CSSStyleSheet   = js.native
+  @JSName("sheet")
+  def sheetOrNull: CSSStyleSheet | Null = js.native
 
 @js.native
 @JSGlobal
-class VideoPlaybackQuality extends js.Object:
+class VideoPlaybackQuality extends PlatformObject:
   def creationTime: Double      = js.native
   def droppedVideoFrames: Int   = js.native
   def totalVideoFrames: Int     = js.native
@@ -3901,24 +4228,29 @@ class VideoPlaybackQuality extends js.Object:
 
 @js.native
 @JSGlobal
-class GroupEffect extends js.Object:
+class GroupEffect extends PlatformObject:
   def this(
       @unused children: scala.scalajs.js.Array[AnimationEffect],
-      @unused timing: scala.scalajs.js.Any = js.native,
+      @unused timing: Double | EffectTiming = js.native,
   ) = this()
-  def children: AnimationNodeList             = js.native
-  def firstChild: AnimationEffect             = js.native
-  def lastChild: AnimationEffect              = js.native
+  def children: AnimationNodeList = js.native
+  @JSName("firstChild")
+  def firstChildOrNull: AnimationEffect | Null = js.native
+  @JSName("lastChild")
+  def lastChildOrNull: AnimationEffect | Null = js.native
   def prepend(effects: AnimationEffect): Unit = js.native
   def append(effects: AnimationEffect): Unit  = js.native
 end GroupEffect
 
 @js.native
 @JSGlobal
-class AnimationEffect extends js.Object:
-  def parent: GroupEffect                                          = js.native
-  def previousSibling: AnimationEffect                             = js.native
-  def nextSibling: AnimationEffect                                 = js.native
+class AnimationEffect extends PlatformObject:
+  @JSName("parent")
+  def parentOrNull: GroupEffect | Null = js.native
+  @JSName("previousSibling")
+  def previousSiblingOrNull: AnimationEffect | Null = js.native
+  @JSName("nextSibling")
+  def nextSiblingOrNull: AnimationEffect | Null                    = js.native
   def getTiming(): EffectTiming                                    = js.native
   def getComputedTiming(): ComputedEffectTiming                    = js.native
   def updateTiming(timing: OptionalEffectTiming = js.native): Unit = js.native
@@ -3930,7 +4262,7 @@ end AnimationEffect
 
 @js.native
 @JSGlobal
-class GPUBindGroupLayout extends js.Object:
+class GPUBindGroupLayout extends PlatformObject:
   var label: String = js.native
 
 @js.native
@@ -3946,35 +4278,40 @@ class CSSSkewX extends CSSTransformComponent:
 
 @js.native
 @JSGlobal
-class XRPose extends js.Object:
-  def transform: XRRigidTransform       = js.native
-  def linearVelocity: DOMPointReadOnly  = js.native
-  def angularVelocity: DOMPointReadOnly = js.native
-  def emulatedPosition: Boolean         = js.native
+class XRPose extends PlatformObject:
+  def transform: XRRigidTransform = js.native
+  @JSName("linearVelocity")
+  def linearVelocityOrNull: DOMPointReadOnly | Null = js.native
+  @JSName("angularVelocity")
+  def angularVelocityOrNull: DOMPointReadOnly | Null = js.native
+  def emulatedPosition: Boolean                      = js.native
 
 @js.native
 @JSGlobal
 class CSSColor extends CSSColorValue:
   def this(
-      @unused colorSpace: scala.scalajs.js.Any,
-      @unused channels: scala.scalajs.js.Array[scala.scalajs.js.Any],
-      @unused alpha: scala.scalajs.js.Any = js.native,
+      @unused colorSpace: String | CSSKeywordValue,
+      @unused channels: scala.scalajs.js.Array[Double | CSSNumericValue | String | CSSKeywordValue],
+      @unused alpha: Double | CSSNumericValue = js.native,
   ) = this()
-  var colorSpace: scala.scalajs.js.Any                       = js.native
-  var channels: scala.scalajs.js.Array[scala.scalajs.js.Any] = js.native
-  var alpha: scala.scalajs.js.Any                            = js.native
+  var colorSpace: String | CSSKeywordValue                                                  = js.native
+  var channels: scala.scalajs.js.Array[Double | CSSNumericValue | String | CSSKeywordValue] = js.native
+  var alpha: Double | CSSNumericValue                                                       = js.native
 end CSSColor
 
 @js.native
 @JSGlobal
-class Writer extends js.Object:
-  def sharedContext: String                                                                           = js.native
-  def tone: String                                                                                    = js.native
-  def format: String                                                                                  = js.native
-  def length: String                                                                                  = js.native
-  def expectedInputLanguages: scala.scalajs.js.Array[String]                                          = js.native
-  def expectedContextLanguages: scala.scalajs.js.Array[String]                                        = js.native
-  def outputLanguage: String                                                                          = js.native
+class Writer extends PlatformObject:
+  def sharedContext: String = js.native
+  def tone: String          = js.native
+  def format: String        = js.native
+  def length: String        = js.native
+  @JSName("expectedInputLanguages")
+  def expectedInputLanguagesOrNull: scala.scalajs.js.Array[String] | Null = js.native
+  @JSName("expectedContextLanguages")
+  def expectedContextLanguagesOrNull: scala.scalajs.js.Array[String] | Null = js.native
+  @JSName("outputLanguage")
+  def outputLanguageOrNull: String | Null                                                             = js.native
   def inputQuota: Double                                                                              = js.native
   def write(input: String, options: WriterWriteOptions = js.native): scala.scalajs.js.Promise[String] = js.native
   def writeStreaming(input: String, options: WriterWriteOptions = js.native): ReadableStream          = js.native
@@ -3996,7 +4333,8 @@ class SVGDefsElement extends SVGGraphicsElement
 @js.native
 @JSGlobal
 class Keyboard extends EventTarget:
-  var onlayoutchange: scala.scalajs.js.Any                                                       = js.native
+  @JSName("onlayoutchange")
+  var onlayoutchangeOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null       = js.native
   def lock(keyCodes: scala.scalajs.js.Array[String] = js.native): scala.scalajs.js.Promise[Unit] = js.native
   def unlock(): Unit                                                                             = js.native
   def getLayoutMap(): scala.scalajs.js.Promise[KeyboardLayoutMap]                                = js.native
@@ -4021,7 +4359,7 @@ object SVGTextPathElement extends js.Object:
 
 @js.native
 @JSGlobal
-class CryptoKey extends js.Object:
+class CryptoKey extends PlatformObject:
   def `type`: String                  = js.native
   def extractable: Boolean            = js.native
   def algorithm: scala.scalajs.js.Any = js.native
@@ -4030,49 +4368,73 @@ class CryptoKey extends js.Object:
 @js.native
 @JSGlobal
 class HTMLFrameSetElement extends HTMLElement:
-  var cols: String                                = js.native
-  var rows: String                                = js.native
-  var ongamepadconnected: scala.scalajs.js.Any    = js.native
-  var ongamepaddisconnected: scala.scalajs.js.Any = js.native
-  var onafterprint: scala.scalajs.js.Any          = js.native
-  var onbeforeprint: scala.scalajs.js.Any         = js.native
-  var onbeforeunload: scala.scalajs.js.Any        = js.native
-  var onhashchange: scala.scalajs.js.Any          = js.native
-  var onlanguagechange: scala.scalajs.js.Any      = js.native
-  var onmessage: scala.scalajs.js.Any             = js.native
-  var onmessageerror: scala.scalajs.js.Any        = js.native
-  var onoffline: scala.scalajs.js.Any             = js.native
-  var ononline: scala.scalajs.js.Any              = js.native
-  var onpagehide: scala.scalajs.js.Any            = js.native
-  var onpagereveal: scala.scalajs.js.Any          = js.native
-  var onpageshow: scala.scalajs.js.Any            = js.native
-  var onpageswap: scala.scalajs.js.Any            = js.native
-  var onpopstate: scala.scalajs.js.Any            = js.native
-  var onrejectionhandled: scala.scalajs.js.Any    = js.native
-  var onstorage: scala.scalajs.js.Any             = js.native
-  var onunhandledrejection: scala.scalajs.js.Any  = js.native
-  var onunload: scala.scalajs.js.Any              = js.native
-  var onportalactivate: scala.scalajs.js.Any      = js.native
+  var cols: String = js.native
+  var rows: String = js.native
+  @JSName("ongamepadconnected")
+  var ongamepadconnectedOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("ongamepaddisconnected")
+  var ongamepaddisconnectedOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("onafterprint")
+  var onafterprintOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("onbeforeprint")
+  var onbeforeprintOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("onbeforeunload")
+  var onbeforeunloadOrNull: scala.scalajs.js.Function1[Event, String] | Null = js.native
+  @JSName("onhashchange")
+  var onhashchangeOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("onlanguagechange")
+  var onlanguagechangeOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("onmessage")
+  var onmessageOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("onmessageerror")
+  var onmessageerrorOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("onoffline")
+  var onofflineOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("ononline")
+  var ononlineOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("onpagehide")
+  var onpagehideOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("onpagereveal")
+  var onpagerevealOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("onpageshow")
+  var onpageshowOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("onpageswap")
+  var onpageswapOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("onpopstate")
+  var onpopstateOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("onrejectionhandled")
+  var onrejectionhandledOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("onstorage")
+  var onstorageOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("onunhandledrejection")
+  var onunhandledrejectionOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("onunload")
+  var onunloadOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("onportalactivate")
+  var onportalactivateOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
 end HTMLFrameSetElement
 
 @js.native
 @JSGlobal
-class SVGAnimatedEnumeration extends js.Object:
+class SVGAnimatedEnumeration extends PlatformObject:
   var baseVal: Int = js.native
   def animVal: Int = js.native
 
 @js.native
 @JSGlobal
-class HTMLAllCollection extends js.Object:
+class HTMLAllCollection extends PlatformObject:
   def length: Int = js.native
   @JSBracketAccess
-  def apply(index: Int): Element                                  = js.native
-  def namedItem(name: String): scala.scalajs.js.Any               = js.native
-  def item(nameOrIndex: String = js.native): scala.scalajs.js.Any = js.native
+  def apply(index: Int): Element = js.native
+  @JSName("namedItem")
+  def namedItemOrNull(name: String): HTMLCollection | Element | Null = js.native
+  @JSName("item")
+  def itemOrNull(nameOrIndex: String = js.native): HTMLCollection | Element | Null = js.native
+end HTMLAllCollection
 
 @js.native
 @JSGlobal
-class ResizeObserver extends js.Object:
+class ResizeObserver extends PlatformObject:
   def this(
       @unused callback: scala.scalajs.js.Function2[scala.scalajs.js.Array[ResizeObserverEntry], ResizeObserver, Unit]
   ) = this()
@@ -4082,7 +4444,7 @@ class ResizeObserver extends js.Object:
 
 @js.native
 @JSGlobal
-class DataTransfer extends js.Object:
+class DataTransfer extends PlatformObject:
   var dropEffect: String                                 = js.native
   var effectAllowed: String                              = js.native
   def items: DataTransferItemList                        = js.native
@@ -4096,7 +4458,7 @@ end DataTransfer
 
 @js.native
 @JSGlobal
-class BluetoothDataFilter extends js.Object:
+class BluetoothDataFilter extends PlatformObject:
   def this(@unused init: BluetoothDataFilterInit = js.native) = this()
   def dataPrefix: scala.scalajs.js.Any = js.native
   def mask: scala.scalajs.js.Any       = js.native
@@ -4107,12 +4469,12 @@ class HTMLAudioElement extends HTMLMediaElement
 
 @js.native
 @JSGlobal
-class GPUCompilationInfo extends js.Object:
+class GPUCompilationInfo extends PlatformObject:
   def messages: scala.scalajs.js.Array[GPUCompilationMessage] = js.native
 
 @js.native
 @JSGlobal
-class ViewTransition extends js.Object:
+class ViewTransition extends PlatformObject:
   def updateCallbackDone: scala.scalajs.js.Promise[Unit]                       = js.native
   def ready: scala.scalajs.js.Promise[Unit]                                    = js.native
   def finished: scala.scalajs.js.Promise[Unit]                                 = js.native
@@ -4158,7 +4520,8 @@ class SVGTSpanElement extends SVGTextPositioningElement
 @js.native
 @JSGlobal
 class WebTransportSendStream extends WritableStream:
-  var sendGroup: WebTransportSendGroup                                  = js.native
+  @JSName("sendGroup")
+  var sendGroupOrNull: WebTransportSendGroup | Null                     = js.native
   var sendOrder: Int                                                    = js.native
   def getStats(): scala.scalajs.js.Promise[WebTransportSendStreamStats] = js.native
 
@@ -4178,46 +4541,50 @@ end AudioWorkletGlobalScope
 
 @js.native
 @JSGlobal
-class CSSTransformComponent extends js.Object:
+class CSSTransformComponent extends PlatformObject:
   var is2D: Boolean         = js.native
   def toMatrix(): DOMMatrix = js.native
 
 @js.native
 @JSGlobal
 class HTMLObjectElement extends HTMLElement:
-  var data: String                           = js.native
-  var `type`: String                         = js.native
-  var name: String                           = js.native
-  def form: HTMLFormElement                  = js.native
-  var width: String                          = js.native
-  var height: String                         = js.native
-  def contentDocument: Document              = js.native
-  def contentWindow: scala.scalajs.js.Any    = js.native
-  def willValidate: Boolean                  = js.native
-  def validity: ValidityState                = js.native
-  def validationMessage: String              = js.native
-  var align: String                          = js.native
-  var archive: String                        = js.native
-  var code: String                           = js.native
-  var declare: Boolean                       = js.native
-  var hspace: Int                            = js.native
-  var standby: String                        = js.native
-  var vspace: Int                            = js.native
-  var codeBase: String                       = js.native
-  var codeType: String                       = js.native
-  var useMap: String                         = js.native
-  var border: String                         = js.native
-  def getSVGDocument(): Document             = js.native
-  def checkValidity(): Boolean               = js.native
-  def reportValidity(): Boolean              = js.native
-  def setCustomValidity(error: String): Unit = js.native
+  var data: String   = js.native
+  var `type`: String = js.native
+  var name: String   = js.native
+  @JSName("form")
+  def formOrNull: HTMLFormElement | Null = js.native
+  var width: String                      = js.native
+  var height: String                     = js.native
+  @JSName("contentDocument")
+  def contentDocumentOrNull: Document | Null = js.native
+  @JSName("contentWindow")
+  def contentWindowOrNull: Window | Null = js.native
+  def willValidate: Boolean              = js.native
+  def validity: ValidityState            = js.native
+  def validationMessage: String          = js.native
+  var align: String                      = js.native
+  var archive: String                    = js.native
+  var code: String                       = js.native
+  var declare: Boolean                   = js.native
+  var hspace: Int                        = js.native
+  var standby: String                    = js.native
+  var vspace: Int                        = js.native
+  var codeBase: String                   = js.native
+  var codeType: String                   = js.native
+  var useMap: String                     = js.native
+  var border: String                     = js.native
+  @JSName("getSVGDocument")
+  def getSVGDocumentOrNull(): Document | Null = js.native
+  def checkValidity(): Boolean                = js.native
+  def reportValidity(): Boolean               = js.native
+  def setCustomValidity(error: String): Unit  = js.native
 end HTMLObjectElement
 
 @js.native
 @JSGlobal
-class WEBGL_multi_draw_instanced_base_vertex_base_instance extends js.Object:
+class WEBGL_multi_draw_instanced_base_vertex_base_instance extends PlatformObject:
   def multiDrawArraysInstancedBaseInstanceWEBGL(
-      mode: scala.scalajs.js.Any,
+      mode: Int,
       firstsList: scala.scalajs.js.Any,
       firstsOffset: Int,
       countsList: scala.scalajs.js.Any,
@@ -4226,13 +4593,13 @@ class WEBGL_multi_draw_instanced_base_vertex_base_instance extends js.Object:
       instanceCountsOffset: Int,
       baseInstancesList: scala.scalajs.js.Any,
       baseInstancesOffset: Int,
-      drawcount: scala.scalajs.js.Any,
+      drawcount: Int,
   ): Unit = js.native
   def multiDrawElementsInstancedBaseVertexBaseInstanceWEBGL(
-      mode: scala.scalajs.js.Any,
+      mode: Int,
       countsList: scala.scalajs.js.Any,
       countsOffset: Int,
-      `type`: scala.scalajs.js.Any,
+      `type`: Int,
       offsetsList: scala.scalajs.js.Any,
       offsetsOffset: Int,
       instanceCountsList: scala.scalajs.js.Any,
@@ -4241,21 +4608,21 @@ class WEBGL_multi_draw_instanced_base_vertex_base_instance extends js.Object:
       baseVerticesOffset: Int,
       baseInstancesList: scala.scalajs.js.Any,
       baseInstancesOffset: Int,
-      drawcount: scala.scalajs.js.Any,
+      drawcount: Int,
   ): Unit = js.native
 end WEBGL_multi_draw_instanced_base_vertex_base_instance
 
 @js.native
 @JSGlobal
 class CSSCustomMediaRule extends CSSRule:
-  def name: String                = js.native
-  def query: scala.scalajs.js.Any = js.native
+  def name: String               = js.native
+  def query: MediaList | Boolean = js.native
 
 @js.native
 @JSGlobal
-class RTCRtpScriptTransform extends js.Object:
+class RTCRtpScriptTransform extends PlatformObject:
   def this(
-      @unused workerOrWorkerAndParameters: scala.scalajs.js.Any,
+      @unused workerOrWorkerAndParameters: Worker | WorkerAndParameters,
       @unused options: scala.scalajs.js.Any = js.native,
       @unused transfer: scala.scalajs.js.Array[scala.scalajs.js.Any] = js.native,
   ) = this()
@@ -4263,30 +4630,32 @@ class RTCRtpScriptTransform extends js.Object:
 @js.native
 @JSGlobal
 class CSSMathSum extends CSSMathValue:
-  def this(@unused args: scala.scalajs.js.Any) = this()
+  def this(@unused args: Double | CSSNumericValue) = this()
   def values: CSSNumericArray = js.native
 
 @js.native
 @JSGlobal
-class GPUExternalTexture extends js.Object:
+class GPUExternalTexture extends PlatformObject:
   var label: String = js.native
 
 @js.native
 @JSGlobal
-class PeriodicSyncManager extends js.Object:
+class PeriodicSyncManager extends PlatformObject:
   def register(tag: String, options: BackgroundSyncOptions = js.native): scala.scalajs.js.Promise[Unit] = js.native
   def getTags(): scala.scalajs.js.Any                                                                   = js.native
   def unregister(tag: String): scala.scalajs.js.Promise[Unit]                                           = js.native
 
 @js.native
 @JSGlobal
-class FaceDetector extends js.Object:
+class FaceDetector extends PlatformObject:
   def this(@unused faceDetectorOptions: FaceDetectorOptions = js.native) = this()
-  def detect(image: scala.scalajs.js.Any): scala.scalajs.js.Any = js.native
+  def detect(
+      image: HTMLImageElement | SVGImageElement | HTMLVideoElement | HTMLCanvasElement | ImageBitmap | OffscreenCanvas | VideoFrame | Blob | ImageData
+  ): scala.scalajs.js.Any = js.native
 
 @js.native
 @JSGlobal
-class DOMQuad extends js.Object:
+class DOMQuad extends PlatformObject:
   def this(
       @unused p1: DOMPointInit = js.native,
       @unused p2: DOMPointInit = js.native,
@@ -4314,7 +4683,7 @@ class HTMLDListElement extends HTMLElement:
 
 @js.native
 @JSGlobal
-class StorageBucket extends js.Object:
+class StorageBucket extends PlatformObject:
   def name: String                                                        = js.native
   def indexedDB: IDBFactory                                               = js.native
   def caches: CacheStorage                                                = js.native
@@ -4329,12 +4698,16 @@ end StorageBucket
 @js.native
 @JSGlobal
 class DedicatedWorkerGlobalScope extends WorkerGlobalScope:
-  def name: String                         = js.native
-  var onrtctransform: scala.scalajs.js.Any = js.native
-  var onmessage: scala.scalajs.js.Any      = js.native
-  var onmessageerror: scala.scalajs.js.Any = js.native
+  def name: String = js.native
+  @JSName("onrtctransform")
+  var onrtctransformOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("onmessage")
+  var onmessageOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("onmessageerror")
+  var onmessageerrorOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
   def postMessage(message: scala.scalajs.js.Any, transfer: scala.scalajs.js.Array[scala.scalajs.js.Any]): Unit =
     js.native
+  def postMessage(message: scala.scalajs.js.Any): Unit                                      = js.native
   def postMessage(message: scala.scalajs.js.Any, options: StructuredSerializeOptions): Unit = js.native
   def close(): Unit                                                                         = js.native
   def requestAnimationFrame(callback: scala.scalajs.js.Function1[Double, Unit]): Int        = js.native
@@ -4343,7 +4716,7 @@ end DedicatedWorkerGlobalScope
 
 @js.native
 @JSGlobal
-class CookieStoreManager extends js.Object:
+class CookieStoreManager extends PlatformObject:
   def subscribe(subscriptions: scala.scalajs.js.Array[CookieStoreGetOptions]): scala.scalajs.js.Promise[Unit] =
     js.native
   def getSubscriptions(): scala.scalajs.js.Any = js.native
@@ -4353,18 +4726,20 @@ class CookieStoreManager extends js.Object:
 @js.native
 @JSGlobal
 class ModelContext extends EventTarget:
-  var ontoolchange: scala.scalajs.js.Any                                                               = js.native
+  @JSName("ontoolchange")
+  var ontoolchangeOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null               = js.native
   def registerTool(tool: ModelContextTool, options: ModelContextRegisterToolOptions = js.native): Unit = js.native
 
 @js.native
 @JSGlobal
-class USBAlternateInterface extends js.Object:
+class USBAlternateInterface extends PlatformObject:
   def this(@unused deviceInterface: USBInterface, @unused alternateSetting: scala.scalajs.js.Any) = this()
-  def alternateSetting: scala.scalajs.js.Any         = js.native
-  def interfaceClass: scala.scalajs.js.Any           = js.native
-  def interfaceSubclass: scala.scalajs.js.Any        = js.native
-  def interfaceProtocol: scala.scalajs.js.Any        = js.native
-  def interfaceName: String                          = js.native
+  def alternateSetting: scala.scalajs.js.Any  = js.native
+  def interfaceClass: scala.scalajs.js.Any    = js.native
+  def interfaceSubclass: scala.scalajs.js.Any = js.native
+  def interfaceProtocol: scala.scalajs.js.Any = js.native
+  @JSName("interfaceName")
+  def interfaceNameOrNull: String | Null             = js.native
   def endpoints: scala.scalajs.js.Array[USBEndpoint] = js.native
 end USBAlternateInterface
 
@@ -4396,14 +4771,15 @@ class AudioWorkletNode extends AudioNode:
       @unused name: String,
       @unused options: AudioWorkletNodeOptions = js.native,
   ) = this()
-  def parameters: AudioParamMap              = js.native
-  def port: MessagePort                      = js.native
-  var onprocessorerror: scala.scalajs.js.Any = js.native
+  def parameters: AudioParamMap = js.native
+  def port: MessagePort         = js.native
+  @JSName("onprocessorerror")
+  var onprocessorerrorOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
 end AudioWorkletNode
 
 @js.native
 @JSGlobal
-class FileSystemDirectoryReader extends js.Object:
+class FileSystemDirectoryReader extends PlatformObject:
   def readEntries(
       successCallback: scala.scalajs.js.Function1[scala.scalajs.js.Array[FileSystemEntry], Unit],
       errorCallback: scala.scalajs.js.Function1[DOMException, Unit] = js.native,
@@ -4411,7 +4787,7 @@ class FileSystemDirectoryReader extends js.Object:
 
 @js.native
 @JSGlobal
-class XRViewport extends js.Object:
+class XRViewport extends PlatformObject:
   def x: Int      = js.native
   def y: Int      = js.native
   def width: Int  = js.native
@@ -4437,13 +4813,13 @@ end FileSystemDirectoryHandle
 
 @js.native
 @JSGlobal
-class SVGAnimatedNumber extends js.Object:
+class SVGAnimatedNumber extends PlatformObject:
   var baseVal: Double = js.native
   def animVal: Double = js.native
 
 @js.native
 @JSGlobal
-class BluetoothLEScan extends js.Object:
+class BluetoothLEScan extends PlatformObject:
   def filters: scala.scalajs.js.Array[BluetoothLEScanFilter] = js.native
   def keepRepeatedDevices: Boolean                           = js.native
   def acceptAllAdvertisements: Boolean                       = js.native
@@ -4453,42 +4829,46 @@ class BluetoothLEScan extends js.Object:
 @js.native
 @JSGlobal
 class RTCSctpTransport extends EventTarget:
-  def transport: RTCDtlsTransport         = js.native
-  def state: String                       = js.native
-  def maxMessageSize: Double              = js.native
-  def maxChannels: Int                    = js.native
-  var onstatechange: scala.scalajs.js.Any = js.native
+  def transport: RTCDtlsTransport = js.native
+  def state: String               = js.native
+  @JSName("maxMessageSize")
+  def maxMessageSizeOrNull: Double | Null = js.native
+  @JSName("maxChannels")
+  def maxChannelsOrNull: Int | Null = js.native
+  @JSName("onstatechange")
+  var onstatechangeOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+end RTCSctpTransport
 
 @js.native
 @JSGlobal
-class OES_vertex_array_object extends js.Object:
-  def createVertexArrayOES(): WebGLVertexArrayObjectOES                              = js.native
-  def deleteVertexArrayOES(arrayObject: WebGLVertexArrayObjectOES): Unit             = js.native
-  def isVertexArrayOES(arrayObject: WebGLVertexArrayObjectOES): scala.scalajs.js.Any = js.native
-  def bindVertexArrayOES(arrayObject: WebGLVertexArrayObjectOES): Unit               = js.native
+class OES_vertex_array_object extends PlatformObject:
+  def createVertexArrayOES(): WebGLVertexArrayObjectOES                  = js.native
+  def deleteVertexArrayOES(arrayObject: WebGLVertexArrayObjectOES): Unit = js.native
+  def isVertexArrayOES(arrayObject: WebGLVertexArrayObjectOES): Boolean  = js.native
+  def bindVertexArrayOES(arrayObject: WebGLVertexArrayObjectOES): Unit   = js.native
 
 @js.native
 @JSGlobal
 object OES_vertex_array_object extends js.Object:
-  val VERTEX_ARRAY_BINDING_OES: scala.scalajs.js.Any = js.native
+  val VERTEX_ARRAY_BINDING_OES: Int = js.native
 
 @js.native
 @JSGlobal
-class OES_standard_derivatives extends js.Object
+class OES_standard_derivatives extends PlatformObject
 
 @js.native
 @JSGlobal
 object OES_standard_derivatives extends js.Object:
-  val FRAGMENT_SHADER_DERIVATIVE_HINT_OES: scala.scalajs.js.Any = js.native
+  val FRAGMENT_SHADER_DERIVATIVE_HINT_OES: Int = js.native
 
 @js.native
 @JSGlobal
-class AudioSinkInfo extends js.Object:
+class AudioSinkInfo extends PlatformObject:
   def `type`: String = js.native
 
 @js.native
 @JSGlobal
-class Blob extends js.Object:
+class Blob extends PlatformObject:
   def this(
       @unused blobParts: scala.scalajs.js.Array[scala.scalajs.js.Any] = js.native,
       @unused options: BlobPropertyBag = js.native,
@@ -4504,7 +4884,7 @@ end Blob
 
 @js.native
 @JSGlobal
-class FileSystemHandle extends js.Object:
+class FileSystemHandle extends PlatformObject:
   def kind: String = js.native
   def name: String = js.native
   def queryPermission(descriptor: FileSystemHandlePermissionDescriptor = js.native): scala.scalajs.js.Promise[String] =
@@ -4517,18 +4897,18 @@ end FileSystemHandle
 
 @js.native
 @JSGlobal
-class BluetoothRemoteGATTServer extends js.Object:
-  def device: BluetoothDevice                                                                                = js.native
-  def connected: Boolean                                                                                     = js.native
-  def connect(): scala.scalajs.js.Promise[BluetoothRemoteGATTServer]                                         = js.native
-  def disconnect(): Unit                                                                                     = js.native
-  def getPrimaryService(service: scala.scalajs.js.Any): scala.scalajs.js.Promise[BluetoothRemoteGATTService] = js.native
-  def getPrimaryServices(service: scala.scalajs.js.Any = js.native): scala.scalajs.js.Any                    = js.native
+class BluetoothRemoteGATTServer extends PlatformObject:
+  def device: BluetoothDevice                                                                        = js.native
+  def connected: Boolean                                                                             = js.native
+  def connect(): scala.scalajs.js.Promise[BluetoothRemoteGATTServer]                                 = js.native
+  def disconnect(): Unit                                                                             = js.native
+  def getPrimaryService(service: String | Int): scala.scalajs.js.Promise[BluetoothRemoteGATTService] = js.native
+  def getPrimaryServices(service: String | Int = js.native): scala.scalajs.js.Any                    = js.native
 
 @js.native
 @JSGlobal
 class CSSMathProduct extends CSSMathValue:
-  def this(@unused args: scala.scalajs.js.Any) = this()
+  def this(@unused args: Double | CSSNumericValue) = this()
   def values: CSSNumericArray = js.native
 
 @js.native
@@ -4543,12 +4923,13 @@ class FileSystemFileHandle extends FileSystemHandle:
 @js.native
 @JSGlobal
 class OrientationSensor extends Sensor:
-  def quaternion: scala.scalajs.js.Array[Double]               = js.native
+  @JSName("quaternion")
+  def quaternionOrNull: scala.scalajs.js.Array[Double] | Null  = js.native
   def populateMatrix(targetMatrix: scala.scalajs.js.Any): Unit = js.native
 
 @js.native
 @JSGlobal
-class XSLTProcessor extends js.Object:
+class XSLTProcessor extends PlatformObject:
   def importStylesheet(style: Node): Unit                                                      = js.native
   def transformToFragment(source: Node, output: Document): DocumentFragment                    = js.native
   def transformToDocument(source: Node): Document                                              = js.native
@@ -4561,7 +4942,7 @@ end XSLTProcessor
 
 @js.native
 @JSGlobal
-class XRAnchorSet extends js.Object:
+class XRAnchorSet extends PlatformObject:
   def size: Int                                                                         = js.native
   def has(value: XRAnchor): Boolean                                                     = js.native
   def keys(): scala.scalajs.js.Iterator[XRAnchor]                                       = js.native
@@ -4576,8 +4957,9 @@ end XRAnchorSet
 @JSGlobal
 class ConvolverNode extends AudioNode:
   def this(@unused context: BaseAudioContext, @unused options: ConvolverOptions = js.native) = this()
-  var buffer: AudioBuffer = js.native
-  var normalize: Boolean  = js.native
+  @JSName("buffer")
+  var bufferOrNull: AudioBuffer | Null = js.native
+  var normalize: Boolean               = js.native
 
 @js.native
 @JSGlobal
@@ -4586,7 +4968,7 @@ class StaticRange extends AbstractRange:
 
 @js.native
 @JSGlobal
-class SVGAnimatedLength extends js.Object:
+class SVGAnimatedLength extends PlatformObject:
   def baseVal: SVGLength = js.native
   def animVal: SVGLength = js.native
 
@@ -4602,27 +4984,36 @@ class CSSLayerBlockRule extends CSSGroupingRule:
 
 @js.native
 @JSGlobal
-class FileSystem extends js.Object:
+class FileSystem extends PlatformObject:
   def name: String                   = js.native
   def root: FileSystemDirectoryEntry = js.native
 
 @js.native
 @JSGlobal
 class Node extends EventTarget:
-  def nodeType: Int                                              = js.native
-  def nodeName: String                                           = js.native
-  def baseURI: String                                            = js.native
-  def isConnected: Boolean                                       = js.native
-  def ownerDocument: Document                                    = js.native
-  def parentNode: Node                                           = js.native
-  def parentElement: Element                                     = js.native
-  def childNodes: NodeList                                       = js.native
-  def firstChild: Node                                           = js.native
-  def lastChild: Node                                            = js.native
-  def previousSibling: Node                                      = js.native
-  def nextSibling: Node                                          = js.native
-  var nodeValue: String                                          = js.native
-  var textContent: String                                        = js.native
+  def nodeType: Int        = js.native
+  def nodeName: String     = js.native
+  def baseURI: String      = js.native
+  def isConnected: Boolean = js.native
+  @JSName("ownerDocument")
+  def ownerDocumentOrNull: Document | Null = js.native
+  @JSName("parentNode")
+  def parentNodeOrNull: Node | Null = js.native
+  @JSName("parentElement")
+  def parentElementOrNull: Element | Null = js.native
+  def childNodes: NodeList                = js.native
+  @JSName("firstChild")
+  def firstChildOrNull: Node | Null = js.native
+  @JSName("lastChild")
+  def lastChildOrNull: Node | Null = js.native
+  @JSName("previousSibling")
+  def previousSiblingOrNull: Node | Null = js.native
+  @JSName("nextSibling")
+  def nextSiblingOrNull: Node | Null = js.native
+  @JSName("nodeValue")
+  var nodeValueOrNull: String | Null = js.native
+  @JSName("textContent")
+  var textContentOrNull: String | Null                           = js.native
   def getRootNode(options: GetRootNodeOptions = js.native): Node = js.native
   def hasChildNodes(): Boolean                                   = js.native
   def normalize(): Unit                                          = js.native
@@ -4631,13 +5022,15 @@ class Node extends EventTarget:
   def isSameNode(otherNode: Node): Boolean                       = js.native
   def compareDocumentPosition(other: Node): Int                  = js.native
   def contains(other: Node): Boolean                             = js.native
-  def lookupPrefix(namespace: String): String                    = js.native
-  def lookupNamespaceURI(prefix: String): String                 = js.native
-  def isDefaultNamespace(namespace: String): Boolean             = js.native
-  def insertBefore(node: Node, child: Node): Node                = js.native
-  def appendChild(node: Node): Node                              = js.native
-  def replaceChild(node: Node, child: Node): Node                = js.native
-  def removeChild(child: Node): Node                             = js.native
+  @JSName("lookupPrefix")
+  def lookupPrefixOrNull(namespace: String): String | Null = js.native
+  @JSName("lookupNamespaceURI")
+  def lookupNamespaceURIOrNull(prefix: String): String | Null = js.native
+  def isDefaultNamespace(namespace: String): Boolean          = js.native
+  def insertBefore(node: Node, child: Node): Node             = js.native
+  def appendChild(node: Node): Node                           = js.native
+  def replaceChild(node: Node, child: Node): Node             = js.native
+  def removeChild(child: Node): Node                          = js.native
 end Node
 
 @js.native
@@ -4665,14 +5058,14 @@ end Node
 
 @js.native
 @JSGlobal
-class StorageBucketManager extends js.Object:
+class StorageBucketManager extends PlatformObject:
   def open(name: String, options: StorageBucketOptions = js.native): scala.scalajs.js.Promise[StorageBucket] = js.native
   def keys(): scala.scalajs.js.Any                                                                           = js.native
   def delete(name: String): scala.scalajs.js.Promise[Unit]                                                   = js.native
 
 @js.native
 @JSGlobal
-class Origin extends js.Object:
+class Origin extends PlatformObject:
   def opaque: Boolean                      = js.native
   def isSameOrigin(other: Origin): Boolean = js.native
   def isSameSite(other: Origin): Boolean   = js.native
@@ -4694,29 +5087,37 @@ class HTMLTableColElement extends HTMLElement:
 
 @js.native
 @JSGlobal
-class NamedNodeMap extends js.Object:
-  def length: Int                                                   = js.native
-  def item(index: Int): Attr                                        = js.native
-  def getNamedItem(qualifiedName: String): Attr                     = js.native
-  def getNamedItemNS(namespace: String, localName: String): Attr    = js.native
-  def setNamedItem(attr: Attr): Attr                                = js.native
-  def setNamedItemNS(attr: Attr): Attr                              = js.native
+class NamedNodeMap extends PlatformObject:
+  def length: Int = js.native
+  @JSName("item")
+  def itemOrNull(index: Int): Attr | Null = js.native
+  @JSName("getNamedItem")
+  def getNamedItemOrNull(qualifiedName: String): Attr | Null = js.native
+  @JSName("getNamedItemNS")
+  def getNamedItemNSOrNull(namespace: String, localName: String): Attr | Null = js.native
+  @JSName("setNamedItem")
+  def setNamedItemOrNull(attr: Attr): Attr | Null = js.native
+  @JSName("setNamedItemNS")
+  def setNamedItemNSOrNull(attr: Attr): Attr | Null                 = js.native
   def removeNamedItem(qualifiedName: String): Attr                  = js.native
   def removeNamedItemNS(namespace: String, localName: String): Attr = js.native
 end NamedNodeMap
 
 @js.native
 @JSGlobal
-class XRFrame extends js.Object:
-  def trackedAnchors: XRAnchorSet                                                              = js.native
-  def body: XRBody                                                                             = js.native
+class XRFrame extends PlatformObject:
+  def trackedAnchors: XRAnchorSet = js.native
+  @JSName("body")
+  def bodyOrNull: XRBody | Null                                                                = js.native
   def detectedMeshes: XRMeshSet                                                                = js.native
   def detectedPlanes: XRPlaneSet                                                               = js.native
   def session: XRSession                                                                       = js.native
   def predictedDisplayTime: Double                                                             = js.native
   def createAnchor(pose: XRRigidTransform, space: XRSpace): scala.scalajs.js.Promise[XRAnchor] = js.native
-  def getDepthInformation(view: XRView): XRCPUDepthInformation                                 = js.native
-  def getJointPose(joint: XRJointSpace, baseSpace: XRSpace): XRJointPose                       = js.native
+  @JSName("getDepthInformation")
+  def getDepthInformationOrNull(view: XRView): XRCPUDepthInformation | Null = js.native
+  @JSName("getJointPose")
+  def getJointPoseOrNull(joint: XRJointSpace, baseSpace: XRSpace): XRJointPose | Null = js.native
   def fillJointRadii(jointSpaces: scala.scalajs.js.Array[XRJointSpace], radii: scala.scalajs.js.Any): Boolean =
     js.native
   def fillPoses(
@@ -4727,22 +5128,27 @@ class XRFrame extends js.Object:
   def getHitTestResults(hitTestSource: XRHitTestSource): scala.scalajs.js.Array[XRHitTestResult] = js.native
   def getHitTestResultsForTransientInput(
       hitTestSource: XRTransientInputHitTestSource
-  ): scala.scalajs.js.Array[XRTransientInputHitTestResult]          = js.native
-  def getLightEstimate(lightProbe: XRLightProbe): XRLightEstimate   = js.native
-  def getViewerPose(referenceSpace: XRReferenceSpace): XRViewerPose = js.native
-  def getPose(space: XRSpace, baseSpace: XRSpace): XRPose           = js.native
+  ): scala.scalajs.js.Array[XRTransientInputHitTestResult] = js.native
+  @JSName("getLightEstimate")
+  def getLightEstimateOrNull(lightProbe: XRLightProbe): XRLightEstimate | Null = js.native
+  @JSName("getViewerPose")
+  def getViewerPoseOrNull(referenceSpace: XRReferenceSpace): XRViewerPose | Null = js.native
+  @JSName("getPose")
+  def getPoseOrNull(space: XRSpace, baseSpace: XRSpace): XRPose | Null = js.native
 end XRFrame
 
 @js.native
 @JSGlobal
-class AnimationTimeline extends js.Object:
-  def currentTime: scala.scalajs.js.Any                    = js.native
-  def duration: scala.scalajs.js.Any                       = js.native
+class AnimationTimeline extends PlatformObject:
+  @JSName("currentTime")
+  def currentTimeOrNull: Double | CSSNumericValue | Null = js.native
+  @JSName("duration")
+  def durationOrNull: Double | CSSNumericValue | Null      = js.native
   def play(effect: AnimationEffect = js.native): Animation = js.native
 
 @js.native
 @JSGlobal
-class Permissions extends js.Object:
+class Permissions extends PlatformObject:
   def request(permissionDesc: scala.scalajs.js.Any): scala.scalajs.js.Promise[PermissionStatus] = js.native
   def revoke(permissionDesc: scala.scalajs.js.Any): scala.scalajs.js.Promise[PermissionStatus]  = js.native
   def query(permissionDesc: scala.scalajs.js.Any): scala.scalajs.js.Promise[PermissionStatus]   = js.native
@@ -4750,59 +5156,90 @@ class Permissions extends js.Object:
 @js.native
 @JSGlobal
 class SVGScriptElement extends SVGElement:
-  var `type`: String          = js.native
-  var crossOrigin: String     = js.native
-  def href: SVGAnimatedString = js.native
+  var `type`: String = js.native
+  @JSName("crossOrigin")
+  var crossOriginOrNull: String | Null = js.native
+  def href: SVGAnimatedString          = js.native
 
 @js.native
 @JSGlobal
-class DataTransferItem extends js.Object:
-  def kind: String                                                          = js.native
-  def `type`: String                                                        = js.native
-  def webkitGetAsEntry(): FileSystemEntry                                   = js.native
+class DataTransferItem extends PlatformObject:
+  def kind: String   = js.native
+  def `type`: String = js.native
+  @JSName("webkitGetAsEntry")
+  def webkitGetAsEntryOrNull(): FileSystemEntry | Null                      = js.native
   def getAsFileSystemHandle(): scala.scalajs.js.Promise[FileSystemHandle]   = js.native
   def getAsString(callback: scala.scalajs.js.Function1[String, Unit]): Unit = js.native
-  def getAsFile(): File                                                     = js.native
+  @JSName("getAsFile")
+  def getAsFileOrNull(): File | Null = js.native
+end DataTransferItem
 
 @js.native
 @JSGlobal
 class RTCPeerConnection extends EventTarget:
   def this(@unused configuration: RTCConfiguration = js.native) = this()
-  def peerIdentity: scala.scalajs.js.Promise[RTCIdentityAssertion]                                     = js.native
-  def idpLoginUrl: String                                                                              = js.native
-  def idpErrorInfo: String                                                                             = js.native
-  def localDescription: RTCSessionDescription                                                          = js.native
-  def currentLocalDescription: RTCSessionDescription                                                   = js.native
-  def pendingLocalDescription: RTCSessionDescription                                                   = js.native
-  def remoteDescription: RTCSessionDescription                                                         = js.native
-  def currentRemoteDescription: RTCSessionDescription                                                  = js.native
-  def pendingRemoteDescription: RTCSessionDescription                                                  = js.native
-  def signalingState: String                                                                           = js.native
-  def iceGatheringState: String                                                                        = js.native
-  def iceConnectionState: String                                                                       = js.native
-  def connectionState: String                                                                          = js.native
-  def canTrickleIceCandidates: Boolean                                                                 = js.native
-  var onnegotiationneeded: scala.scalajs.js.Any                                                        = js.native
-  var onicecandidate: scala.scalajs.js.Any                                                             = js.native
-  var onicecandidateerror: scala.scalajs.js.Any                                                        = js.native
-  var onsignalingstatechange: scala.scalajs.js.Any                                                     = js.native
-  var oniceconnectionstatechange: scala.scalajs.js.Any                                                 = js.native
-  var onicegatheringstatechange: scala.scalajs.js.Any                                                  = js.native
-  var onconnectionstatechange: scala.scalajs.js.Any                                                    = js.native
-  var ontrack: scala.scalajs.js.Any                                                                    = js.native
-  def sctp: RTCSctpTransport                                                                           = js.native
-  var ondatachannel: scala.scalajs.js.Any                                                              = js.native
+  def peerIdentity: scala.scalajs.js.Promise[RTCIdentityAssertion] = js.native
+  @JSName("idpLoginUrl")
+  def idpLoginUrlOrNull: String | Null = js.native
+  @JSName("idpErrorInfo")
+  def idpErrorInfoOrNull: String | Null = js.native
+  @JSName("localDescription")
+  def localDescriptionOrNull: RTCSessionDescription | Null = js.native
+  @JSName("currentLocalDescription")
+  def currentLocalDescriptionOrNull: RTCSessionDescription | Null = js.native
+  @JSName("pendingLocalDescription")
+  def pendingLocalDescriptionOrNull: RTCSessionDescription | Null = js.native
+  @JSName("remoteDescription")
+  def remoteDescriptionOrNull: RTCSessionDescription | Null = js.native
+  @JSName("currentRemoteDescription")
+  def currentRemoteDescriptionOrNull: RTCSessionDescription | Null = js.native
+  @JSName("pendingRemoteDescription")
+  def pendingRemoteDescriptionOrNull: RTCSessionDescription | Null = js.native
+  def signalingState: String                                       = js.native
+  def iceGatheringState: String                                    = js.native
+  def iceConnectionState: String                                   = js.native
+  def connectionState: String                                      = js.native
+  @JSName("canTrickleIceCandidates")
+  def canTrickleIceCandidatesOrNull: Boolean | Null = js.native
+  @JSName("onnegotiationneeded")
+  var onnegotiationneededOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("onicecandidate")
+  var onicecandidateOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("onicecandidateerror")
+  var onicecandidateerrorOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("onsignalingstatechange")
+  var onsignalingstatechangeOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("oniceconnectionstatechange")
+  var oniceconnectionstatechangeOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("onicegatheringstatechange")
+  var onicegatheringstatechangeOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("onconnectionstatechange")
+  var onconnectionstatechangeOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("ontrack")
+  var ontrackOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("sctp")
+  def sctpOrNull: RTCSctpTransport | Null = js.native
+  @JSName("ondatachannel")
+  var ondatachannelOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null              = js.native
   def setIdentityProvider(provider: String, options: RTCIdentityProviderOptions = js.native): Unit     = js.native
   def getIdentityAssertion(): scala.scalajs.js.Promise[String]                                         = js.native
+  def createOffer(): scala.scalajs.js.Promise[RTCSessionDescriptionInit]                               = js.native
   def createOffer(options: RTCOfferOptions): scala.scalajs.js.Promise[RTCSessionDescriptionInit]       = js.native
+  def createAnswer(): scala.scalajs.js.Promise[RTCSessionDescriptionInit]                              = js.native
   def createAnswer(options: RTCAnswerOptions): scala.scalajs.js.Promise[RTCSessionDescriptionInit]     = js.native
+  def setLocalDescription(): scala.scalajs.js.Promise[Unit]                                            = js.native
   def setLocalDescription(description: RTCLocalSessionDescriptionInit): scala.scalajs.js.Promise[Unit] = js.native
   def setRemoteDescription(description: RTCSessionDescriptionInit): scala.scalajs.js.Promise[Unit]     = js.native
+  def addIceCandidate(): scala.scalajs.js.Promise[Unit]                                                = js.native
   def addIceCandidate(candidate: RTCIceCandidateInit): scala.scalajs.js.Promise[Unit]                  = js.native
   def restartIce(): Unit                                                                               = js.native
   def getConfiguration(): RTCConfiguration                                                             = js.native
   def setConfiguration(configuration: RTCConfiguration = js.native): Unit                              = js.native
   def close(): Unit                                                                                    = js.native
+  def createOffer(
+      successCallback: scala.scalajs.js.Function1[RTCSessionDescriptionInit, Unit],
+      failureCallback: scala.scalajs.js.Function1[DOMException, Unit],
+  ): scala.scalajs.js.Promise[Unit] = js.native
   def createOffer(
       successCallback: scala.scalajs.js.Function1[RTCSessionDescriptionInit, Unit],
       failureCallback: scala.scalajs.js.Function1[DOMException, Unit],
@@ -4832,8 +5269,10 @@ class RTCPeerConnection extends EventTarget:
   def getTransceivers(): scala.scalajs.js.Array[RTCRtpTransceiver]          = js.native
   def addTrack(track: MediaStreamTrack, streams: MediaStream): RTCRtpSender = js.native
   def removeTrack(sender: RTCRtpSender): Unit                               = js.native
-  def addTransceiver(trackOrKind: scala.scalajs.js.Any, init: RTCRtpTransceiverInit = js.native): RTCRtpTransceiver =
-    js.native
+  def addTransceiver(
+      trackOrKind: MediaStreamTrack | String,
+      init: RTCRtpTransceiverInit = js.native,
+  ): RTCRtpTransceiver                                                                                  = js.native
   def createDataChannel(label: String, dataChannelDict: RTCDataChannelInit = js.native): RTCDataChannel = js.native
   def getStats(selector: MediaStreamTrack = js.native): scala.scalajs.js.Promise[RTCStatsReport]        = js.native
 end RTCPeerConnection
@@ -4847,15 +5286,15 @@ object RTCPeerConnection extends js.Object:
 @JSGlobal
 class CSSLab extends CSSColorValue:
   def this(
-      @unused l: scala.scalajs.js.Any,
-      @unused a: scala.scalajs.js.Any,
-      @unused b: scala.scalajs.js.Any,
-      @unused alpha: scala.scalajs.js.Any = js.native,
+      @unused l: Double | CSSNumericValue | String | CSSKeywordValue,
+      @unused a: Double | CSSNumericValue | String | CSSKeywordValue,
+      @unused b: Double | CSSNumericValue | String | CSSKeywordValue,
+      @unused alpha: Double | CSSNumericValue | String | CSSKeywordValue = js.native,
   ) = this()
-  var l: scala.scalajs.js.Any     = js.native
-  var a: scala.scalajs.js.Any     = js.native
-  var b: scala.scalajs.js.Any     = js.native
-  var alpha: scala.scalajs.js.Any = js.native
+  var l: Double | CSSNumericValue | String | CSSKeywordValue     = js.native
+  var a: Double | CSSNumericValue | String | CSSKeywordValue     = js.native
+  var b: Double | CSSNumericValue | String | CSSKeywordValue     = js.native
+  var alpha: Double | CSSNumericValue | String | CSSKeywordValue = js.native
 end CSSLab
 
 @js.native
@@ -4867,29 +5306,34 @@ class CSSKeywordValue extends CSSStyleValue:
 @js.native
 @JSGlobal
 class SourceBuffer extends EventTarget:
-  var mode: String                                   = js.native
-  def updating: Boolean                              = js.native
-  def buffered: TimeRanges                           = js.native
-  var timestampOffset: Double                        = js.native
-  def audioTracks: AudioTrackList                    = js.native
-  def videoTracks: VideoTrackList                    = js.native
-  def textTracks: TextTrackList                      = js.native
-  var appendWindowStart: Double                      = js.native
-  var appendWindowEnd: Double                        = js.native
-  var onupdatestart: scala.scalajs.js.Any            = js.native
-  var onupdate: scala.scalajs.js.Any                 = js.native
-  var onupdateend: scala.scalajs.js.Any              = js.native
-  var onerror: scala.scalajs.js.Any                  = js.native
-  var onabort: scala.scalajs.js.Any                  = js.native
-  def appendBuffer(data: scala.scalajs.js.Any): Unit = js.native
-  def abort(): Unit                                  = js.native
-  def changeType(`type`: String): Unit               = js.native
-  def remove(start: Double, end: Double): Unit       = js.native
+  var mode: String                = js.native
+  def updating: Boolean           = js.native
+  def buffered: TimeRanges        = js.native
+  var timestampOffset: Double     = js.native
+  def audioTracks: AudioTrackList = js.native
+  def videoTracks: VideoTrackList = js.native
+  def textTracks: TextTrackList   = js.native
+  var appendWindowStart: Double   = js.native
+  var appendWindowEnd: Double     = js.native
+  @JSName("onupdatestart")
+  var onupdatestartOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("onupdate")
+  var onupdateOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("onupdateend")
+  var onupdateendOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("onerror")
+  var onerrorOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("onabort")
+  var onabortOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  def appendBuffer(data: scala.scalajs.js.Any): Unit                                = js.native
+  def abort(): Unit                                                                 = js.native
+  def changeType(`type`: String): Unit                                              = js.native
+  def remove(start: Double, end: Double): Unit                                      = js.native
 end SourceBuffer
 
 @js.native
 @JSGlobal
-class MediaDeviceInfo extends js.Object:
+class MediaDeviceInfo extends PlatformObject:
   def deviceId: String               = js.native
   def kind: String                   = js.native
   def label: String                  = js.native
@@ -4899,15 +5343,15 @@ class MediaDeviceInfo extends js.Object:
 @js.native
 @JSGlobal
 class CSSNumericValue extends CSSStyleValue:
-  def add(values: scala.scalajs.js.Any): CSSNumericValue = js.native
-  def sub(values: scala.scalajs.js.Any): CSSNumericValue = js.native
-  def mul(values: scala.scalajs.js.Any): CSSNumericValue = js.native
-  def div(values: scala.scalajs.js.Any): CSSNumericValue = js.native
-  def min(values: scala.scalajs.js.Any): CSSNumericValue = js.native
-  def max(values: scala.scalajs.js.Any): CSSNumericValue = js.native
-  def to(unit: String): CSSUnitValue                     = js.native
-  def toSum(units: String): CSSMathSum                   = js.native
-  def `type`(): CSSNumericType                           = js.native
+  def add(values: Double | CSSNumericValue): CSSNumericValue = js.native
+  def sub(values: Double | CSSNumericValue): CSSNumericValue = js.native
+  def mul(values: Double | CSSNumericValue): CSSNumericValue = js.native
+  def div(values: Double | CSSNumericValue): CSSNumericValue = js.native
+  def min(values: Double | CSSNumericValue): CSSNumericValue = js.native
+  def max(values: Double | CSSNumericValue): CSSNumericValue = js.native
+  def to(unit: String): CSSUnitValue                         = js.native
+  def toSum(units: String): CSSMathSum                       = js.native
+  def `type`(): CSSNumericType                               = js.native
 end CSSNumericValue
 
 @js.native
@@ -4917,10 +5361,11 @@ object CSSNumericValue extends js.Object:
 
 @js.native
 @JSGlobal
-class DOMStringList extends js.Object:
-  def length: Int                       = js.native
-  def item(index: Int): String          = js.native
-  def contains(string: String): Boolean = js.native
+class DOMStringList extends PlatformObject:
+  def length: Int = js.native
+  @JSName("item")
+  def itemOrNull(index: Int): String | Null = js.native
+  def contains(string: String): Boolean     = js.native
 
 @js.native
 @JSGlobal
@@ -4928,45 +5373,47 @@ class SVGUseElementShadowRoot extends ShadowRoot
 
 @js.native
 @JSGlobal
-class TrustedTypePolicyFactory extends js.Object:
-  def emptyHTML: TrustedHTML           = js.native
-  def emptyScript: TrustedScript       = js.native
-  def defaultPolicy: TrustedTypePolicy = js.native
+class TrustedTypePolicyFactory extends PlatformObject:
+  def emptyHTML: TrustedHTML     = js.native
+  def emptyScript: TrustedScript = js.native
+  @JSName("defaultPolicy")
+  def defaultPolicyOrNull: TrustedTypePolicy | Null = js.native
   def createPolicy(policyName: String, policyOptions: TrustedTypePolicyOptions = js.native): TrustedTypePolicy =
     js.native
   def isHTML(value: scala.scalajs.js.Any): Boolean      = js.native
   def isScript(value: scala.scalajs.js.Any): Boolean    = js.native
   def isScriptURL(value: scala.scalajs.js.Any): Boolean = js.native
-  def getAttributeType(
+  @JSName("getAttributeType")
+  def getAttributeTypeOrNull(
       tagName: String,
       attribute: String,
       elementNs: String = js.native,
       attrNs: String = js.native,
-  ): String                                                                                     = js.native
-  def getPropertyType(tagName: String, property: String, elementNs: String = js.native): String = js.native
+  ): String | Null = js.native
+  @JSName("getPropertyType")
+  def getPropertyTypeOrNull(tagName: String, property: String, elementNs: String = js.native): String | Null = js.native
 end TrustedTypePolicyFactory
 
 @js.native
 @JSGlobal
 class BackgroundFetchRegistration extends EventTarget:
-  def id: String                                 = js.native
-  def uploadTotal: Int                           = js.native
-  def uploaded: Int                              = js.native
-  def downloadTotal: Int                         = js.native
-  def downloaded: Int                            = js.native
-  def result: String                             = js.native
-  def failureReason: String                      = js.native
-  def recordsAvailable: Boolean                  = js.native
-  var onprogress: scala.scalajs.js.Any           = js.native
-  def abort(): scala.scalajs.js.Promise[Boolean] = js.native
+  def id: String                = js.native
+  def uploadTotal: Int          = js.native
+  def uploaded: Int             = js.native
+  def downloadTotal: Int        = js.native
+  def downloaded: Int           = js.native
+  def result: String            = js.native
+  def failureReason: String     = js.native
+  def recordsAvailable: Boolean = js.native
+  @JSName("onprogress")
+  var onprogressOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  def abort(): scala.scalajs.js.Promise[Boolean]                                       = js.native
   def `match`(
-      request: scala.scalajs.js.Any,
+      request: Request | String,
       options: CacheQueryOptions = js.native,
   ): scala.scalajs.js.Promise[BackgroundFetchRecord] = js.native
-  def matchAll(
-      request: scala.scalajs.js.Any = js.native,
-      options: CacheQueryOptions = js.native,
-  ): scala.scalajs.js.Any = js.native
+  def matchAll(request: Request | String = js.native, options: CacheQueryOptions = js.native): scala.scalajs.js.Any =
+    js.native
 end BackgroundFetchRegistration
 
 @js.native
@@ -4981,7 +5428,7 @@ class HTMLHtmlElement extends HTMLElement:
 
 @js.native
 @JSGlobal
-class SubtleCrypto extends js.Object:
+class SubtleCrypto extends PlatformObject:
   def encrypt(
       algorithm: scala.scalajs.js.Any,
       key: CryptoKey,
@@ -5085,25 +5532,33 @@ object SubtleCrypto extends js.Object:
 @js.native
 @JSGlobal
 class XMLHttpRequestEventTarget extends EventTarget:
-  var onloadstart: scala.scalajs.js.Any = js.native
-  var onprogress: scala.scalajs.js.Any  = js.native
-  var onabort: scala.scalajs.js.Any     = js.native
-  var onerror: scala.scalajs.js.Any     = js.native
-  var onload: scala.scalajs.js.Any      = js.native
-  var ontimeout: scala.scalajs.js.Any   = js.native
-  var onloadend: scala.scalajs.js.Any   = js.native
+  @JSName("onloadstart")
+  var onloadstartOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("onprogress")
+  var onprogressOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("onabort")
+  var onabortOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("onerror")
+  var onerrorOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("onload")
+  var onloadOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("ontimeout")
+  var ontimeoutOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("onloadend")
+  var onloadendOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
 end XMLHttpRequestEventTarget
 
 @js.native
 @JSGlobal
-class WorkletAnimationEffect extends js.Object:
-  var localTime: Double                         = js.native
+class WorkletAnimationEffect extends PlatformObject:
+  @JSName("localTime")
+  var localTimeOrNull: Double | Null            = js.native
   def getTiming(): EffectTiming                 = js.native
   def getComputedTiming(): ComputedEffectTiming = js.native
 
 @js.native
 @JSGlobal
-class SVGTransform extends js.Object:
+class SVGTransform extends PlatformObject:
   def `type`: Int                                            = js.native
   def matrix: DOMMatrix                                      = js.native
   def angle: Double                                          = js.native
@@ -5130,12 +5585,14 @@ end SVGTransform
 @js.native
 @JSGlobal
 class IDBOpenDBRequest extends IDBRequest:
-  var onblocked: scala.scalajs.js.Any       = js.native
-  var onupgradeneeded: scala.scalajs.js.Any = js.native
+  @JSName("onblocked")
+  var onblockedOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("onupgradeneeded")
+  var onupgradeneededOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
 
 @js.native
 @JSGlobal
-class StorageManager extends js.Object:
+class StorageManager extends PlatformObject:
   def getDirectory(): scala.scalajs.js.Promise[FileSystemDirectoryHandle] = js.native
   def persisted(): scala.scalajs.js.Promise[Boolean]                      = js.native
   def persist(): scala.scalajs.js.Promise[Boolean]                        = js.native
@@ -5147,13 +5604,13 @@ class SVGAnimateElement extends SVGAnimationElement
 
 @js.native
 @JSGlobal
-class SVGAnimatedBoolean extends js.Object:
+class SVGAnimatedBoolean extends PlatformObject:
   var baseVal: Boolean = js.native
   def animVal: Boolean = js.native
 
 @js.native
 @JSGlobal
-class AbstractRange extends js.Object:
+class AbstractRange extends PlatformObject:
   def startContainer: Node = js.native
   def startOffset: Int     = js.native
   def endContainer: Node   = js.native
@@ -5162,10 +5619,11 @@ class AbstractRange extends js.Object:
 
 @js.native
 @JSGlobal
-class CSSStyleDeclaration extends js.Object:
-  var cssText: String                                                                  = js.native
-  def length: Int                                                                      = js.native
-  def parentRule: CSSRule                                                              = js.native
+class CSSStyleDeclaration extends PlatformObject:
+  var cssText: String = js.native
+  def length: Int     = js.native
+  @JSName("parentRule")
+  def parentRuleOrNull: CSSRule | Null                                                 = js.native
   def item(index: Int): String                                                         = js.native
   def getPropertyValue(property: String): String                                       = js.native
   def getPropertyPriority(property: String): String                                    = js.native
@@ -5175,7 +5633,7 @@ end CSSStyleDeclaration
 
 @js.native
 @JSGlobal
-class SVGPathSegment extends js.Object:
+class SVGPathSegment extends PlatformObject:
   var `type`: String                         = js.native
   var values: scala.scalajs.js.Array[Double] = js.native
 
@@ -5196,12 +5654,12 @@ end SVGFEDiffuseLightingElement
 
 @js.native
 @JSGlobal
-class KHR_parallel_shader_compile extends js.Object
+class KHR_parallel_shader_compile extends PlatformObject
 
 @js.native
 @JSGlobal
 object KHR_parallel_shader_compile extends js.Object:
-  val COMPLETION_STATUS_KHR: scala.scalajs.js.Any = js.native
+  val COMPLETION_STATUS_KHR: Int = js.native
 
 @js.native
 @JSGlobal
@@ -5263,13 +5721,14 @@ class PerformanceScriptTiming extends PerformanceEntry:
   def sourceCharPosition: Int              = js.native
   def pauseDuration: Double                = js.native
   def forcedStyleAndLayoutDuration: Double = js.native
-  def window: Window                       = js.native
-  def windowAttribution: String            = js.native
+  @JSName("window")
+  def windowOrNull: Window | Null = js.native
+  def windowAttribution: String   = js.native
 end PerformanceScriptTiming
 
 @js.native
 @JSGlobal
-class OES_texture_float extends js.Object
+class OES_texture_float extends PlatformObject
 
 @js.native
 @JSGlobal
@@ -5288,25 +5747,29 @@ end CSSPageDescriptors
 @js.native
 @JSGlobal
 class CSSMathNegate extends CSSMathValue:
-  def this(@unused arg: scala.scalajs.js.Any) = this()
+  def this(@unused arg: Double | CSSNumericValue) = this()
   def value: CSSNumericValue = js.native
 
 @js.native
 @JSGlobal
 class WebSocket extends EventTarget:
   def this(@unused url: String, @unused protocols: scala.scalajs.js.Any = js.native) = this()
-  def url: String                                                    = js.native
-  def readyState: Int                                                = js.native
-  def bufferedAmount: Int                                            = js.native
-  var onopen: scala.scalajs.js.Any                                   = js.native
-  var onerror: scala.scalajs.js.Any                                  = js.native
-  var onclose: scala.scalajs.js.Any                                  = js.native
-  def extensions: String                                             = js.native
-  def protocol: String                                               = js.native
-  var onmessage: scala.scalajs.js.Any                                = js.native
-  var binaryType: String                                             = js.native
-  def close(code: Int = js.native, reason: String = js.native): Unit = js.native
-  def send(data: scala.scalajs.js.Any): Unit                         = js.native
+  def url: String         = js.native
+  def readyState: Int     = js.native
+  def bufferedAmount: Int = js.native
+  @JSName("onopen")
+  var onopenOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("onerror")
+  var onerrorOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("onclose")
+  var oncloseOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  def extensions: String                                                            = js.native
+  def protocol: String                                                              = js.native
+  @JSName("onmessage")
+  var onmessageOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  var binaryType: String                                                              = js.native
+  def close(code: Int = js.native, reason: String = js.native): Unit                  = js.native
+  def send(data: scala.scalajs.js.Any): Unit                                          = js.native
 end WebSocket
 
 @js.native
@@ -5319,7 +5782,7 @@ object WebSocket extends js.Object:
 
 @js.native
 @JSGlobal
-class Scheduler extends js.Object:
+class Scheduler extends PlatformObject:
   def postTask(
       callback: scala.scalajs.js.Function0[scala.scalajs.js.Any],
       options: SchedulerPostTaskOptions = js.native,
@@ -5330,28 +5793,31 @@ class Scheduler extends js.Object:
 @JSGlobal
 class OffscreenCanvas extends EventTarget:
   def this(@unused width: Int, @unused height: Int) = this()
-  var width: Int                                                                                     = js.native
-  var height: Int                                                                                    = js.native
-  var oncontextlost: scala.scalajs.js.Any                                                            = js.native
-  var oncontextrestored: scala.scalajs.js.Any                                                        = js.native
-  def getContext(contextId: String, options: scala.scalajs.js.Any = js.native): scala.scalajs.js.Any = js.native
-  def transferToImageBitmap(): ImageBitmap                                                           = js.native
-  def convertToBlob(options: ImageEncodeOptions = js.native): scala.scalajs.js.Promise[Blob]         = js.native
+  var width: Int  = js.native
+  var height: Int = js.native
+  @JSName("oncontextlost")
+  var oncontextlostOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("oncontextrestored")
+  var oncontextrestoredOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  def transferToImageBitmap(): ImageBitmap                                                    = js.native
+  def convertToBlob(options: ImageEncodeOptions = js.native): scala.scalajs.js.Promise[Blob]  = js.native
+  @JSName("getContext")
+  def getContextOrNull[C, O](contextId: OffscreenContextId[C, O], options: O = js.native): C | Null = js.native
 end OffscreenCanvas
 
 @js.native
 @JSGlobal
 class CSSMathMin extends CSSMathValue:
-  def this(@unused args: scala.scalajs.js.Any) = this()
+  def this(@unused args: Double | CSSNumericValue) = this()
   def values: CSSNumericArray = js.native
 
 @js.native
 @JSGlobal
-class MediaSourceHandle extends js.Object
+class MediaSourceHandle extends PlatformObject
 
 @js.native
 @JSGlobal
-class MLTensor extends js.Object:
+class MLTensor extends PlatformObject:
   def dataType: String                   = js.native
   def shape: scala.scalajs.js.Array[Int] = js.native
   def readable: Boolean                  = js.native
@@ -5363,12 +5829,13 @@ class MLTensor extends js.Object:
 @JSGlobal
 class WebTransportError extends DOMException:
   def this(@unused message: String = js.native, @unused options: WebTransportErrorOptions = js.native) = this()
-  def source: String       = js.native
-  def streamErrorCode: Int = js.native
+  def source: String = js.native
+  @JSName("streamErrorCode")
+  def streamErrorCodeOrNull: Int | Null = js.native
 
 @js.native
 @JSGlobal
-class LanguageModelParams extends js.Object:
+class LanguageModelParams extends PlatformObject:
   def defaultTopK: Int           = js.native
   def maxTopK: Int               = js.native
   def defaultTemperature: Double = js.native
@@ -5378,12 +5845,14 @@ class LanguageModelParams extends js.Object:
 @JSGlobal
 class AudioBufferSourceNode extends AudioScheduledSourceNode:
   def this(@unused context: BaseAudioContext, @unused options: AudioBufferSourceOptions = js.native) = this()
-  var buffer: AudioBuffer                                         = js.native
+  @JSName("buffer")
+  var bufferOrNull: AudioBuffer | Null                            = js.native
   def playbackRate: AudioParam                                    = js.native
   def detune: AudioParam                                          = js.native
   var loop: Boolean                                               = js.native
   var loopStart: Double                                           = js.native
   var loopEnd: Double                                             = js.native
+  def start(when: Double, offset: Double): Unit                   = js.native
   def start(when: Double, offset: Double, duration: Double): Unit = js.native
 end AudioBufferSourceNode
 
@@ -5407,7 +5876,7 @@ end FileSystemDirectoryEntry
 
 @js.native
 @JSGlobal
-class TextFormat extends js.Object:
+class TextFormat extends PlatformObject:
   def this(@unused options: TextFormatInit = js.native) = this()
   def rangeStart: Int            = js.native
   def rangeEnd: Int              = js.native
@@ -5416,7 +5885,7 @@ class TextFormat extends js.Object:
 
 @js.native
 @JSGlobal
-class RTCRtpSFrameEncrypter extends js.Object:
+class RTCRtpSFrameEncrypter extends PlatformObject:
   def this(@unused options: RTCRtpSFrameEncrypterOptions) = this()
   def setEncryptionKey(key: CryptoKey, keyId: scala.scalajs.js.Any): scala.scalajs.js.Promise[Unit] = js.native
 
@@ -5440,18 +5909,22 @@ class WebGLTransformFeedback extends WebGLObject
 @js.native
 @JSGlobal
 class TextTrackList extends EventTarget:
-  def length: Int                         = js.native
-  var onchange: scala.scalajs.js.Any      = js.native
-  var onaddtrack: scala.scalajs.js.Any    = js.native
-  var onremovetrack: scala.scalajs.js.Any = js.native
+  def length: Int = js.native
+  @JSName("onchange")
+  var onchangeOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("onaddtrack")
+  var onaddtrackOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("onremovetrack")
+  var onremovetrackOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
   @JSBracketAccess
-  def apply(index: Int): TextTrack        = js.native
-  def getTrackById(id: String): TextTrack = js.native
+  def apply(index: Int): TextTrack = js.native
+  @JSName("getTrackById")
+  def getTrackByIdOrNull(id: String): TextTrack | Null = js.native
 end TextTrackList
 
 @js.native
 @JSGlobal
-class EXT_frag_depth extends js.Object
+class EXT_frag_depth extends PlatformObject
 
 @js.native
 @JSGlobal
@@ -5463,11 +5936,15 @@ class CSSStyleRule extends CSSGroupingRule:
 @js.native
 @JSGlobal
 class SerialPort extends EventTarget:
-  var onconnect: scala.scalajs.js.Any                                                      = js.native
-  var ondisconnect: scala.scalajs.js.Any                                                   = js.native
-  def connected: Boolean                                                                   = js.native
-  def readable: ReadableStream                                                             = js.native
-  def writable: WritableStream                                                             = js.native
+  @JSName("onconnect")
+  var onconnectOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("ondisconnect")
+  var ondisconnectOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  def connected: Boolean                                                                 = js.native
+  @JSName("readable")
+  def readableOrNull: ReadableStream | Null = js.native
+  @JSName("writable")
+  def writableOrNull: WritableStream | Null                                                = js.native
   def getInfo(): SerialPortInfo                                                            = js.native
   def open(options: SerialOptions): scala.scalajs.js.Promise[Unit]                         = js.native
   def setSignals(signals: SerialOutputSignals = js.native): scala.scalajs.js.Promise[Unit] = js.native
@@ -5485,24 +5962,28 @@ class CSSPageRule extends CSSGroupingRule:
 @js.native
 @JSGlobal
 class SVGAnimationElement extends SVGElement:
-  def targetElement: SVGElement            = js.native
-  var onbegin: scala.scalajs.js.Any        = js.native
-  var onend: scala.scalajs.js.Any          = js.native
-  var onrepeat: scala.scalajs.js.Any       = js.native
-  def requiredExtensions: SVGStringList    = js.native
-  def systemLanguage: SVGStringList        = js.native
-  def getStartTime(): Double               = js.native
-  def getCurrentTime(): Double             = js.native
-  def getSimpleDuration(): Double          = js.native
-  def beginElement(): Unit                 = js.native
-  def beginElementAt(offset: Double): Unit = js.native
-  def endElement(): Unit                   = js.native
-  def endElementAt(offset: Double): Unit   = js.native
+  @JSName("targetElement")
+  def targetElementOrNull: SVGElement | Null = js.native
+  @JSName("onbegin")
+  var onbeginOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("onend")
+  var onendOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("onrepeat")
+  var onrepeatOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  def requiredExtensions: SVGStringList                                              = js.native
+  def systemLanguage: SVGStringList                                                  = js.native
+  def getStartTime(): Double                                                         = js.native
+  def getCurrentTime(): Double                                                       = js.native
+  def getSimpleDuration(): Double                                                    = js.native
+  def beginElement(): Unit                                                           = js.native
+  def beginElementAt(offset: Double): Unit                                           = js.native
+  def endElement(): Unit                                                             = js.native
+  def endElementAt(offset: Double): Unit                                             = js.native
 end SVGAnimationElement
 
 @js.native
 @JSGlobal
-class AudioPlaybackStats extends js.Object:
+class AudioPlaybackStats extends PlatformObject:
   def underrunDuration: Double       = js.native
   def underrunEvents: Int            = js.native
   def totalDuration: Double          = js.native
@@ -5515,13 +5996,14 @@ end AudioPlaybackStats
 
 @js.native
 @JSGlobal
-class XRHitTestResult extends js.Object:
+class XRHitTestResult extends PlatformObject:
   def createAnchor(): scala.scalajs.js.Promise[XRAnchor] = js.native
-  def getPose(baseSpace: XRSpace): XRPose                = js.native
+  @JSName("getPose")
+  def getPoseOrNull(baseSpace: XRSpace): XRPose | Null = js.native
 
 @js.native
 @JSGlobal
-class PerformanceServerTiming extends js.Object:
+class PerformanceServerTiming extends PlatformObject:
   def name: String                   = js.native
   def duration: Double               = js.native
   def description: String            = js.native
@@ -5530,43 +6012,48 @@ class PerformanceServerTiming extends js.Object:
 @js.native
 @JSGlobal
 class ProcessingInstruction extends CharacterData:
-  def target: String       = js.native
-  def sheet: CSSStyleSheet = js.native
+  def target: String = js.native
+  @JSName("sheet")
+  def sheetOrNull: CSSStyleSheet | Null = js.native
 
 @js.native
 @JSGlobal
 class CookieStore extends EventTarget:
-  var onchange: scala.scalajs.js.Any                                                         = js.native
+  @JSName("onchange")
+  var onchangeOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null         = js.native
   def get(name: String): scala.scalajs.js.Promise[CookieListItem]                            = js.native
+  def get(): scala.scalajs.js.Promise[CookieListItem]                                        = js.native
   def get(options: CookieStoreGetOptions): scala.scalajs.js.Promise[CookieListItem]          = js.native
-  def getAll(name: String): scala.scalajs.js.Promise[scala.scalajs.js.Any]                   = js.native
-  def getAll(options: CookieStoreGetOptions): scala.scalajs.js.Promise[scala.scalajs.js.Any] = js.native
-  def set(name: String, value: String): scala.scalajs.js.Promise[Unit]                       = js.native
-  def set(options: CookieInit): scala.scalajs.js.Promise[Unit]                               = js.native
-  def delete(name: String): scala.scalajs.js.Promise[Unit]                                   = js.native
-  def delete(options: CookieStoreDeleteOptions): scala.scalajs.js.Promise[Unit]              = js.native
+  def getAll(name: String): scala.scalajs.js.Promise[scala.scalajs.js.Array[CookieListItem]] = js.native
+  def getAll(): scala.scalajs.js.Promise[scala.scalajs.js.Array[CookieListItem]]             = js.native
+  def getAll(options: CookieStoreGetOptions): scala.scalajs.js.Promise[scala.scalajs.js.Array[CookieListItem]] =
+    js.native
+  def set(name: String, value: String): scala.scalajs.js.Promise[Unit]          = js.native
+  def set(options: CookieInit): scala.scalajs.js.Promise[Unit]                  = js.native
+  def delete(name: String): scala.scalajs.js.Promise[Unit]                      = js.native
+  def delete(options: CookieStoreDeleteOptions): scala.scalajs.js.Promise[Unit] = js.native
 end CookieStore
 
 @js.native
 @JSGlobal
-class SVGNumber extends js.Object:
+class SVGNumber extends PlatformObject:
   var value: Double = js.native
 
 @js.native
 @JSGlobal
-class Sanitizer extends js.Object:
-  def this(@unused configuration: scala.scalajs.js.Any = js.native) = this()
-  def get(): SanitizerConfig                                             = js.native
-  def allowElement(element: scala.scalajs.js.Any): Boolean               = js.native
-  def removeElement(element: scala.scalajs.js.Any): Boolean              = js.native
-  def replaceElementWithChildren(element: scala.scalajs.js.Any): Boolean = js.native
-  def allowProcessingInstruction(pi: scala.scalajs.js.Any): Boolean      = js.native
-  def removeProcessingInstruction(pi: scala.scalajs.js.Any): Boolean     = js.native
-  def allowAttribute(attribute: scala.scalajs.js.Any): Boolean           = js.native
-  def removeAttribute(attribute: scala.scalajs.js.Any): Boolean          = js.native
-  def setComments(allow: Boolean): Boolean                               = js.native
-  def setDataAttributes(allow: Boolean): Boolean                         = js.native
-  def removeUnsafe(): Boolean                                            = js.native
+class Sanitizer extends PlatformObject:
+  def this(@unused configuration: SanitizerConfig | String = js.native) = this()
+  def get(): SanitizerConfig                                                            = js.native
+  def allowElement(element: String | SanitizerElementNamespaceWithAttributes): Boolean  = js.native
+  def removeElement(element: String | SanitizerElementNamespace): Boolean               = js.native
+  def replaceElementWithChildren(element: String | SanitizerElementNamespace): Boolean  = js.native
+  def allowProcessingInstruction(pi: String | SanitizerProcessingInstruction): Boolean  = js.native
+  def removeProcessingInstruction(pi: String | SanitizerProcessingInstruction): Boolean = js.native
+  def allowAttribute(attribute: String | SanitizerAttributeNamespace): Boolean          = js.native
+  def removeAttribute(attribute: String | SanitizerAttributeNamespace): Boolean         = js.native
+  def setComments(allow: Boolean): Boolean                                              = js.native
+  def setDataAttributes(allow: Boolean): Boolean                                        = js.native
+  def removeUnsafe(): Boolean                                                           = js.native
 end Sanitizer
 
 @js.native
@@ -5576,16 +6063,23 @@ class SVGTitleElement extends SVGElement
 @js.native
 @JSGlobal
 class XRWebGLSubImage extends XRSubImage:
-  def colorTexture: WebGLTexture        = js.native
-  def depthStencilTexture: WebGLTexture = js.native
-  def motionVectorTexture: WebGLTexture = js.native
-  def imageIndex: Int                   = js.native
-  def colorTextureWidth: Int            = js.native
-  def colorTextureHeight: Int           = js.native
-  def depthStencilTextureWidth: Int     = js.native
-  def depthStencilTextureHeight: Int    = js.native
-  def motionVectorTextureWidth: Int     = js.native
-  def motionVectorTextureHeight: Int    = js.native
+  def colorTexture: WebGLTexture = js.native
+  @JSName("depthStencilTexture")
+  def depthStencilTextureOrNull: WebGLTexture | Null = js.native
+  @JSName("motionVectorTexture")
+  def motionVectorTextureOrNull: WebGLTexture | Null = js.native
+  @JSName("imageIndex")
+  def imageIndexOrNull: Int | Null = js.native
+  def colorTextureWidth: Int       = js.native
+  def colorTextureHeight: Int      = js.native
+  @JSName("depthStencilTextureWidth")
+  def depthStencilTextureWidthOrNull: Int | Null = js.native
+  @JSName("depthStencilTextureHeight")
+  def depthStencilTextureHeightOrNull: Int | Null = js.native
+  @JSName("motionVectorTextureWidth")
+  def motionVectorTextureWidthOrNull: Int | Null = js.native
+  @JSName("motionVectorTextureHeight")
+  def motionVectorTextureHeightOrNull: Int | Null = js.native
 end XRWebGLSubImage
 
 @js.native
@@ -5625,28 +6119,32 @@ end PerformanceResourceTiming
 @js.native
 @JSGlobal
 class ScreenOrientation extends EventTarget:
-  def `type`: String                                            = js.native
-  def angle: Int                                                = js.native
-  var onchange: scala.scalajs.js.Any                            = js.native
-  def lock(orientation: String): scala.scalajs.js.Promise[Unit] = js.native
-  def unlock(): Unit                                            = js.native
+  def `type`: String = js.native
+  def angle: Int     = js.native
+  @JSName("onchange")
+  var onchangeOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  def lock(orientation: String): scala.scalajs.js.Promise[Unit]                      = js.native
+  def unlock(): Unit                                                                 = js.native
 
 @js.native
 @JSGlobal
 class MediaSource extends EventTarget:
-  def handle: MediaSourceHandle                              = js.native
-  def sourceBuffers: SourceBufferList                        = js.native
-  def activeSourceBuffers: SourceBufferList                  = js.native
-  def readyState: String                                     = js.native
-  var duration: Double                                       = js.native
-  var onsourceopen: scala.scalajs.js.Any                     = js.native
-  var onsourceended: scala.scalajs.js.Any                    = js.native
-  var onsourceclose: scala.scalajs.js.Any                    = js.native
-  def addSourceBuffer(`type`: String): SourceBuffer          = js.native
-  def removeSourceBuffer(sourceBuffer: SourceBuffer): Unit   = js.native
-  def endOfStream(error: String = js.native): Unit           = js.native
-  def setLiveSeekableRange(start: Double, end: Double): Unit = js.native
-  def clearLiveSeekableRange(): Unit                         = js.native
+  def handle: MediaSourceHandle             = js.native
+  def sourceBuffers: SourceBufferList       = js.native
+  def activeSourceBuffers: SourceBufferList = js.native
+  def readyState: String                    = js.native
+  var duration: Double                      = js.native
+  @JSName("onsourceopen")
+  var onsourceopenOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("onsourceended")
+  var onsourceendedOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("onsourceclose")
+  var onsourcecloseOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  def addSourceBuffer(`type`: String): SourceBuffer                                       = js.native
+  def removeSourceBuffer(sourceBuffer: SourceBuffer): Unit                                = js.native
+  def endOfStream(error: String = js.native): Unit                                        = js.native
+  def setLiveSeekableRange(start: Double, end: Double): Unit                              = js.native
+  def clearLiveSeekableRange(): Unit                                                      = js.native
 end MediaSource
 
 @js.native
@@ -5658,12 +6156,15 @@ object MediaSource extends js.Object:
 @js.native
 @JSGlobal
 class NDEFReader extends EventTarget:
-  var onreading: scala.scalajs.js.Any                                            = js.native
-  var onreadingerror: scala.scalajs.js.Any                                       = js.native
-  def scan(options: NDEFScanOptions = js.native): scala.scalajs.js.Promise[Unit] = js.native
+  @JSName("onreading")
+  var onreadingOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("onreadingerror")
+  var onreadingerrorOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  def scan(options: NDEFScanOptions = js.native): scala.scalajs.js.Promise[Unit]           = js.native
   def write(message: scala.scalajs.js.Any, options: NDEFWriteOptions = js.native): scala.scalajs.js.Promise[Unit] =
     js.native
   def makeReadOnly(options: NDEFMakeReadOnlyOptions = js.native): scala.scalajs.js.Promise[Unit] = js.native
+end NDEFReader
 
 @js.native
 @JSGlobal
@@ -5687,52 +6188,56 @@ end SVGFESpotLightElement
 @js.native
 @JSGlobal
 class NetworkInformation extends EventTarget:
-  def `type`: String                    = js.native
-  def effectiveType: String             = js.native
-  def downlinkMax: scala.scalajs.js.Any = js.native
-  def downlink: scala.scalajs.js.Any    = js.native
-  def rtt: scala.scalajs.js.Any         = js.native
-  var onchange: scala.scalajs.js.Any    = js.native
-  def saveData: Boolean                 = js.native
+  def `type`: String        = js.native
+  def effectiveType: String = js.native
+  def downlinkMax: Double   = js.native
+  def downlink: Double      = js.native
+  def rtt: Int              = js.native
+  @JSName("onchange")
+  var onchangeOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  def saveData: Boolean                                                              = js.native
 end NetworkInformation
 
 @js.native
 @JSGlobal
 class MediaQueryList extends EventTarget:
-  def media: String                                                           = js.native
-  def matches: Boolean                                                        = js.native
-  var onchange: scala.scalajs.js.Any                                          = js.native
-  def addListener(callback: scala.scalajs.js.Function1[Event, Unit]): Unit    = js.native
-  def removeListener(callback: scala.scalajs.js.Function1[Event, Unit]): Unit = js.native
+  def media: String    = js.native
+  def matches: Boolean = js.native
+  @JSName("onchange")
+  var onchangeOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  def addListener(callback: scala.scalajs.js.Function1[Event, Unit]): Unit           = js.native
+  def removeListener(callback: scala.scalajs.js.Function1[Event, Unit]): Unit        = js.native
 
 @js.native
 @JSGlobal
-class BluetoothUUID extends js.Object
+class BluetoothUUID extends PlatformObject
 
 @js.native
 @JSGlobal
 object BluetoothUUID extends js.Object:
-  def getService(name: scala.scalajs.js.Any): scala.scalajs.js.Any        = js.native
-  def getCharacteristic(name: scala.scalajs.js.Any): scala.scalajs.js.Any = js.native
-  def getDescriptor(name: scala.scalajs.js.Any): scala.scalajs.js.Any     = js.native
-  def canonicalUUID(alias: Int): scala.scalajs.js.Any                     = js.native
+  def getService(name: String | Int): String        = js.native
+  def getCharacteristic(name: String | Int): String = js.native
+  def getDescriptor(name: String | Int): String     = js.native
+  def canonicalUUID(alias: Int): String             = js.native
 
 @js.native
 @JSGlobal
 class HTMLEmbedElement extends HTMLElement:
-  var src: String                = js.native
-  var `type`: String             = js.native
-  var width: String              = js.native
-  var height: String             = js.native
-  var align: String              = js.native
-  var name: String               = js.native
-  def getSVGDocument(): Document = js.native
+  var src: String    = js.native
+  var `type`: String = js.native
+  var width: String  = js.native
+  var height: String = js.native
+  var align: String  = js.native
+  var name: String   = js.native
+  @JSName("getSVGDocument")
+  def getSVGDocumentOrNull(): Document | Null = js.native
 end HTMLEmbedElement
 
 @js.native
 @JSGlobal
 class MIDIInput extends MIDIPort:
-  var onmidimessage: scala.scalajs.js.Any = js.native
+  @JSName("onmidimessage")
+  var onmidimessageOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
 
 @js.native
 @JSGlobal
@@ -5742,30 +6247,37 @@ class HTMLBaseElement extends HTMLElement:
 
 @js.native
 @JSGlobal
-class NavigationActivation extends js.Object:
-  def from: NavigationHistoryEntry  = js.native
-  def entry: NavigationHistoryEntry = js.native
-  def navigationType: String        = js.native
+class NavigationActivation extends PlatformObject:
+  @JSName("from")
+  def fromOrNull: NavigationHistoryEntry | Null = js.native
+  def entry: NavigationHistoryEntry             = js.native
+  def navigationType: String                    = js.native
 
 @js.native
 @JSGlobal
 class ShadowRoot extends DocumentFragment:
-  def mode: String                                                     = js.native
-  def delegatesFocus: Boolean                                          = js.native
-  def slotAssignment: String                                           = js.native
-  def clonable: Boolean                                                = js.native
-  def serializable: Boolean                                            = js.native
-  def host: Element                                                    = js.native
-  var onslotchange: scala.scalajs.js.Any                               = js.native
-  var innerHTML: scala.scalajs.js.Any                                  = js.native
-  def styleSheets: StyleSheetList                                      = js.native
-  var adoptedStyleSheets: scala.scalajs.js.Array[CSSStyleSheet]        = js.native
-  def customElementRegistry: CustomElementRegistry                     = js.native
-  def fullscreenElement: Element                                       = js.native
-  def activeElement: Element                                           = js.native
-  def pictureInPictureElement: Element                                 = js.native
-  def pointerLockElement: Element                                      = js.native
-  def setHTMLUnsafe(html: scala.scalajs.js.Any): Unit                  = js.native
+  def mode: String            = js.native
+  def delegatesFocus: Boolean = js.native
+  def slotAssignment: String  = js.native
+  def clonable: Boolean       = js.native
+  def serializable: Boolean   = js.native
+  def host: Element           = js.native
+  @JSName("onslotchange")
+  var onslotchangeOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  var innerHTML: TrustedHTML | String                                                    = js.native
+  def styleSheets: StyleSheetList                                                        = js.native
+  var adoptedStyleSheets: scala.scalajs.js.Array[CSSStyleSheet]                          = js.native
+  @JSName("customElementRegistry")
+  def customElementRegistryOrNull: CustomElementRegistry | Null = js.native
+  @JSName("fullscreenElement")
+  def fullscreenElementOrNull: Element | Null = js.native
+  @JSName("activeElement")
+  def activeElementOrNull: Element | Null = js.native
+  @JSName("pictureInPictureElement")
+  def pictureInPictureElementOrNull: Element | Null = js.native
+  @JSName("pointerLockElement")
+  def pointerLockElementOrNull: Element | Null                         = js.native
+  def setHTMLUnsafe(html: TrustedHTML | String): Unit                  = js.native
   def getHTML(options: GetHTMLOptions = js.native): String             = js.native
   def setHTML(html: String, options: SetHTMLOptions = js.native): Unit = js.native
   def getAnimations(): scala.scalajs.js.Array[Animation]               = js.native
@@ -5774,891 +6286,855 @@ end ShadowRoot
 @js.native
 @JSGlobal
 class CreateMonitor extends EventTarget:
-  var ondownloadprogress: scala.scalajs.js.Any = js.native
+  @JSName("ondownloadprogress")
+  var ondownloadprogressOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
 
 @js.native
 @JSGlobal
-class WebGL2RenderingContext extends js.Object:
-  def canvas: scala.scalajs.js.Any                                                               = js.native
-  def drawingBufferWidth: scala.scalajs.js.Any                                                   = js.native
-  def drawingBufferHeight: scala.scalajs.js.Any                                                  = js.native
-  def drawingBufferFormat: scala.scalajs.js.Any                                                  = js.native
-  var drawingBufferColorSpace: String                                                            = js.native
-  var unpackColorSpace: String                                                                   = js.native
-  def getContextAttributes(): WebGLContextAttributes                                             = js.native
-  def isContextLost(): Boolean                                                                   = js.native
-  def getSupportedExtensions(): scala.scalajs.js.Array[String]                                   = js.native
-  def getExtension(name: String): scala.scalajs.js.Any                                           = js.native
-  def drawingBufferStorage(sizedFormat: scala.scalajs.js.Any, width: Int, height: Int): Unit     = js.native
-  def activeTexture(texture: scala.scalajs.js.Any): Unit                                         = js.native
-  def attachShader(program: WebGLProgram, shader: WebGLShader): Unit                             = js.native
-  def bindAttribLocation(program: WebGLProgram, index: scala.scalajs.js.Any, name: String): Unit = js.native
-  def bindBuffer(target: scala.scalajs.js.Any, buffer: WebGLBuffer): Unit                        = js.native
-  def bindFramebuffer(target: scala.scalajs.js.Any, framebuffer: WebGLFramebuffer): Unit         = js.native
-  def bindRenderbuffer(target: scala.scalajs.js.Any, renderbuffer: WebGLRenderbuffer): Unit      = js.native
-  def bindTexture(target: scala.scalajs.js.Any, texture: WebGLTexture): Unit                     = js.native
-  def blendColor(
-      red: scala.scalajs.js.Any,
-      green: scala.scalajs.js.Any,
-      blue: scala.scalajs.js.Any,
-      alpha: scala.scalajs.js.Any,
-  ): Unit                                                                                         = js.native
-  def blendEquation(mode: scala.scalajs.js.Any): Unit                                             = js.native
-  def blendEquationSeparate(modeRGB: scala.scalajs.js.Any, modeAlpha: scala.scalajs.js.Any): Unit = js.native
-  def blendFunc(sfactor: scala.scalajs.js.Any, dfactor: scala.scalajs.js.Any): Unit               = js.native
-  def blendFuncSeparate(
-      srcRGB: scala.scalajs.js.Any,
-      dstRGB: scala.scalajs.js.Any,
-      srcAlpha: scala.scalajs.js.Any,
-      dstAlpha: scala.scalajs.js.Any,
-  ): Unit                                                                        = js.native
-  def checkFramebufferStatus(target: scala.scalajs.js.Any): scala.scalajs.js.Any = js.native
-  def clear(mask: scala.scalajs.js.Any): Unit                                    = js.native
-  def clearColor(
-      red: scala.scalajs.js.Any,
-      green: scala.scalajs.js.Any,
-      blue: scala.scalajs.js.Any,
-      alpha: scala.scalajs.js.Any,
-  ): Unit                                           = js.native
-  def clearDepth(depth: scala.scalajs.js.Any): Unit = js.native
-  def clearStencil(s: scala.scalajs.js.Any): Unit   = js.native
-  def colorMask(
-      red: scala.scalajs.js.Any,
-      green: scala.scalajs.js.Any,
-      blue: scala.scalajs.js.Any,
-      alpha: scala.scalajs.js.Any,
-  ): Unit                                      = js.native
-  def compileShader(shader: WebGLShader): Unit = js.native
+class WebGL2RenderingContext extends PlatformObject:
+  def canvas: HTMLCanvasElement | OffscreenCanvas = js.native
+  def drawingBufferWidth: Int                     = js.native
+  def drawingBufferHeight: Int                    = js.native
+  def drawingBufferFormat: Int                    = js.native
+  var drawingBufferColorSpace: String             = js.native
+  var unpackColorSpace: String                    = js.native
+  @JSName("getContextAttributes")
+  def getContextAttributesOrNull(): WebGLContextAttributes | Null = js.native
+  def isContextLost(): Boolean                                    = js.native
+  @JSName("getSupportedExtensions")
+  def getSupportedExtensionsOrNull(): scala.scalajs.js.Array[String] | Null = js.native
+  @JSName("getExtension")
+  def getExtensionOrNull(name: String): scala.scalajs.js.Any | Null                   = js.native
+  def drawingBufferStorage(sizedFormat: Int, width: Int, height: Int): Unit           = js.native
+  def activeTexture(texture: Int): Unit                                               = js.native
+  def attachShader(program: WebGLProgram, shader: WebGLShader): Unit                  = js.native
+  def bindAttribLocation(program: WebGLProgram, index: Int, name: String): Unit       = js.native
+  def bindBuffer(target: Int, buffer: WebGLBuffer): Unit                              = js.native
+  def bindFramebuffer(target: Int, framebuffer: WebGLFramebuffer): Unit               = js.native
+  def bindRenderbuffer(target: Int, renderbuffer: WebGLRenderbuffer): Unit            = js.native
+  def bindTexture(target: Int, texture: WebGLTexture): Unit                           = js.native
+  def blendColor(red: Double, green: Double, blue: Double, alpha: Double): Unit       = js.native
+  def blendEquation(mode: Int): Unit                                                  = js.native
+  def blendEquationSeparate(modeRGB: Int, modeAlpha: Int): Unit                       = js.native
+  def blendFunc(sfactor: Int, dfactor: Int): Unit                                     = js.native
+  def blendFuncSeparate(srcRGB: Int, dstRGB: Int, srcAlpha: Int, dstAlpha: Int): Unit = js.native
+  def checkFramebufferStatus(target: Int): Int                                        = js.native
+  def clear(mask: Int): Unit                                                          = js.native
+  def clearColor(red: Double, green: Double, blue: Double, alpha: Double): Unit       = js.native
+  def clearDepth(depth: Double): Unit                                                 = js.native
+  def clearStencil(s: Int): Unit                                                      = js.native
+  def colorMask(red: Boolean, green: Boolean, blue: Boolean, alpha: Boolean): Unit    = js.native
+  def compileShader(shader: WebGLShader): Unit                                        = js.native
   def copyTexImage2D(
-      target: scala.scalajs.js.Any,
-      level: scala.scalajs.js.Any,
-      internalformat: scala.scalajs.js.Any,
-      x: scala.scalajs.js.Any,
-      y: scala.scalajs.js.Any,
-      width: scala.scalajs.js.Any,
-      height: scala.scalajs.js.Any,
-      border: scala.scalajs.js.Any,
+      target: Int,
+      level: Int,
+      internalformat: Int,
+      x: Int,
+      y: Int,
+      width: Int,
+      height: Int,
+      border: Int,
   ): Unit = js.native
   def copyTexSubImage2D(
-      target: scala.scalajs.js.Any,
-      level: scala.scalajs.js.Any,
-      xoffset: scala.scalajs.js.Any,
-      yoffset: scala.scalajs.js.Any,
-      x: scala.scalajs.js.Any,
-      y: scala.scalajs.js.Any,
-      width: scala.scalajs.js.Any,
-      height: scala.scalajs.js.Any,
-  ): Unit                                                                                                    = js.native
-  def createBuffer(): WebGLBuffer                                                                            = js.native
-  def createFramebuffer(): WebGLFramebuffer                                                                  = js.native
-  def createProgram(): WebGLProgram                                                                          = js.native
-  def createRenderbuffer(): WebGLRenderbuffer                                                                = js.native
-  def createShader(`type`: scala.scalajs.js.Any): WebGLShader                                                = js.native
-  def createTexture(): WebGLTexture                                                                          = js.native
-  def cullFace(mode: scala.scalajs.js.Any): Unit                                                             = js.native
-  def deleteBuffer(buffer: WebGLBuffer): Unit                                                                = js.native
-  def deleteFramebuffer(framebuffer: WebGLFramebuffer): Unit                                                 = js.native
-  def deleteProgram(program: WebGLProgram): Unit                                                             = js.native
-  def deleteRenderbuffer(renderbuffer: WebGLRenderbuffer): Unit                                              = js.native
-  def deleteShader(shader: WebGLShader): Unit                                                                = js.native
-  def deleteTexture(texture: WebGLTexture): Unit                                                             = js.native
-  def depthFunc(func: scala.scalajs.js.Any): Unit                                                            = js.native
-  def depthMask(flag: scala.scalajs.js.Any): Unit                                                            = js.native
-  def depthRange(zNear: scala.scalajs.js.Any, zFar: scala.scalajs.js.Any): Unit                              = js.native
-  def detachShader(program: WebGLProgram, shader: WebGLShader): Unit                                         = js.native
-  def disable(cap: scala.scalajs.js.Any): Unit                                                               = js.native
-  def disableVertexAttribArray(index: scala.scalajs.js.Any): Unit                                            = js.native
-  def drawArrays(mode: scala.scalajs.js.Any, first: scala.scalajs.js.Any, count: scala.scalajs.js.Any): Unit = js.native
-  def drawElements(
-      mode: scala.scalajs.js.Any,
-      count: scala.scalajs.js.Any,
-      `type`: scala.scalajs.js.Any,
-      offset: scala.scalajs.js.Any,
-  ): Unit                                                        = js.native
-  def enable(cap: scala.scalajs.js.Any): Unit                    = js.native
-  def enableVertexAttribArray(index: scala.scalajs.js.Any): Unit = js.native
-  def finish(): Unit                                             = js.native
-  def flush(): Unit                                              = js.native
+      target: Int,
+      level: Int,
+      xoffset: Int,
+      yoffset: Int,
+      x: Int,
+      y: Int,
+      width: Int,
+      height: Int,
+  ): Unit                                     = js.native
+  def createBuffer(): WebGLBuffer             = js.native
+  def createFramebuffer(): WebGLFramebuffer   = js.native
+  def createProgram(): WebGLProgram           = js.native
+  def createRenderbuffer(): WebGLRenderbuffer = js.native
+  @JSName("createShader")
+  def createShaderOrNull(`type`: Int): WebGLShader | Null                 = js.native
+  def createTexture(): WebGLTexture                                       = js.native
+  def cullFace(mode: Int): Unit                                           = js.native
+  def deleteBuffer(buffer: WebGLBuffer): Unit                             = js.native
+  def deleteFramebuffer(framebuffer: WebGLFramebuffer): Unit              = js.native
+  def deleteProgram(program: WebGLProgram): Unit                          = js.native
+  def deleteRenderbuffer(renderbuffer: WebGLRenderbuffer): Unit           = js.native
+  def deleteShader(shader: WebGLShader): Unit                             = js.native
+  def deleteTexture(texture: WebGLTexture): Unit                          = js.native
+  def depthFunc(func: Int): Unit                                          = js.native
+  def depthMask(flag: Boolean): Unit                                      = js.native
+  def depthRange(zNear: Double, zFar: Double): Unit                       = js.native
+  def detachShader(program: WebGLProgram, shader: WebGLShader): Unit      = js.native
+  def disable(cap: Int): Unit                                             = js.native
+  def disableVertexAttribArray(index: Int): Unit                          = js.native
+  def drawArrays(mode: Int, first: Int, count: Int): Unit                 = js.native
+  def drawElements(mode: Int, count: Int, `type`: Int, offset: Int): Unit = js.native
+  def enable(cap: Int): Unit                                              = js.native
+  def enableVertexAttribArray(index: Int): Unit                           = js.native
+  def finish(): Unit                                                      = js.native
+  def flush(): Unit                                                       = js.native
   def framebufferRenderbuffer(
-      target: scala.scalajs.js.Any,
-      attachment: scala.scalajs.js.Any,
-      renderbuffertarget: scala.scalajs.js.Any,
+      target: Int,
+      attachment: Int,
+      renderbuffertarget: Int,
       renderbuffer: WebGLRenderbuffer,
   ): Unit = js.native
-  def framebufferTexture2D(
-      target: scala.scalajs.js.Any,
-      attachment: scala.scalajs.js.Any,
-      textarget: scala.scalajs.js.Any,
-      texture: WebGLTexture,
-      level: scala.scalajs.js.Any,
-  ): Unit                                                                                                 = js.native
-  def frontFace(mode: scala.scalajs.js.Any): Unit                                                         = js.native
-  def generateMipmap(target: scala.scalajs.js.Any): Unit                                                  = js.native
-  def getActiveAttrib(program: WebGLProgram, index: scala.scalajs.js.Any): WebGLActiveInfo                = js.native
-  def getActiveUniform(program: WebGLProgram, index: scala.scalajs.js.Any): WebGLActiveInfo               = js.native
-  def getAttachedShaders(program: WebGLProgram): scala.scalajs.js.Array[WebGLShader]                      = js.native
-  def getAttribLocation(program: WebGLProgram, name: String): scala.scalajs.js.Any                        = js.native
-  def getBufferParameter(target: scala.scalajs.js.Any, pname: scala.scalajs.js.Any): scala.scalajs.js.Any = js.native
-  def getParameter(pname: scala.scalajs.js.Any): scala.scalajs.js.Any                                     = js.native
-  def getError(): scala.scalajs.js.Any                                                                    = js.native
-  def getFramebufferAttachmentParameter(
-      target: scala.scalajs.js.Any,
-      attachment: scala.scalajs.js.Any,
-      pname: scala.scalajs.js.Any,
-  ): scala.scalajs.js.Any                                                                           = js.native
-  def getProgramParameter(program: WebGLProgram, pname: scala.scalajs.js.Any): scala.scalajs.js.Any = js.native
-  def getProgramInfoLog(program: WebGLProgram): String                                              = js.native
-  def getRenderbufferParameter(target: scala.scalajs.js.Any, pname: scala.scalajs.js.Any): scala.scalajs.js.Any =
+  def framebufferTexture2D(target: Int, attachment: Int, textarget: Int, texture: WebGLTexture, level: Int): Unit =
     js.native
-  def getShaderParameter(shader: WebGLShader, pname: scala.scalajs.js.Any): scala.scalajs.js.Any = js.native
-  def getShaderPrecisionFormat(
-      shadertype: scala.scalajs.js.Any,
-      precisiontype: scala.scalajs.js.Any,
-  ): WebGLShaderPrecisionFormat                                                                             = js.native
-  def getShaderInfoLog(shader: WebGLShader): String                                                         = js.native
-  def getShaderSource(shader: WebGLShader): String                                                          = js.native
-  def getTexParameter(target: scala.scalajs.js.Any, pname: scala.scalajs.js.Any): scala.scalajs.js.Any      = js.native
-  def getUniform(program: WebGLProgram, location: WebGLUniformLocation): scala.scalajs.js.Any               = js.native
-  def getUniformLocation(program: WebGLProgram, name: String): WebGLUniformLocation                         = js.native
-  def getVertexAttrib(index: scala.scalajs.js.Any, pname: scala.scalajs.js.Any): scala.scalajs.js.Any       = js.native
-  def getVertexAttribOffset(index: scala.scalajs.js.Any, pname: scala.scalajs.js.Any): scala.scalajs.js.Any = js.native
-  def hint(target: scala.scalajs.js.Any, mode: scala.scalajs.js.Any): Unit                                  = js.native
-  def isBuffer(buffer: WebGLBuffer): scala.scalajs.js.Any                                                   = js.native
-  def isEnabled(cap: scala.scalajs.js.Any): scala.scalajs.js.Any                                            = js.native
-  def isFramebuffer(framebuffer: WebGLFramebuffer): scala.scalajs.js.Any                                    = js.native
-  def isProgram(program: WebGLProgram): scala.scalajs.js.Any                                                = js.native
-  def isRenderbuffer(renderbuffer: WebGLRenderbuffer): scala.scalajs.js.Any                                 = js.native
-  def isShader(shader: WebGLShader): scala.scalajs.js.Any                                                   = js.native
-  def isTexture(texture: WebGLTexture): scala.scalajs.js.Any                                                = js.native
-  def lineWidth(width: scala.scalajs.js.Any): Unit                                                          = js.native
-  def linkProgram(program: WebGLProgram): Unit                                                              = js.native
-  def pixelStorei(pname: scala.scalajs.js.Any, param: scala.scalajs.js.Any): Unit                           = js.native
-  def polygonOffset(factor: scala.scalajs.js.Any, units: scala.scalajs.js.Any): Unit                        = js.native
-  def renderbufferStorage(
-      target: scala.scalajs.js.Any,
-      internalformat: scala.scalajs.js.Any,
-      width: scala.scalajs.js.Any,
-      height: scala.scalajs.js.Any,
-  ): Unit                                                                             = js.native
-  def sampleCoverage(value: scala.scalajs.js.Any, invert: scala.scalajs.js.Any): Unit = js.native
-  def scissor(
-      x: scala.scalajs.js.Any,
-      y: scala.scalajs.js.Any,
-      width: scala.scalajs.js.Any,
-      height: scala.scalajs.js.Any,
-  ): Unit                                                                                                  = js.native
-  def shaderSource(shader: WebGLShader, source: String): Unit                                              = js.native
-  def stencilFunc(func: scala.scalajs.js.Any, ref: scala.scalajs.js.Any, mask: scala.scalajs.js.Any): Unit = js.native
-  def stencilFuncSeparate(
-      face: scala.scalajs.js.Any,
-      func: scala.scalajs.js.Any,
-      ref: scala.scalajs.js.Any,
-      mask: scala.scalajs.js.Any,
-  ): Unit                                                                                                   = js.native
-  def stencilMask(mask: scala.scalajs.js.Any): Unit                                                         = js.native
-  def stencilMaskSeparate(face: scala.scalajs.js.Any, mask: scala.scalajs.js.Any): Unit                     = js.native
-  def stencilOp(fail: scala.scalajs.js.Any, zfail: scala.scalajs.js.Any, zpass: scala.scalajs.js.Any): Unit = js.native
-  def stencilOpSeparate(
-      face: scala.scalajs.js.Any,
-      fail: scala.scalajs.js.Any,
-      zfail: scala.scalajs.js.Any,
-      zpass: scala.scalajs.js.Any,
-  ): Unit = js.native
-  def texParameterf(target: scala.scalajs.js.Any, pname: scala.scalajs.js.Any, param: scala.scalajs.js.Any): Unit =
+  def frontFace(mode: Int): Unit        = js.native
+  def generateMipmap(target: Int): Unit = js.native
+  @JSName("getActiveAttrib")
+  def getActiveAttribOrNull(program: WebGLProgram, index: Int): WebGLActiveInfo | Null = js.native
+  @JSName("getActiveUniform")
+  def getActiveUniformOrNull(program: WebGLProgram, index: Int): WebGLActiveInfo | Null = js.native
+  @JSName("getAttachedShaders")
+  def getAttachedShadersOrNull(program: WebGLProgram): scala.scalajs.js.Array[WebGLShader] | Null       = js.native
+  def getAttribLocation(program: WebGLProgram, name: String): Int                                       = js.native
+  def getBufferParameter(target: Int, pname: Int): scala.scalajs.js.Any                                 = js.native
+  def getParameter(pname: Int): scala.scalajs.js.Any                                                    = js.native
+  def getError(): Int                                                                                   = js.native
+  def getFramebufferAttachmentParameter(target: Int, attachment: Int, pname: Int): scala.scalajs.js.Any = js.native
+  def getProgramParameter(program: WebGLProgram, pname: Int): scala.scalajs.js.Any                      = js.native
+  @JSName("getProgramInfoLog")
+  def getProgramInfoLogOrNull(program: WebGLProgram): String | Null             = js.native
+  def getRenderbufferParameter(target: Int, pname: Int): scala.scalajs.js.Any   = js.native
+  def getShaderParameter(shader: WebGLShader, pname: Int): scala.scalajs.js.Any = js.native
+  @JSName("getShaderPrecisionFormat")
+  def getShaderPrecisionFormatOrNull(shadertype: Int, precisiontype: Int): WebGLShaderPrecisionFormat | Null = js.native
+  @JSName("getShaderInfoLog")
+  def getShaderInfoLogOrNull(shader: WebGLShader): String | Null = js.native
+  @JSName("getShaderSource")
+  def getShaderSourceOrNull(shader: WebGLShader): String | Null                               = js.native
+  def getTexParameter(target: Int, pname: Int): scala.scalajs.js.Any                          = js.native
+  def getUniform(program: WebGLProgram, location: WebGLUniformLocation): scala.scalajs.js.Any = js.native
+  @JSName("getUniformLocation")
+  def getUniformLocationOrNull(program: WebGLProgram, name: String): WebGLUniformLocation | Null  = js.native
+  def getVertexAttrib(index: Int, pname: Int): scala.scalajs.js.Any                               = js.native
+  def getVertexAttribOffset(index: Int, pname: Int): Int                                          = js.native
+  def hint(target: Int, mode: Int): Unit                                                          = js.native
+  def isBuffer(buffer: WebGLBuffer): Boolean                                                      = js.native
+  def isEnabled(cap: Int): Boolean                                                                = js.native
+  def isFramebuffer(framebuffer: WebGLFramebuffer): Boolean                                       = js.native
+  def isProgram(program: WebGLProgram): Boolean                                                   = js.native
+  def isRenderbuffer(renderbuffer: WebGLRenderbuffer): Boolean                                    = js.native
+  def isShader(shader: WebGLShader): Boolean                                                      = js.native
+  def isTexture(texture: WebGLTexture): Boolean                                                   = js.native
+  def lineWidth(width: Double): Unit                                                              = js.native
+  def linkProgram(program: WebGLProgram): Unit                                                    = js.native
+  def pixelStorei(pname: Int, param: Int): Unit                                                   = js.native
+  def polygonOffset(factor: Double, units: Double): Unit                                          = js.native
+  def renderbufferStorage(target: Int, internalformat: Int, width: Int, height: Int): Unit        = js.native
+  def sampleCoverage(value: Double, invert: Boolean): Unit                                        = js.native
+  def scissor(x: Int, y: Int, width: Int, height: Int): Unit                                      = js.native
+  def shaderSource(shader: WebGLShader, source: String): Unit                                     = js.native
+  def stencilFunc(func: Int, ref: Int, mask: Int): Unit                                           = js.native
+  def stencilFuncSeparate(face: Int, func: Int, ref: Int, mask: Int): Unit                        = js.native
+  def stencilMask(mask: Int): Unit                                                                = js.native
+  def stencilMaskSeparate(face: Int, mask: Int): Unit                                             = js.native
+  def stencilOp(fail: Int, zfail: Int, zpass: Int): Unit                                          = js.native
+  def stencilOpSeparate(face: Int, fail: Int, zfail: Int, zpass: Int): Unit                       = js.native
+  def texParameterf(target: Int, pname: Int, param: Double): Unit                                 = js.native
+  def texParameteri(target: Int, pname: Int, param: Int): Unit                                    = js.native
+  def uniform1f(location: WebGLUniformLocation, x: Double): Unit                                  = js.native
+  def uniform2f(location: WebGLUniformLocation, x: Double, y: Double): Unit                       = js.native
+  def uniform3f(location: WebGLUniformLocation, x: Double, y: Double, z: Double): Unit            = js.native
+  def uniform4f(location: WebGLUniformLocation, x: Double, y: Double, z: Double, w: Double): Unit = js.native
+  def uniform1i(location: WebGLUniformLocation, x: Int): Unit                                     = js.native
+  def uniform2i(location: WebGLUniformLocation, x: Int, y: Int): Unit                             = js.native
+  def uniform3i(location: WebGLUniformLocation, x: Int, y: Int, z: Int): Unit                     = js.native
+  def uniform4i(location: WebGLUniformLocation, x: Int, y: Int, z: Int, w: Int): Unit             = js.native
+  def useProgram(program: WebGLProgram): Unit                                                     = js.native
+  def validateProgram(program: WebGLProgram): Unit                                                = js.native
+  def vertexAttrib1f(index: Int, x: Double): Unit                                                 = js.native
+  def vertexAttrib2f(index: Int, x: Double, y: Double): Unit                                      = js.native
+  def vertexAttrib3f(index: Int, x: Double, y: Double, z: Double): Unit                           = js.native
+  def vertexAttrib4f(index: Int, x: Double, y: Double, z: Double, w: Double): Unit                = js.native
+  def vertexAttrib1fv(index: Int, values: scala.scalajs.js.Any): Unit                             = js.native
+  def vertexAttrib2fv(index: Int, values: scala.scalajs.js.Any): Unit                             = js.native
+  def vertexAttrib3fv(index: Int, values: scala.scalajs.js.Any): Unit                             = js.native
+  def vertexAttrib4fv(index: Int, values: scala.scalajs.js.Any): Unit                             = js.native
+  def vertexAttribPointer(index: Int, size: Int, `type`: Int, normalized: Boolean, stride: Int, offset: Int): Unit =
     js.native
-  def texParameteri(target: scala.scalajs.js.Any, pname: scala.scalajs.js.Any, param: scala.scalajs.js.Any): Unit =
+  def viewport(x: Int, y: Int, width: Int, height: Int): Unit = js.native
+  def makeXRCompatible(): scala.scalajs.js.Promise[Unit]      = js.native
+  def copyBufferSubData(readTarget: Int, writeTarget: Int, readOffset: Int, writeOffset: Int, size: Int): Unit =
     js.native
-  def uniform1f(location: WebGLUniformLocation, x: scala.scalajs.js.Any): Unit                          = js.native
-  def uniform2f(location: WebGLUniformLocation, x: scala.scalajs.js.Any, y: scala.scalajs.js.Any): Unit = js.native
-  def uniform3f(
-      location: WebGLUniformLocation,
-      x: scala.scalajs.js.Any,
-      y: scala.scalajs.js.Any,
-      z: scala.scalajs.js.Any,
-  ): Unit = js.native
-  def uniform4f(
-      location: WebGLUniformLocation,
-      x: scala.scalajs.js.Any,
-      y: scala.scalajs.js.Any,
-      z: scala.scalajs.js.Any,
-      w: scala.scalajs.js.Any,
-  ): Unit                                                                                               = js.native
-  def uniform1i(location: WebGLUniformLocation, x: scala.scalajs.js.Any): Unit                          = js.native
-  def uniform2i(location: WebGLUniformLocation, x: scala.scalajs.js.Any, y: scala.scalajs.js.Any): Unit = js.native
-  def uniform3i(
-      location: WebGLUniformLocation,
-      x: scala.scalajs.js.Any,
-      y: scala.scalajs.js.Any,
-      z: scala.scalajs.js.Any,
-  ): Unit = js.native
-  def uniform4i(
-      location: WebGLUniformLocation,
-      x: scala.scalajs.js.Any,
-      y: scala.scalajs.js.Any,
-      z: scala.scalajs.js.Any,
-      w: scala.scalajs.js.Any,
-  ): Unit                                                                                                 = js.native
-  def useProgram(program: WebGLProgram): Unit                                                             = js.native
-  def validateProgram(program: WebGLProgram): Unit                                                        = js.native
-  def vertexAttrib1f(index: scala.scalajs.js.Any, x: scala.scalajs.js.Any): Unit                          = js.native
-  def vertexAttrib2f(index: scala.scalajs.js.Any, x: scala.scalajs.js.Any, y: scala.scalajs.js.Any): Unit = js.native
-  def vertexAttrib3f(
-      index: scala.scalajs.js.Any,
-      x: scala.scalajs.js.Any,
-      y: scala.scalajs.js.Any,
-      z: scala.scalajs.js.Any,
-  ): Unit = js.native
-  def vertexAttrib4f(
-      index: scala.scalajs.js.Any,
-      x: scala.scalajs.js.Any,
-      y: scala.scalajs.js.Any,
-      z: scala.scalajs.js.Any,
-      w: scala.scalajs.js.Any,
-  ): Unit                                                                              = js.native
-  def vertexAttrib1fv(index: scala.scalajs.js.Any, values: scala.scalajs.js.Any): Unit = js.native
-  def vertexAttrib2fv(index: scala.scalajs.js.Any, values: scala.scalajs.js.Any): Unit = js.native
-  def vertexAttrib3fv(index: scala.scalajs.js.Any, values: scala.scalajs.js.Any): Unit = js.native
-  def vertexAttrib4fv(index: scala.scalajs.js.Any, values: scala.scalajs.js.Any): Unit = js.native
-  def vertexAttribPointer(
-      index: scala.scalajs.js.Any,
-      size: scala.scalajs.js.Any,
-      `type`: scala.scalajs.js.Any,
-      normalized: scala.scalajs.js.Any,
-      stride: scala.scalajs.js.Any,
-      offset: scala.scalajs.js.Any,
-  ): Unit = js.native
-  def viewport(
-      x: scala.scalajs.js.Any,
-      y: scala.scalajs.js.Any,
-      width: scala.scalajs.js.Any,
-      height: scala.scalajs.js.Any,
-  ): Unit                                                = js.native
-  def makeXRCompatible(): scala.scalajs.js.Promise[Unit] = js.native
-  def copyBufferSubData(
-      readTarget: scala.scalajs.js.Any,
-      writeTarget: scala.scalajs.js.Any,
-      readOffset: scala.scalajs.js.Any,
-      writeOffset: scala.scalajs.js.Any,
-      size: scala.scalajs.js.Any,
-  ): Unit = js.native
   def getBufferSubData(
-      target: scala.scalajs.js.Any,
-      srcByteOffset: scala.scalajs.js.Any,
+      target: Int,
+      srcByteOffset: Int,
       dstBuffer: scala.scalajs.js.Any,
       dstOffset: Int = js.native,
-      length: scala.scalajs.js.Any = js.native,
+      length: Int = js.native,
   ): Unit = js.native
   def blitFramebuffer(
-      srcX0: scala.scalajs.js.Any,
-      srcY0: scala.scalajs.js.Any,
-      srcX1: scala.scalajs.js.Any,
-      srcY1: scala.scalajs.js.Any,
-      dstX0: scala.scalajs.js.Any,
-      dstY0: scala.scalajs.js.Any,
-      dstX1: scala.scalajs.js.Any,
-      dstY1: scala.scalajs.js.Any,
-      mask: scala.scalajs.js.Any,
-      filter: scala.scalajs.js.Any,
+      srcX0: Int,
+      srcY0: Int,
+      srcX1: Int,
+      srcY1: Int,
+      dstX0: Int,
+      dstY0: Int,
+      dstX1: Int,
+      dstY1: Int,
+      mask: Int,
+      filter: Int,
   ): Unit = js.native
-  def framebufferTextureLayer(
-      target: scala.scalajs.js.Any,
-      attachment: scala.scalajs.js.Any,
-      texture: WebGLTexture,
-      level: scala.scalajs.js.Any,
-      layer: scala.scalajs.js.Any,
-  ): Unit = js.native
-  def invalidateFramebuffer(
-      target: scala.scalajs.js.Any,
-      attachments: scala.scalajs.js.Array[scala.scalajs.js.Any],
-  ): Unit = js.native
+  def framebufferTextureLayer(target: Int, attachment: Int, texture: WebGLTexture, level: Int, layer: Int): Unit =
+    js.native
+  def invalidateFramebuffer(target: Int, attachments: scala.scalajs.js.Array[Int]): Unit = js.native
   def invalidateSubFramebuffer(
-      target: scala.scalajs.js.Any,
-      attachments: scala.scalajs.js.Array[scala.scalajs.js.Any],
-      x: scala.scalajs.js.Any,
-      y: scala.scalajs.js.Any,
-      width: scala.scalajs.js.Any,
-      height: scala.scalajs.js.Any,
-  ): Unit                                         = js.native
-  def readBuffer(src: scala.scalajs.js.Any): Unit = js.native
-  def getInternalformatParameter(
-      target: scala.scalajs.js.Any,
-      internalformat: scala.scalajs.js.Any,
-      pname: scala.scalajs.js.Any,
-  ): scala.scalajs.js.Any = js.native
-  def renderbufferStorageMultisample(
-      target: scala.scalajs.js.Any,
-      samples: scala.scalajs.js.Any,
-      internalformat: scala.scalajs.js.Any,
-      width: scala.scalajs.js.Any,
-      height: scala.scalajs.js.Any,
-  ): Unit = js.native
-  def texStorage2D(
-      target: scala.scalajs.js.Any,
-      levels: scala.scalajs.js.Any,
-      internalformat: scala.scalajs.js.Any,
-      width: scala.scalajs.js.Any,
-      height: scala.scalajs.js.Any,
-  ): Unit = js.native
-  def texStorage3D(
-      target: scala.scalajs.js.Any,
-      levels: scala.scalajs.js.Any,
-      internalformat: scala.scalajs.js.Any,
-      width: scala.scalajs.js.Any,
-      height: scala.scalajs.js.Any,
-      depth: scala.scalajs.js.Any,
+      target: Int,
+      attachments: scala.scalajs.js.Array[Int],
+      x: Int,
+      y: Int,
+      width: Int,
+      height: Int,
+  ): Unit                                                                                            = js.native
+  def readBuffer(src: Int): Unit                                                                     = js.native
+  def getInternalformatParameter(target: Int, internalformat: Int, pname: Int): scala.scalajs.js.Any = js.native
+  def renderbufferStorageMultisample(target: Int, samples: Int, internalformat: Int, width: Int, height: Int): Unit =
+    js.native
+  def texStorage2D(target: Int, levels: Int, internalformat: Int, width: Int, height: Int): Unit             = js.native
+  def texStorage3D(target: Int, levels: Int, internalformat: Int, width: Int, height: Int, depth: Int): Unit = js.native
+  def texImage3D(
+      target: Int,
+      level: Int,
+      internalformat: Int,
+      width: Int,
+      height: Int,
+      depth: Int,
+      border: Int,
+      format: Int,
+      `type`: Int,
+      pboOffset: Int,
   ): Unit = js.native
   def texImage3D(
-      target: scala.scalajs.js.Any,
-      level: scala.scalajs.js.Any,
-      internalformat: scala.scalajs.js.Any,
-      width: scala.scalajs.js.Any,
-      height: scala.scalajs.js.Any,
-      depth: scala.scalajs.js.Any,
-      border: scala.scalajs.js.Any,
-      format: scala.scalajs.js.Any,
-      `type`: scala.scalajs.js.Any,
+      target: Int,
+      level: Int,
+      internalformat: Int,
+      width: Int,
+      height: Int,
+      depth: Int,
+      border: Int,
+      format: Int,
+      `type`: Int,
+      source: ImageBitmap | ImageData | HTMLImageElement | HTMLCanvasElement | HTMLVideoElement | OffscreenCanvas | VideoFrame,
+  ): Unit = js.native
+  def texImage3D(
+      target: Int,
+      level: Int,
+      internalformat: Int,
+      width: Int,
+      height: Int,
+      depth: Int,
+      border: Int,
+      format: Int,
+      `type`: Int,
       srcData: scala.scalajs.js.Any,
   ): Unit = js.native
   def texImage3D(
-      target: scala.scalajs.js.Any,
-      level: scala.scalajs.js.Any,
-      internalformat: scala.scalajs.js.Any,
-      width: scala.scalajs.js.Any,
-      height: scala.scalajs.js.Any,
-      depth: scala.scalajs.js.Any,
-      border: scala.scalajs.js.Any,
-      format: scala.scalajs.js.Any,
-      `type`: scala.scalajs.js.Any,
+      target: Int,
+      level: Int,
+      internalformat: Int,
+      width: Int,
+      height: Int,
+      depth: Int,
+      border: Int,
+      format: Int,
+      `type`: Int,
       srcData: scala.scalajs.js.Any,
       srcOffset: Int,
   ): Unit = js.native
   def texSubImage3D(
-      target: scala.scalajs.js.Any,
-      level: scala.scalajs.js.Any,
-      xoffset: scala.scalajs.js.Any,
-      yoffset: scala.scalajs.js.Any,
-      zoffset: scala.scalajs.js.Any,
-      width: scala.scalajs.js.Any,
-      height: scala.scalajs.js.Any,
-      depth: scala.scalajs.js.Any,
-      format: scala.scalajs.js.Any,
-      `type`: scala.scalajs.js.Any,
-      source: scala.scalajs.js.Any,
+      target: Int,
+      level: Int,
+      xoffset: Int,
+      yoffset: Int,
+      zoffset: Int,
+      width: Int,
+      height: Int,
+      depth: Int,
+      format: Int,
+      `type`: Int,
+      pboOffset: Int,
   ): Unit = js.native
   def texSubImage3D(
-      target: scala.scalajs.js.Any,
-      level: scala.scalajs.js.Any,
-      xoffset: scala.scalajs.js.Any,
-      yoffset: scala.scalajs.js.Any,
-      zoffset: scala.scalajs.js.Any,
-      width: scala.scalajs.js.Any,
-      height: scala.scalajs.js.Any,
-      depth: scala.scalajs.js.Any,
-      format: scala.scalajs.js.Any,
-      `type`: scala.scalajs.js.Any,
+      target: Int,
+      level: Int,
+      xoffset: Int,
+      yoffset: Int,
+      zoffset: Int,
+      width: Int,
+      height: Int,
+      depth: Int,
+      format: Int,
+      `type`: Int,
+      source: ImageBitmap | ImageData | HTMLImageElement | HTMLCanvasElement | HTMLVideoElement | OffscreenCanvas | VideoFrame,
+  ): Unit = js.native
+  def texSubImage3D(
+      target: Int,
+      level: Int,
+      xoffset: Int,
+      yoffset: Int,
+      zoffset: Int,
+      width: Int,
+      height: Int,
+      depth: Int,
+      format: Int,
+      `type`: Int,
+      srcData: scala.scalajs.js.Any,
+  ): Unit = js.native
+  def texSubImage3D(
+      target: Int,
+      level: Int,
+      xoffset: Int,
+      yoffset: Int,
+      zoffset: Int,
+      width: Int,
+      height: Int,
+      depth: Int,
+      format: Int,
+      `type`: Int,
       srcData: scala.scalajs.js.Any,
       srcOffset: Int,
   ): Unit = js.native
   def copyTexSubImage3D(
-      target: scala.scalajs.js.Any,
-      level: scala.scalajs.js.Any,
-      xoffset: scala.scalajs.js.Any,
-      yoffset: scala.scalajs.js.Any,
-      zoffset: scala.scalajs.js.Any,
-      x: scala.scalajs.js.Any,
-      y: scala.scalajs.js.Any,
-      width: scala.scalajs.js.Any,
-      height: scala.scalajs.js.Any,
+      target: Int,
+      level: Int,
+      xoffset: Int,
+      yoffset: Int,
+      zoffset: Int,
+      x: Int,
+      y: Int,
+      width: Int,
+      height: Int,
   ): Unit = js.native
   def compressedTexImage3D(
-      target: scala.scalajs.js.Any,
-      level: scala.scalajs.js.Any,
-      internalformat: scala.scalajs.js.Any,
-      width: scala.scalajs.js.Any,
-      height: scala.scalajs.js.Any,
-      depth: scala.scalajs.js.Any,
-      border: scala.scalajs.js.Any,
-      imageSize: scala.scalajs.js.Any,
-      offset: scala.scalajs.js.Any,
+      target: Int,
+      level: Int,
+      internalformat: Int,
+      width: Int,
+      height: Int,
+      depth: Int,
+      border: Int,
+      imageSize: Int,
+      offset: Int,
   ): Unit = js.native
   def compressedTexImage3D(
-      target: scala.scalajs.js.Any,
-      level: scala.scalajs.js.Any,
-      internalformat: scala.scalajs.js.Any,
-      width: scala.scalajs.js.Any,
-      height: scala.scalajs.js.Any,
-      depth: scala.scalajs.js.Any,
-      border: scala.scalajs.js.Any,
+      target: Int,
+      level: Int,
+      internalformat: Int,
+      width: Int,
+      height: Int,
+      depth: Int,
+      border: Int,
+      srcData: scala.scalajs.js.Any,
+  ): Unit = js.native
+  def compressedTexImage3D(
+      target: Int,
+      level: Int,
+      internalformat: Int,
+      width: Int,
+      height: Int,
+      depth: Int,
+      border: Int,
       srcData: scala.scalajs.js.Any,
       srcOffset: Int,
-      srcLengthOverride: scala.scalajs.js.Any,
   ): Unit = js.native
-  def compressedTexSubImage3D(
-      target: scala.scalajs.js.Any,
-      level: scala.scalajs.js.Any,
-      xoffset: scala.scalajs.js.Any,
-      yoffset: scala.scalajs.js.Any,
-      zoffset: scala.scalajs.js.Any,
-      width: scala.scalajs.js.Any,
-      height: scala.scalajs.js.Any,
-      depth: scala.scalajs.js.Any,
-      format: scala.scalajs.js.Any,
-      imageSize: scala.scalajs.js.Any,
-      offset: scala.scalajs.js.Any,
-  ): Unit = js.native
-  def compressedTexSubImage3D(
-      target: scala.scalajs.js.Any,
-      level: scala.scalajs.js.Any,
-      xoffset: scala.scalajs.js.Any,
-      yoffset: scala.scalajs.js.Any,
-      zoffset: scala.scalajs.js.Any,
-      width: scala.scalajs.js.Any,
-      height: scala.scalajs.js.Any,
-      depth: scala.scalajs.js.Any,
-      format: scala.scalajs.js.Any,
+  def compressedTexImage3D(
+      target: Int,
+      level: Int,
+      internalformat: Int,
+      width: Int,
+      height: Int,
+      depth: Int,
+      border: Int,
       srcData: scala.scalajs.js.Any,
       srcOffset: Int,
-      srcLengthOverride: scala.scalajs.js.Any,
-  ): Unit                                                                                                  = js.native
-  def getFragDataLocation(program: WebGLProgram, name: String): scala.scalajs.js.Any                       = js.native
-  def uniform1ui(location: WebGLUniformLocation, v0: scala.scalajs.js.Any): Unit                           = js.native
-  def uniform2ui(location: WebGLUniformLocation, v0: scala.scalajs.js.Any, v1: scala.scalajs.js.Any): Unit = js.native
-  def uniform3ui(
-      location: WebGLUniformLocation,
-      v0: scala.scalajs.js.Any,
-      v1: scala.scalajs.js.Any,
-      v2: scala.scalajs.js.Any,
+      srcLengthOverride: Int,
   ): Unit = js.native
-  def uniform4ui(
-      location: WebGLUniformLocation,
-      v0: scala.scalajs.js.Any,
-      v1: scala.scalajs.js.Any,
-      v2: scala.scalajs.js.Any,
-      v3: scala.scalajs.js.Any,
+  def compressedTexSubImage3D(
+      target: Int,
+      level: Int,
+      xoffset: Int,
+      yoffset: Int,
+      zoffset: Int,
+      width: Int,
+      height: Int,
+      depth: Int,
+      format: Int,
+      imageSize: Int,
+      offset: Int,
   ): Unit = js.native
+  def compressedTexSubImage3D(
+      target: Int,
+      level: Int,
+      xoffset: Int,
+      yoffset: Int,
+      zoffset: Int,
+      width: Int,
+      height: Int,
+      depth: Int,
+      format: Int,
+      srcData: scala.scalajs.js.Any,
+  ): Unit = js.native
+  def compressedTexSubImage3D(
+      target: Int,
+      level: Int,
+      xoffset: Int,
+      yoffset: Int,
+      zoffset: Int,
+      width: Int,
+      height: Int,
+      depth: Int,
+      format: Int,
+      srcData: scala.scalajs.js.Any,
+      srcOffset: Int,
+  ): Unit = js.native
+  def compressedTexSubImage3D(
+      target: Int,
+      level: Int,
+      xoffset: Int,
+      yoffset: Int,
+      zoffset: Int,
+      width: Int,
+      height: Int,
+      depth: Int,
+      format: Int,
+      srcData: scala.scalajs.js.Any,
+      srcOffset: Int,
+      srcLengthOverride: Int,
+  ): Unit                                                                                  = js.native
+  def getFragDataLocation(program: WebGLProgram, name: String): Int                        = js.native
+  def uniform1ui(location: WebGLUniformLocation, v0: Int): Unit                            = js.native
+  def uniform2ui(location: WebGLUniformLocation, v0: Int, v1: Int): Unit                   = js.native
+  def uniform3ui(location: WebGLUniformLocation, v0: Int, v1: Int, v2: Int): Unit          = js.native
+  def uniform4ui(location: WebGLUniformLocation, v0: Int, v1: Int, v2: Int, v3: Int): Unit = js.native
   def uniform1uiv(
       location: WebGLUniformLocation,
       data: scala.scalajs.js.Any,
       srcOffset: Int = js.native,
-      srcLength: scala.scalajs.js.Any = js.native,
+      srcLength: Int = js.native,
   ): Unit = js.native
   def uniform2uiv(
       location: WebGLUniformLocation,
       data: scala.scalajs.js.Any,
       srcOffset: Int = js.native,
-      srcLength: scala.scalajs.js.Any = js.native,
+      srcLength: Int = js.native,
   ): Unit = js.native
   def uniform3uiv(
       location: WebGLUniformLocation,
       data: scala.scalajs.js.Any,
       srcOffset: Int = js.native,
-      srcLength: scala.scalajs.js.Any = js.native,
+      srcLength: Int = js.native,
   ): Unit = js.native
   def uniform4uiv(
       location: WebGLUniformLocation,
       data: scala.scalajs.js.Any,
       srcOffset: Int = js.native,
-      srcLength: scala.scalajs.js.Any = js.native,
+      srcLength: Int = js.native,
   ): Unit = js.native
   def uniformMatrix3x2fv(
       location: WebGLUniformLocation,
-      transpose: scala.scalajs.js.Any,
+      transpose: Boolean,
       data: scala.scalajs.js.Any,
       srcOffset: Int = js.native,
-      srcLength: scala.scalajs.js.Any = js.native,
+      srcLength: Int = js.native,
   ): Unit = js.native
   def uniformMatrix4x2fv(
       location: WebGLUniformLocation,
-      transpose: scala.scalajs.js.Any,
+      transpose: Boolean,
       data: scala.scalajs.js.Any,
       srcOffset: Int = js.native,
-      srcLength: scala.scalajs.js.Any = js.native,
+      srcLength: Int = js.native,
   ): Unit = js.native
   def uniformMatrix2x3fv(
       location: WebGLUniformLocation,
-      transpose: scala.scalajs.js.Any,
+      transpose: Boolean,
       data: scala.scalajs.js.Any,
       srcOffset: Int = js.native,
-      srcLength: scala.scalajs.js.Any = js.native,
+      srcLength: Int = js.native,
   ): Unit = js.native
   def uniformMatrix4x3fv(
       location: WebGLUniformLocation,
-      transpose: scala.scalajs.js.Any,
+      transpose: Boolean,
       data: scala.scalajs.js.Any,
       srcOffset: Int = js.native,
-      srcLength: scala.scalajs.js.Any = js.native,
+      srcLength: Int = js.native,
   ): Unit = js.native
   def uniformMatrix2x4fv(
       location: WebGLUniformLocation,
-      transpose: scala.scalajs.js.Any,
+      transpose: Boolean,
       data: scala.scalajs.js.Any,
       srcOffset: Int = js.native,
-      srcLength: scala.scalajs.js.Any = js.native,
+      srcLength: Int = js.native,
   ): Unit = js.native
   def uniformMatrix3x4fv(
       location: WebGLUniformLocation,
-      transpose: scala.scalajs.js.Any,
+      transpose: Boolean,
       data: scala.scalajs.js.Any,
       srcOffset: Int = js.native,
-      srcLength: scala.scalajs.js.Any = js.native,
-  ): Unit = js.native
-  def vertexAttribI4i(
-      index: scala.scalajs.js.Any,
-      x: scala.scalajs.js.Any,
-      y: scala.scalajs.js.Any,
-      z: scala.scalajs.js.Any,
-      w: scala.scalajs.js.Any,
-  ): Unit                                                                               = js.native
-  def vertexAttribI4iv(index: scala.scalajs.js.Any, values: scala.scalajs.js.Any): Unit = js.native
-  def vertexAttribI4ui(
-      index: scala.scalajs.js.Any,
-      x: scala.scalajs.js.Any,
-      y: scala.scalajs.js.Any,
-      z: scala.scalajs.js.Any,
-      w: scala.scalajs.js.Any,
-  ): Unit                                                                                = js.native
-  def vertexAttribI4uiv(index: scala.scalajs.js.Any, values: scala.scalajs.js.Any): Unit = js.native
-  def vertexAttribIPointer(
-      index: scala.scalajs.js.Any,
-      size: scala.scalajs.js.Any,
-      `type`: scala.scalajs.js.Any,
-      stride: scala.scalajs.js.Any,
-      offset: scala.scalajs.js.Any,
-  ): Unit                                                                                   = js.native
-  def vertexAttribDivisor(index: scala.scalajs.js.Any, divisor: scala.scalajs.js.Any): Unit = js.native
-  def drawArraysInstanced(
-      mode: scala.scalajs.js.Any,
-      first: scala.scalajs.js.Any,
-      count: scala.scalajs.js.Any,
-      instanceCount: scala.scalajs.js.Any,
-  ): Unit = js.native
-  def drawElementsInstanced(
-      mode: scala.scalajs.js.Any,
-      count: scala.scalajs.js.Any,
-      `type`: scala.scalajs.js.Any,
-      offset: scala.scalajs.js.Any,
-      instanceCount: scala.scalajs.js.Any,
-  ): Unit = js.native
-  def drawRangeElements(
-      mode: scala.scalajs.js.Any,
-      start: scala.scalajs.js.Any,
-      end: scala.scalajs.js.Any,
-      count: scala.scalajs.js.Any,
-      `type`: scala.scalajs.js.Any,
-      offset: scala.scalajs.js.Any,
-  ): Unit                                                                      = js.native
-  def drawBuffers(buffers: scala.scalajs.js.Array[scala.scalajs.js.Any]): Unit = js.native
-  def clearBufferfv(
-      buffer: scala.scalajs.js.Any,
-      drawbuffer: scala.scalajs.js.Any,
-      values: scala.scalajs.js.Any,
-      srcOffset: Int = js.native,
-  ): Unit = js.native
-  def clearBufferiv(
-      buffer: scala.scalajs.js.Any,
-      drawbuffer: scala.scalajs.js.Any,
-      values: scala.scalajs.js.Any,
-      srcOffset: Int = js.native,
-  ): Unit = js.native
-  def clearBufferuiv(
-      buffer: scala.scalajs.js.Any,
-      drawbuffer: scala.scalajs.js.Any,
-      values: scala.scalajs.js.Any,
-      srcOffset: Int = js.native,
-  ): Unit = js.native
-  def clearBufferfi(
-      buffer: scala.scalajs.js.Any,
-      drawbuffer: scala.scalajs.js.Any,
-      depth: scala.scalajs.js.Any,
-      stencil: scala.scalajs.js.Any,
-  ): Unit                                                                                     = js.native
-  def createQuery(): WebGLQuery                                                               = js.native
-  def deleteQuery(query: WebGLQuery): Unit                                                    = js.native
-  def isQuery(query: WebGLQuery): scala.scalajs.js.Any                                        = js.native
-  def beginQuery(target: scala.scalajs.js.Any, query: WebGLQuery): Unit                       = js.native
-  def endQuery(target: scala.scalajs.js.Any): Unit                                            = js.native
-  def getQuery(target: scala.scalajs.js.Any, pname: scala.scalajs.js.Any): WebGLQuery         = js.native
-  def getQueryParameter(query: WebGLQuery, pname: scala.scalajs.js.Any): scala.scalajs.js.Any = js.native
-  def createSampler(): WebGLSampler                                                           = js.native
-  def deleteSampler(sampler: WebGLSampler): Unit                                              = js.native
-  def isSampler(sampler: WebGLSampler): scala.scalajs.js.Any                                  = js.native
-  def bindSampler(unit: scala.scalajs.js.Any, sampler: WebGLSampler): Unit                    = js.native
-  def samplerParameteri(sampler: WebGLSampler, pname: scala.scalajs.js.Any, param: scala.scalajs.js.Any): Unit =
+      srcLength: Int = js.native,
+  ): Unit                                                                                              = js.native
+  def vertexAttribI4i(index: Int, x: Int, y: Int, z: Int, w: Int): Unit                                = js.native
+  def vertexAttribI4iv(index: Int, values: scala.scalajs.js.Any): Unit                                 = js.native
+  def vertexAttribI4ui(index: Int, x: Int, y: Int, z: Int, w: Int): Unit                               = js.native
+  def vertexAttribI4uiv(index: Int, values: scala.scalajs.js.Any): Unit                                = js.native
+  def vertexAttribIPointer(index: Int, size: Int, `type`: Int, stride: Int, offset: Int): Unit         = js.native
+  def vertexAttribDivisor(index: Int, divisor: Int): Unit                                              = js.native
+  def drawArraysInstanced(mode: Int, first: Int, count: Int, instanceCount: Int): Unit                 = js.native
+  def drawElementsInstanced(mode: Int, count: Int, `type`: Int, offset: Int, instanceCount: Int): Unit = js.native
+  def drawRangeElements(mode: Int, start: Int, end: Int, count: Int, `type`: Int, offset: Int): Unit   = js.native
+  def drawBuffers(buffers: scala.scalajs.js.Array[Int]): Unit                                          = js.native
+  def clearBufferfv(buffer: Int, drawbuffer: Int, values: scala.scalajs.js.Any, srcOffset: Int = js.native): Unit =
     js.native
-  def samplerParameterf(sampler: WebGLSampler, pname: scala.scalajs.js.Any, param: scala.scalajs.js.Any): Unit =
+  def clearBufferiv(buffer: Int, drawbuffer: Int, values: scala.scalajs.js.Any, srcOffset: Int = js.native): Unit =
     js.native
-  def getSamplerParameter(sampler: WebGLSampler, pname: scala.scalajs.js.Any): scala.scalajs.js.Any = js.native
-  def fenceSync(condition: scala.scalajs.js.Any, flags: scala.scalajs.js.Any): WebGLSync            = js.native
-  def isSync(sync: WebGLSync): scala.scalajs.js.Any                                                 = js.native
-  def deleteSync(sync: WebGLSync): Unit                                                             = js.native
-  def clientWaitSync(
-      sync: WebGLSync,
-      flags: scala.scalajs.js.Any,
-      timeout: scala.scalajs.js.Any,
-  ): scala.scalajs.js.Any                                                                         = js.native
-  def waitSync(sync: WebGLSync, flags: scala.scalajs.js.Any, timeout: scala.scalajs.js.Any): Unit = js.native
-  def getSyncParameter(sync: WebGLSync, pname: scala.scalajs.js.Any): scala.scalajs.js.Any        = js.native
-  def createTransformFeedback(): WebGLTransformFeedback                                           = js.native
-  def deleteTransformFeedback(tf: WebGLTransformFeedback): Unit                                   = js.native
-  def isTransformFeedback(tf: WebGLTransformFeedback): scala.scalajs.js.Any                       = js.native
-  def bindTransformFeedback(target: scala.scalajs.js.Any, tf: WebGLTransformFeedback): Unit       = js.native
-  def beginTransformFeedback(primitiveMode: scala.scalajs.js.Any): Unit                           = js.native
-  def endTransformFeedback(): Unit                                                                = js.native
+  def clearBufferuiv(buffer: Int, drawbuffer: Int, values: scala.scalajs.js.Any, srcOffset: Int = js.native): Unit =
+    js.native
+  def clearBufferfi(buffer: Int, drawbuffer: Int, depth: Double, stencil: Int): Unit = js.native
+  def createQuery(): WebGLQuery                                                      = js.native
+  def deleteQuery(query: WebGLQuery): Unit                                           = js.native
+  def isQuery(query: WebGLQuery): Boolean                                            = js.native
+  def beginQuery(target: Int, query: WebGLQuery): Unit                               = js.native
+  def endQuery(target: Int): Unit                                                    = js.native
+  @JSName("getQuery")
+  def getQueryOrNull(target: Int, pname: Int): WebGLQuery | Null                   = js.native
+  def getQueryParameter(query: WebGLQuery, pname: Int): scala.scalajs.js.Any       = js.native
+  def createSampler(): WebGLSampler                                                = js.native
+  def deleteSampler(sampler: WebGLSampler): Unit                                   = js.native
+  def isSampler(sampler: WebGLSampler): Boolean                                    = js.native
+  def bindSampler(unit: Int, sampler: WebGLSampler): Unit                          = js.native
+  def samplerParameteri(sampler: WebGLSampler, pname: Int, param: Int): Unit       = js.native
+  def samplerParameterf(sampler: WebGLSampler, pname: Int, param: Double): Unit    = js.native
+  def getSamplerParameter(sampler: WebGLSampler, pname: Int): scala.scalajs.js.Any = js.native
+  @JSName("fenceSync")
+  def fenceSyncOrNull(condition: Int, flags: Int): WebGLSync | Null        = js.native
+  def isSync(sync: WebGLSync): Boolean                                     = js.native
+  def deleteSync(sync: WebGLSync): Unit                                    = js.native
+  def clientWaitSync(sync: WebGLSync, flags: Int, timeout: Int): Int       = js.native
+  def waitSync(sync: WebGLSync, flags: Int, timeout: Int): Unit            = js.native
+  def getSyncParameter(sync: WebGLSync, pname: Int): scala.scalajs.js.Any  = js.native
+  def createTransformFeedback(): WebGLTransformFeedback                    = js.native
+  def deleteTransformFeedback(tf: WebGLTransformFeedback): Unit            = js.native
+  def isTransformFeedback(tf: WebGLTransformFeedback): Boolean             = js.native
+  def bindTransformFeedback(target: Int, tf: WebGLTransformFeedback): Unit = js.native
+  def beginTransformFeedback(primitiveMode: Int): Unit                     = js.native
+  def endTransformFeedback(): Unit                                         = js.native
   def transformFeedbackVaryings(
       program: WebGLProgram,
       varyings: scala.scalajs.js.Array[String],
-      bufferMode: scala.scalajs.js.Any,
-  ): Unit                                                                                                  = js.native
-  def getTransformFeedbackVarying(program: WebGLProgram, index: scala.scalajs.js.Any): WebGLActiveInfo     = js.native
-  def pauseTransformFeedback(): Unit                                                                       = js.native
-  def resumeTransformFeedback(): Unit                                                                      = js.native
-  def bindBufferBase(target: scala.scalajs.js.Any, index: scala.scalajs.js.Any, buffer: WebGLBuffer): Unit = js.native
-  def bindBufferRange(
-      target: scala.scalajs.js.Any,
-      index: scala.scalajs.js.Any,
-      buffer: WebGLBuffer,
-      offset: scala.scalajs.js.Any,
-      size: scala.scalajs.js.Any,
-  ): Unit                                                                                                  = js.native
-  def getIndexedParameter(target: scala.scalajs.js.Any, index: scala.scalajs.js.Any): scala.scalajs.js.Any = js.native
-  def getUniformIndices(
+      bufferMode: Int,
+  ): Unit = js.native
+  @JSName("getTransformFeedbackVarying")
+  def getTransformFeedbackVaryingOrNull(program: WebGLProgram, index: Int): WebGLActiveInfo | Null = js.native
+  def pauseTransformFeedback(): Unit                                                               = js.native
+  def resumeTransformFeedback(): Unit                                                              = js.native
+  def bindBufferBase(target: Int, index: Int, buffer: WebGLBuffer): Unit                           = js.native
+  def bindBufferRange(target: Int, index: Int, buffer: WebGLBuffer, offset: Int, size: Int): Unit  = js.native
+  def getIndexedParameter(target: Int, index: Int): scala.scalajs.js.Any                           = js.native
+  @JSName("getUniformIndices")
+  def getUniformIndicesOrNull(
       program: WebGLProgram,
       uniformNames: scala.scalajs.js.Array[String],
-  ): scala.scalajs.js.Array[scala.scalajs.js.Any] = js.native
+  ): scala.scalajs.js.Array[Int] | Null = js.native
   def getActiveUniforms(
       program: WebGLProgram,
-      uniformIndices: scala.scalajs.js.Array[scala.scalajs.js.Any],
-      pname: scala.scalajs.js.Any,
-  ): scala.scalajs.js.Any                                                                         = js.native
-  def getUniformBlockIndex(program: WebGLProgram, uniformBlockName: String): scala.scalajs.js.Any = js.native
-  def getActiveUniformBlockParameter(
-      program: WebGLProgram,
-      uniformBlockIndex: scala.scalajs.js.Any,
-      pname: scala.scalajs.js.Any,
-  ): scala.scalajs.js.Any                                                                               = js.native
-  def getActiveUniformBlockName(program: WebGLProgram, uniformBlockIndex: scala.scalajs.js.Any): String = js.native
-  def uniformBlockBinding(
-      program: WebGLProgram,
-      uniformBlockIndex: scala.scalajs.js.Any,
-      uniformBlockBinding: scala.scalajs.js.Any,
-  ): Unit                                                                      = js.native
-  def createVertexArray(): WebGLVertexArrayObject                              = js.native
-  def deleteVertexArray(vertexArray: WebGLVertexArrayObject): Unit             = js.native
-  def isVertexArray(vertexArray: WebGLVertexArrayObject): scala.scalajs.js.Any = js.native
-  def bindVertexArray(array: WebGLVertexArrayObject): Unit                     = js.native
-  def bufferData(target: scala.scalajs.js.Any, srcData: scala.scalajs.js.Any, usage: scala.scalajs.js.Any): Unit =
+      uniformIndices: scala.scalajs.js.Array[Int],
+      pname: Int,
+  ): scala.scalajs.js.Any                                                        = js.native
+  def getUniformBlockIndex(program: WebGLProgram, uniformBlockName: String): Int = js.native
+  def getActiveUniformBlockParameter(program: WebGLProgram, uniformBlockIndex: Int, pname: Int): scala.scalajs.js.Any =
     js.native
-  def bufferSubData(
-      target: scala.scalajs.js.Any,
-      dstByteOffset: scala.scalajs.js.Any,
-      srcData: scala.scalajs.js.Any,
-  ): Unit = js.native
-  def bufferData(
-      target: scala.scalajs.js.Any,
-      srcData: scala.scalajs.js.Any,
-      usage: scala.scalajs.js.Any,
-      srcOffset: Int,
-      length: scala.scalajs.js.Any,
-  ): Unit = js.native
-  def bufferSubData(
-      target: scala.scalajs.js.Any,
-      dstByteOffset: scala.scalajs.js.Any,
-      srcData: scala.scalajs.js.Any,
-      srcOffset: Int,
-      length: scala.scalajs.js.Any,
+  @JSName("getActiveUniformBlockName")
+  def getActiveUniformBlockNameOrNull(program: WebGLProgram, uniformBlockIndex: Int): String | Null         = js.native
+  def uniformBlockBinding(program: WebGLProgram, uniformBlockIndex: Int, uniformBlockBinding: Int): Unit    = js.native
+  def createVertexArray(): WebGLVertexArrayObject                                                           = js.native
+  def deleteVertexArray(vertexArray: WebGLVertexArrayObject): Unit                                          = js.native
+  def isVertexArray(vertexArray: WebGLVertexArrayObject): Boolean                                           = js.native
+  def bindVertexArray(array: WebGLVertexArrayObject): Unit                                                  = js.native
+  def bufferData(target: Int, size: Int, usage: Int): Unit                                                  = js.native
+  def bufferData(target: Int, srcData: scala.scalajs.js.Any, usage: Int): Unit                              = js.native
+  def bufferSubData(target: Int, dstByteOffset: Int, srcData: scala.scalajs.js.Any): Unit                   = js.native
+  def bufferData(target: Int, srcData: scala.scalajs.js.Any, usage: Int, srcOffset: Int): Unit              = js.native
+  def bufferData(target: Int, srcData: scala.scalajs.js.Any, usage: Int, srcOffset: Int, length: Int): Unit = js.native
+  def bufferSubData(target: Int, dstByteOffset: Int, srcData: scala.scalajs.js.Any, srcOffset: Int): Unit   = js.native
+  def bufferSubData(target: Int, dstByteOffset: Int, srcData: scala.scalajs.js.Any, srcOffset: Int, length: Int): Unit =
+    js.native
+  def texImage2D(
+      target: Int,
+      level: Int,
+      internalformat: Int,
+      width: Int,
+      height: Int,
+      border: Int,
+      format: Int,
+      `type`: Int,
+      pixels: scala.scalajs.js.Any,
   ): Unit = js.native
   def texImage2D(
-      target: scala.scalajs.js.Any,
-      level: scala.scalajs.js.Any,
-      internalformat: scala.scalajs.js.Any,
-      width: scala.scalajs.js.Any,
-      height: scala.scalajs.js.Any,
-      border: scala.scalajs.js.Any,
-      format: scala.scalajs.js.Any,
-      `type`: scala.scalajs.js.Any,
-      source: scala.scalajs.js.Any,
-  ): Unit = js.native
-  def texImage2D(
-      target: scala.scalajs.js.Any,
-      level: scala.scalajs.js.Any,
-      internalformat: scala.scalajs.js.Any,
-      format: scala.scalajs.js.Any,
-      `type`: scala.scalajs.js.Any,
-      source: scala.scalajs.js.Any,
+      target: Int,
+      level: Int,
+      internalformat: Int,
+      format: Int,
+      `type`: Int,
+      source: ImageBitmap | ImageData | HTMLImageElement | HTMLCanvasElement | HTMLVideoElement | OffscreenCanvas | VideoFrame,
   ): Unit = js.native
   def texSubImage2D(
-      target: scala.scalajs.js.Any,
-      level: scala.scalajs.js.Any,
-      xoffset: scala.scalajs.js.Any,
-      yoffset: scala.scalajs.js.Any,
-      width: scala.scalajs.js.Any,
-      height: scala.scalajs.js.Any,
-      format: scala.scalajs.js.Any,
-      `type`: scala.scalajs.js.Any,
-      source: scala.scalajs.js.Any,
+      target: Int,
+      level: Int,
+      xoffset: Int,
+      yoffset: Int,
+      width: Int,
+      height: Int,
+      format: Int,
+      `type`: Int,
+      pixels: scala.scalajs.js.Any,
   ): Unit = js.native
   def texSubImage2D(
-      target: scala.scalajs.js.Any,
-      level: scala.scalajs.js.Any,
-      xoffset: scala.scalajs.js.Any,
-      yoffset: scala.scalajs.js.Any,
-      format: scala.scalajs.js.Any,
-      `type`: scala.scalajs.js.Any,
-      source: scala.scalajs.js.Any,
+      target: Int,
+      level: Int,
+      xoffset: Int,
+      yoffset: Int,
+      format: Int,
+      `type`: Int,
+      source: ImageBitmap | ImageData | HTMLImageElement | HTMLCanvasElement | HTMLVideoElement | OffscreenCanvas | VideoFrame,
   ): Unit = js.native
   def texImage2D(
-      target: scala.scalajs.js.Any,
-      level: scala.scalajs.js.Any,
-      internalformat: scala.scalajs.js.Any,
-      width: scala.scalajs.js.Any,
-      height: scala.scalajs.js.Any,
-      border: scala.scalajs.js.Any,
-      format: scala.scalajs.js.Any,
-      `type`: scala.scalajs.js.Any,
+      target: Int,
+      level: Int,
+      internalformat: Int,
+      width: Int,
+      height: Int,
+      border: Int,
+      format: Int,
+      `type`: Int,
+      pboOffset: Int,
+  ): Unit = js.native
+  def texImage2D(
+      target: Int,
+      level: Int,
+      internalformat: Int,
+      width: Int,
+      height: Int,
+      border: Int,
+      format: Int,
+      `type`: Int,
+      source: ImageBitmap | ImageData | HTMLImageElement | HTMLCanvasElement | HTMLVideoElement | OffscreenCanvas | VideoFrame,
+  ): Unit = js.native
+  def texImage2D(
+      target: Int,
+      level: Int,
+      internalformat: Int,
+      width: Int,
+      height: Int,
+      border: Int,
+      format: Int,
+      `type`: Int,
       srcData: scala.scalajs.js.Any,
       srcOffset: Int,
   ): Unit = js.native
   def texSubImage2D(
-      target: scala.scalajs.js.Any,
-      level: scala.scalajs.js.Any,
-      xoffset: scala.scalajs.js.Any,
-      yoffset: scala.scalajs.js.Any,
-      width: scala.scalajs.js.Any,
-      height: scala.scalajs.js.Any,
-      format: scala.scalajs.js.Any,
-      `type`: scala.scalajs.js.Any,
+      target: Int,
+      level: Int,
+      xoffset: Int,
+      yoffset: Int,
+      width: Int,
+      height: Int,
+      format: Int,
+      `type`: Int,
+      pboOffset: Int,
+  ): Unit = js.native
+  def texSubImage2D(
+      target: Int,
+      level: Int,
+      xoffset: Int,
+      yoffset: Int,
+      width: Int,
+      height: Int,
+      format: Int,
+      `type`: Int,
+      source: ImageBitmap | ImageData | HTMLImageElement | HTMLCanvasElement | HTMLVideoElement | OffscreenCanvas | VideoFrame,
+  ): Unit = js.native
+  def texSubImage2D(
+      target: Int,
+      level: Int,
+      xoffset: Int,
+      yoffset: Int,
+      width: Int,
+      height: Int,
+      format: Int,
+      `type`: Int,
       srcData: scala.scalajs.js.Any,
       srcOffset: Int,
   ): Unit = js.native
   def compressedTexImage2D(
-      target: scala.scalajs.js.Any,
-      level: scala.scalajs.js.Any,
-      internalformat: scala.scalajs.js.Any,
-      width: scala.scalajs.js.Any,
-      height: scala.scalajs.js.Any,
-      border: scala.scalajs.js.Any,
-      imageSize: scala.scalajs.js.Any,
-      offset: scala.scalajs.js.Any,
+      target: Int,
+      level: Int,
+      internalformat: Int,
+      width: Int,
+      height: Int,
+      border: Int,
+      imageSize: Int,
+      offset: Int,
   ): Unit = js.native
   def compressedTexImage2D(
-      target: scala.scalajs.js.Any,
-      level: scala.scalajs.js.Any,
-      internalformat: scala.scalajs.js.Any,
-      width: scala.scalajs.js.Any,
-      height: scala.scalajs.js.Any,
-      border: scala.scalajs.js.Any,
+      target: Int,
+      level: Int,
+      internalformat: Int,
+      width: Int,
+      height: Int,
+      border: Int,
+      srcData: scala.scalajs.js.Any,
+  ): Unit = js.native
+  def compressedTexImage2D(
+      target: Int,
+      level: Int,
+      internalformat: Int,
+      width: Int,
+      height: Int,
+      border: Int,
       srcData: scala.scalajs.js.Any,
       srcOffset: Int,
-      srcLengthOverride: scala.scalajs.js.Any,
   ): Unit = js.native
-  def compressedTexSubImage2D(
-      target: scala.scalajs.js.Any,
-      level: scala.scalajs.js.Any,
-      xoffset: scala.scalajs.js.Any,
-      yoffset: scala.scalajs.js.Any,
-      width: scala.scalajs.js.Any,
-      height: scala.scalajs.js.Any,
-      format: scala.scalajs.js.Any,
-      imageSize: scala.scalajs.js.Any,
-      offset: scala.scalajs.js.Any,
-  ): Unit = js.native
-  def compressedTexSubImage2D(
-      target: scala.scalajs.js.Any,
-      level: scala.scalajs.js.Any,
-      xoffset: scala.scalajs.js.Any,
-      yoffset: scala.scalajs.js.Any,
-      width: scala.scalajs.js.Any,
-      height: scala.scalajs.js.Any,
-      format: scala.scalajs.js.Any,
+  def compressedTexImage2D(
+      target: Int,
+      level: Int,
+      internalformat: Int,
+      width: Int,
+      height: Int,
+      border: Int,
       srcData: scala.scalajs.js.Any,
       srcOffset: Int,
-      srcLengthOverride: scala.scalajs.js.Any,
+      srcLengthOverride: Int,
+  ): Unit = js.native
+  def compressedTexSubImage2D(
+      target: Int,
+      level: Int,
+      xoffset: Int,
+      yoffset: Int,
+      width: Int,
+      height: Int,
+      format: Int,
+      imageSize: Int,
+      offset: Int,
+  ): Unit = js.native
+  def compressedTexSubImage2D(
+      target: Int,
+      level: Int,
+      xoffset: Int,
+      yoffset: Int,
+      width: Int,
+      height: Int,
+      format: Int,
+      srcData: scala.scalajs.js.Any,
+  ): Unit = js.native
+  def compressedTexSubImage2D(
+      target: Int,
+      level: Int,
+      xoffset: Int,
+      yoffset: Int,
+      width: Int,
+      height: Int,
+      format: Int,
+      srcData: scala.scalajs.js.Any,
+      srcOffset: Int,
+  ): Unit = js.native
+  def compressedTexSubImage2D(
+      target: Int,
+      level: Int,
+      xoffset: Int,
+      yoffset: Int,
+      width: Int,
+      height: Int,
+      format: Int,
+      srcData: scala.scalajs.js.Any,
+      srcOffset: Int,
+      srcLengthOverride: Int,
   ): Unit = js.native
   def uniform1fv(
       location: WebGLUniformLocation,
       data: scala.scalajs.js.Any,
       srcOffset: Int = js.native,
-      srcLength: scala.scalajs.js.Any = js.native,
+      srcLength: Int = js.native,
   ): Unit = js.native
   def uniform2fv(
       location: WebGLUniformLocation,
       data: scala.scalajs.js.Any,
       srcOffset: Int = js.native,
-      srcLength: scala.scalajs.js.Any = js.native,
+      srcLength: Int = js.native,
   ): Unit = js.native
   def uniform3fv(
       location: WebGLUniformLocation,
       data: scala.scalajs.js.Any,
       srcOffset: Int = js.native,
-      srcLength: scala.scalajs.js.Any = js.native,
+      srcLength: Int = js.native,
   ): Unit = js.native
   def uniform4fv(
       location: WebGLUniformLocation,
       data: scala.scalajs.js.Any,
       srcOffset: Int = js.native,
-      srcLength: scala.scalajs.js.Any = js.native,
+      srcLength: Int = js.native,
   ): Unit = js.native
   def uniform1iv(
       location: WebGLUniformLocation,
       data: scala.scalajs.js.Any,
       srcOffset: Int = js.native,
-      srcLength: scala.scalajs.js.Any = js.native,
+      srcLength: Int = js.native,
   ): Unit = js.native
   def uniform2iv(
       location: WebGLUniformLocation,
       data: scala.scalajs.js.Any,
       srcOffset: Int = js.native,
-      srcLength: scala.scalajs.js.Any = js.native,
+      srcLength: Int = js.native,
   ): Unit = js.native
   def uniform3iv(
       location: WebGLUniformLocation,
       data: scala.scalajs.js.Any,
       srcOffset: Int = js.native,
-      srcLength: scala.scalajs.js.Any = js.native,
+      srcLength: Int = js.native,
   ): Unit = js.native
   def uniform4iv(
       location: WebGLUniformLocation,
       data: scala.scalajs.js.Any,
       srcOffset: Int = js.native,
-      srcLength: scala.scalajs.js.Any = js.native,
+      srcLength: Int = js.native,
   ): Unit = js.native
   def uniformMatrix2fv(
       location: WebGLUniformLocation,
-      transpose: scala.scalajs.js.Any,
+      transpose: Boolean,
       data: scala.scalajs.js.Any,
       srcOffset: Int = js.native,
-      srcLength: scala.scalajs.js.Any = js.native,
+      srcLength: Int = js.native,
   ): Unit = js.native
   def uniformMatrix3fv(
       location: WebGLUniformLocation,
-      transpose: scala.scalajs.js.Any,
+      transpose: Boolean,
       data: scala.scalajs.js.Any,
       srcOffset: Int = js.native,
-      srcLength: scala.scalajs.js.Any = js.native,
+      srcLength: Int = js.native,
   ): Unit = js.native
   def uniformMatrix4fv(
       location: WebGLUniformLocation,
-      transpose: scala.scalajs.js.Any,
+      transpose: Boolean,
       data: scala.scalajs.js.Any,
       srcOffset: Int = js.native,
-      srcLength: scala.scalajs.js.Any = js.native,
+      srcLength: Int = js.native,
   ): Unit = js.native
   def readPixels(
-      x: scala.scalajs.js.Any,
-      y: scala.scalajs.js.Any,
-      width: scala.scalajs.js.Any,
-      height: scala.scalajs.js.Any,
-      format: scala.scalajs.js.Any,
-      `type`: scala.scalajs.js.Any,
-      offset: scala.scalajs.js.Any,
-  ): Unit = js.native
+      x: Int,
+      y: Int,
+      width: Int,
+      height: Int,
+      format: Int,
+      `type`: Int,
+      dstData: scala.scalajs.js.Any,
+  ): Unit                                                                                              = js.native
+  def readPixels(x: Int, y: Int, width: Int, height: Int, format: Int, `type`: Int, offset: Int): Unit = js.native
   def readPixels(
-      x: scala.scalajs.js.Any,
-      y: scala.scalajs.js.Any,
-      width: scala.scalajs.js.Any,
-      height: scala.scalajs.js.Any,
-      format: scala.scalajs.js.Any,
-      `type`: scala.scalajs.js.Any,
+      x: Int,
+      y: Int,
+      width: Int,
+      height: Int,
+      format: Int,
+      `type`: Int,
       dstData: scala.scalajs.js.Any,
       dstOffset: Int,
   ): Unit = js.native
@@ -6666,7 +7142,7 @@ end WebGL2RenderingContext
 
 @js.native
 @JSGlobal
-class NamedFlowMap extends js.Object:
+class NamedFlowMap extends PlatformObject:
   def size: Int                                                                        = js.native
   def get(key: String): scala.scalajs.js.UndefOr[NamedFlow]                            = js.native
   def has(key: String): Boolean                                                        = js.native
@@ -6684,13 +7160,14 @@ end NamedFlowMap
 @js.native
 @JSGlobal
 class PictureInPictureWindow extends EventTarget:
-  def width: Int                     = js.native
-  def height: Int                    = js.native
-  var onresize: scala.scalajs.js.Any = js.native
+  def width: Int  = js.native
+  def height: Int = js.native
+  @JSName("onresize")
+  var onresizeOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
 
 @js.native
 @JSGlobal
-class SVGStringList extends js.Object:
+class SVGStringList extends PlatformObject:
   def length: Int                                           = js.native
   def numberOfItems: Int                                    = js.native
   def clear(): Unit                                         = js.native
@@ -6706,23 +7183,24 @@ end SVGStringList
 
 @js.native
 @JSGlobal
-class WEBGL_compressed_texture_etc1 extends js.Object
+class WEBGL_compressed_texture_etc1 extends PlatformObject
 
 @js.native
 @JSGlobal
 object WEBGL_compressed_texture_etc1 extends js.Object:
-  val COMPRESSED_RGB_ETC1_WEBGL: scala.scalajs.js.Any = js.native
+  val COMPRESSED_RGB_ETC1_WEBGL: Int = js.native
 
 @js.native
 @JSGlobal
-class RdfLiteral extends js.Object:
+class RdfLiteral extends PlatformObject:
   def value: String    = js.native
   def datatype: String = js.native
-  def language: String = js.native
+  @JSName("language")
+  def languageOrNull: String | Null = js.native
 
 @js.native
 @JSGlobal
-class ClipboardItem extends js.Object:
+class ClipboardItem extends PlatformObject:
   def this(
       @unused items: scala.scalajs.js.Dictionary[scala.scalajs.js.Any],
       @unused options: ClipboardItemOptions = js.native,
@@ -6761,75 +7239,68 @@ end PannerNode
 
 @js.native
 @JSGlobal
-class GPURenderBundleEncoder extends js.Object:
-  var label: String                                                              = js.native
-  def finish(descriptor: GPURenderBundleDescriptor = js.native): GPURenderBundle = js.native
-  def pushDebugGroup(groupLabel: String): Unit                                   = js.native
-  def popDebugGroup(): Unit                                                      = js.native
-  def insertDebugMarker(markerLabel: String): Unit                               = js.native
+class GPURenderBundleEncoder extends PlatformObject:
+  var label: String                                                                                        = js.native
+  def finish(descriptor: GPURenderBundleDescriptor = js.native): GPURenderBundle                           = js.native
+  def pushDebugGroup(groupLabel: String): Unit                                                             = js.native
+  def popDebugGroup(): Unit                                                                                = js.native
+  def insertDebugMarker(markerLabel: String): Unit                                                         = js.native
+  def setBindGroup(index: Int, bindGroup: GPUBindGroup): Unit                                              = js.native
+  def setBindGroup(index: Int, bindGroup: GPUBindGroup, dynamicOffsets: scala.scalajs.js.Array[Int]): Unit = js.native
   def setBindGroup(
-      index: scala.scalajs.js.Any,
-      bindGroup: GPUBindGroup,
-      dynamicOffsets: scala.scalajs.js.Array[scala.scalajs.js.Any],
-  ): Unit = js.native
-  def setBindGroup(
-      index: scala.scalajs.js.Any,
+      index: Int,
       bindGroup: GPUBindGroup,
       dynamicOffsetsData: scala.scalajs.js.Any,
-      dynamicOffsetsDataStart: scala.scalajs.js.Any,
-      dynamicOffsetsDataLength: scala.scalajs.js.Any,
+      dynamicOffsetsDataStart: Int,
+      dynamicOffsetsDataLength: Int,
   ): Unit = js.native
   def setImmediates(
-      rangeOffset: scala.scalajs.js.Any,
+      rangeOffset: Int,
       data: scala.scalajs.js.Any,
-      dataOffset: scala.scalajs.js.Any = js.native,
-      dataSize: scala.scalajs.js.Any = js.native,
+      dataOffset: Int = js.native,
+      dataSize: Int = js.native,
   ): Unit                                            = js.native
   def setPipeline(pipeline: GPURenderPipeline): Unit = js.native
-  def setIndexBuffer(
-      buffer: GPUBuffer,
-      indexFormat: String,
-      offset: scala.scalajs.js.Any = js.native,
-      size: scala.scalajs.js.Any = js.native,
-  ): Unit = js.native
-  def setVertexBuffer(
-      slot: scala.scalajs.js.Any,
-      buffer: GPUBuffer,
-      offset: scala.scalajs.js.Any = js.native,
-      size: scala.scalajs.js.Any = js.native,
-  ): Unit = js.native
+  def setIndexBuffer(buffer: GPUBuffer, indexFormat: String, offset: Int = js.native, size: Int = js.native): Unit =
+    js.native
+  def setVertexBuffer(slot: Int, buffer: GPUBuffer, offset: Int = js.native, size: Int = js.native): Unit = js.native
   def draw(
-      vertexCount: scala.scalajs.js.Any,
-      instanceCount: scala.scalajs.js.Any = js.native,
-      firstVertex: scala.scalajs.js.Any = js.native,
-      firstInstance: scala.scalajs.js.Any = js.native,
+      vertexCount: Int,
+      instanceCount: Int = js.native,
+      firstVertex: Int = js.native,
+      firstInstance: Int = js.native,
   ): Unit = js.native
   def drawIndexed(
-      indexCount: scala.scalajs.js.Any,
-      instanceCount: scala.scalajs.js.Any = js.native,
-      firstIndex: scala.scalajs.js.Any = js.native,
-      baseVertex: scala.scalajs.js.Any = js.native,
-      firstInstance: scala.scalajs.js.Any = js.native,
-  ): Unit                                                                                        = js.native
-  def drawIndirect(indirectBuffer: GPUBuffer, indirectOffset: scala.scalajs.js.Any): Unit        = js.native
-  def drawIndexedIndirect(indirectBuffer: GPUBuffer, indirectOffset: scala.scalajs.js.Any): Unit = js.native
+      indexCount: Int,
+      instanceCount: Int = js.native,
+      firstIndex: Int = js.native,
+      baseVertex: Int = js.native,
+      firstInstance: Int = js.native,
+  ): Unit                                                                       = js.native
+  def drawIndirect(indirectBuffer: GPUBuffer, indirectOffset: Int): Unit        = js.native
+  def drawIndexedIndirect(indirectBuffer: GPUBuffer, indirectOffset: Int): Unit = js.native
 end GPURenderBundleEncoder
 
 @js.native
 @JSGlobal
 class IDBRequest extends EventTarget:
-  def result: scala.scalajs.js.Any    = js.native
-  def error: DOMException             = js.native
-  def source: scala.scalajs.js.Any    = js.native
-  def transaction: IDBTransaction     = js.native
-  def readyState: String              = js.native
-  var onsuccess: scala.scalajs.js.Any = js.native
-  var onerror: scala.scalajs.js.Any   = js.native
+  def result: scala.scalajs.js.Any = js.native
+  @JSName("error")
+  def errorOrNull: DOMException | Null = js.native
+  @JSName("source")
+  def sourceOrNull: IDBObjectStore | IDBIndex | IDBCursor | Null = js.native
+  @JSName("transaction")
+  def transactionOrNull: IDBTransaction | Null = js.native
+  def readyState: String                       = js.native
+  @JSName("onsuccess")
+  var onsuccessOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("onerror")
+  var onerrorOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
 end IDBRequest
 
 @js.native
 @JSGlobal
-class WebTransportBidirectionalStream extends js.Object:
+class WebTransportBidirectionalStream extends PlatformObject:
   def readable: WebTransportReceiveStream = js.native
   def writable: WebTransportSendStream    = js.native
 
@@ -6838,19 +7309,23 @@ class WebTransportBidirectionalStream extends js.Object:
 class SequenceEffect extends GroupEffect:
   def this(
       @unused children: scala.scalajs.js.Array[AnimationEffect],
-      @unused timing: scala.scalajs.js.Any = js.native,
+      @unused timing: Double | EffectTiming = js.native,
   ) = this()
 
 @js.native
 @JSGlobal
-class GeolocationCoordinates extends js.Object:
-  def accuracy: Double               = js.native
-  def latitude: Double               = js.native
-  def longitude: Double              = js.native
-  def altitude: Double               = js.native
-  def altitudeAccuracy: Double       = js.native
-  def heading: Double                = js.native
-  def speed: Double                  = js.native
+class GeolocationCoordinates extends PlatformObject:
+  def accuracy: Double  = js.native
+  def latitude: Double  = js.native
+  def longitude: Double = js.native
+  @JSName("altitude")
+  def altitudeOrNull: Double | Null = js.native
+  @JSName("altitudeAccuracy")
+  def altitudeAccuracyOrNull: Double | Null = js.native
+  @JSName("heading")
+  def headingOrNull: Double | Null = js.native
+  @JSName("speed")
+  def speedOrNull: Double | Null     = js.native
   def toJSON(): scala.scalajs.js.Any = js.native
 end GeolocationCoordinates
 
@@ -6858,14 +7333,15 @@ end GeolocationCoordinates
 @JSGlobal
 class AudioEncoder extends EventTarget:
   def this(@unused init: AudioEncoderInit) = this()
-  def state: String                               = js.native
-  def encodeQueueSize: Int                        = js.native
-  var ondequeue: scala.scalajs.js.Any             = js.native
-  def configure(config: AudioEncoderConfig): Unit = js.native
-  def encode(data: AudioData): Unit               = js.native
-  def flush(): scala.scalajs.js.Promise[Unit]     = js.native
-  def reset(): Unit                               = js.native
-  def close(): Unit                               = js.native
+  def state: String        = js.native
+  def encodeQueueSize: Int = js.native
+  @JSName("ondequeue")
+  var ondequeueOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  def configure(config: AudioEncoderConfig): Unit                                     = js.native
+  def encode(data: AudioData): Unit                                                   = js.native
+  def flush(): scala.scalajs.js.Promise[Unit]                                         = js.native
+  def reset(): Unit                                                                   = js.native
+  def close(): Unit                                                                   = js.native
 end AudioEncoder
 
 @js.native
@@ -6876,16 +7352,24 @@ object AudioEncoder extends js.Object:
 @js.native
 @JSGlobal
 class BluetoothDevice extends EventTarget:
-  def id: String                                                                                           = js.native
-  def name: String                                                                                         = js.native
-  def gatt: BluetoothRemoteGATTServer                                                                      = js.native
-  def watchingAdvertisements: Boolean                                                                      = js.native
-  var onadvertisementreceived: scala.scalajs.js.Any                                                        = js.native
-  var ongattserverdisconnected: scala.scalajs.js.Any                                                       = js.native
-  var oncharacteristicvaluechanged: scala.scalajs.js.Any                                                   = js.native
-  var onserviceadded: scala.scalajs.js.Any                                                                 = js.native
-  var onservicechanged: scala.scalajs.js.Any                                                               = js.native
-  var onserviceremoved: scala.scalajs.js.Any                                                               = js.native
+  def id: String = js.native
+  @JSName("name")
+  def nameOrNull: String | Null = js.native
+  @JSName("gatt")
+  def gattOrNull: BluetoothRemoteGATTServer | Null = js.native
+  def watchingAdvertisements: Boolean              = js.native
+  @JSName("onadvertisementreceived")
+  var onadvertisementreceivedOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("ongattserverdisconnected")
+  var ongattserverdisconnectedOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("oncharacteristicvaluechanged")
+  var oncharacteristicvaluechangedOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("onserviceadded")
+  var onserviceaddedOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("onservicechanged")
+  var onservicechangedOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("onserviceremoved")
+  var onserviceremovedOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null               = js.native
   def forget(): scala.scalajs.js.Promise[Unit]                                                             = js.native
   def watchAdvertisements(options: WatchAdvertisementsOptions = js.native): scala.scalajs.js.Promise[Unit] = js.native
 end BluetoothDevice
@@ -6893,8 +7377,9 @@ end BluetoothDevice
 @js.native
 @JSGlobal
 class TaskSignal extends AbortSignal:
-  def priority: String                       = js.native
-  var onprioritychange: scala.scalajs.js.Any = js.native
+  def priority: String = js.native
+  @JSName("onprioritychange")
+  var onprioritychangeOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
 
 @js.native
 @JSGlobal
@@ -6908,11 +7393,15 @@ class AudioDestinationNode extends AudioNode:
 
 @js.native
 @JSGlobal
-class MLContext extends js.Object:
-  def accelerated: Boolean                                                                        = js.native
-  def lost: scala.scalajs.js.Promise[MLContextLostInfo]                                           = js.native
-  def dispatch(graph: MLGraph, inputs: scala.scalajs.js.Any, outputs: scala.scalajs.js.Any): Unit = js.native
-  def createTensor(descriptor: MLTensorDescriptor): scala.scalajs.js.Promise[MLTensor]            = js.native
+class MLContext extends PlatformObject:
+  def accelerated: Boolean                              = js.native
+  def lost: scala.scalajs.js.Promise[MLContextLostInfo] = js.native
+  def dispatch(
+      graph: MLGraph,
+      inputs: scala.scalajs.js.Dictionary[MLTensor],
+      outputs: scala.scalajs.js.Dictionary[MLTensor],
+  ): Unit                                                                              = js.native
+  def createTensor(descriptor: MLTensorDescriptor): scala.scalajs.js.Promise[MLTensor] = js.native
   def createConstantTensor(
       descriptor: MLOperandDescriptor,
       inputData: scala.scalajs.js.Any,
@@ -6926,7 +7415,7 @@ end MLContext
 
 @js.native
 @JSGlobal
-class SVGAngle extends js.Object:
+class SVGAngle extends PlatformObject:
   def unitType: Int                                                              = js.native
   var value: Double                                                              = js.native
   var valueInSpecifiedUnits: Double                                              = js.native
@@ -6946,13 +7435,16 @@ object SVGAngle extends js.Object:
 @js.native
 @JSGlobal
 class Attr extends Node:
-  def namespaceURI: String  = js.native
-  def prefix: String        = js.native
-  def localName: String     = js.native
-  def name: String          = js.native
-  var value: String         = js.native
-  def ownerElement: Element = js.native
-  def specified: Boolean    = js.native
+  @JSName("namespaceURI")
+  def namespaceURIOrNull: String | Null = js.native
+  @JSName("prefix")
+  def prefixOrNull: String | Null = js.native
+  def localName: String           = js.native
+  def name: String                = js.native
+  var value: String               = js.native
+  @JSName("ownerElement")
+  def ownerElementOrNull: Element | Null = js.native
+  def specified: Boolean                 = js.native
 end Attr
 
 @js.native
@@ -7014,7 +7506,7 @@ end CSSFontFaceDescriptors
 
 @js.native
 @JSGlobal
-class CrashReportContext extends js.Object:
+class CrashReportContext extends PlatformObject:
   def initialize(length: Int): scala.scalajs.js.Promise[Unit] = js.native
   def set(key: String, value: String): Unit                   = js.native
   def delete(key: String): Unit                               = js.native
@@ -7037,43 +7529,46 @@ object IdentityCredential extends js.Object:
 
 @js.native
 @JSGlobal
-class WEBGL_provoking_vertex extends js.Object:
-  def provokingVertexWEBGL(provokeMode: scala.scalajs.js.Any): Unit = js.native
+class WEBGL_provoking_vertex extends PlatformObject:
+  def provokingVertexWEBGL(provokeMode: Int): Unit = js.native
 
 @js.native
 @JSGlobal
 object WEBGL_provoking_vertex extends js.Object:
-  val FIRST_VERTEX_CONVENTION_WEBGL: scala.scalajs.js.Any = js.native
-  val LAST_VERTEX_CONVENTION_WEBGL: scala.scalajs.js.Any  = js.native
-  val PROVOKING_VERTEX_WEBGL: scala.scalajs.js.Any        = js.native
+  val FIRST_VERTEX_CONVENTION_WEBGL: Int = js.native
+  val LAST_VERTEX_CONVENTION_WEBGL: Int  = js.native
+  val PROVOKING_VERTEX_WEBGL: Int        = js.native
 
 @js.native
 @JSGlobal
 class WakeLockSentinel extends EventTarget:
-  def released: Boolean                         = js.native
-  def `type`: String                            = js.native
-  var onrelease: scala.scalajs.js.Any           = js.native
-  def release(): scala.scalajs.js.Promise[Unit] = js.native
+  def released: Boolean = js.native
+  def `type`: String    = js.native
+  @JSName("onrelease")
+  var onreleaseOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  def release(): scala.scalajs.js.Promise[Unit]                                       = js.native
 
 @js.native
 @JSGlobal
-class FontFaceFeatures extends js.Object
+class FontFaceFeatures extends PlatformObject
 
 @js.native
 @JSGlobal
 class SVGUseElement extends SVGGraphicsElement:
-  def x: SVGAnimatedLength             = js.native
-  def y: SVGAnimatedLength             = js.native
-  def width: SVGAnimatedLength         = js.native
-  def height: SVGAnimatedLength        = js.native
-  def instanceRoot: SVGElement         = js.native
-  def animatedInstanceRoot: SVGElement = js.native
-  def href: SVGAnimatedString          = js.native
+  def x: SVGAnimatedLength      = js.native
+  def y: SVGAnimatedLength      = js.native
+  def width: SVGAnimatedLength  = js.native
+  def height: SVGAnimatedLength = js.native
+  @JSName("instanceRoot")
+  def instanceRootOrNull: SVGElement | Null = js.native
+  @JSName("animatedInstanceRoot")
+  def animatedInstanceRootOrNull: SVGElement | Null = js.native
+  def href: SVGAnimatedString                       = js.native
 end SVGUseElement
 
 @js.native
 @JSGlobal
-class EXT_float_blend extends js.Object
+class EXT_float_blend extends PlatformObject
 
 @js.native
 @JSGlobal
@@ -7087,13 +7582,16 @@ class InputDeviceInfo extends MediaDeviceInfo:
 
 @js.native
 @JSGlobal
-class XRInputSource extends js.Object:
-  def gamepad: Gamepad                         = js.native
-  def hand: XRHand                             = js.native
-  def handedness: String                       = js.native
-  def targetRayMode: String                    = js.native
-  def targetRaySpace: XRSpace                  = js.native
-  def gripSpace: XRSpace                       = js.native
+class XRInputSource extends PlatformObject:
+  @JSName("gamepad")
+  def gamepadOrNull: Gamepad | Null = js.native
+  @JSName("hand")
+  def handOrNull: XRHand | Null = js.native
+  def handedness: String        = js.native
+  def targetRayMode: String     = js.native
+  def targetRaySpace: XRSpace   = js.native
+  @JSName("gripSpace")
+  def gripSpaceOrNull: XRSpace | Null          = js.native
   def profiles: scala.scalajs.js.Array[String] = js.native
   def skipRendering: Boolean                   = js.native
 end XRInputSource
@@ -7101,27 +7599,32 @@ end XRInputSource
 @js.native
 @JSGlobal
 class LargestContentfulPaint extends PerformanceEntry:
-  def loadTime: Double         = js.native
-  def renderTime: Double       = js.native
-  def size: Int                = js.native
-  def url: String              = js.native
-  def element: Element         = js.native
-  def paintTime: Double        = js.native
-  def presentationTime: Double = js.native
+  def loadTime: Double   = js.native
+  def renderTime: Double = js.native
+  def size: Int          = js.native
+  def url: String        = js.native
+  @JSName("element")
+  def elementOrNull: Element | Null = js.native
+  def paintTime: Double             = js.native
+  @JSName("presentationTime")
+  def presentationTimeOrNull: Double | Null = js.native
 end LargestContentfulPaint
 
 @js.native
 @JSGlobal
 class CaptureController extends EventTarget:
-  var oncapturedmousechange: scala.scalajs.js.Any                        = js.native
-  def zoomLevel: Int                                                     = js.native
-  var onzoomlevelchange: scala.scalajs.js.Any                            = js.native
-  def getSupportedZoomLevels(): scala.scalajs.js.Array[Int]              = js.native
-  def increaseZoomLevel(): scala.scalajs.js.Promise[Unit]                = js.native
-  def decreaseZoomLevel(): scala.scalajs.js.Promise[Unit]                = js.native
-  def resetZoomLevel(): scala.scalajs.js.Promise[Unit]                   = js.native
-  def forwardWheel(element: HTMLElement): scala.scalajs.js.Promise[Unit] = js.native
-  def setFocusBehavior(focusBehavior: String): Unit                      = js.native
+  @JSName("oncapturedmousechange")
+  var oncapturedmousechangeOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("zoomLevel")
+  def zoomLevelOrNull: Int | Null = js.native
+  @JSName("onzoomlevelchange")
+  var onzoomlevelchangeOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  def getSupportedZoomLevels(): scala.scalajs.js.Array[Int]                                   = js.native
+  def increaseZoomLevel(): scala.scalajs.js.Promise[Unit]                                     = js.native
+  def decreaseZoomLevel(): scala.scalajs.js.Promise[Unit]                                     = js.native
+  def resetZoomLevel(): scala.scalajs.js.Promise[Unit]                                        = js.native
+  def forwardWheel(element: HTMLElement): scala.scalajs.js.Promise[Unit]                      = js.native
+  def setFocusBehavior(focusBehavior: String): Unit                                           = js.native
 end CaptureController
 
 @js.native
@@ -7134,15 +7637,20 @@ class ConstantSourceNode extends AudioScheduledSourceNode:
 @JSGlobal
 class EditContext extends EventTarget:
   def this(@unused options: EditContextInit = js.native) = this()
-  def text: String                                                                                   = js.native
-  def selectionStart: Int                                                                            = js.native
-  def selectionEnd: Int                                                                              = js.native
-  def characterBoundsRangeStart: Int                                                                 = js.native
-  var ontextupdate: scala.scalajs.js.Any                                                             = js.native
-  var ontextformatupdate: scala.scalajs.js.Any                                                       = js.native
-  var oncharacterboundsupdate: scala.scalajs.js.Any                                                  = js.native
-  var oncompositionstart: scala.scalajs.js.Any                                                       = js.native
-  var oncompositionend: scala.scalajs.js.Any                                                         = js.native
+  def text: String                   = js.native
+  def selectionStart: Int            = js.native
+  def selectionEnd: Int              = js.native
+  def characterBoundsRangeStart: Int = js.native
+  @JSName("ontextupdate")
+  var ontextupdateOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("ontextformatupdate")
+  var ontextformatupdateOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("oncharacterboundsupdate")
+  var oncharacterboundsupdateOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("oncompositionstart")
+  var oncompositionstartOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("oncompositionend")
+  var oncompositionendOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null         = js.native
   def updateText(rangeStart: Int, rangeEnd: Int, text: String): Unit                                 = js.native
   def updateSelection(start: Int, end: Int): Unit                                                    = js.native
   def updateControlBounds(controlBounds: DOMRect): Unit                                              = js.native
@@ -7155,29 +7663,35 @@ end EditContext
 @js.native
 @JSGlobal
 class HTMLGeolocationElement extends HTMLElement:
-  def position: GeolocationPosition                  = js.native
-  def error: GeolocationPositionError                = js.native
-  var autolocate: Boolean                            = js.native
-  var watch: Boolean                                 = js.native
-  var onlocation: scala.scalajs.js.Any               = js.native
-  def isValid: Boolean                               = js.native
-  def invalidReason: String                          = js.native
-  var onvalidationstatuschange: scala.scalajs.js.Any = js.native
-  def initialPermissionStatus: String                = js.native
-  def permissionStatus: String                       = js.native
-  var onpromptaction: scala.scalajs.js.Any           = js.native
-  var onpromptdismiss: scala.scalajs.js.Any          = js.native
+  @JSName("position")
+  def positionOrNull: GeolocationPosition | Null = js.native
+  @JSName("error")
+  def errorOrNull: GeolocationPositionError | Null = js.native
+  var autolocate: Boolean                          = js.native
+  var watch: Boolean                               = js.native
+  @JSName("onlocation")
+  var onlocationOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  def isValid: Boolean                                                                 = js.native
+  def invalidReason: String                                                            = js.native
+  @JSName("onvalidationstatuschange")
+  var onvalidationstatuschangeOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  def initialPermissionStatus: String                                                                = js.native
+  def permissionStatus: String                                                                       = js.native
+  @JSName("onpromptaction")
+  var onpromptactionOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("onpromptdismiss")
+  var onpromptdismissOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
 end HTMLGeolocationElement
 
 @js.native
 @JSGlobal
-class Exception extends js.Object:
+class Exception extends PlatformObject:
   def this(
       @unused exceptionTag: Tag,
       @unused payload: scala.scalajs.js.Array[scala.scalajs.js.Any],
       @unused options: ExceptionOptions = js.native,
   ) = this()
-  def stack: scala.scalajs.js.Any                                 = js.native
+  def stack: String | Unit                                        = js.native
   def getArg(exceptionTag: Tag, index: Int): scala.scalajs.js.Any = js.native
   def is(exceptionTag: Tag): Boolean                              = js.native
 end Exception
@@ -7185,11 +7699,12 @@ end Exception
 @js.native
 @JSGlobal
 class SVGStyleElement extends SVGElement:
-  var `type`: String       = js.native
-  var media: String        = js.native
-  var title: String        = js.native
-  var disabled: Boolean    = js.native
-  def sheet: CSSStyleSheet = js.native
+  var `type`: String    = js.native
+  var media: String     = js.native
+  var title: String     = js.native
+  var disabled: Boolean = js.native
+  @JSName("sheet")
+  def sheetOrNull: CSSStyleSheet | Null = js.native
 
 @js.native
 @JSGlobal
@@ -7206,12 +7721,12 @@ end ScreenDetailed
 
 @js.native
 @JSGlobal
-class CanvasGradient extends js.Object:
+class CanvasGradient extends PlatformObject:
   def addColorStop(offset: Double, color: String): Unit = js.native
 
 @js.native
 @JSGlobal
-class CSSFontFeatureValuesMap extends js.Object:
+class CSSFontFeatureValuesMap extends PlatformObject:
   def size: Int                                                                                          = js.native
   def set(featureValueName: String, values: scala.scalajs.js.Any): Unit                                  = js.native
   def get(key: String): scala.scalajs.js.UndefOr[scala.scalajs.js.Array[Int]]                            = js.native
@@ -7230,37 +7745,39 @@ end CSSFontFeatureValuesMap
 @js.native
 @JSGlobal
 class HTMLLegendElement extends HTMLElement:
-  def form: HTMLFormElement = js.native
-  var align: String         = js.native
+  @JSName("form")
+  def formOrNull: HTMLFormElement | Null = js.native
+  var align: String                      = js.native
 
 @js.native
 @JSGlobal
-class SpeechGrammar extends js.Object:
+class SpeechGrammar extends PlatformObject:
   var src: String    = js.native
   var weight: Double = js.native
 
 @js.native
 @JSGlobal
 class BaseAudioContext extends EventTarget:
-  def destination: AudioDestinationNode                                                 = js.native
-  def sampleRate: Double                                                                = js.native
-  def currentTime: Double                                                               = js.native
-  def listener: AudioListener                                                           = js.native
-  def state: String                                                                     = js.native
-  def renderQuantumSize: Int                                                            = js.native
-  def audioWorklet: AudioWorklet                                                        = js.native
-  var onstatechange: scala.scalajs.js.Any                                               = js.native
-  def createAnalyser(): AnalyserNode                                                    = js.native
-  def createBiquadFilter(): BiquadFilterNode                                            = js.native
-  def createBuffer(numberOfChannels: Int, length: Int, sampleRate: Double): AudioBuffer = js.native
-  def createBufferSource(): AudioBufferSourceNode                                       = js.native
-  def createChannelMerger(numberOfInputs: Int = js.native): ChannelMergerNode           = js.native
-  def createChannelSplitter(numberOfOutputs: Int = js.native): ChannelSplitterNode      = js.native
-  def createConstantSource(): ConstantSourceNode                                        = js.native
-  def createConvolver(): ConvolverNode                                                  = js.native
-  def createDelay(maxDelayTime: Double = js.native): DelayNode                          = js.native
-  def createDynamicsCompressor(): DynamicsCompressorNode                                = js.native
-  def createGain(): GainNode                                                            = js.native
+  def destination: AudioDestinationNode = js.native
+  def sampleRate: Double                = js.native
+  def currentTime: Double               = js.native
+  def listener: AudioListener           = js.native
+  def state: String                     = js.native
+  def renderQuantumSize: Int            = js.native
+  def audioWorklet: AudioWorklet        = js.native
+  @JSName("onstatechange")
+  var onstatechangeOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  def createAnalyser(): AnalyserNode                                                      = js.native
+  def createBiquadFilter(): BiquadFilterNode                                              = js.native
+  def createBuffer(numberOfChannels: Int, length: Int, sampleRate: Double): AudioBuffer   = js.native
+  def createBufferSource(): AudioBufferSourceNode                                         = js.native
+  def createChannelMerger(numberOfInputs: Int = js.native): ChannelMergerNode             = js.native
+  def createChannelSplitter(numberOfOutputs: Int = js.native): ChannelSplitterNode        = js.native
+  def createConstantSource(): ConstantSourceNode                                          = js.native
+  def createConvolver(): ConvolverNode                                                    = js.native
+  def createDelay(maxDelayTime: Double = js.native): DelayNode                            = js.native
+  def createDynamicsCompressor(): DynamicsCompressorNode                                  = js.native
+  def createGain(): GainNode                                                              = js.native
   def createIIRFilter(
       feedforward: scala.scalajs.js.Array[Double],
       feedback: scala.scalajs.js.Array[Double],
@@ -7288,7 +7805,7 @@ end BaseAudioContext
 
 @js.native
 @JSGlobal
-class AudioListener extends js.Object:
+class AudioListener extends PlatformObject:
   def positionX: AudioParam                                                                        = js.native
   def positionY: AudioParam                                                                        = js.native
   def positionZ: AudioParam                                                                        = js.native
@@ -7305,23 +7822,26 @@ end AudioListener
 @js.native
 @JSGlobal
 class PreferenceObject extends EventTarget:
-  def `override`: String                                             = js.native
-  def value: String                                                  = js.native
-  def validValues: scala.scalajs.js.Array[String]                    = js.native
-  var onchange: scala.scalajs.js.Any                                 = js.native
-  def clearOverride(): Unit                                          = js.native
-  def requestOverride(value: String): scala.scalajs.js.Promise[Unit] = js.native
+  @JSName("override")
+  def overrideOrNull: String | Null               = js.native
+  def value: String                               = js.native
+  def validValues: scala.scalajs.js.Array[String] = js.native
+  @JSName("onchange")
+  var onchangeOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  def clearOverride(): Unit                                                          = js.native
+  def requestOverride(value: String): scala.scalajs.js.Promise[Unit]                 = js.native
+end PreferenceObject
 
 @js.native
 @JSGlobal
-class WebGLActiveInfo extends js.Object:
-  def size: scala.scalajs.js.Any   = js.native
-  def `type`: scala.scalajs.js.Any = js.native
-  def name: String                 = js.native
+class WebGLActiveInfo extends PlatformObject:
+  def size: Int    = js.native
+  def `type`: Int  = js.native
+  def name: String = js.native
 
 @js.native
 @JSGlobal
-class NavigationTransition extends js.Object:
+class NavigationTransition extends PlatformObject:
   def navigationType: String                    = js.native
   def from: NavigationHistoryEntry              = js.native
   def to: NavigationDestination                 = js.native
@@ -7333,16 +7853,17 @@ class NavigationTransition extends js.Object:
 class OfflineAudioContext extends BaseAudioContext:
   def this(@unused contextOptions: OfflineAudioContextOptions) = this()
   def this(@unused numberOfChannels: Int, @unused length: Int, @unused sampleRate: Double) = this()
-  def length: Int                                                  = js.native
-  var oncomplete: scala.scalajs.js.Any                             = js.native
-  def startRendering(): scala.scalajs.js.Promise[AudioBuffer]      = js.native
-  def resume(): scala.scalajs.js.Promise[Unit]                     = js.native
-  def suspend(suspendTime: Double): scala.scalajs.js.Promise[Unit] = js.native
+  def length: Int = js.native
+  @JSName("oncomplete")
+  var oncompleteOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  def startRendering(): scala.scalajs.js.Promise[AudioBuffer]                          = js.native
+  def resume(): scala.scalajs.js.Promise[Unit]                                         = js.native
+  def suspend(suspendTime: Double): scala.scalajs.js.Promise[Unit]                     = js.native
 end OfflineAudioContext
 
 @js.native
 @JSGlobal
-class TrustedScript extends js.Object:
+class TrustedScript extends PlatformObject:
   def toJSON(): String = js.native
 
 @js.native
@@ -7351,21 +7872,24 @@ class SVGFEFuncRElement extends SVGComponentTransferFunctionElement
 
 @js.native
 @JSGlobal
-class LayoutConstraints extends js.Object:
-  def availableInlineSize: Double      = js.native
-  def availableBlockSize: Double       = js.native
-  def fixedInlineSize: Double          = js.native
-  def fixedBlockSize: Double           = js.native
-  def percentageInlineSize: Double     = js.native
-  def percentageBlockSize: Double      = js.native
-  def blockFragmentationOffset: Double = js.native
-  def blockFragmentationType: String   = js.native
-  def data: scala.scalajs.js.Any       = js.native
+class LayoutConstraints extends PlatformObject:
+  def availableInlineSize: Double = js.native
+  def availableBlockSize: Double  = js.native
+  @JSName("fixedInlineSize")
+  def fixedInlineSizeOrNull: Double | Null = js.native
+  @JSName("fixedBlockSize")
+  def fixedBlockSizeOrNull: Double | Null = js.native
+  def percentageInlineSize: Double        = js.native
+  def percentageBlockSize: Double         = js.native
+  @JSName("blockFragmentationOffset")
+  def blockFragmentationOffsetOrNull: Double | Null = js.native
+  def blockFragmentationType: String                = js.native
+  def data: scala.scalajs.js.Any                    = js.native
 end LayoutConstraints
 
 @js.native
 @JSGlobal
-class History extends js.Object:
+class History extends PlatformObject:
   def length: Int                                                                             = js.native
   var scrollRestoration: String                                                               = js.native
   def state: scala.scalajs.js.Any                                                             = js.native
@@ -7409,17 +7933,21 @@ object SVGComponentTransferFunctionElement extends js.Object:
 
 @js.native
 @JSGlobal
-class SVGAnimatedPreserveAspectRatio extends js.Object:
+class SVGAnimatedPreserveAspectRatio extends PlatformObject:
   def baseVal: SVGPreserveAspectRatio = js.native
   def animVal: SVGPreserveAspectRatio = js.native
 
 @js.native
 @JSGlobal
-class RTCRtpSender extends js.Object:
-  var transform: scala.scalajs.js.Any = js.native
-  def track: MediaStreamTrack         = js.native
-  def transport: RTCDtlsTransport     = js.native
-  def dtmf: RTCDTMFSender             = js.native
+class RTCRtpSender extends PlatformObject:
+  @JSName("transform")
+  var transformOrNull: RTCRtpSFrameEncrypter | RTCRtpScriptTransform | Null = js.native
+  @JSName("track")
+  def trackOrNull: MediaStreamTrack | Null = js.native
+  @JSName("transport")
+  def transportOrNull: RTCDtlsTransport | Null = js.native
+  @JSName("dtmf")
+  def dtmfOrNull: RTCDTMFSender | Null = js.native
   def setParameters(
       parameters: RTCRtpSendParameters,
       setParameterOptions: RTCSetParameterOptions = js.native,
@@ -7438,28 +7966,37 @@ object RTCRtpSender extends js.Object:
 @js.native
 @JSGlobal
 class RTCDataChannel extends EventTarget:
-  def priority: String                          = js.native
-  def label: String                             = js.native
-  def ordered: Boolean                          = js.native
-  def maxPacketLifeTime: Int                    = js.native
-  def maxRetransmits: Int                       = js.native
-  def protocol: String                          = js.native
-  def negotiated: Boolean                       = js.native
-  def id: Int                                   = js.native
-  def readyState: String                        = js.native
-  def bufferedAmount: Int                       = js.native
-  var bufferedAmountLowThreshold: Int           = js.native
-  var onopen: scala.scalajs.js.Any              = js.native
-  var onbufferedamountlow: scala.scalajs.js.Any = js.native
-  var onerror: scala.scalajs.js.Any             = js.native
-  var onclosing: scala.scalajs.js.Any           = js.native
-  var onclose: scala.scalajs.js.Any             = js.native
-  var onmessage: scala.scalajs.js.Any           = js.native
-  var binaryType: String                        = js.native
-  def close(): Unit                             = js.native
-  def send(data: String): Unit                  = js.native
-  def send(data: Blob): Unit                    = js.native
-  def send(data: scala.scalajs.js.Any): Unit    = js.native
+  def priority: String = js.native
+  def label: String    = js.native
+  def ordered: Boolean = js.native
+  @JSName("maxPacketLifeTime")
+  def maxPacketLifeTimeOrNull: Int | Null = js.native
+  @JSName("maxRetransmits")
+  def maxRetransmitsOrNull: Int | Null = js.native
+  def protocol: String                 = js.native
+  def negotiated: Boolean              = js.native
+  @JSName("id")
+  def idOrNull: Int | Null            = js.native
+  def readyState: String              = js.native
+  def bufferedAmount: Int             = js.native
+  var bufferedAmountLowThreshold: Int = js.native
+  @JSName("onopen")
+  var onopenOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("onbufferedamountlow")
+  var onbufferedamountlowOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("onerror")
+  var onerrorOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("onclosing")
+  var onclosingOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("onclose")
+  var oncloseOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("onmessage")
+  var onmessageOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  var binaryType: String                                                              = js.native
+  def close(): Unit                                                                   = js.native
+  def send(data: String): Unit                                                        = js.native
+  def send(data: Blob): Unit                                                          = js.native
+  def send(data: scala.scalajs.js.Any): Unit                                          = js.native
 end RTCDataChannel
 
 @js.native
@@ -7469,7 +8006,7 @@ class CSSTransition extends Animation:
 
 @js.native
 @JSGlobal
-class FileReaderSync extends js.Object:
+class FileReaderSync extends PlatformObject:
   def readAsArrayBuffer(blob: Blob): scala.scalajs.js.Any          = js.native
   def readAsBinaryString(blob: Blob): String                       = js.native
   def readAsText(blob: Blob, encoding: String = js.native): String = js.native
@@ -7482,20 +8019,20 @@ class HTMLPreElement extends HTMLElement:
 
 @js.native
 @JSGlobal
-class SpeechRecognitionAlternative extends js.Object:
+class SpeechRecognitionAlternative extends PlatformObject:
   def transcript: String = js.native
   def confidence: Double = js.native
 
 @js.native
 @JSGlobal
-class WEBGL_color_buffer_float extends js.Object
+class WEBGL_color_buffer_float extends PlatformObject
 
 @js.native
 @JSGlobal
 object WEBGL_color_buffer_float extends js.Object:
-  val RGBA32F_EXT: scala.scalajs.js.Any                               = js.native
-  val FRAMEBUFFER_ATTACHMENT_COMPONENT_TYPE_EXT: scala.scalajs.js.Any = js.native
-  val UNSIGNED_NORMALIZED_EXT: scala.scalajs.js.Any                   = js.native
+  val RGBA32F_EXT: Int                               = js.native
+  val FRAMEBUFFER_ATTACHMENT_COMPONENT_TYPE_EXT: Int = js.native
+  val UNSIGNED_NORMALIZED_EXT: Int                   = js.native
 
 @js.native
 @JSGlobal
@@ -7504,9 +8041,10 @@ class HTMLTitleElement extends HTMLElement:
 
 @js.native
 @JSGlobal
-class PushSubscriptionOptions extends js.Object:
-  def userVisibleOnly: Boolean                   = js.native
-  def applicationServerKey: scala.scalajs.js.Any = js.native
+class PushSubscriptionOptions extends PlatformObject:
+  def userVisibleOnly: Boolean = js.native
+  @JSName("applicationServerKey")
+  def applicationServerKeyOrNull: scala.scalajs.js.Any | Null = js.native
 
 @js.native
 @JSGlobal
@@ -7517,10 +8055,14 @@ class TextTrack extends EventTarget:
   def id: String                              = js.native
   def inBandMetadataTrackDispatchType: String = js.native
   var mode: String                            = js.native
-  def cues: TextTrackCueList                  = js.native
-  def activeCues: TextTrackCueList            = js.native
-  var oncuechange: scala.scalajs.js.Any       = js.native
-  def sourceBuffer: SourceBuffer              = js.native
+  @JSName("cues")
+  def cuesOrNull: TextTrackCueList | Null = js.native
+  @JSName("activeCues")
+  def activeCuesOrNull: TextTrackCueList | Null = js.native
+  @JSName("oncuechange")
+  var oncuechangeOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("sourceBuffer")
+  def sourceBufferOrNull: SourceBuffer | Null = js.native
   def addCue(cue: TextTrackCue): Unit         = js.native
   def removeCue(cue: TextTrackCue): Unit      = js.native
 end TextTrack
@@ -7559,7 +8101,7 @@ end MathMLAnchorElement
 
 @js.native
 @JSGlobal
-class TransformStream extends js.Object:
+class TransformStream extends PlatformObject:
   def this(
       @unused transformer: scala.scalajs.js.Any = js.native,
       @unused writableStrategy: QueuingStrategy = js.native,
@@ -7571,7 +8113,7 @@ end TransformStream
 
 @js.native
 @JSGlobal
-class BluetoothCharacteristicProperties extends js.Object:
+class BluetoothCharacteristicProperties extends PlatformObject:
   def broadcast: Boolean                 = js.native
   def read: Boolean                      = js.native
   def writeWithoutResponse: Boolean      = js.native
@@ -7596,33 +8138,36 @@ class SVGFETileElement extends SVGElement:
 @JSGlobal
 class PointerTimeline extends AnimationTimeline:
   def this(@unused options: PointerTimelineOptions = js.native) = this()
-  def source: Element = js.native
-  def axis: String    = js.native
+  @JSName("source")
+  def sourceOrNull: Element | Null = js.native
+  def axis: String                 = js.native
 
 @js.native
 @JSGlobal
-class EXT_texture_norm16 extends js.Object
+class EXT_texture_norm16 extends PlatformObject
 
 @js.native
 @JSGlobal
 object EXT_texture_norm16 extends js.Object:
-  val R16_EXT: scala.scalajs.js.Any          = js.native
-  val RG16_EXT: scala.scalajs.js.Any         = js.native
-  val RGB16_EXT: scala.scalajs.js.Any        = js.native
-  val RGBA16_EXT: scala.scalajs.js.Any       = js.native
-  val R16_SNORM_EXT: scala.scalajs.js.Any    = js.native
-  val RG16_SNORM_EXT: scala.scalajs.js.Any   = js.native
-  val RGB16_SNORM_EXT: scala.scalajs.js.Any  = js.native
-  val RGBA16_SNORM_EXT: scala.scalajs.js.Any = js.native
+  val R16_EXT: Int          = js.native
+  val RG16_EXT: Int         = js.native
+  val RGB16_EXT: Int        = js.native
+  val RGBA16_EXT: Int       = js.native
+  val R16_SNORM_EXT: Int    = js.native
+  val RG16_SNORM_EXT: Int   = js.native
+  val RGB16_SNORM_EXT: Int  = js.native
+  val RGBA16_SNORM_EXT: Int = js.native
 end EXT_texture_norm16
 
 @js.native
 @JSGlobal
-class WebTransportDatagramDuplexStream extends js.Object:
-  def readable: ReadableStream                                                                    = js.native
-  def maxDatagramSize: Int                                                                        = js.native
-  var incomingMaxAge: Double                                                                      = js.native
-  var outgoingMaxAge: Double                                                                      = js.native
+class WebTransportDatagramDuplexStream extends PlatformObject:
+  def readable: ReadableStream = js.native
+  def maxDatagramSize: Int     = js.native
+  @JSName("incomingMaxAge")
+  var incomingMaxAgeOrNull: Double | Null = js.native
+  @JSName("outgoingMaxAge")
+  var outgoingMaxAgeOrNull: Double | Null                                                         = js.native
   var incomingMaxBufferedDatagrams: Int                                                           = js.native
   var outgoingMaxBufferedDatagrams: Int                                                           = js.native
   def createWritable(options: WebTransportSendOptions = js.native): WebTransportDatagramsWritable = js.native
@@ -7630,38 +8175,46 @@ end WebTransportDatagramDuplexStream
 
 @js.native
 @JSGlobal
-class TreeWalker extends js.Object:
-  def root: Node                                    = js.native
-  def whatToShow: Int                               = js.native
-  def filter: scala.scalajs.js.Function1[Node, Int] = js.native
-  var currentNode: Node                             = js.native
-  def parentNode(): Node                            = js.native
-  def firstChild(): Node                            = js.native
-  def lastChild(): Node                             = js.native
-  def previousSibling(): Node                       = js.native
-  def nextSibling(): Node                           = js.native
-  def previousNode(): Node                          = js.native
-  def nextNode(): Node                              = js.native
+class TreeWalker extends PlatformObject:
+  def root: Node      = js.native
+  def whatToShow: Int = js.native
+  @JSName("filter")
+  def filterOrNull: scala.scalajs.js.Function1[Node, Int] | Null = js.native
+  var currentNode: Node                                          = js.native
+  @JSName("parentNode")
+  def parentNodeOrNull(): Node | Null = js.native
+  @JSName("firstChild")
+  def firstChildOrNull(): Node | Null = js.native
+  @JSName("lastChild")
+  def lastChildOrNull(): Node | Null = js.native
+  @JSName("previousSibling")
+  def previousSiblingOrNull(): Node | Null = js.native
+  @JSName("nextSibling")
+  def nextSiblingOrNull(): Node | Null = js.native
+  @JSName("previousNode")
+  def previousNodeOrNull(): Node | Null = js.native
+  @JSName("nextNode")
+  def nextNodeOrNull(): Node | Null = js.native
 end TreeWalker
 
 @js.native
 @JSGlobal
 class CSSHSL extends CSSColorValue:
   def this(
-      @unused h: scala.scalajs.js.Any,
-      @unused s: scala.scalajs.js.Any,
-      @unused l: scala.scalajs.js.Any,
-      @unused alpha: scala.scalajs.js.Any = js.native,
+      @unused h: Double | CSSNumericValue | String | CSSKeywordValue,
+      @unused s: Double | CSSNumericValue | String | CSSKeywordValue,
+      @unused l: Double | CSSNumericValue | String | CSSKeywordValue,
+      @unused alpha: Double | CSSNumericValue | String | CSSKeywordValue = js.native,
   ) = this()
-  var h: scala.scalajs.js.Any     = js.native
-  var s: scala.scalajs.js.Any     = js.native
-  var l: scala.scalajs.js.Any     = js.native
-  var alpha: scala.scalajs.js.Any = js.native
+  var h: Double | CSSNumericValue | String | CSSKeywordValue     = js.native
+  var s: Double | CSSNumericValue | String | CSSKeywordValue     = js.native
+  var l: Double | CSSNumericValue | String | CSSKeywordValue     = js.native
+  var alpha: Double | CSSNumericValue | String | CSSKeywordValue = js.native
 end CSSHSL
 
 @js.native
 @JSGlobal
-class TimeRanges extends js.Object:
+class TimeRanges extends PlatformObject:
   def length: Int               = js.native
   def start(index: Int): Double = js.native
   def end(index: Int): Double   = js.native
@@ -7680,12 +8233,12 @@ end HTMLMeterElement
 
 @js.native
 @JSGlobal
-class WEBGL_depth_texture extends js.Object
+class WEBGL_depth_texture extends PlatformObject
 
 @js.native
 @JSGlobal
 object WEBGL_depth_texture extends js.Object:
-  val UNSIGNED_INT_24_8_WEBGL: scala.scalajs.js.Any = js.native
+  val UNSIGNED_INT_24_8_WEBGL: Int = js.native
 
 @js.native
 @JSGlobal
@@ -7693,7 +8246,7 @@ class HTMLSpanElement extends HTMLElement
 
 @js.native
 @JSGlobal
-class ImageTrack extends js.Object:
+class ImageTrack extends PlatformObject:
   def animated: Boolean       = js.native
   def frameCount: Int         = js.native
   def repetitionCount: Double = js.native
@@ -7701,7 +8254,7 @@ class ImageTrack extends js.Object:
 
 @js.native
 @JSGlobal
-class GPUAdapterInfo extends js.Object:
+class GPUAdapterInfo extends PlatformObject:
   def vendor: String             = js.native
   def architecture: String       = js.native
   def device: String             = js.native
@@ -7726,13 +8279,17 @@ end HTMLSourceElement
 @js.native
 @JSGlobal
 class IDBDatabase extends EventTarget:
-  def name: String                          = js.native
-  def version: Int                          = js.native
-  def objectStoreNames: DOMStringList       = js.native
-  var onabort: scala.scalajs.js.Any         = js.native
-  var onclose: scala.scalajs.js.Any         = js.native
-  var onerror: scala.scalajs.js.Any         = js.native
-  var onversionchange: scala.scalajs.js.Any = js.native
+  def name: String                    = js.native
+  def version: Int                    = js.native
+  def objectStoreNames: DOMStringList = js.native
+  @JSName("onabort")
+  var onabortOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("onclose")
+  var oncloseOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("onerror")
+  var onerrorOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("onversionchange")
+  var onversionchangeOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
   def transaction(
       storeNames: scala.scalajs.js.Any,
       mode: String = js.native,
@@ -7745,37 +8302,39 @@ end IDBDatabase
 
 @js.native
 @JSGlobal
-class AbortController extends js.Object:
+class AbortController extends PlatformObject:
   def signal: AbortSignal                                   = js.native
   def abort(reason: scala.scalajs.js.Any = js.native): Unit = js.native
 
 @js.native
 @JSGlobal
-class StyleSheetList extends js.Object:
-  def length: Int                     = js.native
-  def item(index: Int): CSSStyleSheet = js.native
+class StyleSheetList extends PlatformObject:
+  def length: Int = js.native
+  @JSName("item")
+  def itemOrNull(index: Int): CSSStyleSheet | Null = js.native
 
 @js.native
 @JSGlobal
-class EXT_sRGB extends js.Object
+class EXT_sRGB extends PlatformObject
 
 @js.native
 @JSGlobal
 object EXT_sRGB extends js.Object:
-  val SRGB_EXT: scala.scalajs.js.Any                                  = js.native
-  val SRGB_ALPHA_EXT: scala.scalajs.js.Any                            = js.native
-  val SRGB8_ALPHA8_EXT: scala.scalajs.js.Any                          = js.native
-  val FRAMEBUFFER_ATTACHMENT_COLOR_ENCODING_EXT: scala.scalajs.js.Any = js.native
+  val SRGB_EXT: Int                                  = js.native
+  val SRGB_ALPHA_EXT: Int                            = js.native
+  val SRGB8_ALPHA8_EXT: Int                          = js.native
+  val FRAMEBUFFER_ATTACHMENT_COLOR_ENCODING_EXT: Int = js.native
 
 @js.native
 @JSGlobal
 class ScriptProcessorNode extends AudioNode:
-  var onaudioprocess: scala.scalajs.js.Any = js.native
-  def bufferSize: Int                      = js.native
+  @JSName("onaudioprocess")
+  var onaudioprocessOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  def bufferSize: Int                                                                      = js.native
 
 @js.native
 @JSGlobal
-class USBIsochronousOutTransferPacket extends js.Object:
+class USBIsochronousOutTransferPacket extends PlatformObject:
   def this(@unused status: String, @unused bytesWritten: Int = js.native) = this()
   def bytesWritten: Int = js.native
   def status: String    = js.native
@@ -7808,7 +8367,7 @@ end HTMLTableCellElement
 
 @js.native
 @JSGlobal
-class DecompressionStream extends js.Object:
+class DecompressionStream extends PlatformObject:
   def this(@unused format: String) = this()
   def readable: ReadableStream = js.native
   def writable: WritableStream = js.native
@@ -7823,38 +8382,38 @@ class TaskAttributionTiming extends PerformanceEntry:
 
 @js.native
 @JSGlobal
-class CustomElementRegistry extends js.Object:
-  def define(
-      name: String,
-      constructor: scala.scalajs.js.Function0[HTMLElement],
-      options: ElementDefinitionOptions = js.native,
-  ): Unit                                                                                          = js.native
-  def get(name: String): scala.scalajs.js.Any                                                      = js.native
-  def getName(constructor: scala.scalajs.js.Function0[HTMLElement]): String                        = js.native
-  def whenDefined(name: String): scala.scalajs.js.Promise[scala.scalajs.js.Function0[HTMLElement]] = js.native
-  def upgrade(root: Node): Unit                                                                    = js.native
-  def initialize(root: Node): Unit                                                                 = js.native
+class CustomElementRegistry extends PlatformObject:
+  def define(name: String, constructor: scala.scalajs.js.Any, options: ElementDefinitionOptions = js.native): Unit =
+    js.native
+  def get(name: String): scala.scalajs.js.Any = js.native
+  @JSName("getName")
+  def getNameOrNull(constructor: scala.scalajs.js.Any): String | Null           = js.native
+  def whenDefined(name: String): scala.scalajs.js.Promise[scala.scalajs.js.Any] = js.native
+  def upgrade(root: Node): Unit                                                 = js.native
+  def initialize(root: Node): Unit                                              = js.native
 end CustomElementRegistry
 
 @js.native
 @JSGlobal
 class VirtualKeyboard extends EventTarget:
-  def boundingRect: DOMRect                  = js.native
-  var overlaysContent: Boolean               = js.native
-  var ongeometrychange: scala.scalajs.js.Any = js.native
-  def show(): Unit                           = js.native
-  def hide(): Unit                           = js.native
+  def boundingRect: DOMRect    = js.native
+  var overlaysContent: Boolean = js.native
+  @JSName("ongeometrychange")
+  var ongeometrychangeOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  def show(): Unit                                                                           = js.native
+  def hide(): Unit                                                                           = js.native
 
 @js.native
 @JSGlobal
 class WindowControlsOverlay extends EventTarget:
-  def visible: Boolean                       = js.native
-  var ongeometrychange: scala.scalajs.js.Any = js.native
-  def getTitlebarAreaRect(): DOMRect         = js.native
+  def visible: Boolean = js.native
+  @JSName("ongeometrychange")
+  var ongeometrychangeOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  def getTitlebarAreaRect(): DOMRect                                                         = js.native
 
 @js.native
 @JSGlobal
-class FontFaceVariationAxis extends js.Object:
+class FontFaceVariationAxis extends PlatformObject:
   def name: String         = js.native
   def axisTag: String      = js.native
   def minimumValue: Double = js.native
@@ -7870,13 +8429,13 @@ class CSSMixinRule extends CSSGroupingRule:
 
 @js.native
 @JSGlobal
-class UserActivation extends js.Object:
+class UserActivation extends PlatformObject:
   def hasBeenActive: Boolean = js.native
   def isActive: Boolean      = js.native
 
 @js.native
 @JSGlobal
-class HighlightRegistry extends js.Object:
+class HighlightRegistry extends PlatformObject:
   def size: Int = js.native
   def highlightsFromPoint(
       x: Double,
@@ -7898,7 +8457,7 @@ end HighlightRegistry
 
 @js.native
 @JSGlobal
-class USBEndpoint extends js.Object:
+class USBEndpoint extends PlatformObject:
   def this(
       @unused alternate: USBAlternateInterface,
       @unused endpointNumber: scala.scalajs.js.Any,
@@ -7921,14 +8480,15 @@ class Profiler extends EventTarget:
 @js.native
 @JSGlobal
 class RTCDTMFSender extends EventTarget:
-  var ontonechange: scala.scalajs.js.Any                                                        = js.native
+  @JSName("ontonechange")
+  var ontonechangeOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null        = js.native
   def canInsertDTMF: Boolean                                                                    = js.native
   def toneBuffer: String                                                                        = js.native
   def insertDTMF(tones: String, duration: Int = js.native, interToneGap: Int = js.native): Unit = js.native
 
 @js.native
 @JSGlobal
-class DOMException extends js.Object:
+class DOMException extends PlatformObject:
   def this(@unused message: String = js.native, @unused name: String = js.native) = this()
   def name: String    = js.native
   def message: String = js.native
@@ -7966,12 +8526,12 @@ end DOMException
 
 @js.native
 @JSGlobal
-class GPUCommandBuffer extends js.Object:
+class GPUCommandBuffer extends PlatformObject:
   var label: String = js.native
 
 @js.native
 @JSGlobal
-class FontFace extends js.Object:
+class FontFace extends PlatformObject:
   def this(
       @unused family: String,
       @unused source: scala.scalajs.js.Any,
@@ -7998,19 +8558,19 @@ end FontFace
 
 @js.native
 @JSGlobal
-class MediaKeys extends js.Object:
+class MediaKeys extends PlatformObject:
   def createSession(sessionType: String = js.native): MediaKeySession                                  = js.native
   def getStatusForPolicy(policy: MediaKeysPolicy = js.native): scala.scalajs.js.Promise[String]        = js.native
   def setServerCertificate(serverCertificate: scala.scalajs.js.Any): scala.scalajs.js.Promise[Boolean] = js.native
 
 @js.native
 @JSGlobal
-class GPUTextureView extends js.Object:
+class GPUTextureView extends PlatformObject:
   var label: String = js.native
 
 @js.native
 @JSGlobal
-class DigitalGoodsService extends js.Object:
+class DigitalGoodsService extends PlatformObject:
   def getDetails(itemIds: scala.scalajs.js.Array[String]): scala.scalajs.js.Any = js.native
   def listPurchases(): scala.scalajs.js.Any                                     = js.native
   def listPurchaseHistory(): scala.scalajs.js.Any                               = js.native
@@ -8018,11 +8578,12 @@ class DigitalGoodsService extends js.Object:
 
 @js.native
 @JSGlobal
-class Headers extends js.Object:
+class Headers extends PlatformObject:
   def this(@unused init: scala.scalajs.js.Any = js.native) = this()
-  def append(name: String, value: String): Unit      = js.native
-  def delete(name: String): Unit                     = js.native
-  def get(name: String): String                      = js.native
+  def append(name: String, value: String): Unit = js.native
+  def delete(name: String): Unit                = js.native
+  @JSName("get")
+  def getOrNull(name: String): String | Null         = js.native
   def getSetCookie(): scala.scalajs.js.Array[String] = js.native
   def has(name: String): Boolean                     = js.native
   def set(name: String, value: String): Unit         = js.native
@@ -8032,7 +8593,7 @@ end Headers
 
 @js.native
 @JSGlobal
-class ValidityState extends js.Object:
+class ValidityState extends PlatformObject:
   def valueMissing: Boolean    = js.native
   def typeMismatch: Boolean    = js.native
   def patternMismatch: Boolean = js.native
@@ -8054,15 +8615,16 @@ class SVGImageElement extends SVGGraphicsElement:
   def width: SVGAnimatedLength                            = js.native
   def height: SVGAnimatedLength                           = js.native
   def preserveAspectRatio: SVGAnimatedPreserveAspectRatio = js.native
-  var crossOrigin: String                                 = js.native
-  def href: SVGAnimatedString                             = js.native
+  @JSName("crossOrigin")
+  var crossOriginOrNull: String | Null = js.native
+  def href: SVGAnimatedString          = js.native
 end SVGImageElement
 
 @js.native
 @JSGlobal
-class StylePropertyMapReadOnly extends js.Object:
+class StylePropertyMapReadOnly extends PlatformObject:
   def size: Int                                                       = js.native
-  def get(property: String): scala.scalajs.js.Any                     = js.native
+  def get(property: String): Unit | CSSStyleValue                     = js.native
   def getAll(property: String): scala.scalajs.js.Array[CSSStyleValue] = js.native
   def has(property: String): Boolean                                  = js.native
   @JSName(js.Symbol.iterator)
@@ -8075,7 +8637,7 @@ class RTCIdentityProviderGlobalScope extends WorkerGlobalScope:
 
 @js.native
 @JSGlobal
-class USBOutTransferResult extends js.Object:
+class USBOutTransferResult extends PlatformObject:
   def this(@unused status: String, @unused bytesWritten: Int = js.native) = this()
   def bytesWritten: Int = js.native
   def status: String    = js.native
@@ -8083,7 +8645,7 @@ class USBOutTransferResult extends js.Object:
 @js.native
 @JSGlobal
 class DigitalCredential extends Credential:
-  def protocol: scala.scalajs.js.Any = js.native
+  def protocol: String               = js.native
   def data: scala.scalajs.js.Any     = js.native
   def toJSON(): scala.scalajs.js.Any = js.native
 
@@ -8094,26 +8656,28 @@ object DigitalCredential extends js.Object:
 
 @js.native
 @JSGlobal
-class IntersectionObserverEntry extends js.Object:
+class IntersectionObserverEntry extends PlatformObject:
   def this(@unused intersectionObserverEntryInit: IntersectionObserverEntryInit) = this()
-  def time: Double                        = js.native
-  def rootBounds: DOMRectReadOnly         = js.native
-  def boundingClientRect: DOMRectReadOnly = js.native
-  def intersectionRect: DOMRectReadOnly   = js.native
-  def isIntersecting: Boolean             = js.native
-  def isVisible: Boolean                  = js.native
-  def intersectionRatio: Double           = js.native
-  def target: Element                     = js.native
+  def time: Double = js.native
+  @JSName("rootBounds")
+  def rootBoundsOrNull: DOMRectReadOnly | Null = js.native
+  def boundingClientRect: DOMRectReadOnly      = js.native
+  def intersectionRect: DOMRectReadOnly        = js.native
+  def isIntersecting: Boolean                  = js.native
+  def isVisible: Boolean                       = js.native
+  def intersectionRatio: Double                = js.native
+  def target: Element                          = js.native
 end IntersectionObserverEntry
 
 @js.native
 @JSGlobal
 class HTMLTextAreaElement extends HTMLElement:
-  var autocomplete: String                                                                 = js.native
-  var cols: Int                                                                            = js.native
-  var dirName: String                                                                      = js.native
-  var disabled: Boolean                                                                    = js.native
-  def form: HTMLFormElement                                                                = js.native
+  var autocomplete: String = js.native
+  var cols: Int            = js.native
+  var dirName: String      = js.native
+  var disabled: Boolean    = js.native
+  @JSName("form")
+  def formOrNull: HTMLFormElement | Null                                                   = js.native
   var maxLength: Int                                                                       = js.native
   var minLength: Int                                                                       = js.native
   var name: String                                                                         = js.native
@@ -8138,6 +8702,7 @@ class HTMLTextAreaElement extends HTMLElement:
   def setCustomValidity(error: String): Unit                                               = js.native
   def select(): Unit                                                                       = js.native
   def setRangeText(replacement: String): Unit                                              = js.native
+  def setRangeText(replacement: String, start: Int, end: Int): Unit                        = js.native
   def setRangeText(replacement: String, start: Int, end: Int, selectionMode: String): Unit = js.native
   def setSelectionRange(start: Int, end: Int, direction: String = js.native): Unit         = js.native
 end HTMLTextAreaElement
@@ -8157,11 +8722,11 @@ end DataCue
 
 @js.native
 @JSGlobal
-class JsonLd extends js.Object
+class JsonLd extends PlatformObject
 
 @js.native
 @JSGlobal
-class Geolocation extends js.Object:
+class Geolocation extends PlatformObject:
   def getCurrentPosition(
       successCallback: scala.scalajs.js.Function1[GeolocationPosition, Unit],
       errorCallback: scala.scalajs.js.Function1[GeolocationPositionError, Unit] = js.native,
@@ -8190,7 +8755,7 @@ class WindowClient extends Client:
 
 @js.native
 @JSGlobal
-class TrustedTypePolicy extends js.Object:
+class TrustedTypePolicy extends PlatformObject:
   def name: String                                                                      = js.native
   def createHTML(input: String, arguments: scala.scalajs.js.Any): TrustedHTML           = js.native
   def createScript(input: String, arguments: scala.scalajs.js.Any): TrustedScript       = js.native
@@ -8227,7 +8792,7 @@ class CSSMatrixComponent extends CSSTransformComponent:
 
 @js.native
 @JSGlobal
-class SpeechSynthesisVoice extends js.Object:
+class SpeechSynthesisVoice extends PlatformObject:
   def voiceURI: String      = js.native
   def name: String          = js.native
   def lang: String          = js.native
@@ -8236,45 +8801,45 @@ class SpeechSynthesisVoice extends js.Object:
 
 @js.native
 @JSGlobal
-class WEBGL_compressed_texture_astc extends js.Object:
+class WEBGL_compressed_texture_astc extends PlatformObject:
   def getSupportedProfiles(): scala.scalajs.js.Array[String] = js.native
 
 @js.native
 @JSGlobal
 object WEBGL_compressed_texture_astc extends js.Object:
-  val COMPRESSED_RGBA_ASTC_4x4_KHR: scala.scalajs.js.Any           = js.native
-  val COMPRESSED_RGBA_ASTC_5x4_KHR: scala.scalajs.js.Any           = js.native
-  val COMPRESSED_RGBA_ASTC_5x5_KHR: scala.scalajs.js.Any           = js.native
-  val COMPRESSED_RGBA_ASTC_6x5_KHR: scala.scalajs.js.Any           = js.native
-  val COMPRESSED_RGBA_ASTC_6x6_KHR: scala.scalajs.js.Any           = js.native
-  val COMPRESSED_RGBA_ASTC_8x5_KHR: scala.scalajs.js.Any           = js.native
-  val COMPRESSED_RGBA_ASTC_8x6_KHR: scala.scalajs.js.Any           = js.native
-  val COMPRESSED_RGBA_ASTC_8x8_KHR: scala.scalajs.js.Any           = js.native
-  val COMPRESSED_RGBA_ASTC_10x5_KHR: scala.scalajs.js.Any          = js.native
-  val COMPRESSED_RGBA_ASTC_10x6_KHR: scala.scalajs.js.Any          = js.native
-  val COMPRESSED_RGBA_ASTC_10x8_KHR: scala.scalajs.js.Any          = js.native
-  val COMPRESSED_RGBA_ASTC_10x10_KHR: scala.scalajs.js.Any         = js.native
-  val COMPRESSED_RGBA_ASTC_12x10_KHR: scala.scalajs.js.Any         = js.native
-  val COMPRESSED_RGBA_ASTC_12x12_KHR: scala.scalajs.js.Any         = js.native
-  val COMPRESSED_SRGB8_ALPHA8_ASTC_4x4_KHR: scala.scalajs.js.Any   = js.native
-  val COMPRESSED_SRGB8_ALPHA8_ASTC_5x4_KHR: scala.scalajs.js.Any   = js.native
-  val COMPRESSED_SRGB8_ALPHA8_ASTC_5x5_KHR: scala.scalajs.js.Any   = js.native
-  val COMPRESSED_SRGB8_ALPHA8_ASTC_6x5_KHR: scala.scalajs.js.Any   = js.native
-  val COMPRESSED_SRGB8_ALPHA8_ASTC_6x6_KHR: scala.scalajs.js.Any   = js.native
-  val COMPRESSED_SRGB8_ALPHA8_ASTC_8x5_KHR: scala.scalajs.js.Any   = js.native
-  val COMPRESSED_SRGB8_ALPHA8_ASTC_8x6_KHR: scala.scalajs.js.Any   = js.native
-  val COMPRESSED_SRGB8_ALPHA8_ASTC_8x8_KHR: scala.scalajs.js.Any   = js.native
-  val COMPRESSED_SRGB8_ALPHA8_ASTC_10x5_KHR: scala.scalajs.js.Any  = js.native
-  val COMPRESSED_SRGB8_ALPHA8_ASTC_10x6_KHR: scala.scalajs.js.Any  = js.native
-  val COMPRESSED_SRGB8_ALPHA8_ASTC_10x8_KHR: scala.scalajs.js.Any  = js.native
-  val COMPRESSED_SRGB8_ALPHA8_ASTC_10x10_KHR: scala.scalajs.js.Any = js.native
-  val COMPRESSED_SRGB8_ALPHA8_ASTC_12x10_KHR: scala.scalajs.js.Any = js.native
-  val COMPRESSED_SRGB8_ALPHA8_ASTC_12x12_KHR: scala.scalajs.js.Any = js.native
+  val COMPRESSED_RGBA_ASTC_4x4_KHR: Int           = js.native
+  val COMPRESSED_RGBA_ASTC_5x4_KHR: Int           = js.native
+  val COMPRESSED_RGBA_ASTC_5x5_KHR: Int           = js.native
+  val COMPRESSED_RGBA_ASTC_6x5_KHR: Int           = js.native
+  val COMPRESSED_RGBA_ASTC_6x6_KHR: Int           = js.native
+  val COMPRESSED_RGBA_ASTC_8x5_KHR: Int           = js.native
+  val COMPRESSED_RGBA_ASTC_8x6_KHR: Int           = js.native
+  val COMPRESSED_RGBA_ASTC_8x8_KHR: Int           = js.native
+  val COMPRESSED_RGBA_ASTC_10x5_KHR: Int          = js.native
+  val COMPRESSED_RGBA_ASTC_10x6_KHR: Int          = js.native
+  val COMPRESSED_RGBA_ASTC_10x8_KHR: Int          = js.native
+  val COMPRESSED_RGBA_ASTC_10x10_KHR: Int         = js.native
+  val COMPRESSED_RGBA_ASTC_12x10_KHR: Int         = js.native
+  val COMPRESSED_RGBA_ASTC_12x12_KHR: Int         = js.native
+  val COMPRESSED_SRGB8_ALPHA8_ASTC_4x4_KHR: Int   = js.native
+  val COMPRESSED_SRGB8_ALPHA8_ASTC_5x4_KHR: Int   = js.native
+  val COMPRESSED_SRGB8_ALPHA8_ASTC_5x5_KHR: Int   = js.native
+  val COMPRESSED_SRGB8_ALPHA8_ASTC_6x5_KHR: Int   = js.native
+  val COMPRESSED_SRGB8_ALPHA8_ASTC_6x6_KHR: Int   = js.native
+  val COMPRESSED_SRGB8_ALPHA8_ASTC_8x5_KHR: Int   = js.native
+  val COMPRESSED_SRGB8_ALPHA8_ASTC_8x6_KHR: Int   = js.native
+  val COMPRESSED_SRGB8_ALPHA8_ASTC_8x8_KHR: Int   = js.native
+  val COMPRESSED_SRGB8_ALPHA8_ASTC_10x5_KHR: Int  = js.native
+  val COMPRESSED_SRGB8_ALPHA8_ASTC_10x6_KHR: Int  = js.native
+  val COMPRESSED_SRGB8_ALPHA8_ASTC_10x8_KHR: Int  = js.native
+  val COMPRESSED_SRGB8_ALPHA8_ASTC_10x10_KHR: Int = js.native
+  val COMPRESSED_SRGB8_ALPHA8_ASTC_12x10_KHR: Int = js.native
+  val COMPRESSED_SRGB8_ALPHA8_ASTC_12x12_KHR: Int = js.native
 end WEBGL_compressed_texture_astc
 
 @js.native
 @JSGlobal
-class ImageCapture extends js.Object:
+class ImageCapture extends PlatformObject:
   def this(@unused videoTrack: MediaStreamTrack) = this()
   def track: MediaStreamTrack                                                             = js.native
   def takePhoto(photoSettings: PhotoSettings = js.native): scala.scalajs.js.Promise[Blob] = js.native
@@ -8284,13 +8849,13 @@ class ImageCapture extends js.Object:
 
 @js.native
 @JSGlobal
-class NavigationPrecommitController extends js.Object:
+class NavigationPrecommitController extends PlatformObject:
   def redirect(url: String, options: NavigationNavigateOptions = js.native): Unit           = js.native
   def addHandler(handler: scala.scalajs.js.Function0[scala.scalajs.js.Promise[Unit]]): Unit = js.native
 
 @js.native
 @JSGlobal
-class AudioParamMap extends js.Object:
+class AudioParamMap extends PlatformObject:
   def size: Int                                                                         = js.native
   def get(key: String): scala.scalajs.js.UndefOr[AudioParam]                            = js.native
   def has(key: String): Boolean                                                         = js.native
@@ -8304,12 +8869,12 @@ end AudioParamMap
 
 @js.native
 @JSGlobal
-class TrustedHTML extends js.Object:
+class TrustedHTML extends PlatformObject:
   def toJSON(): String = js.native
 
 @js.native
 @JSGlobal
-class XRHand extends js.Object:
+class XRHand extends PlatformObject:
   def size: Int                      = js.native
   def get(key: String): XRJointSpace = js.native
   @JSName(js.Symbol.iterator)
@@ -8322,15 +8887,21 @@ class LayoutWorkletGlobalScope extends WorkletGlobalScope:
 
 @js.native
 @JSGlobal
-class GamepadPose extends js.Object:
-  def hasOrientation: Boolean                   = js.native
-  def hasPosition: Boolean                      = js.native
-  def position: scala.scalajs.js.Any            = js.native
-  def linearVelocity: scala.scalajs.js.Any      = js.native
-  def linearAcceleration: scala.scalajs.js.Any  = js.native
-  def orientation: scala.scalajs.js.Any         = js.native
-  def angularVelocity: scala.scalajs.js.Any     = js.native
-  def angularAcceleration: scala.scalajs.js.Any = js.native
+class GamepadPose extends PlatformObject:
+  def hasOrientation: Boolean = js.native
+  def hasPosition: Boolean    = js.native
+  @JSName("position")
+  def positionOrNull: scala.scalajs.js.Any | Null = js.native
+  @JSName("linearVelocity")
+  def linearVelocityOrNull: scala.scalajs.js.Any | Null = js.native
+  @JSName("linearAcceleration")
+  def linearAccelerationOrNull: scala.scalajs.js.Any | Null = js.native
+  @JSName("orientation")
+  def orientationOrNull: scala.scalajs.js.Any | Null = js.native
+  @JSName("angularVelocity")
+  def angularVelocityOrNull: scala.scalajs.js.Any | Null = js.native
+  @JSName("angularAcceleration")
+  def angularAccelerationOrNull: scala.scalajs.js.Any | Null = js.native
 end GamepadPose
 
 @js.native
@@ -8340,19 +8911,23 @@ class SVGGraphicsElement extends SVGElement:
   def requiredExtensions: SVGStringList                            = js.native
   def systemLanguage: SVGStringList                                = js.native
   def getBBox(options: SVGBoundingBoxOptions = js.native): DOMRect = js.native
-  def getCTM(): DOMMatrix                                          = js.native
-  def getScreenCTM(): DOMMatrix                                    = js.native
+  @JSName("getCTM")
+  def getCTMOrNull(): DOMMatrix | Null = js.native
+  @JSName("getScreenCTM")
+  def getScreenCTMOrNull(): DOMMatrix | Null = js.native
+end SVGGraphicsElement
 
 @js.native
 @JSGlobal
 class HTMLImageElement extends HTMLElement:
-  def x: Int                                   = js.native
-  def y: Int                                   = js.native
-  var alt: String                              = js.native
-  var src: String                              = js.native
-  var srcset: String                           = js.native
-  var sizes: String                            = js.native
-  var crossOrigin: String                      = js.native
+  def x: Int         = js.native
+  def y: Int         = js.native
+  var alt: String    = js.native
+  var src: String    = js.native
+  var srcset: String = js.native
+  var sizes: String  = js.native
+  @JSName("crossOrigin")
+  var crossOriginOrNull: String | Null         = js.native
   var useMap: String                           = js.native
   var isMap: Boolean                           = js.native
   var controls: Boolean                        = js.native
@@ -8378,7 +8953,7 @@ end HTMLImageElement
 
 @js.native
 @JSGlobal
-class LockManager extends js.Object:
+class LockManager extends PlatformObject:
   def request(
       name: String,
       callback: scala.scalajs.js.Function1[Lock, scala.scalajs.js.Promise[scala.scalajs.js.Any]],
@@ -8396,11 +8971,12 @@ end LockManager
 class XRWebGLDepthInformation extends XRDepthInformation:
   def texture: WebGLTexture = js.native
   def textureType: String   = js.native
-  def imageIndex: Int       = js.native
+  @JSName("imageIndex")
+  def imageIndexOrNull: Int | Null = js.native
 
 @js.native
 @JSGlobal
-class SVGTransformList extends js.Object:
+class SVGTransformList extends PlatformObject:
   def length: Int                                                       = js.native
   def numberOfItems: Int                                                = js.native
   def clear(): Unit                                                     = js.native
@@ -8413,54 +8989,65 @@ class SVGTransformList extends js.Object:
   @JSBracketAccess
   def update(index: Int, newItem: SVGTransform): Unit                                 = js.native
   def createSVGTransformFromMatrix(matrix: DOMMatrix2DInit = js.native): SVGTransform = js.native
-  def consolidate(): SVGTransform                                                     = js.native
+  @JSName("consolidate")
+  def consolidateOrNull(): SVGTransform | Null = js.native
 end SVGTransformList
 
 @js.native
 @JSGlobal
-class MimeTypeArray extends js.Object:
-  def length: Int                       = js.native
-  def item(index: Int): MimeType        = js.native
-  def namedItem(name: String): MimeType = js.native
+class MimeTypeArray extends PlatformObject:
+  def length: Int = js.native
+  @JSName("item")
+  def itemOrNull(index: Int): MimeType | Null = js.native
+  @JSName("namedItem")
+  def namedItemOrNull(name: String): MimeType | Null = js.native
 
 @js.native
 @JSGlobal
 class HTMLLinkElement extends HTMLElement:
-  var href: String           = js.native
-  var crossOrigin: String    = js.native
-  var rel: String            = js.native
-  var as: String             = js.native
-  def relList: DOMTokenList  = js.native
-  var media: String          = js.native
-  var integrity: String      = js.native
-  var hreflang: String       = js.native
-  var `type`: String         = js.native
-  def sizes: DOMTokenList    = js.native
-  var imageSrcset: String    = js.native
-  var imageSizes: String     = js.native
-  var referrerPolicy: String = js.native
-  def blocking: DOMTokenList = js.native
-  var disabled: Boolean      = js.native
-  var fetchPriority: String  = js.native
-  var charset: String        = js.native
-  var rev: String            = js.native
-  var target: String         = js.native
-  def sheet: CSSStyleSheet   = js.native
+  var href: String = js.native
+  @JSName("crossOrigin")
+  var crossOriginOrNull: String | Null = js.native
+  var rel: String                      = js.native
+  var as: String                       = js.native
+  def relList: DOMTokenList            = js.native
+  var media: String                    = js.native
+  var integrity: String                = js.native
+  var hreflang: String                 = js.native
+  var `type`: String                   = js.native
+  def sizes: DOMTokenList              = js.native
+  var imageSrcset: String              = js.native
+  var imageSizes: String               = js.native
+  var referrerPolicy: String           = js.native
+  def blocking: DOMTokenList           = js.native
+  var disabled: Boolean                = js.native
+  var fetchPriority: String            = js.native
+  var charset: String                  = js.native
+  var rev: String                      = js.native
+  var target: String                   = js.native
+  @JSName("sheet")
+  def sheetOrNull: CSSStyleSheet | Null = js.native
 end HTMLLinkElement
 
 @js.native
 @JSGlobal
 class PaymentResponse extends EventTarget:
-  def requestId: String                         = js.native
-  def methodName: String                        = js.native
-  def details: scala.scalajs.js.Any             = js.native
-  def shippingAddress: ContactAddress           = js.native
-  def shippingOption: String                    = js.native
-  def payerName: String                         = js.native
-  def payerEmail: String                        = js.native
-  def payerPhone: String                        = js.native
-  var onpayerdetailchange: scala.scalajs.js.Any = js.native
-  def toJSON(): scala.scalajs.js.Any            = js.native
+  def requestId: String             = js.native
+  def methodName: String            = js.native
+  def details: scala.scalajs.js.Any = js.native
+  @JSName("shippingAddress")
+  def shippingAddressOrNull: ContactAddress | Null = js.native
+  @JSName("shippingOption")
+  def shippingOptionOrNull: String | Null = js.native
+  @JSName("payerName")
+  def payerNameOrNull: String | Null = js.native
+  @JSName("payerEmail")
+  def payerEmailOrNull: String | Null = js.native
+  @JSName("payerPhone")
+  def payerPhoneOrNull: String | Null = js.native
+  @JSName("onpayerdetailchange")
+  var onpayerdetailchangeOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  def toJSON(): scala.scalajs.js.Any                                                            = js.native
   def complete(
       result: String = js.native,
       details: PaymentCompleteDetails = js.native,
@@ -8475,7 +9062,7 @@ class CSSConditionRule extends CSSGroupingRule:
 
 @js.native
 @JSGlobal
-class ImageData extends js.Object:
+class ImageData extends PlatformObject:
   def this(@unused sw: Int, @unused sh: Int, @unused settings: ImageDataSettings) = this()
   def this(
       @unused data: scala.scalajs.js.Any,
@@ -8500,7 +9087,7 @@ class HTMLSlotElement extends HTMLElement:
   var name: String                                                                                 = js.native
   def assignedNodes(options: AssignedNodesOptions = js.native): scala.scalajs.js.Array[Node]       = js.native
   def assignedElements(options: AssignedNodesOptions = js.native): scala.scalajs.js.Array[Element] = js.native
-  def assign(nodes: scala.scalajs.js.Any): Unit                                                    = js.native
+  def assign(nodes: Element | Text): Unit                                                          = js.native
 
 @js.native
 @JSGlobal
@@ -8512,7 +9099,7 @@ class HTMLOListElement extends HTMLElement:
 
 @js.native
 @JSGlobal
-class IDBFactory extends js.Object:
+class IDBFactory extends PlatformObject:
   def open(name: String, version: Int = js.native): IDBOpenDBRequest      = js.native
   def deleteDatabase(name: String): IDBOpenDBRequest                      = js.native
   def databases(): scala.scalajs.js.Any                                   = js.native
@@ -8520,7 +9107,7 @@ class IDBFactory extends js.Object:
 
 @js.native
 @JSGlobal
-class XPathEvaluator extends js.Object:
+class XPathEvaluator extends PlatformObject:
   def createExpression(
       expression: String,
       resolver: scala.scalajs.js.Function1[String, String] = js.native,
@@ -8538,15 +9125,21 @@ end XPathEvaluator
 @js.native
 @JSGlobal
 class HTMLMediaElement extends HTMLElement:
-  def sinkId: String                                                                                 = js.native
-  def mediaKeys: MediaKeys                                                                           = js.native
-  var onencrypted: scala.scalajs.js.Any                                                              = js.native
-  var onwaitingforkey: scala.scalajs.js.Any                                                          = js.native
-  def error: MediaError                                                                              = js.native
-  var src: String                                                                                    = js.native
-  var srcObject: scala.scalajs.js.Any                                                                = js.native
-  def currentSrc: String                                                                             = js.native
-  var crossOrigin: String                                                                            = js.native
+  def sinkId: String = js.native
+  @JSName("mediaKeys")
+  def mediaKeysOrNull: MediaKeys | Null = js.native
+  @JSName("onencrypted")
+  var onencryptedOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("onwaitingforkey")
+  var onwaitingforkeyOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("error")
+  def errorOrNull: MediaError | Null = js.native
+  var src: String                    = js.native
+  @JSName("srcObject")
+  var srcObjectOrNull: MediaStream | MediaSource | Blob | Null = js.native
+  def currentSrc: String                                       = js.native
+  @JSName("crossOrigin")
+  var crossOriginOrNull: String | Null                                                               = js.native
   def networkState: Int                                                                              = js.native
   var preload: String                                                                                = js.native
   def buffered: TimeRanges                                                                           = js.native
@@ -8602,39 +9195,41 @@ end HTMLMediaElement
 @js.native
 @JSGlobal
 class BluetoothRemoteGATTCharacteristic extends EventTarget:
-  def service: BluetoothRemoteGATTService                = js.native
-  def uuid: scala.scalajs.js.Any                         = js.native
-  def properties: BluetoothCharacteristicProperties      = js.native
-  def value: scala.scalajs.js.Any                        = js.native
-  var oncharacteristicvaluechanged: scala.scalajs.js.Any = js.native
-  def getDescriptor(descriptor: scala.scalajs.js.Any): scala.scalajs.js.Promise[BluetoothRemoteGATTDescriptor] =
-    js.native
-  def getDescriptors(descriptor: scala.scalajs.js.Any = js.native): scala.scalajs.js.Any     = js.native
-  def readValue(): scala.scalajs.js.Promise[scala.scalajs.js.Any]                            = js.native
-  def writeValue(value: scala.scalajs.js.Any): scala.scalajs.js.Promise[Unit]                = js.native
-  def writeValueWithResponse(value: scala.scalajs.js.Any): scala.scalajs.js.Promise[Unit]    = js.native
-  def writeValueWithoutResponse(value: scala.scalajs.js.Any): scala.scalajs.js.Promise[Unit] = js.native
-  def startNotifications(): scala.scalajs.js.Promise[BluetoothRemoteGATTCharacteristic]      = js.native
-  def stopNotifications(): scala.scalajs.js.Promise[BluetoothRemoteGATTCharacteristic]       = js.native
+  def service: BluetoothRemoteGATTService           = js.native
+  def uuid: String                                  = js.native
+  def properties: BluetoothCharacteristicProperties = js.native
+  @JSName("value")
+  def valueOrNull: scala.scalajs.js.Any | Null = js.native
+  @JSName("oncharacteristicvaluechanged")
+  var oncharacteristicvaluechangedOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  def getDescriptor(descriptor: String | Int): scala.scalajs.js.Promise[BluetoothRemoteGATTDescriptor]   = js.native
+  def getDescriptors(descriptor: String | Int = js.native): scala.scalajs.js.Any                         = js.native
+  def readValue(): scala.scalajs.js.Promise[scala.scalajs.js.Any]                                        = js.native
+  def writeValue(value: scala.scalajs.js.Any): scala.scalajs.js.Promise[Unit]                            = js.native
+  def writeValueWithResponse(value: scala.scalajs.js.Any): scala.scalajs.js.Promise[Unit]                = js.native
+  def writeValueWithoutResponse(value: scala.scalajs.js.Any): scala.scalajs.js.Promise[Unit]             = js.native
+  def startNotifications(): scala.scalajs.js.Promise[BluetoothRemoteGATTCharacteristic]                  = js.native
+  def stopNotifications(): scala.scalajs.js.Promise[BluetoothRemoteGATTCharacteristic]                   = js.native
 end BluetoothRemoteGATTCharacteristic
 
 @js.native
 @JSGlobal
-class WEBGL_debug_shaders extends js.Object:
+class WEBGL_debug_shaders extends PlatformObject:
   def getTranslatedShaderSource(shader: WebGLShader): String = js.native
 
 @js.native
 @JSGlobal
-class BluetoothRemoteGATTDescriptor extends js.Object:
-  def characteristic: BluetoothRemoteGATTCharacteristic                       = js.native
-  def uuid: scala.scalajs.js.Any                                              = js.native
-  def value: scala.scalajs.js.Any                                             = js.native
+class BluetoothRemoteGATTDescriptor extends PlatformObject:
+  def characteristic: BluetoothRemoteGATTCharacteristic = js.native
+  def uuid: String                                      = js.native
+  @JSName("value")
+  def valueOrNull: scala.scalajs.js.Any | Null                                = js.native
   def readValue(): scala.scalajs.js.Promise[scala.scalajs.js.Any]             = js.native
   def writeValue(value: scala.scalajs.js.Any): scala.scalajs.js.Promise[Unit] = js.native
 
 @js.native
 @JSGlobal
-class CropTarget extends js.Object
+class CropTarget extends PlatformObject
 
 @js.native
 @JSGlobal
@@ -8647,7 +9242,7 @@ class WebGLQuery extends WebGLObject
 
 @js.native
 @JSGlobal
-class PresentationReceiver extends js.Object:
+class PresentationReceiver extends PlatformObject:
   def connectionList: scala.scalajs.js.Promise[PresentationConnectionList] = js.native
 
 @js.native
@@ -8656,7 +9251,7 @@ class SVGDescElement extends SVGElement
 
 @js.native
 @JSGlobal
-class USBIsochronousOutTransferResult extends js.Object:
+class USBIsochronousOutTransferResult extends PlatformObject:
   def this(@unused packets: scala.scalajs.js.Array[USBIsochronousOutTransferPacket]) = this()
   def packets: scala.scalajs.js.Array[USBIsochronousOutTransferPacket] = js.native
 
@@ -8673,10 +9268,11 @@ class SVGFEFuncGElement extends SVGComponentTransferFunctionElement
 
 @js.native
 @JSGlobal
-class DOMTokenList extends js.Object:
-  def length: Int                                                = js.native
-  var value: String                                              = js.native
-  def item(index: Int): String                                   = js.native
+class DOMTokenList extends PlatformObject:
+  def length: Int   = js.native
+  var value: String = js.native
+  @JSName("item")
+  def itemOrNull(index: Int): String | Null                      = js.native
   def contains(token: String): Boolean                           = js.native
   def add(tokens: String): Unit                                  = js.native
   def remove(tokens: String): Unit                               = js.native
@@ -8695,7 +9291,7 @@ class BrowserCaptureMediaStreamTrack extends MediaStreamTrack:
 
 @js.native
 @JSGlobal
-class ByteLengthQueuingStrategy extends js.Object:
+class ByteLengthQueuingStrategy extends PlatformObject:
   def this(@unused init: QueuingStrategyInit) = this()
   def highWaterMark: Double                                                        = js.native
   def size: scala.scalajs.js.Function1[scala.scalajs.js.Any, scala.scalajs.js.Any] = js.native
@@ -8725,7 +9321,7 @@ class HTMLFormElement extends HTMLElement:
   @JSBracketAccess
   def apply(index: Int): Element = js.native
   @JSBracketAccess
-  def apply(name: String): scala.scalajs.js.Any               = js.native
+  def apply(name: String): RadioNodeList | Element            = js.native
   def submit(): Unit                                          = js.native
   def requestSubmit(submitter: HTMLElement = js.native): Unit = js.native
   def reset(): Unit                                           = js.native
@@ -8763,21 +9359,21 @@ object SVGTextContentElement extends js.Object:
 
 @js.native
 @JSGlobal
-class PeriodicWave extends js.Object:
+class PeriodicWave extends PlatformObject:
   def this(@unused context: BaseAudioContext, @unused options: PeriodicWaveOptions = js.native) = this()
 
 @js.native
 @JSGlobal
-class EventTarget extends js.Object:
+class EventTarget extends PlatformObject:
   def addEventListener(
       `type`: String,
       callback: scala.scalajs.js.Function1[Event, Unit],
-      options: scala.scalajs.js.Any = js.native,
+      options: AddEventListenerOptions | Boolean = js.native,
   ): Unit = js.native
   def removeEventListener(
       `type`: String,
       callback: scala.scalajs.js.Function1[Event, Unit],
-      options: scala.scalajs.js.Any = js.native,
+      options: EventListenerOptions | Boolean = js.native,
   ): Unit                                                                                   = js.native
   def dispatchEvent(event: Event): Boolean                                                  = js.native
   def when(`type`: String, options: ObservableEventListenerOptions = js.native): Observable = js.native
@@ -8785,47 +9381,58 @@ end EventTarget
 
 @js.native
 @JSGlobal
-class TrustedScriptURL extends js.Object:
+class TrustedScriptURL extends PlatformObject:
   def toJSON(): String = js.native
 
 @js.native
 @JSGlobal
 class RTCIceTransport extends EventTarget:
-  var onerror: scala.scalajs.js.Any                                                         = js.native
-  var onicecandidate: scala.scalajs.js.Any                                                  = js.native
-  def role: String                                                                          = js.native
-  def component: String                                                                     = js.native
-  def state: String                                                                         = js.native
-  def gatheringState: String                                                                = js.native
-  var onstatechange: scala.scalajs.js.Any                                                   = js.native
-  var ongatheringstatechange: scala.scalajs.js.Any                                          = js.native
-  var onselectedcandidatepairchange: scala.scalajs.js.Any                                   = js.native
-  def gather(options: RTCIceGatherOptions = js.native): Unit                                = js.native
-  def start(remoteParameters: RTCIceParameters = js.native, role: String = js.native): Unit = js.native
-  def stop(): Unit                                                                          = js.native
-  def addRemoteCandidate(remoteCandidate: RTCIceCandidateInit = js.native): Unit            = js.native
-  def getLocalCandidates(): scala.scalajs.js.Array[RTCIceCandidate]                         = js.native
-  def getRemoteCandidates(): scala.scalajs.js.Array[RTCIceCandidate]                        = js.native
-  def getSelectedCandidatePair(): RTCIceCandidatePair                                       = js.native
-  def getLocalParameters(): RTCIceParameters                                                = js.native
-  def getRemoteParameters(): RTCIceParameters                                               = js.native
+  @JSName("onerror")
+  var onerrorOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("onicecandidate")
+  var onicecandidateOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  def role: String                                                                         = js.native
+  def component: String                                                                    = js.native
+  def state: String                                                                        = js.native
+  def gatheringState: String                                                               = js.native
+  @JSName("onstatechange")
+  var onstatechangeOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("ongatheringstatechange")
+  var ongatheringstatechangeOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("onselectedcandidatepairchange")
+  var onselectedcandidatepairchangeOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  def gather(options: RTCIceGatherOptions = js.native): Unit                                              = js.native
+  def start(remoteParameters: RTCIceParameters = js.native, role: String = js.native): Unit               = js.native
+  def stop(): Unit                                                                                        = js.native
+  def addRemoteCandidate(remoteCandidate: RTCIceCandidateInit = js.native): Unit                          = js.native
+  def getLocalCandidates(): scala.scalajs.js.Array[RTCIceCandidate]                                       = js.native
+  def getRemoteCandidates(): scala.scalajs.js.Array[RTCIceCandidate]                                      = js.native
+  @JSName("getSelectedCandidatePair")
+  def getSelectedCandidatePairOrNull(): RTCIceCandidatePair | Null = js.native
+  @JSName("getLocalParameters")
+  def getLocalParametersOrNull(): RTCIceParameters | Null = js.native
+  @JSName("getRemoteParameters")
+  def getRemoteParametersOrNull(): RTCIceParameters | Null = js.native
 end RTCIceTransport
 
 @js.native
 @JSGlobal
 class XRLightProbe extends EventTarget:
-  def probeSpace: XRSpace                      = js.native
-  var onreflectionchange: scala.scalajs.js.Any = js.native
+  def probeSpace: XRSpace = js.native
+  @JSName("onreflectionchange")
+  var onreflectionchangeOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
 
 @js.native
 @JSGlobal
 class PresentationRequest extends EventTarget:
   def this(@unused url: String) = this()
   def this(@unused urls: scala.scalajs.js.Array[String]) = this()
-  var onconnectionavailable: scala.scalajs.js.Any                                         = js.native
-  def start(): scala.scalajs.js.Promise[PresentationConnection]                           = js.native
-  def reconnect(presentationId: String): scala.scalajs.js.Promise[PresentationConnection] = js.native
-  def getAvailability(): scala.scalajs.js.Promise[PresentationAvailability]               = js.native
+  @JSName("onconnectionavailable")
+  var onconnectionavailableOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  def start(): scala.scalajs.js.Promise[PresentationConnection]                                   = js.native
+  def reconnect(presentationId: String): scala.scalajs.js.Promise[PresentationConnection]         = js.native
+  def getAvailability(): scala.scalajs.js.Promise[PresentationAvailability]                       = js.native
+end PresentationRequest
 
 @js.native
 @JSGlobal
@@ -8848,7 +9455,10 @@ class AudioNode extends EventTarget:
   var channelCount: Int                                                       = js.native
   var channelCountMode: String                                                = js.native
   var channelInterpretation: String                                           = js.native
+  def connect(destinationNode: AudioNode): AudioNode                          = js.native
+  def connect(destinationNode: AudioNode, output: Int): AudioNode             = js.native
   def connect(destinationNode: AudioNode, output: Int, input: Int): AudioNode = js.native
+  def connect(destinationParam: AudioParam): Unit                             = js.native
   def connect(destinationParam: AudioParam, output: Int): Unit                = js.native
   def disconnect(): Unit                                                      = js.native
   def disconnect(output: Int): Unit                                           = js.native
@@ -8872,7 +9482,7 @@ class XRJointSpace extends XRSpace:
 
 @js.native
 @JSGlobal
-class RTCStatsReport extends js.Object:
+class RTCStatsReport extends PlatformObject:
   def size: Int                                                                                   = js.native
   def get(key: String): scala.scalajs.js.UndefOr[scala.scalajs.js.Any]                            = js.native
   def has(key: String): Boolean                                                                   = js.native
@@ -8886,7 +9496,7 @@ end RTCStatsReport
 
 @js.native
 @JSGlobal
-class Touch extends js.Object:
+class Touch extends PlatformObject:
   def this(@unused touchInitDict: TouchInit) = this()
   def identifier: Int       = js.native
   def target: EventTarget   = js.native
@@ -8907,7 +9517,7 @@ end Touch
 
 @js.native
 @JSGlobal
-class MIDIOutputMap extends js.Object:
+class MIDIOutputMap extends PlatformObject:
   def size: Int                                                                         = js.native
   def get(key: String): scala.scalajs.js.UndefOr[MIDIOutput]                            = js.native
   def has(key: String): Boolean                                                         = js.native
@@ -8921,23 +9531,26 @@ end MIDIOutputMap
 
 @js.native
 @JSGlobal
-class FormData extends js.Object:
+class FormData extends PlatformObject:
   def this(@unused form: HTMLFormElement = js.native, @unused submitter: HTMLElement = js.native) = this()
-  def append(name: String, value: String): Unit                          = js.native
-  def append(name: String, blobValue: Blob, filename: String): Unit      = js.native
-  def delete(name: String): Unit                                         = js.native
-  def get(name: String): scala.scalajs.js.Any                            = js.native
-  def getAll(name: String): scala.scalajs.js.Array[scala.scalajs.js.Any] = js.native
-  def has(name: String): Boolean                                         = js.native
-  def set(name: String, value: String): Unit                             = js.native
-  def set(name: String, blobValue: Blob, filename: String): Unit         = js.native
+  def append(name: String, value: String): Unit                     = js.native
+  def append(name: String, blobValue: Blob): Unit                   = js.native
+  def append(name: String, blobValue: Blob, filename: String): Unit = js.native
+  def delete(name: String): Unit                                    = js.native
+  @JSName("get")
+  def getOrNull(name: String): File | String | Null               = js.native
+  def getAll(name: String): scala.scalajs.js.Array[File | String] = js.native
+  def has(name: String): Boolean                                  = js.native
+  def set(name: String, value: String): Unit                      = js.native
+  def set(name: String, blobValue: Blob): Unit                    = js.native
+  def set(name: String, blobValue: Blob, filename: String): Unit  = js.native
   @JSName(js.Symbol.iterator)
-  def jsIterator(): scala.scalajs.js.Iterator[js.Tuple2[String, scala.scalajs.js.Any]] = js.native
+  def jsIterator(): scala.scalajs.js.Iterator[js.Tuple2[String, File | String]] = js.native
 end FormData
 
 @js.native
 @JSGlobal
-class GPUSupportedFeatures extends js.Object:
+class GPUSupportedFeatures extends PlatformObject:
   def size: Int                                                                     = js.native
   def has(value: String): Boolean                                                   = js.native
   def keys(): scala.scalajs.js.Iterator[String]                                     = js.native
@@ -8950,14 +9563,14 @@ end GPUSupportedFeatures
 
 @js.native
 @JSGlobal
-class PerformanceObserverEntryList extends js.Object:
-  def getEntries(): scala.scalajs.js.Any                                               = js.native
-  def getEntriesByType(`type`: String): scala.scalajs.js.Any                           = js.native
-  def getEntriesByName(name: String, `type`: String = js.native): scala.scalajs.js.Any = js.native
+class PerformanceObserverEntryList extends PlatformObject:
+  def getEntries(): scala.scalajs.js.Array[PerformanceEntry]                                               = js.native
+  def getEntriesByType(`type`: String): scala.scalajs.js.Array[PerformanceEntry]                           = js.native
+  def getEntriesByName(name: String, `type`: String = js.native): scala.scalajs.js.Array[PerformanceEntry] = js.native
 
 @js.native
 @JSGlobal
-class Navigator extends js.Object:
+class Navigator extends PlatformObject:
   def attribution: Attribution                                                 = js.native
   def audioSession: AudioSession                                               = js.native
   def clipboard: Clipboard                                                     = js.native
@@ -9027,11 +9640,11 @@ class Navigator extends js.Object:
       supportedConfigurations: scala.scalajs.js.Array[MediaKeySystemConfiguration],
   ): scala.scalajs.js.Promise[MediaKeySystemAccess] = js.native
   def deprecatedReplaceInURN(
-      urnOrConfig: scala.scalajs.js.Any,
+      urnOrConfig: String | FencedFrameConfig,
       replacements: scala.scalajs.js.Dictionary[String],
   ): scala.scalajs.js.Promise[Unit] = js.native
   def deprecatedURNtoURL(
-      urnOrConfig: scala.scalajs.js.Any,
+      urnOrConfig: String | FencedFrameConfig,
       send_reports: Boolean = js.native,
   ): scala.scalajs.js.Promise[String]                                           = js.native
   def adAuctionComponents(numAdComponents: Int): scala.scalajs.js.Array[String] = js.native
@@ -9062,10 +9675,12 @@ class XMLHttpRequestUpload extends XMLHttpRequestEventTarget
 @js.native
 @JSGlobal
 class Clipboard extends EventTarget:
-  def read(formats: ClipboardUnsanitizedFormats = js.native): scala.scalajs.js.Promise[scala.scalajs.js.Any] = js.native
-  def readText(): scala.scalajs.js.Promise[String]                                                           = js.native
-  def write(data: scala.scalajs.js.Any): scala.scalajs.js.Promise[Unit]                                      = js.native
-  def writeText(data: String): scala.scalajs.js.Promise[Unit]                                                = js.native
+  def read(
+      formats: ClipboardUnsanitizedFormats = js.native
+  ): scala.scalajs.js.Promise[scala.scalajs.js.Array[ClipboardItem]]                     = js.native
+  def readText(): scala.scalajs.js.Promise[String]                                       = js.native
+  def write(data: scala.scalajs.js.Array[ClipboardItem]): scala.scalajs.js.Promise[Unit] = js.native
+  def writeText(data: String): scala.scalajs.js.Promise[Unit]                            = js.native
 
 @js.native
 @JSGlobal
@@ -9079,15 +9694,15 @@ class SVGLinearGradientElement extends SVGGradientElement:
 @JSGlobal
 class CSSRGB extends CSSColorValue:
   def this(
-      @unused r: scala.scalajs.js.Any,
-      @unused g: scala.scalajs.js.Any,
-      @unused b: scala.scalajs.js.Any,
-      @unused alpha: scala.scalajs.js.Any = js.native,
+      @unused r: Double | CSSNumericValue | String | CSSKeywordValue,
+      @unused g: Double | CSSNumericValue | String | CSSKeywordValue,
+      @unused b: Double | CSSNumericValue | String | CSSKeywordValue,
+      @unused alpha: Double | CSSNumericValue | String | CSSKeywordValue = js.native,
   ) = this()
-  var r: scala.scalajs.js.Any     = js.native
-  var g: scala.scalajs.js.Any     = js.native
-  var b: scala.scalajs.js.Any     = js.native
-  var alpha: scala.scalajs.js.Any = js.native
+  var r: Double | CSSNumericValue | String | CSSKeywordValue     = js.native
+  var g: Double | CSSNumericValue | String | CSSKeywordValue     = js.native
+  var b: Double | CSSNumericValue | String | CSSKeywordValue     = js.native
+  var alpha: Double | CSSNumericValue | String | CSSKeywordValue = js.native
 end CSSRGB
 
 @js.native
@@ -9106,18 +9721,18 @@ end HTMLDialogElement
 @JSGlobal
 class CSSScale extends CSSTransformComponent:
   def this(
-      @unused x: scala.scalajs.js.Any,
-      @unused y: scala.scalajs.js.Any,
-      @unused z: scala.scalajs.js.Any = js.native,
+      @unused x: Double | CSSNumericValue,
+      @unused y: Double | CSSNumericValue,
+      @unused z: Double | CSSNumericValue = js.native,
   ) = this()
-  var x: scala.scalajs.js.Any = js.native
-  var y: scala.scalajs.js.Any = js.native
-  var z: scala.scalajs.js.Any = js.native
+  var x: Double | CSSNumericValue = js.native
+  var y: Double | CSSNumericValue = js.native
+  var z: Double | CSSNumericValue = js.native
 end CSSScale
 
 @js.native
 @JSGlobal
-class FontFacePalette extends js.Object:
+class FontFacePalette extends PlatformObject:
   def length: Int                        = js.native
   def usableWithLightBackground: Boolean = js.native
   def usableWithDarkBackground: Boolean  = js.native
@@ -9136,7 +9751,7 @@ class HTMLFontElement extends HTMLElement:
 
 @js.native
 @JSGlobal
-class SVGLength extends js.Object:
+class SVGLength extends PlatformObject:
   def unitType: Int                                                              = js.native
   var value: Double                                                              = js.native
   var valueInSpecifiedUnits: Double                                              = js.native
@@ -9163,33 +9778,48 @@ end SVGLength
 @js.native
 @JSGlobal
 class XRSession extends EventTarget:
-  def persistentAnchors: scala.scalajs.js.Array[String]                                              = js.native
-  def environmentBlendMode: String                                                                   = js.native
-  def interactionMode: String                                                                        = js.native
-  def depthUsage: String                                                                             = js.native
-  def depthDataFormat: String                                                                        = js.native
-  def depthType: String                                                                              = js.native
-  def depthActive: Boolean                                                                           = js.native
-  def domOverlayState: XRDOMOverlayState                                                             = js.native
-  def preferredReflectionFormat: String                                                              = js.native
-  def visibilityState: String                                                                        = js.native
-  def frameRate: Double                                                                              = js.native
-  def supportedFrameRates: scala.scalajs.js.Any                                                      = js.native
-  def renderState: XRRenderState                                                                     = js.native
-  def inputSources: XRInputSourceArray                                                               = js.native
-  def trackedSources: XRInputSourceArray                                                             = js.native
-  def enabledFeatures: scala.scalajs.js.Array[String]                                                = js.native
-  def isSystemKeyboardSupported: Boolean                                                             = js.native
-  var onend: scala.scalajs.js.Any                                                                    = js.native
-  var oninputsourceschange: scala.scalajs.js.Any                                                     = js.native
-  var onselect: scala.scalajs.js.Any                                                                 = js.native
-  var onselectstart: scala.scalajs.js.Any                                                            = js.native
-  var onselectend: scala.scalajs.js.Any                                                              = js.native
-  var onsqueeze: scala.scalajs.js.Any                                                                = js.native
-  var onsqueezestart: scala.scalajs.js.Any                                                           = js.native
-  var onsqueezeend: scala.scalajs.js.Any                                                             = js.native
-  var onvisibilitychange: scala.scalajs.js.Any                                                       = js.native
-  var onframeratechange: scala.scalajs.js.Any                                                        = js.native
+  def persistentAnchors: scala.scalajs.js.Array[String] = js.native
+  def environmentBlendMode: String                      = js.native
+  def interactionMode: String                           = js.native
+  def depthUsage: String                                = js.native
+  def depthDataFormat: String                           = js.native
+  @JSName("depthType")
+  def depthTypeOrNull: String | Null = js.native
+  @JSName("depthActive")
+  def depthActiveOrNull: Boolean | Null = js.native
+  @JSName("domOverlayState")
+  def domOverlayStateOrNull: XRDOMOverlayState | Null = js.native
+  def preferredReflectionFormat: String               = js.native
+  def visibilityState: String                         = js.native
+  @JSName("frameRate")
+  def frameRateOrNull: Double | Null = js.native
+  @JSName("supportedFrameRates")
+  def supportedFrameRatesOrNull: scala.scalajs.js.Any | Null = js.native
+  def renderState: XRRenderState                             = js.native
+  def inputSources: XRInputSourceArray                       = js.native
+  def trackedSources: XRInputSourceArray                     = js.native
+  def enabledFeatures: scala.scalajs.js.Array[String]        = js.native
+  def isSystemKeyboardSupported: Boolean                     = js.native
+  @JSName("onend")
+  var onendOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("oninputsourceschange")
+  var oninputsourceschangeOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("onselect")
+  var onselectOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("onselectstart")
+  var onselectstartOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("onselectend")
+  var onselectendOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("onsqueeze")
+  var onsqueezeOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("onsqueezestart")
+  var onsqueezestartOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("onsqueezeend")
+  var onsqueezeendOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("onvisibilitychange")
+  var onvisibilitychangeOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("onframeratechange")
+  var onframeratechangeOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null        = js.native
   def maxRenderLayers: Int                                                                           = js.native
   def restorePersistentAnchor(uuid: String): scala.scalajs.js.Promise[XRAnchor]                      = js.native
   def deletePersistentAnchor(uuid: String): scala.scalajs.js.Promise[Unit]                           = js.native
@@ -9211,30 +9841,39 @@ end XRSession
 
 @js.native
 @JSGlobal
-class DeviceMotionEventAcceleration extends js.Object:
-  def x: Double = js.native
-  def y: Double = js.native
-  def z: Double = js.native
+class DeviceMotionEventAcceleration extends PlatformObject:
+  @JSName("x")
+  def xOrNull: Double | Null = js.native
+  @JSName("y")
+  def yOrNull: Double | Null = js.native
+  @JSName("z")
+  def zOrNull: Double | Null = js.native
 
 @js.native
 @JSGlobal
-class PluginArray extends js.Object:
-  def length: Int                     = js.native
-  def refresh(): Unit                 = js.native
-  def item(index: Int): Plugin        = js.native
-  def namedItem(name: String): Plugin = js.native
+class PluginArray extends PlatformObject:
+  def length: Int     = js.native
+  def refresh(): Unit = js.native
+  @JSName("item")
+  def itemOrNull(index: Int): Plugin | Null = js.native
+  @JSName("namedItem")
+  def namedItemOrNull(name: String): Plugin | Null = js.native
 
 @js.native
 @JSGlobal
 class Sensor extends EventTarget:
-  def activated: Boolean               = js.native
-  def hasReading: Boolean              = js.native
-  def timestamp: Double                = js.native
-  var onreading: scala.scalajs.js.Any  = js.native
-  var onactivate: scala.scalajs.js.Any = js.native
-  var onerror: scala.scalajs.js.Any    = js.native
-  def start(): Unit                    = js.native
-  def stop(): Unit                     = js.native
+  def activated: Boolean  = js.native
+  def hasReading: Boolean = js.native
+  @JSName("timestamp")
+  def timestampOrNull: Double | Null = js.native
+  @JSName("onreading")
+  var onreadingOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("onactivate")
+  var onactivateOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("onerror")
+  var onerrorOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  def start(): Unit                                                                 = js.native
+  def stop(): Unit                                                                  = js.native
 end Sensor
 
 @js.native
@@ -9252,8 +9891,10 @@ end HTMLModelElement
 @js.native
 @JSGlobal
 class CSSScopeRule extends CSSGroupingRule:
-  def start: String = js.native
-  def end: String   = js.native
+  @JSName("start")
+  def startOrNull: String | Null = js.native
+  @JSName("end")
+  def endOrNull: String | Null = js.native
 
 @js.native
 @JSGlobal
@@ -9266,8 +9907,10 @@ class SVGGeometryElement extends SVGGraphicsElement:
 
 @js.native
 @JSGlobal
-class TextDetector extends js.Object:
-  def detect(image: scala.scalajs.js.Any): scala.scalajs.js.Any = js.native
+class TextDetector extends PlatformObject:
+  def detect(
+      image: HTMLImageElement | SVGImageElement | HTMLVideoElement | HTMLCanvasElement | ImageBitmap | OffscreenCanvas | VideoFrame | Blob | ImageData
+  ): scala.scalajs.js.Any = js.native
 
 @js.native
 @JSGlobal
@@ -9277,32 +9920,37 @@ object TextDetector extends js.Object:
 
 @js.native
 @JSGlobal
-class LaunchParams extends js.Object:
-  def targetURL: String                               = js.native
+class LaunchParams extends PlatformObject:
+  @JSName("targetURL")
+  def targetURLOrNull: String | Null                  = js.native
   def files: scala.scalajs.js.Array[FileSystemHandle] = js.native
 
 @js.native
 @JSGlobal
 class XRQuadLayer extends XRCompositionLayer:
-  var space: XRSpace                 = js.native
-  var transform: XRRigidTransform    = js.native
-  var width: Double                  = js.native
-  var height: Double                 = js.native
-  var onredraw: scala.scalajs.js.Any = js.native
+  var space: XRSpace              = js.native
+  var transform: XRRigidTransform = js.native
+  var width: Double               = js.native
+  var height: Double              = js.native
+  @JSName("onredraw")
+  var onredrawOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
 
 @js.native
 @JSGlobal
-class GPUCommandEncoder extends js.Object:
-  var label: String                                                                                   = js.native
-  def beginRenderPass(descriptor: GPURenderPassDescriptor): GPURenderPassEncoder                      = js.native
-  def beginComputePass(descriptor: GPUComputePassDescriptor = js.native): GPUComputePassEncoder       = js.native
-  def copyBufferToBuffer(source: GPUBuffer, destination: GPUBuffer, size: scala.scalajs.js.Any): Unit = js.native
+class GPUCommandEncoder extends PlatformObject:
+  var label: String                                                                             = js.native
+  def beginRenderPass(descriptor: GPURenderPassDescriptor): GPURenderPassEncoder                = js.native
+  def beginComputePass(descriptor: GPUComputePassDescriptor = js.native): GPUComputePassEncoder = js.native
+  def copyBufferToBuffer(source: GPUBuffer, destination: GPUBuffer): Unit                       = js.native
+  def copyBufferToBuffer(source: GPUBuffer, destination: GPUBuffer, size: Int): Unit            = js.native
+  def copyBufferToBuffer(source: GPUBuffer, sourceOffset: Int, destination: GPUBuffer, destinationOffset: Int): Unit =
+    js.native
   def copyBufferToBuffer(
       source: GPUBuffer,
-      sourceOffset: scala.scalajs.js.Any,
+      sourceOffset: Int,
       destination: GPUBuffer,
-      destinationOffset: scala.scalajs.js.Any,
-      size: scala.scalajs.js.Any,
+      destinationOffset: Int,
+      size: Int,
   ): Unit = js.native
   def copyBufferToTexture(
       source: GPUTexelCopyBufferInfo,
@@ -9318,18 +9966,14 @@ class GPUCommandEncoder extends js.Object:
       source: GPUTexelCopyTextureInfo,
       destination: GPUTexelCopyTextureInfo,
       copySize: scala.scalajs.js.Any,
-  ): Unit = js.native
-  def clearBuffer(
-      buffer: GPUBuffer,
-      offset: scala.scalajs.js.Any = js.native,
-      size: scala.scalajs.js.Any = js.native,
-  ): Unit = js.native
+  ): Unit                                                                                  = js.native
+  def clearBuffer(buffer: GPUBuffer, offset: Int = js.native, size: Int = js.native): Unit = js.native
   def resolveQuerySet(
       querySet: GPUQuerySet,
-      firstQuery: scala.scalajs.js.Any,
-      queryCount: scala.scalajs.js.Any,
+      firstQuery: Int,
+      queryCount: Int,
       destination: GPUBuffer,
-      destinationOffset: scala.scalajs.js.Any,
+      destinationOffset: Int,
   ): Unit                                                                          = js.native
   def finish(descriptor: GPUCommandBufferDescriptor = js.native): GPUCommandBuffer = js.native
   def pushDebugGroup(groupLabel: String): Unit                                     = js.native
@@ -9339,7 +9983,7 @@ end GPUCommandEncoder
 
 @js.native
 @JSGlobal
-class Tag extends js.Object:
+class Tag extends PlatformObject:
   def this(@unused `type`: TagType) = this()
 
 @js.native
@@ -9354,7 +9998,7 @@ class NamedFlow extends EventTarget:
 
 @js.native
 @JSGlobal
-class NavigationPreloadManager extends js.Object:
+class NavigationPreloadManager extends PlatformObject:
   def enable(): scala.scalajs.js.Promise[Unit]                      = js.native
   def disable(): scala.scalajs.js.Promise[Unit]                     = js.native
   def setHeaderValue(value: String): scala.scalajs.js.Promise[Unit] = js.native
@@ -9362,22 +10006,23 @@ class NavigationPreloadManager extends js.Object:
 
 @js.native
 @JSGlobal
-class AnimationNodeList extends js.Object:
-  def length: Int                       = js.native
-  def item(index: Int): AnimationEffect = js.native
+class AnimationNodeList extends PlatformObject:
+  def length: Int = js.native
+  @JSName("item")
+  def itemOrNull(index: Int): AnimationEffect | Null = js.native
 
 @js.native
 @JSGlobal
-class GPUQueue extends js.Object:
+class GPUQueue extends PlatformObject:
   var label: String                                                          = js.native
   def submit(commandBuffers: scala.scalajs.js.Array[GPUCommandBuffer]): Unit = js.native
   def onSubmittedWorkDone(): scala.scalajs.js.Promise[Unit]                  = js.native
   def writeBuffer(
       buffer: GPUBuffer,
-      bufferOffset: scala.scalajs.js.Any,
+      bufferOffset: Int,
       data: scala.scalajs.js.Any,
-      dataOffset: scala.scalajs.js.Any = js.native,
-      size: scala.scalajs.js.Any = js.native,
+      dataOffset: Int = js.native,
+      size: Int = js.native,
   ): Unit = js.native
   def writeTexture(
       destination: GPUTexelCopyTextureInfo,
@@ -9394,7 +10039,7 @@ end GPUQueue
 
 @js.native
 @JSGlobal
-class MutationObserver extends js.Object:
+class MutationObserver extends PlatformObject:
   def this(
       @unused callback: scala.scalajs.js.Function2[scala.scalajs.js.Array[MutationRecord], MutationObserver, Unit]
   ) = this()
@@ -9404,7 +10049,7 @@ class MutationObserver extends js.Object:
 
 @js.native
 @JSGlobal
-class ModelContextClient extends js.Object:
+class ModelContextClient extends PlatformObject:
   def requestUserInteraction(
       callback: scala.scalajs.js.Function0[scala.scalajs.js.Promise[scala.scalajs.js.Any]]
   ): scala.scalajs.js.Promise[scala.scalajs.js.Any] = js.native
@@ -9413,80 +10058,134 @@ class ModelContextClient extends js.Object:
 @JSGlobal
 class CSSOKLab extends CSSColorValue:
   def this(
-      @unused l: scala.scalajs.js.Any,
-      @unused a: scala.scalajs.js.Any,
-      @unused b: scala.scalajs.js.Any,
-      @unused alpha: scala.scalajs.js.Any = js.native,
+      @unused l: Double | CSSNumericValue | String | CSSKeywordValue,
+      @unused a: Double | CSSNumericValue | String | CSSKeywordValue,
+      @unused b: Double | CSSNumericValue | String | CSSKeywordValue,
+      @unused alpha: Double | CSSNumericValue | String | CSSKeywordValue = js.native,
   ) = this()
-  var l: scala.scalajs.js.Any     = js.native
-  var a: scala.scalajs.js.Any     = js.native
-  var b: scala.scalajs.js.Any     = js.native
-  var alpha: scala.scalajs.js.Any = js.native
+  var l: Double | CSSNumericValue | String | CSSKeywordValue     = js.native
+  var a: Double | CSSNumericValue | String | CSSKeywordValue     = js.native
+  var b: Double | CSSNumericValue | String | CSSKeywordValue     = js.native
+  var alpha: Double | CSSNumericValue | String | CSSKeywordValue = js.native
 end CSSOKLab
 
 @js.native
 @JSGlobal
-class ElementInternals extends js.Object:
-  def shadowRoot: ShadowRoot                                                                   = js.native
-  def form: HTMLFormElement                                                                    = js.native
-  def willValidate: Boolean                                                                    = js.native
-  def validity: ValidityState                                                                  = js.native
-  def validationMessage: String                                                                = js.native
-  def labels: NodeList                                                                         = js.native
-  def states: CustomStateSet                                                                   = js.native
-  var role: String                                                                             = js.native
-  var ariaActiveDescendantElement: Element                                                     = js.native
-  var ariaAtomic: String                                                                       = js.native
-  var ariaAutoComplete: String                                                                 = js.native
-  var ariaBrailleLabel: String                                                                 = js.native
-  var ariaBrailleRoleDescription: String                                                       = js.native
-  var ariaBusy: String                                                                         = js.native
-  var ariaChecked: String                                                                      = js.native
-  var ariaColCount: String                                                                     = js.native
-  var ariaColIndex: String                                                                     = js.native
-  var ariaColIndexText: String                                                                 = js.native
-  var ariaColSpan: String                                                                      = js.native
-  var ariaControlsElements: scala.scalajs.js.Array[Element]                                    = js.native
-  var ariaCurrent: String                                                                      = js.native
-  var ariaDescribedByElements: scala.scalajs.js.Array[Element]                                 = js.native
-  var ariaDescription: String                                                                  = js.native
-  var ariaDetailsElements: scala.scalajs.js.Array[Element]                                     = js.native
-  var ariaDisabled: String                                                                     = js.native
-  var ariaErrorMessageElements: scala.scalajs.js.Array[Element]                                = js.native
-  var ariaExpanded: String                                                                     = js.native
-  var ariaFlowToElements: scala.scalajs.js.Array[Element]                                      = js.native
-  var ariaHasPopup: String                                                                     = js.native
-  var ariaHidden: String                                                                       = js.native
-  var ariaInvalid: String                                                                      = js.native
-  var ariaKeyShortcuts: String                                                                 = js.native
-  var ariaLabel: String                                                                        = js.native
-  var ariaLabelledByElements: scala.scalajs.js.Array[Element]                                  = js.native
-  var ariaLevel: String                                                                        = js.native
-  var ariaLive: String                                                                         = js.native
-  var ariaModal: String                                                                        = js.native
-  var ariaMultiLine: String                                                                    = js.native
-  var ariaMultiSelectable: String                                                              = js.native
-  var ariaOrientation: String                                                                  = js.native
-  var ariaOwnsElements: scala.scalajs.js.Array[Element]                                        = js.native
-  var ariaPlaceholder: String                                                                  = js.native
-  var ariaPosInSet: String                                                                     = js.native
-  var ariaPressed: String                                                                      = js.native
-  var ariaReadOnly: String                                                                     = js.native
-  var ariaRelevant: String                                                                     = js.native
-  var ariaRequired: String                                                                     = js.native
-  var ariaRoleDescription: String                                                              = js.native
-  var ariaRowCount: String                                                                     = js.native
-  var ariaRowIndex: String                                                                     = js.native
-  var ariaRowIndexText: String                                                                 = js.native
-  var ariaRowSpan: String                                                                      = js.native
-  var ariaSelected: String                                                                     = js.native
-  var ariaSetSize: String                                                                      = js.native
-  var ariaSort: String                                                                         = js.native
-  var ariaValueMax: String                                                                     = js.native
-  var ariaValueMin: String                                                                     = js.native
-  var ariaValueNow: String                                                                     = js.native
-  var ariaValueText: String                                                                    = js.native
-  def setFormValue(value: scala.scalajs.js.Any, state: scala.scalajs.js.Any = js.native): Unit = js.native
+class ElementInternals extends PlatformObject:
+  @JSName("shadowRoot")
+  def shadowRootOrNull: ShadowRoot | Null = js.native
+  @JSName("form")
+  def formOrNull: HTMLFormElement | Null = js.native
+  def willValidate: Boolean              = js.native
+  def validity: ValidityState            = js.native
+  def validationMessage: String          = js.native
+  def labels: NodeList                   = js.native
+  def states: CustomStateSet             = js.native
+  @JSName("role")
+  var roleOrNull: String | Null = js.native
+  @JSName("ariaActiveDescendantElement")
+  var ariaActiveDescendantElementOrNull: Element | Null = js.native
+  @JSName("ariaAtomic")
+  var ariaAtomicOrNull: String | Null = js.native
+  @JSName("ariaAutoComplete")
+  var ariaAutoCompleteOrNull: String | Null = js.native
+  @JSName("ariaBrailleLabel")
+  var ariaBrailleLabelOrNull: String | Null = js.native
+  @JSName("ariaBrailleRoleDescription")
+  var ariaBrailleRoleDescriptionOrNull: String | Null = js.native
+  @JSName("ariaBusy")
+  var ariaBusyOrNull: String | Null = js.native
+  @JSName("ariaChecked")
+  var ariaCheckedOrNull: String | Null = js.native
+  @JSName("ariaColCount")
+  var ariaColCountOrNull: String | Null = js.native
+  @JSName("ariaColIndex")
+  var ariaColIndexOrNull: String | Null = js.native
+  @JSName("ariaColIndexText")
+  var ariaColIndexTextOrNull: String | Null = js.native
+  @JSName("ariaColSpan")
+  var ariaColSpanOrNull: String | Null = js.native
+  @JSName("ariaControlsElements")
+  var ariaControlsElementsOrNull: scala.scalajs.js.Array[Element] | Null = js.native
+  @JSName("ariaCurrent")
+  var ariaCurrentOrNull: String | Null = js.native
+  @JSName("ariaDescribedByElements")
+  var ariaDescribedByElementsOrNull: scala.scalajs.js.Array[Element] | Null = js.native
+  @JSName("ariaDescription")
+  var ariaDescriptionOrNull: String | Null = js.native
+  @JSName("ariaDetailsElements")
+  var ariaDetailsElementsOrNull: scala.scalajs.js.Array[Element] | Null = js.native
+  @JSName("ariaDisabled")
+  var ariaDisabledOrNull: String | Null = js.native
+  @JSName("ariaErrorMessageElements")
+  var ariaErrorMessageElementsOrNull: scala.scalajs.js.Array[Element] | Null = js.native
+  @JSName("ariaExpanded")
+  var ariaExpandedOrNull: String | Null = js.native
+  @JSName("ariaFlowToElements")
+  var ariaFlowToElementsOrNull: scala.scalajs.js.Array[Element] | Null = js.native
+  @JSName("ariaHasPopup")
+  var ariaHasPopupOrNull: String | Null = js.native
+  @JSName("ariaHidden")
+  var ariaHiddenOrNull: String | Null = js.native
+  @JSName("ariaInvalid")
+  var ariaInvalidOrNull: String | Null = js.native
+  @JSName("ariaKeyShortcuts")
+  var ariaKeyShortcutsOrNull: String | Null = js.native
+  @JSName("ariaLabel")
+  var ariaLabelOrNull: String | Null = js.native
+  @JSName("ariaLabelledByElements")
+  var ariaLabelledByElementsOrNull: scala.scalajs.js.Array[Element] | Null = js.native
+  @JSName("ariaLevel")
+  var ariaLevelOrNull: String | Null = js.native
+  @JSName("ariaLive")
+  var ariaLiveOrNull: String | Null = js.native
+  @JSName("ariaModal")
+  var ariaModalOrNull: String | Null = js.native
+  @JSName("ariaMultiLine")
+  var ariaMultiLineOrNull: String | Null = js.native
+  @JSName("ariaMultiSelectable")
+  var ariaMultiSelectableOrNull: String | Null = js.native
+  @JSName("ariaOrientation")
+  var ariaOrientationOrNull: String | Null = js.native
+  @JSName("ariaOwnsElements")
+  var ariaOwnsElementsOrNull: scala.scalajs.js.Array[Element] | Null = js.native
+  @JSName("ariaPlaceholder")
+  var ariaPlaceholderOrNull: String | Null = js.native
+  @JSName("ariaPosInSet")
+  var ariaPosInSetOrNull: String | Null = js.native
+  @JSName("ariaPressed")
+  var ariaPressedOrNull: String | Null = js.native
+  @JSName("ariaReadOnly")
+  var ariaReadOnlyOrNull: String | Null = js.native
+  @JSName("ariaRelevant")
+  var ariaRelevantOrNull: String | Null = js.native
+  @JSName("ariaRequired")
+  var ariaRequiredOrNull: String | Null = js.native
+  @JSName("ariaRoleDescription")
+  var ariaRoleDescriptionOrNull: String | Null = js.native
+  @JSName("ariaRowCount")
+  var ariaRowCountOrNull: String | Null = js.native
+  @JSName("ariaRowIndex")
+  var ariaRowIndexOrNull: String | Null = js.native
+  @JSName("ariaRowIndexText")
+  var ariaRowIndexTextOrNull: String | Null = js.native
+  @JSName("ariaRowSpan")
+  var ariaRowSpanOrNull: String | Null = js.native
+  @JSName("ariaSelected")
+  var ariaSelectedOrNull: String | Null = js.native
+  @JSName("ariaSetSize")
+  var ariaSetSizeOrNull: String | Null = js.native
+  @JSName("ariaSort")
+  var ariaSortOrNull: String | Null = js.native
+  @JSName("ariaValueMax")
+  var ariaValueMaxOrNull: String | Null = js.native
+  @JSName("ariaValueMin")
+  var ariaValueMinOrNull: String | Null = js.native
+  @JSName("ariaValueNow")
+  var ariaValueNowOrNull: String | Null = js.native
+  @JSName("ariaValueText")
+  var ariaValueTextOrNull: String | Null                                                               = js.native
+  def setFormValue(value: File | String | FormData, state: File | String | FormData = js.native): Unit = js.native
   def setValidity(
       flags: ValidityStateFlags = js.native,
       message: String = js.native,
@@ -9498,7 +10197,7 @@ end ElementInternals
 
 @js.native
 @JSGlobal
-class SyncManager extends js.Object:
+class SyncManager extends PlatformObject:
   def register(tag: String): scala.scalajs.js.Promise[Unit] = js.native
   def getTags(): scala.scalajs.js.Any                       = js.native
 
@@ -9510,7 +10209,7 @@ class WebTransportWriter extends WritableStreamDefaultWriter:
 
 @js.native
 @JSGlobal
-class RemoteDocument extends js.Object:
+class RemoteDocument extends PlatformObject:
   def contentType: String            = js.native
   def contextUrl: String             = js.native
   var document: scala.scalajs.js.Any = js.native
@@ -9539,14 +10238,14 @@ object HTMLTrackElement extends js.Object:
 
 @js.native
 @JSGlobal
-class ChapterInformation extends js.Object:
+class ChapterInformation extends PlatformObject:
   def title: String                               = js.native
   def startTime: Double                           = js.native
   def artwork: scala.scalajs.js.Array[MediaImage] = js.native
 
 @js.native
 @JSGlobal
-class XRPlaneSet extends js.Object:
+class XRPlaneSet extends PlatformObject:
   def size: Int                                                                       = js.native
   def has(value: XRPlane): Boolean                                                    = js.native
   def keys(): scala.scalajs.js.Iterator[XRPlane]                                      = js.native
@@ -9569,14 +10268,17 @@ class SVGMaskElement extends SVGElement:
 
 @js.native
 @JSGlobal
-class WebTransport extends js.Object:
+class WebTransport extends PlatformObject:
   def this(@unused url: String, @unused options: WebTransportOptions = js.native) = this()
-  def ready: scala.scalajs.js.Promise[Unit]                             = js.native
-  def reliability: String                                               = js.native
-  def congestionControl: String                                         = js.native
-  var anticipatedConcurrentIncomingUnidirectionalStreams: Int           = js.native
-  var anticipatedConcurrentIncomingBidirectionalStreams: Int            = js.native
-  def responseHeaders: Headers                                          = js.native
+  def ready: scala.scalajs.js.Promise[Unit] = js.native
+  def reliability: String                   = js.native
+  def congestionControl: String             = js.native
+  @JSName("anticipatedConcurrentIncomingUnidirectionalStreams")
+  var anticipatedConcurrentIncomingUnidirectionalStreamsOrNull: Int | Null = js.native
+  @JSName("anticipatedConcurrentIncomingBidirectionalStreams")
+  var anticipatedConcurrentIncomingBidirectionalStreamsOrNull: Int | Null = js.native
+  @JSName("responseHeaders")
+  def responseHeadersOrNull: Headers | Null                             = js.native
   def protocol: String                                                  = js.native
   def closed: scala.scalajs.js.Promise[WebTransportCloseInfo]           = js.native
   def draining: scala.scalajs.js.Promise[Unit]                          = js.native
@@ -9605,7 +10307,7 @@ object WebTransport extends js.Object:
 
 @js.native
 @JSGlobal
-class GPUAdapter extends js.Object:
+class GPUAdapter extends PlatformObject:
   def features: GPUSupportedFeatures                                                                  = js.native
   def limits: GPUSupportedLimits                                                                      = js.native
   def info: GPUAdapterInfo                                                                            = js.native
@@ -9614,12 +10316,15 @@ class GPUAdapter extends js.Object:
 @js.native
 @JSGlobal
 class HTMLPortalElement extends HTMLElement:
-  var src: String                                                                                       = js.native
-  var referrerPolicy: String                                                                            = js.native
-  var onmessage: scala.scalajs.js.Any                                                                   = js.native
-  var onmessageerror: scala.scalajs.js.Any                                                              = js.native
+  var src: String            = js.native
+  var referrerPolicy: String = js.native
+  @JSName("onmessage")
+  var onmessageOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("onmessageerror")
+  var onmessageerrorOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null              = js.native
   def activate(options: PortalActivateOptions = js.native): scala.scalajs.js.Promise[Unit]              = js.native
   def postMessage(message: scala.scalajs.js.Any, options: StructuredSerializeOptions = js.native): Unit = js.native
+end HTMLPortalElement
 
 @js.native
 @JSGlobal
@@ -9630,34 +10335,37 @@ class XREquirectLayer extends XRCompositionLayer:
   var centralHorizontalAngle: Double = js.native
   var upperVerticalAngle: Double     = js.native
   var lowerVerticalAngle: Double     = js.native
-  var onredraw: scala.scalajs.js.Any = js.native
+  @JSName("onredraw")
+  var onredrawOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
 end XREquirectLayer
 
 @js.native
 @JSGlobal
-class TextEncoder extends js.Object:
+class TextEncoder extends PlatformObject:
   def encoding: String                                                                           = js.native
   def encode(input: String = js.native): scala.scalajs.js.Any                                    = js.native
   def encodeInto(source: String, destination: scala.scalajs.js.Any): TextEncoderEncodeIntoResult = js.native
 
 @js.native
 @JSGlobal
-class MediaKeyStatusMap extends js.Object:
-  def size: Int                                              = js.native
-  def has(keyId: scala.scalajs.js.Any): Boolean              = js.native
-  def get(keyId: scala.scalajs.js.Any): scala.scalajs.js.Any = js.native
+class MediaKeyStatusMap extends PlatformObject:
+  def size: Int                                       = js.native
+  def has(keyId: scala.scalajs.js.Any): Boolean       = js.native
+  def get(keyId: scala.scalajs.js.Any): String | Unit = js.native
   @JSName(js.Symbol.iterator)
   def jsIterator(): scala.scalajs.js.Iterator[js.Tuple2[scala.scalajs.js.Any, String]] = js.native
 
 @js.native
 @JSGlobal
-class LayoutFragment extends js.Object:
-  def inlineSize: Double          = js.native
-  def blockSize: Double           = js.native
-  var inlineOffset: Double        = js.native
-  var blockOffset: Double         = js.native
-  def data: scala.scalajs.js.Any  = js.native
-  def breakToken: ChildBreakToken = js.native
+class LayoutFragment extends PlatformObject:
+  def inlineSize: Double         = js.native
+  def blockSize: Double          = js.native
+  var inlineOffset: Double       = js.native
+  var blockOffset: Double        = js.native
+  def data: scala.scalajs.js.Any = js.native
+  @JSName("breakToken")
+  def breakTokenOrNull: ChildBreakToken | Null = js.native
+end LayoutFragment
 
 @js.native
 @JSGlobal
@@ -9671,7 +10379,7 @@ class IIRFilterNode extends AudioNode:
 
 @js.native
 @JSGlobal
-class Table extends js.Object:
+class Table extends PlatformObject:
   def this(@unused descriptor: TableDescriptor, @unused value: scala.scalajs.js.Any = js.native) = this()
   def length: scala.scalajs.js.Any                                                                     = js.native
   def grow(delta: scala.scalajs.js.Any, value: scala.scalajs.js.Any = js.native): scala.scalajs.js.Any = js.native
@@ -9684,19 +10392,22 @@ class WebGLTimerQueryEXT extends WebGLObject
 
 @js.native
 @JSGlobal
-class PaymentManager extends js.Object:
+class PaymentManager extends PlatformObject:
   var userHint: String                                                                               = js.native
   def enableDelegations(delegations: scala.scalajs.js.Array[String]): scala.scalajs.js.Promise[Unit] = js.native
 
 @js.native
 @JSGlobal
-class BluetoothLEScanFilter extends js.Object:
+class BluetoothLEScanFilter extends PlatformObject:
   def this(@unused init: BluetoothLEScanFilterInit = js.native) = this()
-  def name: String                                           = js.native
-  def namePrefix: String                                     = js.native
-  def services: scala.scalajs.js.Array[scala.scalajs.js.Any] = js.native
-  def manufacturerData: BluetoothManufacturerDataFilter      = js.native
-  def serviceData: BluetoothServiceDataFilter                = js.native
+  @JSName("name")
+  def nameOrNull: String | Null = js.native
+  @JSName("namePrefix")
+  def namePrefixOrNull: String | Null                   = js.native
+  def services: scala.scalajs.js.Array[String]          = js.native
+  def manufacturerData: BluetoothManufacturerDataFilter = js.native
+  def serviceData: BluetoothServiceDataFilter           = js.native
+end BluetoothLEScanFilter
 
 @js.native
 @JSGlobal
@@ -9728,35 +10439,36 @@ end HTMLAreaElement
 
 @js.native
 @JSGlobal
-class CacheStorage extends js.Object:
-  def `match`(request: scala.scalajs.js.Any, options: MultiCacheQueryOptions = js.native): scala.scalajs.js.Any =
-    js.native
-  def has(cacheName: String): scala.scalajs.js.Promise[Boolean]    = js.native
-  def open(cacheName: String): scala.scalajs.js.Promise[Cache]     = js.native
-  def delete(cacheName: String): scala.scalajs.js.Promise[Boolean] = js.native
-  def keys(): scala.scalajs.js.Any                                 = js.native
+class CacheStorage extends PlatformObject:
+  def `match`(request: Request | String, options: MultiCacheQueryOptions = js.native): scala.scalajs.js.Any = js.native
+  def has(cacheName: String): scala.scalajs.js.Promise[Boolean]                                             = js.native
+  def open(cacheName: String): scala.scalajs.js.Promise[Cache]                                              = js.native
+  def delete(cacheName: String): scala.scalajs.js.Promise[Boolean]                                          = js.native
+  def keys(): scala.scalajs.js.Any                                                                          = js.native
 
 @js.native
 @JSGlobal
 class DocumentType extends Node:
-  def name: String                                   = js.native
-  def publicId: String                               = js.native
-  def systemId: String                               = js.native
-  def before(nodes: scala.scalajs.js.Any): Unit      = js.native
-  def after(nodes: scala.scalajs.js.Any): Unit       = js.native
-  def replaceWith(nodes: scala.scalajs.js.Any): Unit = js.native
-  def remove(): Unit                                 = js.native
+  def name: String                            = js.native
+  def publicId: String                        = js.native
+  def systemId: String                        = js.native
+  def before(nodes: Node | String): Unit      = js.native
+  def after(nodes: Node | String): Unit       = js.native
+  def replaceWith(nodes: Node | String): Unit = js.native
+  def remove(): Unit                          = js.native
 end DocumentType
 
 @js.native
 @JSGlobal
 class SFrameDecrypterStream extends EventTarget:
   def this(@unused options: SFrameTransformOptions) = this()
-  def readable: ReadableStream                                                                      = js.native
-  def writable: WritableStream                                                                      = js.native
-  var onerror: scala.scalajs.js.Any                                                                 = js.native
+  def readable: ReadableStream = js.native
+  def writable: WritableStream = js.native
+  @JSName("onerror")
+  var onerrorOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null                 = js.native
   def addDecryptionKey(key: CryptoKey, keyId: scala.scalajs.js.Any): scala.scalajs.js.Promise[Unit] = js.native
   def removeDecryptionKey(keyId: scala.scalajs.js.Any): scala.scalajs.js.Promise[Unit]              = js.native
+end SFrameDecrypterStream
 
 @js.native
 @JSGlobal
@@ -9776,24 +10488,26 @@ end AnalyserNode
 @js.native
 @JSGlobal
 class CharacterData extends Node:
-  var data: String                                             = js.native
-  def length: Int                                              = js.native
-  def previousElementSibling: Element                          = js.native
-  def nextElementSibling: Element                              = js.native
+  var data: String = js.native
+  def length: Int  = js.native
+  @JSName("previousElementSibling")
+  def previousElementSiblingOrNull: Element | Null = js.native
+  @JSName("nextElementSibling")
+  def nextElementSiblingOrNull: Element | Null                 = js.native
   def substringData(offset: Int, count: Int): String           = js.native
   def appendData(data: String): Unit                           = js.native
   def insertData(offset: Int, data: String): Unit              = js.native
   def deleteData(offset: Int, count: Int): Unit                = js.native
   def replaceData(offset: Int, count: Int, data: String): Unit = js.native
-  def before(nodes: scala.scalajs.js.Any): Unit                = js.native
-  def after(nodes: scala.scalajs.js.Any): Unit                 = js.native
-  def replaceWith(nodes: scala.scalajs.js.Any): Unit           = js.native
+  def before(nodes: Node | String): Unit                       = js.native
+  def after(nodes: Node | String): Unit                        = js.native
+  def replaceWith(nodes: Node | String): Unit                  = js.native
   def remove(): Unit                                           = js.native
 end CharacterData
 
 @js.native
 @JSGlobal
-class GPUCompilationMessage extends js.Object:
+class GPUCompilationMessage extends PlatformObject:
   def message: String = js.native
   def `type`: String  = js.native
   def lineNum: Int    = js.native
@@ -9804,8 +10518,10 @@ class GPUCompilationMessage extends js.Object:
 @js.native
 @JSGlobal
 class MediaDevices extends EventTarget:
-  var oncaptureaction: scala.scalajs.js.Any                                                                 = js.native
-  var ondevicechange: scala.scalajs.js.Any                                                                  = js.native
+  @JSName("oncaptureaction")
+  var oncaptureactionOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("ondevicechange")
+  var ondevicechangeOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null                  = js.native
   def selectAudioOutput(options: AudioOutputOptions = js.native): scala.scalajs.js.Promise[MediaDeviceInfo] = js.native
   def setCaptureHandleConfig(config: CaptureHandleConfig = js.native): Unit                                 = js.native
   def setSupportedCaptureActions(actions: scala.scalajs.js.Array[String]): Unit                             = js.native
@@ -9819,7 +10535,7 @@ end MediaDevices
 
 @js.native
 @JSGlobal
-class HandwritingRecognizer extends js.Object:
+class HandwritingRecognizer extends PlatformObject:
   def startDrawing(hints: HandwritingHints = js.native): HandwritingDrawing = js.native
   def finish(): Unit                                                        = js.native
 
@@ -9840,12 +10556,12 @@ end HTMLTableRowElement
 
 @js.native
 @JSGlobal
-class GPURenderBundle extends js.Object:
+class GPURenderBundle extends PlatformObject:
   var label: String = js.native
 
 @js.native
 @JSGlobal
-class PermissionsPolicy extends js.Object:
+class PermissionsPolicy extends PlatformObject:
   def allowsFeature(feature: String, origin: String = js.native): Boolean     = js.native
   def features(): scala.scalajs.js.Array[String]                              = js.native
   def allowedFeatures(): scala.scalajs.js.Array[String]                       = js.native
@@ -9857,44 +10573,45 @@ class HTMLHeadElement extends HTMLElement
 
 @js.native
 @JSGlobal
-class EXT_color_buffer_half_float extends js.Object
+class EXT_color_buffer_half_float extends PlatformObject
 
 @js.native
 @JSGlobal
 object EXT_color_buffer_half_float extends js.Object:
-  val RGBA16F_EXT: scala.scalajs.js.Any                               = js.native
-  val RGB16F_EXT: scala.scalajs.js.Any                                = js.native
-  val FRAMEBUFFER_ATTACHMENT_COMPONENT_TYPE_EXT: scala.scalajs.js.Any = js.native
-  val UNSIGNED_NORMALIZED_EXT: scala.scalajs.js.Any                   = js.native
+  val RGBA16F_EXT: Int                               = js.native
+  val RGB16F_EXT: Int                                = js.native
+  val FRAMEBUFFER_ATTACHMENT_COMPONENT_TYPE_EXT: Int = js.native
+  val UNSIGNED_NORMALIZED_EXT: Int                   = js.native
 
 @js.native
 @JSGlobal
 class Text extends CharacterData:
   def this(@unused data: String = js.native) = this()
-  def wholeText: String                                                                 = js.native
-  def assignedSlot: HTMLSlotElement                                                     = js.native
+  def wholeText: String = js.native
+  @JSName("assignedSlot")
+  def assignedSlotOrNull: HTMLSlotElement | Null                                        = js.native
   def splitText(offset: Int): Text                                                      = js.native
   def getBoxQuads(options: BoxQuadOptions = js.native): scala.scalajs.js.Array[DOMQuad] = js.native
   def convertQuadFromNode(
       quad: DOMQuadInit,
-      from: scala.scalajs.js.Any,
+      from: Text | Element | CSSPseudoElement | Document,
       options: ConvertCoordinateOptions = js.native,
   ): DOMQuad = js.native
   def convertRectFromNode(
       rect: DOMRectReadOnly,
-      from: scala.scalajs.js.Any,
+      from: Text | Element | CSSPseudoElement | Document,
       options: ConvertCoordinateOptions = js.native,
   ): DOMQuad = js.native
   def convertPointFromNode(
       point: DOMPointInit,
-      from: scala.scalajs.js.Any,
+      from: Text | Element | CSSPseudoElement | Document,
       options: ConvertCoordinateOptions = js.native,
   ): DOMPoint = js.native
 end Text
 
 @js.native
 @JSGlobal
-class FontFaceVariations extends js.Object:
+class FontFaceVariations extends PlatformObject:
   def size: Int                                                  = js.native
   def has(value: FontFaceVariationAxis): Boolean                 = js.native
   def keys(): scala.scalajs.js.Iterator[FontFaceVariationAxis]   = js.native
@@ -9909,19 +10626,23 @@ end FontFaceVariations
 @js.native
 @JSGlobal
 class BatteryManager extends EventTarget:
-  def charging: Boolean                             = js.native
-  def chargingTime: Double                          = js.native
-  def dischargingTime: Double                       = js.native
-  def level: Double                                 = js.native
-  var onchargingchange: scala.scalajs.js.Any        = js.native
-  var onchargingtimechange: scala.scalajs.js.Any    = js.native
-  var ondischargingtimechange: scala.scalajs.js.Any = js.native
-  var onlevelchange: scala.scalajs.js.Any           = js.native
+  def charging: Boolean       = js.native
+  def chargingTime: Double    = js.native
+  def dischargingTime: Double = js.native
+  def level: Double           = js.native
+  @JSName("onchargingchange")
+  var onchargingchangeOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("onchargingtimechange")
+  var onchargingtimechangeOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("ondischargingtimechange")
+  var ondischargingtimechangeOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("onlevelchange")
+  var onlevelchangeOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
 end BatteryManager
 
 @js.native
 @JSGlobal
-class PerformanceEntry extends js.Object:
+class PerformanceEntry extends PlatformObject:
   def id: Int                        = js.native
   def name: String                   = js.native
   def entryType: String              = js.native
@@ -9933,13 +10654,13 @@ end PerformanceEntry
 
 @js.native
 @JSGlobal
-class SVGAnimatedAngle extends js.Object:
+class SVGAnimatedAngle extends PlatformObject:
   def baseVal: SVGAngle = js.native
   def animVal: SVGAngle = js.native
 
 @js.native
 @JSGlobal
-class AttributionAggregationServices extends js.Object:
+class AttributionAggregationServices extends PlatformObject:
   def size: Int                                                                                            = js.native
   def get(key: String): scala.scalajs.js.UndefOr[AttributionAggregationService]                            = js.native
   def has(key: String): Boolean                                                                            = js.native
@@ -9953,7 +10674,7 @@ end AttributionAggregationServices
 
 @js.native
 @JSGlobal
-class TextDecoderStream extends js.Object:
+class TextDecoderStream extends PlatformObject:
   def this(@unused label: String = js.native, @unused options: TextDecoderOptions = js.native) = this()
   def encoding: String         = js.native
   def fatal: Boolean           = js.native
@@ -9970,12 +10691,12 @@ class CSSParserBlock extends CSSParserValue:
 
 @js.native
 @JSGlobal
-class LaunchQueue extends js.Object:
+class LaunchQueue extends PlatformObject:
   def setConsumer(consumer: scala.scalajs.js.Function1[LaunchParams, scala.scalajs.js.Any]): Unit = js.native
 
 @js.native
 @JSGlobal
-class IDBKeyRange extends js.Object:
+class IDBKeyRange extends PlatformObject:
   def lower: scala.scalajs.js.Any                  = js.native
   def upper: scala.scalajs.js.Any                  = js.native
   def lowerOpen: Boolean                           = js.native
@@ -9998,7 +10719,7 @@ end IDBKeyRange
 
 @js.native
 @JSGlobal
-class MediaStreamTrackProcessor extends js.Object:
+class MediaStreamTrackProcessor extends PlatformObject:
   def this(@unused init: MediaStreamTrackProcessorInit) = this()
   def readable: ReadableStream = js.native
   def discardedFrames: Int     = js.native
@@ -10006,22 +10727,26 @@ class MediaStreamTrackProcessor extends js.Object:
 
 @js.native
 @JSGlobal
-class NodeIterator extends js.Object:
-  def root: Node                                    = js.native
-  def referenceNode: Node                           = js.native
-  def pointerBeforeReferenceNode: Boolean           = js.native
-  def whatToShow: Int                               = js.native
-  def filter: scala.scalajs.js.Function1[Node, Int] = js.native
-  def nextNode(): Node                              = js.native
-  def previousNode(): Node                          = js.native
-  def detach(): Unit                                = js.native
+class NodeIterator extends PlatformObject:
+  def root: Node                          = js.native
+  def referenceNode: Node                 = js.native
+  def pointerBeforeReferenceNode: Boolean = js.native
+  def whatToShow: Int                     = js.native
+  @JSName("filter")
+  def filterOrNull: scala.scalajs.js.Function1[Node, Int] | Null = js.native
+  @JSName("nextNode")
+  def nextNodeOrNull(): Node | Null = js.native
+  @JSName("previousNode")
+  def previousNodeOrNull(): Node | Null = js.native
+  def detach(): Unit                    = js.native
 end NodeIterator
 
 @js.native
 @JSGlobal
-class MediaSession extends js.Object:
-  var metadata: MediaMetadata = js.native
-  var playbackState: String   = js.native
+class MediaSession extends PlatformObject:
+  @JSName("metadata")
+  var metadataOrNull: MediaMetadata | Null = js.native
+  var playbackState: String                = js.native
   def setActionHandler(action: String, handler: scala.scalajs.js.Function1[MediaSessionActionDetails, Unit]): Unit =
     js.native
   def setPositionState(state: MediaPositionState = js.native): Unit         = js.native
@@ -10032,7 +10757,7 @@ end MediaSession
 
 @js.native
 @JSGlobal
-class SVGAnimatedLengthList extends js.Object:
+class SVGAnimatedLengthList extends PlatformObject:
   def baseVal: SVGLengthList = js.native
   def animVal: SVGLengthList = js.native
 
@@ -10048,7 +10773,7 @@ class SVGRadialGradientElement extends SVGGradientElement:
 
 @js.native
 @JSGlobal
-class Clients extends js.Object:
+class Clients extends PlatformObject:
   def get(id: String): scala.scalajs.js.Any                                   = js.native
   def matchAll(options: ClientQueryOptions = js.native): scala.scalajs.js.Any = js.native
   def openWindow(url: String): scala.scalajs.js.Promise[WindowClient]         = js.native
@@ -10093,7 +10818,7 @@ class HTMLOptGroupElement extends HTMLElement:
 
 @js.native
 @JSGlobal
-class EyeDropper extends js.Object:
+class EyeDropper extends PlatformObject:
   def open(options: ColorSelectionOptions = js.native): scala.scalajs.js.Promise[ColorSelectionResult] = js.native
 
 @js.native
@@ -10114,19 +10839,19 @@ class HTMLDataListElement extends HTMLElement:
 class CSSHWB extends CSSColorValue:
   def this(
       @unused h: CSSNumericValue,
-      @unused w: scala.scalajs.js.Any,
-      @unused b: scala.scalajs.js.Any,
-      @unused alpha: scala.scalajs.js.Any = js.native,
+      @unused w: Double | CSSNumericValue,
+      @unused b: Double | CSSNumericValue,
+      @unused alpha: Double | CSSNumericValue = js.native,
   ) = this()
-  var h: CSSNumericValue          = js.native
-  var w: scala.scalajs.js.Any     = js.native
-  var b: scala.scalajs.js.Any     = js.native
-  var alpha: scala.scalajs.js.Any = js.native
+  var h: CSSNumericValue              = js.native
+  var w: Double | CSSNumericValue     = js.native
+  var b: Double | CSSNumericValue     = js.native
+  var alpha: Double | CSSNumericValue = js.native
 end CSSHWB
 
 @js.native
 @JSGlobal
-class CompressionStream extends js.Object:
+class CompressionStream extends PlatformObject:
   def this(@unused format: String) = this()
   def readable: ReadableStream = js.native
   def writable: WritableStream = js.native
@@ -10134,20 +10859,23 @@ class CompressionStream extends js.Object:
 @js.native
 @JSGlobal
 class PermissionStatus extends EventTarget:
-  def state: String                  = js.native
-  def name: String                   = js.native
-  var onchange: scala.scalajs.js.Any = js.native
+  def state: String = js.native
+  def name: String  = js.native
+  @JSName("onchange")
+  var onchangeOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
 
 @js.native
 @JSGlobal
-class DataTransferItemList extends js.Object:
+class DataTransferItemList extends PlatformObject:
   def length: Int = js.native
   @JSBracketAccess
-  def apply(index: Int): DataTransferItem                 = js.native
-  def add(data: String, `type`: String): DataTransferItem = js.native
-  def add(data: File): DataTransferItem                   = js.native
-  def remove(index: Int): Unit                            = js.native
-  def clear(): Unit                                       = js.native
+  def apply(index: Int): DataTransferItem = js.native
+  @JSName("add")
+  def addOrNull(data: String, `type`: String): DataTransferItem | Null = js.native
+  @JSName("add")
+  def addOrNull(data: File): DataTransferItem | Null = js.native
+  def remove(index: Int): Unit                       = js.native
+  def clear(): Unit                                  = js.native
 end DataTransferItemList
 
 @js.native
@@ -10170,31 +10898,32 @@ end HTMLMarqueeElement
 
 @js.native
 @JSGlobal
-class Gamepad extends js.Object:
+class Gamepad extends PlatformObject:
   def hand: String                                                   = js.native
   def hapticActuators: scala.scalajs.js.Array[GamepadHapticActuator] = js.native
-  def pose: GamepadPose                                              = js.native
-  def id: String                                                     = js.native
-  def index: Int                                                     = js.native
-  def connected: Boolean                                             = js.native
-  def timestamp: Double                                              = js.native
-  def mapping: String                                                = js.native
-  def axes: scala.scalajs.js.Array[Double]                           = js.native
-  def buttons: scala.scalajs.js.Array[GamepadButton]                 = js.native
-  def touches: scala.scalajs.js.Array[GamepadTouch]                  = js.native
-  def vibrationActuator: GamepadHapticActuator                       = js.native
+  @JSName("pose")
+  def poseOrNull: GamepadPose | Null                 = js.native
+  def id: String                                     = js.native
+  def index: Int                                     = js.native
+  def connected: Boolean                             = js.native
+  def timestamp: Double                              = js.native
+  def mapping: String                                = js.native
+  def axes: scala.scalajs.js.Array[Double]           = js.native
+  def buttons: scala.scalajs.js.Array[GamepadButton] = js.native
+  def touches: scala.scalajs.js.Array[GamepadTouch]  = js.native
+  def vibrationActuator: GamepadHapticActuator       = js.native
 end Gamepad
 
 @js.native
 @JSGlobal
-class OffscreenCanvasRenderingContext2D extends js.Object:
+class OffscreenCanvasRenderingContext2D extends PlatformObject:
   def canvas: OffscreenCanvas                                                              = js.native
   var globalAlpha: Double                                                                  = js.native
   var globalCompositeOperation: String                                                     = js.native
   var imageSmoothingEnabled: Boolean                                                       = js.native
   var imageSmoothingQuality: String                                                        = js.native
-  var strokeStyle: scala.scalajs.js.Any                                                    = js.native
-  var fillStyle: scala.scalajs.js.Any                                                      = js.native
+  var strokeStyle: String | CanvasGradient | CanvasPattern                                 = js.native
+  var fillStyle: String | CanvasGradient | CanvasPattern                                   = js.native
   var shadowOffsetX: Double                                                                = js.native
   var shadowOffsetY: Double                                                                = js.native
   var shadowBlur: Double                                                                   = js.native
@@ -10227,34 +10956,55 @@ class OffscreenCanvasRenderingContext2D extends js.Object:
   def transform(a: Double, b: Double, c: Double, d: Double, e: Double, f: Double): Unit    = js.native
   def getTransform(): DOMMatrix                                                            = js.native
   def setTransform(a: Double, b: Double, c: Double, d: Double, e: Double, f: Double): Unit = js.native
+  def setTransform(): Unit                                                                 = js.native
   def setTransform(transform: DOMMatrix2DInit): Unit                                       = js.native
   def resetTransform(): Unit                                                               = js.native
   def createLinearGradient(x0: Double, y0: Double, x1: Double, y1: Double): CanvasGradient = js.native
   def createRadialGradient(x0: Double, y0: Double, r0: Double, x1: Double, y1: Double, r1: Double): CanvasGradient =
     js.native
-  def createConicGradient(startAngle: Double, x: Double, y: Double): CanvasGradient                = js.native
-  def createPattern(image: scala.scalajs.js.Any, repetition: String): CanvasPattern                = js.native
-  def clearRect(x: Double, y: Double, w: Double, h: Double): Unit                                  = js.native
-  def fillRect(x: Double, y: Double, w: Double, h: Double): Unit                                   = js.native
-  def strokeRect(x: Double, y: Double, w: Double, h: Double): Unit                                 = js.native
-  def beginPath(): Unit                                                                            = js.native
-  def fill(fillRule: String): Unit                                                                 = js.native
-  def fill(path: Path2D, fillRule: String): Unit                                                   = js.native
-  def stroke(): Unit                                                                               = js.native
-  def stroke(path: Path2D): Unit                                                                   = js.native
-  def clip(fillRule: String): Unit                                                                 = js.native
-  def clip(path: Path2D, fillRule: String): Unit                                                   = js.native
-  def isPointInPath(x: Double, y: Double, fillRule: String): Boolean                               = js.native
-  def isPointInPath(path: Path2D, x: Double, y: Double, fillRule: String): Boolean                 = js.native
-  def isPointInStroke(x: Double, y: Double): Boolean                                               = js.native
-  def isPointInStroke(path: Path2D, x: Double, y: Double): Boolean                                 = js.native
-  def fillText(text: String, x: Double, y: Double, maxWidth: Double = js.native): Unit             = js.native
-  def strokeText(text: String, x: Double, y: Double, maxWidth: Double = js.native): Unit           = js.native
-  def measureText(text: String): TextMetrics                                                       = js.native
-  def drawImage(image: scala.scalajs.js.Any, dx: Double, dy: Double): Unit                         = js.native
-  def drawImage(image: scala.scalajs.js.Any, dx: Double, dy: Double, dw: Double, dh: Double): Unit = js.native
+  def createConicGradient(startAngle: Double, x: Double, y: Double): CanvasGradient = js.native
+  @JSName("createPattern")
+  def createPatternOrNull(
+      image: HTMLImageElement | SVGImageElement | HTMLVideoElement | HTMLCanvasElement | ImageBitmap | OffscreenCanvas | VideoFrame,
+      repetition: String,
+  ): CanvasPattern | Null                                                                = js.native
+  def clearRect(x: Double, y: Double, w: Double, h: Double): Unit                        = js.native
+  def fillRect(x: Double, y: Double, w: Double, h: Double): Unit                         = js.native
+  def strokeRect(x: Double, y: Double, w: Double, h: Double): Unit                       = js.native
+  def beginPath(): Unit                                                                  = js.native
+  def fill(): Unit                                                                       = js.native
+  def fill(fillRule: String): Unit                                                       = js.native
+  def fill(path: Path2D): Unit                                                           = js.native
+  def fill(path: Path2D, fillRule: String): Unit                                         = js.native
+  def stroke(): Unit                                                                     = js.native
+  def stroke(path: Path2D): Unit                                                         = js.native
+  def clip(): Unit                                                                       = js.native
+  def clip(fillRule: String): Unit                                                       = js.native
+  def clip(path: Path2D): Unit                                                           = js.native
+  def clip(path: Path2D, fillRule: String): Unit                                         = js.native
+  def isPointInPath(x: Double, y: Double): Boolean                                       = js.native
+  def isPointInPath(x: Double, y: Double, fillRule: String): Boolean                     = js.native
+  def isPointInPath(path: Path2D, x: Double, y: Double): Boolean                         = js.native
+  def isPointInPath(path: Path2D, x: Double, y: Double, fillRule: String): Boolean       = js.native
+  def isPointInStroke(x: Double, y: Double): Boolean                                     = js.native
+  def isPointInStroke(path: Path2D, x: Double, y: Double): Boolean                       = js.native
+  def fillText(text: String, x: Double, y: Double, maxWidth: Double = js.native): Unit   = js.native
+  def strokeText(text: String, x: Double, y: Double, maxWidth: Double = js.native): Unit = js.native
+  def measureText(text: String): TextMetrics                                             = js.native
   def drawImage(
-      image: scala.scalajs.js.Any,
+      image: HTMLImageElement | SVGImageElement | HTMLVideoElement | HTMLCanvasElement | ImageBitmap | OffscreenCanvas | VideoFrame,
+      dx: Double,
+      dy: Double,
+  ): Unit = js.native
+  def drawImage(
+      image: HTMLImageElement | SVGImageElement | HTMLVideoElement | HTMLCanvasElement | ImageBitmap | OffscreenCanvas | VideoFrame,
+      dx: Double,
+      dy: Double,
+      dw: Double,
+      dh: Double,
+  ): Unit = js.native
+  def drawImage(
+      image: HTMLImageElement | SVGImageElement | HTMLVideoElement | HTMLCanvasElement | ImageBitmap | OffscreenCanvas | VideoFrame,
       sx: Double,
       sy: Double,
       sw: Double,
@@ -10264,6 +11014,7 @@ class OffscreenCanvasRenderingContext2D extends js.Object:
       dw: Double,
       dh: Double,
   ): Unit                                                                                                  = js.native
+  def createImageData(sw: Int, sh: Int): ImageData                                                         = js.native
   def createImageData(sw: Int, sh: Int, settings: ImageDataSettings): ImageData                            = js.native
   def createImageData(imageData: ImageData): ImageData                                                     = js.native
   def getImageData(sx: Int, sy: Int, sw: Int, sh: Int, settings: ImageDataSettings = js.native): ImageData = js.native
@@ -10309,32 +11060,38 @@ end OffscreenCanvasRenderingContext2D
 
 @js.native
 @JSGlobal
-class EncodedVideoChunk extends js.Object:
+class EncodedVideoChunk extends PlatformObject:
   def this(@unused init: EncodedVideoChunkInit) = this()
-  def `type`: String                                  = js.native
-  def timestamp: Int                                  = js.native
-  def duration: Int                                   = js.native
+  def `type`: String = js.native
+  def timestamp: Int = js.native
+  @JSName("duration")
+  def durationOrNull: Int | Null                      = js.native
   def byteLength: Int                                 = js.native
   def copyTo(destination: scala.scalajs.js.Any): Unit = js.native
+end EncodedVideoChunk
 
 @js.native
 @JSGlobal
-class USBDevice extends js.Object:
-  def usbVersionMajor: scala.scalajs.js.Any                                                         = js.native
-  def usbVersionMinor: scala.scalajs.js.Any                                                         = js.native
-  def usbVersionSubminor: scala.scalajs.js.Any                                                      = js.native
-  def deviceClass: scala.scalajs.js.Any                                                             = js.native
-  def deviceSubclass: scala.scalajs.js.Any                                                          = js.native
-  def deviceProtocol: scala.scalajs.js.Any                                                          = js.native
-  def vendorId: Int                                                                                 = js.native
-  def productId: Int                                                                                = js.native
-  def deviceVersionMajor: scala.scalajs.js.Any                                                      = js.native
-  def deviceVersionMinor: scala.scalajs.js.Any                                                      = js.native
-  def deviceVersionSubminor: scala.scalajs.js.Any                                                   = js.native
-  def manufacturerName: String                                                                      = js.native
-  def productName: String                                                                           = js.native
-  def serialNumber: String                                                                          = js.native
-  def configuration: USBConfiguration                                                               = js.native
+class USBDevice extends PlatformObject:
+  def usbVersionMajor: scala.scalajs.js.Any       = js.native
+  def usbVersionMinor: scala.scalajs.js.Any       = js.native
+  def usbVersionSubminor: scala.scalajs.js.Any    = js.native
+  def deviceClass: scala.scalajs.js.Any           = js.native
+  def deviceSubclass: scala.scalajs.js.Any        = js.native
+  def deviceProtocol: scala.scalajs.js.Any        = js.native
+  def vendorId: Int                               = js.native
+  def productId: Int                              = js.native
+  def deviceVersionMajor: scala.scalajs.js.Any    = js.native
+  def deviceVersionMinor: scala.scalajs.js.Any    = js.native
+  def deviceVersionSubminor: scala.scalajs.js.Any = js.native
+  @JSName("manufacturerName")
+  def manufacturerNameOrNull: String | Null = js.native
+  @JSName("productName")
+  def productNameOrNull: String | Null = js.native
+  @JSName("serialNumber")
+  def serialNumberOrNull: String | Null = js.native
+  @JSName("configuration")
+  def configurationOrNull: USBConfiguration | Null                                                  = js.native
   def configurations: scala.scalajs.js.Array[USBConfiguration]                                      = js.native
   def opened: Boolean                                                                               = js.native
   def open(): scala.scalajs.js.Promise[Unit]                                                        = js.native
@@ -10376,7 +11133,7 @@ end USBDevice
 
 @js.native
 @JSGlobal
-class FontMetrics extends js.Object:
+class FontMetrics extends PlatformObject:
   def width: Double                               = js.native
   def advances: scala.scalajs.js.Array[Double]    = js.native
   def boundingBoxLeft: Double                     = js.native
@@ -10395,16 +11152,17 @@ end FontMetrics
 
 @js.native
 @JSGlobal
-class Response extends js.Object:
+class Response extends PlatformObject:
   def this(@unused body: scala.scalajs.js.Any = js.native, @unused init: ResponseInit = js.native) = this()
-  def `type`: String                                                = js.native
-  def url: String                                                   = js.native
-  def redirected: Boolean                                           = js.native
-  def status: Int                                                   = js.native
-  def ok: Boolean                                                   = js.native
-  def statusText: String                                            = js.native
-  def headers: Headers                                              = js.native
-  def body: ReadableStream                                          = js.native
+  def `type`: String      = js.native
+  def url: String         = js.native
+  def redirected: Boolean = js.native
+  def status: Int         = js.native
+  def ok: Boolean         = js.native
+  def statusText: String  = js.native
+  def headers: Headers    = js.native
+  @JSName("body")
+  def bodyOrNull: ReadableStream | Null                             = js.native
   def bodyUsed: Boolean                                             = js.native
   def arrayBuffer(): scala.scalajs.js.Promise[scala.scalajs.js.Any] = js.native
   def blob(): scala.scalajs.js.Promise[Blob]                        = js.native
@@ -10435,7 +11193,7 @@ end WorkletAnimation
 
 @js.native
 @JSGlobal
-class AudioWorkletProcessor extends js.Object:
+class AudioWorkletProcessor extends PlatformObject:
   def port: MessagePort = js.native
 
 @js.native
@@ -10443,21 +11201,24 @@ class AudioWorkletProcessor extends js.Object:
 class MediaStream extends EventTarget:
   def this(@unused stream: MediaStream) = this()
   def this(@unused tracks: scala.scalajs.js.Array[MediaStreamTrack]) = this()
-  def id: String                                                 = js.native
-  def active: Boolean                                            = js.native
-  var onaddtrack: scala.scalajs.js.Any                           = js.native
-  var onremovetrack: scala.scalajs.js.Any                        = js.native
-  def getAudioTracks(): scala.scalajs.js.Array[MediaStreamTrack] = js.native
-  def getVideoTracks(): scala.scalajs.js.Array[MediaStreamTrack] = js.native
-  def getTracks(): scala.scalajs.js.Array[MediaStreamTrack]      = js.native
-  def getTrackById(trackId: String): MediaStreamTrack            = js.native
-  def addTrack(track: MediaStreamTrack): Unit                    = js.native
-  def removeTrack(track: MediaStreamTrack): Unit                 = js.native
+  def id: String      = js.native
+  def active: Boolean = js.native
+  @JSName("onaddtrack")
+  var onaddtrackOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("onremovetrack")
+  var onremovetrackOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  def getAudioTracks(): scala.scalajs.js.Array[MediaStreamTrack]                          = js.native
+  def getVideoTracks(): scala.scalajs.js.Array[MediaStreamTrack]                          = js.native
+  def getTracks(): scala.scalajs.js.Array[MediaStreamTrack]                               = js.native
+  @JSName("getTrackById")
+  def getTrackByIdOrNull(trackId: String): MediaStreamTrack | Null = js.native
+  def addTrack(track: MediaStreamTrack): Unit                      = js.native
+  def removeTrack(track: MediaStreamTrack): Unit                   = js.native
 end MediaStream
 
 @js.native
 @JSGlobal
-class XRMeshSet extends js.Object:
+class XRMeshSet extends PlatformObject:
   def size: Int                                                                     = js.native
   def has(value: XRMesh): Boolean                                                   = js.native
   def keys(): scala.scalajs.js.Iterator[XRMesh]                                     = js.native
@@ -10471,20 +11232,24 @@ end XRMeshSet
 @js.native
 @JSGlobal
 class ServiceWorkerRegistration extends EventTarget:
-  def backgroundFetch: BackgroundFetchManager     = js.native
-  def sync: SyncManager                           = js.native
-  def index: ContentIndex                         = js.native
-  def cookies: CookieStoreManager                 = js.native
-  def periodicSync: PeriodicSyncManager           = js.native
-  def installing: ServiceWorker                   = js.native
-  def waiting: ServiceWorker                      = js.native
-  def active: ServiceWorker                       = js.native
+  def backgroundFetch: BackgroundFetchManager = js.native
+  def sync: SyncManager                       = js.native
+  def index: ContentIndex                     = js.native
+  def cookies: CookieStoreManager             = js.native
+  def periodicSync: PeriodicSyncManager       = js.native
+  @JSName("installing")
+  def installingOrNull: ServiceWorker | Null = js.native
+  @JSName("waiting")
+  def waitingOrNull: ServiceWorker | Null = js.native
+  @JSName("active")
+  def activeOrNull: ServiceWorker | Null          = js.native
   def navigationPreload: NavigationPreloadManager = js.native
   def scope: String                               = js.native
   def updateViaCache: String                      = js.native
-  var onupdatefound: scala.scalajs.js.Any         = js.native
-  def paymentManager: PaymentManager              = js.native
-  def pushManager: PushManager                    = js.native
+  @JSName("onupdatefound")
+  var onupdatefoundOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  def paymentManager: PaymentManager                                                      = js.native
+  def pushManager: PushManager                                                            = js.native
   def showNotification(title: String, options: NotificationOptions = js.native): scala.scalajs.js.Promise[Unit] =
     js.native
   def getNotifications(filter: GetNotificationOptions = js.native): scala.scalajs.js.Any = js.native
@@ -10495,13 +11260,14 @@ end ServiceWorkerRegistration
 @js.native
 @JSGlobal
 class XRCubeLayer extends XRCompositionLayer:
-  var space: XRSpace                 = js.native
-  var orientation: DOMPointReadOnly  = js.native
-  var onredraw: scala.scalajs.js.Any = js.native
+  var space: XRSpace                = js.native
+  var orientation: DOMPointReadOnly = js.native
+  @JSName("onredraw")
+  var onredrawOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
 
 @js.native
 @JSGlobal
-class VTTRegion extends js.Object:
+class VTTRegion extends PlatformObject:
   var id: String              = js.native
   var width: Double           = js.native
   var lines: Int              = js.native
@@ -10514,7 +11280,7 @@ end VTTRegion
 
 @js.native
 @JSGlobal
-class LayoutEdges extends js.Object:
+class LayoutEdges extends PlatformObject:
   def inlineStart: Double = js.native
   def inlineEnd: Double   = js.native
   def blockStart: Double  = js.native
@@ -10529,7 +11295,7 @@ class HTMLMenuElement extends HTMLElement:
 
 @js.native
 @JSGlobal
-class BackgroundFetchRecord extends js.Object:
+class BackgroundFetchRecord extends PlatformObject:
   def request: Request                                  = js.native
   def responseReady: scala.scalajs.js.Promise[Response] = js.native
 
@@ -10543,7 +11309,7 @@ class LayoutShift extends PerformanceEntry:
 
 @js.native
 @JSGlobal
-class AnimationTrigger extends js.Object:
+class AnimationTrigger extends PlatformObject:
   def this(@unused options: AnimationTriggerOptions = js.native) = this()
   var timeline: AnimationTimeline          = js.native
   var behavior: String                     = js.native
@@ -10555,22 +11321,26 @@ end AnimationTrigger
 
 @js.native
 @JSGlobal
-class EXT_shader_texture_lod extends js.Object
+class EXT_shader_texture_lod extends PlatformObject
 
 @js.native
 @JSGlobal
 class IDBTransaction extends EventTarget:
-  def objectStoreNames: DOMStringList           = js.native
-  def mode: String                              = js.native
-  def durability: String                        = js.native
-  def db: IDBDatabase                           = js.native
-  def error: DOMException                       = js.native
-  var onabort: scala.scalajs.js.Any             = js.native
-  var oncomplete: scala.scalajs.js.Any          = js.native
-  var onerror: scala.scalajs.js.Any             = js.native
-  def objectStore(name: String): IDBObjectStore = js.native
-  def commit(): Unit                            = js.native
-  def abort(): Unit                             = js.native
+  def objectStoreNames: DOMStringList = js.native
+  def mode: String                    = js.native
+  def durability: String              = js.native
+  def db: IDBDatabase                 = js.native
+  @JSName("error")
+  def errorOrNull: DOMException | Null = js.native
+  @JSName("onabort")
+  var onabortOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("oncomplete")
+  var oncompleteOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("onerror")
+  var onerrorOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  def objectStore(name: String): IDBObjectStore                                     = js.native
+  def commit(): Unit                                                                = js.native
+  def abort(): Unit                                                                 = js.native
 end IDBTransaction
 
 @js.native
@@ -10592,7 +11362,7 @@ end XRCompositionLayer
 
 @js.native
 @JSGlobal
-class FencedFrameConfig extends js.Object:
+class FencedFrameConfig extends PlatformObject:
   def this(@unused url: String) = this()
   def setSharedStorageContext(contextString: String): Unit = js.native
 
@@ -10614,7 +11384,7 @@ end BiquadFilterNode
 
 @js.native
 @JSGlobal
-class PushMessageData extends js.Object:
+class PushMessageData extends PlatformObject:
   def arrayBuffer(): scala.scalajs.js.Any = js.native
   def blob(): Blob                        = js.native
   def bytes(): scala.scalajs.js.Any       = js.native
@@ -10623,7 +11393,7 @@ class PushMessageData extends js.Object:
 
 @js.native
 @JSGlobal
-class MessageChannel extends js.Object:
+class MessageChannel extends PlatformObject:
   def port1: MessagePort = js.native
   def port2: MessagePort = js.native
 
@@ -10640,7 +11410,7 @@ class GainNode extends AudioNode:
 
 @js.native
 @JSGlobal
-class EventCounts extends js.Object:
+class EventCounts extends PlatformObject:
   def size: Int                                                                  = js.native
   def get(key: String): scala.scalajs.js.UndefOr[Int]                            = js.native
   def has(key: String): Boolean                                                  = js.native
@@ -10654,15 +11424,15 @@ end EventCounts
 
 @js.native
 @JSGlobal
-class MLGraphBuilder extends js.Object:
+class MLGraphBuilder extends PlatformObject:
   def this(@unused context: MLContext) = this()
-  def input(name: String, descriptor: MLOperandDescriptor): MLOperand                         = js.native
-  def constant(descriptor: MLOperandDescriptor, buffer: scala.scalajs.js.Any): MLOperand      = js.native
-  def constant(dataType: String, value: scala.scalajs.js.Any): MLOperand                      = js.native
-  def constant(tensor: MLTensor): MLOperand                                                   = js.native
-  def build(outputs: scala.scalajs.js.Any): scala.scalajs.js.Promise[MLGraph]                 = js.native
-  def argMin(input: MLOperand, axis: Int, options: MLArgMinMaxOptions = js.native): MLOperand = js.native
-  def argMax(input: MLOperand, axis: Int, options: MLArgMinMaxOptions = js.native): MLOperand = js.native
+  def input(name: String, descriptor: MLOperandDescriptor): MLOperand                           = js.native
+  def constant(descriptor: MLOperandDescriptor, buffer: scala.scalajs.js.Any): MLOperand        = js.native
+  def constant(dataType: String, value: scala.scalajs.js.Any): MLOperand                        = js.native
+  def constant(tensor: MLTensor): MLOperand                                                     = js.native
+  def build(outputs: scala.scalajs.js.Dictionary[MLOperand]): scala.scalajs.js.Promise[MLGraph] = js.native
+  def argMin(input: MLOperand, axis: Int, options: MLArgMinMaxOptions = js.native): MLOperand   = js.native
+  def argMax(input: MLOperand, axis: Int, options: MLArgMinMaxOptions = js.native): MLOperand   = js.native
   def batchNormalization(
       input: MLOperand,
       mean: MLOperand,
@@ -10853,17 +11623,18 @@ class XRBoundedReferenceSpace extends XRReferenceSpace:
 
 @js.native
 @JSGlobal
-class WebGLShaderPrecisionFormat extends js.Object:
-  def rangeMin: scala.scalajs.js.Any  = js.native
-  def rangeMax: scala.scalajs.js.Any  = js.native
-  def precision: scala.scalajs.js.Any = js.native
+class WebGLShaderPrecisionFormat extends PlatformObject:
+  def rangeMin: Int  = js.native
+  def rangeMax: Int  = js.native
+  def precision: Int = js.native
 
 @js.native
 @JSGlobal
-class USBConfiguration extends js.Object:
+class USBConfiguration extends PlatformObject:
   def this(@unused device: USBDevice, @unused configurationValue: scala.scalajs.js.Any) = this()
-  def configurationValue: scala.scalajs.js.Any         = js.native
-  def configurationName: String                        = js.native
+  def configurationValue: scala.scalajs.js.Any = js.native
+  @JSName("configurationName")
+  def configurationNameOrNull: String | Null           = js.native
   def interfaces: scala.scalajs.js.Array[USBInterface] = js.native
 
 @js.native
@@ -10873,20 +11644,22 @@ class SVGFEMergeNodeElement extends SVGElement:
 
 @js.native
 @JSGlobal
-class WebTransportSendGroup extends js.Object:
+class WebTransportSendGroup extends PlatformObject:
   def getStats(): scala.scalajs.js.Promise[WebTransportSendStreamStats] = js.native
 
 @js.native
 @JSGlobal
-class EXT_color_buffer_float extends js.Object
+class EXT_color_buffer_float extends PlatformObject
 
 @js.native
 @JSGlobal
 class ScreenDetails extends EventTarget:
   def screens: scala.scalajs.js.Array[ScreenDetailed] = js.native
   def currentScreen: ScreenDetailed                   = js.native
-  var onscreenschange: scala.scalajs.js.Any           = js.native
-  var oncurrentscreenchange: scala.scalajs.js.Any     = js.native
+  @JSName("onscreenschange")
+  var onscreenschangeOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("oncurrentscreenchange")
+  var oncurrentscreenchangeOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
 
 @js.native
 @JSGlobal
@@ -10896,7 +11669,7 @@ class CSSNamespaceRule extends CSSRule:
 
 @js.native
 @JSGlobal
-class PressureRecord extends js.Object:
+class PressureRecord extends PlatformObject:
   def source: String                 = js.native
   def state: String                  = js.native
   def time: Double                   = js.native
@@ -10905,22 +11678,24 @@ class PressureRecord extends js.Object:
 @js.native
 @JSGlobal
 class PortalHost extends EventTarget:
-  var onmessage: scala.scalajs.js.Any                                                                   = js.native
-  var onmessageerror: scala.scalajs.js.Any                                                              = js.native
+  @JSName("onmessage")
+  var onmessageOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("onmessageerror")
+  var onmessageerrorOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null              = js.native
   def postMessage(message: scala.scalajs.js.Any, options: StructuredSerializeOptions = js.native): Unit = js.native
 
 @js.native
 @JSGlobal
-class GPUTexture extends js.Object:
-  def width: scala.scalajs.js.Any                                                  = js.native
-  def height: scala.scalajs.js.Any                                                 = js.native
-  def depthOrArrayLayers: scala.scalajs.js.Any                                     = js.native
-  def mipLevelCount: scala.scalajs.js.Any                                          = js.native
-  def sampleCount: scala.scalajs.js.Any                                            = js.native
+class GPUTexture extends PlatformObject:
+  def width: Int                                                                   = js.native
+  def height: Int                                                                  = js.native
+  def depthOrArrayLayers: Int                                                      = js.native
+  def mipLevelCount: Int                                                           = js.native
+  def sampleCount: Int                                                             = js.native
   def dimension: String                                                            = js.native
   def format: String                                                               = js.native
-  def usage: scala.scalajs.js.Any                                                  = js.native
-  def textureBindingViewDimension: scala.scalajs.js.Any                            = js.native
+  def usage: Int                                                                   = js.native
+  def textureBindingViewDimension: String | Unit                                   = js.native
   var label: String                                                                = js.native
   def createView(descriptor: GPUTextureViewDescriptor = js.native): GPUTextureView = js.native
   def destroy(): Unit                                                              = js.native
@@ -10928,13 +11703,13 @@ end GPUTexture
 
 @js.native
 @JSGlobal
-class GPUShaderModule extends js.Object:
+class GPUShaderModule extends PlatformObject:
   var label: String                                                      = js.native
   def getCompilationInfo(): scala.scalajs.js.Promise[GPUCompilationInfo] = js.native
 
 @js.native
 @JSGlobal
-class NavigationDestination extends js.Object:
+class NavigationDestination extends PlatformObject:
   def url: String                      = js.native
   def key: String                      = js.native
   def id: String                       = js.native
@@ -10944,7 +11719,7 @@ class NavigationDestination extends js.Object:
 
 @js.native
 @JSGlobal
-class DOMRectReadOnly extends js.Object:
+class DOMRectReadOnly extends PlatformObject:
   def this(
       @unused x: Double = js.native,
       @unused y: Double = js.native,
@@ -10992,10 +11767,13 @@ object SVGFEColorMatrixElement extends js.Object:
 @js.native
 @JSGlobal
 class RemotePlayback extends EventTarget:
-  def state: String                                                                                         = js.native
-  var onconnecting: scala.scalajs.js.Any                                                                    = js.native
-  var onconnect: scala.scalajs.js.Any                                                                       = js.native
-  var ondisconnect: scala.scalajs.js.Any                                                                    = js.native
+  def state: String = js.native
+  @JSName("onconnecting")
+  var onconnectingOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("onconnect")
+  var onconnectOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("ondisconnect")
+  var ondisconnectOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null                    = js.native
   def watchAvailability(callback: scala.scalajs.js.Function1[Boolean, Unit]): scala.scalajs.js.Promise[Int] = js.native
   def cancelWatchAvailability(id: Int = js.native): scala.scalajs.js.Promise[Unit]                          = js.native
   def prompt(): scala.scalajs.js.Promise[Unit]                                                              = js.native
@@ -11003,7 +11781,7 @@ end RemotePlayback
 
 @js.native
 @JSGlobal
-class ResizeObserverSize extends js.Object:
+class ResizeObserverSize extends PlatformObject:
   def inlineSize: Double = js.native
   def blockSize: Double  = js.native
 
@@ -11015,13 +11793,13 @@ class MediaStreamAudioDestinationNode extends AudioNode:
 
 @js.native
 @JSGlobal
-class WEBGL_lose_context extends js.Object:
+class WEBGL_lose_context extends PlatformObject:
   def loseContext(): Unit    = js.native
   def restoreContext(): Unit = js.native
 
 @js.native
 @JSGlobal
-class XRHitTestSource extends js.Object:
+class XRHitTestSource extends PlatformObject:
   def cancel(): Unit = js.native
 
 @js.native
@@ -11036,13 +11814,17 @@ class OscillatorNode extends AudioScheduledSourceNode:
 @js.native
 @JSGlobal
 class ServiceWorkerContainer extends EventTarget:
-  def controller: ServiceWorker                                  = js.native
+  @JSName("controller")
+  def controllerOrNull: ServiceWorker | Null                     = js.native
   def ready: scala.scalajs.js.Promise[ServiceWorkerRegistration] = js.native
-  var oncontrollerchange: scala.scalajs.js.Any                   = js.native
-  var onmessage: scala.scalajs.js.Any                            = js.native
-  var onmessageerror: scala.scalajs.js.Any                       = js.native
+  @JSName("oncontrollerchange")
+  var oncontrollerchangeOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("onmessage")
+  var onmessageOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("onmessageerror")
+  var onmessageerrorOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
   def register(
-      scriptURL: scala.scalajs.js.Any,
+      scriptURL: TrustedScriptURL | String,
       options: RegistrationOptions = js.native,
   ): scala.scalajs.js.Promise[ServiceWorkerRegistration]                   = js.native
   def getRegistration(clientURL: String = js.native): scala.scalajs.js.Any = js.native
@@ -11053,27 +11835,30 @@ end ServiceWorkerContainer
 @js.native
 @JSGlobal
 class XRSystem extends EventTarget:
-  var ondevicechange: scala.scalajs.js.Any                                                                  = js.native
+  @JSName("ondevicechange")
+  var ondevicechangeOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null                  = js.native
   def isSessionSupported(mode: String): scala.scalajs.js.Promise[Boolean]                                   = js.native
   def requestSession(mode: String, options: XRSessionInit = js.native): scala.scalajs.js.Promise[XRSession] = js.native
 
 @js.native
 @JSGlobal
 class HTMLIFrameElement extends HTMLElement:
-  var credentialless: Boolean              = js.native
-  var csp: String                          = js.native
-  var src: String                          = js.native
-  var srcdoc: scala.scalajs.js.Any         = js.native
-  var name: String                         = js.native
-  def sandbox: DOMTokenList                = js.native
-  var allow: String                        = js.native
-  var allowFullscreen: Boolean             = js.native
-  var width: String                        = js.native
-  var height: String                       = js.native
-  var referrerPolicy: String               = js.native
-  var loading: String                      = js.native
-  def contentDocument: Document            = js.native
-  def contentWindow: scala.scalajs.js.Any  = js.native
+  var credentialless: Boolean      = js.native
+  var csp: String                  = js.native
+  var src: String                  = js.native
+  var srcdoc: TrustedHTML | String = js.native
+  var name: String                 = js.native
+  def sandbox: DOMTokenList        = js.native
+  var allow: String                = js.native
+  var allowFullscreen: Boolean     = js.native
+  var width: String                = js.native
+  var height: String               = js.native
+  var referrerPolicy: String       = js.native
+  var loading: String              = js.native
+  @JSName("contentDocument")
+  def contentDocumentOrNull: Document | Null = js.native
+  @JSName("contentWindow")
+  def contentWindowOrNull: Window | Null   = js.native
   var align: String                        = js.native
   var scrolling: String                    = js.native
   var frameBorder: String                  = js.native
@@ -11082,19 +11867,24 @@ class HTMLIFrameElement extends HTMLElement:
   var marginWidth: String                  = js.native
   def permissionsPolicy: PermissionsPolicy = js.native
   var privateToken: String                 = js.native
-  def getSVGDocument(): Document           = js.native
+  @JSName("getSVGDocument")
+  def getSVGDocumentOrNull(): Document | Null = js.native
 end HTMLIFrameElement
 
 @js.native
 @JSGlobal
 class AudioTrackList extends EventTarget:
-  def length: Int                         = js.native
-  var onchange: scala.scalajs.js.Any      = js.native
-  var onaddtrack: scala.scalajs.js.Any    = js.native
-  var onremovetrack: scala.scalajs.js.Any = js.native
+  def length: Int = js.native
+  @JSName("onchange")
+  var onchangeOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("onaddtrack")
+  var onaddtrackOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("onremovetrack")
+  var onremovetrackOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
   @JSBracketAccess
-  def apply(index: Int): AudioTrack        = js.native
-  def getTrackById(id: String): AudioTrack = js.native
+  def apply(index: Int): AudioTrack = js.native
+  @JSName("getTrackById")
+  def getTrackByIdOrNull(id: String): AudioTrack | Null = js.native
 end AudioTrackList
 
 @js.native
@@ -11104,16 +11894,19 @@ class SVGMPathElement extends SVGElement:
 
 @js.native
 @JSGlobal
-class XPathResult extends js.Object:
-  def resultType: Int                = js.native
-  def numberValue: Double            = js.native
-  def stringValue: String            = js.native
-  def booleanValue: Boolean          = js.native
-  def singleNodeValue: Node          = js.native
-  def invalidIteratorState: Boolean  = js.native
-  def snapshotLength: Int            = js.native
-  def iterateNext(): Node            = js.native
-  def snapshotItem(index: Int): Node = js.native
+class XPathResult extends PlatformObject:
+  def resultType: Int       = js.native
+  def numberValue: Double   = js.native
+  def stringValue: String   = js.native
+  def booleanValue: Boolean = js.native
+  @JSName("singleNodeValue")
+  def singleNodeValueOrNull: Node | Null = js.native
+  def invalidIteratorState: Boolean      = js.native
+  def snapshotLength: Int                = js.native
+  @JSName("iterateNext")
+  def iterateNextOrNull(): Node | Null = js.native
+  @JSName("snapshotItem")
+  def snapshotItemOrNull(index: Int): Node | Null = js.native
 end XPathResult
 
 @js.native
@@ -11134,39 +11927,40 @@ end XPathResult
 @js.native
 @JSGlobal
 class HTMLFencedFrameElement extends HTMLElement:
-  var config: FencedFrameConfig = js.native
-  var width: String             = js.native
-  var height: String            = js.native
-  def sandbox: DOMTokenList     = js.native
-  var allow: String             = js.native
+  @JSName("config")
+  var configOrNull: FencedFrameConfig | Null = js.native
+  var width: String                          = js.native
+  var height: String                         = js.native
+  def sandbox: DOMTokenList                  = js.native
+  var allow: String                          = js.native
 
 @js.native
 @JSGlobal
-class EXT_texture_compression_bptc extends js.Object
+class EXT_texture_compression_bptc extends PlatformObject
 
 @js.native
 @JSGlobal
 object EXT_texture_compression_bptc extends js.Object:
-  val COMPRESSED_RGBA_BPTC_UNORM_EXT: scala.scalajs.js.Any         = js.native
-  val COMPRESSED_SRGB_ALPHA_BPTC_UNORM_EXT: scala.scalajs.js.Any   = js.native
-  val COMPRESSED_RGB_BPTC_SIGNED_FLOAT_EXT: scala.scalajs.js.Any   = js.native
-  val COMPRESSED_RGB_BPTC_UNSIGNED_FLOAT_EXT: scala.scalajs.js.Any = js.native
+  val COMPRESSED_RGBA_BPTC_UNORM_EXT: Int         = js.native
+  val COMPRESSED_SRGB_ALPHA_BPTC_UNORM_EXT: Int   = js.native
+  val COMPRESSED_RGB_BPTC_SIGNED_FLOAT_EXT: Int   = js.native
+  val COMPRESSED_RGB_BPTC_UNSIGNED_FLOAT_EXT: Int = js.native
 
 @js.native
 @JSGlobal
-class SVGAnimatedRect extends js.Object:
+class SVGAnimatedRect extends PlatformObject:
   def baseVal: DOMRect         = js.native
   def animVal: DOMRectReadOnly = js.native
 
 @js.native
 @JSGlobal
-class NDEFMessage extends js.Object:
+class NDEFMessage extends PlatformObject:
   def this(@unused messageInit: NDEFMessageInit) = this()
   def records: scala.scalajs.js.Array[NDEFRecord] = js.native
 
 @js.native
 @JSGlobal
-class XPathExpression extends js.Object:
+class XPathExpression extends PlatformObject:
   def evaluate(contextNode: Node, `type`: Int = js.native, result: XPathResult = js.native): XPathResult = js.native
 
 @js.native
@@ -11174,34 +11968,40 @@ class XPathExpression extends js.Object:
 class CSSRotate extends CSSTransformComponent:
   def this(@unused angle: CSSNumericValue) = this()
   def this(
-      @unused x: scala.scalajs.js.Any,
-      @unused y: scala.scalajs.js.Any,
-      @unused z: scala.scalajs.js.Any,
+      @unused x: Double | CSSNumericValue,
+      @unused y: Double | CSSNumericValue,
+      @unused z: Double | CSSNumericValue,
       @unused angle: CSSNumericValue,
   ) = this()
-  var x: scala.scalajs.js.Any = js.native
-  var y: scala.scalajs.js.Any = js.native
-  var z: scala.scalajs.js.Any = js.native
-  var angle: CSSNumericValue  = js.native
+  var x: Double | CSSNumericValue = js.native
+  var y: Double | CSSNumericValue = js.native
+  var z: Double | CSSNumericValue = js.native
+  var angle: CSSNumericValue      = js.native
 end CSSRotate
 
 @js.native
 @JSGlobal
 class MediaStreamTrack extends EventTarget:
-  var oncapturehandlechange: scala.scalajs.js.Any                                                      = js.native
-  def kind: String                                                                                     = js.native
-  def id: String                                                                                       = js.native
-  def label: String                                                                                    = js.native
-  var enabled: Boolean                                                                                 = js.native
-  def muted: Boolean                                                                                   = js.native
-  var onmute: scala.scalajs.js.Any                                                                     = js.native
-  var onunmute: scala.scalajs.js.Any                                                                   = js.native
-  def readyState: String                                                                               = js.native
-  var onended: scala.scalajs.js.Any                                                                    = js.native
-  var contentHint: String                                                                              = js.native
-  def isolated: Boolean                                                                                = js.native
-  var onisolationchange: scala.scalajs.js.Any                                                          = js.native
-  def getCaptureHandle(): CaptureHandle                                                                = js.native
+  @JSName("oncapturehandlechange")
+  var oncapturehandlechangeOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  def kind: String                                                                                = js.native
+  def id: String                                                                                  = js.native
+  def label: String                                                                               = js.native
+  var enabled: Boolean                                                                            = js.native
+  def muted: Boolean                                                                              = js.native
+  @JSName("onmute")
+  var onmuteOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("onunmute")
+  var onunmuteOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  def readyState: String                                                             = js.native
+  @JSName("onended")
+  var onendedOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  var contentHint: String                                                           = js.native
+  def isolated: Boolean                                                             = js.native
+  @JSName("onisolationchange")
+  var onisolationchangeOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("getCaptureHandle")
+  def getCaptureHandleOrNull(): CaptureHandle | Null                                                   = js.native
   def getSupportedCaptureActions(): scala.scalajs.js.Array[String]                                     = js.native
   def sendCaptureAction(action: String): scala.scalajs.js.Promise[Unit]                                = js.native
   def stop(): Unit                                                                                     = js.native
@@ -11213,26 +12013,26 @@ end MediaStreamTrack
 
 @js.native
 @JSGlobal
-class WEBGL_blend_equation_advanced_coherent extends js.Object
+class WEBGL_blend_equation_advanced_coherent extends PlatformObject
 
 @js.native
 @JSGlobal
 object WEBGL_blend_equation_advanced_coherent extends js.Object:
-  val MULTIPLY: scala.scalajs.js.Any       = js.native
-  val SCREEN: scala.scalajs.js.Any         = js.native
-  val OVERLAY: scala.scalajs.js.Any        = js.native
-  val DARKEN: scala.scalajs.js.Any         = js.native
-  val LIGHTEN: scala.scalajs.js.Any        = js.native
-  val COLORDODGE: scala.scalajs.js.Any     = js.native
-  val COLORBURN: scala.scalajs.js.Any      = js.native
-  val HARDLIGHT: scala.scalajs.js.Any      = js.native
-  val SOFTLIGHT: scala.scalajs.js.Any      = js.native
-  val DIFFERENCE: scala.scalajs.js.Any     = js.native
-  val EXCLUSION: scala.scalajs.js.Any      = js.native
-  val HSL_HUE: scala.scalajs.js.Any        = js.native
-  val HSL_SATURATION: scala.scalajs.js.Any = js.native
-  val HSL_COLOR: scala.scalajs.js.Any      = js.native
-  val HSL_LUMINOSITY: scala.scalajs.js.Any = js.native
+  val MULTIPLY: Int       = js.native
+  val SCREEN: Int         = js.native
+  val OVERLAY: Int        = js.native
+  val DARKEN: Int         = js.native
+  val LIGHTEN: Int        = js.native
+  val COLORDODGE: Int     = js.native
+  val COLORBURN: Int      = js.native
+  val HARDLIGHT: Int      = js.native
+  val SOFTLIGHT: Int      = js.native
+  val DIFFERENCE: Int     = js.native
+  val EXCLUSION: Int      = js.native
+  val HSL_HUE: Int        = js.native
+  val HSL_SATURATION: Int = js.native
+  val HSL_COLOR: Int      = js.native
+  val HSL_LUMINOSITY: Int = js.native
 end WEBGL_blend_equation_advanced_coherent
 
 @js.native
@@ -11242,7 +12042,7 @@ class MediaStreamTrackAudioSourceNode extends AudioNode:
 
 @js.native
 @JSGlobal
-class ReadableStreamBYOBReader extends js.Object:
+class ReadableStreamBYOBReader extends PlatformObject:
   def this(@unused stream: ReadableStream) = this()
   def closed: scala.scalajs.js.Promise[Unit] = js.native
   def read(
@@ -11258,16 +12058,19 @@ end ReadableStreamBYOBReader
 class XRWebGLLayer extends XRLayer:
   def this(
       @unused session: XRSession,
-      @unused context: scala.scalajs.js.Any,
+      @unused context: WebGLRenderingContext | WebGL2RenderingContext,
       @unused layerInit: XRWebGLLayerInit = js.native,
   ) = this()
-  def antialias: Boolean                    = js.native
-  def ignoreDepthValues: Boolean            = js.native
-  var fixedFoveation: Double                = js.native
-  def framebuffer: WebGLFramebuffer         = js.native
-  def framebufferWidth: Int                 = js.native
-  def framebufferHeight: Int                = js.native
-  def getViewport(view: XRView): XRViewport = js.native
+  def antialias: Boolean         = js.native
+  def ignoreDepthValues: Boolean = js.native
+  @JSName("fixedFoveation")
+  var fixedFoveationOrNull: Double | Null = js.native
+  @JSName("framebuffer")
+  def framebufferOrNull: WebGLFramebuffer | Null = js.native
+  def framebufferWidth: Int                      = js.native
+  def framebufferHeight: Int                     = js.native
+  @JSName("getViewport")
+  def getViewportOrNull(view: XRView): XRViewport | Null = js.native
 end XRWebGLLayer
 
 @js.native
@@ -11277,24 +12080,24 @@ object XRWebGLLayer extends js.Object:
 
 @js.native
 @JSGlobal
-class OVR_multiview2 extends js.Object:
+class OVR_multiview2 extends PlatformObject:
   def framebufferTextureMultiviewOVR(
-      target: scala.scalajs.js.Any,
-      attachment: scala.scalajs.js.Any,
+      target: Int,
+      attachment: Int,
       texture: WebGLTexture,
-      level: scala.scalajs.js.Any,
-      baseViewIndex: scala.scalajs.js.Any,
-      numViews: scala.scalajs.js.Any,
+      level: Int,
+      baseViewIndex: Int,
+      numViews: Int,
   ): Unit = js.native
 end OVR_multiview2
 
 @js.native
 @JSGlobal
 object OVR_multiview2 extends js.Object:
-  val FRAMEBUFFER_ATTACHMENT_TEXTURE_NUM_VIEWS_OVR: scala.scalajs.js.Any       = js.native
-  val FRAMEBUFFER_ATTACHMENT_TEXTURE_BASE_VIEW_INDEX_OVR: scala.scalajs.js.Any = js.native
-  val MAX_VIEWS_OVR: scala.scalajs.js.Any                                      = js.native
-  val FRAMEBUFFER_INCOMPLETE_VIEW_TARGETS_OVR: scala.scalajs.js.Any            = js.native
+  val FRAMEBUFFER_ATTACHMENT_TEXTURE_NUM_VIEWS_OVR: Int       = js.native
+  val FRAMEBUFFER_ATTACHMENT_TEXTURE_BASE_VIEW_INDEX_OVR: Int = js.native
+  val MAX_VIEWS_OVR: Int                                      = js.native
+  val FRAMEBUFFER_INCOMPLETE_VIEW_TARGETS_OVR: Int            = js.native
 
 @js.native
 @JSGlobal
@@ -11311,12 +12114,12 @@ class HTMLParagraphElement extends HTMLElement:
 
 @js.native
 @JSGlobal
-class AuthenticatorResponse extends js.Object:
+class AuthenticatorResponse extends PlatformObject:
   def clientDataJSON: scala.scalajs.js.Any = js.native
 
 @js.native
 @JSGlobal
-class CSSStyleValue extends js.Object
+class CSSStyleValue extends PlatformObject
 
 @js.native
 @JSGlobal
@@ -11336,13 +12139,15 @@ class PerformanceEventTiming extends PerformanceEntry:
   def processingStart: Double = js.native
   def processingEnd: Double   = js.native
   def cancelable: Boolean     = js.native
-  def target: Node            = js.native
-  def targetSelector: String  = js.native
-  def interactionId: Int      = js.native
+  @JSName("target")
+  def targetOrNull: Node | Null = js.native
+  def targetSelector: String    = js.native
+  def interactionId: Int        = js.native
+end PerformanceEventTiming
 
 @js.native
 @JSGlobal
-class XMLSerializer extends js.Object:
+class XMLSerializer extends PlatformObject:
   def serializeToString(root: Node): String = js.native
 
 @js.native
@@ -11354,28 +12159,30 @@ class PerformanceElementTiming extends PerformanceEntry:
   def identifier: String                = js.native
   def naturalWidth: Int                 = js.native
   def naturalHeight: Int                = js.native
-  def element: Element                  = js.native
-  def url: String                       = js.native
-  def paintTime: Double                 = js.native
-  def presentationTime: Double          = js.native
+  @JSName("element")
+  def elementOrNull: Element | Null = js.native
+  def url: String                   = js.native
+  def paintTime: Double             = js.native
+  @JSName("presentationTime")
+  def presentationTimeOrNull: Double | Null = js.native
 end PerformanceElementTiming
 
 @js.native
 @JSGlobal
-class CanvasPattern extends js.Object:
+class CanvasPattern extends PlatformObject:
   def setTransform(transform: DOMMatrix2DInit = js.native): Unit = js.native
 
 @js.native
 @JSGlobal
-class TextEncoderStream extends js.Object:
+class TextEncoderStream extends PlatformObject:
   def encoding: String         = js.native
   def readable: ReadableStream = js.native
   def writable: WritableStream = js.native
 
 @js.native
 @JSGlobal
-class DOMParser extends js.Object:
-  def parseFromString(string: scala.scalajs.js.Any, `type`: String): Document = js.native
+class DOMParser extends PlatformObject:
+  def parseFromString(string: TrustedHTML | String, `type`: String): Document = js.native
 
 @js.native
 @JSGlobal
@@ -11387,8 +12194,8 @@ class SVGEllipseElement extends SVGGeometryElement:
 
 @js.native
 @JSGlobal
-class IDBCursor extends js.Object:
-  def source: scala.scalajs.js.Any                                                          = js.native
+class IDBCursor extends PlatformObject:
+  def source: IDBObjectStore | IDBIndex                                                     = js.native
   def direction: String                                                                     = js.native
   def key: scala.scalajs.js.Any                                                             = js.native
   def primaryKey: scala.scalajs.js.Any                                                      = js.native
@@ -11413,28 +12220,35 @@ class SVGClipPathElement extends SVGElement:
 
 @js.native
 @JSGlobal
-class VideoColorSpace extends js.Object:
+class VideoColorSpace extends PlatformObject:
   def this(@unused init: VideoColorSpaceInit = js.native) = this()
-  def primaries: String             = js.native
-  def transfer: String              = js.native
-  def matrix: String                = js.native
-  def fullRange: Boolean            = js.native
-  def toJSON(): VideoColorSpaceInit = js.native
+  @JSName("primaries")
+  def primariesOrNull: String | Null = js.native
+  @JSName("transfer")
+  def transferOrNull: String | Null = js.native
+  @JSName("matrix")
+  def matrixOrNull: String | Null = js.native
+  @JSName("fullRange")
+  def fullRangeOrNull: Boolean | Null = js.native
+  def toJSON(): VideoColorSpaceInit   = js.native
+end VideoColorSpace
 
 @js.native
 @JSGlobal
 class HTMLVideoElement extends HTMLMediaElement:
-  var width: Int                                                                  = js.native
-  var height: Int                                                                 = js.native
-  def videoWidth: Int                                                             = js.native
-  def videoHeight: Int                                                            = js.native
-  var poster: String                                                              = js.native
-  var playsInline: Boolean                                                        = js.native
-  var onenterpictureinpicture: scala.scalajs.js.Any                               = js.native
-  var onleavepictureinpicture: scala.scalajs.js.Any                               = js.native
-  var disablePictureInPicture: Boolean                                            = js.native
-  def getVideoPlaybackQuality(): VideoPlaybackQuality                             = js.native
-  def requestPictureInPicture(): scala.scalajs.js.Promise[PictureInPictureWindow] = js.native
+  var width: Int           = js.native
+  var height: Int          = js.native
+  def videoWidth: Int      = js.native
+  def videoHeight: Int     = js.native
+  var poster: String       = js.native
+  var playsInline: Boolean = js.native
+  @JSName("onenterpictureinpicture")
+  var onenterpictureinpictureOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("onleavepictureinpicture")
+  var onleavepictureinpictureOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  var disablePictureInPicture: Boolean                                                              = js.native
+  def getVideoPlaybackQuality(): VideoPlaybackQuality                                               = js.native
+  def requestPictureInPicture(): scala.scalajs.js.Promise[PictureInPictureWindow]                   = js.native
   def requestVideoFrameCallback(callback: scala.scalajs.js.Function2[Double, VideoFrameCallbackMetadata, Unit]): Int =
     js.native
   def cancelVideoFrameCallback(handle: Int): Unit = js.native
@@ -11442,14 +12256,17 @@ end HTMLVideoElement
 
 @js.native
 @JSGlobal
-class Rewriter extends js.Object:
-  def sharedContext: String                                                                                 = js.native
-  def tone: String                                                                                          = js.native
-  def format: String                                                                                        = js.native
-  def length: String                                                                                        = js.native
-  def expectedInputLanguages: scala.scalajs.js.Array[String]                                                = js.native
-  def expectedContextLanguages: scala.scalajs.js.Array[String]                                              = js.native
-  def outputLanguage: String                                                                                = js.native
+class Rewriter extends PlatformObject:
+  def sharedContext: String = js.native
+  def tone: String          = js.native
+  def format: String        = js.native
+  def length: String        = js.native
+  @JSName("expectedInputLanguages")
+  def expectedInputLanguagesOrNull: scala.scalajs.js.Array[String] | Null = js.native
+  @JSName("expectedContextLanguages")
+  def expectedContextLanguagesOrNull: scala.scalajs.js.Array[String] | Null = js.native
+  @JSName("outputLanguage")
+  def outputLanguageOrNull: String | Null                                                                   = js.native
   def inputQuota: Double                                                                                    = js.native
   def rewrite(input: String, options: RewriterRewriteOptions = js.native): scala.scalajs.js.Promise[String] = js.native
   def rewriteStreaming(input: String, options: RewriterRewriteOptions = js.native): ReadableStream          = js.native
@@ -11467,10 +12284,11 @@ object Rewriter extends js.Object:
 @js.native
 @JSGlobal
 class MIDIAccess extends EventTarget:
-  def inputs: MIDIInputMap                = js.native
-  def outputs: MIDIOutputMap              = js.native
-  var onstatechange: scala.scalajs.js.Any = js.native
-  def sysexEnabled: Boolean               = js.native
+  def inputs: MIDIInputMap   = js.native
+  def outputs: MIDIOutputMap = js.native
+  @JSName("onstatechange")
+  var onstatechangeOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  def sysexEnabled: Boolean                                                               = js.native
 
 @js.native
 @JSGlobal
@@ -11479,7 +12297,7 @@ class CSSFunctionDeclarations extends CSSRule:
 
 @js.native
 @JSGlobal
-class Lock extends js.Object:
+class Lock extends PlatformObject:
   def name: String = js.native
   def mode: String = js.native
 
@@ -11487,17 +12305,23 @@ class Lock extends js.Object:
 @JSGlobal
 class UncalibratedMagnetometer extends Sensor:
   def this(@unused sensorOptions: MagnetometerSensorOptions = js.native) = this()
-  def x: Double     = js.native
-  def y: Double     = js.native
-  def z: Double     = js.native
-  def xBias: Double = js.native
-  def yBias: Double = js.native
-  def zBias: Double = js.native
+  @JSName("x")
+  def xOrNull: Double | Null = js.native
+  @JSName("y")
+  def yOrNull: Double | Null = js.native
+  @JSName("z")
+  def zOrNull: Double | Null = js.native
+  @JSName("xBias")
+  def xBiasOrNull: Double | Null = js.native
+  @JSName("yBias")
+  def yBiasOrNull: Double | Null = js.native
+  @JSName("zBias")
+  def zBiasOrNull: Double | Null = js.native
 end UncalibratedMagnetometer
 
 @js.native
 @JSGlobal
-class PerformanceNavigation extends js.Object:
+class PerformanceNavigation extends PlatformObject:
   def `type`: Int                    = js.native
   def redirectCount: Int             = js.native
   def toJSON(): scala.scalajs.js.Any = js.native
@@ -11513,27 +12337,30 @@ object PerformanceNavigation extends js.Object:
 @js.native
 @JSGlobal
 class HTMLSelectElement extends HTMLElement:
-  var autocomplete: String                                                               = js.native
-  var disabled: Boolean                                                                  = js.native
-  def form: HTMLFormElement                                                              = js.native
-  var multiple: Boolean                                                                  = js.native
-  var name: String                                                                       = js.native
-  var required: Boolean                                                                  = js.native
-  var size: Int                                                                          = js.native
-  def `type`: String                                                                     = js.native
-  def options: HTMLOptionsCollection                                                     = js.native
-  var length: Int                                                                        = js.native
-  def selectedOptions: HTMLCollection                                                    = js.native
-  var selectedIndex: Int                                                                 = js.native
-  var value: String                                                                      = js.native
-  def willValidate: Boolean                                                              = js.native
-  def validity: ValidityState                                                            = js.native
-  def validationMessage: String                                                          = js.native
-  def labels: NodeList                                                                   = js.native
-  def item(index: Int): HTMLOptionElement                                                = js.native
-  def namedItem(name: String): HTMLOptionElement                                         = js.native
-  def add(element: scala.scalajs.js.Any, before: scala.scalajs.js.Any = js.native): Unit = js.native
-  def remove(index: Int): Unit                                                           = js.native
+  var autocomplete: String = js.native
+  var disabled: Boolean    = js.native
+  @JSName("form")
+  def formOrNull: HTMLFormElement | Null = js.native
+  var multiple: Boolean                  = js.native
+  var name: String                       = js.native
+  var required: Boolean                  = js.native
+  var size: Int                          = js.native
+  def `type`: String                     = js.native
+  def options: HTMLOptionsCollection     = js.native
+  var length: Int                        = js.native
+  def selectedOptions: HTMLCollection    = js.native
+  var selectedIndex: Int                 = js.native
+  var value: String                      = js.native
+  def willValidate: Boolean              = js.native
+  def validity: ValidityState            = js.native
+  def validationMessage: String          = js.native
+  def labels: NodeList                   = js.native
+  @JSName("item")
+  def itemOrNull(index: Int): HTMLOptionElement | Null = js.native
+  @JSName("namedItem")
+  def namedItemOrNull(name: String): HTMLOptionElement | Null                                            = js.native
+  def add(element: HTMLOptionElement | HTMLOptGroupElement, before: HTMLElement | Int = js.native): Unit = js.native
+  def remove(index: Int): Unit                                                                           = js.native
   @JSBracketAccess
   def update(index: Int, option: HTMLOptionElement): Unit = js.native
   def checkValidity(): Boolean                            = js.native
@@ -11544,7 +12371,7 @@ end HTMLSelectElement
 
 @js.native
 @JSGlobal
-class CSSNumericArray extends js.Object:
+class CSSNumericArray extends PlatformObject:
   def length: Int = js.native
   @JSBracketAccess
   def apply(index: Int): CSSNumericValue = js.native
@@ -11553,20 +12380,20 @@ class CSSNumericArray extends js.Object:
 
 @js.native
 @JSGlobal
-class WEBGL_compressed_texture_s3tc extends js.Object
+class WEBGL_compressed_texture_s3tc extends PlatformObject
 
 @js.native
 @JSGlobal
 object WEBGL_compressed_texture_s3tc extends js.Object:
-  val COMPRESSED_RGB_S3TC_DXT1_EXT: scala.scalajs.js.Any  = js.native
-  val COMPRESSED_RGBA_S3TC_DXT1_EXT: scala.scalajs.js.Any = js.native
-  val COMPRESSED_RGBA_S3TC_DXT3_EXT: scala.scalajs.js.Any = js.native
-  val COMPRESSED_RGBA_S3TC_DXT5_EXT: scala.scalajs.js.Any = js.native
+  val COMPRESSED_RGB_S3TC_DXT1_EXT: Int  = js.native
+  val COMPRESSED_RGBA_S3TC_DXT1_EXT: Int = js.native
+  val COMPRESSED_RGBA_S3TC_DXT3_EXT: Int = js.native
+  val COMPRESSED_RGBA_S3TC_DXT5_EXT: Int = js.native
 
 @js.native
 @JSGlobal
 class CSSMathInvert extends CSSMathValue:
-  def this(@unused arg: scala.scalajs.js.Any) = this()
+  def this(@unused arg: Double | CSSNumericValue) = this()
   def value: CSSNumericValue = js.native
 
 @js.native
@@ -11577,14 +12404,15 @@ class WebGLVertexArrayObjectOES extends WebGLObject
 @JSGlobal
 class VideoDecoder extends EventTarget:
   def this(@unused init: VideoDecoderInit) = this()
-  def state: String                               = js.native
-  def decodeQueueSize: Int                        = js.native
-  var ondequeue: scala.scalajs.js.Any             = js.native
-  def configure(config: VideoDecoderConfig): Unit = js.native
-  def decode(chunk: EncodedVideoChunk): Unit      = js.native
-  def flush(): scala.scalajs.js.Promise[Unit]     = js.native
-  def reset(): Unit                               = js.native
-  def close(): Unit                               = js.native
+  def state: String        = js.native
+  def decodeQueueSize: Int = js.native
+  @JSName("ondequeue")
+  var ondequeueOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  def configure(config: VideoDecoderConfig): Unit                                     = js.native
+  def decode(chunk: EncodedVideoChunk): Unit                                          = js.native
+  def flush(): scala.scalajs.js.Promise[Unit]                                         = js.native
+  def reset(): Unit                                                                   = js.native
+  def close(): Unit                                                                   = js.native
 end VideoDecoder
 
 @js.native
@@ -11605,22 +12433,23 @@ class CSSKeyframesRule extends CSSRule:
   def cssRules: CSSRuleList = js.native
   def length: Int           = js.native
   @JSBracketAccess
-  def apply(index: Int): CSSKeyframeRule        = js.native
-  def appendRule(rule: String): Unit            = js.native
-  def deleteRule(select: String): Unit          = js.native
-  def findRule(select: String): CSSKeyframeRule = js.native
+  def apply(index: Int): CSSKeyframeRule = js.native
+  def appendRule(rule: String): Unit     = js.native
+  def deleteRule(select: String): Unit   = js.native
+  @JSName("findRule")
+  def findRuleOrNull(select: String): CSSKeyframeRule | Null = js.native
 end CSSKeyframesRule
 
 @js.native
 @JSGlobal
-class Crypto extends js.Object:
+class Crypto extends PlatformObject:
   def subtle: SubtleCrypto                                               = js.native
   def getRandomValues(array: scala.scalajs.js.Any): scala.scalajs.js.Any = js.native
   def randomUUID(): String                                               = js.native
 
 @js.native
 @JSGlobal
-class GamepadButton extends js.Object:
+class GamepadButton extends PlatformObject:
   def pressed: Boolean = js.native
   def touched: Boolean = js.native
   def value: Double    = js.native
@@ -11636,58 +12465,70 @@ class XRJointPose extends XRPose:
 
 @js.native
 @JSGlobal
-class AudioTrack extends js.Object:
-  def id: String                 = js.native
-  def kind: String               = js.native
-  def label: String              = js.native
-  def language: String           = js.native
-  var enabled: Boolean           = js.native
-  def sourceBuffer: SourceBuffer = js.native
+class AudioTrack extends PlatformObject:
+  def id: String       = js.native
+  def kind: String     = js.native
+  def label: String    = js.native
+  def language: String = js.native
+  var enabled: Boolean = js.native
+  @JSName("sourceBuffer")
+  def sourceBufferOrNull: SourceBuffer | Null = js.native
+end AudioTrack
 
 @js.native
 @JSGlobal
-class NDEFRecord extends js.Object:
+class NDEFRecord extends PlatformObject:
   def this(@unused recordInit: NDEFRecordInit) = this()
-  def recordType: String                              = js.native
-  def mediaType: String                               = js.native
-  def id: String                                      = js.native
-  def data: scala.scalajs.js.Any                      = js.native
-  def encoding: String                                = js.native
-  def lang: String                                    = js.native
-  def toRecords(): scala.scalajs.js.Array[NDEFRecord] = js.native
+  def recordType: String = js.native
+  @JSName("mediaType")
+  def mediaTypeOrNull: String | Null = js.native
+  @JSName("id")
+  def idOrNull: String | Null = js.native
+  @JSName("data")
+  def dataOrNull: scala.scalajs.js.Any | Null = js.native
+  @JSName("encoding")
+  def encodingOrNull: String | Null = js.native
+  @JSName("lang")
+  def langOrNull: String | Null = js.native
+  @JSName("toRecords")
+  def toRecordsOrNull(): scala.scalajs.js.Array[NDEFRecord] | Null = js.native
 end NDEFRecord
 
 @js.native
 @JSGlobal
-class XRView extends js.Object:
-  def camera: XRCamera                          = js.native
-  def isFirstPersonObserver: Boolean            = js.native
-  def eye: String                               = js.native
-  def index: Int                                = js.native
-  def recommendedViewportScale: Double          = js.native
-  def projectionMatrix: scala.scalajs.js.Any    = js.native
-  def transform: XRRigidTransform               = js.native
-  def requestViewportScale(scale: Double): Unit = js.native
+class XRView extends PlatformObject:
+  @JSName("camera")
+  def cameraOrNull: XRCamera | Null  = js.native
+  def isFirstPersonObserver: Boolean = js.native
+  def eye: String                    = js.native
+  def index: Int                     = js.native
+  @JSName("recommendedViewportScale")
+  def recommendedViewportScaleOrNull: Double | Null = js.native
+  def projectionMatrix: scala.scalajs.js.Any        = js.native
+  def transform: XRRigidTransform                   = js.native
+  def requestViewportScale(scale: Double): Unit     = js.native
 end XRView
 
 @js.native
 @JSGlobal
 class NavigatorManagedData extends EventTarget:
-  var onmanagedconfigurationchange: scala.scalajs.js.Any                                  = js.native
-  def getAnnotatedAssetId(): scala.scalajs.js.Promise[String]                             = js.native
-  def getAnnotatedLocation(): scala.scalajs.js.Promise[String]                            = js.native
-  def getDirectoryId(): scala.scalajs.js.Promise[String]                                  = js.native
-  def getHostname(): scala.scalajs.js.Promise[String]                                     = js.native
-  def getSerialNumber(): scala.scalajs.js.Promise[String]                                 = js.native
-  def getManagedConfiguration(keys: scala.scalajs.js.Array[String]): scala.scalajs.js.Any = js.native
+  @JSName("onmanagedconfigurationchange")
+  var onmanagedconfigurationchangeOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  def getAnnotatedAssetId(): scala.scalajs.js.Promise[String]                                            = js.native
+  def getAnnotatedLocation(): scala.scalajs.js.Promise[String]                                           = js.native
+  def getDirectoryId(): scala.scalajs.js.Promise[String]                                                 = js.native
+  def getHostname(): scala.scalajs.js.Promise[String]                                                    = js.native
+  def getSerialNumber(): scala.scalajs.js.Promise[String]                                                = js.native
+  def getManagedConfiguration(keys: scala.scalajs.js.Array[String]): scala.scalajs.js.Any                = js.native
 end NavigatorManagedData
 
 @js.native
 @JSGlobal
-class WritableStreamDefaultWriter extends js.Object:
+class WritableStreamDefaultWriter extends PlatformObject:
   def this(@unused stream: WritableStream) = this()
-  def closed: scala.scalajs.js.Promise[Unit]                                          = js.native
-  def desiredSize: Double                                                             = js.native
+  def closed: scala.scalajs.js.Promise[Unit] = js.native
+  @JSName("desiredSize")
+  def desiredSizeOrNull: Double | Null                                                = js.native
   def ready: scala.scalajs.js.Promise[Unit]                                           = js.native
   def abort(reason: scala.scalajs.js.Any = js.native): scala.scalajs.js.Promise[Unit] = js.native
   def close(): scala.scalajs.js.Promise[Unit]                                         = js.native
@@ -11702,7 +12543,7 @@ class CSSNestedDeclarations extends CSSRule:
 
 @js.native
 @JSGlobal
-class XRRigidTransform extends js.Object:
+class XRRigidTransform extends PlatformObject:
   def this(@unused position: DOMPointInit = js.native, @unused orientation: DOMPointInit = js.native) = this()
   def position: DOMPointReadOnly    = js.native
   def orientation: DOMPointReadOnly = js.native
@@ -11711,33 +12552,37 @@ class XRRigidTransform extends js.Object:
 
 @js.native
 @JSGlobal
-class ReadableByteStreamController extends js.Object:
-  def byobRequest: ReadableStreamBYOBRequest           = js.native
-  def desiredSize: Double                              = js.native
+class ReadableByteStreamController extends PlatformObject:
+  @JSName("byobRequest")
+  def byobRequestOrNull: ReadableStreamBYOBRequest | Null = js.native
+  @JSName("desiredSize")
+  def desiredSizeOrNull: Double | Null                 = js.native
   def close(): Unit                                    = js.native
   def enqueue(chunk: scala.scalajs.js.Any): Unit       = js.native
   def error(e: scala.scalajs.js.Any = js.native): Unit = js.native
+end ReadableByteStreamController
 
 @js.native
 @JSGlobal
 class AmbientLightSensor extends Sensor:
   def this(@unused sensorOptions: SensorOptions = js.native) = this()
-  def illuminance: Double = js.native
+  @JSName("illuminance")
+  def illuminanceOrNull: Double | Null = js.native
 
 @js.native
 @JSGlobal
-class MLGraph extends js.Object:
+class MLGraph extends PlatformObject:
   def destroy(): Unit = js.native
 
 @js.native
 @JSGlobal
-class PaintSize extends js.Object:
+class PaintSize extends PlatformObject:
   def width: Double  = js.native
   def height: Double = js.native
 
 @js.native
 @JSGlobal
-class SVGLengthList extends js.Object:
+class SVGLengthList extends PlatformObject:
   def length: Int                                                 = js.native
   def numberOfItems: Int                                          = js.native
   def clear(): Unit                                               = js.native
@@ -11753,7 +12598,7 @@ end SVGLengthList
 
 @js.native
 @JSGlobal
-class FileSystemSyncAccessHandle extends js.Object:
+class FileSystemSyncAccessHandle extends PlatformObject:
   def read(buffer: scala.scalajs.js.Any, options: FileSystemReadWriteOptions = js.native): Int  = js.native
   def write(buffer: scala.scalajs.js.Any, options: FileSystemReadWriteOptions = js.native): Int = js.native
   def truncate(newSize: Int): Unit                                                              = js.native
@@ -11777,8 +12622,9 @@ class CSSStartingStyleRule extends CSSGroupingRule
 
 @js.native
 @JSGlobal
-class DelegatedInkTrailPresenter extends js.Object:
-  def presentationArea: Element                                                 = js.native
+class DelegatedInkTrailPresenter extends PlatformObject:
+  @JSName("presentationArea")
+  def presentationAreaOrNull: Element | Null                                    = js.native
   def updateInkTrailStartPoint(event: PointerEvent, style: InkTrailStyle): Unit = js.native
 
 @js.native
@@ -11791,13 +12637,17 @@ class CSSKeyframeRule extends CSSRule:
 @JSGlobal
 class Accelerometer extends Sensor:
   def this(@unused options: AccelerometerSensorOptions = js.native) = this()
-  def x: Double = js.native
-  def y: Double = js.native
-  def z: Double = js.native
+  @JSName("x")
+  def xOrNull: Double | Null = js.native
+  @JSName("y")
+  def yOrNull: Double | Null = js.native
+  @JSName("z")
+  def zOrNull: Double | Null = js.native
+end Accelerometer
 
 @js.native
 @JSGlobal
-class BackgroundFetchManager extends js.Object:
+class BackgroundFetchManager extends PlatformObject:
   def fetch(
       id: String,
       requests: scala.scalajs.js.Any,
@@ -11809,35 +12659,30 @@ end BackgroundFetchManager
 
 @js.native
 @JSGlobal
-class GPUBuffer extends js.Object:
-  def size: scala.scalajs.js.Any  = js.native
-  def usage: scala.scalajs.js.Any = js.native
-  def mapState: String            = js.native
-  var label: String               = js.native
-  def mapAsync(
-      mode: scala.scalajs.js.Any,
-      offset: scala.scalajs.js.Any = js.native,
-      size: scala.scalajs.js.Any = js.native,
-  ): scala.scalajs.js.Promise[Unit] = js.native
-  def getMappedRange(
-      offset: scala.scalajs.js.Any = js.native,
-      size: scala.scalajs.js.Any = js.native,
-  ): scala.scalajs.js.Any = js.native
-  def unmap(): Unit       = js.native
-  def destroy(): Unit     = js.native
+class GPUBuffer extends PlatformObject:
+  def size: Int                                                                                           = js.native
+  def usage: Int                                                                                          = js.native
+  def mapState: String                                                                                    = js.native
+  var label: String                                                                                       = js.native
+  def mapAsync(mode: Int, offset: Int = js.native, size: Int = js.native): scala.scalajs.js.Promise[Unit] = js.native
+  def getMappedRange(offset: Int = js.native, size: Int = js.native): scala.scalajs.js.Any                = js.native
+  def unmap(): Unit                                                                                       = js.native
+  def destroy(): Unit                                                                                     = js.native
 end GPUBuffer
 
 @js.native
 @JSGlobal
 class USB extends EventTarget:
-  var onconnect: scala.scalajs.js.Any                                                      = js.native
-  var ondisconnect: scala.scalajs.js.Any                                                   = js.native
+  @JSName("onconnect")
+  var onconnectOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("ondisconnect")
+  var ondisconnectOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null   = js.native
   def getDevices(): scala.scalajs.js.Any                                                   = js.native
   def requestDevice(options: USBDeviceRequestOptions): scala.scalajs.js.Promise[USBDevice] = js.native
 
 @js.native
 @JSGlobal
-class FontData extends js.Object:
+class FontData extends PlatformObject:
   def postscriptName: String                 = js.native
   def fullName: String                       = js.native
   def family: String                         = js.native
@@ -11846,64 +12691,73 @@ class FontData extends js.Object:
 
 @js.native
 @JSGlobal
-class SVGAnimatedNumberList extends js.Object:
+class SVGAnimatedNumberList extends PlatformObject:
   def baseVal: SVGNumberList = js.native
   def animVal: SVGNumberList = js.native
 
 @js.native
 @JSGlobal
 class HTMLInputElement extends HTMLElement:
-  var webkitdirectory: Boolean                                                             = js.native
-  def webkitEntries: scala.scalajs.js.Array[FileSystemEntry]                               = js.native
-  var capture: String                                                                      = js.native
-  var accept: String                                                                       = js.native
-  var alpha: Boolean                                                                       = js.native
-  var alt: String                                                                          = js.native
-  var autocomplete: String                                                                 = js.native
-  var defaultChecked: Boolean                                                              = js.native
-  var checked: Boolean                                                                     = js.native
-  var colorSpace: String                                                                   = js.native
-  var dirName: String                                                                      = js.native
-  var disabled: Boolean                                                                    = js.native
-  def form: HTMLFormElement                                                                = js.native
-  var files: FileList                                                                      = js.native
-  var formAction: String                                                                   = js.native
-  var formEnctype: String                                                                  = js.native
-  var formMethod: String                                                                   = js.native
-  var formNoValidate: Boolean                                                              = js.native
-  var formTarget: String                                                                   = js.native
-  var height: Int                                                                          = js.native
-  var indeterminate: Boolean                                                               = js.native
-  def list: HTMLDataListElement                                                            = js.native
-  var max: String                                                                          = js.native
-  var maxLength: Int                                                                       = js.native
-  var min: String                                                                          = js.native
-  var minLength: Int                                                                       = js.native
-  var multiple: Boolean                                                                    = js.native
-  var name: String                                                                         = js.native
-  var pattern: String                                                                      = js.native
-  var placeholder: String                                                                  = js.native
-  var readOnly: Boolean                                                                    = js.native
-  var required: Boolean                                                                    = js.native
-  var size: Int                                                                            = js.native
-  var src: String                                                                          = js.native
-  var step: String                                                                         = js.native
-  var `type`: String                                                                       = js.native
-  var defaultValue: String                                                                 = js.native
-  var value: String                                                                        = js.native
-  var valueAsDate: scala.scalajs.js.Any                                                    = js.native
-  var valueAsNumber: Double                                                                = js.native
-  var width: Int                                                                           = js.native
-  def willValidate: Boolean                                                                = js.native
-  def validity: ValidityState                                                              = js.native
-  def validationMessage: String                                                            = js.native
-  def labels: NodeList                                                                     = js.native
-  var selectionStart: Int                                                                  = js.native
-  var selectionEnd: Int                                                                    = js.native
-  var selectionDirection: String                                                           = js.native
-  var align: String                                                                        = js.native
-  var useMap: String                                                                       = js.native
-  var popoverTargetElement: Element                                                        = js.native
+  var webkitdirectory: Boolean                               = js.native
+  def webkitEntries: scala.scalajs.js.Array[FileSystemEntry] = js.native
+  var capture: String                                        = js.native
+  var accept: String                                         = js.native
+  var alpha: Boolean                                         = js.native
+  var alt: String                                            = js.native
+  var autocomplete: String                                   = js.native
+  var defaultChecked: Boolean                                = js.native
+  var checked: Boolean                                       = js.native
+  var colorSpace: String                                     = js.native
+  var dirName: String                                        = js.native
+  var disabled: Boolean                                      = js.native
+  @JSName("form")
+  def formOrNull: HTMLFormElement | Null = js.native
+  @JSName("files")
+  var filesOrNull: FileList | Null = js.native
+  var formAction: String           = js.native
+  var formEnctype: String          = js.native
+  var formMethod: String           = js.native
+  var formNoValidate: Boolean      = js.native
+  var formTarget: String           = js.native
+  var height: Int                  = js.native
+  var indeterminate: Boolean       = js.native
+  @JSName("list")
+  def listOrNull: HTMLDataListElement | Null = js.native
+  var max: String                            = js.native
+  var maxLength: Int                         = js.native
+  var min: String                            = js.native
+  var minLength: Int                         = js.native
+  var multiple: Boolean                      = js.native
+  var name: String                           = js.native
+  var pattern: String                        = js.native
+  var placeholder: String                    = js.native
+  var readOnly: Boolean                      = js.native
+  var required: Boolean                      = js.native
+  var size: Int                              = js.native
+  var src: String                            = js.native
+  var step: String                           = js.native
+  var `type`: String                         = js.native
+  var defaultValue: String                   = js.native
+  var value: String                          = js.native
+  @JSName("valueAsDate")
+  var valueAsDateOrNull: scala.scalajs.js.Any | Null = js.native
+  var valueAsNumber: Double                          = js.native
+  var width: Int                                     = js.native
+  def willValidate: Boolean                          = js.native
+  def validity: ValidityState                        = js.native
+  def validationMessage: String                      = js.native
+  @JSName("labels")
+  def labelsOrNull: NodeList | Null = js.native
+  @JSName("selectionStart")
+  var selectionStartOrNull: Int | Null = js.native
+  @JSName("selectionEnd")
+  var selectionEndOrNull: Int | Null = js.native
+  @JSName("selectionDirection")
+  var selectionDirectionOrNull: String | Null = js.native
+  var align: String                           = js.native
+  var useMap: String                          = js.native
+  @JSName("popoverTargetElement")
+  var popoverTargetElementOrNull: Element | Null                                           = js.native
   var popoverTargetAction: String                                                          = js.native
   def stepUp(n: Int = js.native): Unit                                                     = js.native
   def stepDown(n: Int = js.native): Unit                                                   = js.native
@@ -11912,6 +12766,7 @@ class HTMLInputElement extends HTMLElement:
   def setCustomValidity(error: String): Unit                                               = js.native
   def select(): Unit                                                                       = js.native
   def setRangeText(replacement: String): Unit                                              = js.native
+  def setRangeText(replacement: String, start: Int, end: Int): Unit                        = js.native
   def setRangeText(replacement: String, start: Int, end: Int, selectionMode: String): Unit = js.native
   def setSelectionRange(start: Int, end: Int, direction: String = js.native): Unit         = js.native
   def showPicker(): Unit                                                                   = js.native
@@ -11920,14 +12775,16 @@ end HTMLInputElement
 @js.native
 @JSGlobal
 class HID extends EventTarget:
-  var onconnect: scala.scalajs.js.Any                                       = js.native
-  var ondisconnect: scala.scalajs.js.Any                                    = js.native
-  def getDevices(): scala.scalajs.js.Any                                    = js.native
-  def requestDevice(options: HIDDeviceRequestOptions): scala.scalajs.js.Any = js.native
+  @JSName("onconnect")
+  var onconnectOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("ondisconnect")
+  var ondisconnectOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  def getDevices(): scala.scalajs.js.Any                                                 = js.native
+  def requestDevice(options: HIDDeviceRequestOptions): scala.scalajs.js.Any              = js.native
 
 @js.native
 @JSGlobal
-class GPURenderPipeline extends js.Object:
+class GPURenderPipeline extends PlatformObject:
   var label: String                                      = js.native
   def getBindGroupLayout(index: Int): GPUBindGroupLayout = js.native
 
@@ -11942,235 +12799,337 @@ class AnimationWorkletGlobalScope extends WorkletGlobalScope:
 @js.native
 @JSGlobal
 class Worker extends EventTarget:
-  def this(@unused scriptURL: scala.scalajs.js.Any, @unused options: WorkerOptions = js.native) = this()
-  var onerror: scala.scalajs.js.Any        = js.native
-  var onmessage: scala.scalajs.js.Any      = js.native
-  var onmessageerror: scala.scalajs.js.Any = js.native
-  def terminate(): Unit                    = js.native
+  def this(@unused scriptURL: TrustedScriptURL | String, @unused options: WorkerOptions = js.native) = this()
+  @JSName("onerror")
+  var onerrorOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("onmessage")
+  var onmessageOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("onmessageerror")
+  var onmessageerrorOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  def terminate(): Unit                                                                    = js.native
   def postMessage(message: scala.scalajs.js.Any, transfer: scala.scalajs.js.Array[scala.scalajs.js.Any]): Unit =
     js.native
+  def postMessage(message: scala.scalajs.js.Any): Unit                                      = js.native
   def postMessage(message: scala.scalajs.js.Any, options: StructuredSerializeOptions): Unit = js.native
 end Worker
 
 @js.native
 @JSGlobal
 class MathMLElement extends Element:
-  def attributeStyleMap: StylePropertyMap              = js.native
-  def style: CSSStyleProperties                        = js.native
-  var onanimationstart: scala.scalajs.js.Any           = js.native
-  var onanimationiteration: scala.scalajs.js.Any       = js.native
-  var onanimationend: scala.scalajs.js.Any             = js.native
-  var onanimationcancel: scala.scalajs.js.Any          = js.native
-  var onsnapchanged: scala.scalajs.js.Any              = js.native
-  var onsnapchanging: scala.scalajs.js.Any             = js.native
-  var ontransitionrun: scala.scalajs.js.Any            = js.native
-  var ontransitionstart: scala.scalajs.js.Any          = js.native
-  var ontransitionend: scala.scalajs.js.Any            = js.native
-  var ontransitioncancel: scala.scalajs.js.Any         = js.native
-  var onfencedtreeclick: scala.scalajs.js.Any          = js.native
-  var onabort: scala.scalajs.js.Any                    = js.native
-  var onauxclick: scala.scalajs.js.Any                 = js.native
-  var onbeforeinput: scala.scalajs.js.Any              = js.native
-  var onbeforematch: scala.scalajs.js.Any              = js.native
-  var onbeforetoggle: scala.scalajs.js.Any             = js.native
-  var onblur: scala.scalajs.js.Any                     = js.native
-  var oncancel: scala.scalajs.js.Any                   = js.native
-  var oncanplay: scala.scalajs.js.Any                  = js.native
-  var oncanplaythrough: scala.scalajs.js.Any           = js.native
-  var onchange: scala.scalajs.js.Any                   = js.native
-  var onclick: scala.scalajs.js.Any                    = js.native
-  var onclose: scala.scalajs.js.Any                    = js.native
-  var oncommand: scala.scalajs.js.Any                  = js.native
-  var oncontextlost: scala.scalajs.js.Any              = js.native
-  var oncontextmenu: scala.scalajs.js.Any              = js.native
-  var oncontextrestored: scala.scalajs.js.Any          = js.native
-  var oncopy: scala.scalajs.js.Any                     = js.native
-  var oncuechange: scala.scalajs.js.Any                = js.native
-  var oncut: scala.scalajs.js.Any                      = js.native
-  var ondblclick: scala.scalajs.js.Any                 = js.native
-  var ondrag: scala.scalajs.js.Any                     = js.native
-  var ondragend: scala.scalajs.js.Any                  = js.native
-  var ondragenter: scala.scalajs.js.Any                = js.native
-  var ondragleave: scala.scalajs.js.Any                = js.native
-  var ondragover: scala.scalajs.js.Any                 = js.native
-  var ondragstart: scala.scalajs.js.Any                = js.native
-  var ondrop: scala.scalajs.js.Any                     = js.native
-  var ondurationchange: scala.scalajs.js.Any           = js.native
-  var onemptied: scala.scalajs.js.Any                  = js.native
-  var onended: scala.scalajs.js.Any                    = js.native
-  var onerror: scala.scalajs.js.Any                    = js.native
-  var onfocus: scala.scalajs.js.Any                    = js.native
-  var onformdata: scala.scalajs.js.Any                 = js.native
-  var oninput: scala.scalajs.js.Any                    = js.native
-  var oninvalid: scala.scalajs.js.Any                  = js.native
-  var onkeydown: scala.scalajs.js.Any                  = js.native
-  var onkeypress: scala.scalajs.js.Any                 = js.native
-  var onkeyup: scala.scalajs.js.Any                    = js.native
-  var onload: scala.scalajs.js.Any                     = js.native
-  var onloadeddata: scala.scalajs.js.Any               = js.native
-  var onloadedmetadata: scala.scalajs.js.Any           = js.native
-  var onloadstart: scala.scalajs.js.Any                = js.native
-  var onmousedown: scala.scalajs.js.Any                = js.native
-  var onmouseenter: scala.scalajs.js.Any               = js.native
-  var onmouseleave: scala.scalajs.js.Any               = js.native
-  var onmousemove: scala.scalajs.js.Any                = js.native
-  var onmouseout: scala.scalajs.js.Any                 = js.native
-  var onmouseover: scala.scalajs.js.Any                = js.native
-  var onmouseup: scala.scalajs.js.Any                  = js.native
-  var onpaste: scala.scalajs.js.Any                    = js.native
-  var onpause: scala.scalajs.js.Any                    = js.native
-  var onplay: scala.scalajs.js.Any                     = js.native
-  var onplaying: scala.scalajs.js.Any                  = js.native
-  var onprogress: scala.scalajs.js.Any                 = js.native
-  var onratechange: scala.scalajs.js.Any               = js.native
-  var onreset: scala.scalajs.js.Any                    = js.native
-  var onresize: scala.scalajs.js.Any                   = js.native
-  var onscroll: scala.scalajs.js.Any                   = js.native
-  var onscrollend: scala.scalajs.js.Any                = js.native
-  var onsecuritypolicyviolation: scala.scalajs.js.Any  = js.native
-  var onseeked: scala.scalajs.js.Any                   = js.native
-  var onseeking: scala.scalajs.js.Any                  = js.native
-  var onselect: scala.scalajs.js.Any                   = js.native
-  var onslotchange: scala.scalajs.js.Any               = js.native
-  var onstalled: scala.scalajs.js.Any                  = js.native
-  var onsubmit: scala.scalajs.js.Any                   = js.native
-  var onsuspend: scala.scalajs.js.Any                  = js.native
-  var ontimeupdate: scala.scalajs.js.Any               = js.native
-  var ontoggle: scala.scalajs.js.Any                   = js.native
-  var onvolumechange: scala.scalajs.js.Any             = js.native
-  var onwaiting: scala.scalajs.js.Any                  = js.native
-  var onwebkitanimationend: scala.scalajs.js.Any       = js.native
-  var onwebkitanimationiteration: scala.scalajs.js.Any = js.native
-  var onwebkitanimationstart: scala.scalajs.js.Any     = js.native
-  var onwebkittransitionend: scala.scalajs.js.Any      = js.native
-  var onwheel: scala.scalajs.js.Any                    = js.native
-  var onpointerover: scala.scalajs.js.Any              = js.native
-  var onpointerenter: scala.scalajs.js.Any             = js.native
-  var onpointerdown: scala.scalajs.js.Any              = js.native
-  var onpointermove: scala.scalajs.js.Any              = js.native
-  var onpointerrawupdate: scala.scalajs.js.Any         = js.native
-  var onpointerup: scala.scalajs.js.Any                = js.native
-  var onpointercancel: scala.scalajs.js.Any            = js.native
-  var onpointerout: scala.scalajs.js.Any               = js.native
-  var onpointerleave: scala.scalajs.js.Any             = js.native
-  var ongotpointercapture: scala.scalajs.js.Any        = js.native
-  var onlostpointercapture: scala.scalajs.js.Any       = js.native
-  var onselectstart: scala.scalajs.js.Any              = js.native
-  var onselectionchange: scala.scalajs.js.Any          = js.native
-  var ontouchstart: scala.scalajs.js.Any               = js.native
-  var ontouchend: scala.scalajs.js.Any                 = js.native
-  var ontouchmove: scala.scalajs.js.Any                = js.native
-  var ontouchcancel: scala.scalajs.js.Any              = js.native
-  var onbeforexrselect: scala.scalajs.js.Any           = js.native
-  def dataset: DOMStringMap                            = js.native
-  var nonce: String                                    = js.native
-  var autofocus: Boolean                               = js.native
-  var tabIndex: Int                                    = js.native
-  def focus(options: FocusOptions = js.native): Unit   = js.native
-  def blur(): Unit                                     = js.native
+  def attributeStyleMap: StylePropertyMap = js.native
+  def style: CSSStyleProperties           = js.native
+  @JSName("onanimationstart")
+  var onanimationstartOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("onanimationiteration")
+  var onanimationiterationOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("onanimationend")
+  var onanimationendOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("onanimationcancel")
+  var onanimationcancelOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("onsnapchanged")
+  var onsnapchangedOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("onsnapchanging")
+  var onsnapchangingOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("ontransitionrun")
+  var ontransitionrunOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("ontransitionstart")
+  var ontransitionstartOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("ontransitionend")
+  var ontransitionendOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("ontransitioncancel")
+  var ontransitioncancelOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("onfencedtreeclick")
+  var onfencedtreeclickOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("onabort")
+  var onabortOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("onauxclick")
+  var onauxclickOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("onbeforeinput")
+  var onbeforeinputOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("onbeforematch")
+  var onbeforematchOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("onbeforetoggle")
+  var onbeforetoggleOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("onblur")
+  var onblurOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("oncancel")
+  var oncancelOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("oncanplay")
+  var oncanplayOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("oncanplaythrough")
+  var oncanplaythroughOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("onchange")
+  var onchangeOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("onclick")
+  var onclickOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("onclose")
+  var oncloseOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("oncommand")
+  var oncommandOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("oncontextlost")
+  var oncontextlostOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("oncontextmenu")
+  var oncontextmenuOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("oncontextrestored")
+  var oncontextrestoredOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("oncopy")
+  var oncopyOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("oncuechange")
+  var oncuechangeOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("oncut")
+  var oncutOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("ondblclick")
+  var ondblclickOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("ondrag")
+  var ondragOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("ondragend")
+  var ondragendOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("ondragenter")
+  var ondragenterOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("ondragleave")
+  var ondragleaveOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("ondragover")
+  var ondragoverOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("ondragstart")
+  var ondragstartOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("ondrop")
+  var ondropOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("ondurationchange")
+  var ondurationchangeOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("onemptied")
+  var onemptiedOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("onended")
+  var onendedOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("onerror")
+  var onerrorOrNull: scala.scalajs.js.Function | Null = js.native
+  @JSName("onfocus")
+  var onfocusOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("onformdata")
+  var onformdataOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("oninput")
+  var oninputOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("oninvalid")
+  var oninvalidOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("onkeydown")
+  var onkeydownOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("onkeypress")
+  var onkeypressOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("onkeyup")
+  var onkeyupOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("onload")
+  var onloadOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("onloadeddata")
+  var onloadeddataOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("onloadedmetadata")
+  var onloadedmetadataOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("onloadstart")
+  var onloadstartOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("onmousedown")
+  var onmousedownOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("onmouseenter")
+  var onmouseenterOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("onmouseleave")
+  var onmouseleaveOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("onmousemove")
+  var onmousemoveOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("onmouseout")
+  var onmouseoutOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("onmouseover")
+  var onmouseoverOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("onmouseup")
+  var onmouseupOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("onpaste")
+  var onpasteOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("onpause")
+  var onpauseOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("onplay")
+  var onplayOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("onplaying")
+  var onplayingOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("onprogress")
+  var onprogressOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("onratechange")
+  var onratechangeOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("onreset")
+  var onresetOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("onresize")
+  var onresizeOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("onscroll")
+  var onscrollOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("onscrollend")
+  var onscrollendOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("onsecuritypolicyviolation")
+  var onsecuritypolicyviolationOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("onseeked")
+  var onseekedOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("onseeking")
+  var onseekingOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("onselect")
+  var onselectOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("onslotchange")
+  var onslotchangeOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("onstalled")
+  var onstalledOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("onsubmit")
+  var onsubmitOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("onsuspend")
+  var onsuspendOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("ontimeupdate")
+  var ontimeupdateOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("ontoggle")
+  var ontoggleOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("onvolumechange")
+  var onvolumechangeOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("onwaiting")
+  var onwaitingOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("onwebkitanimationend")
+  var onwebkitanimationendOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("onwebkitanimationiteration")
+  var onwebkitanimationiterationOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("onwebkitanimationstart")
+  var onwebkitanimationstartOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("onwebkittransitionend")
+  var onwebkittransitionendOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("onwheel")
+  var onwheelOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("onpointerover")
+  var onpointeroverOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("onpointerenter")
+  var onpointerenterOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("onpointerdown")
+  var onpointerdownOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("onpointermove")
+  var onpointermoveOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("onpointerrawupdate")
+  var onpointerrawupdateOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("onpointerup")
+  var onpointerupOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("onpointercancel")
+  var onpointercancelOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("onpointerout")
+  var onpointeroutOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("onpointerleave")
+  var onpointerleaveOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("ongotpointercapture")
+  var ongotpointercaptureOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("onlostpointercapture")
+  var onlostpointercaptureOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("onselectstart")
+  var onselectstartOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("onselectionchange")
+  var onselectionchangeOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("ontouchstart")
+  var ontouchstartOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("ontouchend")
+  var ontouchendOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("ontouchmove")
+  var ontouchmoveOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("ontouchcancel")
+  var ontouchcancelOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("onbeforexrselect")
+  var onbeforexrselectOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  def dataset: DOMStringMap                                                                  = js.native
+  var nonce: String                                                                          = js.native
+  var autofocus: Boolean                                                                     = js.native
+  var tabIndex: Int                                                                          = js.native
+  def focus(options: FocusOptions = js.native): Unit                                         = js.native
+  def blur(): Unit                                                                           = js.native
 end MathMLElement
 
 @js.native
 @JSGlobal
-class GPURenderPassEncoder extends js.Object:
+class GPURenderPassEncoder extends PlatformObject:
   var label: String = js.native
   def setViewport(x: Double, y: Double, width: Double, height: Double, minDepth: Double, maxDepth: Double): Unit =
     js.native
-  def setScissorRect(
-      x: scala.scalajs.js.Any,
-      y: scala.scalajs.js.Any,
-      width: scala.scalajs.js.Any,
-      height: scala.scalajs.js.Any,
-  ): Unit                                                                    = js.native
-  def setBlendConstant(color: scala.scalajs.js.Any): Unit                    = js.native
-  def setStencilReference(reference: scala.scalajs.js.Any): Unit             = js.native
-  def beginOcclusionQuery(queryIndex: scala.scalajs.js.Any): Unit            = js.native
-  def endOcclusionQuery(): Unit                                              = js.native
-  def executeBundles(bundles: scala.scalajs.js.Array[GPURenderBundle]): Unit = js.native
-  def end(): Unit                                                            = js.native
-  def pushDebugGroup(groupLabel: String): Unit                               = js.native
-  def popDebugGroup(): Unit                                                  = js.native
-  def insertDebugMarker(markerLabel: String): Unit                           = js.native
+  def setScissorRect(x: Int, y: Int, width: Int, height: Int): Unit                                        = js.native
+  def setBlendConstant(color: scala.scalajs.js.Any): Unit                                                  = js.native
+  def setStencilReference(reference: Int): Unit                                                            = js.native
+  def beginOcclusionQuery(queryIndex: Int): Unit                                                           = js.native
+  def endOcclusionQuery(): Unit                                                                            = js.native
+  def executeBundles(bundles: scala.scalajs.js.Array[GPURenderBundle]): Unit                               = js.native
+  def end(): Unit                                                                                          = js.native
+  def pushDebugGroup(groupLabel: String): Unit                                                             = js.native
+  def popDebugGroup(): Unit                                                                                = js.native
+  def insertDebugMarker(markerLabel: String): Unit                                                         = js.native
+  def setBindGroup(index: Int, bindGroup: GPUBindGroup): Unit                                              = js.native
+  def setBindGroup(index: Int, bindGroup: GPUBindGroup, dynamicOffsets: scala.scalajs.js.Array[Int]): Unit = js.native
   def setBindGroup(
-      index: scala.scalajs.js.Any,
-      bindGroup: GPUBindGroup,
-      dynamicOffsets: scala.scalajs.js.Array[scala.scalajs.js.Any],
-  ): Unit = js.native
-  def setBindGroup(
-      index: scala.scalajs.js.Any,
+      index: Int,
       bindGroup: GPUBindGroup,
       dynamicOffsetsData: scala.scalajs.js.Any,
-      dynamicOffsetsDataStart: scala.scalajs.js.Any,
-      dynamicOffsetsDataLength: scala.scalajs.js.Any,
+      dynamicOffsetsDataStart: Int,
+      dynamicOffsetsDataLength: Int,
   ): Unit = js.native
   def setImmediates(
-      rangeOffset: scala.scalajs.js.Any,
+      rangeOffset: Int,
       data: scala.scalajs.js.Any,
-      dataOffset: scala.scalajs.js.Any = js.native,
-      dataSize: scala.scalajs.js.Any = js.native,
+      dataOffset: Int = js.native,
+      dataSize: Int = js.native,
   ): Unit                                            = js.native
   def setPipeline(pipeline: GPURenderPipeline): Unit = js.native
-  def setIndexBuffer(
-      buffer: GPUBuffer,
-      indexFormat: String,
-      offset: scala.scalajs.js.Any = js.native,
-      size: scala.scalajs.js.Any = js.native,
-  ): Unit = js.native
-  def setVertexBuffer(
-      slot: scala.scalajs.js.Any,
-      buffer: GPUBuffer,
-      offset: scala.scalajs.js.Any = js.native,
-      size: scala.scalajs.js.Any = js.native,
-  ): Unit = js.native
+  def setIndexBuffer(buffer: GPUBuffer, indexFormat: String, offset: Int = js.native, size: Int = js.native): Unit =
+    js.native
+  def setVertexBuffer(slot: Int, buffer: GPUBuffer, offset: Int = js.native, size: Int = js.native): Unit = js.native
   def draw(
-      vertexCount: scala.scalajs.js.Any,
-      instanceCount: scala.scalajs.js.Any = js.native,
-      firstVertex: scala.scalajs.js.Any = js.native,
-      firstInstance: scala.scalajs.js.Any = js.native,
+      vertexCount: Int,
+      instanceCount: Int = js.native,
+      firstVertex: Int = js.native,
+      firstInstance: Int = js.native,
   ): Unit = js.native
   def drawIndexed(
-      indexCount: scala.scalajs.js.Any,
-      instanceCount: scala.scalajs.js.Any = js.native,
-      firstIndex: scala.scalajs.js.Any = js.native,
-      baseVertex: scala.scalajs.js.Any = js.native,
-      firstInstance: scala.scalajs.js.Any = js.native,
-  ): Unit                                                                                        = js.native
-  def drawIndirect(indirectBuffer: GPUBuffer, indirectOffset: scala.scalajs.js.Any): Unit        = js.native
-  def drawIndexedIndirect(indirectBuffer: GPUBuffer, indirectOffset: scala.scalajs.js.Any): Unit = js.native
+      indexCount: Int,
+      instanceCount: Int = js.native,
+      firstIndex: Int = js.native,
+      baseVertex: Int = js.native,
+      firstInstance: Int = js.native,
+  ): Unit                                                                       = js.native
+  def drawIndirect(indirectBuffer: GPUBuffer, indirectOffset: Int): Unit        = js.native
+  def drawIndexedIndirect(indirectBuffer: GPUBuffer, indirectOffset: Int): Unit = js.native
 end GPURenderPassEncoder
 
 @js.native
 @JSGlobal
-class USBIsochronousInTransferResult extends js.Object:
+class USBIsochronousInTransferResult extends PlatformObject:
   def this(
       @unused packets: scala.scalajs.js.Array[USBIsochronousInTransferPacket],
       @unused data: scala.scalajs.js.Any = js.native,
   ) = this()
-  def data: scala.scalajs.js.Any                                      = js.native
+  @JSName("data")
+  def dataOrNull: scala.scalajs.js.Any | Null                         = js.native
   def packets: scala.scalajs.js.Array[USBIsochronousInTransferPacket] = js.native
+end USBIsochronousInTransferResult
 
 @js.native
 @JSGlobal
 class SpeechSynthesisUtterance extends EventTarget:
   def this(@unused text: String = js.native) = this()
-  var text: String                     = js.native
-  var lang: String                     = js.native
-  var voice: SpeechSynthesisVoice      = js.native
-  var volume: Double                   = js.native
-  var rate: Double                     = js.native
-  var pitch: Double                    = js.native
-  var onstart: scala.scalajs.js.Any    = js.native
-  var onend: scala.scalajs.js.Any      = js.native
-  var onerror: scala.scalajs.js.Any    = js.native
-  var onpause: scala.scalajs.js.Any    = js.native
-  var onresume: scala.scalajs.js.Any   = js.native
-  var onmark: scala.scalajs.js.Any     = js.native
-  var onboundary: scala.scalajs.js.Any = js.native
+  var text: String = js.native
+  var lang: String = js.native
+  @JSName("voice")
+  var voiceOrNull: SpeechSynthesisVoice | Null = js.native
+  var volume: Double                           = js.native
+  var rate: Double                             = js.native
+  var pitch: Double                            = js.native
+  @JSName("onstart")
+  var onstartOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("onend")
+  var onendOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("onerror")
+  var onerrorOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("onpause")
+  var onpauseOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("onresume")
+  var onresumeOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("onmark")
+  var onmarkOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("onboundary")
+  var onboundaryOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
 end SpeechSynthesisUtterance
 
 @js.native
 @JSGlobal
-class External extends js.Object:
+class External extends PlatformObject:
   def AddSearchProvider(): Unit         = js.native
   def IsSearchProviderInstalled(): Unit = js.native
 
@@ -12185,7 +13144,8 @@ class CSSTranslate extends CSSTransformComponent:
 @js.native
 @JSGlobal
 class HIDDevice extends EventTarget:
-  var oninputreport: scala.scalajs.js.Any                                                                    = js.native
+  @JSName("oninputreport")
+  var oninputreportOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null                    = js.native
   def opened: Boolean                                                                                        = js.native
   def vendorId: Int                                                                                          = js.native
   def productId: Int                                                                                         = js.native
@@ -12210,7 +13170,7 @@ class SVGAnimateMotionElement extends SVGAnimationElement
 
 @js.native
 @JSGlobal
-class Highlight extends js.Object:
+class Highlight extends PlatformObject:
   def this(@unused initialRanges: AbstractRange) = this()
   var priority: Int                                                                               = js.native
   var `type`: String                                                                              = js.native
@@ -12229,26 +13189,34 @@ end Highlight
 
 @js.native
 @JSGlobal
-class XRTransientInputHitTestSource extends js.Object:
+class XRTransientInputHitTestSource extends PlatformObject:
   def cancel(): Unit = js.native
 
 @js.native
 @JSGlobal
 class FileReader extends EventTarget:
-  def readyState: Int                                            = js.native
-  def result: scala.scalajs.js.Any                               = js.native
-  def error: DOMException                                        = js.native
-  var onloadstart: scala.scalajs.js.Any                          = js.native
-  var onprogress: scala.scalajs.js.Any                           = js.native
-  var onload: scala.scalajs.js.Any                               = js.native
-  var onabort: scala.scalajs.js.Any                              = js.native
-  var onerror: scala.scalajs.js.Any                              = js.native
-  var onloadend: scala.scalajs.js.Any                            = js.native
-  def readAsArrayBuffer(blob: Blob): Unit                        = js.native
-  def readAsBinaryString(blob: Blob): Unit                       = js.native
-  def readAsText(blob: Blob, encoding: String = js.native): Unit = js.native
-  def readAsDataURL(blob: Blob): Unit                            = js.native
-  def abort(): Unit                                              = js.native
+  def readyState: Int = js.native
+  @JSName("result")
+  def resultOrNull: scala.scalajs.js.Any | Null = js.native
+  @JSName("error")
+  def errorOrNull: DOMException | Null = js.native
+  @JSName("onloadstart")
+  var onloadstartOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("onprogress")
+  var onprogressOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("onload")
+  var onloadOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("onabort")
+  var onabortOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("onerror")
+  var onerrorOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("onloadend")
+  var onloadendOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  def readAsArrayBuffer(blob: Blob): Unit                                             = js.native
+  def readAsBinaryString(blob: Blob): Unit                                            = js.native
+  def readAsText(blob: Blob, encoding: String = js.native): Unit                      = js.native
+  def readAsDataURL(blob: Blob): Unit                                                 = js.native
+  def abort(): Unit                                                                   = js.native
 end FileReader
 
 @js.native
@@ -12277,12 +13245,13 @@ class CSSFontPaletteValuesRule extends CSSRule:
 @JSGlobal
 class VTTCue extends TextTrackCue:
   def this(@unused startTime: Double, @unused endTime: Double, @unused text: String) = this()
-  var region: VTTRegion                = js.native
+  @JSName("region")
+  var regionOrNull: VTTRegion | Null   = js.native
   var vertical: String                 = js.native
   var snapToLines: Boolean             = js.native
-  var line: scala.scalajs.js.Any       = js.native
+  var line: Double | String            = js.native
   var lineAlign: String                = js.native
-  var position: scala.scalajs.js.Any   = js.native
+  var position: Double | String        = js.native
   var positionAlign: String            = js.native
   var size: Double                     = js.native
   var align: String                    = js.native
@@ -12292,7 +13261,7 @@ end VTTCue
 
 @js.native
 @JSGlobal
-class LayoutChild extends js.Object:
+class LayoutChild extends PlatformObject:
   def styleMap: StylePropertyMapReadOnly                         = js.native
   def intrinsicSizes(): scala.scalajs.js.Promise[IntrinsicSizes] = js.native
   def layoutNextFragment(
@@ -12304,37 +13273,43 @@ class LayoutChild extends js.Object:
 @JSGlobal
 class BroadcastChannel extends EventTarget:
   def this(@unused name: String) = this()
-  def name: String                                     = js.native
-  var onmessage: scala.scalajs.js.Any                  = js.native
-  var onmessageerror: scala.scalajs.js.Any             = js.native
-  def postMessage(message: scala.scalajs.js.Any): Unit = js.native
-  def close(): Unit                                    = js.native
+  def name: String = js.native
+  @JSName("onmessage")
+  var onmessageOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("onmessageerror")
+  var onmessageerrorOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  def postMessage(message: scala.scalajs.js.Any): Unit                                     = js.native
+  def close(): Unit                                                                        = js.native
+end BroadcastChannel
 
 @js.native
 @JSGlobal
-class BluetoothServiceDataMap extends js.Object:
-  def size: Int                                                                      = js.native
-  def get(key: scala.scalajs.js.Any): scala.scalajs.js.UndefOr[scala.scalajs.js.Any] = js.native
-  def has(key: scala.scalajs.js.Any): Boolean                                        = js.native
-  def keys(): scala.scalajs.js.Iterator[scala.scalajs.js.Any]                        = js.native
-  def values(): scala.scalajs.js.Iterator[scala.scalajs.js.Any]                      = js.native
-  def entries(): scala.scalajs.js.Iterator[scala.scalajs.js.Tuple2[scala.scalajs.js.Any, scala.scalajs.js.Any]] =
-    js.native
-  def forEach(callback: scala.scalajs.js.Function2[scala.scalajs.js.Any, scala.scalajs.js.Any, Unit]): Unit = js.native
+class BluetoothServiceDataMap extends PlatformObject:
+  def size: Int                                                                                   = js.native
+  def get(key: String): scala.scalajs.js.UndefOr[scala.scalajs.js.Any]                            = js.native
+  def has(key: String): Boolean                                                                   = js.native
+  def keys(): scala.scalajs.js.Iterator[String]                                                   = js.native
+  def values(): scala.scalajs.js.Iterator[scala.scalajs.js.Any]                                   = js.native
+  def entries(): scala.scalajs.js.Iterator[scala.scalajs.js.Tuple2[String, scala.scalajs.js.Any]] = js.native
+  def forEach(callback: scala.scalajs.js.Function2[scala.scalajs.js.Any, String, Unit]): Unit     = js.native
   @JSName(js.Symbol.iterator)
-  def jsIterator(): scala.scalajs.js.Iterator[js.Tuple2[scala.scalajs.js.Any, scala.scalajs.js.Any]] = js.native
+  def jsIterator(): scala.scalajs.js.Iterator[js.Tuple2[String, scala.scalajs.js.Any]] = js.native
 end BluetoothServiceDataMap
 
 @js.native
 @JSGlobal
-class StyleSheet extends js.Object:
-  def `type`: String                  = js.native
-  def href: String                    = js.native
-  def ownerNode: scala.scalajs.js.Any = js.native
-  def parentStyleSheet: CSSStyleSheet = js.native
-  def title: String                   = js.native
-  def media: MediaList                = js.native
-  var disabled: Boolean               = js.native
+class StyleSheet extends PlatformObject:
+  def `type`: String = js.native
+  @JSName("href")
+  def hrefOrNull: String | Null = js.native
+  @JSName("ownerNode")
+  def ownerNodeOrNull: Element | ProcessingInstruction | Null = js.native
+  @JSName("parentStyleSheet")
+  def parentStyleSheetOrNull: CSSStyleSheet | Null = js.native
+  @JSName("title")
+  def titleOrNull: String | Null = js.native
+  def media: MediaList           = js.native
+  var disabled: Boolean          = js.native
 end StyleSheet
 
 @js.native
@@ -12348,13 +13323,13 @@ class GPUOutOfMemoryError extends GPUError:
 
 @js.native
 @JSGlobal
-class PaintRenderingContext2D extends js.Object:
+class PaintRenderingContext2D extends PlatformObject:
   var globalAlpha: Double                                                                  = js.native
   var globalCompositeOperation: String                                                     = js.native
   var imageSmoothingEnabled: Boolean                                                       = js.native
   var imageSmoothingQuality: String                                                        = js.native
-  var strokeStyle: scala.scalajs.js.Any                                                    = js.native
-  var fillStyle: scala.scalajs.js.Any                                                      = js.native
+  var strokeStyle: String | CanvasGradient | CanvasPattern                                 = js.native
+  var fillStyle: String | CanvasGradient | CanvasPattern                                   = js.native
   var shadowOffsetX: Double                                                                = js.native
   var shadowOffsetY: Double                                                                = js.native
   var shadowBlur: Double                                                                   = js.native
@@ -12374,31 +13349,52 @@ class PaintRenderingContext2D extends js.Object:
   def transform(a: Double, b: Double, c: Double, d: Double, e: Double, f: Double): Unit    = js.native
   def getTransform(): DOMMatrix                                                            = js.native
   def setTransform(a: Double, b: Double, c: Double, d: Double, e: Double, f: Double): Unit = js.native
+  def setTransform(): Unit                                                                 = js.native
   def setTransform(transform: DOMMatrix2DInit): Unit                                       = js.native
   def resetTransform(): Unit                                                               = js.native
   def createLinearGradient(x0: Double, y0: Double, x1: Double, y1: Double): CanvasGradient = js.native
   def createRadialGradient(x0: Double, y0: Double, r0: Double, x1: Double, y1: Double, r1: Double): CanvasGradient =
     js.native
-  def createConicGradient(startAngle: Double, x: Double, y: Double): CanvasGradient                = js.native
-  def createPattern(image: scala.scalajs.js.Any, repetition: String): CanvasPattern                = js.native
-  def clearRect(x: Double, y: Double, w: Double, h: Double): Unit                                  = js.native
-  def fillRect(x: Double, y: Double, w: Double, h: Double): Unit                                   = js.native
-  def strokeRect(x: Double, y: Double, w: Double, h: Double): Unit                                 = js.native
-  def beginPath(): Unit                                                                            = js.native
-  def fill(fillRule: String): Unit                                                                 = js.native
-  def fill(path: Path2D, fillRule: String): Unit                                                   = js.native
-  def stroke(): Unit                                                                               = js.native
-  def stroke(path: Path2D): Unit                                                                   = js.native
-  def clip(fillRule: String): Unit                                                                 = js.native
-  def clip(path: Path2D, fillRule: String): Unit                                                   = js.native
-  def isPointInPath(x: Double, y: Double, fillRule: String): Boolean                               = js.native
-  def isPointInPath(path: Path2D, x: Double, y: Double, fillRule: String): Boolean                 = js.native
-  def isPointInStroke(x: Double, y: Double): Boolean                                               = js.native
-  def isPointInStroke(path: Path2D, x: Double, y: Double): Boolean                                 = js.native
-  def drawImage(image: scala.scalajs.js.Any, dx: Double, dy: Double): Unit                         = js.native
-  def drawImage(image: scala.scalajs.js.Any, dx: Double, dy: Double, dw: Double, dh: Double): Unit = js.native
+  def createConicGradient(startAngle: Double, x: Double, y: Double): CanvasGradient = js.native
+  @JSName("createPattern")
+  def createPatternOrNull(
+      image: HTMLImageElement | SVGImageElement | HTMLVideoElement | HTMLCanvasElement | ImageBitmap | OffscreenCanvas | VideoFrame,
+      repetition: String,
+  ): CanvasPattern | Null                                                          = js.native
+  def clearRect(x: Double, y: Double, w: Double, h: Double): Unit                  = js.native
+  def fillRect(x: Double, y: Double, w: Double, h: Double): Unit                   = js.native
+  def strokeRect(x: Double, y: Double, w: Double, h: Double): Unit                 = js.native
+  def beginPath(): Unit                                                            = js.native
+  def fill(): Unit                                                                 = js.native
+  def fill(fillRule: String): Unit                                                 = js.native
+  def fill(path: Path2D): Unit                                                     = js.native
+  def fill(path: Path2D, fillRule: String): Unit                                   = js.native
+  def stroke(): Unit                                                               = js.native
+  def stroke(path: Path2D): Unit                                                   = js.native
+  def clip(): Unit                                                                 = js.native
+  def clip(fillRule: String): Unit                                                 = js.native
+  def clip(path: Path2D): Unit                                                     = js.native
+  def clip(path: Path2D, fillRule: String): Unit                                   = js.native
+  def isPointInPath(x: Double, y: Double): Boolean                                 = js.native
+  def isPointInPath(x: Double, y: Double, fillRule: String): Boolean               = js.native
+  def isPointInPath(path: Path2D, x: Double, y: Double): Boolean                   = js.native
+  def isPointInPath(path: Path2D, x: Double, y: Double, fillRule: String): Boolean = js.native
+  def isPointInStroke(x: Double, y: Double): Boolean                               = js.native
+  def isPointInStroke(path: Path2D, x: Double, y: Double): Boolean                 = js.native
   def drawImage(
-      image: scala.scalajs.js.Any,
+      image: HTMLImageElement | SVGImageElement | HTMLVideoElement | HTMLCanvasElement | ImageBitmap | OffscreenCanvas | VideoFrame,
+      dx: Double,
+      dy: Double,
+  ): Unit = js.native
+  def drawImage(
+      image: HTMLImageElement | SVGImageElement | HTMLVideoElement | HTMLCanvasElement | ImageBitmap | OffscreenCanvas | VideoFrame,
+      dx: Double,
+      dy: Double,
+      dw: Double,
+      dh: Double,
+  ): Unit = js.native
+  def drawImage(
+      image: HTMLImageElement | SVGImageElement | HTMLVideoElement | HTMLCanvasElement | ImageBitmap | OffscreenCanvas | VideoFrame,
       sx: Double,
       sy: Double,
       sw: Double,
@@ -12440,30 +13436,34 @@ end PaintRenderingContext2D
 
 @js.native
 @JSGlobal
-class ReadableStreamDefaultController extends js.Object:
-  def desiredSize: Double                                    = js.native
+class ReadableStreamDefaultController extends PlatformObject:
+  @JSName("desiredSize")
+  def desiredSizeOrNull: Double | Null                       = js.native
   def close(): Unit                                          = js.native
   def enqueue(chunk: scala.scalajs.js.Any = js.native): Unit = js.native
   def error(e: scala.scalajs.js.Any = js.native): Unit       = js.native
 
 @js.native
 @JSGlobal
-class EXT_disjoint_timer_query_webgl2 extends js.Object:
-  def queryCounterEXT(query: WebGLQuery, target: scala.scalajs.js.Any): Unit = js.native
+class EXT_disjoint_timer_query_webgl2 extends PlatformObject:
+  def queryCounterEXT(query: WebGLQuery, target: Int): Unit = js.native
 
 @js.native
 @JSGlobal
 object EXT_disjoint_timer_query_webgl2 extends js.Object:
-  val QUERY_COUNTER_BITS_EXT: scala.scalajs.js.Any = js.native
-  val TIME_ELAPSED_EXT: scala.scalajs.js.Any       = js.native
-  val TIMESTAMP_EXT: scala.scalajs.js.Any          = js.native
-  val GPU_DISJOINT_EXT: scala.scalajs.js.Any       = js.native
+  val QUERY_COUNTER_BITS_EXT: Int = js.native
+  val TIME_ELAPSED_EXT: Int       = js.native
+  val TIMESTAMP_EXT: Int          = js.native
+  val GPU_DISJOINT_EXT: Int       = js.native
 
 @js.native
 @JSGlobal
-class Observable extends js.Object:
+class Observable extends PlatformObject:
   def this(@unused callback: scala.scalajs.js.Function1[Subscriber, Unit]) = this()
-  def subscribe(observer: scala.scalajs.js.Any = js.native, options: SubscribeOptions = js.native): Unit   = js.native
+  def subscribe(
+      observer: scala.scalajs.js.Function1[scala.scalajs.js.Any, Unit] | SubscriptionObserver = js.native,
+      options: SubscribeOptions = js.native,
+  ): Unit                                                                                                  = js.native
   def takeUntil(value: scala.scalajs.js.Any): Observable                                                   = js.native
   def map(mapper: scala.scalajs.js.Function2[scala.scalajs.js.Any, Int, scala.scalajs.js.Any]): Observable = js.native
   def filter(predicate: scala.scalajs.js.Function2[scala.scalajs.js.Any, Int, Boolean]): Observable        = js.native
@@ -12473,7 +13473,9 @@ class Observable extends js.Object:
     js.native
   def switchMap(mapper: scala.scalajs.js.Function2[scala.scalajs.js.Any, Int, scala.scalajs.js.Any]): Observable =
     js.native
-  def inspect(inspectorUnion: scala.scalajs.js.Any = js.native): Observable                                 = js.native
+  def inspect(
+      inspectorUnion: scala.scalajs.js.Function1[scala.scalajs.js.Any, Unit] | ObservableInspector = js.native
+  ): Observable                                                                                             = js.native
   def `catch`(callback: scala.scalajs.js.Function1[scala.scalajs.js.Any, scala.scalajs.js.Any]): Observable = js.native
   def `finally`(callback: scala.scalajs.js.Function0[Unit]): Observable                                     = js.native
   def toArray(options: SubscribeOptions = js.native): scala.scalajs.js.Any                                  = js.native
@@ -12509,7 +13511,7 @@ object Observable extends js.Object:
 
 @js.native
 @JSGlobal
-class XRAnchor extends js.Object:
+class XRAnchor extends PlatformObject:
   def anchorSpace: XRSpace                                        = js.native
   def requestPersistentHandle(): scala.scalajs.js.Promise[String] = js.native
   def delete(): Unit                                              = js.native
@@ -12517,12 +13519,12 @@ class XRAnchor extends js.Object:
 @js.native
 @JSGlobal
 class CSSPerspective extends CSSTransformComponent:
-  def this(@unused length: scala.scalajs.js.Any) = this()
-  var length: scala.scalajs.js.Any = js.native
+  def this(@unused length: CSSNumericValue | String | CSSKeywordValue) = this()
+  var length: CSSNumericValue | String | CSSKeywordValue = js.native
 
 @js.native
 @JSGlobal
-class SpeechGrammarList extends js.Object:
+class SpeechGrammarList extends PlatformObject:
   def length: Int                                                     = js.native
   def item(index: Int): SpeechGrammar                                 = js.native
   def addFromURI(src: String, weight: Double = js.native): Unit       = js.native
@@ -12540,7 +13542,7 @@ class PerformanceMark extends PerformanceEntry:
 
 @js.native
 @JSGlobal
-class WorkerLocation extends js.Object:
+class WorkerLocation extends PlatformObject:
   def href: String     = js.native
   def origin: String   = js.native
   def protocol: String = js.native
@@ -12596,14 +13598,14 @@ object DOMMatrix extends js.Object:
 
 @js.native
 @JSGlobal
-class RdfGraph extends js.Object:
+class RdfGraph extends PlatformObject:
   def add(triple: RdfTriple): Unit = js.native
   @JSName(js.Symbol.iterator)
   def jsIterator(): scala.scalajs.js.Iterator[RdfTriple] = js.native
 
 @js.native
 @JSGlobal
-class FragmentDirective extends js.Object
+class FragmentDirective extends PlatformObject
 
 @js.native
 @JSGlobal
@@ -12631,7 +13633,7 @@ class CSSStyleProperties extends CSSStyleDeclaration:
 
 @js.native
 @JSGlobal
-class PerformanceObserver extends js.Object:
+class PerformanceObserver extends PlatformObject:
   def this(
       @unused callback: scala.scalajs.js.Function3[
         PerformanceObserverEntryList,
@@ -12642,7 +13644,7 @@ class PerformanceObserver extends js.Object:
   ) = this()
   def observe(options: PerformanceObserverInit = js.native): Unit = js.native
   def disconnect(): Unit                                          = js.native
-  def takeRecords(): scala.scalajs.js.Any                         = js.native
+  def takeRecords(): scala.scalajs.js.Array[PerformanceEntry]     = js.native
 end PerformanceObserver
 
 @js.native
@@ -12663,7 +13665,7 @@ class ChannelSplitterNode extends AudioNode:
 
 @js.native
 @JSGlobal
-class IdentityProvider extends js.Object
+class IdentityProvider extends PlatformObject
 
 @js.native
 @JSGlobal
@@ -12677,12 +13679,12 @@ object IdentityProvider extends js.Object:
 
 @js.native
 @JSGlobal
-class WebGLObject extends js.Object:
+class WebGLObject extends PlatformObject:
   var label: String = js.native
 
 @js.native
 @JSGlobal
-class DOMPointReadOnly extends js.Object:
+class DOMPointReadOnly extends PlatformObject:
   def this(
       @unused x: Double = js.native,
       @unused y: Double = js.native,
@@ -12704,7 +13706,7 @@ object DOMPointReadOnly extends js.Object:
 
 @js.native
 @JSGlobal
-class TextDecoder extends js.Object:
+class TextDecoder extends PlatformObject:
   def this(@unused label: String = js.native, @unused options: TextDecoderOptions = js.native) = this()
   def encoding: String                                                                                = js.native
   def fatal: Boolean                                                                                  = js.native
@@ -12723,51 +13725,51 @@ class SVGRectElement extends SVGGeometryElement:
 
 @js.native
 @JSGlobal
-class WEBGL_draw_buffers extends js.Object:
-  def drawBuffersWEBGL(buffers: scala.scalajs.js.Array[scala.scalajs.js.Any]): Unit = js.native
+class WEBGL_draw_buffers extends PlatformObject:
+  def drawBuffersWEBGL(buffers: scala.scalajs.js.Array[Int]): Unit = js.native
 
 @js.native
 @JSGlobal
 object WEBGL_draw_buffers extends js.Object:
-  val COLOR_ATTACHMENT0_WEBGL: scala.scalajs.js.Any     = js.native
-  val COLOR_ATTACHMENT1_WEBGL: scala.scalajs.js.Any     = js.native
-  val COLOR_ATTACHMENT2_WEBGL: scala.scalajs.js.Any     = js.native
-  val COLOR_ATTACHMENT3_WEBGL: scala.scalajs.js.Any     = js.native
-  val COLOR_ATTACHMENT4_WEBGL: scala.scalajs.js.Any     = js.native
-  val COLOR_ATTACHMENT5_WEBGL: scala.scalajs.js.Any     = js.native
-  val COLOR_ATTACHMENT6_WEBGL: scala.scalajs.js.Any     = js.native
-  val COLOR_ATTACHMENT7_WEBGL: scala.scalajs.js.Any     = js.native
-  val COLOR_ATTACHMENT8_WEBGL: scala.scalajs.js.Any     = js.native
-  val COLOR_ATTACHMENT9_WEBGL: scala.scalajs.js.Any     = js.native
-  val COLOR_ATTACHMENT10_WEBGL: scala.scalajs.js.Any    = js.native
-  val COLOR_ATTACHMENT11_WEBGL: scala.scalajs.js.Any    = js.native
-  val COLOR_ATTACHMENT12_WEBGL: scala.scalajs.js.Any    = js.native
-  val COLOR_ATTACHMENT13_WEBGL: scala.scalajs.js.Any    = js.native
-  val COLOR_ATTACHMENT14_WEBGL: scala.scalajs.js.Any    = js.native
-  val COLOR_ATTACHMENT15_WEBGL: scala.scalajs.js.Any    = js.native
-  val DRAW_BUFFER0_WEBGL: scala.scalajs.js.Any          = js.native
-  val DRAW_BUFFER1_WEBGL: scala.scalajs.js.Any          = js.native
-  val DRAW_BUFFER2_WEBGL: scala.scalajs.js.Any          = js.native
-  val DRAW_BUFFER3_WEBGL: scala.scalajs.js.Any          = js.native
-  val DRAW_BUFFER4_WEBGL: scala.scalajs.js.Any          = js.native
-  val DRAW_BUFFER5_WEBGL: scala.scalajs.js.Any          = js.native
-  val DRAW_BUFFER6_WEBGL: scala.scalajs.js.Any          = js.native
-  val DRAW_BUFFER7_WEBGL: scala.scalajs.js.Any          = js.native
-  val DRAW_BUFFER8_WEBGL: scala.scalajs.js.Any          = js.native
-  val DRAW_BUFFER9_WEBGL: scala.scalajs.js.Any          = js.native
-  val DRAW_BUFFER10_WEBGL: scala.scalajs.js.Any         = js.native
-  val DRAW_BUFFER11_WEBGL: scala.scalajs.js.Any         = js.native
-  val DRAW_BUFFER12_WEBGL: scala.scalajs.js.Any         = js.native
-  val DRAW_BUFFER13_WEBGL: scala.scalajs.js.Any         = js.native
-  val DRAW_BUFFER14_WEBGL: scala.scalajs.js.Any         = js.native
-  val DRAW_BUFFER15_WEBGL: scala.scalajs.js.Any         = js.native
-  val MAX_COLOR_ATTACHMENTS_WEBGL: scala.scalajs.js.Any = js.native
-  val MAX_DRAW_BUFFERS_WEBGL: scala.scalajs.js.Any      = js.native
+  val COLOR_ATTACHMENT0_WEBGL: Int     = js.native
+  val COLOR_ATTACHMENT1_WEBGL: Int     = js.native
+  val COLOR_ATTACHMENT2_WEBGL: Int     = js.native
+  val COLOR_ATTACHMENT3_WEBGL: Int     = js.native
+  val COLOR_ATTACHMENT4_WEBGL: Int     = js.native
+  val COLOR_ATTACHMENT5_WEBGL: Int     = js.native
+  val COLOR_ATTACHMENT6_WEBGL: Int     = js.native
+  val COLOR_ATTACHMENT7_WEBGL: Int     = js.native
+  val COLOR_ATTACHMENT8_WEBGL: Int     = js.native
+  val COLOR_ATTACHMENT9_WEBGL: Int     = js.native
+  val COLOR_ATTACHMENT10_WEBGL: Int    = js.native
+  val COLOR_ATTACHMENT11_WEBGL: Int    = js.native
+  val COLOR_ATTACHMENT12_WEBGL: Int    = js.native
+  val COLOR_ATTACHMENT13_WEBGL: Int    = js.native
+  val COLOR_ATTACHMENT14_WEBGL: Int    = js.native
+  val COLOR_ATTACHMENT15_WEBGL: Int    = js.native
+  val DRAW_BUFFER0_WEBGL: Int          = js.native
+  val DRAW_BUFFER1_WEBGL: Int          = js.native
+  val DRAW_BUFFER2_WEBGL: Int          = js.native
+  val DRAW_BUFFER3_WEBGL: Int          = js.native
+  val DRAW_BUFFER4_WEBGL: Int          = js.native
+  val DRAW_BUFFER5_WEBGL: Int          = js.native
+  val DRAW_BUFFER6_WEBGL: Int          = js.native
+  val DRAW_BUFFER7_WEBGL: Int          = js.native
+  val DRAW_BUFFER8_WEBGL: Int          = js.native
+  val DRAW_BUFFER9_WEBGL: Int          = js.native
+  val DRAW_BUFFER10_WEBGL: Int         = js.native
+  val DRAW_BUFFER11_WEBGL: Int         = js.native
+  val DRAW_BUFFER12_WEBGL: Int         = js.native
+  val DRAW_BUFFER13_WEBGL: Int         = js.native
+  val DRAW_BUFFER14_WEBGL: Int         = js.native
+  val DRAW_BUFFER15_WEBGL: Int         = js.native
+  val MAX_COLOR_ATTACHMENTS_WEBGL: Int = js.native
+  val MAX_DRAW_BUFFERS_WEBGL: Int      = js.native
 end WEBGL_draw_buffers
 
 @js.native
 @JSGlobal
-class SpeechRecognitionPhrase extends js.Object:
+class SpeechRecognitionPhrase extends PlatformObject:
   def this(@unused phrase: String, @unused boost: Double = js.native) = this()
   def phrase: String = js.native
   def boost: Double  = js.native
@@ -12790,7 +13792,7 @@ object SVGGradientElement extends js.Object:
 
 @js.native
 @JSGlobal
-class WorkerNavigator extends js.Object:
+class WorkerNavigator extends PlatformObject:
   def mediaCapabilities: MediaCapabilities                                   = js.native
   def permissions: Permissions                                               = js.native
   def serial: Serial                                                         = js.native
@@ -12827,7 +13829,7 @@ end WorkerNavigator
 
 @js.native
 @JSGlobal
-class Screen extends js.Object:
+class Screen extends PlatformObject:
   def availWidth: Int                = js.native
   def availHeight: Int               = js.native
   def width: Int                     = js.native
@@ -12836,7 +13838,8 @@ class Screen extends js.Object:
   def pixelDepth: Int                = js.native
   def orientation: ScreenOrientation = js.native
   def isExtended: Boolean            = js.native
-  var onchange: scala.scalajs.js.Any = js.native
+  @JSName("onchange")
+  var onchangeOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
 end Screen
 
 @js.native
@@ -12866,19 +13869,23 @@ object SVGFEDisplacementMapElement extends js.Object:
 @js.native
 @JSGlobal
 class PresentationConnection extends EventTarget:
-  def id: String                             = js.native
-  def url: String                            = js.native
-  def state: String                          = js.native
-  var onconnect: scala.scalajs.js.Any        = js.native
-  var onclose: scala.scalajs.js.Any          = js.native
-  var onterminate: scala.scalajs.js.Any      = js.native
-  var binaryType: String                     = js.native
-  var onmessage: scala.scalajs.js.Any        = js.native
-  def close(): Unit                          = js.native
-  def terminate(): Unit                      = js.native
-  def send(message: String): Unit            = js.native
-  def send(data: Blob): Unit                 = js.native
-  def send(data: scala.scalajs.js.Any): Unit = js.native
+  def id: String    = js.native
+  def url: String   = js.native
+  def state: String = js.native
+  @JSName("onconnect")
+  var onconnectOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("onclose")
+  var oncloseOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("onterminate")
+  var onterminateOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  var binaryType: String                                                                = js.native
+  @JSName("onmessage")
+  var onmessageOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  def close(): Unit                                                                   = js.native
+  def terminate(): Unit                                                               = js.native
+  def send(message: String): Unit                                                     = js.native
+  def send(data: Blob): Unit                                                          = js.native
+  def send(data: scala.scalajs.js.Any): Unit                                          = js.native
 end PresentationConnection
 
 @js.native
@@ -12889,7 +13896,7 @@ class HTMLModElement extends HTMLElement:
 
 @js.native
 @JSGlobal
-class ResizeObserverEntry extends js.Object:
+class ResizeObserverEntry extends PlatformObject:
   def target: Element                                                       = js.native
   def contentRect: DOMRectReadOnly                                          = js.native
   def borderBoxSize: scala.scalajs.js.Array[ResizeObserverSize]             = js.native
@@ -12899,219 +13906,360 @@ class ResizeObserverEntry extends js.Object:
 @js.native
 @JSGlobal
 class Window extends EventTarget:
-  def credentialless: Boolean                                                                          = js.native
-  def orientation: Int                                                                                 = js.native
-  var onorientationchange: scala.scalajs.js.Any                                                        = js.native
-  def cookieStore: CookieStore                                                                         = js.native
-  def crashReport: CrashReportContext                                                                  = js.native
-  def viewport: Viewport                                                                               = js.native
-  def screen: Screen                                                                                   = js.native
-  def visualViewport: VisualViewport                                                                   = js.native
-  def innerWidth: Int                                                                                  = js.native
-  def innerHeight: Int                                                                                 = js.native
-  def scrollX: Double                                                                                  = js.native
-  def pageXOffset: Double                                                                              = js.native
-  def scrollY: Double                                                                                  = js.native
-  def pageYOffset: Double                                                                              = js.native
-  def screenX: Int                                                                                     = js.native
-  def screenLeft: Int                                                                                  = js.native
-  def screenY: Int                                                                                     = js.native
-  def screenTop: Int                                                                                   = js.native
-  def outerWidth: Int                                                                                  = js.native
-  def outerHeight: Int                                                                                 = js.native
-  def devicePixelRatio: Double                                                                         = js.native
-  def documentPictureInPicture: DocumentPictureInPicture                                               = js.native
-  def event: scala.scalajs.js.Any                                                                      = js.native
-  def fence: Fence                                                                                     = js.native
-  def window: scala.scalajs.js.Any                                                                     = js.native
-  def self: scala.scalajs.js.Any                                                                       = js.native
-  def document: Document                                                                               = js.native
-  var name: String                                                                                     = js.native
-  def location: Location                                                                               = js.native
-  def history: History                                                                                 = js.native
-  def navigation: Navigation                                                                           = js.native
-  def customElements: CustomElementRegistry                                                            = js.native
-  def locationbar: BarProp                                                                             = js.native
-  def menubar: BarProp                                                                                 = js.native
-  def personalbar: BarProp                                                                             = js.native
-  def scrollbars: BarProp                                                                              = js.native
-  def statusbar: BarProp                                                                               = js.native
-  def toolbar: BarProp                                                                                 = js.native
-  var status: String                                                                                   = js.native
-  def closed: Boolean                                                                                  = js.native
-  def frames: scala.scalajs.js.Any                                                                     = js.native
-  def length: Int                                                                                      = js.native
-  def top: scala.scalajs.js.Any                                                                        = js.native
-  var opener: scala.scalajs.js.Any                                                                     = js.native
-  def parent: scala.scalajs.js.Any                                                                     = js.native
-  def frameElement: Element                                                                            = js.native
-  def navigator: Navigator                                                                             = js.native
-  def clientInformation: Navigator                                                                     = js.native
-  def originAgentCluster: Boolean                                                                      = js.native
-  def external: External                                                                               = js.native
-  var onappinstalled: scala.scalajs.js.Any                                                             = js.native
-  var onbeforeinstallprompt: scala.scalajs.js.Any                                                      = js.native
-  var ondeviceorientation: scala.scalajs.js.Any                                                        = js.native
-  var ondeviceorientationabsolute: scala.scalajs.js.Any                                                = js.native
-  var ondevicemotion: scala.scalajs.js.Any                                                             = js.native
-  def portalHost: PortalHost                                                                           = js.native
-  def speechSynthesis: SpeechSynthesis                                                                 = js.native
-  def launchQueue: LaunchQueue                                                                         = js.native
-  var onanimationstart: scala.scalajs.js.Any                                                           = js.native
-  var onanimationiteration: scala.scalajs.js.Any                                                       = js.native
-  var onanimationend: scala.scalajs.js.Any                                                             = js.native
-  var onanimationcancel: scala.scalajs.js.Any                                                          = js.native
-  var onsnapchanged: scala.scalajs.js.Any                                                              = js.native
-  var onsnapchanging: scala.scalajs.js.Any                                                             = js.native
-  var ontransitionrun: scala.scalajs.js.Any                                                            = js.native
-  var ontransitionstart: scala.scalajs.js.Any                                                          = js.native
-  var ontransitionend: scala.scalajs.js.Any                                                            = js.native
-  var ontransitioncancel: scala.scalajs.js.Any                                                         = js.native
-  var onfencedtreeclick: scala.scalajs.js.Any                                                          = js.native
-  var onabort: scala.scalajs.js.Any                                                                    = js.native
-  var onauxclick: scala.scalajs.js.Any                                                                 = js.native
-  var onbeforeinput: scala.scalajs.js.Any                                                              = js.native
-  var onbeforematch: scala.scalajs.js.Any                                                              = js.native
-  var onbeforetoggle: scala.scalajs.js.Any                                                             = js.native
-  var onblur: scala.scalajs.js.Any                                                                     = js.native
-  var oncancel: scala.scalajs.js.Any                                                                   = js.native
-  var oncanplay: scala.scalajs.js.Any                                                                  = js.native
-  var oncanplaythrough: scala.scalajs.js.Any                                                           = js.native
-  var onchange: scala.scalajs.js.Any                                                                   = js.native
-  var onclick: scala.scalajs.js.Any                                                                    = js.native
-  var onclose: scala.scalajs.js.Any                                                                    = js.native
-  var oncommand: scala.scalajs.js.Any                                                                  = js.native
-  var oncontextlost: scala.scalajs.js.Any                                                              = js.native
-  var oncontextmenu: scala.scalajs.js.Any                                                              = js.native
-  var oncontextrestored: scala.scalajs.js.Any                                                          = js.native
-  var oncopy: scala.scalajs.js.Any                                                                     = js.native
-  var oncuechange: scala.scalajs.js.Any                                                                = js.native
-  var oncut: scala.scalajs.js.Any                                                                      = js.native
-  var ondblclick: scala.scalajs.js.Any                                                                 = js.native
-  var ondrag: scala.scalajs.js.Any                                                                     = js.native
-  var ondragend: scala.scalajs.js.Any                                                                  = js.native
-  var ondragenter: scala.scalajs.js.Any                                                                = js.native
-  var ondragleave: scala.scalajs.js.Any                                                                = js.native
-  var ondragover: scala.scalajs.js.Any                                                                 = js.native
-  var ondragstart: scala.scalajs.js.Any                                                                = js.native
-  var ondrop: scala.scalajs.js.Any                                                                     = js.native
-  var ondurationchange: scala.scalajs.js.Any                                                           = js.native
-  var onemptied: scala.scalajs.js.Any                                                                  = js.native
-  var onended: scala.scalajs.js.Any                                                                    = js.native
-  var onerror: scala.scalajs.js.Any                                                                    = js.native
-  var onfocus: scala.scalajs.js.Any                                                                    = js.native
-  var onformdata: scala.scalajs.js.Any                                                                 = js.native
-  var oninput: scala.scalajs.js.Any                                                                    = js.native
-  var oninvalid: scala.scalajs.js.Any                                                                  = js.native
-  var onkeydown: scala.scalajs.js.Any                                                                  = js.native
-  var onkeypress: scala.scalajs.js.Any                                                                 = js.native
-  var onkeyup: scala.scalajs.js.Any                                                                    = js.native
-  var onload: scala.scalajs.js.Any                                                                     = js.native
-  var onloadeddata: scala.scalajs.js.Any                                                               = js.native
-  var onloadedmetadata: scala.scalajs.js.Any                                                           = js.native
-  var onloadstart: scala.scalajs.js.Any                                                                = js.native
-  var onmousedown: scala.scalajs.js.Any                                                                = js.native
-  var onmouseenter: scala.scalajs.js.Any                                                               = js.native
-  var onmouseleave: scala.scalajs.js.Any                                                               = js.native
-  var onmousemove: scala.scalajs.js.Any                                                                = js.native
-  var onmouseout: scala.scalajs.js.Any                                                                 = js.native
-  var onmouseover: scala.scalajs.js.Any                                                                = js.native
-  var onmouseup: scala.scalajs.js.Any                                                                  = js.native
-  var onpaste: scala.scalajs.js.Any                                                                    = js.native
-  var onpause: scala.scalajs.js.Any                                                                    = js.native
-  var onplay: scala.scalajs.js.Any                                                                     = js.native
-  var onplaying: scala.scalajs.js.Any                                                                  = js.native
-  var onprogress: scala.scalajs.js.Any                                                                 = js.native
-  var onratechange: scala.scalajs.js.Any                                                               = js.native
-  var onreset: scala.scalajs.js.Any                                                                    = js.native
-  var onresize: scala.scalajs.js.Any                                                                   = js.native
-  var onscroll: scala.scalajs.js.Any                                                                   = js.native
-  var onscrollend: scala.scalajs.js.Any                                                                = js.native
-  var onsecuritypolicyviolation: scala.scalajs.js.Any                                                  = js.native
-  var onseeked: scala.scalajs.js.Any                                                                   = js.native
-  var onseeking: scala.scalajs.js.Any                                                                  = js.native
-  var onselect: scala.scalajs.js.Any                                                                   = js.native
-  var onslotchange: scala.scalajs.js.Any                                                               = js.native
-  var onstalled: scala.scalajs.js.Any                                                                  = js.native
-  var onsubmit: scala.scalajs.js.Any                                                                   = js.native
-  var onsuspend: scala.scalajs.js.Any                                                                  = js.native
-  var ontimeupdate: scala.scalajs.js.Any                                                               = js.native
-  var ontoggle: scala.scalajs.js.Any                                                                   = js.native
-  var onvolumechange: scala.scalajs.js.Any                                                             = js.native
-  var onwaiting: scala.scalajs.js.Any                                                                  = js.native
-  var onwebkitanimationend: scala.scalajs.js.Any                                                       = js.native
-  var onwebkitanimationiteration: scala.scalajs.js.Any                                                 = js.native
-  var onwebkitanimationstart: scala.scalajs.js.Any                                                     = js.native
-  var onwebkittransitionend: scala.scalajs.js.Any                                                      = js.native
-  var onwheel: scala.scalajs.js.Any                                                                    = js.native
-  var onpointerover: scala.scalajs.js.Any                                                              = js.native
-  var onpointerenter: scala.scalajs.js.Any                                                             = js.native
-  var onpointerdown: scala.scalajs.js.Any                                                              = js.native
-  var onpointermove: scala.scalajs.js.Any                                                              = js.native
-  var onpointerrawupdate: scala.scalajs.js.Any                                                         = js.native
-  var onpointerup: scala.scalajs.js.Any                                                                = js.native
-  var onpointercancel: scala.scalajs.js.Any                                                            = js.native
-  var onpointerout: scala.scalajs.js.Any                                                               = js.native
-  var onpointerleave: scala.scalajs.js.Any                                                             = js.native
-  var ongotpointercapture: scala.scalajs.js.Any                                                        = js.native
-  var onlostpointercapture: scala.scalajs.js.Any                                                       = js.native
-  var onselectstart: scala.scalajs.js.Any                                                              = js.native
-  var onselectionchange: scala.scalajs.js.Any                                                          = js.native
-  var ontouchstart: scala.scalajs.js.Any                                                               = js.native
-  var ontouchend: scala.scalajs.js.Any                                                                 = js.native
-  var ontouchmove: scala.scalajs.js.Any                                                                = js.native
-  var ontouchcancel: scala.scalajs.js.Any                                                              = js.native
-  var onbeforexrselect: scala.scalajs.js.Any                                                           = js.native
-  var ongamepadconnected: scala.scalajs.js.Any                                                         = js.native
-  var ongamepaddisconnected: scala.scalajs.js.Any                                                      = js.native
-  var onafterprint: scala.scalajs.js.Any                                                               = js.native
-  var onbeforeprint: scala.scalajs.js.Any                                                              = js.native
-  var onbeforeunload: scala.scalajs.js.Any                                                             = js.native
-  var onhashchange: scala.scalajs.js.Any                                                               = js.native
-  var onlanguagechange: scala.scalajs.js.Any                                                           = js.native
-  var onmessage: scala.scalajs.js.Any                                                                  = js.native
-  var onmessageerror: scala.scalajs.js.Any                                                             = js.native
-  var onoffline: scala.scalajs.js.Any                                                                  = js.native
-  var ononline: scala.scalajs.js.Any                                                                   = js.native
-  var onpagehide: scala.scalajs.js.Any                                                                 = js.native
-  var onpagereveal: scala.scalajs.js.Any                                                               = js.native
-  var onpageshow: scala.scalajs.js.Any                                                                 = js.native
-  var onpageswap: scala.scalajs.js.Any                                                                 = js.native
-  var onpopstate: scala.scalajs.js.Any                                                                 = js.native
-  var onrejectionhandled: scala.scalajs.js.Any                                                         = js.native
-  var onstorage: scala.scalajs.js.Any                                                                  = js.native
-  var onunhandledrejection: scala.scalajs.js.Any                                                       = js.native
-  var onunload: scala.scalajs.js.Any                                                                   = js.native
-  var onportalactivate: scala.scalajs.js.Any                                                           = js.native
-  def indexedDB: IDBFactory                                                                            = js.native
-  def performance: Performance                                                                         = js.native
-  def origin: String                                                                                   = js.native
-  def isSecureContext: Boolean                                                                         = js.native
-  def crossOriginIsolated: Boolean                                                                     = js.native
-  def scheduler: Scheduler                                                                             = js.native
-  def caches: CacheStorage                                                                             = js.native
-  def trustedTypes: TrustedTypePolicyFactory                                                           = js.native
-  def crypto: Crypto                                                                                   = js.native
-  def sessionStorage: Storage                                                                          = js.native
-  def localStorage: Storage                                                                            = js.native
-  def pushManager: PushManager                                                                         = js.native
-  def navigate(dir: String): Unit                                                                      = js.native
-  def requestResize(): Unit                                                                            = js.native
-  def getComputedStyle(elt: Element, pseudoElt: String = js.native): CSSStyleProperties                = js.native
-  def matchMedia(query: String): MediaQueryList                                                        = js.native
-  def moveTo(x: Int, y: Int): Unit                                                                     = js.native
-  def moveBy(x: Int, y: Int): Unit                                                                     = js.native
-  def resizeTo(width: Int, height: Int): Unit                                                          = js.native
-  def resizeBy(x: Int, y: Int): Unit                                                                   = js.native
-  def scroll(options: ScrollToOptions): scala.scalajs.js.Promise[Unit]                                 = js.native
-  def scroll(x: Double, y: Double): scala.scalajs.js.Promise[Unit]                                     = js.native
-  def scrollTo(options: ScrollToOptions): scala.scalajs.js.Promise[Unit]                               = js.native
-  def scrollTo(x: Double, y: Double): scala.scalajs.js.Promise[Unit]                                   = js.native
-  def scrollBy(options: ScrollToOptions): scala.scalajs.js.Promise[Unit]                               = js.native
-  def scrollBy(x: Double, y: Double): scala.scalajs.js.Promise[Unit]                                   = js.native
-  def getDigitalGoodsService(serviceProvider: String): scala.scalajs.js.Promise[DigitalGoodsService]   = js.native
-  def fetchLater(input: scala.scalajs.js.Any, init: DeferredRequestInit = js.native): FetchLaterResult = js.native
-  def showOpenFilePicker(options: OpenFilePickerOptions = js.native): scala.scalajs.js.Any             = js.native
+  def credentialless: Boolean = js.native
+  def orientation: Int        = js.native
+  @JSName("onorientationchange")
+  var onorientationchangeOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  def cookieStore: CookieStore                                                                  = js.native
+  def crashReport: CrashReportContext                                                           = js.native
+  def viewport: Viewport                                                                        = js.native
+  def screen: Screen                                                                            = js.native
+  @JSName("visualViewport")
+  def visualViewportOrNull: VisualViewport | Null        = js.native
+  def innerWidth: Int                                    = js.native
+  def innerHeight: Int                                   = js.native
+  def scrollX: Double                                    = js.native
+  def pageXOffset: Double                                = js.native
+  def scrollY: Double                                    = js.native
+  def pageYOffset: Double                                = js.native
+  def screenX: Int                                       = js.native
+  def screenLeft: Int                                    = js.native
+  def screenY: Int                                       = js.native
+  def screenTop: Int                                     = js.native
+  def outerWidth: Int                                    = js.native
+  def outerHeight: Int                                   = js.native
+  def devicePixelRatio: Double                           = js.native
+  def documentPictureInPicture: DocumentPictureInPicture = js.native
+  def event: Event | Unit                                = js.native
+  @JSName("fence")
+  def fenceOrNull: Fence | Null             = js.native
+  def window: Window                        = js.native
+  def self: Window                          = js.native
+  def document: Document                    = js.native
+  var name: String                          = js.native
+  def location: Location                    = js.native
+  def history: History                      = js.native
+  def navigation: Navigation                = js.native
+  def customElements: CustomElementRegistry = js.native
+  def locationbar: BarProp                  = js.native
+  def menubar: BarProp                      = js.native
+  def personalbar: BarProp                  = js.native
+  def scrollbars: BarProp                   = js.native
+  def statusbar: BarProp                    = js.native
+  def toolbar: BarProp                      = js.native
+  var status: String                        = js.native
+  def closed: Boolean                       = js.native
+  def frames: Window                        = js.native
+  def length: Int                           = js.native
+  @JSName("top")
+  def topOrNull: Window | Null     = js.native
+  var opener: scala.scalajs.js.Any = js.native
+  @JSName("parent")
+  def parentOrNull: Window | Null = js.native
+  @JSName("frameElement")
+  def frameElementOrNull: Element | Null = js.native
+  def navigator: Navigator               = js.native
+  def clientInformation: Navigator       = js.native
+  def originAgentCluster: Boolean        = js.native
+  def external: External                 = js.native
+  @JSName("onappinstalled")
+  var onappinstalledOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("onbeforeinstallprompt")
+  var onbeforeinstallpromptOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("ondeviceorientation")
+  var ondeviceorientationOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("ondeviceorientationabsolute")
+  var ondeviceorientationabsoluteOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("ondevicemotion")
+  var ondevicemotionOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("portalHost")
+  def portalHostOrNull: PortalHost | Null = js.native
+  def speechSynthesis: SpeechSynthesis    = js.native
+  def launchQueue: LaunchQueue            = js.native
+  @JSName("onanimationstart")
+  var onanimationstartOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("onanimationiteration")
+  var onanimationiterationOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("onanimationend")
+  var onanimationendOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("onanimationcancel")
+  var onanimationcancelOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("onsnapchanged")
+  var onsnapchangedOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("onsnapchanging")
+  var onsnapchangingOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("ontransitionrun")
+  var ontransitionrunOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("ontransitionstart")
+  var ontransitionstartOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("ontransitionend")
+  var ontransitionendOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("ontransitioncancel")
+  var ontransitioncancelOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("onfencedtreeclick")
+  var onfencedtreeclickOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("onabort")
+  var onabortOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("onauxclick")
+  var onauxclickOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("onbeforeinput")
+  var onbeforeinputOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("onbeforematch")
+  var onbeforematchOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("onbeforetoggle")
+  var onbeforetoggleOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("onblur")
+  var onblurOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("oncancel")
+  var oncancelOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("oncanplay")
+  var oncanplayOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("oncanplaythrough")
+  var oncanplaythroughOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("onchange")
+  var onchangeOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("onclick")
+  var onclickOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("onclose")
+  var oncloseOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("oncommand")
+  var oncommandOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("oncontextlost")
+  var oncontextlostOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("oncontextmenu")
+  var oncontextmenuOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("oncontextrestored")
+  var oncontextrestoredOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("oncopy")
+  var oncopyOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("oncuechange")
+  var oncuechangeOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("oncut")
+  var oncutOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("ondblclick")
+  var ondblclickOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("ondrag")
+  var ondragOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("ondragend")
+  var ondragendOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("ondragenter")
+  var ondragenterOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("ondragleave")
+  var ondragleaveOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("ondragover")
+  var ondragoverOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("ondragstart")
+  var ondragstartOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("ondrop")
+  var ondropOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("ondurationchange")
+  var ondurationchangeOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("onemptied")
+  var onemptiedOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("onended")
+  var onendedOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("onerror")
+  var onerrorOrNull: scala.scalajs.js.Function | Null = js.native
+  @JSName("onfocus")
+  var onfocusOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("onformdata")
+  var onformdataOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("oninput")
+  var oninputOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("oninvalid")
+  var oninvalidOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("onkeydown")
+  var onkeydownOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("onkeypress")
+  var onkeypressOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("onkeyup")
+  var onkeyupOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("onload")
+  var onloadOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("onloadeddata")
+  var onloadeddataOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("onloadedmetadata")
+  var onloadedmetadataOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("onloadstart")
+  var onloadstartOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("onmousedown")
+  var onmousedownOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("onmouseenter")
+  var onmouseenterOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("onmouseleave")
+  var onmouseleaveOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("onmousemove")
+  var onmousemoveOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("onmouseout")
+  var onmouseoutOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("onmouseover")
+  var onmouseoverOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("onmouseup")
+  var onmouseupOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("onpaste")
+  var onpasteOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("onpause")
+  var onpauseOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("onplay")
+  var onplayOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("onplaying")
+  var onplayingOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("onprogress")
+  var onprogressOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("onratechange")
+  var onratechangeOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("onreset")
+  var onresetOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("onresize")
+  var onresizeOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("onscroll")
+  var onscrollOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("onscrollend")
+  var onscrollendOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("onsecuritypolicyviolation")
+  var onsecuritypolicyviolationOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("onseeked")
+  var onseekedOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("onseeking")
+  var onseekingOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("onselect")
+  var onselectOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("onslotchange")
+  var onslotchangeOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("onstalled")
+  var onstalledOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("onsubmit")
+  var onsubmitOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("onsuspend")
+  var onsuspendOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("ontimeupdate")
+  var ontimeupdateOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("ontoggle")
+  var ontoggleOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("onvolumechange")
+  var onvolumechangeOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("onwaiting")
+  var onwaitingOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("onwebkitanimationend")
+  var onwebkitanimationendOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("onwebkitanimationiteration")
+  var onwebkitanimationiterationOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("onwebkitanimationstart")
+  var onwebkitanimationstartOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("onwebkittransitionend")
+  var onwebkittransitionendOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("onwheel")
+  var onwheelOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("onpointerover")
+  var onpointeroverOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("onpointerenter")
+  var onpointerenterOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("onpointerdown")
+  var onpointerdownOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("onpointermove")
+  var onpointermoveOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("onpointerrawupdate")
+  var onpointerrawupdateOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("onpointerup")
+  var onpointerupOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("onpointercancel")
+  var onpointercancelOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("onpointerout")
+  var onpointeroutOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("onpointerleave")
+  var onpointerleaveOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("ongotpointercapture")
+  var ongotpointercaptureOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("onlostpointercapture")
+  var onlostpointercaptureOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("onselectstart")
+  var onselectstartOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("onselectionchange")
+  var onselectionchangeOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("ontouchstart")
+  var ontouchstartOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("ontouchend")
+  var ontouchendOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("ontouchmove")
+  var ontouchmoveOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("ontouchcancel")
+  var ontouchcancelOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("onbeforexrselect")
+  var onbeforexrselectOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("ongamepadconnected")
+  var ongamepadconnectedOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("ongamepaddisconnected")
+  var ongamepaddisconnectedOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("onafterprint")
+  var onafterprintOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("onbeforeprint")
+  var onbeforeprintOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("onbeforeunload")
+  var onbeforeunloadOrNull: scala.scalajs.js.Function1[Event, String] | Null = js.native
+  @JSName("onhashchange")
+  var onhashchangeOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("onlanguagechange")
+  var onlanguagechangeOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("onmessage")
+  var onmessageOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("onmessageerror")
+  var onmessageerrorOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("onoffline")
+  var onofflineOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("ononline")
+  var ononlineOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("onpagehide")
+  var onpagehideOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("onpagereveal")
+  var onpagerevealOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("onpageshow")
+  var onpageshowOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("onpageswap")
+  var onpageswapOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("onpopstate")
+  var onpopstateOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("onrejectionhandled")
+  var onrejectionhandledOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("onstorage")
+  var onstorageOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("onunhandledrejection")
+  var onunhandledrejectionOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("onunload")
+  var onunloadOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("onportalactivate")
+  var onportalactivateOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null         = js.native
+  def indexedDB: IDBFactory                                                                          = js.native
+  def performance: Performance                                                                       = js.native
+  def origin: String                                                                                 = js.native
+  def isSecureContext: Boolean                                                                       = js.native
+  def crossOriginIsolated: Boolean                                                                   = js.native
+  def scheduler: Scheduler                                                                           = js.native
+  def caches: CacheStorage                                                                           = js.native
+  def trustedTypes: TrustedTypePolicyFactory                                                         = js.native
+  def crypto: Crypto                                                                                 = js.native
+  def sessionStorage: Storage                                                                        = js.native
+  def localStorage: Storage                                                                          = js.native
+  def pushManager: PushManager                                                                       = js.native
+  def navigate(dir: String): Unit                                                                    = js.native
+  def requestResize(): Unit                                                                          = js.native
+  def getComputedStyle(elt: Element, pseudoElt: String = js.native): CSSStyleProperties              = js.native
+  def matchMedia(query: String): MediaQueryList                                                      = js.native
+  def moveTo(x: Int, y: Int): Unit                                                                   = js.native
+  def moveBy(x: Int, y: Int): Unit                                                                   = js.native
+  def resizeTo(width: Int, height: Int): Unit                                                        = js.native
+  def resizeBy(x: Int, y: Int): Unit                                                                 = js.native
+  def scroll(): scala.scalajs.js.Promise[Unit]                                                       = js.native
+  def scroll(options: ScrollToOptions): scala.scalajs.js.Promise[Unit]                               = js.native
+  def scroll(x: Double, y: Double): scala.scalajs.js.Promise[Unit]                                   = js.native
+  def scrollTo(): scala.scalajs.js.Promise[Unit]                                                     = js.native
+  def scrollTo(options: ScrollToOptions): scala.scalajs.js.Promise[Unit]                             = js.native
+  def scrollTo(x: Double, y: Double): scala.scalajs.js.Promise[Unit]                                 = js.native
+  def scrollBy(): scala.scalajs.js.Promise[Unit]                                                     = js.native
+  def scrollBy(options: ScrollToOptions): scala.scalajs.js.Promise[Unit]                             = js.native
+  def scrollBy(x: Double, y: Double): scala.scalajs.js.Promise[Unit]                                 = js.native
+  def getDigitalGoodsService(serviceProvider: String): scala.scalajs.js.Promise[DigitalGoodsService] = js.native
+  def fetchLater(input: Request | String, init: DeferredRequestInit = js.native): FetchLaterResult   = js.native
+  def showOpenFilePicker(options: OpenFilePickerOptions = js.native): scala.scalajs.js.Any           = js.native
   def showSaveFilePicker(options: SaveFilePickerOptions = js.native): scala.scalajs.js.Promise[FileSystemFileHandle] =
     js.native
   def showDirectoryPicker(
@@ -13121,20 +14269,24 @@ class Window extends EventTarget:
   def stop(): Unit                                       = js.native
   def focus(): Unit                                      = js.native
   def blur(): Unit                                       = js.native
-  def open(url: String = js.native, target: String = js.native, features: String = js.native): scala.scalajs.js.Any =
+  @JSName("open")
+  def openOrNull(url: String = js.native, target: String = js.native, features: String = js.native): Window | Null =
     js.native
   @JSBracketAccess
-  def apply(name: String): scala.scalajs.js.Any                                = js.native
-  def alert(): Unit                                                            = js.native
-  def alert(message: String): Unit                                             = js.native
-  def confirm(message: String = js.native): Boolean                            = js.native
-  def prompt(message: String = js.native, default: String = js.native): String = js.native
-  def print(): Unit                                                            = js.native
+  def apply(name: String): scala.scalajs.js.Any     = js.native
+  def alert(): Unit                                 = js.native
+  def alert(message: String): Unit                  = js.native
+  def confirm(message: String = js.native): Boolean = js.native
+  @JSName("prompt")
+  def promptOrNull(message: String = js.native, default: String = js.native): String | Null = js.native
+  def print(): Unit                                                                         = js.native
+  def postMessage(message: scala.scalajs.js.Any, targetOrigin: String): Unit                = js.native
   def postMessage(
       message: scala.scalajs.js.Any,
       targetOrigin: String,
       transfer: scala.scalajs.js.Array[scala.scalajs.js.Any],
   ): Unit                                                                                 = js.native
+  def postMessage(message: scala.scalajs.js.Any): Unit                                    = js.native
   def postMessage(message: scala.scalajs.js.Any, options: WindowPostMessageOptions): Unit = js.native
   def captureEvents(): Unit                                                               = js.native
   def releaseEvents(): Unit                                                               = js.native
@@ -13142,27 +14294,44 @@ class Window extends EventTarget:
   def requestIdleCallback(
       callback: scala.scalajs.js.Function1[IdleDeadline, Unit],
       options: IdleRequestOptions = js.native,
-  ): Int                                                                                                    = js.native
-  def cancelIdleCallback(handle: Int): Unit                                                                 = js.native
-  def getSelection(): Selection                                                                             = js.native
-  def getScreenDetails(): scala.scalajs.js.Promise[ScreenDetails]                                           = js.native
-  def fetch(input: scala.scalajs.js.Any, init: RequestInit = js.native): scala.scalajs.js.Promise[Response] = js.native
-  def reportError(e: scala.scalajs.js.Any): Unit                                                            = js.native
-  def btoa(data: String): String                                                                            = js.native
-  def atob(data: String): String                                                                            = js.native
-  def setTimeout(handler: scala.scalajs.js.Any, timeout: Int = js.native, arguments: scala.scalajs.js.Any): Int =
-    js.native
+  ): Int                                    = js.native
+  def cancelIdleCallback(handle: Int): Unit = js.native
+  @JSName("getSelection")
+  def getSelectionOrNull(): Selection | Null                                                            = js.native
+  def getScreenDetails(): scala.scalajs.js.Promise[ScreenDetails]                                       = js.native
+  def fetch(input: Request | String, init: RequestInit = js.native): scala.scalajs.js.Promise[Response] = js.native
+  def reportError(e: scala.scalajs.js.Any): Unit                                                        = js.native
+  def btoa(data: String): String                                                                        = js.native
+  def atob(data: String): String                                                                        = js.native
+  def setTimeout(
+      handler: String | scala.scalajs.js.Function1[scala.scalajs.js.Any, scala.scalajs.js.Any] | TrustedScript,
+      timeout: Int = js.native,
+      arguments: scala.scalajs.js.Any,
+  ): Int                                      = js.native
   def clearTimeout(id: Int = js.native): Unit = js.native
-  def setInterval(handler: scala.scalajs.js.Any, timeout: Int = js.native, arguments: scala.scalajs.js.Any): Int =
-    js.native
+  def setInterval(
+      handler: String | scala.scalajs.js.Function1[scala.scalajs.js.Any, scala.scalajs.js.Any] | TrustedScript,
+      timeout: Int = js.native,
+      arguments: scala.scalajs.js.Any,
+  ): Int                                                               = js.native
   def clearInterval(id: Int = js.native): Unit                         = js.native
   def queueMicrotask(callback: scala.scalajs.js.Function0[Unit]): Unit = js.native
   def createImageBitmap(
-      image: scala.scalajs.js.Any,
+      image: HTMLImageElement | SVGImageElement | HTMLVideoElement | HTMLCanvasElement | ImageBitmap | OffscreenCanvas | VideoFrame | Blob | ImageData
+  ): scala.scalajs.js.Promise[ImageBitmap] = js.native
+  def createImageBitmap(
+      image: HTMLImageElement | SVGImageElement | HTMLVideoElement | HTMLCanvasElement | ImageBitmap | OffscreenCanvas | VideoFrame | Blob | ImageData,
       options: ImageBitmapOptions,
   ): scala.scalajs.js.Promise[ImageBitmap] = js.native
   def createImageBitmap(
-      image: scala.scalajs.js.Any,
+      image: HTMLImageElement | SVGImageElement | HTMLVideoElement | HTMLCanvasElement | ImageBitmap | OffscreenCanvas | VideoFrame | Blob | ImageData,
+      sx: Int,
+      sy: Int,
+      sw: Int,
+      sh: Int,
+  ): scala.scalajs.js.Promise[ImageBitmap] = js.native
+  def createImageBitmap(
+      image: HTMLImageElement | SVGImageElement | HTMLVideoElement | HTMLCanvasElement | ImageBitmap | OffscreenCanvas | VideoFrame | Blob | ImageData,
       sx: Int,
       sy: Int,
       sw: Int,
@@ -13185,14 +14354,14 @@ class CSSApplyBlockRule extends CSSGroupingRule:
 
 @js.native
 @JSGlobal
-class PerformanceTimingConfidence extends js.Object:
+class PerformanceTimingConfidence extends PlatformObject:
   def randomizedTriggerRate: Double  = js.native
   def value: String                  = js.native
   def toJSON(): scala.scalajs.js.Any = js.native
 
 @js.native
 @JSGlobal
-class MLOperand extends js.Object:
+class MLOperand extends PlatformObject:
   def dataType: String                   = js.native
   def shape: scala.scalajs.js.Array[Int] = js.native
 
@@ -13203,9 +14372,12 @@ class WebGLBuffer extends WebGLObject
 @js.native
 @JSGlobal
 class HTMLTableElement extends HTMLElement:
-  var caption: HTMLTableCaptionElement                       = js.native
-  var tHead: HTMLTableSectionElement                         = js.native
-  var tFoot: HTMLTableSectionElement                         = js.native
+  @JSName("caption")
+  var captionOrNull: HTMLTableCaptionElement | Null = js.native
+  @JSName("tHead")
+  var tHeadOrNull: HTMLTableSectionElement | Null = js.native
+  @JSName("tFoot")
+  var tFootOrNull: HTMLTableSectionElement | Null            = js.native
   def tBodies: HTMLCollection                                = js.native
   def rows: HTMLCollection                                   = js.native
   var align: String                                          = js.native
@@ -13244,54 +14416,75 @@ class WebGLSampler extends WebGLObject
 
 @js.native
 @JSGlobal
-class Instance extends js.Object:
+class Instance extends PlatformObject:
   def this(@unused module: Module, @unused importObject: scala.scalajs.js.Any = js.native) = this()
   def exports: scala.scalajs.js.Any = js.native
 
 @js.native
 @JSGlobal
 class ServiceWorkerGlobalScope extends WorkerGlobalScope:
-  var onbackgroundfetchsuccess: scala.scalajs.js.Any = js.native
-  var onbackgroundfetchfail: scala.scalajs.js.Any    = js.native
-  var onbackgroundfetchabort: scala.scalajs.js.Any   = js.native
-  var onbackgroundfetchclick: scala.scalajs.js.Any   = js.native
-  var onsync: scala.scalajs.js.Any                   = js.native
-  var oncontentdelete: scala.scalajs.js.Any          = js.native
-  def cookieStore: CookieStore                       = js.native
-  var oncookiechange: scala.scalajs.js.Any           = js.native
-  var onnotificationclick: scala.scalajs.js.Any      = js.native
-  var onnotificationclose: scala.scalajs.js.Any      = js.native
-  var onperiodicsync: scala.scalajs.js.Any           = js.native
-  var onpush: scala.scalajs.js.Any                   = js.native
-  var onpushsubscriptionchange: scala.scalajs.js.Any = js.native
-  def clients: Clients                               = js.native
-  def registration: ServiceWorkerRegistration        = js.native
-  def serviceWorker: ServiceWorker                   = js.native
-  var oninstall: scala.scalajs.js.Any                = js.native
-  var onactivate: scala.scalajs.js.Any               = js.native
-  var onfetch: scala.scalajs.js.Any                  = js.native
-  var onmessage: scala.scalajs.js.Any                = js.native
-  var onmessageerror: scala.scalajs.js.Any           = js.native
-  var oncanmakepayment: scala.scalajs.js.Any         = js.native
-  var onpaymentrequest: scala.scalajs.js.Any         = js.native
-  def skipWaiting(): scala.scalajs.js.Promise[Unit]  = js.native
+  @JSName("onbackgroundfetchsuccess")
+  var onbackgroundfetchsuccessOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("onbackgroundfetchfail")
+  var onbackgroundfetchfailOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("onbackgroundfetchabort")
+  var onbackgroundfetchabortOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("onbackgroundfetchclick")
+  var onbackgroundfetchclickOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("onsync")
+  var onsyncOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("oncontentdelete")
+  var oncontentdeleteOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  def cookieStore: CookieStore                                                              = js.native
+  @JSName("oncookiechange")
+  var oncookiechangeOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("onnotificationclick")
+  var onnotificationclickOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("onnotificationclose")
+  var onnotificationcloseOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("onperiodicsync")
+  var onperiodicsyncOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("onpush")
+  var onpushOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("onpushsubscriptionchange")
+  var onpushsubscriptionchangeOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  def clients: Clients                                                                               = js.native
+  def registration: ServiceWorkerRegistration                                                        = js.native
+  def serviceWorker: ServiceWorker                                                                   = js.native
+  @JSName("oninstall")
+  var oninstallOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("onactivate")
+  var onactivateOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("onfetch")
+  var onfetchOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("onmessage")
+  var onmessageOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("onmessageerror")
+  var onmessageerrorOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("oncanmakepayment")
+  var oncanmakepaymentOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("onpaymentrequest")
+  var onpaymentrequestOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  def skipWaiting(): scala.scalajs.js.Promise[Unit]                                          = js.native
 end ServiceWorkerGlobalScope
 
 @js.native
 @JSGlobal
 class AudioContext extends BaseAudioContext:
   def this(@unused contextOptions: AudioContextOptions = js.native) = this()
-  def baseLatency: Double                                                                               = js.native
-  def outputLatency: Double                                                                             = js.native
-  def sinkId: scala.scalajs.js.Any                                                                      = js.native
-  var onsinkchange: scala.scalajs.js.Any                                                                = js.native
-  var onerror: scala.scalajs.js.Any                                                                     = js.native
+  def baseLatency: Double            = js.native
+  def outputLatency: Double          = js.native
+  def sinkId: String | AudioSinkInfo = js.native
+  @JSName("onsinkchange")
+  var onsinkchangeOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("onerror")
+  var onerrorOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null                     = js.native
   def playbackStats: AudioPlaybackStats                                                                 = js.native
   def getOutputTimestamp(): AudioTimestamp                                                              = js.native
   def resume(): scala.scalajs.js.Promise[Unit]                                                          = js.native
   def suspend(): scala.scalajs.js.Promise[Unit]                                                         = js.native
   def close(): scala.scalajs.js.Promise[Unit]                                                           = js.native
-  def setSinkId(sinkId: scala.scalajs.js.Any): scala.scalajs.js.Promise[Unit]                           = js.native
+  def setSinkId(sinkId: String | AudioSinkOptions): scala.scalajs.js.Promise[Unit]                      = js.native
   def createMediaElementSource(mediaElement: HTMLMediaElement): MediaElementAudioSourceNode             = js.native
   def createMediaStreamSource(mediaStream: MediaStream): MediaStreamAudioSourceNode                     = js.native
   def createMediaStreamTrackSource(mediaStreamTrack: MediaStreamTrack): MediaStreamTrackAudioSourceNode = js.native
@@ -13300,7 +14493,7 @@ end AudioContext
 
 @js.native
 @JSGlobal
-class Client extends js.Object:
+class Client extends PlatformObject:
   def lifecycleState: String = js.native
   def url: String            = js.native
   def frameType: String      = js.native
@@ -13308,33 +14501,39 @@ class Client extends js.Object:
   def `type`: String         = js.native
   def postMessage(message: scala.scalajs.js.Any, transfer: scala.scalajs.js.Array[scala.scalajs.js.Any]): Unit =
     js.native
+  def postMessage(message: scala.scalajs.js.Any): Unit                                      = js.native
   def postMessage(message: scala.scalajs.js.Any, options: StructuredSerializeOptions): Unit = js.native
 end Client
 
 @js.native
 @JSGlobal
 class XMLHttpRequest extends XMLHttpRequestEventTarget:
-  var onreadystatechange: scala.scalajs.js.Any                                                    = js.native
-  def readyState: Int                                                                             = js.native
-  var timeout: Int                                                                                = js.native
-  var withCredentials: Boolean                                                                    = js.native
-  def upload: XMLHttpRequestUpload                                                                = js.native
-  def responseURL: String                                                                         = js.native
-  def status: Int                                                                                 = js.native
-  def statusText: String                                                                          = js.native
-  var responseType: String                                                                        = js.native
-  def response: scala.scalajs.js.Any                                                              = js.native
-  def responseText: String                                                                        = js.native
-  def responseXML: Document                                                                       = js.native
+  @JSName("onreadystatechange")
+  var onreadystatechangeOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  def readyState: Int                                                                          = js.native
+  var timeout: Int                                                                             = js.native
+  var withCredentials: Boolean                                                                 = js.native
+  def upload: XMLHttpRequestUpload                                                             = js.native
+  def responseURL: String                                                                      = js.native
+  def status: Int                                                                              = js.native
+  def statusText: String                                                                       = js.native
+  var responseType: String                                                                     = js.native
+  def response: scala.scalajs.js.Any                                                           = js.native
+  def responseText: String                                                                     = js.native
+  @JSName("responseXML")
+  def responseXMLOrNull: Document | Null                                                          = js.native
   def setPrivateToken(privateToken: PrivateToken): Unit                                           = js.native
   def open(method: String, url: String): Unit                                                     = js.native
+  def open(method: String, url: String, async: Boolean): Unit                                     = js.native
+  def open(method: String, url: String, async: Boolean, username: String): Unit                   = js.native
   def open(method: String, url: String, async: Boolean, username: String, password: String): Unit = js.native
   def setRequestHeader(name: String, value: String): Unit                                         = js.native
   def send(body: scala.scalajs.js.Any = js.native): Unit                                          = js.native
   def abort(): Unit                                                                               = js.native
-  def getResponseHeader(name: String): String                                                     = js.native
-  def getAllResponseHeaders(): String                                                             = js.native
-  def overrideMimeType(mime: String): Unit                                                        = js.native
+  @JSName("getResponseHeader")
+  def getResponseHeaderOrNull(name: String): String | Null = js.native
+  def getAllResponseHeaders(): String                      = js.native
+  def overrideMimeType(mime: String): Unit                 = js.native
 end XMLHttpRequest
 
 @js.native
@@ -13353,7 +14552,7 @@ class Comment extends CharacterData:
 
 @js.native
 @JSGlobal
-class DOMStringMap extends js.Object:
+class DOMStringMap extends PlatformObject:
   @JSBracketAccess
   def apply(name: String): String = js.native
   @JSBracketAccess
@@ -13362,17 +14561,18 @@ class DOMStringMap extends js.Object:
 
 @js.native
 @JSGlobal
-class SVGAnimatedTransformList extends js.Object:
+class SVGAnimatedTransformList extends PlatformObject:
   def baseVal: SVGTransformList = js.native
   def animVal: SVGTransformList = js.native
 
 @js.native
 @JSGlobal
 class AbortSignal extends EventTarget:
-  def aborted: Boolean              = js.native
-  def reason: scala.scalajs.js.Any  = js.native
-  var onabort: scala.scalajs.js.Any = js.native
-  def throwIfAborted(): Unit        = js.native
+  def aborted: Boolean             = js.native
+  def reason: scala.scalajs.js.Any = js.native
+  @JSName("onabort")
+  var onabortOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  def throwIfAborted(): Unit                                                        = js.native
 
 @js.native
 @JSGlobal
@@ -13395,18 +14595,21 @@ class RadioNodeList extends NodeList:
 @js.native
 @JSGlobal
 class SharedWorker extends EventTarget:
-  def this(@unused scriptURL: scala.scalajs.js.Any, @unused options: scala.scalajs.js.Any = js.native) = this()
-  def port: MessagePort             = js.native
-  var onerror: scala.scalajs.js.Any = js.native
+  def this(@unused scriptURL: TrustedScriptURL | String, @unused options: String | SharedWorkerOptions = js.native) =
+    this()
+  def port: MessagePort = js.native
+  @JSName("onerror")
+  var onerrorOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
 
 @js.native
 @JSGlobal
-class URLSearchParams extends js.Object:
+class URLSearchParams extends PlatformObject:
   def this(@unused init: scala.scalajs.js.Any = js.native) = this()
   def size: Int                                             = js.native
   def append(name: String, value: String): Unit             = js.native
   def delete(name: String, value: String = js.native): Unit = js.native
-  def get(name: String): String                             = js.native
+  @JSName("get")
+  def getOrNull(name: String): String | Null                = js.native
   def getAll(name: String): scala.scalajs.js.Array[String]  = js.native
   def has(name: String, value: String = js.native): Boolean = js.native
   def set(name: String, value: String): Unit                = js.native
@@ -13424,21 +14627,26 @@ class SVGFEPointLightElement extends SVGElement:
 
 @js.native
 @JSGlobal
-class MutationRecord extends js.Object:
-  def `type`: String             = js.native
-  def target: Node               = js.native
-  def addedNodes: NodeList       = js.native
-  def removedNodes: NodeList     = js.native
-  def previousSibling: Node      = js.native
-  def nextSibling: Node          = js.native
-  def attributeName: String      = js.native
-  def attributeNamespace: String = js.native
-  def oldValue: String           = js.native
+class MutationRecord extends PlatformObject:
+  def `type`: String         = js.native
+  def target: Node           = js.native
+  def addedNodes: NodeList   = js.native
+  def removedNodes: NodeList = js.native
+  @JSName("previousSibling")
+  def previousSiblingOrNull: Node | Null = js.native
+  @JSName("nextSibling")
+  def nextSiblingOrNull: Node | Null = js.native
+  @JSName("attributeName")
+  def attributeNameOrNull: String | Null = js.native
+  @JSName("attributeNamespace")
+  def attributeNamespaceOrNull: String | Null = js.native
+  @JSName("oldValue")
+  def oldValueOrNull: String | Null = js.native
 end MutationRecord
 
 @js.native
 @JSGlobal
-class MimeType extends js.Object:
+class MimeType extends PlatformObject:
   def `type`: String        = js.native
   def description: String   = js.native
   def suffixes: String      = js.native
@@ -13446,7 +14654,7 @@ class MimeType extends js.Object:
 
 @js.native
 @JSGlobal
-class XRDepthInformation extends js.Object:
+class XRDepthInformation extends PlatformObject:
   def width: Int                                    = js.native
   def height: Int                                   = js.native
   def normDepthBufferFromNormView: XRRigidTransform = js.native
@@ -13456,7 +14664,7 @@ class XRDepthInformation extends js.Object:
 
 @js.native
 @JSGlobal
-class Credential extends js.Object:
+class Credential extends PlatformObject:
   def id: String     = js.native
   def `type`: String = js.native
 
@@ -13468,8 +14676,9 @@ object Credential extends js.Object:
 @js.native
 @JSGlobal
 class HTMLFieldSetElement extends HTMLElement:
-  var disabled: Boolean                      = js.native
-  def form: HTMLFormElement                  = js.native
+  var disabled: Boolean = js.native
+  @JSName("form")
+  def formOrNull: HTMLFormElement | Null     = js.native
   var name: String                           = js.native
   def `type`: String                         = js.native
   def elements: HTMLCollection               = js.native
@@ -13487,7 +14696,7 @@ class XMLDocument extends Document
 
 @js.native
 @JSGlobal
-class RTCEncodedVideoFrame extends js.Object:
+class RTCEncodedVideoFrame extends PlatformObject:
   def this(@unused originalFrame: RTCEncodedVideoFrame, @unused options: RTCEncodedVideoFrameOptions = js.native) =
     this()
   def `type`: String                              = js.native
@@ -13497,18 +14706,20 @@ class RTCEncodedVideoFrame extends js.Object:
 @js.native
 @JSGlobal
 class NavigationHistoryEntry extends EventTarget:
-  def url: String                      = js.native
-  def key: String                      = js.native
-  def id: String                       = js.native
-  def index: Int                       = js.native
-  def sameDocument: Boolean            = js.native
-  var ondispose: scala.scalajs.js.Any  = js.native
-  def getState(): scala.scalajs.js.Any = js.native
+  @JSName("url")
+  def urlOrNull: String | Null = js.native
+  def key: String              = js.native
+  def id: String               = js.native
+  def index: Int               = js.native
+  def sameDocument: Boolean    = js.native
+  @JSName("ondispose")
+  var ondisposeOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  def getState(): scala.scalajs.js.Any                                                = js.native
 end NavigationHistoryEntry
 
 @js.native
 @JSGlobal
-class XRMediaBinding extends js.Object:
+class XRMediaBinding extends PlatformObject:
   def this(@unused session: XRSession) = this()
   def createQuadLayer(video: HTMLVideoElement, init: XRMediaQuadLayerInit = js.native): XRQuadLayer = js.native
   def createCylinderLayer(video: HTMLVideoElement, init: XRMediaCylinderLayerInit = js.native): XRCylinderLayer =
@@ -13518,7 +14729,7 @@ class XRMediaBinding extends js.Object:
 
 @js.native
 @JSGlobal
-class RestrictionTarget extends js.Object
+class RestrictionTarget extends PlatformObject
 
 @js.native
 @JSGlobal
@@ -13527,12 +14738,12 @@ object RestrictionTarget extends js.Object:
 
 @js.native
 @JSGlobal
-class FetchLaterResult extends js.Object:
+class FetchLaterResult extends PlatformObject:
   def activated: Boolean = js.native
 
 @js.native
 @JSGlobal
-class SVGNumberList extends js.Object:
+class SVGNumberList extends PlatformObject:
   def length: Int                                                 = js.native
   def numberOfItems: Int                                          = js.native
   def clear(): Unit                                               = js.native
@@ -13549,11 +14760,12 @@ end SVGNumberList
 @js.native
 @JSGlobal
 class ManagedSourceBuffer extends SourceBuffer:
-  var onbufferedchange: scala.scalajs.js.Any = js.native
+  @JSName("onbufferedchange")
+  var onbufferedchangeOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
 
 @js.native
 @JSGlobal
-class Font extends js.Object:
+class Font extends PlatformObject:
   def name: String        = js.native
   def glyphsRendered: Int = js.native
 
@@ -13568,7 +14780,7 @@ class CSSFunctionDescriptors extends CSSStyleDeclaration:
 
 @js.native
 @JSGlobal
-class XRLightEstimate extends js.Object:
+class XRLightEstimate extends PlatformObject:
   def sphericalHarmonicsCoefficients: scala.scalajs.js.Any = js.native
   def primaryLightDirection: DOMPointReadOnly              = js.native
   def primaryLightIntensity: DOMPointReadOnly              = js.native
@@ -13585,7 +14797,7 @@ class AbsoluteOrientationSensor extends OrientationSensor:
 
 @js.native
 @JSGlobal
-class GeolocationPositionError extends js.Object:
+class GeolocationPositionError extends PlatformObject:
   def code: Int       = js.native
   def message: String = js.native
 
@@ -13598,7 +14810,7 @@ object GeolocationPositionError extends js.Object:
 
 @js.native
 @JSGlobal
-class XRRay extends js.Object:
+class XRRay extends PlatformObject:
   def this(@unused origin: DOMPointInit = js.native, @unused direction: XRRayDirectionInit = js.native) = this()
   def this(@unused transform: XRRigidTransform) = this()
   def origin: DOMPointReadOnly     = js.native
@@ -13607,14 +14819,14 @@ class XRRay extends js.Object:
 
 @js.native
 @JSGlobal
-class RdfTriple extends js.Object:
-  def subject: String                = js.native
-  def predicate: String              = js.native
-  def `object`: scala.scalajs.js.Any = js.native
+class RdfTriple extends PlatformObject:
+  def subject: String               = js.native
+  def predicate: String             = js.native
+  def `object`: String | RdfLiteral = js.native
 
 @js.native
 @JSGlobal
-class PushManager extends js.Object:
+class PushManager extends PlatformObject:
   def subscribe(options: PushSubscriptionOptionsInit = js.native): scala.scalajs.js.Promise[PushSubscription] =
     js.native
   def getSubscription(): scala.scalajs.js.Promise[PushSubscription]                                       = js.native
@@ -13628,12 +14840,14 @@ object PushManager extends js.Object:
 @js.native
 @JSGlobal
 class MediaKeySession extends EventTarget:
-  def sessionId: String                                                                                     = js.native
-  def expiration: Double                                                                                    = js.native
-  def closed: scala.scalajs.js.Promise[String]                                                              = js.native
-  def keyStatuses: MediaKeyStatusMap                                                                        = js.native
-  var onkeystatuseschange: scala.scalajs.js.Any                                                             = js.native
-  var onmessage: scala.scalajs.js.Any                                                                       = js.native
+  def sessionId: String                        = js.native
+  def expiration: Double                       = js.native
+  def closed: scala.scalajs.js.Promise[String] = js.native
+  def keyStatuses: MediaKeyStatusMap           = js.native
+  @JSName("onkeystatuseschange")
+  var onkeystatuseschangeOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("onmessage")
+  var onmessageOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null                       = js.native
   def generateRequest(initDataType: String, initData: scala.scalajs.js.Any): scala.scalajs.js.Promise[Unit] = js.native
   def load(sessionId: String): scala.scalajs.js.Promise[Boolean]                                            = js.native
   def update(response: scala.scalajs.js.Any): scala.scalajs.js.Promise[Unit]                                = js.native
@@ -13643,19 +14857,22 @@ end MediaKeySession
 
 @js.native
 @JSGlobal
-class GPUCanvasContext extends js.Object:
-  def canvas: scala.scalajs.js.Any                           = js.native
+class GPUCanvasContext extends PlatformObject:
+  def canvas: HTMLCanvasElement | OffscreenCanvas            = js.native
   def configure(configuration: GPUCanvasConfiguration): Unit = js.native
   def unconfigure(): Unit                                    = js.native
-  def getConfiguration(): GPUCanvasConfiguration             = js.native
-  def getCurrentTexture(): GPUTexture                        = js.native
+  @JSName("getConfiguration")
+  def getConfigurationOrNull(): GPUCanvasConfiguration | Null = js.native
+  def getCurrentTexture(): GPUTexture                         = js.native
 
 @js.native
 @JSGlobal
-class Selection extends js.Object:
-  def anchorNode: Node                                                                                      = js.native
-  def anchorOffset: Int                                                                                     = js.native
-  def focusNode: Node                                                                                       = js.native
+class Selection extends PlatformObject:
+  @JSName("anchorNode")
+  def anchorNodeOrNull: Node | Null = js.native
+  def anchorOffset: Int             = js.native
+  @JSName("focusNode")
+  def focusNodeOrNull: Node | Null                                                                          = js.native
   def focusOffset: Int                                                                                      = js.native
   def isCollapsed: Boolean                                                                                  = js.native
   def rangeCount: Int                                                                                       = js.native
@@ -13682,7 +14899,7 @@ end Selection
 
 @js.native
 @JSGlobal
-class RTCEncodedAudioFrame extends js.Object:
+class RTCEncodedAudioFrame extends PlatformObject:
   def this(@unused originalFrame: RTCEncodedAudioFrame, @unused options: RTCEncodedAudioFrameOptions = js.native) =
     this()
   var data: scala.scalajs.js.Any                  = js.native
@@ -13700,18 +14917,19 @@ class CSSImageValue extends CSSStyleValue
 @js.native
 @JSGlobal
 class PublicKeyCredential extends Credential:
-  def rawId: scala.scalajs.js.Any                                        = js.native
-  def response: AuthenticatorResponse                                    = js.native
-  def authenticatorAttachment: String                                    = js.native
+  def rawId: scala.scalajs.js.Any     = js.native
+  def response: AuthenticatorResponse = js.native
+  @JSName("authenticatorAttachment")
+  def authenticatorAttachmentOrNull: String | Null                       = js.native
   def getClientExtensionResults(): AuthenticationExtensionsClientOutputs = js.native
   def toJSON(): scala.scalajs.js.Any                                     = js.native
 
 @js.native
 @JSGlobal
 object PublicKeyCredential extends js.Object:
-  def isConditionalMediationAvailable(): scala.scalajs.js.Promise[Boolean]               = js.native
-  def isUserVerifyingPlatformAuthenticatorAvailable(): scala.scalajs.js.Promise[Boolean] = js.native
-  def getClientCapabilities(): scala.scalajs.js.Promise[scala.scalajs.js.Any]            = js.native
+  def isConditionalMediationAvailable(): scala.scalajs.js.Promise[Boolean]                    = js.native
+  def isUserVerifyingPlatformAuthenticatorAvailable(): scala.scalajs.js.Promise[Boolean]      = js.native
+  def getClientCapabilities(): scala.scalajs.js.Promise[scala.scalajs.js.Dictionary[Boolean]] = js.native
   def parseCreationOptionsFromJSON(
       options: PublicKeyCredentialCreationOptionsJSON
   ): PublicKeyCredentialCreationOptions = js.native
@@ -13724,7 +14942,7 @@ end PublicKeyCredential
 
 @js.native
 @JSGlobal
-class WebGLUniformLocation extends js.Object
+class WebGLUniformLocation extends PlatformObject
 
 @js.native
 @JSGlobal
@@ -13737,7 +14955,7 @@ class HTMLHRElement extends HTMLElement:
 
 @js.native
 @JSGlobal
-class DOMImplementation extends js.Object:
+class DOMImplementation extends PlatformObject:
   def createDocumentType(name: String, publicId: String, systemId: String): DocumentType = js.native
   def createDocument(namespace: String, qualifiedName: String, doctype: DocumentType = js.native): XMLDocument =
     js.native
@@ -13746,7 +14964,7 @@ class DOMImplementation extends js.Object:
 
 @js.native
 @JSGlobal
-class Attribution extends js.Object:
+class Attribution extends PlatformObject:
   def aggregationServices: AttributionAggregationServices = js.native
   def saveImpression(options: AttributionImpressionOptions): scala.scalajs.js.Promise[AttributionImpressionResult] =
     js.native
@@ -13755,50 +14973,50 @@ class Attribution extends js.Object:
 
 @js.native
 @JSGlobal
-class WEBGL_multi_draw extends js.Object:
+class WEBGL_multi_draw extends PlatformObject:
   def multiDrawArraysWEBGL(
-      mode: scala.scalajs.js.Any,
+      mode: Int,
       firstsList: scala.scalajs.js.Any,
       firstsOffset: Int,
       countsList: scala.scalajs.js.Any,
       countsOffset: Int,
-      drawcount: scala.scalajs.js.Any,
+      drawcount: Int,
   ): Unit = js.native
   def multiDrawElementsWEBGL(
-      mode: scala.scalajs.js.Any,
+      mode: Int,
       countsList: scala.scalajs.js.Any,
       countsOffset: Int,
-      `type`: scala.scalajs.js.Any,
+      `type`: Int,
       offsetsList: scala.scalajs.js.Any,
       offsetsOffset: Int,
-      drawcount: scala.scalajs.js.Any,
+      drawcount: Int,
   ): Unit = js.native
   def multiDrawArraysInstancedWEBGL(
-      mode: scala.scalajs.js.Any,
+      mode: Int,
       firstsList: scala.scalajs.js.Any,
       firstsOffset: Int,
       countsList: scala.scalajs.js.Any,
       countsOffset: Int,
       instanceCountsList: scala.scalajs.js.Any,
       instanceCountsOffset: Int,
-      drawcount: scala.scalajs.js.Any,
+      drawcount: Int,
   ): Unit = js.native
   def multiDrawElementsInstancedWEBGL(
-      mode: scala.scalajs.js.Any,
+      mode: Int,
       countsList: scala.scalajs.js.Any,
       countsOffset: Int,
-      `type`: scala.scalajs.js.Any,
+      `type`: Int,
       offsetsList: scala.scalajs.js.Any,
       offsetsOffset: Int,
       instanceCountsList: scala.scalajs.js.Any,
       instanceCountsOffset: Int,
-      drawcount: scala.scalajs.js.Any,
+      drawcount: Int,
   ): Unit = js.native
 end WEBGL_multi_draw
 
 @js.native
 @JSGlobal
-class WritableStream extends js.Object:
+class WritableStream extends PlatformObject:
   def this(@unused underlyingSink: scala.scalajs.js.Any = js.native, @unused strategy: QueuingStrategy = js.native) =
     this()
   def locked: Boolean                                                                 = js.native
@@ -13812,12 +15030,12 @@ class WebGLFramebuffer extends WebGLObject
 
 @js.native
 @JSGlobal
-class MediaStreamTrackHandle extends js.Object:
+class MediaStreamTrackHandle extends PlatformObject:
   def this(@unused track: MediaStreamTrack) = this()
 
 @js.native
 @JSGlobal
-class BarProp extends js.Object:
+class BarProp extends PlatformObject:
   def visible: Boolean = js.native
 
 @js.native
@@ -13826,7 +15044,7 @@ class CDATASection extends Text
 
 @js.native
 @JSGlobal
-class ContactAddress extends js.Object:
+class ContactAddress extends PlatformObject:
   def city: String                                = js.native
   def country: String                             = js.native
   def dependentLocality: String                   = js.native
@@ -13845,17 +15063,18 @@ end ContactAddress
 class CSSParserAtRule extends CSSParserRule:
   def this(
       @unused name: String,
-      @unused prelude: scala.scalajs.js.Array[scala.scalajs.js.Any],
+      @unused prelude: scala.scalajs.js.Array[String | CSSStyleValue | CSSParserValue],
       @unused body: scala.scalajs.js.Array[CSSParserRule] = js.native,
   ) = this()
   def name: String                                    = js.native
   def prelude: scala.scalajs.js.Array[CSSParserValue] = js.native
-  def body: scala.scalajs.js.Array[CSSParserRule]     = js.native
+  @JSName("body")
+  def bodyOrNull: scala.scalajs.js.Array[CSSParserRule] | Null = js.native
 end CSSParserAtRule
 
 @js.native
 @JSGlobal
-class XRBody extends js.Object:
+class XRBody extends PlatformObject:
   def size: Int                     = js.native
   def get(key: String): XRBodySpace = js.native
   @JSName(js.Symbol.iterator)
@@ -13878,7 +15097,7 @@ class CSSColorValue extends CSSStyleValue
 @js.native
 @JSGlobal
 object CSSColorValue extends js.Object:
-  def parse(cssText: String): scala.scalajs.js.Any = js.native
+  def parse(cssText: String): CSSColorValue | CSSStyleValue = js.native
 
 @js.native
 @JSGlobal
@@ -13887,49 +15106,73 @@ class WebGLRenderbuffer extends WebGLObject
 @js.native
 @JSGlobal
 class HTMLBodyElement extends HTMLElement:
-  var onorientationchange: scala.scalajs.js.Any   = js.native
-  var text: String                                = js.native
-  var link: String                                = js.native
-  var vLink: String                               = js.native
-  var aLink: String                               = js.native
-  var bgColor: String                             = js.native
-  var background: String                          = js.native
-  var ongamepadconnected: scala.scalajs.js.Any    = js.native
-  var ongamepaddisconnected: scala.scalajs.js.Any = js.native
-  var onafterprint: scala.scalajs.js.Any          = js.native
-  var onbeforeprint: scala.scalajs.js.Any         = js.native
-  var onbeforeunload: scala.scalajs.js.Any        = js.native
-  var onhashchange: scala.scalajs.js.Any          = js.native
-  var onlanguagechange: scala.scalajs.js.Any      = js.native
-  var onmessage: scala.scalajs.js.Any             = js.native
-  var onmessageerror: scala.scalajs.js.Any        = js.native
-  var onoffline: scala.scalajs.js.Any             = js.native
-  var ononline: scala.scalajs.js.Any              = js.native
-  var onpagehide: scala.scalajs.js.Any            = js.native
-  var onpagereveal: scala.scalajs.js.Any          = js.native
-  var onpageshow: scala.scalajs.js.Any            = js.native
-  var onpageswap: scala.scalajs.js.Any            = js.native
-  var onpopstate: scala.scalajs.js.Any            = js.native
-  var onrejectionhandled: scala.scalajs.js.Any    = js.native
-  var onstorage: scala.scalajs.js.Any             = js.native
-  var onunhandledrejection: scala.scalajs.js.Any  = js.native
-  var onunload: scala.scalajs.js.Any              = js.native
-  var onportalactivate: scala.scalajs.js.Any      = js.native
+  @JSName("onorientationchange")
+  var onorientationchangeOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  var text: String                                                                              = js.native
+  var link: String                                                                              = js.native
+  var vLink: String                                                                             = js.native
+  var aLink: String                                                                             = js.native
+  var bgColor: String                                                                           = js.native
+  var background: String                                                                        = js.native
+  @JSName("ongamepadconnected")
+  var ongamepadconnectedOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("ongamepaddisconnected")
+  var ongamepaddisconnectedOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("onafterprint")
+  var onafterprintOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("onbeforeprint")
+  var onbeforeprintOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("onbeforeunload")
+  var onbeforeunloadOrNull: scala.scalajs.js.Function1[Event, String] | Null = js.native
+  @JSName("onhashchange")
+  var onhashchangeOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("onlanguagechange")
+  var onlanguagechangeOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("onmessage")
+  var onmessageOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("onmessageerror")
+  var onmessageerrorOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("onoffline")
+  var onofflineOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("ononline")
+  var ononlineOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("onpagehide")
+  var onpagehideOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("onpagereveal")
+  var onpagerevealOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("onpageshow")
+  var onpageshowOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("onpageswap")
+  var onpageswapOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("onpopstate")
+  var onpopstateOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("onrejectionhandled")
+  var onrejectionhandledOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("onstorage")
+  var onstorageOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("onunhandledrejection")
+  var onunhandledrejectionOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("onunload")
+  var onunloadOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("onportalactivate")
+  var onportalactivateOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
 end HTMLBodyElement
 
 @js.native
 @JSGlobal
-class VideoTrack extends js.Object:
-  def id: String                 = js.native
-  def kind: String               = js.native
-  def label: String              = js.native
-  def language: String           = js.native
-  var selected: Boolean          = js.native
-  def sourceBuffer: SourceBuffer = js.native
+class VideoTrack extends PlatformObject:
+  def id: String        = js.native
+  def kind: String      = js.native
+  def label: String     = js.native
+  def language: String  = js.native
+  var selected: Boolean = js.native
+  @JSName("sourceBuffer")
+  def sourceBufferOrNull: SourceBuffer | Null = js.native
+end VideoTrack
 
 @js.native
 @JSGlobal
-class RTCSessionDescription extends js.Object:
+class RTCSessionDescription extends PlatformObject:
   def this(@unused descriptionInitDict: RTCSessionDescriptionInit) = this()
   def `type`: String                      = js.native
   def sdp: String                         = js.native
@@ -13938,14 +15181,22 @@ class RTCSessionDescription extends js.Object:
 @js.native
 @JSGlobal
 class Bluetooth extends EventTarget:
-  var onavailabilitychanged: scala.scalajs.js.Any                                                           = js.native
-  def referringDevice: BluetoothDevice                                                                      = js.native
-  var onadvertisementreceived: scala.scalajs.js.Any                                                         = js.native
-  var ongattserverdisconnected: scala.scalajs.js.Any                                                        = js.native
-  var oncharacteristicvaluechanged: scala.scalajs.js.Any                                                    = js.native
-  var onserviceadded: scala.scalajs.js.Any                                                                  = js.native
-  var onservicechanged: scala.scalajs.js.Any                                                                = js.native
-  var onserviceremoved: scala.scalajs.js.Any                                                                = js.native
+  @JSName("onavailabilitychanged")
+  var onavailabilitychangedOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("referringDevice")
+  def referringDeviceOrNull: BluetoothDevice | Null = js.native
+  @JSName("onadvertisementreceived")
+  var onadvertisementreceivedOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("ongattserverdisconnected")
+  var ongattserverdisconnectedOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("oncharacteristicvaluechanged")
+  var oncharacteristicvaluechangedOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("onserviceadded")
+  var onserviceaddedOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("onservicechanged")
+  var onservicechangedOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("onserviceremoved")
+  var onserviceremovedOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null                = js.native
   def requestLEScan(options: BluetoothLEScanOptions = js.native): scala.scalajs.js.Promise[BluetoothLEScan] = js.native
   def getAvailability(): scala.scalajs.js.Promise[Boolean]                                                  = js.native
   def getDevices(): scala.scalajs.js.Any                                                                    = js.native
@@ -13956,18 +15207,21 @@ end Bluetooth
 @JSGlobal
 class RTCRtpSFrameDecrypter extends EventTarget:
   def this(@unused options: SFrameTransformOptions) = this()
-  var onerror: scala.scalajs.js.Any                                                                 = js.native
+  @JSName("onerror")
+  var onerrorOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null                 = js.native
   def addDecryptionKey(key: CryptoKey, keyId: scala.scalajs.js.Any): scala.scalajs.js.Promise[Unit] = js.native
   def removeDecryptionKey(keyId: scala.scalajs.js.Any): scala.scalajs.js.Promise[Unit]              = js.native
 
 @js.native
 @JSGlobal
-class RTCRtpTransceiver extends js.Object:
-  def mid: String                                                            = js.native
-  def sender: RTCRtpSender                                                   = js.native
-  def receiver: RTCRtpReceiver                                               = js.native
-  var direction: String                                                      = js.native
-  def currentDirection: String                                               = js.native
+class RTCRtpTransceiver extends PlatformObject:
+  @JSName("mid")
+  def midOrNull: String | Null = js.native
+  def sender: RTCRtpSender     = js.native
+  def receiver: RTCRtpReceiver = js.native
+  var direction: String        = js.native
+  @JSName("currentDirection")
+  def currentDirectionOrNull: String | Null                                  = js.native
   def stop(): Unit                                                           = js.native
   def setCodecPreferences(codecs: scala.scalajs.js.Array[RTCRtpCodec]): Unit = js.native
 end RTCRtpTransceiver
@@ -13978,7 +15232,7 @@ class XRSpace extends EventTarget
 
 @js.native
 @JSGlobal
-class ViewTransitionTypeSet extends js.Object:
+class ViewTransitionTypeSet extends PlatformObject:
   def size: Int                                                                     = js.native
   def has(value: String): Boolean                                                   = js.native
   def keys(): scala.scalajs.js.Iterator[String]                                     = js.native
@@ -13997,20 +15251,24 @@ end ViewTransitionTypeSet
 class AuthenticatorAssertionResponse extends AuthenticatorResponse:
   def authenticatorData: scala.scalajs.js.Any = js.native
   def signature: scala.scalajs.js.Any         = js.native
-  def userHandle: scala.scalajs.js.Any        = js.native
+  @JSName("userHandle")
+  def userHandleOrNull: scala.scalajs.js.Any | Null = js.native
 
 @js.native
 @JSGlobal
-class XRPlane extends js.Object:
+class XRPlane extends PlatformObject:
   def planeSpace: XRSpace                               = js.native
   def polygon: scala.scalajs.js.Array[DOMPointReadOnly] = js.native
-  def orientation: String                               = js.native
-  def lastChangedTime: Double                           = js.native
-  def semanticLabel: String                             = js.native
+  @JSName("orientation")
+  def orientationOrNull: String | Null = js.native
+  def lastChangedTime: Double          = js.native
+  @JSName("semanticLabel")
+  def semanticLabelOrNull: String | Null = js.native
+end XRPlane
 
 @js.native
 @JSGlobal
-class Module extends js.Object:
+class Module extends PlatformObject:
   def this(@unused bytes: scala.scalajs.js.Any, @unused options: WebAssemblyCompileOptions = js.native) = this()
 
 @js.native
@@ -14023,19 +15281,26 @@ object Module extends js.Object:
 
 @js.native
 @JSGlobal
-class VideoFrame extends js.Object:
-  def this(@unused image: scala.scalajs.js.Any, @unused init: VideoFrameInit) = this()
+class VideoFrame extends PlatformObject:
+  def this(
+      @unused image: HTMLImageElement | SVGImageElement | HTMLVideoElement | HTMLCanvasElement | ImageBitmap | OffscreenCanvas | VideoFrame,
+      @unused init: VideoFrameInit,
+  ) = this()
   def this(@unused data: scala.scalajs.js.Any, @unused init: VideoFrameBufferInit) = this()
-  def format: String                                                    = js.native
-  def codedWidth: Int                                                   = js.native
-  def codedHeight: Int                                                  = js.native
-  def codedRect: DOMRectReadOnly                                        = js.native
-  def visibleRect: DOMRectReadOnly                                      = js.native
-  def rotation: Double                                                  = js.native
-  def flip: Boolean                                                     = js.native
-  def displayWidth: Int                                                 = js.native
-  def displayHeight: Int                                                = js.native
-  def duration: Int                                                     = js.native
+  @JSName("format")
+  def formatOrNull: String | Null = js.native
+  def codedWidth: Int             = js.native
+  def codedHeight: Int            = js.native
+  @JSName("codedRect")
+  def codedRectOrNull: DOMRectReadOnly | Null = js.native
+  @JSName("visibleRect")
+  def visibleRectOrNull: DOMRectReadOnly | Null = js.native
+  def rotation: Double                          = js.native
+  def flip: Boolean                             = js.native
+  def displayWidth: Int                         = js.native
+  def displayHeight: Int                        = js.native
+  @JSName("duration")
+  def durationOrNull: Int | Null                                        = js.native
   def timestamp: Int                                                    = js.native
   def colorSpace: VideoColorSpace                                       = js.native
   def metadata(): VideoFrameMetadata                                    = js.native
@@ -14047,7 +15312,7 @@ end VideoFrame
 
 @js.native
 @JSGlobal
-class SpeechRecognitionResult extends js.Object:
+class SpeechRecognitionResult extends PlatformObject:
   def length: Int                                    = js.native
   def isFinal: Boolean                               = js.native
   def item(index: Int): SpeechRecognitionAlternative = js.native
@@ -14056,14 +15321,17 @@ class SpeechRecognitionResult extends js.Object:
 @JSGlobal
 class WaveShaperNode extends AudioNode:
   def this(@unused context: BaseAudioContext, @unused options: WaveShaperOptions = js.native) = this()
-  var curve: scala.scalajs.js.Any = js.native
-  var oversample: String          = js.native
+  @JSName("curve")
+  var curveOrNull: scala.scalajs.js.Any | Null = js.native
+  var oversample: String                       = js.native
 
 @js.native
 @JSGlobal
 class Serial extends EventTarget:
-  var onconnect: scala.scalajs.js.Any                                                                  = js.native
-  var ondisconnect: scala.scalajs.js.Any                                                               = js.native
+  @JSName("onconnect")
+  var onconnectOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("ondisconnect")
+  var ondisconnectOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null               = js.native
   def getPorts(): scala.scalajs.js.Any                                                                 = js.native
   def requestPort(options: SerialPortRequestOptions = js.native): scala.scalajs.js.Promise[SerialPort] = js.native
 
@@ -14082,18 +15350,21 @@ class CSSSkew extends CSSTransformComponent:
 
 @js.native
 @JSGlobal
-class HandwritingStroke extends js.Object:
+class HandwritingStroke extends PlatformObject:
   def addPoint(point: HandwritingPoint): Unit               = js.native
   def getPoints(): scala.scalajs.js.Array[HandwritingPoint] = js.native
   def clear(): Unit                                         = js.native
 
 @js.native
 @JSGlobal
-class RTCRtpReceiver extends js.Object:
-  var transform: scala.scalajs.js.Any                                                  = js.native
-  def track: MediaStreamTrack                                                          = js.native
-  def transport: RTCDtlsTransport                                                      = js.native
-  var jitterBufferTarget: Double                                                       = js.native
+class RTCRtpReceiver extends PlatformObject:
+  @JSName("transform")
+  var transformOrNull: RTCRtpSFrameDecrypter | RTCRtpScriptTransform | Null = js.native
+  def track: MediaStreamTrack                                               = js.native
+  @JSName("transport")
+  def transportOrNull: RTCDtlsTransport | Null = js.native
+  @JSName("jitterBufferTarget")
+  var jitterBufferTargetOrNull: Double | Null                                          = js.native
   def getParameters(): RTCRtpReceiveParameters                                         = js.native
   def getContributingSources(): scala.scalajs.js.Array[RTCRtpContributingSource]       = js.native
   def getSynchronizationSources(): scala.scalajs.js.Array[RTCRtpSynchronizationSource] = js.native
@@ -14107,23 +15378,24 @@ object RTCRtpReceiver extends js.Object:
 
 @js.native
 @JSGlobal
-class WEBGL_compressed_texture_pvrtc extends js.Object
+class WEBGL_compressed_texture_pvrtc extends PlatformObject
 
 @js.native
 @JSGlobal
 object WEBGL_compressed_texture_pvrtc extends js.Object:
-  val COMPRESSED_RGB_PVRTC_4BPPV1_IMG: scala.scalajs.js.Any  = js.native
-  val COMPRESSED_RGB_PVRTC_2BPPV1_IMG: scala.scalajs.js.Any  = js.native
-  val COMPRESSED_RGBA_PVRTC_4BPPV1_IMG: scala.scalajs.js.Any = js.native
-  val COMPRESSED_RGBA_PVRTC_2BPPV1_IMG: scala.scalajs.js.Any = js.native
+  val COMPRESSED_RGB_PVRTC_4BPPV1_IMG: Int  = js.native
+  val COMPRESSED_RGB_PVRTC_2BPPV1_IMG: Int  = js.native
+  val COMPRESSED_RGBA_PVRTC_4BPPV1_IMG: Int = js.native
+  val COMPRESSED_RGBA_PVRTC_2BPPV1_IMG: Int = js.native
 
 @js.native
 @JSGlobal
 class VideoEncoder extends EventTarget:
   def this(@unused init: VideoEncoderInit) = this()
-  def state: String                                                                   = js.native
-  def encodeQueueSize: Int                                                            = js.native
-  var ondequeue: scala.scalajs.js.Any                                                 = js.native
+  def state: String        = js.native
+  def encodeQueueSize: Int = js.native
+  @JSName("ondequeue")
+  var ondequeueOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
   def configure(config: VideoEncoderConfig): Unit                                     = js.native
   def encode(frame: VideoFrame, options: VideoEncoderEncodeOptions = js.native): Unit = js.native
   def flush(): scala.scalajs.js.Promise[Unit]                                         = js.native
@@ -14139,19 +15411,24 @@ object VideoEncoder extends js.Object:
 @js.native
 @JSGlobal
 class AudioSession extends EventTarget:
-  var `type`: String                      = js.native
-  def state: String                       = js.native
-  var onstatechange: scala.scalajs.js.Any = js.native
+  var `type`: String = js.native
+  def state: String  = js.native
+  @JSName("onstatechange")
+  var onstatechangeOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
 
 @js.native
 @JSGlobal
-class XRRenderState extends js.Object:
-  def depthNear: Double                       = js.native
-  def depthFar: Double                        = js.native
-  def passthroughFullyObscured: Boolean       = js.native
-  def inlineVerticalFieldOfView: Double       = js.native
-  def baseLayer: XRWebGLLayer                 = js.native
+class XRRenderState extends PlatformObject:
+  def depthNear: Double = js.native
+  def depthFar: Double  = js.native
+  @JSName("passthroughFullyObscured")
+  def passthroughFullyObscuredOrNull: Boolean | Null = js.native
+  @JSName("inlineVerticalFieldOfView")
+  def inlineVerticalFieldOfViewOrNull: Double | Null = js.native
+  @JSName("baseLayer")
+  def baseLayerOrNull: XRWebGLLayer | Null    = js.native
   def layers: scala.scalajs.js.Array[XRLayer] = js.native
+end XRRenderState
 
 @js.native
 @JSGlobal
@@ -14168,25 +15445,26 @@ class PaintWorkletGlobalScope extends WorkletGlobalScope:
 @js.native
 @JSGlobal
 class Performance extends EventTarget:
-  def eventCounts: EventCounts                                                                 = js.native
-  def interactionCount: Int                                                                    = js.native
-  def timeOrigin: Double                                                                       = js.native
-  def timing: PerformanceTiming                                                                = js.native
-  def navigation: PerformanceNavigation                                                        = js.native
-  var onresourcetimingbufferfull: scala.scalajs.js.Any                                         = js.native
-  def now(): Double                                                                            = js.native
-  def toJSON(): scala.scalajs.js.Any                                                           = js.native
-  def measureUserAgentSpecificMemory(): scala.scalajs.js.Promise[MemoryMeasurement]            = js.native
-  def getEntries(): scala.scalajs.js.Any                                                       = js.native
-  def getEntriesByType(`type`: String): scala.scalajs.js.Any                                   = js.native
-  def getEntriesByName(name: String, `type`: String = js.native): scala.scalajs.js.Any         = js.native
-  def clearResourceTimings(): Unit                                                             = js.native
-  def setResourceTimingBufferSize(maxSize: Int): Unit                                          = js.native
-  def mark(markName: String, markOptions: PerformanceMarkOptions = js.native): PerformanceMark = js.native
-  def clearMarks(markName: String = js.native): Unit                                           = js.native
+  def eventCounts: EventCounts          = js.native
+  def interactionCount: Int             = js.native
+  def timeOrigin: Double                = js.native
+  def timing: PerformanceTiming         = js.native
+  def navigation: PerformanceNavigation = js.native
+  @JSName("onresourcetimingbufferfull")
+  var onresourcetimingbufferfullOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null     = js.native
+  def now(): Double                                                                                        = js.native
+  def toJSON(): scala.scalajs.js.Any                                                                       = js.native
+  def measureUserAgentSpecificMemory(): scala.scalajs.js.Promise[MemoryMeasurement]                        = js.native
+  def getEntries(): scala.scalajs.js.Array[PerformanceEntry]                                               = js.native
+  def getEntriesByType(`type`: String): scala.scalajs.js.Array[PerformanceEntry]                           = js.native
+  def getEntriesByName(name: String, `type`: String = js.native): scala.scalajs.js.Array[PerformanceEntry] = js.native
+  def clearResourceTimings(): Unit                                                                         = js.native
+  def setResourceTimingBufferSize(maxSize: Int): Unit                                                      = js.native
+  def mark(markName: String, markOptions: PerformanceMarkOptions = js.native): PerformanceMark             = js.native
+  def clearMarks(markName: String = js.native): Unit                                                       = js.native
   def measure(
       measureName: String,
-      startOrMeasureOptions: scala.scalajs.js.Any = js.native,
+      startOrMeasureOptions: String | PerformanceMeasureOptions = js.native,
       endMark: String = js.native,
   ): PerformanceMeasure                                    = js.native
   def clearMeasures(measureName: String = js.native): Unit = js.native
@@ -14218,7 +15496,7 @@ class Range extends AbstractRange:
   def isPointInRange(node: Node, offset: Int): Boolean                         = js.native
   def comparePoint(node: Node, offset: Int): Int                               = js.native
   def intersectsNode(node: Node): Boolean                                      = js.native
-  def createContextualFragment(string: scala.scalajs.js.Any): DocumentFragment = js.native
+  def createContextualFragment(string: TrustedHTML | String): DocumentFragment = js.native
 end Range
 
 @js.native
@@ -14231,13 +15509,14 @@ object Range extends js.Object:
 
 @js.native
 @JSGlobal
-class DOMRectList extends js.Object:
-  def length: Int               = js.native
-  def item(index: Int): DOMRect = js.native
+class DOMRectList extends PlatformObject:
+  def length: Int = js.native
+  @JSName("item")
+  def itemOrNull(index: Int): DOMRect | Null = js.native
 
 @js.native
 @JSGlobal
-class XRInputSourceArray extends js.Object:
+class XRInputSourceArray extends PlatformObject:
   def length: Int = js.native
   @JSBracketAccess
   def apply(index: Int): XRInputSource = js.native
@@ -14255,7 +15534,7 @@ class HTMLProgressElement extends HTMLElement:
 @js.native
 @JSGlobal
 class CSSMathMax extends CSSMathValue:
-  def this(@unused args: scala.scalajs.js.Any) = this()
+  def this(@unused args: Double | CSSNumericValue) = this()
   def values: CSSNumericArray = js.native
 
 @js.native
@@ -14269,21 +15548,32 @@ class SpeechRecognition extends EventTarget:
   var maxAlternatives: Int                                     = js.native
   var processLocally: Boolean                                  = js.native
   var phrases: scala.scalajs.js.Array[SpeechRecognitionPhrase] = js.native
-  var onaudiostart: scala.scalajs.js.Any                       = js.native
-  var onsoundstart: scala.scalajs.js.Any                       = js.native
-  var onspeechstart: scala.scalajs.js.Any                      = js.native
-  var onspeechend: scala.scalajs.js.Any                        = js.native
-  var onsoundend: scala.scalajs.js.Any                         = js.native
-  var onaudioend: scala.scalajs.js.Any                         = js.native
-  var onresult: scala.scalajs.js.Any                           = js.native
-  var onnomatch: scala.scalajs.js.Any                          = js.native
-  var onerror: scala.scalajs.js.Any                            = js.native
-  var onstart: scala.scalajs.js.Any                            = js.native
-  var onend: scala.scalajs.js.Any                              = js.native
-  def start(): Unit                                            = js.native
-  def start(audioTrack: MediaStreamTrack): Unit                = js.native
-  def stop(): Unit                                             = js.native
-  def abort(): Unit                                            = js.native
+  @JSName("onaudiostart")
+  var onaudiostartOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("onsoundstart")
+  var onsoundstartOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("onspeechstart")
+  var onspeechstartOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("onspeechend")
+  var onspeechendOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("onsoundend")
+  var onsoundendOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("onaudioend")
+  var onaudioendOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("onresult")
+  var onresultOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("onnomatch")
+  var onnomatchOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("onerror")
+  var onerrorOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("onstart")
+  var onstartOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("onend")
+  var onendOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  def start(): Unit                                                               = js.native
+  def start(audioTrack: MediaStreamTrack): Unit                                   = js.native
+  def stop(): Unit                                                                = js.native
+  def abort(): Unit                                                               = js.native
 end SpeechRecognition
 
 @js.native
@@ -14295,11 +15585,15 @@ object SpeechRecognition extends js.Object:
 @js.native
 @JSGlobal
 class MessagePort extends EventTarget:
-  var onclose: scala.scalajs.js.Any        = js.native
-  var onmessage: scala.scalajs.js.Any      = js.native
-  var onmessageerror: scala.scalajs.js.Any = js.native
+  @JSName("onclose")
+  var oncloseOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("onmessage")
+  var onmessageOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("onmessageerror")
+  var onmessageerrorOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
   def postMessage(message: scala.scalajs.js.Any, transfer: scala.scalajs.js.Array[scala.scalajs.js.Any]): Unit =
     js.native
+  def postMessage(message: scala.scalajs.js.Any): Unit                                      = js.native
   def postMessage(message: scala.scalajs.js.Any, options: StructuredSerializeOptions): Unit = js.native
   def start(): Unit                                                                         = js.native
   def close(): Unit                                                                         = js.native
@@ -14310,40 +15604,45 @@ end MessagePort
 class HTMLOptionsCollection extends HTMLCollection:
   var selectedIndex: Int = js.native
   @JSBracketAccess
-  def update(index: Int, option: HTMLOptionElement): Unit                                = js.native
-  def add(element: scala.scalajs.js.Any, before: scala.scalajs.js.Any = js.native): Unit = js.native
-  def remove(index: Int): Unit                                                           = js.native
+  def update(index: Int, option: HTMLOptionElement): Unit                                                = js.native
+  def add(element: HTMLOptionElement | HTMLOptGroupElement, before: HTMLElement | Int = js.native): Unit = js.native
+  def remove(index: Int): Unit                                                                           = js.native
 
 @js.native
 @JSGlobal
 class FontFaceSet extends EventTarget:
-  var onloading: scala.scalajs.js.Any                                                   = js.native
-  var onloadingdone: scala.scalajs.js.Any                                               = js.native
-  var onloadingerror: scala.scalajs.js.Any                                              = js.native
-  def ready: scala.scalajs.js.Promise[FontFaceSet]                                      = js.native
-  def status: String                                                                    = js.native
-  def size: Int                                                                         = js.native
-  def add(value: FontFace): Unit                                                        = js.native
-  def delete(value: FontFace): Boolean                                                  = js.native
-  def clear(): Unit                                                                     = js.native
-  def load(font: String, text: String = js.native): scala.scalajs.js.Any                = js.native
-  def check(font: String, text: String = js.native): Boolean                            = js.native
-  def has(value: FontFace): Boolean                                                     = js.native
-  def keys(): scala.scalajs.js.Iterator[FontFace]                                       = js.native
-  def values(): scala.scalajs.js.Iterator[FontFace]                                     = js.native
-  def entries(): scala.scalajs.js.Iterator[scala.scalajs.js.Tuple2[FontFace, FontFace]] = js.native
-  def forEach(callback: scala.scalajs.js.Function1[FontFace, Unit]): Unit               = js.native
+  @JSName("onloading")
+  var onloadingOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("onloadingdone")
+  var onloadingdoneOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("onloadingerror")
+  var onloadingerrorOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  def ready: scala.scalajs.js.Promise[FontFaceSet]                                         = js.native
+  def status: String                                                                       = js.native
+  def size: Int                                                                            = js.native
+  def add(font: FontFace): FontFaceSet                                                     = js.native
+  def delete(font: FontFace): Boolean                                                      = js.native
+  def clear(): Unit                                                                        = js.native
+  def load(font: String, text: String = js.native): scala.scalajs.js.Any                   = js.native
+  def check(font: String, text: String = js.native): Boolean                               = js.native
+  def has(value: FontFace): Boolean                                                        = js.native
+  def keys(): scala.scalajs.js.Iterator[FontFace]                                          = js.native
+  def values(): scala.scalajs.js.Iterator[FontFace]                                        = js.native
+  def entries(): scala.scalajs.js.Iterator[scala.scalajs.js.Tuple2[FontFace, FontFace]]    = js.native
+  def forEach(callback: scala.scalajs.js.Function1[FontFace, Unit]): Unit                  = js.native
   @JSName(js.Symbol.iterator)
   def jsIterator(): scala.scalajs.js.Iterator[FontFace] = js.native
 end FontFaceSet
 
 @js.native
 @JSGlobal
-class CSSRule extends js.Object:
-  var cssText: String                 = js.native
-  def parentRule: CSSRule             = js.native
-  def parentStyleSheet: CSSStyleSheet = js.native
-  def `type`: Int                     = js.native
+class CSSRule extends PlatformObject:
+  var cssText: String = js.native
+  @JSName("parentRule")
+  def parentRuleOrNull: CSSRule | Null = js.native
+  @JSName("parentStyleSheet")
+  def parentStyleSheetOrNull: CSSStyleSheet | Null = js.native
+  def `type`: Int                                  = js.native
 
 @js.native
 @JSGlobal
@@ -14365,8 +15664,8 @@ end CSSRule
 
 @js.native
 @JSGlobal
-class ImageBitmapRenderingContext extends js.Object:
-  def canvas: scala.scalajs.js.Any                       = js.native
+class ImageBitmapRenderingContext extends PlatformObject:
+  def canvas: HTMLCanvasElement | OffscreenCanvas        = js.native
   def transferFromImageBitmap(bitmap: ImageBitmap): Unit = js.native
 
 @js.native
@@ -14376,13 +15675,13 @@ class HTMLQuoteElement extends HTMLElement:
 
 @js.native
 @JSGlobal
-class WritableStreamDefaultController extends js.Object:
+class WritableStreamDefaultController extends PlatformObject:
   def signal: AbortSignal                              = js.native
   def error(e: scala.scalajs.js.Any = js.native): Unit = js.native
 
 @js.native
 @JSGlobal
-class ImageDecoder extends js.Object:
+class ImageDecoder extends PlatformObject:
   def this(@unused init: ImageDecoderInit) = this()
   def `type`: String                                                                               = js.native
   def complete: Boolean                                                                            = js.native
@@ -14426,32 +15725,39 @@ class BluetoothPermissionResult extends PermissionStatus:
 
 @js.native
 @JSGlobal
-class WorkletGlobalScope extends js.Object
+class WorkletGlobalScope extends PlatformObject
 
 @js.native
 @JSGlobal
 class Navigation extends EventTarget:
-  def currentEntry: NavigationHistoryEntry                                                    = js.native
-  def transition: NavigationTransition                                                        = js.native
-  def activation: NavigationActivation                                                        = js.native
-  def canGoBack: Boolean                                                                      = js.native
-  def canGoForward: Boolean                                                                   = js.native
-  var onnavigate: scala.scalajs.js.Any                                                        = js.native
-  var onnavigatesuccess: scala.scalajs.js.Any                                                 = js.native
-  var onnavigateerror: scala.scalajs.js.Any                                                   = js.native
-  var oncurrententrychange: scala.scalajs.js.Any                                              = js.native
-  def entries(): scala.scalajs.js.Array[NavigationHistoryEntry]                               = js.native
-  def updateCurrentEntry(options: NavigationUpdateCurrentEntryOptions): Unit                  = js.native
-  def navigate(url: String, options: NavigationNavigateOptions = js.native): NavigationResult = js.native
-  def reload(options: NavigationReloadOptions = js.native): NavigationResult                  = js.native
-  def traverseTo(key: String, options: NavigationOptions = js.native): NavigationResult       = js.native
-  def back(options: NavigationOptions = js.native): NavigationResult                          = js.native
-  def forward(options: NavigationOptions = js.native): NavigationResult                       = js.native
+  @JSName("currentEntry")
+  def currentEntryOrNull: NavigationHistoryEntry | Null = js.native
+  @JSName("transition")
+  def transitionOrNull: NavigationTransition | Null = js.native
+  @JSName("activation")
+  def activationOrNull: NavigationActivation | Null = js.native
+  def canGoBack: Boolean                            = js.native
+  def canGoForward: Boolean                         = js.native
+  @JSName("onnavigate")
+  var onnavigateOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("onnavigatesuccess")
+  var onnavigatesuccessOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("onnavigateerror")
+  var onnavigateerrorOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("oncurrententrychange")
+  var oncurrententrychangeOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  def entries(): scala.scalajs.js.Array[NavigationHistoryEntry]                                  = js.native
+  def updateCurrentEntry(options: NavigationUpdateCurrentEntryOptions): Unit                     = js.native
+  def navigate(url: String, options: NavigationNavigateOptions = js.native): NavigationResult    = js.native
+  def reload(options: NavigationReloadOptions = js.native): NavigationResult                     = js.native
+  def traverseTo(key: String, options: NavigationOptions = js.native): NavigationResult          = js.native
+  def back(options: NavigationOptions = js.native): NavigationResult                             = js.native
+  def forward(options: NavigationOptions = js.native): NavigationResult                          = js.native
 end Navigation
 
 @js.native
 @JSGlobal
-class MediaKeySystemAccess extends js.Object:
+class MediaKeySystemAccess extends PlatformObject:
   def keySystem: String                                      = js.native
   def getConfiguration(): MediaKeySystemConfiguration        = js.native
   def createMediaKeys(): scala.scalajs.js.Promise[MediaKeys] = js.native
@@ -14459,12 +15765,15 @@ class MediaKeySystemAccess extends js.Object:
 @js.native
 @JSGlobal
 class ServiceWorker extends EventTarget:
-  def scriptURL: String                   = js.native
-  def state: String                       = js.native
-  var onstatechange: scala.scalajs.js.Any = js.native
-  var onerror: scala.scalajs.js.Any       = js.native
+  def scriptURL: String = js.native
+  def state: String     = js.native
+  @JSName("onstatechange")
+  var onstatechangeOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("onerror")
+  var onerrorOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
   def postMessage(message: scala.scalajs.js.Any, transfer: scala.scalajs.js.Array[scala.scalajs.js.Any]): Unit =
     js.native
+  def postMessage(message: scala.scalajs.js.Any): Unit                                      = js.native
   def postMessage(message: scala.scalajs.js.Any, options: StructuredSerializeOptions): Unit = js.native
 end ServiceWorker
 
@@ -14487,130 +15796,236 @@ class XRLayer extends EventTarget
 @js.native
 @JSGlobal
 class SVGElement extends Element:
-  def ownerSVGElement: SVGSVGElement                   = js.native
-  def viewportElement: SVGElement                      = js.native
-  var onanimationstart: scala.scalajs.js.Any           = js.native
-  var onanimationiteration: scala.scalajs.js.Any       = js.native
-  var onanimationend: scala.scalajs.js.Any             = js.native
-  var onanimationcancel: scala.scalajs.js.Any          = js.native
-  var onsnapchanged: scala.scalajs.js.Any              = js.native
-  var onsnapchanging: scala.scalajs.js.Any             = js.native
-  var ontransitionrun: scala.scalajs.js.Any            = js.native
-  var ontransitionstart: scala.scalajs.js.Any          = js.native
-  var ontransitionend: scala.scalajs.js.Any            = js.native
-  var ontransitioncancel: scala.scalajs.js.Any         = js.native
-  var onfencedtreeclick: scala.scalajs.js.Any          = js.native
-  var onabort: scala.scalajs.js.Any                    = js.native
-  var onauxclick: scala.scalajs.js.Any                 = js.native
-  var onbeforeinput: scala.scalajs.js.Any              = js.native
-  var onbeforematch: scala.scalajs.js.Any              = js.native
-  var onbeforetoggle: scala.scalajs.js.Any             = js.native
-  var onblur: scala.scalajs.js.Any                     = js.native
-  var oncancel: scala.scalajs.js.Any                   = js.native
-  var oncanplay: scala.scalajs.js.Any                  = js.native
-  var oncanplaythrough: scala.scalajs.js.Any           = js.native
-  var onchange: scala.scalajs.js.Any                   = js.native
-  var onclick: scala.scalajs.js.Any                    = js.native
-  var onclose: scala.scalajs.js.Any                    = js.native
-  var oncommand: scala.scalajs.js.Any                  = js.native
-  var oncontextlost: scala.scalajs.js.Any              = js.native
-  var oncontextmenu: scala.scalajs.js.Any              = js.native
-  var oncontextrestored: scala.scalajs.js.Any          = js.native
-  var oncopy: scala.scalajs.js.Any                     = js.native
-  var oncuechange: scala.scalajs.js.Any                = js.native
-  var oncut: scala.scalajs.js.Any                      = js.native
-  var ondblclick: scala.scalajs.js.Any                 = js.native
-  var ondrag: scala.scalajs.js.Any                     = js.native
-  var ondragend: scala.scalajs.js.Any                  = js.native
-  var ondragenter: scala.scalajs.js.Any                = js.native
-  var ondragleave: scala.scalajs.js.Any                = js.native
-  var ondragover: scala.scalajs.js.Any                 = js.native
-  var ondragstart: scala.scalajs.js.Any                = js.native
-  var ondrop: scala.scalajs.js.Any                     = js.native
-  var ondurationchange: scala.scalajs.js.Any           = js.native
-  var onemptied: scala.scalajs.js.Any                  = js.native
-  var onended: scala.scalajs.js.Any                    = js.native
-  var onerror: scala.scalajs.js.Any                    = js.native
-  var onfocus: scala.scalajs.js.Any                    = js.native
-  var onformdata: scala.scalajs.js.Any                 = js.native
-  var oninput: scala.scalajs.js.Any                    = js.native
-  var oninvalid: scala.scalajs.js.Any                  = js.native
-  var onkeydown: scala.scalajs.js.Any                  = js.native
-  var onkeypress: scala.scalajs.js.Any                 = js.native
-  var onkeyup: scala.scalajs.js.Any                    = js.native
-  var onload: scala.scalajs.js.Any                     = js.native
-  var onloadeddata: scala.scalajs.js.Any               = js.native
-  var onloadedmetadata: scala.scalajs.js.Any           = js.native
-  var onloadstart: scala.scalajs.js.Any                = js.native
-  var onmousedown: scala.scalajs.js.Any                = js.native
-  var onmouseenter: scala.scalajs.js.Any               = js.native
-  var onmouseleave: scala.scalajs.js.Any               = js.native
-  var onmousemove: scala.scalajs.js.Any                = js.native
-  var onmouseout: scala.scalajs.js.Any                 = js.native
-  var onmouseover: scala.scalajs.js.Any                = js.native
-  var onmouseup: scala.scalajs.js.Any                  = js.native
-  var onpaste: scala.scalajs.js.Any                    = js.native
-  var onpause: scala.scalajs.js.Any                    = js.native
-  var onplay: scala.scalajs.js.Any                     = js.native
-  var onplaying: scala.scalajs.js.Any                  = js.native
-  var onprogress: scala.scalajs.js.Any                 = js.native
-  var onratechange: scala.scalajs.js.Any               = js.native
-  var onreset: scala.scalajs.js.Any                    = js.native
-  var onresize: scala.scalajs.js.Any                   = js.native
-  var onscroll: scala.scalajs.js.Any                   = js.native
-  var onscrollend: scala.scalajs.js.Any                = js.native
-  var onsecuritypolicyviolation: scala.scalajs.js.Any  = js.native
-  var onseeked: scala.scalajs.js.Any                   = js.native
-  var onseeking: scala.scalajs.js.Any                  = js.native
-  var onselect: scala.scalajs.js.Any                   = js.native
-  var onslotchange: scala.scalajs.js.Any               = js.native
-  var onstalled: scala.scalajs.js.Any                  = js.native
-  var onsubmit: scala.scalajs.js.Any                   = js.native
-  var onsuspend: scala.scalajs.js.Any                  = js.native
-  var ontimeupdate: scala.scalajs.js.Any               = js.native
-  var ontoggle: scala.scalajs.js.Any                   = js.native
-  var onvolumechange: scala.scalajs.js.Any             = js.native
-  var onwaiting: scala.scalajs.js.Any                  = js.native
-  var onwebkitanimationend: scala.scalajs.js.Any       = js.native
-  var onwebkitanimationiteration: scala.scalajs.js.Any = js.native
-  var onwebkitanimationstart: scala.scalajs.js.Any     = js.native
-  var onwebkittransitionend: scala.scalajs.js.Any      = js.native
-  var onwheel: scala.scalajs.js.Any                    = js.native
-  var onpointerover: scala.scalajs.js.Any              = js.native
-  var onpointerenter: scala.scalajs.js.Any             = js.native
-  var onpointerdown: scala.scalajs.js.Any              = js.native
-  var onpointermove: scala.scalajs.js.Any              = js.native
-  var onpointerrawupdate: scala.scalajs.js.Any         = js.native
-  var onpointerup: scala.scalajs.js.Any                = js.native
-  var onpointercancel: scala.scalajs.js.Any            = js.native
-  var onpointerout: scala.scalajs.js.Any               = js.native
-  var onpointerleave: scala.scalajs.js.Any             = js.native
-  var ongotpointercapture: scala.scalajs.js.Any        = js.native
-  var onlostpointercapture: scala.scalajs.js.Any       = js.native
-  var onselectstart: scala.scalajs.js.Any              = js.native
-  var onselectionchange: scala.scalajs.js.Any          = js.native
-  var ontouchstart: scala.scalajs.js.Any               = js.native
-  var ontouchend: scala.scalajs.js.Any                 = js.native
-  var ontouchmove: scala.scalajs.js.Any                = js.native
-  var ontouchcancel: scala.scalajs.js.Any              = js.native
-  var onbeforexrselect: scala.scalajs.js.Any           = js.native
-  def dataset: DOMStringMap                            = js.native
-  var nonce: String                                    = js.native
-  var autofocus: Boolean                               = js.native
-  var tabIndex: Int                                    = js.native
-  def attributeStyleMap: StylePropertyMap              = js.native
-  def style: CSSStyleProperties                        = js.native
-  def focus(options: FocusOptions = js.native): Unit   = js.native
-  def blur(): Unit                                     = js.native
+  @JSName("ownerSVGElement")
+  def ownerSVGElementOrNull: SVGSVGElement | Null = js.native
+  @JSName("viewportElement")
+  def viewportElementOrNull: SVGElement | Null = js.native
+  @JSName("onanimationstart")
+  var onanimationstartOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("onanimationiteration")
+  var onanimationiterationOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("onanimationend")
+  var onanimationendOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("onanimationcancel")
+  var onanimationcancelOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("onsnapchanged")
+  var onsnapchangedOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("onsnapchanging")
+  var onsnapchangingOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("ontransitionrun")
+  var ontransitionrunOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("ontransitionstart")
+  var ontransitionstartOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("ontransitionend")
+  var ontransitionendOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("ontransitioncancel")
+  var ontransitioncancelOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("onfencedtreeclick")
+  var onfencedtreeclickOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("onabort")
+  var onabortOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("onauxclick")
+  var onauxclickOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("onbeforeinput")
+  var onbeforeinputOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("onbeforematch")
+  var onbeforematchOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("onbeforetoggle")
+  var onbeforetoggleOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("onblur")
+  var onblurOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("oncancel")
+  var oncancelOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("oncanplay")
+  var oncanplayOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("oncanplaythrough")
+  var oncanplaythroughOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("onchange")
+  var onchangeOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("onclick")
+  var onclickOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("onclose")
+  var oncloseOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("oncommand")
+  var oncommandOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("oncontextlost")
+  var oncontextlostOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("oncontextmenu")
+  var oncontextmenuOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("oncontextrestored")
+  var oncontextrestoredOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("oncopy")
+  var oncopyOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("oncuechange")
+  var oncuechangeOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("oncut")
+  var oncutOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("ondblclick")
+  var ondblclickOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("ondrag")
+  var ondragOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("ondragend")
+  var ondragendOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("ondragenter")
+  var ondragenterOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("ondragleave")
+  var ondragleaveOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("ondragover")
+  var ondragoverOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("ondragstart")
+  var ondragstartOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("ondrop")
+  var ondropOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("ondurationchange")
+  var ondurationchangeOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("onemptied")
+  var onemptiedOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("onended")
+  var onendedOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("onerror")
+  var onerrorOrNull: scala.scalajs.js.Function | Null = js.native
+  @JSName("onfocus")
+  var onfocusOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("onformdata")
+  var onformdataOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("oninput")
+  var oninputOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("oninvalid")
+  var oninvalidOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("onkeydown")
+  var onkeydownOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("onkeypress")
+  var onkeypressOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("onkeyup")
+  var onkeyupOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("onload")
+  var onloadOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("onloadeddata")
+  var onloadeddataOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("onloadedmetadata")
+  var onloadedmetadataOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("onloadstart")
+  var onloadstartOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("onmousedown")
+  var onmousedownOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("onmouseenter")
+  var onmouseenterOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("onmouseleave")
+  var onmouseleaveOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("onmousemove")
+  var onmousemoveOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("onmouseout")
+  var onmouseoutOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("onmouseover")
+  var onmouseoverOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("onmouseup")
+  var onmouseupOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("onpaste")
+  var onpasteOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("onpause")
+  var onpauseOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("onplay")
+  var onplayOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("onplaying")
+  var onplayingOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("onprogress")
+  var onprogressOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("onratechange")
+  var onratechangeOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("onreset")
+  var onresetOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("onresize")
+  var onresizeOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("onscroll")
+  var onscrollOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("onscrollend")
+  var onscrollendOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("onsecuritypolicyviolation")
+  var onsecuritypolicyviolationOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("onseeked")
+  var onseekedOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("onseeking")
+  var onseekingOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("onselect")
+  var onselectOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("onslotchange")
+  var onslotchangeOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("onstalled")
+  var onstalledOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("onsubmit")
+  var onsubmitOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("onsuspend")
+  var onsuspendOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("ontimeupdate")
+  var ontimeupdateOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("ontoggle")
+  var ontoggleOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("onvolumechange")
+  var onvolumechangeOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("onwaiting")
+  var onwaitingOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("onwebkitanimationend")
+  var onwebkitanimationendOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("onwebkitanimationiteration")
+  var onwebkitanimationiterationOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("onwebkitanimationstart")
+  var onwebkitanimationstartOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("onwebkittransitionend")
+  var onwebkittransitionendOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("onwheel")
+  var onwheelOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("onpointerover")
+  var onpointeroverOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("onpointerenter")
+  var onpointerenterOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("onpointerdown")
+  var onpointerdownOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("onpointermove")
+  var onpointermoveOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("onpointerrawupdate")
+  var onpointerrawupdateOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("onpointerup")
+  var onpointerupOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("onpointercancel")
+  var onpointercancelOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("onpointerout")
+  var onpointeroutOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("onpointerleave")
+  var onpointerleaveOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("ongotpointercapture")
+  var ongotpointercaptureOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("onlostpointercapture")
+  var onlostpointercaptureOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("onselectstart")
+  var onselectstartOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("onselectionchange")
+  var onselectionchangeOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("ontouchstart")
+  var ontouchstartOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("ontouchend")
+  var ontouchendOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("ontouchmove")
+  var ontouchmoveOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("ontouchcancel")
+  var ontouchcancelOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("onbeforexrselect")
+  var onbeforexrselectOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  def dataset: DOMStringMap                                                                  = js.native
+  var nonce: String                                                                          = js.native
+  var autofocus: Boolean                                                                     = js.native
+  var tabIndex: Int                                                                          = js.native
+  def attributeStyleMap: StylePropertyMap                                                    = js.native
+  def style: CSSStyleProperties                                                              = js.native
+  def focus(options: FocusOptions = js.native): Unit                                         = js.native
+  def blur(): Unit                                                                           = js.native
 end SVGElement
 
 @js.native
 @JSGlobal
 class HTMLCanvasElement extends HTMLElement:
-  var width: Int                                                                                     = js.native
-  var height: Int                                                                                    = js.native
-  def getContext(contextId: String, options: scala.scalajs.js.Any = js.native): scala.scalajs.js.Any = js.native
-  def toDataURL(`type`: String = js.native, quality: scala.scalajs.js.Any = js.native): String       = js.native
+  var width: Int                                                                               = js.native
+  var height: Int                                                                              = js.native
+  def toDataURL(`type`: String = js.native, quality: scala.scalajs.js.Any = js.native): String = js.native
   def toBlob(
       callback: scala.scalajs.js.Function1[Blob, Unit],
       `type`: String = js.native,
@@ -14618,13 +16033,17 @@ class HTMLCanvasElement extends HTMLElement:
   ): Unit                                                              = js.native
   def transferControlToOffscreen(): OffscreenCanvas                    = js.native
   def captureStream(frameRequestRate: Double = js.native): MediaStream = js.native
+  @JSName("getContext")
+  def getContextOrNull[C, O](contextId: CanvasContextId[C, O], options: O = js.native): C | Null = js.native
 end HTMLCanvasElement
 
 @js.native
 @JSGlobal
-class BarcodeDetector extends js.Object:
+class BarcodeDetector extends PlatformObject:
   def this(@unused barcodeDetectorOptions: BarcodeDetectorOptions = js.native) = this()
-  def detect(image: scala.scalajs.js.Any): scala.scalajs.js.Any = js.native
+  def detect(
+      image: HTMLImageElement | SVGImageElement | HTMLVideoElement | HTMLCanvasElement | ImageBitmap | OffscreenCanvas | VideoFrame | Blob | ImageData
+  ): scala.scalajs.js.Any = js.native
 
 @js.native
 @JSGlobal
@@ -14634,200 +16053,343 @@ object BarcodeDetector extends js.Object:
 @js.native
 @JSGlobal
 class Document extends Node:
-  def rootElement: SVGSVGElement                                                             = js.native
-  def namedFlows: NamedFlowMap                                                               = js.native
-  def activeViewTransition: ViewTransition                                                   = js.native
-  def scrollingElement: Element                                                              = js.native
-  def implementation: DOMImplementation                                                      = js.native
-  def URL: String                                                                            = js.native
-  def documentURI: String                                                                    = js.native
-  def compatMode: String                                                                     = js.native
-  def characterSet: String                                                                   = js.native
-  def charset: String                                                                        = js.native
-  def inputEncoding: String                                                                  = js.native
-  def contentType: String                                                                    = js.native
-  def doctype: DocumentType                                                                  = js.native
-  def documentElement: Element                                                               = js.native
-  def fullscreenEnabled: Boolean                                                             = js.native
-  def fullscreen: Boolean                                                                    = js.native
-  var onfullscreenchange: scala.scalajs.js.Any                                               = js.native
-  var onfullscreenerror: scala.scalajs.js.Any                                                = js.native
-  def location: Location                                                                     = js.native
-  var domain: String                                                                         = js.native
-  def referrer: String                                                                       = js.native
-  var cookie: String                                                                         = js.native
-  def lastModified: String                                                                   = js.native
-  def readyState: String                                                                     = js.native
-  var title: String                                                                          = js.native
-  var dir: String                                                                            = js.native
-  var body: HTMLElement                                                                      = js.native
-  def head: HTMLHeadElement                                                                  = js.native
-  def images: HTMLCollection                                                                 = js.native
-  def embeds: HTMLCollection                                                                 = js.native
-  def plugins: HTMLCollection                                                                = js.native
-  def links: HTMLCollection                                                                  = js.native
-  def forms: HTMLCollection                                                                  = js.native
-  def scripts: HTMLCollection                                                                = js.native
-  def currentScript: scala.scalajs.js.Any                                                    = js.native
-  def defaultView: scala.scalajs.js.Any                                                      = js.native
-  var designMode: String                                                                     = js.native
-  def hidden: Boolean                                                                        = js.native
-  def visibilityState: String                                                                = js.native
-  var onreadystatechange: scala.scalajs.js.Any                                               = js.native
-  var onvisibilitychange: scala.scalajs.js.Any                                               = js.native
-  var fgColor: String                                                                        = js.native
-  var linkColor: String                                                                      = js.native
-  var vlinkColor: String                                                                     = js.native
-  var alinkColor: String                                                                     = js.native
-  var bgColor: String                                                                        = js.native
-  def anchors: HTMLCollection                                                                = js.native
-  def applets: HTMLCollection                                                                = js.native
-  def all: HTMLAllCollection                                                                 = js.native
-  var onfreeze: scala.scalajs.js.Any                                                         = js.native
-  var onresume: scala.scalajs.js.Any                                                         = js.native
-  def wasDiscarded: Boolean                                                                  = js.native
-  def permissionsPolicy: PermissionsPolicy                                                   = js.native
-  def pictureInPictureEnabled: Boolean                                                       = js.native
-  var onpointerlockchange: scala.scalajs.js.Any                                              = js.native
-  var onpointerlockerror: scala.scalajs.js.Any                                               = js.native
-  def prerendering: Boolean                                                                  = js.native
-  var onprerenderingchange: scala.scalajs.js.Any                                             = js.native
-  def fragmentDirective: FragmentDirective                                                   = js.native
-  def timeline: DocumentTimeline                                                             = js.native
-  def fonts: FontFaceSet                                                                     = js.native
-  def styleSheets: StyleSheetList                                                            = js.native
-  var adoptedStyleSheets: scala.scalajs.js.Array[CSSStyleSheet]                              = js.native
-  def customElementRegistry: CustomElementRegistry                                           = js.native
-  def fullscreenElement: Element                                                             = js.native
-  def activeElement: Element                                                                 = js.native
-  def pictureInPictureElement: Element                                                       = js.native
-  def pointerLockElement: Element                                                            = js.native
-  def children: HTMLCollection                                                               = js.native
-  def firstElementChild: Element                                                             = js.native
-  def lastElementChild: Element                                                              = js.native
-  def childElementCount: Int                                                                 = js.native
-  var onanimationstart: scala.scalajs.js.Any                                                 = js.native
-  var onanimationiteration: scala.scalajs.js.Any                                             = js.native
-  var onanimationend: scala.scalajs.js.Any                                                   = js.native
-  var onanimationcancel: scala.scalajs.js.Any                                                = js.native
-  var onsnapchanged: scala.scalajs.js.Any                                                    = js.native
-  var onsnapchanging: scala.scalajs.js.Any                                                   = js.native
-  var ontransitionrun: scala.scalajs.js.Any                                                  = js.native
-  var ontransitionstart: scala.scalajs.js.Any                                                = js.native
-  var ontransitionend: scala.scalajs.js.Any                                                  = js.native
-  var ontransitioncancel: scala.scalajs.js.Any                                               = js.native
-  var onfencedtreeclick: scala.scalajs.js.Any                                                = js.native
-  var onabort: scala.scalajs.js.Any                                                          = js.native
-  var onauxclick: scala.scalajs.js.Any                                                       = js.native
-  var onbeforeinput: scala.scalajs.js.Any                                                    = js.native
-  var onbeforematch: scala.scalajs.js.Any                                                    = js.native
-  var onbeforetoggle: scala.scalajs.js.Any                                                   = js.native
-  var onblur: scala.scalajs.js.Any                                                           = js.native
-  var oncancel: scala.scalajs.js.Any                                                         = js.native
-  var oncanplay: scala.scalajs.js.Any                                                        = js.native
-  var oncanplaythrough: scala.scalajs.js.Any                                                 = js.native
-  var onchange: scala.scalajs.js.Any                                                         = js.native
-  var onclick: scala.scalajs.js.Any                                                          = js.native
-  var onclose: scala.scalajs.js.Any                                                          = js.native
-  var oncommand: scala.scalajs.js.Any                                                        = js.native
-  var oncontextlost: scala.scalajs.js.Any                                                    = js.native
-  var oncontextmenu: scala.scalajs.js.Any                                                    = js.native
-  var oncontextrestored: scala.scalajs.js.Any                                                = js.native
-  var oncopy: scala.scalajs.js.Any                                                           = js.native
-  var oncuechange: scala.scalajs.js.Any                                                      = js.native
-  var oncut: scala.scalajs.js.Any                                                            = js.native
-  var ondblclick: scala.scalajs.js.Any                                                       = js.native
-  var ondrag: scala.scalajs.js.Any                                                           = js.native
-  var ondragend: scala.scalajs.js.Any                                                        = js.native
-  var ondragenter: scala.scalajs.js.Any                                                      = js.native
-  var ondragleave: scala.scalajs.js.Any                                                      = js.native
-  var ondragover: scala.scalajs.js.Any                                                       = js.native
-  var ondragstart: scala.scalajs.js.Any                                                      = js.native
-  var ondrop: scala.scalajs.js.Any                                                           = js.native
-  var ondurationchange: scala.scalajs.js.Any                                                 = js.native
-  var onemptied: scala.scalajs.js.Any                                                        = js.native
-  var onended: scala.scalajs.js.Any                                                          = js.native
-  var onerror: scala.scalajs.js.Any                                                          = js.native
-  var onfocus: scala.scalajs.js.Any                                                          = js.native
-  var onformdata: scala.scalajs.js.Any                                                       = js.native
-  var oninput: scala.scalajs.js.Any                                                          = js.native
-  var oninvalid: scala.scalajs.js.Any                                                        = js.native
-  var onkeydown: scala.scalajs.js.Any                                                        = js.native
-  var onkeypress: scala.scalajs.js.Any                                                       = js.native
-  var onkeyup: scala.scalajs.js.Any                                                          = js.native
-  var onload: scala.scalajs.js.Any                                                           = js.native
-  var onloadeddata: scala.scalajs.js.Any                                                     = js.native
-  var onloadedmetadata: scala.scalajs.js.Any                                                 = js.native
-  var onloadstart: scala.scalajs.js.Any                                                      = js.native
-  var onmousedown: scala.scalajs.js.Any                                                      = js.native
-  var onmouseenter: scala.scalajs.js.Any                                                     = js.native
-  var onmouseleave: scala.scalajs.js.Any                                                     = js.native
-  var onmousemove: scala.scalajs.js.Any                                                      = js.native
-  var onmouseout: scala.scalajs.js.Any                                                       = js.native
-  var onmouseover: scala.scalajs.js.Any                                                      = js.native
-  var onmouseup: scala.scalajs.js.Any                                                        = js.native
-  var onpaste: scala.scalajs.js.Any                                                          = js.native
-  var onpause: scala.scalajs.js.Any                                                          = js.native
-  var onplay: scala.scalajs.js.Any                                                           = js.native
-  var onplaying: scala.scalajs.js.Any                                                        = js.native
-  var onprogress: scala.scalajs.js.Any                                                       = js.native
-  var onratechange: scala.scalajs.js.Any                                                     = js.native
-  var onreset: scala.scalajs.js.Any                                                          = js.native
-  var onresize: scala.scalajs.js.Any                                                         = js.native
-  var onscroll: scala.scalajs.js.Any                                                         = js.native
-  var onscrollend: scala.scalajs.js.Any                                                      = js.native
-  var onsecuritypolicyviolation: scala.scalajs.js.Any                                        = js.native
-  var onseeked: scala.scalajs.js.Any                                                         = js.native
-  var onseeking: scala.scalajs.js.Any                                                        = js.native
-  var onselect: scala.scalajs.js.Any                                                         = js.native
-  var onslotchange: scala.scalajs.js.Any                                                     = js.native
-  var onstalled: scala.scalajs.js.Any                                                        = js.native
-  var onsubmit: scala.scalajs.js.Any                                                         = js.native
-  var onsuspend: scala.scalajs.js.Any                                                        = js.native
-  var ontimeupdate: scala.scalajs.js.Any                                                     = js.native
-  var ontoggle: scala.scalajs.js.Any                                                         = js.native
-  var onvolumechange: scala.scalajs.js.Any                                                   = js.native
-  var onwaiting: scala.scalajs.js.Any                                                        = js.native
-  var onwebkitanimationend: scala.scalajs.js.Any                                             = js.native
-  var onwebkitanimationiteration: scala.scalajs.js.Any                                       = js.native
-  var onwebkitanimationstart: scala.scalajs.js.Any                                           = js.native
-  var onwebkittransitionend: scala.scalajs.js.Any                                            = js.native
-  var onwheel: scala.scalajs.js.Any                                                          = js.native
-  var onpointerover: scala.scalajs.js.Any                                                    = js.native
-  var onpointerenter: scala.scalajs.js.Any                                                   = js.native
-  var onpointerdown: scala.scalajs.js.Any                                                    = js.native
-  var onpointermove: scala.scalajs.js.Any                                                    = js.native
-  var onpointerrawupdate: scala.scalajs.js.Any                                               = js.native
-  var onpointerup: scala.scalajs.js.Any                                                      = js.native
-  var onpointercancel: scala.scalajs.js.Any                                                  = js.native
-  var onpointerout: scala.scalajs.js.Any                                                     = js.native
-  var onpointerleave: scala.scalajs.js.Any                                                   = js.native
-  var ongotpointercapture: scala.scalajs.js.Any                                              = js.native
-  var onlostpointercapture: scala.scalajs.js.Any                                             = js.native
-  var onselectstart: scala.scalajs.js.Any                                                    = js.native
-  var onselectionchange: scala.scalajs.js.Any                                                = js.native
-  var ontouchstart: scala.scalajs.js.Any                                                     = js.native
-  var ontouchend: scala.scalajs.js.Any                                                       = js.native
-  var ontouchmove: scala.scalajs.js.Any                                                      = js.native
-  var ontouchcancel: scala.scalajs.js.Any                                                    = js.native
-  var onbeforexrselect: scala.scalajs.js.Any                                                 = js.native
-  def startViewTransition(callbackOptions: scala.scalajs.js.Any = js.native): ViewTransition = js.native
-  def elementFromPoint(x: Double, y: Double): Element                                        = js.native
-  def elementsFromPoint(x: Double, y: Double): scala.scalajs.js.Array[Element]               = js.native
-  def caretPositionFromPoint(x: Double, y: Double, options: CaretPositionFromPointOptions = js.native): CaretPosition =
-    js.native
-  def getElementsByTagName(qualifiedName: String): HTMLCollection                          = js.native
-  def getElementsByTagNameNS(namespace: String, localName: String): HTMLCollection         = js.native
-  def getElementsByClassName(classNames: String): HTMLCollection                           = js.native
-  def createElement(localName: String, options: scala.scalajs.js.Any = js.native): Element = js.native
-  def createElementNS(namespace: String, qualifiedName: String, options: scala.scalajs.js.Any = js.native): Element =
-    js.native
+  @JSName("rootElement")
+  def rootElementOrNull: SVGSVGElement | Null = js.native
+  def namedFlows: NamedFlowMap                = js.native
+  @JSName("activeViewTransition")
+  def activeViewTransitionOrNull: ViewTransition | Null = js.native
+  @JSName("scrollingElement")
+  def scrollingElementOrNull: Element | Null = js.native
+  def implementation: DOMImplementation      = js.native
+  def URL: String                            = js.native
+  def documentURI: String                    = js.native
+  def compatMode: String                     = js.native
+  def characterSet: String                   = js.native
+  def charset: String                        = js.native
+  def inputEncoding: String                  = js.native
+  def contentType: String                    = js.native
+  @JSName("doctype")
+  def doctypeOrNull: DocumentType | Null = js.native
+  @JSName("documentElement")
+  def documentElementOrNull: Element | Null = js.native
+  def fullscreenEnabled: Boolean            = js.native
+  def fullscreen: Boolean                   = js.native
+  @JSName("onfullscreenchange")
+  var onfullscreenchangeOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("onfullscreenerror")
+  var onfullscreenerrorOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("location")
+  def locationOrNull: Location | Null = js.native
+  var domain: String                  = js.native
+  def referrer: String                = js.native
+  var cookie: String                  = js.native
+  def lastModified: String            = js.native
+  def readyState: String              = js.native
+  var title: String                   = js.native
+  var dir: String                     = js.native
+  @JSName("body")
+  var bodyOrNull: HTMLElement | Null = js.native
+  @JSName("head")
+  def headOrNull: HTMLHeadElement | Null = js.native
+  def images: HTMLCollection             = js.native
+  def embeds: HTMLCollection             = js.native
+  def plugins: HTMLCollection            = js.native
+  def links: HTMLCollection              = js.native
+  def forms: HTMLCollection              = js.native
+  def scripts: HTMLCollection            = js.native
+  @JSName("currentScript")
+  def currentScriptOrNull: HTMLScriptElement | SVGScriptElement | Null = js.native
+  @JSName("defaultView")
+  def defaultViewOrNull: Window | Null = js.native
+  var designMode: String               = js.native
+  def hidden: Boolean                  = js.native
+  def visibilityState: String          = js.native
+  @JSName("onreadystatechange")
+  var onreadystatechangeOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("onvisibilitychange")
+  var onvisibilitychangeOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  var fgColor: String                                                                          = js.native
+  var linkColor: String                                                                        = js.native
+  var vlinkColor: String                                                                       = js.native
+  var alinkColor: String                                                                       = js.native
+  var bgColor: String                                                                          = js.native
+  def anchors: HTMLCollection                                                                  = js.native
+  def applets: HTMLCollection                                                                  = js.native
+  def all: HTMLAllCollection                                                                   = js.native
+  @JSName("onfreeze")
+  var onfreezeOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("onresume")
+  var onresumeOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  def wasDiscarded: Boolean                                                          = js.native
+  def permissionsPolicy: PermissionsPolicy                                           = js.native
+  def pictureInPictureEnabled: Boolean                                               = js.native
+  @JSName("onpointerlockchange")
+  var onpointerlockchangeOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("onpointerlockerror")
+  var onpointerlockerrorOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  def prerendering: Boolean                                                                    = js.native
+  @JSName("onprerenderingchange")
+  var onprerenderingchangeOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  def fragmentDirective: FragmentDirective                                                       = js.native
+  def timeline: DocumentTimeline                                                                 = js.native
+  def fonts: FontFaceSet                                                                         = js.native
+  def styleSheets: StyleSheetList                                                                = js.native
+  var adoptedStyleSheets: scala.scalajs.js.Array[CSSStyleSheet]                                  = js.native
+  @JSName("customElementRegistry")
+  def customElementRegistryOrNull: CustomElementRegistry | Null = js.native
+  @JSName("fullscreenElement")
+  def fullscreenElementOrNull: Element | Null = js.native
+  @JSName("activeElement")
+  def activeElementOrNull: Element | Null = js.native
+  @JSName("pictureInPictureElement")
+  def pictureInPictureElementOrNull: Element | Null = js.native
+  @JSName("pointerLockElement")
+  def pointerLockElementOrNull: Element | Null = js.native
+  def children: HTMLCollection                 = js.native
+  @JSName("firstElementChild")
+  def firstElementChildOrNull: Element | Null = js.native
+  @JSName("lastElementChild")
+  def lastElementChildOrNull: Element | Null = js.native
+  def childElementCount: Int                 = js.native
+  @JSName("onanimationstart")
+  var onanimationstartOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("onanimationiteration")
+  var onanimationiterationOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("onanimationend")
+  var onanimationendOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("onanimationcancel")
+  var onanimationcancelOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("onsnapchanged")
+  var onsnapchangedOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("onsnapchanging")
+  var onsnapchangingOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("ontransitionrun")
+  var ontransitionrunOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("ontransitionstart")
+  var ontransitionstartOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("ontransitionend")
+  var ontransitionendOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("ontransitioncancel")
+  var ontransitioncancelOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("onfencedtreeclick")
+  var onfencedtreeclickOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("onabort")
+  var onabortOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("onauxclick")
+  var onauxclickOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("onbeforeinput")
+  var onbeforeinputOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("onbeforematch")
+  var onbeforematchOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("onbeforetoggle")
+  var onbeforetoggleOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("onblur")
+  var onblurOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("oncancel")
+  var oncancelOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("oncanplay")
+  var oncanplayOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("oncanplaythrough")
+  var oncanplaythroughOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("onchange")
+  var onchangeOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("onclick")
+  var onclickOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("onclose")
+  var oncloseOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("oncommand")
+  var oncommandOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("oncontextlost")
+  var oncontextlostOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("oncontextmenu")
+  var oncontextmenuOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("oncontextrestored")
+  var oncontextrestoredOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("oncopy")
+  var oncopyOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("oncuechange")
+  var oncuechangeOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("oncut")
+  var oncutOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("ondblclick")
+  var ondblclickOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("ondrag")
+  var ondragOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("ondragend")
+  var ondragendOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("ondragenter")
+  var ondragenterOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("ondragleave")
+  var ondragleaveOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("ondragover")
+  var ondragoverOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("ondragstart")
+  var ondragstartOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("ondrop")
+  var ondropOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("ondurationchange")
+  var ondurationchangeOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("onemptied")
+  var onemptiedOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("onended")
+  var onendedOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("onerror")
+  var onerrorOrNull: scala.scalajs.js.Function | Null = js.native
+  @JSName("onfocus")
+  var onfocusOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("onformdata")
+  var onformdataOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("oninput")
+  var oninputOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("oninvalid")
+  var oninvalidOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("onkeydown")
+  var onkeydownOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("onkeypress")
+  var onkeypressOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("onkeyup")
+  var onkeyupOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("onload")
+  var onloadOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("onloadeddata")
+  var onloadeddataOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("onloadedmetadata")
+  var onloadedmetadataOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("onloadstart")
+  var onloadstartOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("onmousedown")
+  var onmousedownOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("onmouseenter")
+  var onmouseenterOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("onmouseleave")
+  var onmouseleaveOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("onmousemove")
+  var onmousemoveOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("onmouseout")
+  var onmouseoutOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("onmouseover")
+  var onmouseoverOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("onmouseup")
+  var onmouseupOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("onpaste")
+  var onpasteOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("onpause")
+  var onpauseOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("onplay")
+  var onplayOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("onplaying")
+  var onplayingOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("onprogress")
+  var onprogressOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("onratechange")
+  var onratechangeOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("onreset")
+  var onresetOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("onresize")
+  var onresizeOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("onscroll")
+  var onscrollOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("onscrollend")
+  var onscrollendOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("onsecuritypolicyviolation")
+  var onsecuritypolicyviolationOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("onseeked")
+  var onseekedOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("onseeking")
+  var onseekingOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("onselect")
+  var onselectOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("onslotchange")
+  var onslotchangeOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("onstalled")
+  var onstalledOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("onsubmit")
+  var onsubmitOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("onsuspend")
+  var onsuspendOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("ontimeupdate")
+  var ontimeupdateOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("ontoggle")
+  var ontoggleOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("onvolumechange")
+  var onvolumechangeOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("onwaiting")
+  var onwaitingOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("onwebkitanimationend")
+  var onwebkitanimationendOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("onwebkitanimationiteration")
+  var onwebkitanimationiterationOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("onwebkitanimationstart")
+  var onwebkitanimationstartOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("onwebkittransitionend")
+  var onwebkittransitionendOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("onwheel")
+  var onwheelOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("onpointerover")
+  var onpointeroverOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("onpointerenter")
+  var onpointerenterOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("onpointerdown")
+  var onpointerdownOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("onpointermove")
+  var onpointermoveOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("onpointerrawupdate")
+  var onpointerrawupdateOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("onpointerup")
+  var onpointerupOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("onpointercancel")
+  var onpointercancelOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("onpointerout")
+  var onpointeroutOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("onpointerleave")
+  var onpointerleaveOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("ongotpointercapture")
+  var ongotpointercaptureOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("onlostpointercapture")
+  var onlostpointercaptureOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("onselectstart")
+  var onselectstartOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("onselectionchange")
+  var onselectionchangeOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("ontouchstart")
+  var ontouchstartOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("ontouchend")
+  var ontouchendOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("ontouchmove")
+  var ontouchmoveOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("ontouchcancel")
+  var ontouchcancelOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("onbeforexrselect")
+  var onbeforexrselectOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  def startViewTransition(
+      callbackOptions: scala.scalajs.js.Function0[
+        scala.scalajs.js.Promise[scala.scalajs.js.Any]
+      ] | StartViewTransitionOptions = js.native
+  ): ViewTransition = js.native
+  @JSName("elementFromPoint")
+  def elementFromPointOrNull(x: Double, y: Double): Element | Null             = js.native
+  def elementsFromPoint(x: Double, y: Double): scala.scalajs.js.Array[Element] = js.native
+  @JSName("caretPositionFromPoint")
+  def caretPositionFromPointOrNull(
+      x: Double,
+      y: Double,
+      options: CaretPositionFromPointOptions = js.native,
+  ): CaretPosition | Null                                                                             = js.native
+  def getElementsByTagName(qualifiedName: String): HTMLCollection                                     = js.native
+  def getElementsByTagNameNS(namespace: String, localName: String): HTMLCollection                    = js.native
+  def getElementsByClassName(classNames: String): HTMLCollection                                      = js.native
+  def createElement(localName: String, options: String | ElementCreationOptions = js.native): Element = js.native
+  def createElementNS(
+      namespace: String,
+      qualifiedName: String,
+      options: String | ElementCreationOptions = js.native,
+  ): Element                                                                           = js.native
   def createDocumentFragment(): DocumentFragment                                       = js.native
   def createTextNode(data: String): Text                                               = js.native
   def createCDATASection(data: String): CDATASection                                   = js.native
   def createComment(data: String): Comment                                             = js.native
   def createProcessingInstruction(target: String, data: String): ProcessingInstruction = js.native
-  def importNode(node: Node, options: scala.scalajs.js.Any = js.native): Node          = js.native
+  def importNode(node: Node, options: Boolean | ImportNodeOptions = js.native): Node   = js.native
   def adoptNode(node: Node): Node                                                      = js.native
   def createAttribute(localName: String): Attr                                         = js.native
   def createAttributeNS(namespace: String, qualifiedName: String): Attr                = js.native
@@ -14847,13 +16409,16 @@ class Document extends Node:
   def measureText(text: String, styleMap: StylePropertyMapReadOnly): FontMetrics = js.native
   def exitFullscreen(): scala.scalajs.js.Promise[Unit]                           = js.native
   @JSBracketAccess
-  def apply(name: String): scala.scalajs.js.Any                                                       = js.native
-  def getElementsByName(elementName: String): NodeList                                                = js.native
-  def open(unused1: String, unused2: String): Document                                                = js.native
-  def open(url: String, name: String, features: String): scala.scalajs.js.Any                         = js.native
+  def apply(name: String): scala.scalajs.js.Any        = js.native
+  def getElementsByName(elementName: String): NodeList = js.native
+  def open(): Document                                 = js.native
+  def open(unused1: String): Document                  = js.native
+  def open(unused1: String, unused2: String): Document = js.native
+  @JSName("open")
+  def openOrNull(url: String, name: String, features: String): Window | Null                          = js.native
   def close(): Unit                                                                                   = js.native
-  def write(text: scala.scalajs.js.Any): Unit                                                         = js.native
-  def writeln(text: scala.scalajs.js.Any): Unit                                                       = js.native
+  def write(text: TrustedHTML | String): Unit                                                         = js.native
+  def writeln(text: TrustedHTML | String): Unit                                                       = js.native
   def hasFocus(): Boolean                                                                             = js.native
   def execCommand(commandId: String, showUI: Boolean = js.native, value: String = js.native): Boolean = js.native
   def queryCommandEnabled(commandId: String): Boolean                                                 = js.native
@@ -14867,35 +16432,38 @@ class Document extends Node:
   def exitPictureInPicture(): scala.scalajs.js.Promise[Unit]                                          = js.native
   def exitPointerLock(): Unit                                                                         = js.native
   def hasUnpartitionedCookieAccess(): scala.scalajs.js.Promise[Boolean]                               = js.native
-  def getSelection(): Selection                                                                       = js.native
-  def hasStorageAccess(): scala.scalajs.js.Promise[Boolean]                                           = js.native
-  def requestStorageAccess(): scala.scalajs.js.Promise[Unit]                                          = js.native
-  def hasPrivateToken(issuer: String): scala.scalajs.js.Promise[Boolean]                              = js.native
-  def hasRedemptionRecord(issuer: String): scala.scalajs.js.Promise[Boolean]                          = js.native
-  def getBoxQuads(options: BoxQuadOptions = js.native): scala.scalajs.js.Array[DOMQuad]               = js.native
+  @JSName("getSelection")
+  def getSelectionOrNull(): Selection | Null                                            = js.native
+  def hasStorageAccess(): scala.scalajs.js.Promise[Boolean]                             = js.native
+  def requestStorageAccess(): scala.scalajs.js.Promise[Unit]                            = js.native
+  def hasPrivateToken(issuer: String): scala.scalajs.js.Promise[Boolean]                = js.native
+  def hasRedemptionRecord(issuer: String): scala.scalajs.js.Promise[Boolean]            = js.native
+  def getBoxQuads(options: BoxQuadOptions = js.native): scala.scalajs.js.Array[DOMQuad] = js.native
   def convertQuadFromNode(
       quad: DOMQuadInit,
-      from: scala.scalajs.js.Any,
+      from: Text | Element | CSSPseudoElement | Document,
       options: ConvertCoordinateOptions = js.native,
   ): DOMQuad = js.native
   def convertRectFromNode(
       rect: DOMRectReadOnly,
-      from: scala.scalajs.js.Any,
+      from: Text | Element | CSSPseudoElement | Document,
       options: ConvertCoordinateOptions = js.native,
   ): DOMQuad = js.native
   def convertPointFromNode(
       point: DOMPointInit,
-      from: scala.scalajs.js.Any,
+      from: Text | Element | CSSPseudoElement | Document,
       options: ConvertCoordinateOptions = js.native,
-  ): DOMPoint                                            = js.native
-  def getElementById(elementId: String): Element         = js.native
-  def getAnimations(): scala.scalajs.js.Array[Animation] = js.native
-  def prepend(nodes: scala.scalajs.js.Any): Unit         = js.native
-  def append(nodes: scala.scalajs.js.Any): Unit          = js.native
-  def replaceChildren(nodes: scala.scalajs.js.Any): Unit = js.native
-  def moveBefore(node: Node, child: Node): Unit          = js.native
-  def querySelector(selectors: String): Element          = js.native
-  def querySelectorAll(selectors: String): NodeList      = js.native
+  ): DOMPoint = js.native
+  @JSName("getElementById")
+  def getElementByIdOrNull(elementId: String): Element | Null = js.native
+  def getAnimations(): scala.scalajs.js.Array[Animation]      = js.native
+  def prepend(nodes: Node | String): Unit                     = js.native
+  def append(nodes: Node | String): Unit                      = js.native
+  def replaceChildren(nodes: Node | String): Unit             = js.native
+  def moveBefore(node: Node, child: Node): Unit               = js.native
+  @JSName("querySelector")
+  def querySelectorOrNull(selectors: String): Element | Null = js.native
+  def querySelectorAll(selectors: String): NodeList          = js.native
   def createExpression(
       expression: String,
       resolver: scala.scalajs.js.Function1[String, String] = js.native,
@@ -14909,17 +16477,18 @@ class Document extends Node:
       result: XPathResult = js.native,
   ): XPathResult                                                                           = js.native
   def ariaNotify(announcement: String, options: AriaNotificationOptions = js.native): Unit = js.native
+  def createElement[E <: HTMLElement](localName: HtmlTag[E]): E                            = js.native
 end Document
 
 @js.native
 @JSGlobal
 object Document extends js.Object:
-  def parseHTMLUnsafe(html: scala.scalajs.js.Any): Document                  = js.native
+  def parseHTMLUnsafe(html: TrustedHTML | String): Document                  = js.native
   def parseHTML(html: String, options: SetHTMLOptions = js.native): Document = js.native
 
 @js.native
 @JSGlobal
-class Ink extends js.Object:
+class Ink extends PlatformObject:
   def requestPresenter(param: InkPresenterParam = js.native): scala.scalajs.js.Promise[DelegatedInkTrailPresenter] =
     js.native
 
@@ -14937,7 +16506,7 @@ class MediaElementAudioSourceNode extends AudioNode:
 
 @js.native
 @JSGlobal
-class GPUSupportedLimits extends js.Object:
+class GPUSupportedLimits extends PlatformObject:
   def maxTextureDimension1D: Int                     = js.native
   def maxTextureDimension2D: Int                     = js.native
   def maxTextureDimension3D: Int                     = js.native
@@ -14979,25 +16548,27 @@ end GPUSupportedLimits
 @js.native
 @JSGlobal
 class BluetoothRemoteGATTService extends EventTarget:
-  def device: BluetoothDevice                            = js.native
-  def uuid: scala.scalajs.js.Any                         = js.native
-  def isPrimary: Boolean                                 = js.native
-  var oncharacteristicvaluechanged: scala.scalajs.js.Any = js.native
-  var onserviceadded: scala.scalajs.js.Any               = js.native
-  var onservicechanged: scala.scalajs.js.Any             = js.native
-  var onserviceremoved: scala.scalajs.js.Any             = js.native
-  def getCharacteristic(
-      characteristic: scala.scalajs.js.Any
-  ): scala.scalajs.js.Promise[BluetoothRemoteGATTCharacteristic]                                 = js.native
-  def getCharacteristics(characteristic: scala.scalajs.js.Any = js.native): scala.scalajs.js.Any = js.native
-  def getIncludedService(service: scala.scalajs.js.Any): scala.scalajs.js.Promise[BluetoothRemoteGATTService] =
+  def device: BluetoothDevice = js.native
+  def uuid: String            = js.native
+  def isPrimary: Boolean      = js.native
+  @JSName("oncharacteristicvaluechanged")
+  var oncharacteristicvaluechangedOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("onserviceadded")
+  var onserviceaddedOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("onservicechanged")
+  var onservicechangedOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("onserviceremoved")
+  var onserviceremovedOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  def getCharacteristic(characteristic: String | Int): scala.scalajs.js.Promise[BluetoothRemoteGATTCharacteristic] =
     js.native
-  def getIncludedServices(service: scala.scalajs.js.Any = js.native): scala.scalajs.js.Any = js.native
+  def getCharacteristics(characteristic: String | Int = js.native): scala.scalajs.js.Any              = js.native
+  def getIncludedService(service: String | Int): scala.scalajs.js.Promise[BluetoothRemoteGATTService] = js.native
+  def getIncludedServices(service: String | Int = js.native): scala.scalajs.js.Any                    = js.native
 end BluetoothRemoteGATTService
 
 @js.native
 @JSGlobal
-class FontFacePalettes extends js.Object:
+class FontFacePalettes extends PlatformObject:
   def length: Int = js.native
   @JSBracketAccess
   def apply(index: Int): FontFacePalette = js.native
@@ -15012,13 +16583,19 @@ class PaymentRequest extends EventTarget:
       @unused details: PaymentDetailsInit,
       @unused options: PaymentOptions = js.native,
   ) = this()
-  def id: String                                    = js.native
-  def shippingAddress: ContactAddress               = js.native
-  def shippingOption: String                        = js.native
-  def shippingType: String                          = js.native
-  var onshippingaddresschange: scala.scalajs.js.Any = js.native
-  var onshippingoptionchange: scala.scalajs.js.Any  = js.native
-  var onpaymentmethodchange: scala.scalajs.js.Any   = js.native
+  def id: String = js.native
+  @JSName("shippingAddress")
+  def shippingAddressOrNull: ContactAddress | Null = js.native
+  @JSName("shippingOption")
+  def shippingOptionOrNull: String | Null = js.native
+  @JSName("shippingType")
+  def shippingTypeOrNull: String | Null = js.native
+  @JSName("onshippingaddresschange")
+  var onshippingaddresschangeOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("onshippingoptionchange")
+  var onshippingoptionchangeOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
+  @JSName("onpaymentmethodchange")
+  var onpaymentmethodchangeOrNull: scala.scalajs.js.Function1[Event, scala.scalajs.js.Any] | Null = js.native
   def show(
       detailsPromise: scala.scalajs.js.Promise[PaymentDetailsUpdate] = js.native
   ): scala.scalajs.js.Promise[PaymentResponse]            = js.native
@@ -15029,5 +16606,6 @@ end PaymentRequest
 @js.native
 @JSGlobal
 object PaymentRequest extends js.Object:
-  def securePaymentConfirmationAvailability(): scala.scalajs.js.Promise[String]                  = js.native
-  def getSecurePaymentConfirmationCapabilities(): scala.scalajs.js.Promise[scala.scalajs.js.Any] = js.native
+  def securePaymentConfirmationAvailability(): scala.scalajs.js.Promise[String] = js.native
+  def getSecurePaymentConfirmationCapabilities(): scala.scalajs.js.Promise[scala.scalajs.js.Dictionary[Boolean]] =
+    js.native

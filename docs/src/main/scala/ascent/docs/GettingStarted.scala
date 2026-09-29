@@ -54,9 +54,9 @@ Published to Maven Central under `rocks.earlyeffect`. Cross-built for JVM, Scala
 Use `%%%` in a cross / JS / Native build (or `%%` on plain JVM):
 
 ```scala
-libraryDependencies += "rocks.earlyeffect" %%% "ascent-core" % "<version>"
-libraryDependencies += "rocks.earlyeffect" %%% "ascent-js"   % "<version>"  // browser mount
-libraryDependencies += "rocks.earlyeffect" %%% "ascent-css"  % "<version>"  // optional
+libraryDependencies += "rocks.earlyeffect" %%% "ascent-core" % "${Released.core}"
+libraryDependencies += "rocks.earlyeffect" %%% "ascent-js"   % "${Released.js}"  // browser mount
+libraryDependencies += "rocks.earlyeffect" %%% "ascent-css"  % "${Released.css}"  // optional
 ```
 
 Most apps take `ascent-core` + `ascent-js`, then add `ascent-css`, `ascent-conduit`, and

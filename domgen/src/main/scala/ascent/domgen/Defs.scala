@@ -58,6 +58,8 @@ final case class FacadeMember(
     reflected: Boolean = false,
     reflectedAttrName: Option[String] = None,
     enumType: Option[String] = None,
+    /** WebIDL's `T?`: the browser may answer `null`, so the facade reads it as `Option[T]`. */
+    nullable: Boolean = false,
 )
 
 /** A generated `@js.native` event-interface facade and its parent in the hierarchy.
@@ -99,6 +101,8 @@ final case class MethodDef(
     params: List[ParamDef],
     bracketAccess: Boolean = false,
     jsSymbol: Option[String] = None,
+    /** The return type is WebIDL's `T?`: the facade answers `Option[T]`. */
+    returnsNullable: Boolean = false,
 )
 
 /** One WebIDL constructor overload. Rendered as `def this(...) = this()` on the `@js.native` class (primary ctor stays

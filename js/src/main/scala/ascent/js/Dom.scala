@@ -5,37 +5,59 @@ import ascent.domtypes.EventKey
 import ascent.dom
 import zio.*
 
+import scala.reflect.TypeTest
 import scala.scalajs.js
 
-/** Typed lifecycle hooks — the ergonomic, cast-free face of [[ascent.ast.Attr.OnMount]] / `OnUnmount` /
-  * `OnMountScoped`.
+/** Typed lifecycle hooks: the cast-free face of [[ascent.ast.Attr.OnMount]] / `OnUnmount` / `OnMountScoped`.
   *
-  * The raw AST hooks hand back `Any` (so `core` stays platform-neutral); these wrap them so the handler receives a real
-  * [[ascent.dom.Element]] — no `asInstanceOf` at the call site. Parameterised on the element subtype so an input hook
-  * can take a [[ascent.dom.HTMLInputElement]] directly.
+  * The raw AST hooks hand back `Any` so `core` stays platform-neutral. These pin the element type first and check the
+  * live node against it (a `TypeTest` the compiler writes, an `instanceof` in the browser), so the handler gets a real
+  * [[ascent.dom.HTMLCanvasElement]] or whatever it names: `Lifecycle.onMount[dom.HTMLCanvasElement] { canvas => ... }`.
+  * Left unpinned, the element type is [[ascent.dom.Element]]. A hook on an element of another type does not run, and
+  * says so in the log.
   */
 object Lifecycle:
 
   /** Fire once after the element is inserted into the DOM, with the live element. For `getBoundingClientRect`, canvas
-    * `getContext`, focus, third-party bootstrap — anything that needs the node in the tree.
+    * `getContext`, focus, third-party bootstrap: anything that needs the node in the tree.
     */
-  def onMount[E <: dom.Element, R](handler: E => URIO[R, Unit]): Attr[R] =
-    Attr.OnMount(el => handler(el.asInstanceOf[E]))
+  def onMount[E <: dom.Element]: OnMountPartiallyApplied[E] = OnMountPartiallyApplied()
 
-  /** Fire once just before the element is removed. Pairs with [[onMount]] for manual acquire/release — though
+  /** Fire once just before the element is removed. Pairs with [[onMount]] for manual acquire/release, though
     * [[onMountScoped]] is usually the cleaner choice.
     */
-  def onUnmount[E <: dom.Element, R](handler: E => URIO[R, Unit]): Attr[R] =
-    Attr.OnUnmount(el => handler(el.asInstanceOf[E]))
+  def onUnmount[E <: dom.Element]: OnUnmountPartiallyApplied[E] = OnUnmountPartiallyApplied()
 
   /** Fire once after insertion, inside a [[zio.Scope]] tied to the element's lifetime. Acquire resources with
-    * `ZIO.acquireRelease` / [[Dom.listen]] and the engine releases them on unmount — no paired `onUnmount`, no manual
-    * bookkeeping. This is the idiomatic way to attach a global ([[Dom.document]] / [[Dom.window]]) listener from a
-    * component.
+    * `ZIO.acquireRelease` / [[Dom.listen]] and the engine releases them on unmount, with no paired `onUnmount`. This is
+    * the idiomatic way to attach a global ([[Dom.document]] / [[Dom.window]]) listener from a component.
     */
-  def onMountScoped[E <: dom.Element, R](handler: E => URIO[R & Scope, Unit]): Attr[R] =
-    Attr.OnMountScoped(el => handler(el.asInstanceOf[E]))
+  def onMountScoped[E <: dom.Element]: OnMountScopedPartiallyApplied[E] = OnMountScopedPartiallyApplied()
 
+  final class OnMountPartiallyApplied[E <: dom.Element] private[Lifecycle] ():
+    def apply[R](handler: E => URIO[R, Unit])(using TypeTest[Any, E]): Attr[R] =
+      Attr.OnMount(node => narrowed("onMount", node)(handler))
+
+  final class OnUnmountPartiallyApplied[E <: dom.Element] private[Lifecycle] ():
+    def apply[R](handler: E => URIO[R, Unit])(using TypeTest[Any, E]): Attr[R] =
+      Attr.OnUnmount(node => narrowed("onUnmount", node)(handler))
+
+  final class OnMountScopedPartiallyApplied[E <: dom.Element] private[Lifecycle] ():
+    def apply[R](handler: E => URIO[R & Scope, Unit])(using TypeTest[Any, E]): Attr[R] =
+      Attr.OnMountScoped(node => narrowed("onMountScoped", node)(handler))
+
+  /** Runs `handler` on `node` when it is an `E`; any other node logs why the hook did nothing. */
+  private def narrowed[E, R](hook: String, node: Any)(handler: E => URIO[R, Unit])(using
+      TypeTest[Any, E]
+  ): URIO[R, Unit] =
+    node match
+      case element: E => handler(element)
+      case other      => ZIO.logWarning(s"Lifecycle.$hook did not run: ${describe(other)} is not the element it takes")
+
+  private def describe(node: Any): String =
+    node match
+      case element: dom.Element => s"<${element.localName}>"
+      case _                    => "a node that is not an element"
 end Lifecycle
 
 /** Imperative DOM helpers a view occasionally needs — binding listeners to non-element targets ([[document]] /
@@ -60,9 +82,9 @@ object Dom:
     * reference through the tree.
     */
   def focusFirst(selector: String): Unit =
-    val el = document.querySelector(selector)
-    if el != null && !js.isUndefined(el) then el.asInstanceOf[js.Dynamic].focus()
-    ()
+    document.querySelector(selector) match
+      case Some(el: dom.HTMLElement) => el.focus()
+      case _                         => ()
 
   /** Signal (via [[Diagnostics]]) if `target` lives inside a server-owned [[ascent.ast.UI.ServerRegion]] — client code
     * shouldn't mutate server-owned DOM, since the server may patch it out from under you. Returns `true` if a violation
@@ -137,16 +159,14 @@ object Dom:
     * element it's declared on plus the event — e.g. a global `/` shortcut that focuses this input. Removed
     * automatically on unmount.
     */
-  def onDocument[E <: dom.Element, R](event: EventKey)(
-      handler: (E, AscentEvent) => URIO[R, Unit]
-  ): Attr[R] =
-    Lifecycle.onMountScoped[E, R](el => listen(document, event)(ev => handler(el, ev)))
+  def onDocument[E <: dom.Element]: GlobalListenerPartiallyApplied[E] = GlobalListenerPartiallyApplied(() => document)
 
   /** Attach a [[window]]-level listener for the element's lifetime. Same contract as [[onDocument]]. */
-  def onWindow[E <: dom.Element, R](event: EventKey)(
-      handler: (E, AscentEvent) => URIO[R, Unit]
-  ): Attr[R] =
-    Lifecycle.onMountScoped[E, R](el => listen(window, event)(ev => handler(el, ev)))
+  def onWindow[E <: dom.Element]: GlobalListenerPartiallyApplied[E] = GlobalListenerPartiallyApplied(() => window)
+
+  final class GlobalListenerPartiallyApplied[E <: dom.Element] private[Dom] (target: () => dom.EventTarget):
+    def apply[R](event: EventKey)(handler: (E, AscentEvent) => URIO[R, Unit])(using TypeTest[Any, E]): Attr[R] =
+      Lifecycle.onMountScoped[E](el => listen(target(), event)(ev => handler(el, ev)))
 
 end Dom
 
@@ -154,8 +174,8 @@ end Dom
   * [[Dom.removeClass]] (which take a raw token). For transient presentational state driven from an event handler (a
   * drag-over highlight) that's kept out of the model:
   * {{{
-  *   Ev.sync.onDragStart(e => e.currentTarget.addCssClass(Dragging))
-  *   Ev.sync.onDragEnd(e => e.currentTarget.removeCssClass(Dragging))
+  *   Ev.sync.onDragStart(e => e.currentTarget.foreach(_.addCssClass(Dragging)))
+  *   Ev.sync.onDragEnd(e => e.currentTarget.foreach(_.removeCssClass(Dragging)))
   * }}}
   *
   * Because the class NAME is applied dynamically here — not through the `E.div(MyClass, …)` conversion that carries the
@@ -165,9 +185,12 @@ end Dom
   * className string at the call site.
   */
 extension (target: dom.EventTarget)
-  /** Ensure `cls`'s CSS is in `<head>`, then add its class token. */
+  /** Ensure `cls`'s CSS is where it styles `target` (its shadow root, or `<head>`), then add its class token. */
   def addCssClass(cls: ascent.css.CssClass): Unit =
-    cls.contributionBlocks.foreach((k, v) => DomStyleSink.appendSync(k, v))
+    val styles = target match
+      case node: dom.Node => StyleTarget.of(node)
+      case _              => StyleTarget.Head
+    cls.contributionBlocks.foreach((k, v) => DomStyleSink.appendSync(styles, k, v))
     Dom.addClass(target, cls.className)
 
   /** Remove `cls`'s class token. The CSS stays in `<head>` (harmless, and likely re-added next time). */

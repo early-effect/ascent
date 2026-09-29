@@ -15,10 +15,10 @@ object MorphSpec extends ZIOSpecDefault:
     ZIO.acquireReleaseWith(
       ZIO.succeed {
         val p = dom.document.createElement("div")
-        dom.document.asInstanceOf[js.Dynamic].body.appendChild(p)
+        dom.document.body.foreach(_.appendChild(p))
         p
       }
-    )(p => ZIO.succeed(p.parentNode.removeChild(p)).unit)(use)
+    )(p => ZIO.succeed(p.parentNode.foreach(_.removeChild(p))))(use)
 
   private def d(e: Any): js.Dynamic = e.asInstanceOf[js.Dynamic]
 
@@ -72,7 +72,7 @@ object MorphSpec extends ZIOSpecDefault:
           // Server re-renders with an empty value attribute; the user's live-typed value must win.
           _ <- ZIO.succeed(Morph.inner(parent, "<input id=\"name\" value=\"\"><span>label</span>"))
           inputAfter   = d(parent).querySelector("#name")
-          stillFocused = dom.document.activeElement.asInstanceOf[js.Any] eq inputAfter.asInstanceOf[js.Any]
+          stillFocused = dom.document.activeElement.exists(js.special.strictEquals(_, inputAfter))
         yield assertTrue(
           inputBefore eq inputAfter,
           stillFocused,

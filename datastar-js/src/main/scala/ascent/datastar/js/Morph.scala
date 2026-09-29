@@ -107,7 +107,7 @@ object Morph:
   private def syncAttributes(existing: js.Dynamic, incoming: js.Dynamic): Unit =
     val incAttrs = incoming.attributes
     val incLen   = incAttrs.length.asInstanceOf[Int]
-    val focused  = dom.document.activeElement.asInstanceOf[js.Any] eq existing.asInstanceOf[js.Any]
+    val focused  = dom.document.activeElement.exists(js.special.strictEquals(_, existing))
     var i        = 0
     while i < incLen do
       val a    = incAttrs.item(i)

@@ -26,9 +26,9 @@ import scala.scalajs.js
   */
 object Canvas:
 
-  /** A canvas with one-shot setup logic. The setup runs once at mount with the live canvas + context, and any cleanup
-    * it needs to do later (e.g. cancel a third-party library's loop) goes in the returned `UIO[Unit]` — wired to the
-    * element's OnUnmount.
+  /** A canvas with one-shot setup logic: `setup` runs once at mount with the live canvas and its 2D context. Cleanup
+    * that must run on unmount (a third-party library's loop) belongs in a [[Lifecycle.onMountScoped]] on the same
+    * element.
     */
   def element(
       cssWidth: Int,
@@ -42,10 +42,8 @@ object Canvas:
         // Inline style so the rendered size (in CSS pixels) matches what the caller asked
         // for — independent of the (possibly DPR-scaled) backing buffer.
         Attr.StaticAttr("style", AttrValue.Str(s"width:${cssWidth}px;height:${cssHeight}px;")),
-        Attr.OnMount { canvasAny =>
-          val canvas = canvasAny.asInstanceOf[dom.HTMLCanvasElement]
-          val ctx    = applyHiDpiSizing(canvas, cssWidth, cssHeight)
-          setup(canvas, ctx)
+        Lifecycle.onMount[dom.HTMLCanvasElement] { canvas =>
+          withHiDpiContext(canvas, cssWidth, cssHeight)(ctx => setup(canvas, ctx))
         },
       ),
       Vector.empty,
@@ -76,16 +74,16 @@ object Canvas:
         Attrs.width(cssWidth),
         Attrs.height(cssHeight),
         Attr.StaticAttr("style", AttrValue.Str(s"width:${cssWidth}px;height:${cssHeight}px;")),
-        Attr.OnMount { canvasAny =>
-          ZIO.succeed {
-            val canvas = canvasAny.asInstanceOf[dom.HTMLCanvasElement]
-            val ctx    = applyHiDpiSizing(canvas, cssWidth, cssHeight)
-            state.start = dom.window.performance.now()
-            // Recursive scheduler — each frame schedules the next.
-            lazy val tick: js.Function1[Double, Unit] = (now: Double) =>
-              draw(ctx, now - state.start)
+        Lifecycle.onMount[dom.HTMLCanvasElement] { canvas =>
+          withHiDpiContext(canvas, cssWidth, cssHeight) { ctx =>
+            ZIO.succeed {
+              state.start = dom.window.performance.now()
+              // Recursive scheduler — each frame schedules the next.
+              lazy val tick: js.Function1[Double, Unit] = (now: Double) =>
+                draw(ctx, now - state.start)
+                state.rafId = dom.window.requestAnimationFrame(tick)
               state.rafId = dom.window.requestAnimationFrame(tick)
-            state.rafId = dom.window.requestAnimationFrame(tick)
+            }
           }
         },
         Attr.OnUnmount { _ =>
@@ -100,19 +98,21 @@ object Canvas:
     )
   end animated
 
-  /** Set the backing-buffer size to `css * devicePixelRatio` and pre-`scale` the context so caller code can use
-    * CSS-pixel coordinates and still get crisp rendering on retina displays. Returns the configured 2D context.
+  /** Size the backing buffer to `css * devicePixelRatio` and pre-`scale` the 2D context, so `use` draws in CSS pixels
+    * and still renders crisply on high-density displays. A canvas the browser gives no 2D context skips `use`, with a
+    * warning.
     */
-  private def applyHiDpiSizing(
-      canvas: dom.HTMLCanvasElement,
-      cssWidth: Int,
-      cssHeight: Int,
-  ): dom.CanvasRenderingContext2D =
-    val dpr = dom.window.devicePixelRatio
-    canvas.width = (cssWidth * dpr).toInt
-    canvas.height = (cssHeight * dpr).toInt
-    val ctx = canvas.getContext("2d").asInstanceOf[dom.CanvasRenderingContext2D]
-    ctx.scale(dpr, dpr)
-    ctx
-  end applyHiDpiSizing
+  private def withHiDpiContext(canvas: dom.HTMLCanvasElement, cssWidth: Int, cssHeight: Int)(
+      use: dom.CanvasRenderingContext2D => UIO[Unit]
+  ): UIO[Unit] =
+    ZIO.suspendSucceed {
+      val dpr = dom.window.devicePixelRatio
+      canvas.width = (cssWidth * dpr).toInt
+      canvas.height = (cssHeight * dpr).toInt
+      canvas.getContext(dom.CanvasContextId.TwoD) match
+        case Some(ctx) =>
+          ctx.scale(dpr, dpr)
+          use(ctx)
+        case None => ZIO.logWarning("this <canvas> has no 2D context, so nothing is drawn on it")
+    }
 end Canvas

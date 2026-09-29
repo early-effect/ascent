@@ -7,7 +7,7 @@ import zipx.shell.Exec as ZipxExec
 
 import chekhov.sbt.ChekhovPlugin.autoImport.chekhovInstall
 
-/** Ascent's zipx CI: platform Verify, e2e, Central, Pages. */
+/** Ascent's zipx CI: platform Verify, e2e, per-module Central releases, Pages. */
 object AscentZipx:
 
   private val javaOpts = Map("JAVA_OPTS" -> EnvValue.plain("-Dfile.encoding=UTF-8"))
@@ -75,20 +75,28 @@ object AscentZipx:
       .named("Install Scala Native build dependencies")
   )
 
-  // Tag publish restores zipx's LocalDir `target` cache; cleanFull so doc is not incremental against stale TASTy.
-  // withExtraSteps replaces the pack extras (it does not append), so keep GPG import and add this after it.
+  // A publish restores zipx's LocalDir `target` cache; cleanFull so doc is not incremental against stale TASTy.
   private val publishCleanFull: Steps = Steps.built("publish-cleanFull")(
     Step
       .run(Script(ZipxExec("sbt", Word.squote("cleanFull"))))
       .named("cleanFull")
   )
 
-  private val publishRelease: Capability =
-    val release = ZipxCentral.release
-    val extras  = release.extraSteps match
-      case s: Steps => s
-      case f        => Steps("release-extra")(f)
-    release.withExtraSteps(extras ++ publishCleanFull)
+  /** Each module whose `Ship` row moved on a push to main publishes signed in its own job and stages its tree;
+    * `ZipxCentral.releaseOnce` then merges every staged tree and releases them to Maven Central once.
+    */
+  private val publishMoved: Capability =
+    ZipxModver
+      .publish()
+      .withEnv(ZipxCentral.signingEnv)
+      .withExtraSteps(ZipxCentral.gpgImportSteps ++ publishCleanFull)
+      // The plugin facade does not re-export this one; the core pack it wraps is on the build classpath.
+      .withPostSteps(zipx.central.ZipxCentral.uploadStagingSteps)
+
+  private val releaseMoved: Capability = ZipxCentral.releaseOnce.copy(gate = Gate.OnDefaultPush)
+
+  /** No tags under `Ship` rows, so the site follows main: every push to it, and a manual dispatch. */
+  private val docsFollowMain: Capability = ZipxDocs.pages().copy(condition = Some(JobCondition.onDefaultPush(List("main"))))
 
   def settings: Seq[Setting[?]] = Seq(
     zipxJavaVersion      := JdkVersion("25"),
@@ -129,8 +137,10 @@ object AscentZipx:
           ),
         )
         .withNodeVersion(NodeVersion("24")),
-      publishRelease,
-      ZipxDocs.pages(),
+      publishMoved,
+      releaseMoved,
+      docsFollowMain,
     ),
+    zipxCacheEpoch := CacheEpoch.ShipCatalog,
   )
 end AscentZipx

@@ -114,8 +114,8 @@ trait DomOps[N]:
 
   // --- document navigation (for mountBody) ---
 
-  /** The document's root element (`<html>`). */
-  def documentElement: N
+  /** The document's root element (`<html>`), or `None` for a document that has none (WebIDL's `Element?`). */
+  def documentElement: Option[N]
 
   /** The document's `<body>`, or `None` if absent. */
   def body: Option[N]

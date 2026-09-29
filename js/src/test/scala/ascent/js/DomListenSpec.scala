@@ -19,10 +19,10 @@ object DomListenSpec extends ZIOSpecDefault:
     ZIO.acquireReleaseWith(
       acquire = ZIO.succeed {
         val p = dom.document.createElement("div")
-        dom.document.asInstanceOf[js.Dynamic].body.appendChild(p)
+        dom.document.body.foreach(_.appendChild(p))
         p
       }
-    )(release = p => ZIO.succeed(p.parentNode.removeChild(p)).unit)(use = use)
+    )(release = p => ZIO.succeed(p.parentNode.foreach(_.removeChild(p))))(use = use)
 
   /** Dispatch a synthetic `keydown` with the given key at `document`. */
   private def dispatchKeydown(key: String): UIO[Unit] =
@@ -60,7 +60,7 @@ object DomListenSpec extends ZIOSpecDefault:
         for
           hits <- Ref.make(0)
           ui: UI[Any] = E.div(
-            Lifecycle.onMountScoped[dom.Element, Any] { _ =>
+            Lifecycle.onMountScoped[dom.Element] { _ =>
               Dom.listen(Dom.document, Events.onKeyDown)(_ => hits.update(_ + 1))
             }
           )
@@ -75,7 +75,7 @@ object DomListenSpec extends ZIOSpecDefault:
         for
           hits <- Ref.make(0)
           ui: UI[Any] = E.div(
-            Lifecycle.onMountScoped[dom.Element, Any] { _ =>
+            Lifecycle.onMountScoped[dom.Element] { _ =>
               Dom.listen(Dom.document, Events.onKeyDown)(_ => hits.update(_ + 1))
             }
           )
@@ -93,7 +93,7 @@ object DomListenSpec extends ZIOSpecDefault:
         for
           keys <- Ref.make(Vector.empty[String])
           ui: UI[Any] = E.input(
-            Dom.onDocument[dom.HTMLInputElement, Any](Events.onKeyDown) { (el, ev) =>
+            Dom.onDocument[dom.HTMLInputElement](Events.onKeyDown) { (el, ev) =>
               keys.update(_ :+ s"${el.tagName.toLowerCase}:${ev.key.getOrElse("?")}")
             }
           )
@@ -111,7 +111,7 @@ object DomListenSpec extends ZIOSpecDefault:
         for
           hits <- Ref.make(0)
           ui: UI[Any] = E.input(
-            Dom.onWindow[dom.HTMLInputElement, Any](Events.onKeyDown)((_, _) => hits.update(_ + 1))
+            Dom.onWindow[dom.HTMLInputElement](Events.onKeyDown)((_, _) => hits.update(_ + 1))
           )
           cleanup      <- AscentApp.mount(ui, parent)
           _            <- dispatchKeydownAt(dom.window.asInstanceOf[js.Dynamic], "/")
@@ -127,7 +127,7 @@ object DomListenSpec extends ZIOSpecDefault:
         for
           tags <- Ref.make(Vector.empty[String])
           ui: UI[Any] = E.input(
-            Dom.onDocument[dom.HTMLInputElement, Any](Events.onKeyDown) { (_, ev) =>
+            Dom.onDocument[dom.HTMLInputElement](Events.onKeyDown) { (_, ev) =>
               tags.update(_ :+ ev.targetTag.getOrElse("none"))
             }
           )

@@ -80,8 +80,8 @@ final class InMemoryDomOps(doc: Document) extends DomOps[Node]:
       case InMemoryDomOps.FnToken(listener) => el.removeEventListener(eventType, listener, false)
       case _                                => ()
 
-  def documentElement: Node = doc.documentElement
-  def body: Option[Node]    = Option(doc.body)
+  def documentElement: Option[Node] = Option(doc.documentElement)
+  def body: Option[Node]            = Option(doc.body)
 
   def sameNode(a: Node, b: Node): Boolean = a.asInstanceOf[AnyRef] eq b.asInstanceOf[AnyRef]
 end InMemoryDomOps

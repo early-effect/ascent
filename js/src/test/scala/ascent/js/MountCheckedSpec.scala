@@ -20,10 +20,10 @@ object MountCheckedSpec extends ZIOSpecDefault:
     ZIO.acquireReleaseWith(
       acquire = ZIO.succeed {
         val p = dom.document.createElement("div")
-        dom.document.asInstanceOf[js.Dynamic].body.appendChild(p)
+        dom.document.body.foreach(_.appendChild(p))
         p
       }
-    )(release = p => ZIO.succeed(p.parentNode.removeChild(p)).unit)(use = use)
+    )(release = p => ZIO.succeed(p.parentNode.foreach(_.removeChild(p))))(use = use)
 
   def spec = suite("Mount (checked property via Attrs.checked(squawk))")(
     test("initial true renders the live checked property as true") {

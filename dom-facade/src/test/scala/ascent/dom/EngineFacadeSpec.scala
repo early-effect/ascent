@@ -60,15 +60,14 @@ object EngineFacadeSpec extends ZIOSpecDefault:
       ZIO.succeed {
         val el = document.createElement("div")
         el.setAttribute("data-x", "hello")
-        val present = el.asInstanceOf[js.Dynamic].getAttribute("data-x").asInstanceOf[String]
+        val present = el.getAttribute("data-x")
         el.removeAttribute("data-x")
-        val absent = el.asInstanceOf[js.Dynamic].getAttribute("data-x")
-        assertTrue(present == "hello", absent == null || js.isUndefined(absent))
+        assertTrue(present.contains("hello"), el.getAttribute("data-x").isEmpty)
       }
     },
     test("HTMLInputElement value and checked are PROPERTIES (writable, reflect immediately)") {
       ZIO.succeed {
-        val input = document.createElement("input").asInstanceOf[HTMLInputElement]
+        val input = document.createElement(HtmlTag.input)
         input.value = "typed"
         input.checked = true
         assertTrue(input.value == "typed", input.checked == true)
@@ -94,20 +93,21 @@ object EngineFacadeSpec extends ZIOSpecDefault:
         val b      = document.createElement("span")
         parent.appendChild(a)
         parent.appendChild(b)
-        // parentNode/nextSibling are opaque Node references, so identity-check via js.Any.
-        val aParent = a.parentNode.asInstanceOf[js.Any]
-        val aNext   = a.nextSibling.asInstanceOf[js.Any]
-        assertTrue(aParent eq parent.asInstanceOf[js.Any], aNext eq b.asInstanceOf[js.Any])
+        assertTrue(
+          a.parentNode.exists(js.special.strictEquals(_, parent)),
+          a.nextSibling.exists(js.special.strictEquals(_, b)),
+          b.nextSibling.isEmpty,
+        )
       }
     },
     test("Document.activeElement reflects focus (used by the controlled-input caret-jump guard)") {
       ZIO.succeed {
         val parent = document.createElement("div")
         document.asInstanceOf[js.Dynamic].body.appendChild(parent)
-        val input = document.createElement("input").asInstanceOf[HTMLInputElement]
+        val input = document.createElement(HtmlTag.input)
         parent.appendChild(input)
         input.asInstanceOf[js.Dynamic].focus()
-        val focused = document.activeElement.asInstanceOf[js.Any] eq input.asInstanceOf[js.Any]
+        val focused = document.activeElement.exists(js.special.strictEquals(_, input))
         document.asInstanceOf[js.Dynamic].body.removeChild(parent)
         assertTrue(focused)
       }

@@ -235,7 +235,7 @@ object IdlSurfaceSpec extends ZIOSpecDefault:
             )
           )
         )
-        assertTrue(src.contains("class NodeList extends js.Object with js.Iterable[Node]:"))
+        assertTrue(src.contains("class NodeList extends PlatformObject with js.Iterable[Node]:"))
       },
       test("@JSBracketAccess wraps apply; @JSName wraps @@asyncIterator") {
         val src = Renderer.interfaces(

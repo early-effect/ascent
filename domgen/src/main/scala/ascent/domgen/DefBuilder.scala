@@ -53,6 +53,7 @@ object DefBuilder:
             val ownAttrs   = iface.attributes
             val mixinAttrs = mixinsByTarget
               .getOrElse(name, Nil)
+              .filterNot(_ == ariaReflection)
               .flatMap(m => attrsAt(m, visited + name))
             ownAttrs ++ mixinAttrs
 
@@ -74,6 +75,13 @@ object DefBuilder:
     }
     seen.values.toList
   end attributesFor
+
+  /** WebIDL's `ARIAMixin` reflects the `aria-*` content attributes as camelCase properties (`ariaLabel` for
+    * `aria-label`), plus element-reference properties that are no content attribute at all. `AriaAttrs` types the real
+    * attributes from aria-query, so the attribute catalog leaves the mixin out: lowercasing its names would give keys
+    * like `arialabel`, which no browser reads.
+    */
+  private val ariaReflection = "ARIAMixin"
 
   /** Map a JS property name from the IDL to its HTML attribute name. The asymmetry exists for historical reasons; only
     * a small set need explicit renames (`class`, `for`). Everything else is lowercased — HTML attribute names are
@@ -277,15 +285,16 @@ object DefBuilder:
         val inheritedMethodSigs = collectInheritedMethodSigs(name, idl, typeOf, jsNative)
         val inheritedMixins     = collectInheritedMixins(name, idl, typeOf, jsNative)
         val ownAttrs            = ownAttributesOf(name, idl)
-          .filterNot((scalaAttrName, _, _, _, _) => inheritedAttrNames.contains(scalaAttrName))
-          .map { (scalaAttrName, idlType, ro, reflected, htmlAttrName) =>
+          .filterNot(a => inheritedAttrNames.contains(a.scalaName))
+          .map { a =>
             FacadeMember(
-              scalaAttrName,
-              typeOf(idlType, idl),
-              ro,
-              reflected,
-              Some(htmlAttrName),
-              enumNameFor(idlType, idl),
+              a.scalaName,
+              typeOf(a.idlType, idl),
+              a.readonly,
+              a.reflected,
+              Some(a.htmlName),
+              enumNameFor(a.idlType, idl),
+              a.nullable,
             )
           }
         val ownAttrsDedup = scala.collection.mutable.LinkedHashMap.empty[String, FacadeMember]
@@ -295,8 +304,9 @@ object DefBuilder:
           if jsNative then collectionExtras(iface, idl, typeOf) else (Nil, Nil, Nil)
         collAttrs.filterNot(a => inheritedAttrNames.contains(a.name)).foreach(m => ownAttrsDedup(m.name) = m)
 
-        val ownMethods = (ownMethodsOf(name, idl, typeOf) ++ collMethods)
+        val declared = (ownMethodsOf(name, idl, typeOf) ++ collMethods)
           .filterNot(m => inheritedMethodSigs.contains((m.scalaName, m.params.map(_.scalaType))))
+        val ownMethods = if jsNative then explicitArities(declared, inheritedMethodSigs) else declared
         // Dedup by (name, paramTypes) so overloads survive (e.g. `stroke()` vs
         // `stroke(Path2D)`).
         val ownMethodsDedup = scala.collection.mutable.LinkedHashMap.empty[(String, List[String]), MethodDef]
@@ -334,7 +344,7 @@ object DefBuilder:
       if visited.contains(name) then ()
       else
         idl.interfaces.get(name).foreach { iface =>
-          ownAttributesOf(name, idl).foreach((scalaAttrName, _, _, _, _) => acc += scalaAttrName)
+          ownAttributesOf(name, idl).foreach(a => acc += a.scalaName)
           if jsNative then collectionExtras(iface, idl, typeOf)._1.foreach(a => acc += a.name)
           iface.inheritance.foreach(p => walk(p, visited + name))
         }
@@ -357,9 +367,11 @@ object DefBuilder:
       if visited.contains(name) then ()
       else
         idl.interfaces.get(name).foreach { iface =>
-          ownMethodsOf(name, idl, typeOf).foreach(m => acc += ((m.scalaName, m.params.map(_.scalaType))))
-          if jsNative then
-            collectionExtras(iface, idl, typeOf)._2.foreach(m => acc += ((m.scalaName, m.params.map(_.scalaType))))
+          val methods =
+            ownMethodsOf(name, idl, typeOf) ++ (if jsNative then collectionExtras(iface, idl, typeOf)._2 else Nil)
+          methods.foreach(m =>
+            if jsNative then acc ++= arityPrefixes(m) else acc += ((m.scalaName, m.params.map(_.scalaType)))
+          )
           iface.inheritance.foreach(p => walk(p, visited + name))
         }
     idl.interfaces.get(interface).flatMap(_.inheritance).foreach(p => walk(p, Set.empty))
@@ -394,13 +406,64 @@ object DefBuilder:
     * (`htmlAttributeName(a.name)`) alongside the existing scalaName/idlType/readonly — consumed by the structural-trait
     * path's in-memory-impl generator ([[Renderer.memoryImpls]]) to auto-implement simple reflected properties.
     */
-  private def ownAttributesOf(interface: String, idl: Webref.Idl): List[(String, String, Boolean, Boolean, String)] =
+  private def ownAttributesOf(interface: String, idl: Webref.Idl): List[OwnAttribute] =
     val mixinNames = idl.includes.filter(_.target == interface).map(_.mixin)
     val ownIface   = idl.interfaces.get(interface).toList.flatMap(_.attributes)
     val mixinIface = mixinNames.flatMap(m => idl.interfaces.get(m).toList.flatMap(_.attributes))
     (ownIface ++ mixinIface).map(a =>
-      (scalaName(a.name), a.idlType, a.readonly, a.reflected, htmlAttributeName(a.name))
+      OwnAttribute(
+        scalaName(a.name),
+        a.idlType,
+        a.readonly,
+        a.reflected,
+        htmlAttributeName(a.name),
+        nullable(a.nullable, a.idlType, idl),
+      )
     )
+  end ownAttributesOf
+
+  /** One attribute as [[ownAttributesOf]] sees it, before its IDL type is mapped to Scala. */
+  private final case class OwnAttribute(
+      scalaName: String,
+      idlType: String,
+      readonly: Boolean,
+      reflected: Boolean,
+      htmlName: String,
+      nullable: Boolean,
+  )
+
+  /** Whether a member may be `null`: its own type is WebIDL's `T?`, or it names a typedef that is (`EventHandler`). */
+  private[domgen] def nullable(marked: Boolean, idlType: String, idl: Webref.Idl): Boolean =
+    marked || idl.nullableTypedefs.contains(idlType)
+
+  /** Scala 3 lets one overload of a name keep default arguments, inherited overloads included. So on a JS facade, an
+    * overloaded name's optional trailing arguments become explicit overloads, one per arity, less any signature already
+    * declared or inherited: `postMessage(message)` stays callable beside `postMessage(message, transfer)`. A name with
+    * one declaration keeps its optional arguments, which render as defaults.
+    */
+  private[domgen] def explicitArities(
+      methods: List[MethodDef],
+      inherited: Set[(String, List[String])],
+  ): List[MethodDef] =
+    val overloaded =
+      methods.groupBy(_.scalaName).collect { case (n, ms) if ms.size > 1 => n }.toSet ++ inherited.map(_._1)
+    methods
+      .flatMap { m =>
+        if overloaded.contains(m.scalaName) then
+          (requiredCount(m) to m.params.size).map(n => m.copy(params = m.params.take(n).map(_.copy(optional = false))))
+        else List(m)
+      }
+      .distinctBy(m => (m.scalaName, m.params.map(_.scalaType)))
+      .filterNot(m => inherited.contains((m.scalaName, m.params.map(_.scalaType))))
+  end explicitArities
+
+  /** Every signature `m` answers to: its name with each argument list that stops inside its optional tail. */
+  private def arityPrefixes(m: MethodDef): List[(String, List[String])] =
+    (requiredCount(m) to m.params.size).map(n => (m.scalaName, m.params.take(n).map(_.scalaType))).toList
+
+  private def requiredCount(m: MethodDef): Int = m.params.indexWhere(_.optional) match
+    case -1 => m.params.size
+    case i  => i
 
   /** Same shape for methods — own ops plus mixin ops.
     *
@@ -423,6 +486,7 @@ object DefBuilder:
         returnType = typeOf(o.returnType, idl),
         params = o.params.map(p => ParamDef(scalaName(p.name), typeOf(p.idlType, idl), p.optional)),
         bracketAccess = o.special == "getter" && o.name == "apply" || o.special == "setter" && o.name == "update",
+        returnsNullable = nullable(o.returnsNullable, o.returnType, idl),
       )
     }
   end ownMethodsOf
@@ -623,6 +687,7 @@ object DefBuilder:
         domName = o.name,
         returnType = scalaFacadeType(o.returnType, idl),
         params = o.params.map(p => ParamDef(scalaName(p.name), scalaFacadeType(p.idlType, idl), p.optional)),
+        returnsNullable = nullable(o.returnsNullable, o.returnType, idl),
       )
       val key = (md.scalaName, md.params.map(_.scalaType))
       seen.getOrElseUpdate(key, md)
@@ -673,17 +738,15 @@ object DefBuilder:
       // Operations are own-only — same logic as InterfaceDef. Drop any that would
       // override an inherited (name, sig) exactly. Different overloads of an inherited
       // name are fine and survive.
-      val parentMethodSigs =
-        iface.inheritance.toList
-          .flatMap(p => methodsFor(p, idl).map(m => (m.scalaName, m.params.map(_.scalaType))))
-          .toSet
-      val ownOps = iface.operations
+      val parentMethodSigs = iface.inheritance.toList.flatMap(p => methodsFor(p, idl).flatMap(arityPrefixes)).toSet
+      val declared         = iface.operations
         .map(o =>
           MethodDef(
             scalaName = scalaName(o.name),
             domName = o.name,
             returnType = scalaFacadeType(o.returnType, idl),
             params = o.params.map(p => ParamDef(scalaName(p.name), scalaFacadeType(p.idlType, idl), p.optional)),
+            returnsNullable = nullable(o.returnsNullable, o.returnType, idl),
           )
         )
         .filterNot(m => parentMethodSigs.contains((m.scalaName, m.params.map(_.scalaType))))
@@ -691,7 +754,7 @@ object DefBuilder:
         interface = name,
         parent = iface.inheritance.filter(idl.interfaces.contains),
         members = facadeMembers(iface, idl),
-        methods = ownOps,
+        methods = explicitArities(declared, parentMethodSigs),
         constructors = constructorsOf(iface, idl, scalaFacadeType),
         constants = constantsOf(iface, idl, scalaFacadeType),
         staticMethods = staticMethodsOf(iface, idl, scalaFacadeType),
@@ -727,7 +790,16 @@ object DefBuilder:
       val childType = scalaFacadeType(a.idlType, idl)
       inheritedTypes.get(a.name) match
         case Some(parentType) if parentType != childType => None // type clash: drop
-        case _ => Some(FacadeMember(a.name, childType, enumType = enumNameFor(a.idlType, idl)))
+        case _                                           =>
+          Some(
+            FacadeMember(
+              a.name,
+              childType,
+              enumType = enumNameFor(a.idlType, idl),
+              nullable = nullable(a.nullable, a.idlType, idl),
+            )
+          )
+      end match
     }
   end facadeMembers
 
@@ -765,26 +837,48 @@ object DefBuilder:
     *      `Interfaces.scala`, so the symbol resolves)
     *   3. primitive / DOMString / fall-through to `js.Any`
     */
-  private[domgen] def scalaFacadeType(idlType: String, idl: Webref.Idl): String =
+  private[domgen] def scalaFacadeType(idlType: String, idl: Webref.Idl): String = resolveFacadeType(idlType, idl, 0)
+
+  /** `depth` bounds typedef chasing, so a (malformed) typedef cycle ends in `js.Any` rather than never ending. */
+  private def resolveFacadeType(idlType: String, idl: Webref.Idl, depth: Int): String =
+    val any = "scala.scalajs.js.Any"
     idl.callbacks.find(_.name == idlType) match
-      case Some(cb) =>
+      case Some(cb) if constructorCallbacks.contains(cb.name) => any
+      case Some(cb)                                           =>
         // Recursively resolve param/return types — a callback that takes an Event should
         // get `Function1[Event, Unit]`, not `Function1[js.Any, Unit]`.
-        val args = cb.params.map(p => scalaFacadeType(p.idlType, idl))
-        val ret  = scalaFacadeType(cb.returnType, idl)
+        val args = cb.params.map(p => resolveFacadeType(p.idlType, idl, depth))
+        val ret  = resolveFacadeType(cb.returnType, idl, depth)
         args.size match
           case 0 => s"scala.scalajs.js.Function0[$ret]"
           case 1 => s"scala.scalajs.js.Function1[${args(0)}, $ret]"
           case 2 => s"scala.scalajs.js.Function2[${args(0)}, ${args(1)}, $ret]"
           case 3 => s"scala.scalajs.js.Function3[${args(0)}, ${args(1)}, ${args(2)}, $ret]"
           case _ => "scala.scalajs.js.Function" // bigger arities are rare in callback shapes
+      case scala.None if idlType.contains(" | ") =>
+        // A union, as Webref.simpleIdlType joins it. A faithful Scala 3 union when every member resolves to a real
+        // type; one member the generator cannot type makes the whole union `js.Any`, since `A | js.Any` is `js.Any`.
+        val members = idlType.split(" \\| ").toList.map(m => resolveFacadeType(m, idl, depth)).distinct
+        if members.contains(any) then any else members.mkString(" | ")
       case scala.None =>
-        genericFacadeType(idlType, t => scalaFacadeType(t, idl)).getOrElse {
-          if idl.interfaces.contains(idlType) then idlType
+        genericFacadeType(idlType, t => resolveFacadeType(t, idl, depth)).getOrElse {
+          if idlType == "WindowProxy" then "Window" // HTML's WindowProxy is the proxy for a Window
+          else if idl.interfaces.contains(idlType) then idlType
           else if idl.dictionaries.exists(_.name == idlType) then idlType
           else if idl.enums.exists(_.name == idlType) then "String"
-          else baseScalaType(idlType)
+          else
+            idl.typedefs.get(idlType) match
+              case Some(named) if depth < 8 => resolveFacadeType(named, idl, depth + 1)
+              case _                        => baseScalaType(idlType)
         }
+    end match
+  end resolveFacadeType
+
+  /** Callback typedefs the spec invokes with `new`, which WebIDL's `callback X = R ();` cannot say: the HTML spec's
+    * prose has `define` check `IsConstructor` and construct the element. A function value would pass the facade and
+    * fail at `define`, so these take a JS class (`js.constructorOf[C]`), and ascent's typed API bounds the class.
+    */
+  private val constructorCallbacks = Set("CustomElementConstructor")
 
   private def baseScalaType(idlType: String): String = idlType match
     case "boolean"                                                                                  => "Boolean"

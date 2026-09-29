@@ -16,7 +16,7 @@ organization         := "rocks.earlyeffect"
 organizationName     := "Early Effect"
 organizationHomepage := Some(uri("https://www.earlyeffect.rocks"))
 versionScheme        := Some("early-semver")
-// No hardcoded version — sbt-dynver-ci: clean tag -> 0.1.0, else <last-tag>-ci (cache-stable).
+// No hardcoded version: each published module's comes from its Ship row in project/ZipxVersions.scala.
 
 homepage := Some(uri("https://github.com/early-effect/ascent"))
 licenses := Seq("Apache-2.0" -> uri("http://www.apache.org/licenses/LICENSE-2.0.txt"))
@@ -142,7 +142,7 @@ lazy val root = (project in file("."))
   .disablePlugins(chekhov.sbt.ChekhovPlugin)
   .aggregate(
     (domTypes.projectRefs ++ core.projectRefs ++ domFacade.projectRefs ++ domCore.projectRefs ++
-      mountEngine.projectRefs ++ js.projectRefs ++ mcpApp.projectRefs ++
+      mountEngine.projectRefs ++ js.projectRefs ++ element.projectRefs ++ mcpApp.projectRefs ++
       domgen.projectRefs ++ css.projectRefs ++ conduitBridge.projectRefs ++ history.projectRefs ++
       html.projectRefs ++ datastar.projectRefs ++ datastarJs.projectRefs ++
       datastarHttp.projectRefs ++ datastarExample.projectRefs ++ datastarExampleServer.projectRefs ++
@@ -278,6 +278,21 @@ lazy val js = (projectMatrix in file("js"))
   .settings(
     name := "ascent-js",
     scalacOptions ++= commonScalacOptions,
+    zioTestSettings,
+    jsdomTestEnv,
+  )
+  .jsPlatform(scalaVersions = scalaVersions)
+
+// --- ascent-element : custom elements from ascent. `CustomElement.define` registers a tag whose instances' lives
+//   arrive as a ZStream (the browser calls the lifecycle; ZIO hears it through a stream, never an Unsafe run).
+//   JS only: custom elements are a browser API.
+lazy val element = (projectMatrix in file("element"))
+  .disablePlugins(chekhov.sbt.ChekhovPlugin)
+  .dependsOn(js)
+  .settings(
+    name := "ascent-element",
+    scalacOptions ++= commonScalacOptions,
+    MyVersions.elementLib,
     zioTestSettings,
     jsdomTestEnv,
   )
@@ -567,6 +582,13 @@ lazy val docs: ProjectMatrix = (projectMatrix in file("docs"))
     publish / skip := true,
     scalacOptions ++= commonScalacOptions,
     description := "Effect-native reactive UI for Scala 3; docs site",
+    // Each module releases on its own number, so install snippets name theirs from the Ship rows. Both rows compile
+    // the pages, so both generate it.
+    Compile / sourceGenerators += Def.task {
+      val out = (Compile / sourceManaged).value / "ascent" / "docs" / "Released.scala"
+      IO.write(out, ReleasedGen.source(zipxShips.value))
+      Seq(out)
+    }.taskValue,
   )
   .jvmPlatform(
     scalaVersions,
@@ -592,12 +614,6 @@ lazy val docs: ProjectMatrix = (projectMatrix in file("docs"))
           ascentPreviewAutoOpen           := true,
           ascentPreviewPort               := AscentPreviewPort.auto,
           ascentPreviewRebuild            := Def.uncached(specularSiteDev.value),
-          // Dynver `-ci` / SNAPSHOT: show the previous stable tag in install snippets.
-          specularDisplayVersion := {
-            val fallback = previousStableVersion.value.getOrElse("<version>")
-            (v: String) =>
-              if v.endsWith("-ci") || v.endsWith("-SNAPSHOT") then fallback else v
-          },
           // Link the JS client and write a marker path BuildSite copies into assets/client.js.
           specularJsLink := Def.uncached {
             (LocalProject("docsJS") / Compile / fastLinkJS).value
@@ -638,6 +654,7 @@ lazy val ascentMatrices: Seq[ProjectMatrix] = Seq(
   domCore,
   mountEngine,
   js,
+  element,
   mcpApp,
   domgen,
   css,
@@ -704,7 +721,8 @@ lazy val ascentChekhov = (projectMatrix in file("chekhov"))
         ),
   )
 
-// Live withMounted suite. Own Scala.js module so Test/fastLinkJS is this project's
+// Live withMounted suite, plus the DOM facade checks that need a real browser (jsdom has no
+// OffscreenCanvas or context globals). Own Scala.js module so Test/fastLinkJS is this project's
 // bundle (tiny UIs in test sources). sbt dependsOn js.js; does not fastOpt the e2e apps.
 lazy val chekhovJs = (project in file("chekhov-js"))
   .enablePlugins(org.scalajs.sbtplugin.ScalaJSPlugin)

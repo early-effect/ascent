@@ -29,13 +29,13 @@ replaces transitive `fileInputs` on sbt 2. Do not `~ascentPreview`.
 Library (JVM):
 
 ```scala
-libraryDependencies += "rocks.earlyeffect" %% "ascent-preview" % "<version>"
+libraryDependencies += "rocks.earlyeffect" %% "ascent-preview" % "${Released.preview}"
 ```
 
 Plugin (the command):
 
 ```scala
-addSbtPlugin("rocks.earlyeffect" % "sbt-ascent-preview" % "<version>")
+addSbtPlugin("rocks.earlyeffect" % "sbt-ascent-preview" % "${Released.preview}")
 ```
 
 Then `enablePlugins(AscentPreviewPlugin)` on the module you type. `sbt-specular` already requires

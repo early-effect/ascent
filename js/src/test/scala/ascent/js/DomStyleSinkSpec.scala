@@ -103,11 +103,11 @@ object DomStyleSinkSpec extends ZIOSpecDefault:
         afterRemove = el.getAttribute("class")
       yield assertTrue(
         // token added, and the CSS is in <head> even though no element with this class ever mounted
-        afterAdd.contains(Highlight.className),
+        afterAdd.exists(_.split(" ").contains(Highlight.className)),
         styleAfterAdd != null,
         styleAfterAdd.textContent.asInstanceOf[String].contains("outline: 2px solid red;"),
         // token removed; the <style> stays (harmless — likely re-added next toggle)
-        !afterRemove.split(" ").contains(Highlight.className),
+        !afterRemove.exists(_.split(" ").contains(Highlight.className)),
       )
       end for
     },
