@@ -76,11 +76,15 @@ final class CustomElement private (val name: ElementName, hub: Hub[ElementLifecy
       case other              => ZIO.dieMessage(s"${name.value} did not construct an HTMLElement: $other")
     }
 
-  def lifecycle: ZStream[Any, Nothing, ElementLifecycle] = ZStream.fromHub(hub)
+  /** Every instance's connections and disconnections from the moment this returns, for as long as the scope lasts. The
+    * subscription is made before it returns, so nothing that happens after is missed; a stream that subscribed only
+    * once it ran would lose what happened in between.
+    */
+  def lifecycle: ZIO[Scope, Nothing, ZStream[Any, Nothing, ElementLifecycle]] = ZStream.fromHubScoped(hub)
 
   /** `lifecycle` for one instance: its connections and disconnections, in order. */
-  def of(element: dom.HTMLElement): ZStream[Any, Nothing, ElementLifecycle] =
-    lifecycle.filter(e => js.special.strictEquals(e.element, element))
+  def of(element: dom.HTMLElement): ZIO[Scope, Nothing, ZStream[Any, Nothing, ElementLifecycle]] =
+    lifecycle.map(_.filter(e => js.special.strictEquals(e.element, element)))
 end CustomElement
 
 object CustomElement:

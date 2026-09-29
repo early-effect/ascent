@@ -18,7 +18,8 @@ object CustomElementSpec extends ZIOSpecDefault:
       ZIO.scoped(
         for
           defined <- CustomElement.define(ElementName("spec-lifecycle"))
-          seen    <- defined.lifecycle.take(4).runCollect.fork
+          stream  <- defined.lifecycle
+          seen    <- stream.take(4).runCollect.fork
           el      <- defined.create
           _       <- attach(el)
           _       <- ZIO.succeed(el.remove())
@@ -38,7 +39,8 @@ object CustomElementSpec extends ZIOSpecDefault:
       ZIO.scoped(
         for
           defined <- CustomElement.define(ElementName("spec-markup"))
-          seen    <- defined.lifecycle.take(1).runCollect.fork
+          stream  <- defined.lifecycle
+          seen    <- stream.take(1).runCollect.fork
           host    <- ZIO.succeed(dom.document.createElement("div"))
           _       <- ZIO.succeed(host.innerHTML = "<spec-markup></spec-markup>") *> attach(host)
           events  <- seen.join
