@@ -51,7 +51,7 @@ object MyVersions extends ZipxVersions:
   val scalafmt       = Plugin("org.scalameta", "sbt-scalafmt", "2.6.2")
   val scalafix       = Plugin("ch.epfl.scala", "sbt-scalafix", "0.14.9")
   val specularPlugin = Plugin("rocks.earlyeffect", "sbt-specular", "0.18.1")
-  val sbtSplice      = Plugin("rocks.earlyeffect", "sbt-splice", "0.3.1-SNAPSHOT")
+  val sbtSplice      = Plugin("rocks.earlyeffect", "sbt-splice", "0.3.1")
   val sbtReload      = Plugin("com.jamesward", "sbt-reload", "0.0.8")
   val sbtChekhov     = Plugin("rocks.earlyeffect", "sbt-chekhov", "0.1.2")
 
