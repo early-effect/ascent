@@ -5,7 +5,7 @@ import zipx.*
 
 /** Typed catalog: every library and plugin this build may use, and the version each published module ships at.
   * `zipxDepUpdate` rewrites `Lib` / `Plugin` constructors; `zipxModverBump <row> [kind]` rewrites a `Ship` /
-  * `ShipGroup`, and a merge to main that moves one releases exactly that row.
+  * `ShipGroup`. A row holds its next release: every build is `<row>-SNAPSHOT` until `zipx-release.yml` releases it.
   *
   * sbt-zipx is not a row: generate emits it from the loaded plugin (`zipxSelfPlugins`). sbt-pgp is not a row: zipx
   * already brings it in. Action pins stay on jar defaults.
@@ -14,7 +14,7 @@ import zipx.*
   * module already pulls them (specular-core / specular-site via the docs theme).
   */
 object MyVersions extends ZipxVersions:
-  val sbt: SbtVersion     = SbtVersion("2.1.0-M2")
+  val sbt: SbtVersion     = SbtVersion("2.1.0-M3")
   val scala: ScalaVersion = ScalaVersion("3.9.0")
 
   val zio                = Lib("dev.zio", "zio", "2.1.26")
@@ -22,9 +22,10 @@ object MyVersions extends ZipxVersions:
   val zioTestSbt         = zio.mod("zio-test-sbt")
   val zioStreams         = zio.mod("zio-streams")
   val zioJson      = Lib("dev.zio", "zio-json", "1.1.0")
-  val heddle       = Lib("rocks.earlyeffect", "heddle", "0.7.1")
+  val heddle       = Lib("rocks.earlyeffect", "heddle", "0.8.0-SNAPSHOT")
   val heddleBrotli = heddle.mod("heddle-brotli")
   val heddleApps   = heddle.mod("heddle-mcp-apps")
+  val heddleFrame  = heddle.mod("heddle-mcp-apps-frame")
 
   val scalaJavaTime     = Lib("io.github.cquiroz", "scala-java-time", "2.7.0")
   val scalaJavaTimeTzdb = scalaJavaTime.mod("scala-java-time-tzdb")
@@ -50,7 +51,7 @@ object MyVersions extends ZipxVersions:
   val scalafmt       = Plugin("org.scalameta", "sbt-scalafmt", "2.6.2")
   val scalafix       = Plugin("ch.epfl.scala", "sbt-scalafix", "0.14.9")
   val specularPlugin = Plugin("rocks.earlyeffect", "sbt-specular", "0.18.1")
-  val sbtSplice      = Plugin("rocks.earlyeffect", "sbt-splice", "0.3.0")
+  val sbtSplice      = Plugin("rocks.earlyeffect", "sbt-splice", "0.3.1")
   val sbtReload      = Plugin("com.jamesward", "sbt-reload", "0.0.8")
   val sbtChekhov     = Plugin("rocks.earlyeffect", "sbt-chekhov", "0.1.2")
 
@@ -67,6 +68,7 @@ object MyVersions extends ZipxVersions:
   val js            = Ship("jsJS", "0.10.0")
   val element       = Ship("elementJS", "0.9.0")
   val mcpApp        = Ship("mcpAppJS", "0.9.0")
+  val mcpHost       = Ship("mcpHostJS", "0.9.0")
   val history       = Ship("history", "0.9.0")
   val conduitBridge = Ship("conduitBridge", "0.9.0")
   val html          = Ship("html", "0.9.0")
@@ -98,6 +100,7 @@ object MyVersions extends ZipxVersions:
   def datastarHttpLib = library(heddle)
   def previewLib      = library(heddle)
   def mcpAppLib       = library(heddleApps)
+  def mcpHostLib      = library(heddleFrame)
   def brotli          = library(heddleBrotli)
   def domgenLib       = library(zioJson, fastparse)
   def docsJvm         = library(specularZioTest, specularTheme)

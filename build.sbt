@@ -35,13 +35,6 @@ developers := List(
   )
 )
 
-// Publishing targets the Sonatype Central Portal, which is built into sbt 2.x (no sbt-sonatype).
-// Snapshots go to Central's snapshot repo; releases stage locally and are promoted by `sonaRelease`.
-publishTo := {
-  val centralSnapshots = "https://central.sonatype.com/repository/maven-snapshots/"
-  if (isSnapshot.value) Some("central-snapshots" at centralSnapshots)
-  else localStaging.value
-}
 publishMavenStyle    := true
 pomIncludeRepository := { _ => false }
 
@@ -142,12 +135,13 @@ lazy val root = (project in file("."))
   .disablePlugins(chekhov.sbt.ChekhovPlugin)
   .aggregate(
     (domTypes.projectRefs ++ core.projectRefs ++ domFacade.projectRefs ++ domCore.projectRefs ++
-      mountEngine.projectRefs ++ js.projectRefs ++ element.projectRefs ++ mcpApp.projectRefs ++
+      mountEngine.projectRefs ++ js.projectRefs ++ element.projectRefs ++ mcpApp.projectRefs ++ mcpHost.projectRefs ++
       domgen.projectRefs ++ css.projectRefs ++ conduitBridge.projectRefs ++ history.projectRefs ++
       html.projectRefs ++ datastar.projectRefs ++ datastarJs.projectRefs ++
       datastarHttp.projectRefs ++ datastarExample.projectRefs ++ datastarExampleServer.projectRefs ++
       hybridChat.projectRefs ++ hybridChatServer.projectRefs ++
-      todoConduit.projectRefs ++ docs.projectRefs ++ preview.projectRefs ++
+      todoConduit.projectRefs ++ mcpHostDemo.projectRefs ++ mcpHostDemoView.projectRefs ++ docs.projectRefs ++
+      preview.projectRefs ++
       ascentChekhov.projectRefs :+
       LocalProject("chekhovJs") :+
       LocalProject("sbtAscentPreview")) *
@@ -314,6 +308,30 @@ lazy val mcpApp = (projectMatrix in file("mcp-app"))
     jsdomTestEnv,
   )
   .jsPlatform(scalaVersions = scalaVersions)
+
+// --- ascent-mcp-host : a host page's <ascent-mcp-view>, wrapping heddle's relay frame in ascent chrome (a border,
+//   the view's state, the question for each call). The frame needs a real browser's sandbox and postMessage, so the
+//   suite runs in Firefox under ChekhovJSEnv and stays off testJS, like chekhovJs.
+lazy val mcpHost = (projectMatrix in file("mcp-host"))
+  .disablePlugins(chekhov.sbt.ChekhovPlugin)
+  .dependsOn(element)
+  .settings(
+    name := "ascent-mcp-host",
+    scalacOptions ++= commonScalacOptions,
+    MyVersions.mcpHostLib,
+    zioTestSettings,
+  )
+  .jsPlatform(
+    scalaVersions,
+    Nil,
+    (p: Project) =>
+      p.settings(
+        scalaJSLinkerConfig ~= (_.withModuleKind(ModuleKind.ESModule)),
+        Test / jsEnv := Def.uncached(
+          ChekhovJSEnv(browser = ChekhovBrowser.Firefox, headless = true, keepOpen = false)
+        ),
+      ),
+  )
 
 // --- ascent-history : OPTIONAL URL session bound to Squawk. Location is path+query+hash; History is
 //   push/replace/back/forward over a swappable backend (memory everywhere, window.history on JS).
@@ -497,6 +515,59 @@ lazy val todoConduit = (projectMatrix in file("example/todo-conduit"))
     (p: Project) => p.enablePlugins(AscentPreviewPlugin).settings(examplePreviewSettings(autoServe = true)),
   )
 
+// --- ascent example: mcp-host — a host page that frames MCP App views in <ascent-mcp-view> (js only) ---
+//   The counter server runs in the page, reached in memory, so the demo is one preview with nothing else to start.
+//   Its view is an ascent-mcp-app, linked on its own as a classic script, which the host serves as the view's
+//   document; ascentPreviewStage puts that bundle next to the page.
+val mcpHostDemoShared = Def.setting(
+  (ThisBuild / baseDirectory).value / "example" / "mcp-host" / "shared" / "src" / "main" / "scala"
+)
+
+lazy val mcpHostDemoView = (projectMatrix in file("example/mcp-host/view"))
+  .disablePlugins(chekhov.sbt.ChekhovPlugin)
+  .dependsOn(mcpApp)
+  .settings(
+    name           := "ascent-mcp-host-demo-view",
+    publish / skip := true,
+    test / skip    := true,
+    scalacOptions ++= commonScalacOptions,
+    scalaJSUseMainModuleInitializer := true,
+    Compile / unmanagedSourceDirectories += mcpHostDemoShared.value,
+  )
+  .jsPlatform(scalaVersions)
+
+lazy val mcpHostDemo = (projectMatrix in file("example/mcp-host/host"))
+  .disablePlugins(chekhov.sbt.ChekhovPlugin)
+  .dependsOn(mcpHost)
+  .settings(
+    name           := "ascent-mcp-host-demo",
+    publish / skip := true,
+    test / skip    := true,
+    scalacOptions ++= commonScalacOptions,
+    scalaJSUseMainModuleInitializer := true,
+    scalaJSLinkerConfig ~= (_.withModuleKind(ModuleKind.ESModule)),
+    Compile / unmanagedSourceDirectories += mcpHostDemoShared.value,
+  )
+  .jsPlatform(
+    scalaVersions,
+    Nil,
+    (p: Project) =>
+      val view = LocalProject("mcpHostDemoViewJS")
+      p.enablePlugins(AscentPreviewPlugin)
+        .settings(
+          examplePreviewSettings(autoServe = true),
+          ascentPreviewStage := Def.uncached {
+            val staged = ascentPreviewStage.value
+            val _      = (view / Compile / fastLinkJS).value
+            IO.copyFile((view / Compile / fastLinkJSOutput).value / "main.js", ascentPreviewRoot.value / "counter-view.js")
+            staged
+          },
+          ascentPreview / fileInputs ++= (view / Compile / unmanagedSources / fileInputs).value,
+          ascentPreviewRebuild / fileInputs ++= (view / Compile / unmanagedSources / fileInputs).value,
+        )
+    ,
+  )
+
 // --- ascent example: datastar-app — server-driven counter proving the full datastar loop ---
 //   The CLIENT (js, pure ascent): a SignalStore fed by the datastar SSE stream drives ascent's own
 //   reactive AST; a button POSTs an action back.
@@ -603,6 +674,8 @@ lazy val docs: ProjectMatrix = (projectMatrix in file("docs"))
           MyVersions.docsJvm,
           // specular-site (via the theme) may still declare an older zio-json; take catalog 1.1.0.
           dependencyOverrides += MyVersions.moduleID(MyVersions.zioJson),
+          // Local only, until heddle 0.8.0 releases: specular-site 0.18.1 still names heddle 0.7.1.
+          dependencyOverrides += MyVersions.moduleID(MyVersions.heddle),
           zioTestSettings,
           Compile / mainClass             := Some("ascent.docs.ServeSite"),
           run / mainClass                 := Some("ascent.docs.ServeSite"),
