@@ -75,21 +75,15 @@ object AscentZipx:
       .named("Install Scala Native build dependencies")
   )
 
-  // A publish restores zipx's LocalDir `target` cache; cleanFull so doc is not incremental against stale TASTy.
-  private val publishCleanFull: Steps = Steps.built("publish-cleanFull")(
-    Step
-      .run(Script(ZipxExec("sbt", Word.squote("cleanFull"))))
-      .named("cleanFull")
-  )
-
   /** Each module whose `Ship` row moved on a push to main publishes signed in its own job and stages its tree;
     * `ZipxCentral.releaseOnce` then merges every staged tree and releases them to Maven Central once.
+    * `cleanFull` stays on Verify, and only when the PR has the `clean` label.
     */
   private val publishMoved: Capability =
     ZipxModver
       .publish()
       .withEnv(ZipxCentral.signingEnv)
-      .withExtraSteps(ZipxCentral.gpgImportSteps ++ publishCleanFull)
+      .withExtraSteps(ZipxCentral.gpgImportSteps)
       // The plugin facade does not re-export this one; the core pack it wraps is on the build classpath.
       .withPostSteps(zipx.central.ZipxCentral.uploadStagingSteps)
 
