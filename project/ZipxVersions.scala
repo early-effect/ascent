@@ -22,7 +22,7 @@ object MyVersions extends ZipxVersions:
   val zioTestSbt         = zio.mod("zio-test-sbt")
   val zioStreams         = zio.mod("zio-streams")
   val zioJson      = Lib("dev.zio", "zio-json", "1.1.0")
-  val heddle       = Lib("rocks.earlyeffect", "heddle", "0.8.0-SNAPSHOT")
+  val heddle       = Lib("rocks.earlyeffect", "heddle", "0.8.0")
   val heddleBrotli = heddle.mod("heddle-brotli")
   val heddleApps   = heddle.mod("heddle-mcp-apps")
   val heddleFrame  = heddle.mod("heddle-mcp-apps-frame")
