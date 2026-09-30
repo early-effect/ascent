@@ -7,7 +7,7 @@ import zipx.shell.Exec as ZipxExec
 
 import chekhov.sbt.ChekhovPlugin.autoImport.chekhovInstall
 
-/** Ascent's zipx CI: platform Verify, e2e, per-module Central releases, Pages. */
+/** Ascent's zipx CI: platform Verify, e2e, Central snapshots, Pages. Releases run from `zipx-release.yml`. */
 object AscentZipx:
 
   private val javaOpts = Map("JAVA_OPTS" -> EnvValue.plain("-Dfile.encoding=UTF-8"))
@@ -75,21 +75,7 @@ object AscentZipx:
       .named("Install Scala Native build dependencies")
   )
 
-  /** Each module whose `Ship` row moved on a push to main publishes signed in its own job and stages its tree;
-    * `ZipxCentral.releaseOnce` then merges every staged tree and releases them to Maven Central once.
-    * `cleanFull` stays on Verify, and only when the PR has the `clean` label.
-    */
-  private val publishMoved: Capability =
-    ZipxModver
-      .publish()
-      .withEnv(ZipxCentral.signingEnv)
-      .withExtraSteps(ZipxCentral.gpgImportSteps)
-      // The plugin facade does not re-export this one; the core pack it wraps is on the build classpath.
-      .withPostSteps(zipx.central.ZipxCentral.uploadStagingSteps)
-
-  private val releaseMoved: Capability = ZipxCentral.releaseOnce.copy(gate = Gate.OnDefaultPush)
-
-  /** No tags under `Ship` rows, so the site follows main: every push to it, and a manual dispatch. */
+  /** The site follows main: every push to it, and a manual dispatch. */
   private val docsFollowMain: Capability = ZipxDocs.pages().copy(condition = Some(JobCondition.onDefaultPush(List("main"))))
 
   def settings: Seq[Setting[?]] = Seq(
@@ -132,10 +118,10 @@ object AscentZipx:
           ),
         )
         .withNodeVersion(NodeVersion("24")),
-      publishMoved,
-      releaseMoved,
+      ZipxCentral.snapshots,
+      ZipxCentral.pullRequestSnapshots("snapshots"),
       docsFollowMain,
     ),
-    zipxCacheEpoch := CacheEpoch.ShipCatalog,
+    zipxReleaseWorkflow := Some(ZipxCentral.releases),
   )
 end AscentZipx

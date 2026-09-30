@@ -35,13 +35,6 @@ developers := List(
   )
 )
 
-// Publishing targets the Sonatype Central Portal, which is built into sbt 2.x (no sbt-sonatype).
-// Snapshots go to Central's snapshot repo; releases stage locally and are promoted by `sonaRelease`.
-publishTo := {
-  val centralSnapshots = "https://central.sonatype.com/repository/maven-snapshots/"
-  if (isSnapshot.value) Some("central-snapshots" at centralSnapshots)
-  else localStaging.value
-}
 publishMavenStyle    := true
 pomIncludeRepository := { _ => false }
 

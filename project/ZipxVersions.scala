@@ -5,7 +5,7 @@ import zipx.*
 
 /** Typed catalog: every library and plugin this build may use, and the version each published module ships at.
   * `zipxDepUpdate` rewrites `Lib` / `Plugin` constructors; `zipxModverBump <row> [kind]` rewrites a `Ship` /
-  * `ShipGroup`, and a merge to main that moves one releases exactly that row.
+  * `ShipGroup`. A row holds its next release: every build is `<row>-SNAPSHOT` until `zipx-release.yml` releases it.
   *
   * sbt-zipx is not a row: generate emits it from the loaded plugin (`zipxSelfPlugins`). sbt-pgp is not a row: zipx
   * already brings it in. Action pins stay on jar defaults.
@@ -14,7 +14,7 @@ import zipx.*
   * module already pulls them (specular-core / specular-site via the docs theme).
   */
 object MyVersions extends ZipxVersions:
-  val sbt: SbtVersion     = SbtVersion("2.1.0-M2")
+  val sbt: SbtVersion     = SbtVersion("2.1.0-M3")
   val scala: ScalaVersion = ScalaVersion("3.9.0")
 
   val zio                = Lib("dev.zio", "zio", "2.1.26")
