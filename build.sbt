@@ -155,6 +155,8 @@ lazy val root = (project in file("."))
   )
   .settings(
     name           := "ascent",
+    // sonaRelease reads this project's version and refuses a -SNAPSHOT. Root is never published.
+    version        := "",
     publish / skip := true,
     test / skip    := true,
   )
