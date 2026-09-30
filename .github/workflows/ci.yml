@@ -18,7 +18,6 @@ jobs:
       contents: read
       pull-requests: read
     env:
-      COURSIER_TTL: "0s"
       PLAYWRIGHT_BROWSERS_PATH: ${{ github.workspace }}/target/ms-playwright
     outputs:
       run: ${{ steps.check.outputs.run }}
@@ -61,7 +60,6 @@ jobs:
       - verify-gate
     if: needs.verify-gate.result == 'success' && needs.verify-gate.outputs.run == 'false'
     env:
-      COURSIER_TTL: "0s"
       PLAYWRIGHT_BROWSERS_PATH: ${{ github.workspace }}/target/ms-playwright
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
@@ -87,7 +85,6 @@ jobs:
       - verify-gate
     if: "!cancelled() && !startsWith(github.ref, 'refs/tags/') && github.event_name != 'workflow_dispatch' && ((needs.verify-gate.result != 'success') || (needs.verify-gate.outputs.run == 'true'))"
     env:
-      COURSIER_TTL: "0s"
       PLAYWRIGHT_BROWSERS_PATH: ${{ github.workspace }}/target/ms-playwright
       JAVA_OPTS: -Dfile.encoding=UTF-8
     steps:
@@ -105,8 +102,6 @@ jobs:
           sbt-disk-cache: "false"
           cache-mode: save
           cache-epoch: "6bed7016e32a74a3"
-      - name: Pinned snapshots
-        run: echo "::warning title=zipx snapshots::pinned snapshots (rocks.earlyeffect:sbt-zipx:0.15.0-SNAPSHOT)"
       - name: test
         run: |
           if [ "$ZIPX_VERIFY_CLEAN_FULL" = "true" ]; then
@@ -123,7 +118,6 @@ jobs:
       - verify-gate
     if: "!cancelled() && !startsWith(github.ref, 'refs/tags/') && github.event_name != 'workflow_dispatch' && ((needs.verify-gate.result != 'success') || (needs.verify-gate.outputs.run == 'true'))"
     env:
-      COURSIER_TTL: "0s"
       PLAYWRIGHT_BROWSERS_PATH: ${{ github.workspace }}/target/ms-playwright
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
@@ -156,7 +150,6 @@ jobs:
       - verify-gate
     if: "!cancelled() && !startsWith(github.ref, 'refs/tags/') && github.event_name != 'workflow_dispatch' && ((needs.verify-gate.result != 'success') || (needs.verify-gate.outputs.run == 'true'))"
     env:
-      COURSIER_TTL: "0s"
       PLAYWRIGHT_BROWSERS_PATH: ${{ github.workspace }}/target/ms-playwright
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
@@ -189,7 +182,6 @@ jobs:
       - verify-gate
     if: "!cancelled() && !startsWith(github.ref, 'refs/tags/') && github.event_name != 'workflow_dispatch' && ((needs.verify-gate.result != 'success') || (needs.verify-gate.outputs.run == 'true'))"
     env:
-      COURSIER_TTL: "0s"
       PLAYWRIGHT_BROWSERS_PATH: ${{ github.workspace }}/target/ms-playwright
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
@@ -225,7 +217,6 @@ jobs:
       contents: read
       pull-requests: write
     env:
-      COURSIER_TTL: "0s"
       PLAYWRIGHT_BROWSERS_PATH: ${{ github.workspace }}/target/ms-playwright
       ZIPX_MODVER_BASE_SHA: ${{ github.event.pull_request.base.sha }}
     steps:
@@ -263,7 +254,6 @@ jobs:
     permissions:
       contents: read
     env:
-      COURSIER_TTL: "0s"
       PLAYWRIGHT_BROWSERS_PATH: ${{ github.workspace }}/target/ms-playwright
       ZIPX_MODVER_BASE_SHA: ${{ github.event.pull_request.base.sha }}
     steps:
@@ -299,7 +289,6 @@ jobs:
       - verify-gate
     if: "!cancelled() && !startsWith(github.ref, 'refs/tags/') && github.event_name != 'workflow_dispatch' && ((needs.verify-gate.result != 'success') || (needs.verify-gate.outputs.run == 'true'))"
     env:
-      COURSIER_TTL: "0s"
       PLAYWRIGHT_BROWSERS_PATH: ${{ github.workspace }}/target/ms-playwright
       JAVA_OPTS: -Dfile.encoding=UTF-8
     steps:
@@ -342,7 +331,6 @@ jobs:
       - verify-gate
     if: "!cancelled() && !startsWith(github.ref, 'refs/tags/') && github.event_name != 'workflow_dispatch' && ((needs.verify-gate.result != 'success') || (needs.verify-gate.outputs.run == 'true'))"
     env:
-      COURSIER_TTL: "0s"
       PLAYWRIGHT_BROWSERS_PATH: ${{ github.workspace }}/target/ms-playwright
       JAVA_OPTS: -Dfile.encoding=UTF-8
     steps:
@@ -378,7 +366,6 @@ jobs:
       - verify-gate
     if: "!cancelled() && !startsWith(github.ref, 'refs/tags/') && github.event_name != 'workflow_dispatch' && ((needs.verify-gate.result != 'success') || (needs.verify-gate.outputs.run == 'true'))"
     env:
-      COURSIER_TTL: "0s"
       PLAYWRIGHT_BROWSERS_PATH: ${{ github.workspace }}/target/ms-playwright
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
@@ -412,7 +399,6 @@ jobs:
       - test
     if: (!cancelled() && needs.cache-rehydrate.result != 'failure' && needs.test.result != 'failure') && ((((github.event_name == 'push') && ((github.ref == 'refs/heads/main'))) || (github.event_name == 'workflow_dispatch')))
     env:
-      COURSIER_TTL: "0s"
       PLAYWRIGHT_BROWSERS_PATH: ${{ github.workspace }}/target/ms-playwright
       SONATYPE_PASSWORD: ${{ secrets.SONATYPE_PASSWORD }}
       SONATYPE_USERNAME: ${{ secrets.SONATYPE_USERNAME }}
@@ -441,7 +427,6 @@ jobs:
       - test
     if: (!cancelled() && needs.cache-rehydrate.result != 'failure' && needs.test.result != 'failure') && (((github.event_name == 'pull_request') && (contains(github.event.pull_request.labels.*.name, 'snapshots'))) && (github.event.pull_request.head.repo.full_name == github.repository))
     env:
-      COURSIER_TTL: "0s"
       PLAYWRIGHT_BROWSERS_PATH: ${{ github.workspace }}/target/ms-playwright
       SONATYPE_PASSWORD: ${{ secrets.SONATYPE_PASSWORD }}
       SONATYPE_USERNAME: ${{ secrets.SONATYPE_USERNAME }}
