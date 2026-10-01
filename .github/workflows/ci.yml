@@ -18,6 +18,7 @@ jobs:
       contents: read
       pull-requests: read
     env:
+      COURSIER_TTL: "0s"
       PLAYWRIGHT_BROWSERS_PATH: ${{ github.workspace }}/target/ms-playwright
     outputs:
       run: ${{ steps.check.outputs.run }}
@@ -60,6 +61,7 @@ jobs:
       - verify-gate
     if: needs.verify-gate.result == 'success' && needs.verify-gate.outputs.run == 'false'
     env:
+      COURSIER_TTL: "0s"
       PLAYWRIGHT_BROWSERS_PATH: ${{ github.workspace }}/target/ms-playwright
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
@@ -75,7 +77,7 @@ jobs:
           node-version: ""
           sbt-disk-cache: "false"
           cache-mode: save
-          cache-epoch: "6bed7016e32a74a3"
+          cache-epoch: "324708881cc3afb6"
       - name: cache-rehydrate
         run: sbt 'Test/compile'
   test:
@@ -85,6 +87,7 @@ jobs:
       - verify-gate
     if: "!cancelled() && !startsWith(github.ref, 'refs/tags/') && github.event_name != 'workflow_dispatch' && ((needs.verify-gate.result != 'success') || (needs.verify-gate.outputs.run == 'true'))"
     env:
+      COURSIER_TTL: "0s"
       PLAYWRIGHT_BROWSERS_PATH: ${{ github.workspace }}/target/ms-playwright
       JAVA_OPTS: -Dfile.encoding=UTF-8
     steps:
@@ -101,7 +104,9 @@ jobs:
           node-version: ""
           sbt-disk-cache: "false"
           cache-mode: save
-          cache-epoch: "6bed7016e32a74a3"
+          cache-epoch: "324708881cc3afb6"
+      - name: Pinned snapshots
+        run: echo "::warning title=zipx snapshots::pinned snapshots (rocks.earlyeffect:sbt-zipx:0.17.0-SNAPSHOT)"
       - name: test
         run: |
           if [ "$ZIPX_VERIFY_CLEAN_FULL" = "true" ]; then
@@ -118,6 +123,7 @@ jobs:
       - verify-gate
     if: "!cancelled() && !startsWith(github.ref, 'refs/tags/') && github.event_name != 'workflow_dispatch' && ((needs.verify-gate.result != 'success') || (needs.verify-gate.outputs.run == 'true'))"
     env:
+      COURSIER_TTL: "0s"
       PLAYWRIGHT_BROWSERS_PATH: ${{ github.workspace }}/target/ms-playwright
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
@@ -133,7 +139,7 @@ jobs:
           node-version: ""
           sbt-disk-cache: "false"
           cache-mode: restore
-          cache-epoch: "6bed7016e32a74a3"
+          cache-epoch: "324708881cc3afb6"
       - name: fmt
         run: |
           if [ "$ZIPX_VERIFY_CLEAN_FULL" = "true" ]; then
@@ -150,6 +156,7 @@ jobs:
       - verify-gate
     if: "!cancelled() && !startsWith(github.ref, 'refs/tags/') && github.event_name != 'workflow_dispatch' && ((needs.verify-gate.result != 'success') || (needs.verify-gate.outputs.run == 'true'))"
     env:
+      COURSIER_TTL: "0s"
       PLAYWRIGHT_BROWSERS_PATH: ${{ github.workspace }}/target/ms-playwright
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
@@ -165,7 +172,7 @@ jobs:
           node-version: ""
           sbt-disk-cache: "false"
           cache-mode: restore
-          cache-epoch: "6bed7016e32a74a3"
+          cache-epoch: "324708881cc3afb6"
       - name: workflow-check
         run: |
           if [ "$ZIPX_VERIFY_CLEAN_FULL" = "true" ]; then
@@ -182,6 +189,7 @@ jobs:
       - verify-gate
     if: "!cancelled() && !startsWith(github.ref, 'refs/tags/') && github.event_name != 'workflow_dispatch' && ((needs.verify-gate.result != 'success') || (needs.verify-gate.outputs.run == 'true'))"
     env:
+      COURSIER_TTL: "0s"
       PLAYWRIGHT_BROWSERS_PATH: ${{ github.workspace }}/target/ms-playwright
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
@@ -197,7 +205,7 @@ jobs:
           node-version: ""
           sbt-disk-cache: "false"
           cache-mode: restore
-          cache-epoch: "6bed7016e32a74a3"
+          cache-epoch: "324708881cc3afb6"
       - name: advisories
         run: |
           if [ "$ZIPX_VERIFY_CLEAN_FULL" = "true" ]; then
@@ -217,6 +225,7 @@ jobs:
       contents: read
       pull-requests: write
     env:
+      COURSIER_TTL: "0s"
       PLAYWRIGHT_BROWSERS_PATH: ${{ github.workspace }}/target/ms-playwright
       ZIPX_MODVER_BASE_SHA: ${{ github.event.pull_request.base.sha }}
     steps:
@@ -233,7 +242,7 @@ jobs:
           node-version: ""
           sbt-disk-cache: "false"
           cache-mode: restore
-          cache-epoch: "6bed7016e32a74a3"
+          cache-epoch: "324708881cc3afb6"
       - name: Fetch PR base SHA
         run: git fetch --no-tags origin "$ZIPX_MODVER_BASE_SHA"
       - name: modver-suggest
@@ -254,6 +263,7 @@ jobs:
     permissions:
       contents: read
     env:
+      COURSIER_TTL: "0s"
       PLAYWRIGHT_BROWSERS_PATH: ${{ github.workspace }}/target/ms-playwright
       ZIPX_MODVER_BASE_SHA: ${{ github.event.pull_request.base.sha }}
     steps:
@@ -270,7 +280,7 @@ jobs:
           node-version: ""
           sbt-disk-cache: "false"
           cache-mode: restore
-          cache-epoch: "6bed7016e32a74a3"
+          cache-epoch: "324708881cc3afb6"
       - name: Fetch PR base SHA
         run: git fetch --no-tags origin "$ZIPX_MODVER_BASE_SHA"
       - name: modver-check
@@ -289,6 +299,7 @@ jobs:
       - verify-gate
     if: "!cancelled() && !startsWith(github.ref, 'refs/tags/') && github.event_name != 'workflow_dispatch' && ((needs.verify-gate.result != 'success') || (needs.verify-gate.outputs.run == 'true'))"
     env:
+      COURSIER_TTL: "0s"
       PLAYWRIGHT_BROWSERS_PATH: ${{ github.workspace }}/target/ms-playwright
       JAVA_OPTS: -Dfile.encoding=UTF-8
     steps:
@@ -305,7 +316,7 @@ jobs:
           node-version: ""
           sbt-disk-cache: "false"
           cache-mode: restore
-          cache-epoch: "6bed7016e32a74a3"
+          cache-epoch: "324708881cc3afb6"
       - name: Set up Node
         uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
         with:
@@ -331,6 +342,7 @@ jobs:
       - verify-gate
     if: "!cancelled() && !startsWith(github.ref, 'refs/tags/') && github.event_name != 'workflow_dispatch' && ((needs.verify-gate.result != 'success') || (needs.verify-gate.outputs.run == 'true'))"
     env:
+      COURSIER_TTL: "0s"
       PLAYWRIGHT_BROWSERS_PATH: ${{ github.workspace }}/target/ms-playwright
       JAVA_OPTS: -Dfile.encoding=UTF-8
     steps:
@@ -347,7 +359,7 @@ jobs:
           node-version: ""
           sbt-disk-cache: "false"
           cache-mode: restore
-          cache-epoch: "6bed7016e32a74a3"
+          cache-epoch: "324708881cc3afb6"
       - name: Install Scala Native build dependencies
         run: sudo apt-get update && sudo apt-get install -y clang libstdc++-12-dev libgc-dev libunwind-dev
       - name: test-native
@@ -366,6 +378,7 @@ jobs:
       - verify-gate
     if: "!cancelled() && !startsWith(github.ref, 'refs/tags/') && github.event_name != 'workflow_dispatch' && ((needs.verify-gate.result != 'success') || (needs.verify-gate.outputs.run == 'true'))"
     env:
+      COURSIER_TTL: "0s"
       PLAYWRIGHT_BROWSERS_PATH: ${{ github.workspace }}/target/ms-playwright
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
@@ -381,7 +394,7 @@ jobs:
           node-version: "24"
           sbt-disk-cache: "false"
           cache-mode: restore
-          cache-epoch: "6bed7016e32a74a3"
+          cache-epoch: "324708881cc3afb6"
       - name: e2e
         run: |
           if [ "$ZIPX_VERIFY_CLEAN_FULL" = "true" ]; then
@@ -399,6 +412,7 @@ jobs:
       - test
     if: (!cancelled() && needs.cache-rehydrate.result != 'failure' && needs.test.result != 'failure') && ((((github.event_name == 'push') && ((github.ref == 'refs/heads/main'))) || (github.event_name == 'workflow_dispatch')))
     env:
+      COURSIER_TTL: "0s"
       PLAYWRIGHT_BROWSERS_PATH: ${{ github.workspace }}/target/ms-playwright
       SONATYPE_PASSWORD: ${{ secrets.SONATYPE_PASSWORD }}
       SONATYPE_USERNAME: ${{ secrets.SONATYPE_USERNAME }}
@@ -416,7 +430,7 @@ jobs:
           node-version: ""
           sbt-disk-cache: "false"
           cache-mode: restore
-          cache-epoch: "6bed7016e32a74a3"
+          cache-epoch: "324708881cc3afb6"
       - name: snapshots
         run: sbt 'zipxSnapshotPublish'
   snapshots-pr:
@@ -427,6 +441,7 @@ jobs:
       - test
     if: (!cancelled() && needs.cache-rehydrate.result != 'failure' && needs.test.result != 'failure') && (((github.event_name == 'pull_request') && (contains(github.event.pull_request.labels.*.name, 'snapshots'))) && (github.event.pull_request.head.repo.full_name == github.repository))
     env:
+      COURSIER_TTL: "0s"
       PLAYWRIGHT_BROWSERS_PATH: ${{ github.workspace }}/target/ms-playwright
       SONATYPE_PASSWORD: ${{ secrets.SONATYPE_PASSWORD }}
       SONATYPE_USERNAME: ${{ secrets.SONATYPE_USERNAME }}
@@ -444,7 +459,7 @@ jobs:
           node-version: ""
           sbt-disk-cache: "false"
           cache-mode: restore
-          cache-epoch: "6bed7016e32a74a3"
+          cache-epoch: "324708881cc3afb6"
       - name: snapshots-pr
         run: sbt 'zipxSnapshotPublish pr'
   docs:

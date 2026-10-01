@@ -4,7 +4,13 @@ name: zipx release
   push:
     tags:
       - "*/v*"
-  workflow_dispatch: null
+  workflow_dispatch:
+    inputs:
+      ships:
+        description: all, or comma-separated ship names (client, libs)
+        type: string
+        required: true
+        default: all
 permissions:
   contents: write
 concurrency:
@@ -17,12 +23,12 @@ jobs:
     if: github.event_name == 'push' || github.ref_name == github.event.repository.default_branch
     environment: zipx-release
     env:
+      COURSIER_TTL: "0s"
       PGP_KEY_HEX: ${{ secrets.PGP_KEY_HEX }}
       PGP_PASSPHRASE: ${{ secrets.PGP_PASSPHRASE }}
       PLAYWRIGHT_BROWSERS_PATH: ${{ github.workspace }}/target/ms-playwright
       SONATYPE_PASSWORD: ${{ secrets.SONATYPE_PASSWORD }}
       SONATYPE_USERNAME: ${{ secrets.SONATYPE_USERNAME }}
-      ZIPX_RELEASE_REF: ${{ github.ref }}
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
@@ -37,7 +43,7 @@ jobs:
           node-version: ""
           sbt-disk-cache: "false"
           cache-mode: restore
-          cache-epoch: "6bed7016e32a74a3"
+          cache-epoch: "324708881cc3afb6"
       - name: Tag is on the default branch
         if: github.event_name == 'push'
         run: |
@@ -57,6 +63,16 @@ jobs:
           echo "$PGP_SECRET" | base64 --decode | gpg --batch --import
         env:
           PGP_SECRET: ${{ secrets.PGP_SECRET }}
+      - name: Release request
+        run: |
+          set -euo pipefail
+          if [ "$GITHUB_EVENT_NAME" = "workflow_dispatch" ]; then
+            echo "ZIPX_RELEASE_REF=$ZIPX_SHIPS" >> "$GITHUB_ENV"
+          else
+            echo "ZIPX_RELEASE_REF=$GITHUB_REF" >> "$GITHUB_ENV"
+          fi
+        env:
+          ZIPX_SHIPS: ${{ inputs.ships }}
       - name: Release
         run: |
           set -euo pipefail
