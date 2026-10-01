@@ -77,7 +77,7 @@ jobs:
           node-version: ""
           sbt-disk-cache: "false"
           cache-mode: save
-          cache-epoch: "6bed7016e32a74a3"
+          cache-epoch: "324708881cc3afb6"
       - name: cache-rehydrate
         run: sbt 'Test/compile'
   test:
@@ -104,7 +104,7 @@ jobs:
           node-version: ""
           sbt-disk-cache: "false"
           cache-mode: save
-          cache-epoch: "6bed7016e32a74a3"
+          cache-epoch: "324708881cc3afb6"
       - name: Pinned snapshots
         run: echo "::warning title=zipx snapshots::pinned snapshots (rocks.earlyeffect:sbt-zipx:0.17.0-SNAPSHOT)"
       - name: test
@@ -139,7 +139,7 @@ jobs:
           node-version: ""
           sbt-disk-cache: "false"
           cache-mode: restore
-          cache-epoch: "6bed7016e32a74a3"
+          cache-epoch: "324708881cc3afb6"
       - name: fmt
         run: |
           if [ "$ZIPX_VERIFY_CLEAN_FULL" = "true" ]; then
@@ -172,7 +172,7 @@ jobs:
           node-version: ""
           sbt-disk-cache: "false"
           cache-mode: restore
-          cache-epoch: "6bed7016e32a74a3"
+          cache-epoch: "324708881cc3afb6"
       - name: workflow-check
         run: |
           if [ "$ZIPX_VERIFY_CLEAN_FULL" = "true" ]; then
@@ -205,7 +205,7 @@ jobs:
           node-version: ""
           sbt-disk-cache: "false"
           cache-mode: restore
-          cache-epoch: "6bed7016e32a74a3"
+          cache-epoch: "324708881cc3afb6"
       - name: advisories
         run: |
           if [ "$ZIPX_VERIFY_CLEAN_FULL" = "true" ]; then
@@ -242,7 +242,7 @@ jobs:
           node-version: ""
           sbt-disk-cache: "false"
           cache-mode: restore
-          cache-epoch: "6bed7016e32a74a3"
+          cache-epoch: "324708881cc3afb6"
       - name: Fetch PR base SHA
         run: git fetch --no-tags origin "$ZIPX_MODVER_BASE_SHA"
       - name: modver-suggest
@@ -280,7 +280,7 @@ jobs:
           node-version: ""
           sbt-disk-cache: "false"
           cache-mode: restore
-          cache-epoch: "6bed7016e32a74a3"
+          cache-epoch: "324708881cc3afb6"
       - name: Fetch PR base SHA
         run: git fetch --no-tags origin "$ZIPX_MODVER_BASE_SHA"
       - name: modver-check
@@ -316,7 +316,7 @@ jobs:
           node-version: ""
           sbt-disk-cache: "false"
           cache-mode: restore
-          cache-epoch: "6bed7016e32a74a3"
+          cache-epoch: "324708881cc3afb6"
       - name: Set up Node
         uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
         with:
@@ -359,7 +359,7 @@ jobs:
           node-version: ""
           sbt-disk-cache: "false"
           cache-mode: restore
-          cache-epoch: "6bed7016e32a74a3"
+          cache-epoch: "324708881cc3afb6"
       - name: Install Scala Native build dependencies
         run: sudo apt-get update && sudo apt-get install -y clang libstdc++-12-dev libgc-dev libunwind-dev
       - name: test-native
@@ -394,7 +394,7 @@ jobs:
           node-version: "24"
           sbt-disk-cache: "false"
           cache-mode: restore
-          cache-epoch: "6bed7016e32a74a3"
+          cache-epoch: "324708881cc3afb6"
       - name: e2e
         run: |
           if [ "$ZIPX_VERIFY_CLEAN_FULL" = "true" ]; then
@@ -430,7 +430,7 @@ jobs:
           node-version: ""
           sbt-disk-cache: "false"
           cache-mode: restore
-          cache-epoch: "6bed7016e32a74a3"
+          cache-epoch: "324708881cc3afb6"
       - name: snapshots
         run: sbt 'zipxSnapshotPublish'
   snapshots-pr:
@@ -459,7 +459,7 @@ jobs:
           node-version: ""
           sbt-disk-cache: "false"
           cache-mode: restore
-          cache-epoch: "6bed7016e32a74a3"
+          cache-epoch: "324708881cc3afb6"
       - name: snapshots-pr
         run: sbt 'zipxSnapshotPublish pr'
   docs:
