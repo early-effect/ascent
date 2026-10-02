@@ -43,7 +43,7 @@ jobs:
           node-version: ""
           sbt-disk-cache: "false"
           cache-mode: restore
-          cache-epoch: "324708881cc3afb6"
+          cache-epoch: b3004d6f01b67d35
       - name: Tag is on the default branch
         if: github.event_name == 'push'
         run: |
@@ -86,6 +86,13 @@ jobs:
           done
         env:
           GH_TOKEN: ${{ github.token }}
+      - name: Open the next snapshot
+        run: |
+          set -euo pipefail
+          echo "## Open the next snapshot" >> "$GITHUB_STEP_SUMMARY"
+          echo "These rows are released. Further snapshots of them publish nothing until the catalog moves." >> "$GITHUB_STEP_SUMMARY"
+          cat target/zipx-release-tags.txt >> "$GITHUB_STEP_SUMMARY"
+          echo "On this commit: sbt zipxModverBump" >> "$GITHUB_STEP_SUMMARY"
   docs:
     name: docs
     needs:
