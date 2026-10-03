@@ -118,6 +118,102 @@ object McpAppSpec extends ZIOSpecDefault:
           // Read inside the scope: after it closes, the view is gone whether teardown worked or not.
           afterButton = text(el, "button")
         yield assertTrue(mountedButton.contains("+"), afterButton.isEmpty)
+      }
+    ,
+    test("subscribe is not sent when the host does not offer it"):
+      ZIO.scoped {
+        for
+          seen         <- Ref.make(Chunk.empty[Int])
+          failed       <- Ref.make(Option.empty[SubscribeError])
+          methods      <- Ref.make(Chunk.empty[String])
+          (view, back) <- ViewPort.pair
+          _            <- answering(back, methods, subscribe = false)
+          el           <- parent
+          _            <- watcher(seen, failed).mount(view, el, AppInfo("counter-view", "1"))
+          _            <- click(el)
+          err          <- failed.get.repeatUntil(_.isDefined)
+          asked        <- methods.get
+        yield assertTrue(
+          err.contains(SubscribeError.NotOffered),
+          !asked.contains("resources/subscribe"),
+        )
+      }
+    ,
+    test("subscribe reads, follows updates, and unsubscribes when the view is torn down"):
+      ZIO.scoped {
+        for
+          seen         <- Ref.make(Chunk.empty[Int])
+          failed       <- Ref.make(Option.empty[SubscribeError])
+          methods      <- Ref.make(Chunk.empty[String])
+          (view, back) <- ViewPort.pair
+          _            <- answering(back, methods, subscribe = true)
+          el           <- parent
+          mounted      <- watcher(seen, failed).mount(view, el, AppInfo("counter-view", "1"))
+          _            <- click(el)
+          _            <- ZIO.sleep(200.millis)
+          _            <- back.send(
+            Message.Notification("notifications/resources/updated", Json.Obj("uri" -> Json.Str("notes://board")))
+          )
+          _      <- ZIO.sleep(200.millis)
+          second <- seen.get
+          _      <- back.send(HostRequest.ResourceTeardown(None).message(RequestId.Num(9)))
+          _      <- ZIO.sleep(200.millis)
+          asked  <- methods.get
+          err    <- failed.get
+          closed <- mounted.closed.timeout(500.millis)
+        yield assertTrue(
+          second == Chunk(1, 2),
+          err.isEmpty,
+          asked.contains("resources/unsubscribe"),
+          closed.isDefined,
+        )
       },
   ) @@ TestAspect.withLiveClock @@ TestAspect.timeout(30.seconds)
+
+  private def watcher(seen: Ref[Chunk[Int]], failed: Ref[Option[SubscribeError]]) =
+    McpApp(shed).view { (_, bridge) =>
+      E.button(
+        Ev.onClick(_ =>
+          bridge
+            .subscribe[Count]("notes://board")(count => seen.update(_ :+ count.value))
+            .tapError(err => failed.set(Some(err)))
+            .ignore
+        ),
+        "watch",
+      )
+    }
+
+  private def click(el: dom.Element): UIO[Unit] =
+    ZIO.succeed {
+      el.querySelector("button") match
+        case Some(button: dom.HTMLButtonElement) => button.click()
+        case _                                   => ()
+    }
+
+  /** Answers the handshake and resource calls. Each `resources/read` returns the next count. */
+  private def answering(port: ViewPort, methods: Ref[Chunk[String]], subscribe: Boolean): URIO[Scope, Unit] =
+    val capabilities =
+      if subscribe then
+        HostCapabilities(experimental = Some(Json.Obj("serverResources" -> Json.Obj("subscribe" -> Json.Bool(true)))))
+      else HostCapabilities()
+    val init = InitializeResult(UiProtocol.Version, Implementation("host", "1"), capabilities, HostContext.empty)
+    Ref.make(0).flatMap { reads =>
+      port.receive
+        .foreach {
+          case Message.Request(id, method, _) =>
+            methods.update(_ :+ method) *> (method match
+              case "resources/read" =>
+                reads.updateAndGet(_ + 1).flatMap { n =>
+                  val body = ResourceContents.Text("notes://board", Some("application/json"), s"""{"value":$n}""", None)
+                  port.send(Message.Result(id, json(ReadResourceResult(Chunk(body)))))
+                }
+              case "ui/initialize" => port.send(Message.Result(id, json(init)))
+              case _               => port.send(Message.Result(id, Json.Obj())))
+          case _ => ZIO.unit
+        }
+        .ignore
+        .forkScoped
+        .unit
+    }
+  end answering
 end McpAppSpec

@@ -7,8 +7,10 @@ import ascent.squawk.{Squawk, sq}
 import heddle.mcp.apps.{Grant, Shed}
 import heddle.mcp.apps.ui.*
 import heddle.mcp.client.{McpError, McpSession}
+import heddle.mcp.protocol.ResourceContents
 import scala.NamedTuple.NamedTuple
 import zio.*
+import zio.json.*
 import zio.stream.ZStream
 
 /** An MCP App view in ascent. `McpApp(shed)` pins every type from the shed, so `view`'s lambda needs no ascription:
@@ -101,7 +103,39 @@ final class ViewBridge[In, Err, Out, N <: Tuple, V <: Tuple] private[mcpapp] (
   def openLink(url: String): IO[McpError, Outcome]                     = views.own(bridge.openLink(url))
   def requestDisplayMode(mode: DisplayMode): IO[McpError, DisplayMode] = views.own(bridge.requestDisplayMode(mode))
   def requestTeardown: IO[McpError, Unit]                              = bridge.requestTeardown
+
+  /** Follow `uri` for as long as this view is mounted. The host must have advertised experimental subscribe. The first
+    * read lands immediately. Later `notifications/resources/updated` for this uri are read again. Teardown
+    * unsubscribes.
+    */
+  def subscribe[A: JsonDecoder](uri: String)(use: A => UIO[Unit]): IO[SubscribeError, Unit] =
+    views.own {
+      if !bridge.offersResourceSubscribe then ZIO.fail(SubscribeError.NotOffered)
+      else
+        def latest: IO[SubscribeError, Unit] =
+          bridge.readResource(uri).mapError(SubscribeError.Session(_)).flatMap { contents =>
+            contents.collectFirst { case ResourceContents.Text(_, _, raw, _) => raw } match
+              case None      => ZIO.fail(SubscribeError.Undecodable(s"$uri has no text"))
+              case Some(raw) =>
+                ZIO.fromEither(raw.fromJson[A]).mapError(SubscribeError.Undecodable(_)).flatMap(use)
+          }
+        val follow =
+          bridge.resourceUpdates.filter(_ == uri).foreach(_ => latest).fork *>
+            bridge.subscribeResource(uri).mapError(SubscribeError.Session(_)) *>
+            latest *>
+            ZIO.never
+        // The host answers this on the same loop that is running teardown, so waiting for the answer here deadlocks.
+        follow.ensuring(bridge.unsubscribeResource(uri).forkDaemon.unit)
+    }
 end ViewBridge
+
+/** Why a view could not follow a resource. `NotOffered` means the host did not advertise subscribe, and nothing was
+  * sent.
+  */
+enum SubscribeError:
+  case NotOffered
+  case Session(error: McpError)
+  case Undecodable(reason: String)
 
 object ViewBridge:
   final class Call[I, E, O] private[mcpapp] (call: McpSession.CallPartiallyApplied[I, E, O], views: Supervised):
