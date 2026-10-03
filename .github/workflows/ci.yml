@@ -106,7 +106,7 @@ jobs:
           cache-mode: save
           cache-epoch: b3004d6f01b67d35
       - name: Pinned snapshots
-        run: echo "::warning title=zipx snapshots::pinned snapshots (rocks.earlyeffect:sbt-zipx:0.17.0-SNAPSHOT)"
+        run: echo "::warning title=zipx snapshots::pinned snapshots (rocks.earlyeffect:heddle:0.9.0-SNAPSHOT, rocks.earlyeffect:heddle-brotli:0.9.0-SNAPSHOT, rocks.earlyeffect:heddle-mcp-apps:0.9.0-SNAPSHOT, rocks.earlyeffect:heddle-mcp-apps-frame:0.9.0-SNAPSHOT, rocks.earlyeffect:sbt-zipx:0.17.0-SNAPSHOT)"
       - name: test
         run: |
           if [ "$ZIPX_VERIFY_CLEAN_FULL" = "true" ]; then
