@@ -5,7 +5,7 @@ import zipx.*
 
 /** Typed catalog: every library and plugin this build may use, and the version each published module ships at.
   * `zipxDepUpdate` rewrites `Lib` / `Plugin` constructors; `zipxModverBump <row> [kind]` rewrites a `Ship` /
-  * `ShipGroup`. A row holds its next release: every build is `<row>-SNAPSHOT` until `zipx-release.yml` releases it.
+  * `ShipGroup`. A row holds its next release: every build compiles `<row>-ci` until `zipx-release.yml` releases it.
   *
   * sbt-zipx is not a row: generate emits it from the loaded plugin (`zipxSelfPlugins`). sbt-pgp is not a row: zipx
   * already brings it in. Action pins stay on jar defaults.
@@ -22,7 +22,8 @@ object MyVersions extends ZipxVersions:
   val zioTestSbt   = zio.mod("zio-test-sbt")
   val zioStreams   = zio.mod("zio-streams")
   val zioJson      = Lib("dev.zio", "zio-json", "1.1.0")
-  val heddle       = Lib("rocks.earlyeffect", "heddle", "0.9.0-SNAPSHOT")
+  // Central's unique snapshot of 87b1886. The bare `0.9.0-87b1886fa165` is not in the repository.
+  val heddle       = Lib("rocks.earlyeffect", "heddle", "0.9.0-87b1886fa165-SNAPSHOT")
   val heddleBrotli = heddle.mod("heddle-brotli")
   val heddleApps   = heddle.mod("heddle-mcp-apps")
   val heddleFrame  = heddle.mod("heddle-mcp-apps-frame")
