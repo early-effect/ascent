@@ -82,19 +82,43 @@ object Renderer:
     val vals = defs
       .map { d =>
         // Void elements get a distinct VoidElementKey so the DSL constructor rejects children at
-        // compile time; everything else is a normal ElementKey.
-        if d.isVoid then s"""  val ${safeId(d.scalaName)}: VoidElementKey = VoidElementKey("${d.domName}")"""
-        else s"""  val ${safeId(d.scalaName)}: ElementKey = ElementKey("${d.domName}")"""
+        // compile time; everything else is a normal ElementKey. The marker is the element's interface.
+        if d.isVoid then
+          s"""  val ${safeId(d.scalaName)}: VoidElementKey[${d.interface}] = VoidElementKey("${d.domName}")"""
+        else s"""  val ${safeId(d.scalaName)}: ElementKey[${d.interface}] = ElementKey("${d.domName}")"""
       }
       .mkString("\n")
     s"""$header
        |package ascent.domtypes
+       |
+       |import ascent.domtypes.tags.*
        |
        |/** All HTML element keys, generated from the vendored webref `elements/html.json`. */
        |object Elements:
        |$vals
        |""".stripMargin
   end elements
+
+  /** Phantom markers. One trait per HTML element interface, rooted at `Element`. */
+  def tagMarkers(markers: List[DefBuilder.TagMarker]): String =
+    val body = markers
+      .map { m =>
+        m.parent match
+          case None         => s"sealed trait ${m.name}"
+          case Some(parent) => s"trait ${m.name} extends $parent"
+      }
+      .mkString("\n")
+    s"""$header
+       |package ascent.domtypes.tags
+       |
+       |/** Phantom markers for HTML element interfaces.
+       |  *
+       |  * An attribute key is typed at the interface that introduces the content attribute.
+       |  * These are not DOM nodes.
+       |  */
+       |$body
+       |""".stripMargin
+  end tagMarkers
 
   // --- dom-types/.../generated/Attrs.scala ---
 
@@ -112,21 +136,24 @@ object Renderer:
     val vals = defs
       .map { d =>
         val v    = codecValueType(d.codec)
-        val main = s"""  val ${safeId(d.scalaName)}: AttrKey[$v] = AttrKey("${d.domName}", ${d.codec.render})"""
+        val e    = d.elementType
+        val main = s"""  val ${safeId(d.scalaName)}: AttrKey[$v, $e] = AttrKey("${d.domName}", ${d.codec.render})"""
         // Emit an ergonomic plain alias for keyword-named attrs (e.g. `typ` -> `type`), so authors
         // can avoid the backtick noise. The alias just points at the canonical backticked val.
         identAliases.get(d.scalaName) match
-          case Some(alias) => s"$main\n  val $alias: AttrKey[$v] = ${safeId(d.scalaName)}"
+          case Some(alias) => s"$main\n  val $alias: AttrKey[$v, $e] = ${safeId(d.scalaName)}"
           case None        => main
       }
       .mkString("\n")
     s"""$header
        |package ascent.domtypes
        |
+       |import ascent.domtypes.tags.*
+       |
        |/** All HTML attribute keys, generated from the vendored webref IDL.
        |  *
-       |  * Each [[AttrKey]] carries the canonical dom name plus the [[Codec]] that converts a typed
-       |  * Scala value into a platform-neutral [[AttrValue]] for the DOM backend.
+       |  * Each [[AttrKey]] carries the canonical dom name, the element marker that introduces it,
+       |  * and the [[Codec]] that converts a typed Scala value into a platform-neutral [[AttrValue]].
        |  */
        |object Attrs:
        |$vals

@@ -23,13 +23,6 @@ object Main extends ZIOAppDefault:
   private val cssGenDir       = Path.of("css/src/main/scala/ascent/css/generated")
   private val domCoreGenDir   = Path.of("dom-core/src/main/scala/ascent/domcore/generated")
 
-  /** HTML elements whose attribute set is fully derived from IDL (per the plan's hybrid strictness: high-value elements
-    * get typed per-element attrs, the rest reuse the common set). Bigger work — full per-element attribute grouping —
-    * is a follow-up; for now this set seeds the global Attrs surface with their union.
-    */
-  private val strictElements: Set[String] =
-    Set("input", "a", "img", "form", "label", "option", "select", "button", "textarea")
-
   def run: ZIO[Any, Throwable, Unit] =
     for
       _     <- Console.printLine("ascent-domgen: loading vendored webref data...")
@@ -128,7 +121,6 @@ object Main extends ZIOAppDefault:
       events = evs,
       idl = Webref.mergeIdl(idls*),
       eventAllowlist = parseAllowlist(allowText),
-      strictElements = strictElements,
       svgElements = svgEls.flatten,
     )
 
@@ -161,6 +153,8 @@ object Main extends ZIOAppDefault:
       } *> Console.printLine(s"  wrote $target")
 
   private def resolveOutputPath(logical: String): Path = logical match
+    case "dom-types/tags/Markers.scala" =>
+      Path.of("dom-types/src/main/scala/ascent/domtypes/tags/Markers.scala")
     case s"dom-types/$file"  => domTypesGenDir.resolve(file)
     case s"dom-facade/$file" => domFacadeGenDir.resolve(file)
     case s"js/$file"         => jsGenDir.resolve(file)

@@ -86,13 +86,18 @@ object Webref:
     * state distinct from the DOM attribute). The in-memory DOM backend's generator uses this to auto-implement
     * reflected properties as reads/writes against the element's attribute map, with zero hand-written code.
     */
-  /** `nullable` is WebIDL's `T?`: the value may be `null`. */
+  /** `nullable` is WebIDL's `T?`: the value may be `null`.
+    *
+    * `reflectAs` is the content-attribute name from `[Reflect="http-equiv"]`. `None` means the attribute is not a
+    * renamed reflection: the HTML name is the usual structural rename or the lowercased IDL name.
+    */
   final case class IdlAttribute(
       name: String,
       idlType: String,
       readonly: Boolean = false,
       reflected: Boolean = false,
       nullable: Boolean = false,
+      reflectAs: Option[String] = None,
   )
 
   /** A WebIDL operation parameter (argument). */
@@ -215,11 +220,28 @@ object Webref:
     given JsonDecoder[RawArgument] = DeriveJsonDecoder.gen[RawArgument]
 
   /** One entry in a member's `extAttrs` array — webref's extended-attribute annotations (`[Reflect]`, `[CEReactions]`,
-    * etc). We only consume the `name`; `rhs`/`arguments` carry extended-attribute parameters we don't yet need.
+    * etc). `rhs` is the parameter (`[Reflect="http-equiv"]` decodes as a string whose value still wears IDL quotes).
+    * Absent or JSON `null` stays `None`.
     */
-  private final case class RawExtAttr(name: String)
+  private final case class RawExtAttr(name: String, rhs: Option[Json] = None)
   private object RawExtAttr:
     given JsonDecoder[RawExtAttr] = DeriveJsonDecoder.gen[RawExtAttr]
+
+  /** The string form of an extended-attribute rhs: `{ "type": "string", "value": "\"http-equiv\"" }`. */
+  private final case class ReflectString(`type`: String, value: String)
+  private object ReflectString:
+    given JsonDecoder[ReflectString] = DeriveJsonDecoder.gen[ReflectString]
+
+  /** `[Reflect="http-equiv"]` → `Some("http-equiv")`. A bare `[Reflect]` (null rhs) is `None`. */
+  private def reflectAsOf(ext: List[RawExtAttr]): Option[String] =
+    ext.collectFirst { case RawExtAttr("Reflect", Some(rhs)) =>
+      rhs.as[ReflectString].toOption.map(s => stripIdlQuotes(s.value))
+    }.flatten
+
+  private def stripIdlQuotes(raw: String): String =
+    if raw.length >= 2 && raw.charAt(0) == '"' && raw.charAt(raw.length - 1) == '"' then
+      raw.substring(1, raw.length - 1)
+    else raw
 
   private final case class RawMember(
       `type`: String,
@@ -401,6 +423,7 @@ object Webref:
             ro.getOrElse(false),
             ext.exists(_.name == "Reflect"),
             isNullable(t),
+            reflectAsOf(ext),
           )
         def op(n: String, t: Json, maybeArgs: Option[List[RawArgument]], spec: String = ""): IdlOperation =
           IdlOperation(n, simpleIdlType(t).getOrElse("any"), paramsOf(maybeArgs), spec, isNullable(t))

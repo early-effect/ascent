@@ -14,9 +14,19 @@ import ascent.html.Html
 
 val ui = E.div(A.className("card"), E.h1("Hello"), E.p("rendered on the server"))
 
-Html.render(ui)        // URIO[R, String]  — just the markup
-Html.renderPage(ui)    // URIO[R, Page]    — (html, css): markup + the collected stylesheet
+Html.render(ui)        // URIO[R, String]: just the markup
+Html.renderPage(ui)    // URIO[R, Page]: markup plus the collected stylesheet
 ```
+
+A whole document is a `UI` too. `Document(title)(head*)(body*)` builds the shell (charset, viewport, title, then your head nodes, then the body). `renderDocument` mounts an `html` root as the document element and emits the doctype. Head and body are separate lists: a `script` in the first list stays in `head`, and the same tag in the second list stays in `body`.
+
+```scala
+val host = Document("Todos host")()(E.script(A.src("/host.js")))
+
+Html.renderDocument(host, StylePlacement.Aside) // ZIO[R, Html.Error, Page]
+```
+
+`A.*` keys are the HTML content attributes, typed at the element that introduces them. `E.meta(A.content(...))` typechecks. `E.div(A.content(...))` does not. Global attributes (`id`, `class`, `lang`, …) are usable on every element. An event or a hand-built `Attr` is accepted everywhere.
 
 ## What it does
 
@@ -35,12 +45,24 @@ Html.renderPage(ui)    // URIO[R, Page]    — (html, css): markup + the collect
 
 | Member | Result | Notes |
 |--------|--------|-------|
-| `Html.render(ui, idMode?)` | `URIO[R, String]` | the markup for an arbitrary subtree |
-| `Html.renderPage(ui, idMode?)` | `URIO[R, Page]` | `Page(html, css)` — CSS collected via `StyleSink.capturing` |
-| `Html.Page` | `case class Page(html, css)` | rendered markup + its stylesheet |
+| `Html.render(ui, idMode?)` | `URIO[R, String]` | fragment markup. Compact `innerHTML`, no doctype. The morph form. |
+| `Html.renderPretty(ui, idMode?)` | `URIO[R, String]` | indented fragment. For humans. Not the morph form. |
+| `Html.renderPage(ui, idMode?)` | `URIO[R, Page]` | `Page(html, css)`. CSS from this render's `StyleRegistry`. |
+| `Html.renderPagePretty(ui, idMode?)` | `URIO[R, Page]` | pretty fragment plus the same CSS. |
+| `Html.renderDocument(ui, placement, idMode?)` | `ZIO[R, Html.Error, Page]` | doctype plus the `html` root. `placement` is required. |
+| `Html.renderDocumentPretty(ui, placement, idMode?)` | `ZIO[R, Html.Error, Page]` | indented document plus the same CSS. Not the morph form. |
+| `Document(title, lang = "en")(head*)(body*)` | `UI[R]` | charset, viewport, title, then `head`, then `body`. |
+| `StylePlacement` | `InlineInHead` or `Aside` | where the collected CSS goes. Both return it on `Page`. |
+| `Html.Error` | `NotHtmlRoot(tags)` or `NoHead` | the tree was not a single `html` element, or `InlineInHead` found no `head`. |
+| `Html.Page` | `case class Page(html, css)` | rendered markup plus its stylesheet. |
 
-`idMode` defaults to `IdMode.HashWithRegistry` (the Mount default) — leave it unless you need a
+`idMode` defaults to `IdMode.HashWithRegistry` (the Mount default). Leave it unless you need a
 different id scheme.
+
+`StylePlacement.Aside` leaves `head` alone. `StylePlacement.InlineInHead` appends one `style` at the
+end of `head` when the CSS is non-empty, and fails with `Html.Error.NoHead` when the mounted tree
+has no `head`. Compact document markup is what a consumer diffs. Pretty output is indented for
+humans; do not feed it back through morph.
 
 Used by [`ascent-datastar-http`](../datastar-http/) to render UI subtrees the server pushes as
 datastar `patch-elements`.

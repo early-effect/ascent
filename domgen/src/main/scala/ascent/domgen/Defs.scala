@@ -26,7 +26,10 @@ end CodecRef
 
 final case class ElementDef(scalaName: String, domName: String, isVoid: Boolean, interface: String)
 
-final case class AttrDef(scalaName: String, domName: String, codec: CodecRef)
+/** `elementType` is the Scala marker (or `|` union of markers) in `ascent.domtypes.tags` that introduces this content
+  * attribute. `id` is `Element`. `content` is `HTMLMetaElement`. `href` is the union of the elements that declare it.
+  */
+final case class AttrDef(scalaName: String, domName: String, codec: CodecRef, elementType: String)
 
 final case class EventDef(
     scalaName: String,

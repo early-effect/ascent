@@ -8,37 +8,43 @@ import zio.test.*
 object AriaRendererSpec extends ZIOSpecDefault:
 
   def spec = suite("AriaRenderer")(
-    test("renders a boolean property as AttrKey[Boolean] with BooleanAsTrueFalse codec") {
+    test("renders a boolean property as AttrKey[Boolean, ascent.domtypes.tags.Element] with BooleanAsTrueFalse codec") {
       val src = AriaRenderer.render(
         List(
           AriaProperty("aria-pressed", "boolean", Nil, allowUndefined = false)
         )
       )
       assertTrue(
-        src.contains("""val ariaPressed: AttrKey[Boolean] = AttrKey("aria-pressed", Codec.BooleanAsTrueFalse)""")
+        src.contains(
+          """val ariaPressed: AttrKey[Boolean, ascent.domtypes.tags.Element] = AttrKey("aria-pressed", Codec.BooleanAsTrueFalse)"""
+        )
       )
     },
-    test("renders an integer property as AttrKey[Int]") {
+    test("renders an integer property as AttrKey[Int, ascent.domtypes.tags.Element]") {
       val src = AriaRenderer.render(
         List(
           AriaProperty("aria-rowcount", "integer", Nil, allowUndefined = false)
         )
       )
       assertTrue(
-        src.contains("""val ariaRowcount: AttrKey[Int] = AttrKey("aria-rowcount", Codec.IntAsString)""")
+        src.contains(
+          """val ariaRowcount: AttrKey[Int, ascent.domtypes.tags.Element] = AttrKey("aria-rowcount", Codec.IntAsString)"""
+        )
       )
     },
-    test("renders a string-typed property as AttrKey[String]") {
+    test("renders a string-typed property as AttrKey[String, ascent.domtypes.tags.Element]") {
       val src = AriaRenderer.render(
         List(
           AriaProperty("aria-label", "string", Nil, allowUndefined = false)
         )
       )
       assertTrue(
-        src.contains("""val ariaLabel: AttrKey[String] = AttrKey("aria-label", Codec.StringAsIs)""")
+        src.contains(
+          """val ariaLabel: AttrKey[String, ascent.domtypes.tags.Element] = AttrKey("aria-label", Codec.StringAsIs)"""
+        )
       )
     },
-    test("renders id / idlist / token / tokenlist as AttrKey[String]") {
+    test("renders id / idlist / token / tokenlist as AttrKey[String, ascent.domtypes.tags.Element]") {
       val src = AriaRenderer.render(
         List(
           AriaProperty("aria-activedescendant", "id", Nil, allowUndefined = false),
@@ -49,21 +55,31 @@ object AriaRendererSpec extends ZIOSpecDefault:
       )
       assertTrue(
         src.contains(
-          """val ariaActivedescendant: AttrKey[String] = AttrKey("aria-activedescendant", Codec.StringAsIs)"""
+          """val ariaActivedescendant: AttrKey[String, ascent.domtypes.tags.Element] = AttrKey("aria-activedescendant", Codec.StringAsIs)"""
         ),
-        src.contains("""val ariaControls: AttrKey[String] = AttrKey("aria-controls", Codec.StringAsIs)"""),
-        src.contains("""val ariaLive: AttrKey[String] = AttrKey("aria-live", Codec.StringAsIs)"""),
-        src.contains("""val ariaRelevant: AttrKey[String] = AttrKey("aria-relevant", Codec.StringAsIs)"""),
+        src.contains(
+          """val ariaControls: AttrKey[String, ascent.domtypes.tags.Element] = AttrKey("aria-controls", Codec.StringAsIs)"""
+        ),
+        src.contains(
+          """val ariaLive: AttrKey[String, ascent.domtypes.tags.Element] = AttrKey("aria-live", Codec.StringAsIs)"""
+        ),
+        src.contains(
+          """val ariaRelevant: AttrKey[String, ascent.domtypes.tags.Element] = AttrKey("aria-relevant", Codec.StringAsIs)"""
+        ),
       )
     },
-    test("renders a tristate property as AttrKey[Boolean] (common true/false case stays ergonomic)") {
+    test(
+      "renders a tristate property as AttrKey[Boolean, ascent.domtypes.tags.Element] (common true/false case stays ergonomic)"
+    ) {
       val src = AriaRenderer.render(
         List(
           AriaProperty("aria-checked", "tristate", Nil, allowUndefined = false)
         )
       )
       assertTrue(
-        src.contains("""val ariaChecked: AttrKey[Boolean] = AttrKey("aria-checked", Codec.BooleanAsTrueFalse)""")
+        src.contains(
+          """val ariaChecked: AttrKey[Boolean, ascent.domtypes.tags.Element] = AttrKey("aria-checked", Codec.BooleanAsTrueFalse)"""
+        )
       )
     },
     test("camel-cases hyphenated property names: aria-rowindex -> ariaRowindex (not ariaRowIndex)") {
@@ -93,7 +109,7 @@ object AriaRendererSpec extends ZIOSpecDefault:
       // every example app expects `AriaAttrs.role(...)`, so the renderer emits it unconditionally.
       val src = AriaRenderer.render(Nil)
       assertTrue(
-        src.contains("""val role: AttrKey[String] = AttrKey("role", Codec.StringAsIs)""")
+        src.contains("""val role: AttrKey[String, ascent.domtypes.tags.Element] = AttrKey("role", Codec.StringAsIs)""")
       )
     },
   )

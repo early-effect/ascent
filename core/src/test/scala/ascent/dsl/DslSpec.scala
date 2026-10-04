@@ -8,11 +8,11 @@ import zio.test.*
 object DslSpec extends ZIOSpecDefault:
 
   // Inline keys so this spec doesn't depend on the generated Elements/Attrs objects.
-  private val divKey  = ElementKey("div")
-  private val spanKey = ElementKey("span")
-  private val brKey   = VoidElementKey("br")
-  private val idKey   = AttrKey[String]("id", Codec.StringAsIs)
-  private val reqKey  = AttrKey[Boolean]("required", Codec.BooleanAsAttrPresence)
+  private val divKey  = ElementKey[ascent.domtypes.tags.Element]("div")
+  private val spanKey = ElementKey[ascent.domtypes.tags.Element]("span")
+  private val brKey   = VoidElementKey[ascent.domtypes.tags.Element]("br")
+  private val idKey   = AttrKey[String, ascent.domtypes.tags.Element]("id", Codec.StringAsIs)
+  private val reqKey  = AttrKey[Boolean, ascent.domtypes.tags.Element]("required", Codec.BooleanAsAttrPresence)
 
   def spec = suite("DSL")(
     suite("Element constructor")(
@@ -47,15 +47,15 @@ object DslSpec extends ZIOSpecDefault:
           )
       },
       test("a Seq[Arg] flattens into the args list") {
-        val children: Seq[Arg[Any]] = Seq(spanKey("a"), spanKey("b"))
-        val ui                      = divKey(children)
+        val children: Seq[Arg[Any, ascent.domtypes.tags.Element]] = Seq(spanKey("a"), spanKey("b"))
+        val ui                                                    = divKey(children)
         assertTrue(ui.asInstanceOf[UI.Element[Any]].children.size == 2)
       },
       test("Option[Arg] - Some lifts, None becomes Empty") {
         // Widened to Option[Arg] so the Option-to-Arg conversion is the only viable path (not the bare Some case).
-        val present: Option[Arg[Any]] = Some(spanKey("a"))
-        val absent: Option[Arg[Any]]  = None
-        val ui                        = divKey(present, absent)
+        val present: Option[Arg[Any, ascent.domtypes.tags.Element]] = Some(spanKey("a"))
+        val absent: Option[Arg[Any, ascent.domtypes.tags.Element]]  = None
+        val ui                                                      = divKey(present, absent)
         assertTrue(ui.asInstanceOf[UI.Element[Any]].children.size == 1)
       },
       test("a void element accepts attributes but its constructor takes no children") {
@@ -76,16 +76,16 @@ object DslSpec extends ZIOSpecDefault:
     ),
     suite("Attribute lift via AttrKey")(
       test("AttrKey[V](v) yields a StaticAttr through the codec") {
-        assertTrue(idKey("x") == Attr.StaticAttr("id", AttrValue.Str("x")))
+        assertTrue(idKey("x") == Arg.TypedAttrArg(Attr.StaticAttr("id", AttrValue.Str("x"))))
       },
       test("AttrKey[Boolean](false) for presence-coded attrs yields Absent") {
-        assertTrue(reqKey(false) == Attr.StaticAttr("required", AttrValue.Absent))
+        assertTrue(reqKey(false) == Arg.TypedAttrArg(Attr.StaticAttr("required", AttrValue.Absent)))
       },
       test("AttrKey[V](Squawk[V]) yields a ReactiveAttr") {
         for s <- sq("y")
-        yield
-          val attr = idKey(s)
-          assertTrue(attr.isInstanceOf[Attr.ReactiveAttr])
+        yield idKey(s) match
+          case Arg.TypedAttrArg(attr) => assertTrue(attr.isInstanceOf[Attr.ReactiveAttr])
+          case _                      => assertTrue(false)
       },
     ),
     suite("Control-flow helpers")(

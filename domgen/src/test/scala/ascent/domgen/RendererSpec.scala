@@ -11,11 +11,16 @@ object RendererSpec extends ZIOSpecDefault:
   )
 
   private val attrs = List(
-    AttrDef(scalaName = "className", domName = "className", codec = CodecRef.StringAsIs),
-    AttrDef(scalaName = "tabIndex", domName = "tabIndex", codec = CodecRef.IntAsString),
-    AttrDef(scalaName = "required", domName = "required", codec = CodecRef.BooleanAsAttrPresence),
+    AttrDef(scalaName = "className", domName = "className", codec = CodecRef.StringAsIs, elementType = "Element"),
+    AttrDef(scalaName = "tabIndex", domName = "tabIndex", codec = CodecRef.IntAsString, elementType = "Element"),
+    AttrDef(
+      scalaName = "required",
+      domName = "required",
+      codec = CodecRef.BooleanAsAttrPresence,
+      elementType = "Element",
+    ),
     // `type` is a hard Scala keyword: it emits backticked AND must offer a plain alias `typ`.
-    AttrDef(scalaName = "type", domName = "type", codec = CodecRef.StringAsIs),
+    AttrDef(scalaName = "type", domName = "type", codec = CodecRef.StringAsIs, elementType = "Element"),
   )
 
   private val events = List(
@@ -55,10 +60,10 @@ object RendererSpec extends ZIOSpecDefault:
       test("non-void elements emit ElementKey; void elements emit VoidElementKey") {
         val src = Renderer.elements(elements)
         assertTrue(
-          src.contains("""val div: ElementKey = ElementKey("div")"""),
+          src.contains("""val div: ElementKey[HTMLDivElement] = ElementKey("div")"""),
           // void elements get a distinct key type so the DSL can reject children at compile time
-          src.contains("""val input: VoidElementKey = VoidElementKey("input")"""),
-          src.contains("""val br: VoidElementKey = VoidElementKey("br")"""),
+          src.contains("""val input: VoidElementKey[HTMLInputElement] = VoidElementKey("input")"""),
+          src.contains("""val br: VoidElementKey[HTMLBRElement] = VoidElementKey("br")"""),
         )
       },
       test("groups all element vals inside object Elements") {
@@ -70,9 +75,11 @@ object RendererSpec extends ZIOSpecDefault:
       test("emits an AttrKey[V] per attribute, parameterized by the codec's scala value type") {
         val src = Renderer.attrs(attrs)
         assertTrue(
-          src.contains("""val className: AttrKey[String] = AttrKey("className", Codec.StringAsIs)"""),
-          src.contains("""val tabIndex: AttrKey[Int] = AttrKey("tabIndex", Codec.IntAsString)"""),
-          src.contains("""val required: AttrKey[Boolean] = AttrKey("required", Codec.BooleanAsAttrPresence)"""),
+          src.contains("""val className: AttrKey[String, Element] = AttrKey("className", Codec.StringAsIs)"""),
+          src.contains("""val tabIndex: AttrKey[Int, Element] = AttrKey("tabIndex", Codec.IntAsString)"""),
+          src.contains(
+            """val required: AttrKey[Boolean, Element] = AttrKey("required", Codec.BooleanAsAttrPresence)"""
+          ),
         )
       },
       test("groups all attr vals inside object Attrs") {
@@ -82,9 +89,9 @@ object RendererSpec extends ZIOSpecDefault:
       test("a keyword-named attr emits backticked AND a plain-identifier alias pointing at it") {
         val src = Renderer.attrs(attrs)
         assertTrue(
-          src.contains("""val `type`: AttrKey[String] = AttrKey("type", Codec.StringAsIs)"""),
+          src.contains("""val `type`: AttrKey[String, Element] = AttrKey("type", Codec.StringAsIs)"""),
           // ergonomic alias so authors can write `A.typ` instead of A.`type`
-          src.contains("""val typ: AttrKey[String] = `type`"""),
+          src.contains("""val typ: AttrKey[String, Element] = `type`"""),
         )
       },
     ),
@@ -461,10 +468,10 @@ object RendererSpec extends ZIOSpecDefault:
     suite("safety: identifier escaping")(
       test("a scalaName that collides with a Scala keyword is backticked in the emitted val") {
         val keywordAttr = List(
-          AttrDef(scalaName = "type", domName = "type", codec = CodecRef.StringAsIs)
+          AttrDef(scalaName = "type", domName = "type", codec = CodecRef.StringAsIs, elementType = "Element")
         )
         val src = Renderer.attrs(keywordAttr)
-        assertTrue(src.contains("val `type`: AttrKey[String]"))
+        assertTrue(src.contains("val `type`: AttrKey[String, Element]"))
       }
     ),
     suite("dom-types: Enums.scala (real Scala 3 enums, platform-neutral)")(

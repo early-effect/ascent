@@ -7,8 +7,8 @@ package ascent.domgen.aria
   * changes:
   * {{{
   *   object AriaAttrs:
-  *     val ariaLabel: AttrKey[String] = AttrKey("aria-label", Codec.StringAsIs)
-  *     val ariaPressed: AttrKey[Boolean] = AttrKey("aria-pressed", Codec.BooleanAsTrueFalse)
+  *     val ariaLabel: AttrKey[String, ascent.domtypes.tags.Element] = AttrKey("aria-label", Codec.StringAsIs)
+  *     val ariaPressed: AttrKey[Boolean, ascent.domtypes.tags.Element] = AttrKey("aria-pressed", Codec.BooleanAsTrueFalse)
   *     ...
   * }}}
   *
@@ -44,16 +44,16 @@ object AriaRenderer:
        |    * proper. Hand-written here because aria-query doesn't list it (its dataset is
        |    * focused on properties + states); every consumer wants it on the same namespace.
        |    */
-       |  val role: AttrKey[String] = AttrKey("role", Codec.StringAsIs)
+       |  val role: AttrKey[String, ascent.domtypes.tags.Element] = AttrKey("role", Codec.StringAsIs)
        |
        |$ariaLines
        |""".stripMargin
   end render
 
-  /** Render one ARIA property as an `AttrKey[T] = AttrKey("dom-name", codec)` line. */
+  /** Render one ARIA property as an `AttrKey[T, Element]` line. ARIA is global, so the marker is `Element`. */
   private def renderOne(p: AriaProperty): String =
     val (scalaType, codec) = scalaTypeAndCodec(p.`type`)
-    s"""  val ${scalaName(p.name)}: AttrKey[$scalaType] = AttrKey("${p.name}", $codec)"""
+    s"""  val ${scalaName(p.name)}: AttrKey[$scalaType, ascent.domtypes.tags.Element] = AttrKey("${p.name}", $codec)"""
 
   /** Map an aria-query type flag to (Scala type, Codec ref).
     *

@@ -69,7 +69,7 @@ object CssClass:
     * class's CSS (as an [[ascent.ast.Attr.Style]] the mount engine collects into the render's [[StyleRegistry]]).
     * Void-safe — both parts are attributes, so `E.input(Card)` type-checks.
     */
-  given cssClassToArg: Conversion[CssClass, VoidArg[Any]] = cc =>
+  given cssClassToArg: Conversion[CssClass, VoidArg[Any, ascent.domtypes.tags.Element]] = cc =>
     Arg.VoidArgsArg(Seq(Arg.AttrArg(cc.toAttr), Arg.AttrArg(Attr.Style(cc.contributionBlocks))))
 
   /** Drive the `class` attribute from state, string-free: pass a `Squawk[Set[CssClass]]` straight to an element —
@@ -77,8 +77,8 @@ object CssClass:
     * `class` tokens to exactly this set AND records each class's CSS into the render (idempotent), so no separate
     * `.contribute` and no `.className` string-building. Void-safe. See [[ascent.ast.Attr.ReactiveClasses]].
     */
-  given classesToArg: Conversion[ascent.squawk.Squawk[Set[CssClass]], VoidArg[Any]] = src =>
-    Arg.AttrArg(Attr.ReactiveClasses(src.map(_.map(_.asContribution))))
+  given classesToArg: Conversion[ascent.squawk.Squawk[Set[CssClass]], VoidArg[Any, ascent.domtypes.tags.Element]] =
+    src => Arg.AttrArg(Attr.ReactiveClasses(src.map(_.map(_.asContribution))))
 
   /** Per-position styles targeting a specific AST node's structural id.
     *

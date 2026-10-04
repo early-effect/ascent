@@ -64,4 +64,5 @@ object CssScope:
     * the mount engine collects into the render's [[StyleRegistry]]). Contributes no DOM; the scope's selector already
     * targets the element via its structural id. Void-safe.
     */
-  given cssScopeToArg: Conversion[CssScope, VoidArg[Any]] = scope => Arg.AttrArg(Attr.Style(scope.contributionBlocks))
+  given cssScopeToArg: Conversion[CssScope, VoidArg[Any, ascent.domtypes.tags.Element]] =
+    scope => Arg.AttrArg(Attr.Style(scope.contributionBlocks))

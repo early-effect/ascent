@@ -36,7 +36,6 @@ object GeneratorSpec extends ZIOSpecDefault:
       events = evs,
       idl = Webref.mergeIdl(idlA, idlB),
       eventAllowlist = Set("click", "keydown", "input", "abort"), // matches the events fixture
-      strictElements = Set("input"),                              // only input gets per-element typed attrs
     )
 
   def spec = suite("Generator pipeline")(
@@ -47,6 +46,7 @@ object GeneratorSpec extends ZIOSpecDefault:
       yield assertTrue(
         out.files.keySet == Set(
           "dom-types/Elements.scala",
+          "dom-types/tags/Markers.scala",
           "dom-types/Attrs.scala",
           "dom-types/Events.scala",
           "dom-types/Enums.scala",
@@ -117,24 +117,32 @@ object GeneratorSpec extends ZIOSpecDefault:
       yield
         val src = out.files("dom-types/Elements.scala")
         assertTrue(
-          src.contains("""val div: ElementKey = ElementKey("div")"""),
-          src.contains("""val span: ElementKey = ElementKey("span")"""),
-          src.contains("""val br: VoidElementKey = VoidElementKey("br")"""),
-          src.contains("""val input: VoidElementKey = VoidElementKey("input")"""),
+          src.contains("""val div: ElementKey[HTMLDivElement] = ElementKey("div")"""),
+          src.contains("""val span: ElementKey[HTMLSpanElement] = ElementKey("span")"""),
+          src.contains("""val br: VoidElementKey[HTMLBRElement] = VoidElementKey("br")"""),
+          src.contains("""val input: VoidElementKey[HTMLInputElement] = VoidElementKey("input")"""),
         )
     },
-    test("Attrs.scala contains attrs for the strict element walked through IDL inheritance") {
+    test("Attrs.scala types each key at the interface that introduces it") {
       // input's IDL chain (HTMLInputElement -> HTMLElement -> Element) contributes own + inherited attrs.
+      // div/br/span add no IDL of their own in this fixture, so the catalog is that chain.
       for
         input <- inputZ
         out   <- Generator.run(input)
       yield
         val src = out.files("dom-types/Attrs.scala")
         assertTrue(
-          src.contains("""val `type`: AttrKey[String] = AttrKey("type", Codec.StringAsIs)"""),
-          src.contains("""val required: AttrKey[Boolean] = AttrKey("required", Codec.BooleanAsAttrPresence)"""),
-          src.contains("""val hidden: AttrKey[Boolean] = AttrKey("hidden", Codec.BooleanAsAttrPresence)"""),
-          src.contains("""val id: AttrKey[String] = AttrKey("id", Codec.StringAsIs)"""),
+          src.contains("""val `type`: AttrKey[String, HTMLInputElement] = AttrKey("type", Codec.StringAsIs)"""),
+          src.contains(
+            """val required: AttrKey[Boolean, HTMLInputElement] = AttrKey("required", Codec.BooleanAsAttrPresence)"""
+          ),
+          src.contains(
+            """val hidden: AttrKey[Boolean, HTMLElement] = AttrKey("hidden", Codec.BooleanAsAttrPresence)"""
+          ),
+          src.contains("""val id: AttrKey[String, Element] = AttrKey("id", Codec.StringAsIs)"""),
+          out.files("dom-types/tags/Markers.scala").contains("sealed trait Element"),
+          out.files("dom-types/tags/Markers.scala").contains("trait HTMLElement extends Element"),
+          out.files("dom-types/tags/Markers.scala").contains("trait HTMLInputElement extends HTMLElement"),
         )
     },
     test("Events.scala only contains keys for events on the allowlist") {

@@ -83,5 +83,6 @@ object GlobalStyle:
   /** Declare page chrome on an element — `E.body(PageChrome, ...)`. Contributes no DOM; it carries the chrome's blocks
     * as an [[ascent.ast.Attr.Style]] the mount engine collects into the render's [[StyleRegistry]].
     */
-  given globalStyleToArg: Conversion[GlobalStyle, VoidArg[Any]] = gs => Arg.AttrArg(Attr.Style(gs.contributionBlocks))
+  given globalStyleToArg: Conversion[GlobalStyle, VoidArg[Any, ascent.domtypes.tags.Element]] =
+    gs => Arg.AttrArg(Attr.Style(gs.contributionBlocks))
 end GlobalStyle
