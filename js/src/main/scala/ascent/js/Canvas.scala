@@ -3,7 +3,6 @@ package ascent.js
 import ascent.ast.{Attr, UI}
 import ascent.dom
 import ascent.domtypes.{Attrs, AttrValue}
-import ascent.dsl.*
 import zio.*
 
 import scala.scalajs.js
