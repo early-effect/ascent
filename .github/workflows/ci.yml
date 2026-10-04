@@ -77,7 +77,8 @@ jobs:
           node-version: ""
           sbt-disk-cache: "false"
           cache-mode: save
-          cache-epoch: b3004d6f01b67d35
+          purge: ${{ github.event_name == 'pull_request' && contains(github.event.pull_request.labels.*.name, 'purge') }}
+          cache-epoch: "0954d8580ecf699d"
       - name: cache-rehydrate
         run: sbt 'Test/compile'
   test:
@@ -104,7 +105,8 @@ jobs:
           node-version: ""
           sbt-disk-cache: "false"
           cache-mode: save
-          cache-epoch: b3004d6f01b67d35
+          purge: ${{ github.event_name == 'pull_request' && contains(github.event.pull_request.labels.*.name, 'purge') }}
+          cache-epoch: "0954d8580ecf699d"
       - name: Pinned snapshots
         run: echo "::warning title=zipx snapshots::pinned snapshots (rocks.earlyeffect:heddle:0.9.0-SNAPSHOT, rocks.earlyeffect:heddle-brotli:0.9.0-SNAPSHOT, rocks.earlyeffect:heddle-mcp-apps:0.9.0-SNAPSHOT, rocks.earlyeffect:heddle-mcp-apps-frame:0.9.0-SNAPSHOT, rocks.earlyeffect:sbt-zipx:0.17.0-SNAPSHOT)"
       - name: test
@@ -139,7 +141,8 @@ jobs:
           node-version: ""
           sbt-disk-cache: "false"
           cache-mode: restore
-          cache-epoch: b3004d6f01b67d35
+          purge: ${{ github.event_name == 'pull_request' && contains(github.event.pull_request.labels.*.name, 'purge') }}
+          cache-epoch: "0954d8580ecf699d"
       - name: fmt
         run: |
           if [ "$ZIPX_VERIFY_CLEAN_FULL" = "true" ]; then
@@ -172,7 +175,8 @@ jobs:
           node-version: ""
           sbt-disk-cache: "false"
           cache-mode: restore
-          cache-epoch: b3004d6f01b67d35
+          purge: ${{ github.event_name == 'pull_request' && contains(github.event.pull_request.labels.*.name, 'purge') }}
+          cache-epoch: "0954d8580ecf699d"
       - name: workflow-check
         run: |
           if [ "$ZIPX_VERIFY_CLEAN_FULL" = "true" ]; then
@@ -205,7 +209,8 @@ jobs:
           node-version: ""
           sbt-disk-cache: "false"
           cache-mode: restore
-          cache-epoch: b3004d6f01b67d35
+          purge: ${{ github.event_name == 'pull_request' && contains(github.event.pull_request.labels.*.name, 'purge') }}
+          cache-epoch: "0954d8580ecf699d"
       - name: advisories
         run: |
           if [ "$ZIPX_VERIFY_CLEAN_FULL" = "true" ]; then
@@ -242,7 +247,8 @@ jobs:
           node-version: ""
           sbt-disk-cache: "false"
           cache-mode: restore
-          cache-epoch: b3004d6f01b67d35
+          purge: ${{ github.event_name == 'pull_request' && contains(github.event.pull_request.labels.*.name, 'purge') }}
+          cache-epoch: "0954d8580ecf699d"
       - name: Fetch PR base SHA
         run: git fetch --no-tags origin "$ZIPX_MODVER_BASE_SHA"
       - name: modver-suggest
@@ -280,7 +286,8 @@ jobs:
           node-version: ""
           sbt-disk-cache: "false"
           cache-mode: restore
-          cache-epoch: b3004d6f01b67d35
+          purge: ${{ github.event_name == 'pull_request' && contains(github.event.pull_request.labels.*.name, 'purge') }}
+          cache-epoch: "0954d8580ecf699d"
       - name: Fetch PR base SHA
         run: git fetch --no-tags origin "$ZIPX_MODVER_BASE_SHA"
       - name: modver-check
@@ -316,7 +323,8 @@ jobs:
           node-version: ""
           sbt-disk-cache: "false"
           cache-mode: restore
-          cache-epoch: b3004d6f01b67d35
+          purge: ${{ github.event_name == 'pull_request' && contains(github.event.pull_request.labels.*.name, 'purge') }}
+          cache-epoch: "0954d8580ecf699d"
       - name: Set up Node
         uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
         with:
@@ -359,7 +367,8 @@ jobs:
           node-version: ""
           sbt-disk-cache: "false"
           cache-mode: restore
-          cache-epoch: b3004d6f01b67d35
+          purge: ${{ github.event_name == 'pull_request' && contains(github.event.pull_request.labels.*.name, 'purge') }}
+          cache-epoch: "0954d8580ecf699d"
       - name: Install Scala Native build dependencies
         run: sudo apt-get update && sudo apt-get install -y clang libstdc++-12-dev libgc-dev libunwind-dev
       - name: test-native
@@ -394,7 +403,8 @@ jobs:
           node-version: "24"
           sbt-disk-cache: "false"
           cache-mode: restore
-          cache-epoch: b3004d6f01b67d35
+          purge: ${{ github.event_name == 'pull_request' && contains(github.event.pull_request.labels.*.name, 'purge') }}
+          cache-epoch: "0954d8580ecf699d"
       - name: e2e
         run: |
           if [ "$ZIPX_VERIFY_CLEAN_FULL" = "true" ]; then
@@ -404,13 +414,31 @@ jobs:
           fi
         env:
           ZIPX_VERIFY_CLEAN_FULL: ${{ github.event_name == 'pull_request' && contains(github.event.pull_request.labels.*.name, 'clean') }}
+  verify:
+    name: verify
+    runs-on: ubuntu-latest
+    needs:
+      - advisories
+      - e2e
+      - fmt
+      - modver-check
+      - modver-suggest
+      - test
+      - test-js
+      - test-native
+      - workflow-check
+    if: "!cancelled()"
+    steps:
+      - name: Fail when a Verify job failed or was cancelled
+        if: (needs.advisories.result == 'failure' || needs.advisories.result == 'cancelled') || (needs.e2e.result == 'failure' || needs.e2e.result == 'cancelled') || (needs.fmt.result == 'failure' || needs.fmt.result == 'cancelled') || (needs.modver-check.result == 'failure' || needs.modver-check.result == 'cancelled') || (needs.modver-suggest.result == 'failure' || needs.modver-suggest.result == 'cancelled') || (needs.test.result == 'failure' || needs.test.result == 'cancelled') || (needs.test-js.result == 'failure' || needs.test-js.result == 'cancelled') || (needs.test-native.result == 'failure' || needs.test-native.result == 'cancelled') || (needs.workflow-check.result == 'failure' || needs.workflow-check.result == 'cancelled')
+        run: exit 1
   snapshots:
     name: snapshots
     runs-on: ubuntu-latest
     needs:
       - cache-rehydrate
-      - test
-    if: (!cancelled() && needs.cache-rehydrate.result != 'failure' && needs.test.result != 'failure') && ((((github.event_name == 'push') && ((github.ref == 'refs/heads/main'))) || (github.event_name == 'workflow_dispatch')))
+      - verify
+    if: (!cancelled() && needs.cache-rehydrate.result != 'failure' && needs.verify.result != 'failure') && ((((github.event_name == 'push') && ((github.ref == 'refs/heads/main'))) || (github.event_name == 'workflow_dispatch')))
     env:
       COURSIER_TTL: "0s"
       PLAYWRIGHT_BROWSERS_PATH: ${{ github.workspace }}/target/ms-playwright
@@ -430,7 +458,8 @@ jobs:
           node-version: ""
           sbt-disk-cache: "false"
           cache-mode: restore
-          cache-epoch: b3004d6f01b67d35
+          purge: ${{ github.event_name == 'pull_request' && contains(github.event.pull_request.labels.*.name, 'purge') }}
+          cache-epoch: "0954d8580ecf699d"
       - name: snapshots
         run: sbt 'zipxSnapshotPublish'
   snapshots-pr:
@@ -438,8 +467,8 @@ jobs:
     runs-on: ubuntu-latest
     needs:
       - cache-rehydrate
-      - test
-    if: (!cancelled() && needs.cache-rehydrate.result != 'failure' && needs.test.result != 'failure') && (((github.event_name == 'pull_request') && (contains(github.event.pull_request.labels.*.name, 'snapshots'))) && (github.event.pull_request.head.repo.full_name == github.repository))
+      - verify
+    if: (!cancelled() && needs.cache-rehydrate.result != 'failure' && needs.verify.result != 'failure') && (((github.event_name == 'pull_request') && (contains(github.event.pull_request.labels.*.name, 'snapshots'))) && (github.event.pull_request.head.repo.full_name == github.repository))
     env:
       COURSIER_TTL: "0s"
       PLAYWRIGHT_BROWSERS_PATH: ${{ github.workspace }}/target/ms-playwright
@@ -459,7 +488,8 @@ jobs:
           node-version: ""
           sbt-disk-cache: "false"
           cache-mode: restore
-          cache-epoch: b3004d6f01b67d35
+          purge: ${{ github.event_name == 'pull_request' && contains(github.event.pull_request.labels.*.name, 'purge') }}
+          cache-epoch: "0954d8580ecf699d"
       - name: snapshots-pr
         run: sbt 'zipxSnapshotPublish pr'
   docs:

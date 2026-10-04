@@ -2,6 +2,7 @@ package ascent
 
 import ascent.ast.{AscentEvent, Attr, UI}
 import ascent.domtypes.{AttrKey, ElementKey, EventKey, VoidElementKey}
+import ascent.domtypes.tags.Element
 import ascent.squawk.Squawk
 import zio.{Scope, URIO}
 
@@ -25,28 +26,29 @@ package object dsl:
     * `ChildArg` lands in `children`, in source order. Order is preserved so the mount renders attrs and children
     * deterministically.
     */
-  extension (key: ElementKey)
-    def apply[R](args: Arg[R]*): UI[R] =
+  extension [El <: Element](key: ElementKey[El])
+    def apply[R](args: Arg[R, El]*): UI[R] =
       val attrs    = Vector.newBuilder[Attr[R]]
       val children = Vector.newBuilder[UI[R]]
       collectArgs(args)(attrs += _, children += _)
       UI.Element(key.domName, attrs.result(), children.result())
 
-  /** A void element accepts attribute/event args ONLY — `VoidArg*`. Passing a child does not type-check (children lift
+  /** A void element accepts attribute/event args only: `VoidArg*`. Passing a child does not type-check (children lift
     * to a child-bearing `Arg`, never a `VoidArg`).
     */
-  extension (key: VoidElementKey)
-    def apply[R](args: VoidArg[R]*): UI[R] =
+  extension [El <: Element](key: VoidElementKey[El])
+    def apply[R](args: VoidArg[R, El]*): UI[R] =
       val attrs = Vector.newBuilder[Attr[R]]
       collectVoidArgs(args)(attrs += _)
       UI.Element(key.domName, attrs.result(), Vector.empty)
 
   /** Make attribute keys callable. `idKey("x")` lifts via the codec to a [[Attr.StaticAttr]]; `idKey(squawk)` lifts to
-    * a [[Attr.ReactiveAttr]] that maps the codec on each emit.
+    * a [[Attr.ReactiveAttr]] that maps the codec on each emit. The result is a [[dsl.Arg.TypedAttrArg]] so the key's
+    * element marker is checked at the element constructor.
     */
-  extension [V](key: AttrKey[V])
-    def apply(value: V): Attr[Any]       = Attr.from(key, value)
-    def apply(src: Squawk[V]): Attr[Any] = Attr.fromSquawk(key, src)
+  extension [V, E <: Element](key: AttrKey[V, E])
+    def apply(value: V): VoidArg[Any, E]       = Arg.TypedAttrArg(Attr.from(key, value))
+    def apply(src: Squawk[V]): VoidArg[Any, E] = Arg.TypedAttrArg(Attr.fromSquawk(key, src))
 
   /** Make event keys callable: `Events.onInput(e => ...)` lifts to an [[Attr.EventHandler]] on the key's DOM event
     * name. The handler is total — `URIO[R, Unit]` — so failures are discharged with ZIO's combinators rather than
@@ -106,7 +108,7 @@ package object dsl:
   /** Group several children as one [[UI.Fragment]] — siblings without a wrapping element. Args are flattened as in the
     * element constructor; non-child args (attributes) are ignored — a fragment has no element to attach them to.
     */
-  def fragment[R](args: Arg[R]*): UI[R] =
+  def fragment[R](args: Arg[R, Element]*): UI[R] =
     val children = Vector.newBuilder[UI[R]]
     collectArgs(args)(_ => (), children += _)
     UI.Fragment(children.result())
@@ -125,20 +127,22 @@ package object dsl:
 
   // --- arg flattening (shared by element / fragment constructors) ---
 
-  private def collectArgs[R](args: Seq[Arg[R]])(onAttr: Attr[R] => Unit, onChild: UI[R] => Unit): Unit =
-    def collect(a: Arg[R]): Unit = a match
-      case Arg.Empty             => ()
-      case Arg.ChildArg(ui)      => onChild(ui)
-      case Arg.AttrArg(attr)     => onAttr(attr)
-      case Arg.ArgsArg(more)     => more.foreach(collect)
-      case Arg.VoidArgsArg(more) => more.foreach(collect)
+  private def collectArgs[R, E](args: Seq[Arg[R, E]])(onAttr: Attr[R] => Unit, onChild: UI[R] => Unit): Unit =
+    def collect(a: Arg[R, E]): Unit = a match
+      case Arg.Empty              => ()
+      case Arg.ChildArg(ui)       => onChild(ui)
+      case Arg.AttrArg(attr)      => onAttr(attr)
+      case Arg.TypedAttrArg(attr) => onAttr(attr)
+      case Arg.ArgsArg(more)      => more.foreach(collect)
+      case Arg.VoidArgsArg(more)  => more.foreach(arg => collect(arg))
     args.foreach(collect)
 
-  private def collectVoidArgs[R](args: Seq[VoidArg[R]])(onAttr: Attr[R] => Unit): Unit =
-    def collect(a: VoidArg[R]): Unit = a match
-      case Arg.Empty             => ()
-      case Arg.AttrArg(attr)     => onAttr(attr)
-      case Arg.VoidArgsArg(more) => more.foreach(collect)
+  private def collectVoidArgs[R, E](args: Seq[VoidArg[R, E]])(onAttr: Attr[R] => Unit): Unit =
+    def collect(a: VoidArg[R, E]): Unit = a match
+      case Arg.Empty              => ()
+      case Arg.AttrArg(attr)      => onAttr(attr)
+      case Arg.TypedAttrArg(attr) => onAttr(attr)
+      case Arg.VoidArgsArg(more)  => more.foreach(collect)
     args.foreach(collect)
 
 end dsl

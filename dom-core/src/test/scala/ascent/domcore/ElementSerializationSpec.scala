@@ -1,6 +1,6 @@
 package ascent.domcore
 
-import ascent.domcore.generated.{Document, Element}
+import ascent.domcore.generated.{Document, Element, HTMLFormElement, HTMLInputElement, HTMLMetaElement}
 import zio.test.*
 
 /** `innerHTML` / `outerHTML` on the in-memory [[Element]] and the escaping in [[HtmlSerialize]], pinning the compact
@@ -111,6 +111,89 @@ object ElementSerializationSpec extends ZIOSpecDefault:
         val p = doc.createElement("p", "")
         p.appendChild(doc.createTextNode("a < b"))
         assertTrue(Serialize.pretty(p) == "<p>a &lt; b</p>")
+      },
+    ),
+    suite("reflected content-attribute names")(
+      test("meta httpEquiv and content serialize as http-equiv and content") {
+        doc.createElement("meta", "") match
+          case meta: HTMLMetaElement =>
+            meta.httpEquiv = "refresh"
+            meta.content = "0"
+            val html = Serialize.compact(meta)
+            assertTrue(html.contains("""http-equiv="refresh""""), html.contains("""content="0""""))
+          case other =>
+            assertTrue(other.isInstanceOf[HTMLMetaElement])
+      },
+      test("form acceptCharset serializes as accept-charset") {
+        doc.createElement("form", "") match
+          case form: HTMLFormElement =>
+            form.acceptCharset = "utf-8"
+            assertTrue(Serialize.compact(form) == """<form accept-charset="utf-8"></form>""")
+          case other =>
+            assertTrue(other.isInstanceOf[HTMLFormElement])
+      },
+      test("defaultChecked writes checked; the checked property does not") {
+        val withDefault = doc.createElement("input", "") match
+          case input: HTMLInputElement =>
+            input.defaultChecked = true
+            Serialize.compact(input)
+          case other =>
+            other.tagName
+        val withProperty = doc.createElement("input", "") match
+          case input: HTMLInputElement =>
+            input.checked = true
+            Serialize.compact(input)
+          case other =>
+            other.tagName
+        assertTrue(withDefault == """<input checked="">""", withProperty == "<input>")
+      },
+    ),
+    suite("Document serialization")(
+      test("a plain document has no doctype") {
+        assertTrue(doc.doctype == null)
+      },
+      test("an HTML doctype plus an html child starts with <!DOCTYPE html><html") {
+        val page = ascent.domcore.generated.DocumentMemory()
+        page.appendChild(DocumentTypeOverrides.html)
+        page.appendChild(page.createElement("html", ""))
+        val name = page.doctype match
+          case null => ""
+          case dt   => dt.name
+        val compact = Serialize.compact(page)
+        val pretty  = Serialize.pretty(page)
+        assertTrue(
+          name == "html",
+          compact.startsWith("<!DOCTYPE html><html"),
+          pretty.startsWith("<!DOCTYPE html>\n<html"),
+        )
+      },
+      test("an element and no doctype has no <!DOCTYPE") {
+        val page = ascent.domcore.generated.DocumentMemory()
+        page.appendChild(page.createElement("div", ""))
+        val compact = Serialize.compact(page)
+        assertTrue(compact == "<div></div>", !compact.contains("<!DOCTYPE"))
+      },
+    ),
+    suite("raw text")(
+      test("a script keeps a literal < and spells </script as <\\/script") {
+        val script = doc.createElement("script", "")
+        script.appendChild(doc.createTextNode("if (a < b) x;</SCRIPT>"))
+        assertTrue(Serialize.compact(script) == "<script>if (a < b) x;<\\/SCRIPT></script>")
+      },
+      test("a style spells </style as <\\/style and keeps a literal <") {
+        val style = doc.createElement("style", "")
+        style.appendChild(doc.createTextNode("a < b;</StYlE>"))
+        assertTrue(Serialize.compact(style) == "<style>a < b;<\\/StYlE></style>")
+      },
+      test("a paragraph still escapes <") {
+        val p = doc.createElement("p", "")
+        p.appendChild(doc.createTextNode("a < b"))
+        assertTrue(Serialize.compact(p) == "<p>a &lt; b</p>")
+      },
+      test("pretty script keeps a literal <") {
+        val script = doc.createElement("script", "")
+        script.appendChild(doc.createTextNode("a < b"))
+        assertTrue(Serialize.pretty(script) == "<script>a < b</script>")
       },
     ),
   )

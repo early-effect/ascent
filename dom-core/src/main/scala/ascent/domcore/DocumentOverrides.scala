@@ -1,7 +1,17 @@
 package ascent.domcore
 
 import ascent.css.Sel
-import ascent.domcore.generated.{Comment, Document, Element, ElementFactory, HTMLElement, HTMLHeadElement, Node, Text}
+import ascent.domcore.generated.{
+  Comment,
+  Document,
+  DocumentType,
+  Element,
+  ElementFactory,
+  HTMLElement,
+  HTMLHeadElement,
+  Node,
+  Text,
+}
 
 // `Matchable[Element]` lives in ElementOverrides' companion object — see the note there for why
 // implicit search doesn't find it automatically here.
@@ -44,6 +54,12 @@ trait DocumentOverrides:
       case cb: NodeMemoryBase => cb.ownerDocumentRef = self
       case _                  => ()
     c
+
+  /** The first `DocumentType` child, or `null` when this document has none. A fragment document is constructed with no
+    * doctype; document render appends one before mount. Same kernel null as [[documentElement]].
+    */
+  def doctype: DocumentType =
+    self.childList.collectFirst { case dt: DocumentType => dt }.getOrElse(null)
 
   def documentElement: Element =
     self.childList.collectFirst { case e: Element => e }.getOrElse(null)

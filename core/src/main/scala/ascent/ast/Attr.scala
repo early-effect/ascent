@@ -87,10 +87,10 @@ object Attr:
     * per-attribute serialization (presence-flag booleans, integer stringification, etc.) so the lifted result is
     * uniform across attribute kinds.
     */
-  def from[V](key: AttrKey[V], value: V): Attr[Any] =
+  def from[V](key: AttrKey[V, ?], value: V): Attr[Any] =
     StaticAttr(key.domName, key.encode(value))
 
   /** Lift an [[AttrKey]] + a Squawk into a [[ReactiveAttr]] that maps the codec on each emit. */
-  def fromSquawk[V](key: AttrKey[V], src: Squawk[V]): ReactiveAttr =
+  def fromSquawk[V](key: AttrKey[V, ?], src: Squawk[V]): ReactiveAttr =
     ReactiveAttr(key.domName, src.map(key.encode))
 end Attr

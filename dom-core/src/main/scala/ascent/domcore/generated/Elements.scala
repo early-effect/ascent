@@ -1727,6 +1727,15 @@ trait HTMLAreaElement extends HTMLElement:
   def target_=(value: String): Unit
 end HTMLAreaElement
 
+trait DocumentType extends Node:
+  def name: String
+  def publicId: String
+  def systemId: String
+  def before(nodes: Node | String): Unit
+  def after(nodes: Node | String): Unit
+  def replaceWith(nodes: Node | String): Unit
+  def remove(): Unit
+
 trait CharacterData extends Node:
   def data: String
   def data_=(value: String): Unit
@@ -2570,7 +2579,7 @@ trait Document extends Node:
   def charset: String
   def inputEncoding: String
   def contentType: String
-  def doctype: ascent.domcore.PlatformOpaque
+  def doctype: DocumentType
   def documentElement: Element
   def fullscreenEnabled: Boolean
   def fullscreen: Boolean

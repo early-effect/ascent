@@ -43,8 +43,9 @@ object as an element arg; `E.div(Card, "hello")`.
       md"""
 Mount collects every `CssClass` / style attr into a per-render `StyleRegistry`. The JS entry
 (`AscentApp.mount`) supplies `DomStyleSink`; SSR (`Html.renderPage`) snapshots CSS into a string
-beside the markup. Two mounts never share a registry, but both dedup into the same `<head>` by
-class key.
+beside the markup. `Html.renderDocument` does the same, and `StylePlacement.InlineInHead` also
+appends that CSS as one `style` element in `head`. Two mounts never share a registry, but both
+dedup into the same `<head>` by class key.
 """,
       example {
         E.p("See ", E.a(A.href("html.html"), "HTML / SSR"), " for ", E.code("renderPage"), ".")

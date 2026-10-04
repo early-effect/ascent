@@ -90,6 +90,26 @@ object WebrefParseSpec extends ZIOSpecDefault:
           val byName = idl.interfaces("HTMLInputElement").attributes.map(a => a.name -> a.reflected).toMap
           assertTrue(byName("required") == false)
       },
+      test("[Reflect=\"http-equiv\"] decodes to the content-attribute name, quotes stripped") {
+        for idl <- Webref.parseIdl("""{
+          "idlparsed": { "idlNames": { "HTMLMetaElement": { "type": "interface", "name": "HTMLMetaElement", "members": [
+            { "type": "attribute", "name": "httpEquiv", "idlType": { "idlType": "DOMString" }, "extAttrs": [
+              { "type": "extended-attribute", "name": "Reflect", "rhs": { "type": "string", "value": "\"http-equiv\"" } }
+            ] },
+            { "type": "attribute", "name": "content", "idlType": { "idlType": "DOMString" }, "extAttrs": [
+              { "type": "extended-attribute", "name": "Reflect", "rhs": null }
+            ] }
+          ] } } }
+        }""")
+        yield
+          val byName = idl.interfaces("HTMLMetaElement").attributes.map(a => a.name -> a).toMap
+          assertTrue(
+            byName("httpEquiv").reflected,
+            byName("httpEquiv").reflectAs.contains("http-equiv"),
+            byName("content").reflected,
+            byName("content").reflectAs.isEmpty,
+          )
+      },
       test("an attribute with a missing extAttrs field defaults to reflected = false, not a decode failure") {
         // The decoder must tolerate a totally absent extAttrs field — it defaults to Nil on RawMember.
         for idl <- Webref.parseIdl("""{

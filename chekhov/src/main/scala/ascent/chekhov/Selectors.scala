@@ -1,5 +1,6 @@
 package ascent.chekhov
 
+import ascent.domtypes.tags.Element
 import ascent.domtypes.{ElementKey, VoidElementKey}
 
 /** CSS selector fragments built from the HTML lattice. No live DOM, no Playwright. */
@@ -15,11 +16,11 @@ object Selectors:
   def taggedSelector(tagName: String, testId: String): String =
     s"${tagName}${testIdSelector(testId)}"
 
-  def taggedTestId(testId: String, tag: ElementKey | VoidElementKey): String =
-    val name = tag match
-      case k: ElementKey     => k.domName
-      case k: VoidElementKey => k.domName
-    taggedSelector(name, testId)
+  def taggedTestId[E <: Element](testId: String, tag: ElementKey[E]): String =
+    taggedSelector(tag.domName, testId)
+
+  def taggedTestId[E <: Element](testId: String, tag: VoidElementKey[E]): String =
+    taggedSelector(tag.domName, testId)
 
   def placeholderSelector(tagName: String, text: String): String =
     s"""${tagName}[placeholder="${escapeAttr(text)}"]"""

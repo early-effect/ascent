@@ -416,6 +416,45 @@ object DefBuilderSpec extends ZIOSpecDefault:
           byScala("id") == "id",
         )
       },
+      test("a Reflect rhs is the content-attribute name, and the canonical IDL name wins a shared one") {
+        val syntheticIdl = Webref.Idl(
+          Map(
+            "HTMLInputElement" -> Webref.IdlInterface(
+              name = "HTMLInputElement",
+              inheritance = None,
+              attributes = List(
+                Webref.IdlAttribute(
+                  "defaultChecked",
+                  "boolean",
+                  reflected = true,
+                  reflectAs = Some("checked"),
+                ),
+                Webref.IdlAttribute("checked", "boolean"),
+                Webref.IdlAttribute(
+                  "httpEquiv",
+                  "DOMString",
+                  reflected = true,
+                  reflectAs = Some("http-equiv"),
+                ),
+              ),
+            )
+          )
+        )
+        val byScala =
+          DefBuilder.attributesFor("HTMLInputElement", syntheticIdl).map(a => a.scalaName -> a.domName).toMap
+        assertTrue(
+          byScala.get("checked").contains("checked"),
+          !byScala.contains("defaultChecked"),
+          byScala.get("httpEquiv").contains("http-equiv"),
+        )
+      },
+      test("a bare Reflect keeps the lowercased IDL name") {
+        assertTrue(
+          DefBuilder.htmlAttributeName("content", None) == "content",
+          DefBuilder.htmlAttributeName("acceptCharset", Some("accept-charset")) == "accept-charset",
+          DefBuilder.htmlAttributeName("className", None) == "class",
+        )
+      },
     ),
     suite("event defs + facade mapping")(
       test("maps each event interface to our ascent.dom facade type string") {

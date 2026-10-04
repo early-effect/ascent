@@ -77,8 +77,8 @@ class SVGStopElementMemory extends SVGElementMemory with SVGStopElement:
 class HTMLMetaElementMemory extends HTMLElementMemory with HTMLMetaElement:
   def name: String                     = attributeMap.getOrElse("name", "")
   def name_=(value: String): Unit      = attributeMap.set("name", value)
-  def httpEquiv: String                = attributeMap.getOrElse("httpequiv", "")
-  def httpEquiv_=(value: String): Unit = attributeMap.set("httpequiv", value)
+  def httpEquiv: String                = attributeMap.getOrElse("http-equiv", "")
+  def httpEquiv_=(value: String): Unit = attributeMap.set("http-equiv", value)
   def content: String                  = attributeMap.getOrElse("content", "")
   def content_=(value: String): Unit   = attributeMap.set("content", value)
   def media: String                    = attributeMap.getOrElse("media", "")
@@ -213,106 +213,106 @@ class ElementMemory extends NodeMemory with Element with ElementOverrides:
   def role_=(value: String): Unit                                      = attributeMap.set("role", value)
   def ariaActiveDescendantElement: Element                             = ???
   def ariaActiveDescendantElement_=(value: Element): Unit              = ???
-  def ariaAtomic: String                                               = attributeMap.getOrElse("ariaatomic", "")
-  def ariaAtomic_=(value: String): Unit                                = attributeMap.set("ariaatomic", value)
-  def ariaAutoComplete: String                                         = attributeMap.getOrElse("ariaautocomplete", "")
-  def ariaAutoComplete_=(value: String): Unit                          = attributeMap.set("ariaautocomplete", value)
-  def ariaBrailleLabel: String                                         = attributeMap.getOrElse("ariabraillelabel", "")
-  def ariaBrailleLabel_=(value: String): Unit                          = attributeMap.set("ariabraillelabel", value)
-  def ariaBrailleRoleDescription: String                     = attributeMap.getOrElse("ariabrailleroledescription", "")
-  def ariaBrailleRoleDescription_=(value: String): Unit      = attributeMap.set("ariabrailleroledescription", value)
-  def ariaBusy: String                                       = attributeMap.getOrElse("ariabusy", "")
-  def ariaBusy_=(value: String): Unit                        = attributeMap.set("ariabusy", value)
-  def ariaChecked: String                                    = attributeMap.getOrElse("ariachecked", "")
-  def ariaChecked_=(value: String): Unit                     = attributeMap.set("ariachecked", value)
-  def ariaColCount: String                                   = attributeMap.getOrElse("ariacolcount", "")
-  def ariaColCount_=(value: String): Unit                    = attributeMap.set("ariacolcount", value)
-  def ariaColIndex: String                                   = attributeMap.getOrElse("ariacolindex", "")
-  def ariaColIndex_=(value: String): Unit                    = attributeMap.set("ariacolindex", value)
-  def ariaColIndexText: String                               = attributeMap.getOrElse("ariacolindextext", "")
-  def ariaColIndexText_=(value: String): Unit                = attributeMap.set("ariacolindextext", value)
-  def ariaColSpan: String                                    = attributeMap.getOrElse("ariacolspan", "")
-  def ariaColSpan_=(value: String): Unit                     = attributeMap.set("ariacolspan", value)
+  def ariaAtomic: String                                               = attributeMap.getOrElse("aria-atomic", "")
+  def ariaAtomic_=(value: String): Unit                                = attributeMap.set("aria-atomic", value)
+  def ariaAutoComplete: String                                         = attributeMap.getOrElse("aria-autocomplete", "")
+  def ariaAutoComplete_=(value: String): Unit                          = attributeMap.set("aria-autocomplete", value)
+  def ariaBrailleLabel: String                                         = attributeMap.getOrElse("aria-braillelabel", "")
+  def ariaBrailleLabel_=(value: String): Unit                          = attributeMap.set("aria-braillelabel", value)
+  def ariaBrailleRoleDescription: String                     = attributeMap.getOrElse("aria-brailleroledescription", "")
+  def ariaBrailleRoleDescription_=(value: String): Unit      = attributeMap.set("aria-brailleroledescription", value)
+  def ariaBusy: String                                       = attributeMap.getOrElse("aria-busy", "")
+  def ariaBusy_=(value: String): Unit                        = attributeMap.set("aria-busy", value)
+  def ariaChecked: String                                    = attributeMap.getOrElse("aria-checked", "")
+  def ariaChecked_=(value: String): Unit                     = attributeMap.set("aria-checked", value)
+  def ariaColCount: String                                   = attributeMap.getOrElse("aria-colcount", "")
+  def ariaColCount_=(value: String): Unit                    = attributeMap.set("aria-colcount", value)
+  def ariaColIndex: String                                   = attributeMap.getOrElse("aria-colindex", "")
+  def ariaColIndex_=(value: String): Unit                    = attributeMap.set("aria-colindex", value)
+  def ariaColIndexText: String                               = attributeMap.getOrElse("aria-colindextext", "")
+  def ariaColIndexText_=(value: String): Unit                = attributeMap.set("aria-colindextext", value)
+  def ariaColSpan: String                                    = attributeMap.getOrElse("aria-colspan", "")
+  def ariaColSpan_=(value: String): Unit                     = attributeMap.set("aria-colspan", value)
   def ariaControlsElements: List[Element]                    = ???
   def ariaControlsElements_=(value: List[Element]): Unit     = ???
-  def ariaCurrent: String                                    = attributeMap.getOrElse("ariacurrent", "")
-  def ariaCurrent_=(value: String): Unit                     = attributeMap.set("ariacurrent", value)
+  def ariaCurrent: String                                    = attributeMap.getOrElse("aria-current", "")
+  def ariaCurrent_=(value: String): Unit                     = attributeMap.set("aria-current", value)
   def ariaDescribedByElements: List[Element]                 = ???
   def ariaDescribedByElements_=(value: List[Element]): Unit  = ???
-  def ariaDescription: String                                = attributeMap.getOrElse("ariadescription", "")
-  def ariaDescription_=(value: String): Unit                 = attributeMap.set("ariadescription", value)
+  def ariaDescription: String                                = attributeMap.getOrElse("aria-description", "")
+  def ariaDescription_=(value: String): Unit                 = attributeMap.set("aria-description", value)
   def ariaDetailsElements: List[Element]                     = ???
   def ariaDetailsElements_=(value: List[Element]): Unit      = ???
-  def ariaDisabled: String                                   = attributeMap.getOrElse("ariadisabled", "")
-  def ariaDisabled_=(value: String): Unit                    = attributeMap.set("ariadisabled", value)
+  def ariaDisabled: String                                   = attributeMap.getOrElse("aria-disabled", "")
+  def ariaDisabled_=(value: String): Unit                    = attributeMap.set("aria-disabled", value)
   def ariaErrorMessageElements: List[Element]                = ???
   def ariaErrorMessageElements_=(value: List[Element]): Unit = ???
-  def ariaExpanded: String                                   = attributeMap.getOrElse("ariaexpanded", "")
-  def ariaExpanded_=(value: String): Unit                    = attributeMap.set("ariaexpanded", value)
+  def ariaExpanded: String                                   = attributeMap.getOrElse("aria-expanded", "")
+  def ariaExpanded_=(value: String): Unit                    = attributeMap.set("aria-expanded", value)
   def ariaFlowToElements: List[Element]                      = ???
   def ariaFlowToElements_=(value: List[Element]): Unit       = ???
-  def ariaHasPopup: String                                   = attributeMap.getOrElse("ariahaspopup", "")
-  def ariaHasPopup_=(value: String): Unit                    = attributeMap.set("ariahaspopup", value)
-  def ariaHidden: String                                     = attributeMap.getOrElse("ariahidden", "")
-  def ariaHidden_=(value: String): Unit                      = attributeMap.set("ariahidden", value)
-  def ariaInvalid: String                                    = attributeMap.getOrElse("ariainvalid", "")
-  def ariaInvalid_=(value: String): Unit                     = attributeMap.set("ariainvalid", value)
-  def ariaKeyShortcuts: String                               = attributeMap.getOrElse("ariakeyshortcuts", "")
-  def ariaKeyShortcuts_=(value: String): Unit                = attributeMap.set("ariakeyshortcuts", value)
-  def ariaLabel: String                                      = attributeMap.getOrElse("arialabel", "")
-  def ariaLabel_=(value: String): Unit                       = attributeMap.set("arialabel", value)
+  def ariaHasPopup: String                                   = attributeMap.getOrElse("aria-haspopup", "")
+  def ariaHasPopup_=(value: String): Unit                    = attributeMap.set("aria-haspopup", value)
+  def ariaHidden: String                                     = attributeMap.getOrElse("aria-hidden", "")
+  def ariaHidden_=(value: String): Unit                      = attributeMap.set("aria-hidden", value)
+  def ariaInvalid: String                                    = attributeMap.getOrElse("aria-invalid", "")
+  def ariaInvalid_=(value: String): Unit                     = attributeMap.set("aria-invalid", value)
+  def ariaKeyShortcuts: String                               = attributeMap.getOrElse("aria-keyshortcuts", "")
+  def ariaKeyShortcuts_=(value: String): Unit                = attributeMap.set("aria-keyshortcuts", value)
+  def ariaLabel: String                                      = attributeMap.getOrElse("aria-label", "")
+  def ariaLabel_=(value: String): Unit                       = attributeMap.set("aria-label", value)
   def ariaLabelledByElements: List[Element]                  = ???
   def ariaLabelledByElements_=(value: List[Element]): Unit   = ???
-  def ariaLevel: String                                      = attributeMap.getOrElse("arialevel", "")
-  def ariaLevel_=(value: String): Unit                       = attributeMap.set("arialevel", value)
-  def ariaLive: String                                       = attributeMap.getOrElse("arialive", "")
-  def ariaLive_=(value: String): Unit                        = attributeMap.set("arialive", value)
-  def ariaModal: String                                      = attributeMap.getOrElse("ariamodal", "")
-  def ariaModal_=(value: String): Unit                       = attributeMap.set("ariamodal", value)
-  def ariaMultiLine: String                                  = attributeMap.getOrElse("ariamultiline", "")
-  def ariaMultiLine_=(value: String): Unit                   = attributeMap.set("ariamultiline", value)
-  def ariaMultiSelectable: String                            = attributeMap.getOrElse("ariamultiselectable", "")
-  def ariaMultiSelectable_=(value: String): Unit             = attributeMap.set("ariamultiselectable", value)
-  def ariaOrientation: String                                = attributeMap.getOrElse("ariaorientation", "")
-  def ariaOrientation_=(value: String): Unit                 = attributeMap.set("ariaorientation", value)
+  def ariaLevel: String                                      = attributeMap.getOrElse("aria-level", "")
+  def ariaLevel_=(value: String): Unit                       = attributeMap.set("aria-level", value)
+  def ariaLive: String                                       = attributeMap.getOrElse("aria-live", "")
+  def ariaLive_=(value: String): Unit                        = attributeMap.set("aria-live", value)
+  def ariaModal: String                                      = attributeMap.getOrElse("aria-modal", "")
+  def ariaModal_=(value: String): Unit                       = attributeMap.set("aria-modal", value)
+  def ariaMultiLine: String                                  = attributeMap.getOrElse("aria-multiline", "")
+  def ariaMultiLine_=(value: String): Unit                   = attributeMap.set("aria-multiline", value)
+  def ariaMultiSelectable: String                            = attributeMap.getOrElse("aria-multiselectable", "")
+  def ariaMultiSelectable_=(value: String): Unit             = attributeMap.set("aria-multiselectable", value)
+  def ariaOrientation: String                                = attributeMap.getOrElse("aria-orientation", "")
+  def ariaOrientation_=(value: String): Unit                 = attributeMap.set("aria-orientation", value)
   def ariaOwnsElements: List[Element]                        = ???
   def ariaOwnsElements_=(value: List[Element]): Unit         = ???
-  def ariaPlaceholder: String                                = attributeMap.getOrElse("ariaplaceholder", "")
-  def ariaPlaceholder_=(value: String): Unit                 = attributeMap.set("ariaplaceholder", value)
-  def ariaPosInSet: String                                   = attributeMap.getOrElse("ariaposinset", "")
-  def ariaPosInSet_=(value: String): Unit                    = attributeMap.set("ariaposinset", value)
-  def ariaPressed: String                                    = attributeMap.getOrElse("ariapressed", "")
-  def ariaPressed_=(value: String): Unit                     = attributeMap.set("ariapressed", value)
-  def ariaReadOnly: String                                   = attributeMap.getOrElse("ariareadonly", "")
-  def ariaReadOnly_=(value: String): Unit                    = attributeMap.set("ariareadonly", value)
-  def ariaRelevant: String                                   = attributeMap.getOrElse("ariarelevant", "")
-  def ariaRelevant_=(value: String): Unit                    = attributeMap.set("ariarelevant", value)
-  def ariaRequired: String                                   = attributeMap.getOrElse("ariarequired", "")
-  def ariaRequired_=(value: String): Unit                    = attributeMap.set("ariarequired", value)
-  def ariaRoleDescription: String                            = attributeMap.getOrElse("ariaroledescription", "")
-  def ariaRoleDescription_=(value: String): Unit             = attributeMap.set("ariaroledescription", value)
-  def ariaRowCount: String                                   = attributeMap.getOrElse("ariarowcount", "")
-  def ariaRowCount_=(value: String): Unit                    = attributeMap.set("ariarowcount", value)
-  def ariaRowIndex: String                                   = attributeMap.getOrElse("ariarowindex", "")
-  def ariaRowIndex_=(value: String): Unit                    = attributeMap.set("ariarowindex", value)
-  def ariaRowIndexText: String                               = attributeMap.getOrElse("ariarowindextext", "")
-  def ariaRowIndexText_=(value: String): Unit                = attributeMap.set("ariarowindextext", value)
-  def ariaRowSpan: String                                    = attributeMap.getOrElse("ariarowspan", "")
-  def ariaRowSpan_=(value: String): Unit                     = attributeMap.set("ariarowspan", value)
-  def ariaSelected: String                                   = attributeMap.getOrElse("ariaselected", "")
-  def ariaSelected_=(value: String): Unit                    = attributeMap.set("ariaselected", value)
-  def ariaSetSize: String                                    = attributeMap.getOrElse("ariasetsize", "")
-  def ariaSetSize_=(value: String): Unit                     = attributeMap.set("ariasetsize", value)
-  def ariaSort: String                                       = attributeMap.getOrElse("ariasort", "")
-  def ariaSort_=(value: String): Unit                        = attributeMap.set("ariasort", value)
-  def ariaValueMax: String                                   = attributeMap.getOrElse("ariavaluemax", "")
-  def ariaValueMax_=(value: String): Unit                    = attributeMap.set("ariavaluemax", value)
-  def ariaValueMin: String                                   = attributeMap.getOrElse("ariavaluemin", "")
-  def ariaValueMin_=(value: String): Unit                    = attributeMap.set("ariavaluemin", value)
-  def ariaValueNow: String                                   = attributeMap.getOrElse("ariavaluenow", "")
-  def ariaValueNow_=(value: String): Unit                    = attributeMap.set("ariavaluenow", value)
-  def ariaValueText: String                                  = attributeMap.getOrElse("ariavaluetext", "")
-  def ariaValueText_=(value: String): Unit                   = attributeMap.set("ariavaluetext", value)
+  def ariaPlaceholder: String                                = attributeMap.getOrElse("aria-placeholder", "")
+  def ariaPlaceholder_=(value: String): Unit                 = attributeMap.set("aria-placeholder", value)
+  def ariaPosInSet: String                                   = attributeMap.getOrElse("aria-posinset", "")
+  def ariaPosInSet_=(value: String): Unit                    = attributeMap.set("aria-posinset", value)
+  def ariaPressed: String                                    = attributeMap.getOrElse("aria-pressed", "")
+  def ariaPressed_=(value: String): Unit                     = attributeMap.set("aria-pressed", value)
+  def ariaReadOnly: String                                   = attributeMap.getOrElse("aria-readonly", "")
+  def ariaReadOnly_=(value: String): Unit                    = attributeMap.set("aria-readonly", value)
+  def ariaRelevant: String                                   = attributeMap.getOrElse("aria-relevant", "")
+  def ariaRelevant_=(value: String): Unit                    = attributeMap.set("aria-relevant", value)
+  def ariaRequired: String                                   = attributeMap.getOrElse("aria-required", "")
+  def ariaRequired_=(value: String): Unit                    = attributeMap.set("aria-required", value)
+  def ariaRoleDescription: String                            = attributeMap.getOrElse("aria-roledescription", "")
+  def ariaRoleDescription_=(value: String): Unit             = attributeMap.set("aria-roledescription", value)
+  def ariaRowCount: String                                   = attributeMap.getOrElse("aria-rowcount", "")
+  def ariaRowCount_=(value: String): Unit                    = attributeMap.set("aria-rowcount", value)
+  def ariaRowIndex: String                                   = attributeMap.getOrElse("aria-rowindex", "")
+  def ariaRowIndex_=(value: String): Unit                    = attributeMap.set("aria-rowindex", value)
+  def ariaRowIndexText: String                               = attributeMap.getOrElse("aria-rowindextext", "")
+  def ariaRowIndexText_=(value: String): Unit                = attributeMap.set("aria-rowindextext", value)
+  def ariaRowSpan: String                                    = attributeMap.getOrElse("aria-rowspan", "")
+  def ariaRowSpan_=(value: String): Unit                     = attributeMap.set("aria-rowspan", value)
+  def ariaSelected: String                                   = attributeMap.getOrElse("aria-selected", "")
+  def ariaSelected_=(value: String): Unit                    = attributeMap.set("aria-selected", value)
+  def ariaSetSize: String                                    = attributeMap.getOrElse("aria-setsize", "")
+  def ariaSetSize_=(value: String): Unit                     = attributeMap.set("aria-setsize", value)
+  def ariaSort: String                                       = attributeMap.getOrElse("aria-sort", "")
+  def ariaSort_=(value: String): Unit                        = attributeMap.set("aria-sort", value)
+  def ariaValueMax: String                                   = attributeMap.getOrElse("aria-valuemax", "")
+  def ariaValueMax_=(value: String): Unit                    = attributeMap.set("aria-valuemax", value)
+  def ariaValueMin: String                                   = attributeMap.getOrElse("aria-valuemin", "")
+  def ariaValueMin_=(value: String): Unit                    = attributeMap.set("aria-valuemin", value)
+  def ariaValueNow: String                                   = attributeMap.getOrElse("aria-valuenow", "")
+  def ariaValueNow_=(value: String): Unit                    = attributeMap.set("aria-valuenow", value)
+  def ariaValueText: String                                  = attributeMap.getOrElse("aria-valuetext", "")
+  def ariaValueText_=(value: String): Unit                   = attributeMap.set("aria-valuetext", value)
   def getSpatialNavigationContainer(): Node                  = ???
   def focusableAreas(option: ascent.domcore.PlatformOpaque): List[Node] = ???
   def spatialNavigationSearch(
@@ -861,10 +861,10 @@ class HTMLTableSectionElementMemory extends HTMLElementMemory with HTMLTableSect
   def rows: HTMLCollection                       = ???
   def align: String                              = attributeMap.getOrElse("align", "")
   def align_=(value: String): Unit               = attributeMap.set("align", value)
-  def ch: String                                 = attributeMap.getOrElse("ch", "")
-  def ch_=(value: String): Unit                  = attributeMap.set("ch", value)
-  def chOff: String                              = attributeMap.getOrElse("choff", "")
-  def chOff_=(value: String): Unit               = attributeMap.set("choff", value)
+  def ch: String                                 = attributeMap.getOrElse("char", "")
+  def ch_=(value: String): Unit                  = attributeMap.set("char", value)
+  def chOff: String                              = attributeMap.getOrElse("charoff", "")
+  def chOff_=(value: String): Unit               = attributeMap.set("charoff", value)
   def vAlign: String                             = attributeMap.getOrElse("valign", "")
   def vAlign_=(value: String): Unit              = attributeMap.set("valign", value)
   def insertRow(index: Int): HTMLTableRowElement = ???
@@ -884,8 +884,8 @@ class HTMLOptionElementMemory extends HTMLElementMemory with HTMLOptionElement w
   private var _label: String                  = ""
   def label: String                           = _label
   def label_=(value: String): Unit            = _label = value
-  def defaultSelected: Boolean                = attributeMap.getOrElse("defaultselected", false)
-  def defaultSelected_=(value: Boolean): Unit = attributeMap.set("defaultselected", value)
+  def defaultSelected: Boolean                = attributeMap.getOrElse("selected", false)
+  def defaultSelected_=(value: Boolean): Unit = attributeMap.set("selected", value)
   private var _value: String                  = ""
   def value: String                           = _value
   def value_=(value: String): Unit            = _value = value
@@ -1106,10 +1106,10 @@ class HTMLTableColElementMemory extends HTMLElementMemory with HTMLTableColEleme
   def span_=(value: Int): Unit      = attributeMap.set("span", value)
   def align: String                 = attributeMap.getOrElse("align", "")
   def align_=(value: String): Unit  = attributeMap.set("align", value)
-  def ch: String                    = attributeMap.getOrElse("ch", "")
-  def ch_=(value: String): Unit     = attributeMap.set("ch", value)
-  def chOff: String                 = attributeMap.getOrElse("choff", "")
-  def chOff_=(value: String): Unit  = attributeMap.set("choff", value)
+  def ch: String                    = attributeMap.getOrElse("char", "")
+  def ch_=(value: String): Unit     = attributeMap.set("char", value)
+  def chOff: String                 = attributeMap.getOrElse("charoff", "")
+  def chOff_=(value: String): Unit  = attributeMap.set("charoff", value)
   def vAlign: String                = attributeMap.getOrElse("valign", "")
   def vAlign_=(value: String): Unit = attributeMap.set("valign", value)
   def width: String                 = attributeMap.getOrElse("width", "")
@@ -1288,10 +1288,10 @@ class HTMLTableCellElementMemory extends HTMLElementMemory with HTMLTableCellEle
   def height_=(value: String): Unit  = attributeMap.set("height", value)
   def width: String                  = attributeMap.getOrElse("width", "")
   def width_=(value: String): Unit   = attributeMap.set("width", value)
-  def ch: String                     = attributeMap.getOrElse("ch", "")
-  def ch_=(value: String): Unit      = attributeMap.set("ch", value)
-  def chOff: String                  = attributeMap.getOrElse("choff", "")
-  def chOff_=(value: String): Unit   = attributeMap.set("choff", value)
+  def ch: String                     = attributeMap.getOrElse("char", "")
+  def ch_=(value: String): Unit      = attributeMap.set("char", value)
+  def chOff: String                  = attributeMap.getOrElse("charoff", "")
+  def chOff_=(value: String): Unit   = attributeMap.set("charoff", value)
   def noWrap: Boolean                = attributeMap.getOrElse("nowrap", false)
   def noWrap_=(value: Boolean): Unit = attributeMap.set("nowrap", value)
   def vAlign: String                 = attributeMap.getOrElse("valign", "")
@@ -1554,8 +1554,8 @@ class HTMLMediaElementMemory extends HTMLElementMemory with HTMLMediaElement:
   private var _muted: Boolean                                       = false
   def muted: Boolean                                                = _muted
   def muted_=(value: Boolean): Unit                                 = _muted = value
-  def defaultMuted: Boolean                                         = attributeMap.getOrElse("defaultmuted", false)
-  def defaultMuted_=(value: Boolean): Unit                          = attributeMap.set("defaultmuted", value)
+  def defaultMuted: Boolean                                         = attributeMap.getOrElse("muted", false)
+  def defaultMuted_=(value: Boolean): Unit                          = attributeMap.set("muted", value)
   private var _loading: String                                      = ""
   def loading: String                                               = _loading
   def loading_=(value: String): Unit                                = _loading = value
@@ -1589,8 +1589,8 @@ class SVGViewElementMemory extends SVGElementMemory with SVGViewElement:
   def preserveAspectRatio: ascent.domcore.PlatformOpaque = ???
 
 class HTMLFormElementMemory extends HTMLElementMemory with HTMLFormElement:
-  def acceptCharset: String                                        = attributeMap.getOrElse("acceptcharset", "")
-  def acceptCharset_=(value: String): Unit                         = attributeMap.set("acceptcharset", value)
+  def acceptCharset: String                                        = attributeMap.getOrElse("accept-charset", "")
+  def acceptCharset_=(value: String): Unit                         = attributeMap.set("accept-charset", value)
   private var _action: String                                      = ""
   def action: String                                               = _action
   def action_=(value: String): Unit                                = _action = value
@@ -1754,6 +1754,12 @@ class HTMLAreaElementMemory extends HTMLElementMemory with HTMLAreaElement:
   def target_=(value: String): Unit         = attributeMap.set("target", value)
 end HTMLAreaElementMemory
 
+class DocumentTypeMemory extends NodeMemory with DocumentType with DocumentTypeOverrides:
+  def before(nodes: Node | String): Unit      = ???
+  def after(nodes: Node | String): Unit       = ???
+  def replaceWith(nodes: Node | String): Unit = ???
+  def remove(): Unit                          = ???
+
 class CharacterDataMemory extends NodeMemory with CharacterData with CharacterDataOverrides:
   private var _data: String                   = ""
   def data: String                            = _data
@@ -1770,10 +1776,10 @@ class HTMLTableRowElementMemory extends HTMLElementMemory with HTMLTableRowEleme
   def cells: HTMLCollection                        = ???
   def align: String                                = attributeMap.getOrElse("align", "")
   def align_=(value: String): Unit                 = attributeMap.set("align", value)
-  def ch: String                                   = attributeMap.getOrElse("ch", "")
-  def ch_=(value: String): Unit                    = attributeMap.set("ch", value)
-  def chOff: String                                = attributeMap.getOrElse("choff", "")
-  def chOff_=(value: String): Unit                 = attributeMap.set("choff", value)
+  def ch: String                                   = attributeMap.getOrElse("char", "")
+  def ch_=(value: String): Unit                    = attributeMap.set("char", value)
+  def chOff: String                                = attributeMap.getOrElse("charoff", "")
+  def chOff_=(value: String): Unit                 = attributeMap.set("charoff", value)
   def vAlign: String                               = attributeMap.getOrElse("valign", "")
   def vAlign_=(value: String): Unit                = attributeMap.set("valign", value)
   def bgColor: String                              = attributeMap.getOrElse("bgcolor", "")
@@ -2070,8 +2076,8 @@ class HTMLInputElementMemory extends HTMLElementMemory with HTMLInputElement wit
   private var _autocomplete: String                      = ""
   def autocomplete: String                               = _autocomplete
   def autocomplete_=(value: String): Unit                = _autocomplete = value
-  def defaultChecked: Boolean                            = attributeMap.getOrElse("defaultchecked", false)
-  def defaultChecked_=(value: Boolean): Unit             = attributeMap.set("defaultchecked", value)
+  def defaultChecked: Boolean                            = attributeMap.getOrElse("checked", false)
+  def defaultChecked_=(value: Boolean): Unit             = attributeMap.set("checked", value)
   private var _colorSpace: String                        = ""
   def colorSpace: String                                 = _colorSpace
   def colorSpace_=(value: String): Unit                  = _colorSpace = value
@@ -2129,8 +2135,8 @@ class HTMLInputElementMemory extends HTMLElementMemory with HTMLInputElement wit
   private var _type: String                              = ""
   def `type`: String                                     = _type
   def type_=(value: String): Unit                        = _type = value
-  def defaultValue: String                               = attributeMap.getOrElse("defaultvalue", "")
-  def defaultValue_=(value: String): Unit                = attributeMap.set("defaultvalue", value)
+  def defaultValue: String                               = attributeMap.getOrElse("value", "")
+  def defaultValue_=(value: String): Unit                = attributeMap.set("value", value)
   private var _width: Int                                = 0
   def width: Int                                         = _width
   def width_=(value: Int): Unit                          = _width = value
@@ -2622,7 +2628,6 @@ class DocumentMemory extends NodeMemory with Document with DocumentOverrides:
   def charset: String                                                          = ""
   def inputEncoding: String                                                    = ""
   def contentType: String                                                      = ""
-  def doctype: ascent.domcore.PlatformOpaque                                   = ???
   def fullscreenEnabled: Boolean                                               = false
   def fullscreen: Boolean                                                      = false
   def onfullscreenchange: ascent.domcore.PlatformOpaque                        = ???

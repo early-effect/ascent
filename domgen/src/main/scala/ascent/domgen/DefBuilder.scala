@@ -32,49 +32,169 @@ object DefBuilder:
   /** All attributes for an interface: its own plus every ancestor's plus every mixin folded in via
     * `Target includes Mixin;` statements at any level of the chain.
     *
-    * De-duplicated by dom name (a subclass override wins; mixin attributes are added AFTER the host interface's own so
-    * the host wins on collision). The walk terminates on a missing parent or a cycle (visited-set guard), so malformed
-    * / partial IDL can't loop forever.
+    * De-duplicated by content-attribute name. When two IDL properties share one (`checked` and `defaultChecked`, both
+    * `checked`), the one whose lowercased IDL name equals that attribute wins. The element's marker on each key is the
+    * interface that introduces the attribute (own attrs plus direct mixins, not a parent walk). The walk terminates on
+    * a missing parent or a cycle (visited-set guard), so malformed / partial IDL can't loop forever.
     */
   def attributesFor(interface: String, idl: Webref.Idl): List[AttrDef] =
-    // Pre-index includes by target name for fast lookup during the walk.
-    val mixinsByTarget: Map[String, List[String]] =
-      idl.includes.groupBy(_.target).view.mapValues(_.map(_.mixin)).toMap
-
-    /** Collect attributes from one interface PLUS any mixins it includes. Visited tracks mixin names too (a malformed
-      * IDL with a mixin including itself shouldn't loop).
-      */
-    def attrsAt(name: String, visited: Set[String]): List[Webref.IdlAttribute] =
-      if visited.contains(name) then Nil
-      else
-        idl.interfaces.get(name) match
-          case None        => Nil
-          case Some(iface) =>
-            val ownAttrs   = iface.attributes
-            val mixinAttrs = mixinsByTarget
-              .getOrElse(name, Nil)
-              .filterNot(_ == ariaReflection)
-              .flatMap(m => attrsAt(m, visited + name))
-            ownAttrs ++ mixinAttrs
-
-    def walk(name: String, visited: Set[String]): List[Webref.IdlAttribute] =
-      if visited.contains(name) then Nil
-      else
-        idl.interfaces.get(name) match
-          case None        => Nil
-          case Some(iface) =>
-            // own + mixin attrs first so they win the later de-dup over inherited ones
-            attrsAt(name, visited) ++ iface.inheritance.toList.flatMap(p => walk(p, visited + name))
-
-    val seen = scala.collection.mutable.LinkedHashMap.empty[String, AttrDef]
-    walk(interface, Set.empty).foreach { a =>
-      // The IDL name is the JS PROPERTY name (e.g. `className`); convert to the HTML
-      // ATTRIBUTE name (e.g. `class`) for `domName`, since that's what setAttribute uses.
-      val htmlAttr = htmlAttributeName(a.name)
-      seen.getOrElseUpdate(htmlAttr, AttrDef(scalaName(a.name), htmlAttr, codecFor(htmlAttr, a.idlType)))
+    val seen = scala.collection.mutable.LinkedHashMap.empty[String, (AttrDef, Boolean)]
+    inheritedAttrs(interface, idl, Set.empty).foreach { a =>
+      val htmlAttr  = htmlAttributeName(a.name, a.reflectAs)
+      val canonical = a.name.toLowerCase == htmlAttr
+      val intro     = introducer(interface, htmlAttr, idl).getOrElse(interface)
+      val candidate = AttrDef(scalaName(a.name), htmlAttr, codecFor(htmlAttr, a.idlType), intro)
+      seen.get(htmlAttr) match
+        case None                          => seen.update(htmlAttr, candidate -> canonical)
+        case Some((_, prevCan)) if prevCan => ()
+        case Some(_) if canonical          => seen.update(htmlAttr, candidate -> true)
+        case Some(_)                       => ()
     }
-    seen.values.toList
+    seen.values.map(_._1).toList
   end attributesFor
+
+  /** Own attributes plus included mixins. Does not walk parent interfaces. `ARIAMixin` stays out: `AriaAttrs` types
+    * those content attributes.
+    */
+  private def attrsAt(name: String, idl: Webref.Idl, visited: Set[String]): List[Webref.IdlAttribute] =
+    if visited.contains(name) then Nil
+    else
+      idl.interfaces.get(name) match
+        case None        => Nil
+        case Some(iface) =>
+          val mixinAttrs = mixinsOf(idl)
+            .getOrElse(name, Nil)
+            .filterNot(_ == ariaReflection)
+            .flatMap(m => attrsAt(m, idl, visited + name))
+          iface.attributes ++ mixinAttrs
+
+  private def mixinsOf(idl: Webref.Idl): Map[String, List[String]] =
+    idl.includes.groupBy(_.target).view.mapValues(_.map(_.mixin)).toMap
+
+  /** Own plus ancestors, own first so a subclass declaration is seen before the parent's. */
+  private def inheritedAttrs(name: String, idl: Webref.Idl, visited: Set[String]): List[Webref.IdlAttribute] =
+    if visited.contains(name) then Nil
+    else
+      idl.interfaces.get(name) match
+        case None        => Nil
+        case Some(iface) =>
+          attrsAt(name, idl, visited) ++ iface.inheritance.toList.flatMap(p => inheritedAttrs(p, idl, visited + name))
+
+  /** Highest ancestor (down to [[Element]], not [[Node]]) whose own-plus-mixin attributes include `htmlAttr`. */
+  private def introducer(interface: String, htmlAttr: String, idl: Webref.Idl): Option[String] =
+    ancestorChain(interface, idl).filter(n => ownHtmlNames(n, idl).contains(htmlAttr)).lastOption
+
+  private def ownHtmlNames(interface: String, idl: Webref.Idl): Set[String] =
+    attrsAt(interface, idl, Set.empty).map(a => htmlAttributeName(a.name, a.reflectAs)).toSet
+
+  /** Self, then parents, stopping at `Element` so `Node` never becomes a marker. */
+  private def ancestorChain(interface: String, idl: Webref.Idl): List[String] =
+    val buf                                         = List.newBuilder[String]
+    def walk(name: String, seen: Set[String]): Unit =
+      if !seen.contains(name) then
+        buf += name
+        if name != "Element" then idl.interfaces.get(name).flatMap(_.inheritance).foreach(p => walk(p, seen + name))
+    walk(interface, Set.empty)
+    buf.result()
+
+  private def isAncestor(ancestor: String, descendant: String, idl: Webref.Idl): Boolean =
+    ancestorChain(descendant, idl).drop(1).contains(ancestor)
+
+  /** One HTML element interface and the marker it extends. `Element` is the root and has no parent. */
+  final case class TagMarker(name: String, parent: Option[String])
+
+  /** A content attribute whose canonical declarations disagree on [[CodecRef]]. `attrs` names each one and the codecs
+    * seen, so the disagreement is a generator failure instead of a silent first-wins.
+    */
+  final case class CodecDispute(attrs: List[String])
+
+  /** HTML content attributes whose canonical IDL declarations disagree on codec. The choice is the codec the strict
+    * element set already published (`input` / `img` / `textarea` / `a` / …). The key's element type then includes only
+    * the interfaces that declare that codec, so a `DOMString` `width` (iframe) is not an `Int` `width` (img).
+    */
+  private val disputedCodecs: Map[String, CodecRef] = Map(
+    "cols"   -> CodecRef.IntAsString,
+    "height" -> CodecRef.IntAsString,
+    "loop"   -> CodecRef.BooleanAsAttrPresence,
+    "max"    -> CodecRef.StringAsIs,
+    "min"    -> CodecRef.StringAsIs,
+    "rows"   -> CodecRef.IntAsString,
+    "size"   -> CodecRef.IntAsString,
+    "value"  -> CodecRef.StringAsIs,
+    "width"  -> CodecRef.IntAsString,
+  )
+
+  /** Phantom markers for every HTML element interface plus ancestors down to `Element`. A tag whose interface is
+    * missing from the IDL still gets a marker extending `Element`.
+    */
+  def tagMarkers(elements: List[Webref.Element], idl: Webref.Idl): List[TagMarker] =
+    val wanted                                        = scala.collection.mutable.LinkedHashSet.empty[String]
+    def ensure(name: String, seen: Set[String]): Unit =
+      if name.nonEmpty && name != "Node" && !seen.contains(name) then
+        wanted += name
+        if name != "Element" then
+          idl.interfaces.get(name).flatMap(_.inheritance) match
+            case Some(parent) => ensure(parent, seen + name)
+            case None         => wanted += "Element"
+    ensure("Element", Set.empty)
+    elements.map(_.interface).distinct.foreach(name => ensure(name, Set.empty))
+    def parentOf(name: String): Option[String] =
+      val fromIdl = idl.interfaces.get(name).flatMap(_.inheritance).filter(wanted.contains)
+      if name == "Element" then None else fromIdl.orElse(Some("Element"))
+    val ordered                   = List.newBuilder[String]
+    val visiting                  = scala.collection.mutable.Set.empty[String]
+    def visit(name: String): Unit =
+      if wanted.contains(name) && !visiting.contains(name) then
+        visiting += name
+        parentOf(name).foreach(visit)
+        ordered += name
+    visit("Element")
+    wanted.foreach(visit)
+    ordered.result().map(name => TagMarker(name, parentOf(name)))
+  end tagMarkers
+
+  /** The global attribute catalog: one key per content-attribute name, typed at the interface (or union of interfaces)
+    * that introduces it. A codec disagreement that [[disputedCodecs]] does not name fails the generator.
+    */
+  def htmlAttrDefs(elements: List[Webref.Element], idl: Webref.Idl): Either[CodecDispute, List[AttrDef]] =
+    final case class Decl(idlName: String, htmlName: String, codec: CodecRef, introducer: String, canonical: Boolean)
+    val decls = tagMarkers(elements, idl).flatMap { marker =>
+      attrsAt(marker.name, idl, Set.empty).map { a =>
+        val html = htmlAttributeName(a.name, a.reflectAs)
+        Decl(
+          a.name,
+          html,
+          codecFor(html, a.idlType),
+          introducer(marker.name, html, idl).getOrElse(marker.name),
+          a.name.toLowerCase == html,
+        )
+      }
+    }
+    val disputes = List.newBuilder[String]
+    val defs     = decls.groupBy(_.htmlName).toList.flatMap { (html, group) =>
+      val canonical = group.filter(_.canonical)
+      val pool      = if canonical.nonEmpty then canonical else group
+      val codecs    = pool.map(_.codec).distinct
+      val chosen    = codecs match
+        case c :: Nil => Some(c)
+        case many     =>
+          disputedCodecs.get(html) match
+            case Some(c) if many.contains(c) => Some(c)
+            case _                           =>
+              disputes += s"$html (${many.map(_.toString).mkString(", ")})"
+              None
+      chosen.flatMap { codec =>
+        pool.find(d => d.codec == codec).map { winner =>
+          val intros = group.filter(_.codec == codec).map(_.introducer).distinct
+          val pruned = intros.filterNot(i => intros.exists(a => a != i && isAncestor(a, i, idl)))
+          AttrDef(scalaName(winner.idlName), html, codec, pruned.sorted.mkString(" | "))
+        }
+      }
+    }
+    val bad = disputes.result()
+    if bad.nonEmpty then Left(CodecDispute(bad))
+    else Right(defs.sortBy(_.scalaName))
+  end htmlAttrDefs
 
   /** WebIDL's `ARIAMixin` reflects the `aria-*` content attributes as camelCase properties (`ariaLabel` for
     * `aria-label`), plus element-reference properties that are no content attribute at all. `AriaAttrs` types the real
@@ -83,8 +203,8 @@ object DefBuilder:
     */
   private val ariaReflection = "ARIAMixin"
 
-  /** Map a JS property name from the IDL to its HTML attribute name. The asymmetry exists for historical reasons; only
-    * a small set need explicit renames (`class`, `for`). Everything else is lowercased — HTML attribute names are
+  /** Map a JS property name from the IDL to its HTML attribute name. `[Reflect="http-equiv"]` wins. Otherwise only a
+    * small set need explicit renames (`class`, `for`). Everything else is lowercased: HTML attribute names are
     * case-insensitive on the wire and all-lowercase by convention, while IDL property names are camelCased.
     */
   private val structuralRenames: Map[String, String] = Map(
@@ -92,8 +212,8 @@ object DefBuilder:
     "htmlFor"   -> "for",
   )
 
-  private[domgen] def htmlAttributeName(idlName: String): String =
-    structuralRenames.getOrElse(idlName, idlName.toLowerCase)
+  private[domgen] def htmlAttributeName(idlName: String, reflectAs: Option[String] = None): String =
+    reflectAs.getOrElse(structuralRenames.getOrElse(idlName, idlName.toLowerCase))
 
   /** HTML attributes that the IDL types `boolean` but which are ENUMERATED `"true"`/`"false"` attributes on the wire —
     * they must serialize the explicit literal, not use presence coding. `draggable=""` / `spellcheck=""` resolve to the
@@ -132,6 +252,9 @@ object DefBuilder:
       "DOMTokenList",
       "HTMLCollection",
       "NamedNodeMap",
+      // Document.doctype's real type. Outside the element ancestor chain, so the closure would otherwise drop it
+      // and the structural trait would stay PlatformOpaque.
+      "DocumentType",
     )
 
   /** The interface closure the platform-neutral structural DOM catalog covers: every HTML + SVG element's interface
@@ -416,7 +539,7 @@ object DefBuilder:
         a.idlType,
         a.readonly,
         a.reflected,
-        htmlAttributeName(a.name),
+        htmlAttributeName(a.name, a.reflectAs),
         nullable(a.nullable, a.idlType, idl),
       )
     )

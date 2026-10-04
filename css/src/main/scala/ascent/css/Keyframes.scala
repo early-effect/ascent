@@ -143,5 +143,6 @@ object Keyframes:
     * without applying a class. Usually unneeded: a [[CssClass]] that [[Keyframes.use]]s the animation pulls it in
     * automatically. Contributes no DOM; void-safe.
     */
-  given keyframesToArg: Conversion[Keyframes, VoidArg[Any]] = kf => Arg.AttrArg(Attr.Style(kf.contributionBlocks))
+  given keyframesToArg: Conversion[Keyframes, VoidArg[Any, ascent.domtypes.tags.Element]] =
+    kf => Arg.AttrArg(Attr.Style(kf.contributionBlocks))
 end Keyframes

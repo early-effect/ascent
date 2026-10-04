@@ -3,7 +3,6 @@ package ascent.js
 import ascent.ast.{Attr, UI}
 import ascent.dom
 import ascent.domtypes.{Attrs, AttrValue}
-import ascent.dsl.*
 import zio.*
 
 import scala.scalajs.js
@@ -37,8 +36,8 @@ object Canvas:
     UI.Element(
       "canvas",
       Vector(
-        Attrs.width(cssWidth),
-        Attrs.height(cssHeight),
+        Attr.from(Attrs.width, cssWidth),
+        Attr.from(Attrs.height, cssHeight),
         // Inline style so the rendered size (in CSS pixels) matches what the caller asked
         // for — independent of the (possibly DPR-scaled) backing buffer.
         Attr.StaticAttr("style", AttrValue.Str(s"width:${cssWidth}px;height:${cssHeight}px;")),
@@ -71,8 +70,8 @@ object Canvas:
     UI.Element(
       "canvas",
       Vector(
-        Attrs.width(cssWidth),
-        Attrs.height(cssHeight),
+        Attr.from(Attrs.width, cssWidth),
+        Attr.from(Attrs.height, cssHeight),
         Attr.StaticAttr("style", AttrValue.Str(s"width:${cssWidth}px;height:${cssHeight}px;")),
         Lifecycle.onMount[dom.HTMLCanvasElement] { canvas =>
           withHiDpiContext(canvas, cssWidth, cssHeight) { ctx =>

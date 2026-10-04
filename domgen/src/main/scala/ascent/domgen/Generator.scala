@@ -15,10 +15,6 @@ final case class GeneratorInput(
       * many esoteric specs; the allowlist keeps the generated surface focused on what real ascent applications use.
       */
     eventAllowlist: Set[String],
-    /** HTML elements that get a per-element typed attribute set (walked through IDL inheritance). Everything else uses
-      * the global+common attr surface only.
-      */
-    strictElements: Set[String],
     /** SVG elements, from `elements/{SVG2,svg-animations,svg-paths}.json`. Feeds the structural DOM catalog's element
       * closure alongside `elements` (HTML) — the two together are the FULL set of `createElement`-reachable tags the
       * cross-platform DOM catalog covers. Defaults to empty so every existing caller (built before SVG was vendored)
@@ -45,6 +41,9 @@ object GeneratorError:
     */
   final case class UnknownEventInterface(interface: String, eventType: String) extends GeneratorError
 
+  /** Canonical declarations of one content attribute disagree on codec, and [[DefBuilder]] has no named choice. */
+  final case class CodecDispute(attrs: List[String]) extends GeneratorError
+
 object Generator:
 
   /** Pure pipeline: parsed inputs → rendered Scala source files. No I/O. */
@@ -66,9 +65,11 @@ object Generator:
         else ZIO.fail(GeneratorError.UnknownEventInterface(e.interface, e.`type`))
       // Build the def model.
       elementDefs = DefBuilder.elementDefs(input.elements)
-      attrDefs    = strictAttrDefs(input.elements, input.strictElements, input.idl)
-      eventDefs   = DefBuilder.eventDefs(filteredEvents)
-      facadeDefs  = DefBuilder.facadeDefs(filteredEvents, input.idl)
+      attrDefs <- ZIO.fromEither(DefBuilder.htmlAttrDefs(input.elements, input.idl)).mapError { d =>
+        GeneratorError.CodecDispute(d.attrs)
+      }
+      eventDefs  = DefBuilder.eventDefs(filteredEvents)
+      facadeDefs = DefBuilder.facadeDefs(filteredEvents, input.idl)
       // Anything emitted as an event facade (Facades.scala) or as an engine-owned class
       // (EngineFacade.scala — Element, Document, Node, EventTarget, Text, Comment,
       // HTMLInputElement) must NOT also be emitted as an interface, or we'd get duplicate
@@ -92,6 +93,7 @@ object Generator:
     yield GeneratorOutput(
       Map(
         "dom-types/Elements.scala"           -> Renderer.elements(elementDefs),
+        "dom-types/tags/Markers.scala"       -> Renderer.tagMarkers(DefBuilder.tagMarkers(input.elements, input.idl)),
         "dom-types/Attrs.scala"              -> Renderer.attrs(attrDefs),
         "dom-types/Events.scala"             -> Renderer.events(eventDefs),
         "dom-types/Enums.scala"              -> Renderer.enumTypes(enumDefs),
@@ -205,6 +207,7 @@ object Generator:
     "Document" -> "createElement",
     "Document" -> "createTextNode",
     "Document" -> "createComment",
+    "Document" -> "doctype",
     "Document" -> "documentElement",
     "Document" -> "body",
     "Document" -> "body_=",
@@ -265,6 +268,11 @@ object Generator:
     "Node" -> "appendChild",
     "Node" -> "replaceChild",
     "Node" -> "removeChild",
+    // DocumentType's three readonly strings would otherwise generate as "". The name is the node's
+    // nodeName; publicId and systemId live on the override, not on every NodeMemoryBase.
+    "DocumentType" -> "name",
+    "DocumentType" -> "publicId",
+    "DocumentType" -> "systemId",
   )
 
   /** Interfaces excluded from [[Renderer.memoryImpls]]'s CLASS generation entirely (their TRAIT still generates
@@ -319,27 +327,5 @@ object Generator:
         candidates.maxBy(e => depth(e.interface))
       }
   end pickMostSpecificPerType
-
-  /** Collect attributes from every strict element's IDL chain into a single de-duplicated set.
-    *
-    * The first-pass strategy is intentionally simple: emit one global `Attrs` listing that's the union across all
-    * strict elements. Per-element attribute *grouping* (so `input` sees only its own attrs and `<a>` sees only `<a>`
-    * attrs) is a follow-up — for now the renderer test exercises the inheritance walk and de-dup behavior, which is the
-    * genuinely tricky part.
-    */
-  private def strictAttrDefs(
-      elements: List[Webref.Element],
-      strict: Set[String],
-      idl: Webref.Idl,
-  ): List[AttrDef] =
-    val elsByName = elements.iterator.map(e => e.name -> e.interface).toMap
-    val seen      = scala.collection.mutable.LinkedHashMap.empty[String, AttrDef]
-    strict.toList.flatMap(elsByName.get).foreach { iface =>
-      DefBuilder.attributesFor(iface, idl).foreach { a =>
-        seen.getOrElseUpdate(a.domName, a)
-      }
-    }
-    seen.values.toList
-  end strictAttrDefs
 
 end Generator

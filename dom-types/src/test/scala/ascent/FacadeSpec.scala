@@ -8,16 +8,16 @@ import zio.test.*
   */
 object FacadeSpec extends ZIOSpecDefault:
 
-  val divK: ElementKey        = Elements.div
-  val classK: AttrKey[String] = Attrs.className
-  val roleK: AttrKey[String]  = AriaAttrs.role
-  val onClickK: EventKey      = Events.onClick
-  val v: AttrValue            = AttrValue.Str("x")
-  val codec: Codec[String]    = Codec.StringAsIs
+  val divK: ElementKey[?]        = Elements.div
+  val classK: AttrKey[String, ?] = Attrs.className
+  val roleK: AttrKey[String, ?]  = AriaAttrs.role
+  val onClickK: EventKey         = Events.onClick
+  val v: AttrValue               = AttrValue.Str("x")
+  val codec: Codec[String]       = Codec.StringAsIs
 
-  val aliasedDiv: ElementKey        = E.div
-  val aliasedClass: AttrKey[String] = A.className
-  val aliasedRole: AttrKey[String]  = Aria.role
+  val aliasedDiv: ElementKey[?]        = E.div
+  val aliasedClass: AttrKey[String, ?] = A.className
+  val aliasedRole: AttrKey[String, ?]  = Aria.role
 
   def spec = suite("ascent.* facade (dom-types)")(
     test("aliases are the very same objects as their full names (no drift)") {

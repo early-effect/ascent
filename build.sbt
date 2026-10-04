@@ -9,18 +9,17 @@ AscentZipx.settings
 
 ThisBuild / scalaVersion := (MyVersions.scala: String)
 
+resolvers += "central-snapshots" at "https://central.sonatype.com/repository/maven-snapshots/"
+
 val scala3Version: String = MyVersions.scala
 
-// sbt 2.x scopes bare build.sbt settings to ThisBuild, so these apply build-wide to every module.
 organization         := "rocks.earlyeffect"
 organizationName     := "Early Effect"
 organizationHomepage := Some(uri("https://www.earlyeffect.rocks"))
 versionScheme        := Some("early-semver")
-// No hardcoded version: each published module's comes from its Ship row in project/ZipxVersions.scala.
-
-homepage := Some(uri("https://github.com/early-effect/ascent"))
-licenses := Seq("Apache-2.0" -> uri("http://www.apache.org/licenses/LICENSE-2.0.txt"))
-scmInfo  := Some(
+homepage             := Some(uri("https://github.com/early-effect/ascent"))
+licenses             := Seq("Apache-2.0" -> uri("http://www.apache.org/licenses/LICENSE-2.0.txt"))
+scmInfo              := Some(
   ScmInfo(
     uri("https://github.com/early-effect/ascent"),
     "scm:git@github.com:early-effect/ascent.git",
@@ -37,35 +36,20 @@ developers := List(
 
 publishMavenStyle    := true
 pomIncludeRepository := { _ => false }
-
-// CI-only publishing: the signing key hex comes from the PGP_KEY_HEX env var (a shared early-effect
-// org secret), so the key can be rotated in one place. There is no real key in this file — the
-// MISSING_KEY_HEX sentinel keeps the build loadable for local compile/test but makes signing fail
-// loudly if anyone tries to publish off-CI.
 usePgpKeyHex(sys.env.getOrElse("PGP_KEY_HEX", "MISSING_KEY_HEX"))
-
-// Take zio-json 1.1.0 from heddle. Older transitives still pin 0.9/0.10; under early-semver that
-// is a hard eviction without a scheme. The old hold at 0.10.0 was for zio-http schema and is gone.
 libraryDependencySchemes += "dev.zio" %% "zio-json" % "always"
 
 val scalaVersions = Seq(scala3Version)
 
-// Cap peak memory during a full cross-build. The Scala Native link phase (LLVM optimize/codegen) is
-// by far the heaviest task — across the ~10 native modules projectMatrix would otherwise run several
-// at once, each holding a large heap. Serialize them (the plugin tags `nativeLink` with
-// NativeTags.Link). Also cap total parallel compiles so JVM+JS+Native fan-out doesn't pile up.
 Global / concurrentRestrictions ++= Seq(
   Tags.limit(NativeTags.Link, 1),
   Tags.limit(Tags.Compile, 4),
 )
 
-// java.time polyfills for Scala.js / Native (ZIO uses java.time.Instant under the hood; the JVM
-// provides it natively, but the JS and Native targets need scala-java-time + tzdb to link). In
-// sbt 2.x plain `%%` appends the project's platform suffix automatically (e.g. `_sjs1`, the role
-// the old `%%%` operator played), so this works uniformly across all three platforms.
 val javaTimePolyfill    = MyVersions.javaTime
-val nativeTestInterface = MyVersions.nativeTestInterface
-val nativeJavaTime      = MyVersions.nativeJavaTime
+val nativeSerialTests   = Seq(Test / parallelExecution := false)
+val nativeTestInterface = MyVersions.nativeTestInterface ++ nativeSerialTests
+val nativeJavaTime      = MyVersions.nativeJavaTime ++ nativeSerialTests
 
 val commonScalacOptions = Seq(
   "-deprecation",
@@ -74,16 +58,8 @@ val commonScalacOptions = Seq(
   "-language:implicitConversions",
 )
 
-// zio-test deps, shared by every module. `library()` resolves `%%` at each module's platform.
-// The ZTestFramework registers itself automatically via zio-test-sbt, so no testFrameworks wiring.
 val zioTestSettings = MyVersions.zioTests
 
-// jsdom-backed test environment for JS modules that need a real DOM (dom-facade engine
-// facade tests, ascent-js mount/binding tests). The dependency itself comes from
-// project/plugins.sbt; we only need to wire up the jsEnv here. Requires `npm install jsdom`
-// in the project root before tests run.
-// `JSEnv` has no JsonFormat, and sbt 2.x caches setting values by default — opt this one out of
-// caching (it's a fresh, non-serializable env instance) rather than invent a bogus codec.
 val jsdomTestEnv = Def.settings(
   Test / jsEnv := Def.uncached(new org.scalajs.jsenv.jsdomnodejs.JSDOMNodeJSEnv())
 )
@@ -112,16 +88,6 @@ val ascentModules = Seq(
   "ascent-chekhov",
 )
 
-/** Published Specular jars depend on the Maven Central `ascent-*` release, but the docs modules `dependsOn` local
-  * ascent, so coursier sees two versions of every ascent artifact. Under `early-semver` that is a hard conflict (local
-  * `0.3.0-ci` vs a published `0.1.0`), so mark them `always` and let the local `dependsOn` win.
-  *
-  * Both the JVM (`_3`) and Scala.js (`_sjs1_3`) coordinates need an entry — `docsJS` resolves the latter, and a scheme
-  * keyed on one does not cover the other.
-  *
-  * Do not use `excludeDependencies` here — it also strips the local `dependsOn` modules (conduit, datastar-http) from
-  * the docs classpath.
-  */
 val docsDogfoodSettings = Def.settings(
   libraryDependencySchemes ++= ascentModules.flatMap { m =>
     Seq(
@@ -147,7 +113,7 @@ lazy val root = (project in file("."))
       LocalProject("sbtAscentPreview")) *
   )
   .settings(
-    name           := "ascent",
+    name := "ascent",
     // sonaRelease reads this project's version and refuses a -SNAPSHOT. Root is never published.
     version        := "",
     publish / skip := true,
@@ -174,16 +140,8 @@ lazy val domgen = (projectMatrix in file("domgen"))
     publish / skip := true,
     scalacOptions ++= commonScalacOptions,
     MyVersions.domgenLib,
-    // Format generated output through the project's own .scalafmt.conf, so `domgen/run` emits
-    // already-formatted files and formatting rules live in exactly one place. Scalameta ships
-    // scalafmt for Scala 2.13; use it from this Scala 3 build via CrossVersion. Catalog excludes
-    // live on the row; for3Use2_13 is not a zipx Cross, so it stays at the use site.
     libraryDependencies += MyVersions.moduleID(MyVersions.scalafmtDynamic).cross(CrossVersion.for3Use2_13),
     zioTestSettings,
-    // sbt 2.x forks `run` with workingDirectory = baseDirectory.value (Defaults.forkOptionsTask),
-    // which for this subproject is domgen/ — but Main.scala's vendored-data paths (data/webref/...)
-    // are relative to the BUILD ROOT. Without this override, `domgen/run` silently can't find any
-    // input file from a fresh checkout.
     Compile / run / baseDirectory := (ThisBuild / baseDirectory).value,
   )
   .jvmPlatform(scalaVersions = scalaVersions)
@@ -204,8 +162,6 @@ lazy val core = (projectMatrix in file("core"))
   .nativePlatform(scalaVersions = scalaVersions, nativeJavaTime)
 
 // --- ascent-dom-facade : our @js.native DOM facade (js only, no scalajs-dom) ---
-//   Depends on dom-types so EnumAccessors.scala's additive typed-enum extensions can reference the
-//   real Scala 3 enums generated there (Enums.scala) — see Renderer.enumAccessors/enumTypes.
 lazy val domFacade = (projectMatrix in file("dom-facade"))
   .disablePlugins(chekhov.sbt.ChekhovPlugin)
   .dependsOn(domTypes)
@@ -218,19 +174,6 @@ lazy val domFacade = (projectMatrix in file("dom-facade"))
   .jsPlatform(scalaVersions = scalaVersions)
 
 // --- ascent-dom-core : platform-neutral structural DOM catalog (Node/Element/Document/EventTarget/
-//   CharacterData/Attr/Event plus every HTML/SVG element interface reachable via createElement) —
-//   generated by domgen (Renderer.structuralTraits/memoryImpls) into generated/Elements.scala +
-//   generated/ElementsMemory.scala. Two backends satisfy the SAME trait catalog: an in-memory
-//   implementation (jvm/js/native, this module's default source tree — the memory impl has no
-//   platform-specific code at all) and a JS adapter wrapping real dom-facade instances (js row
-//   only, under src/main/scala-js).
-//
-//   `domFacade` has ONLY a js row (no jvm/native row exists at all) — projectMatrix's
-//   `dependsOn(ProjectMatrix)` requires a matching row on every platform of the DEPENDENT, so a
-//   matrix-wide `.dependsOn(domFacade)` fails to resolve on domCore's jvm/native rows ("no rows
-//   were found in domFacade matching jvm/native"). The fix: attach the dependency to ONLY the js
-//   row, via jsPlatform's `configure: Project => Project` overload (domFacade.js(scalaVersion)
-//   resolves the concrete js-row Project) — not a matrix-wide `dependsOn`.
 lazy val domCore = (projectMatrix in file("dom-core"))
   .disablePlugins(chekhov.sbt.ChekhovPlugin)
   .dependsOn(core, css)
@@ -248,11 +191,6 @@ lazy val domCore = (projectMatrix in file("dom-core"))
   .nativePlatform(scalaVersions = scalaVersions, nativeTestInterface)
 
 // --- ascent-mount-engine : the cross-platform Mount/Slot/Cleanup binding engine ---
-//   The single UI-AST → DOM walker, rewritten against dom-core's platform-neutral structural
-//   traits (not scalajs-dom directly), so ONE engine runs on jvm/js/native. Depends on core (the
-//   UI AST + Squawk), dom-core (Node/Element/Document traits + in-memory backend), and css
-//   (StyleSink). The JS-only rich-event path and browser <style> injection stay OUT of here — a
-//   caller supplies an `EventCodec[E]` and a `StyleSink` per platform. jvm/js/native.
 lazy val mountEngine = (projectMatrix in file("mount-engine"))
   .disablePlugins(chekhov.sbt.ChekhovPlugin)
   .dependsOn(core, domCore, css)
@@ -266,8 +204,6 @@ lazy val mountEngine = (projectMatrix in file("mount-engine"))
   .nativePlatform(scalaVersions = scalaVersions, nativeTestInterface)
 
 // --- ascent-js : DOM mount/binding engine + typed event DSL + DomStyleSink (js only) ---
-//   Depends on `css` so DomStyleSink can implement StyleSink. CssClass is js-runnable from
-//   here, but authoring stays in `css` so JVM/Native users can write stylesheets too.
 lazy val js = (projectMatrix in file("js"))
   .disablePlugins(chekhov.sbt.ChekhovPlugin)
   .dependsOn(core, domFacade, css, mountEngine)
@@ -279,9 +215,6 @@ lazy val js = (projectMatrix in file("js"))
   )
   .jsPlatform(scalaVersions = scalaVersions)
 
-// --- ascent-element : custom elements from ascent. `CustomElement.define` registers a tag whose instances' lives
-//   arrive as a ZStream (the browser calls the lifecycle; ZIO hears it through a stream, never an Unsafe run).
-//   JS only: custom elements are a browser API.
 lazy val element = (projectMatrix in file("element"))
   .disablePlugins(chekhov.sbt.ChekhovPlugin)
   .dependsOn(js)
@@ -294,9 +227,6 @@ lazy val element = (projectMatrix in file("element"))
   )
   .jsPlatform(scalaVersions = scalaVersions)
 
-// --- ascent-mcp-app : author an MCP App view in ascent over heddle's view bridge. The view renders its launch
-//   tool's Run and calls its shed's grants; the host's context and teardown drive it. JS only: a view is a page in
-//   the host's sandboxed iframe.
 lazy val mcpApp = (projectMatrix in file("mcp-app"))
   .disablePlugins(chekhov.sbt.ChekhovPlugin)
   .dependsOn(js)
@@ -309,9 +239,6 @@ lazy val mcpApp = (projectMatrix in file("mcp-app"))
   )
   .jsPlatform(scalaVersions = scalaVersions)
 
-// --- ascent-mcp-host : a host page's <ascent-mcp-view>, wrapping heddle's relay frame in ascent chrome (a border,
-//   the view's state, the question for each call). The frame needs a real browser's sandbox and postMessage, so the
-//   suite runs in Firefox under ChekhovJSEnv and stays off testJS, like chekhovJs.
 lazy val mcpHost = (projectMatrix in file("mcp-host"))
   .disablePlugins(chekhov.sbt.ChekhovPlugin)
   .dependsOn(element)
@@ -333,10 +260,6 @@ lazy val mcpHost = (projectMatrix in file("mcp-host"))
       ),
   )
 
-// --- ascent-history : OPTIONAL URL session bound to Squawk. Location is path+query+hash; History is
-//   push/replace/back/forward over a swappable backend (memory everywhere, window.history on JS).
-//   Not a router: no matching, layouts, or loaders. Cross-built jvm/js/native so tests and SSR can
-//   seed a memory session; the JS row also depends on dom-facade for the browser backend.
 lazy val history = (projectMatrix in file("history"))
   .disablePlugins(chekhov.sbt.ChekhovPlugin)
   .dependsOn(core)
@@ -353,13 +276,6 @@ lazy val history = (projectMatrix in file("history"))
   )
   .nativePlatform(scalaVersions = scalaVersions, nativeTestInterface)
 
-// --- ascent-conduit : OPTIONAL bridge between conduit's lens-keyed listener model and
-//   ascent's Squawk reactive primitive. `c.squawk(lens)` returns a `UIO[Squawk[S]]` whose
-//   value tracks that slice of the conduit model; updates flow through Squawk's dedup so
-//   only real changes hit the DOM. Cross-built jvm/js/native to match conduit and core.
-//
-//   Depends on published conduit (rocks.earlyeffect). Stays a separate sub-module so users who don't
-//   want conduit (or its ZIO transitive that core already needs) don't pull anything extra.
 lazy val conduitBridge = (projectMatrix in file("conduit"))
   .disablePlugins(chekhov.sbt.ChekhovPlugin)
   .dependsOn(core)
@@ -373,17 +289,6 @@ lazy val conduitBridge = (projectMatrix in file("conduit"))
   .jsPlatform(scalaVersions = scalaVersions, javaTimePolyfill)
   .nativePlatform(scalaVersions = scalaVersions, nativeJavaTime)
 
-// --- ascent-css : CSS-in-Scala. Platform-neutral value layer (Declaration, Selector, Styles
-//   property objects) + an abstract CssClass that injects via a StyleSink instance. The JS-only
-//   DomStyleSink wires the actual <style> tag injection. Authoring is platform-neutral so SSR
-//   can later render to a string by supplying a different StyleSink. dependsOn(core) so
-//   CssClass.toAttr can produce an `ast.Attr` directly. Forward-compat with future generated
-//   CSS: property objects always emit Declaration(name, value), the same shape a generator
-//   produces.
-// fastparse backs the runtime CSS3 selector parser (SelectorGrammar.scala / Sel.parse) — ascent's
-// first genuine runtime dependency beyond ZIO, shipped jvm/js/native. Already used as a JVM-only
-// domgen build-tool dependency; 3.1.1 also publishes real js/native artifacts, so this is a
-// deliberate widening of scope, not a new library the team doesn't already have idioms for.
 lazy val css = (projectMatrix in file("css"))
   .disablePlugins(chekhov.sbt.ChekhovPlugin)
   .dependsOn(core)
@@ -397,11 +302,6 @@ lazy val css = (projectMatrix in file("css"))
   .jsPlatform(scalaVersions = scalaVersions, jsdomTestEnv)
   .nativePlatform(scalaVersions = scalaVersions, nativeTestInterface)
 
-// --- ascent-html : UI AST -> HTML string renderer for SSR. NO separate walker any more — it MOUNTS
-//   the `UI` into a disposable in-memory dom-core Document (via mount-engine's ONE Mount engine +
-//   InMemoryDomOps), reflects live form-control value/checked into attributes for morph, then reads
-//   `root.innerHTML`. So server output is produced by the exact same reconciler the browser uses —
-//   the two can't drift. Depends on mount-engine (which brings core + dom-core + css). jvm/js/native.
 lazy val html = (projectMatrix in file("html"))
   .disablePlugins(chekhov.sbt.ChekhovPlugin)
   .dependsOn(core, css, mountEngine)
@@ -414,11 +314,6 @@ lazy val html = (projectMatrix in file("html"))
   .jsPlatform(scalaVersions = scalaVersions, javaTimePolyfill)
   .nativePlatform(scalaVersions = scalaVersions, nativeJavaTime)
 
-// --- ascent-datastar : the datastar PROTOCOL core. DOM-free and platform-neutral so the routing /
-//   decoding / merge logic is JVM-unit-testable: the decoded wire model (SignalPatch / ElementPatch),
-//   a RemoteDialect SPI, the Datastar dialect, and SignalStore (named typed Squawk Sources fed by
-//   incoming patches). Adds zio-json (NOT otherwise a runtime dep — only domgen uses it). dependsOn
-//   core for Squawk. jvm/js/native; if zio-json's native artifact is unavailable, drop nativePlatform.
 lazy val datastar = (projectMatrix in file("datastar"))
   .disablePlugins(chekhov.sbt.ChekhovPlugin)
   .dependsOn(core)
@@ -432,11 +327,6 @@ lazy val datastar = (projectMatrix in file("datastar"))
   .jsPlatform(scalaVersions = scalaVersions, javaTimePolyfill)
   .nativePlatform(scalaVersions = scalaVersions, nativeJavaTime)
 
-// --- ascent-datastar-js : the CLIENT RUNTIME. "ascent implements the datastar interface": opens an
-//   EventSource, routes incoming patch-signals into Squawk Sources (Source.set -> ascent boundaries
-//   repaint, focus preserved) and patch-elements into the DOM by selector+mode, and dispatches actions
-//   back via fetch. JS only — it's the one piece that touches the live DOM facade. dependsOn datastar
-//   (protocol + store) + js (Mount/Cleanup machinery) + domFacade (EventSource/fetch).
 lazy val datastarJs = (projectMatrix in file("datastar-js"))
   .disablePlugins(chekhov.sbt.ChekhovPlugin)
   .dependsOn(datastar, js, domFacade)
@@ -448,10 +338,6 @@ lazy val datastarJs = (projectMatrix in file("datastar-js"))
   )
   .jsPlatform(scalaVersions = scalaVersions)
 
-// --- ascent-datastar-http : server-side wrapper over heddle Datastar SSE.
-//   Makes the server "an ascent client": render an ascent UI subtree via ascent-html, push it as a
-//   granular patch-elements (selector + mode) or patch-signals. JVM only. Real-server integration
-//   tests use heddle Server/Client.
 lazy val datastarHttp = (projectMatrix in file("datastar-http"))
   .disablePlugins(chekhov.sbt.ChekhovPlugin)
   .dependsOn(html, datastar)
@@ -463,7 +349,6 @@ lazy val datastarHttp = (projectMatrix in file("datastar-http"))
   )
   .jvmPlatform(scalaVersions = scalaVersions)
 
-// --- ascent-preview : static file server + SSE tab reload (JVM). No Specular, no markdown. ---
 lazy val preview = (projectMatrix in file("preview"))
   .disablePlugins(chekhov.sbt.ChekhovPlugin)
   .settings(
@@ -476,8 +361,6 @@ lazy val preview = (projectMatrix in file("preview"))
   )
   .jvmPlatform(scalaVersions = scalaVersions)
 
-// --- sbt-ascent-preview : enablePlugins(AscentPreviewPlugin) then `sbt <module>/ascentPreview`. ---
-// Same source as project/AscentPreviewPlugin.scala (this repo cannot addSbtPlugin itself).
 lazy val sbtAscentPreview = (project in file("sbt-ascent-preview"))
   .enablePlugins(SbtPlugin)
   .disablePlugins(chekhov.sbt.ChekhovPlugin)
@@ -494,10 +377,6 @@ lazy val sbtAscentPreview = (project in file("sbt-ascent-preview"))
   )
 
 // --- ascent example: todo-conduit — TodoMVC over conduit (js only) ---
-//   Lives under `example/<name>/`; more examples will sit alongside it. Depends on `js`
-//   (binding engine), `css` (CSS-in-Scala authoring + DomStyleSink), and `conduitBridge`
-//   (which transitively brings in conduit itself for app state). The examples are the
-//   proving ground that all the optional layers compose without rough edges.
 lazy val todoConduit = (projectMatrix in file("example/todo-conduit"))
   .disablePlugins(chekhov.sbt.ChekhovPlugin)
   .dependsOn(js, css, conduitBridge, history)
@@ -516,9 +395,6 @@ lazy val todoConduit = (projectMatrix in file("example/todo-conduit"))
   )
 
 // --- ascent example: mcp-host — a host page that frames MCP App views in <ascent-mcp-view> (js only) ---
-//   The counter server runs in the page, reached in memory, so the demo is one preview with nothing else to start.
-//   Its view is an ascent-mcp-app, linked on its own as a classic script, which the host serves as the view's
-//   document; ascentPreviewStage puts that bundle next to the page.
 val mcpHostDemoShared = Def.setting(
   (ThisBuild / baseDirectory).value / "example" / "mcp-host" / "shared" / "src" / "main" / "scala"
 )
@@ -551,7 +427,7 @@ lazy val mcpHostDemo = (projectMatrix in file("example/mcp-host/host"))
   .jsPlatform(
     scalaVersions,
     Nil,
-    (p: Project) =>
+    (p: Project) => {
       val view = LocalProject("mcpHostDemoViewJS")
       p.enablePlugins(AscentPreviewPlugin)
         .settings(
@@ -559,18 +435,19 @@ lazy val mcpHostDemo = (projectMatrix in file("example/mcp-host/host"))
           ascentPreviewStage := Def.uncached {
             val staged = ascentPreviewStage.value
             val _      = (view / Compile / fastLinkJS).value
-            IO.copyFile((view / Compile / fastLinkJSOutput).value / "main.js", ascentPreviewRoot.value / "counter-view.js")
+            IO.copyFile(
+              (view / Compile / fastLinkJSOutput).value / "main.js",
+              ascentPreviewRoot.value / "counter-view.js",
+            )
             staged
           },
           ascentPreview / fileInputs ++= (view / Compile / unmanagedSources / fileInputs).value,
           ascentPreviewRebuild / fileInputs ++= (view / Compile / unmanagedSources / fileInputs).value,
         )
-    ,
+    },
   )
 
 // --- ascent example: datastar-app — server-driven counter proving the full datastar loop ---
-//   The CLIENT (js, pure ascent): a SignalStore fed by the datastar SSE stream drives ascent's own
-//   reactive AST; a button POSTs an action back.
 lazy val datastarExample = (projectMatrix in file("example/datastar-app"))
   .disablePlugins(chekhov.sbt.ChekhovPlugin)
   .dependsOn(datastarJs, css)
@@ -607,10 +484,6 @@ lazy val datastarExampleServer = (projectMatrix in file("example/datastar-app-se
   )
   .jvmPlatform(scalaVersions = scalaVersions)
 
-// --- ascent example: hybrid-chat — a chat app whose CHROME is normal client-side ascent (inputs,
-//   layout, typing indicator) and whose MESSAGE LIST is a server-driven `serverRegion`. The CLIENT
-//   (js) declares the region + UI; the SERVER renders message rows via ascent-html and pushes them
-//   with `patchRegion`. Proves the hybrid: client-owned reactivity + server-owned region, together. ---
 lazy val hybridChat = (projectMatrix in file("example/hybrid-chat"))
   .disablePlugins(chekhov.sbt.ChekhovPlugin)
   .dependsOn(datastarJs, css)
@@ -632,8 +505,6 @@ lazy val hybridChat = (projectMatrix in file("example/hybrid-chat"))
         .settings(examplePreviewSettings(autoServe = false)),
   )
 
-// The hybrid-chat SERVER (JVM): ChatRoom state + SSE routes; renders message rows via ascent-html and
-// pushes them into the client's `serverRegion("messages")` with `AscentDatastar.patchRegion`.
 lazy val hybridChatServer = (projectMatrix in file("example/hybrid-chat-server"))
   .disablePlugins(chekhov.sbt.ChekhovPlugin)
   .dependsOn(datastarHttp, preview)
@@ -694,11 +565,12 @@ lazy val docs: ProjectMatrix = (projectMatrix in file("docs"))
             (LocalProject("docsJS") / Compile / fastLinkJS).value
             val outDir = (LocalProject("docsJS") / Compile / fastLinkJSOutput).value
             val mainJs = outDir / "main.js"
-            if (!mainJs.exists) then
-            sys.error(
-              s"Expected $mainJs after fastLinkJS; directory contains: " +
-                Option(outDir.list).toSeq.flatten.mkString(", ")
-            )
+            if (!mainJs.exists) {
+              sys.error(
+                s"Expected $mainJs after fastLinkJS; directory contains: " +
+                  Option(outDir.list).toSeq.flatten.mkString(", ")
+              )
+            }
             val marker = (ThisBuild / baseDirectory).value / "target" / "specular-client-js.path"
             IO.write(marker, mainJs.getAbsolutePath)
             ()
@@ -767,11 +639,6 @@ addCommandAlias("testNative", ascentPlatformTestCommand(_.native))
 
 lazy val e2eStage = taskKey[Unit]("Stage example preview trees for Chekhov e2e")
 
-// --- ascent-chekhov : typed Chekhov locators over the HTML lattice (jvm + js). ---
-//   Shared sources are the TagHandle typeclass + handle algebra (no live DOM, no Chekhov
-//   imports). The JVM row interprets handles as Playwright selector strings via chekhov-core.
-//   The JS row is AscentApp.mount + live handles. sbt dependsOn js.js for compile; it is
-//   not an example fastOpt. Live withMounted tests are chekhovJs.
 lazy val ascentChekhov = (projectMatrix in file("chekhov"))
   .disablePlugins(chekhov.sbt.ChekhovPlugin)
   .dependsOn(core)
@@ -796,9 +663,6 @@ lazy val ascentChekhov = (projectMatrix in file("chekhov"))
         ),
   )
 
-// Live withMounted suite, plus the DOM facade checks that need a real browser (jsdom has no
-// OffscreenCanvas or context globals). Own Scala.js module so Test/fastLinkJS is this project's
-// bundle (tiny UIs in test sources). sbt dependsOn js.js; does not fastOpt the e2e apps.
 lazy val chekhovJs = (project in file("chekhov-js"))
   .enablePlugins(org.scalajs.sbtplugin.ScalaJSPlugin)
   .disablePlugins(chekhov.sbt.ChekhovPlugin)
@@ -829,7 +693,7 @@ lazy val e2e = (project in file("e2e"))
     zioTestSettings,
     MyVersions.e2eTests,
     chekhovBrowsers := Seq(chekhov.ChekhovBrowser.Firefox),
-    e2eStage := Def.uncached {
+    e2eStage        := Def.uncached {
       Def
         .sequential(
           LocalProject("todoConduitJS") / ascentPreviewStage,

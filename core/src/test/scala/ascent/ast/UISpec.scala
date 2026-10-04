@@ -68,8 +68,8 @@ object UISpec extends ZIOSpecDefault:
         yield assertTrue(Attr.ReactiveAttr("class", s).name == "class")
       },
       test("AttrKey[V] applied to a value produces a StaticAttr via its Codec") {
-        val idKey       = AttrKey[String]("id", Codec.StringAsIs)
-        val requiredKey = AttrKey[Boolean]("required", Codec.BooleanAsAttrPresence)
+        val idKey       = AttrKey[String, ascent.domtypes.tags.Element]("id", Codec.StringAsIs)
+        val requiredKey = AttrKey[Boolean, ascent.domtypes.tags.Element]("required", Codec.BooleanAsAttrPresence)
         assertTrue(
           Attr.from(idKey, "x") == Attr.StaticAttr("id", AttrValue.Str("x")),
           Attr.from(requiredKey, true) == Attr.StaticAttr("required", AttrValue.Str("")),
@@ -79,7 +79,7 @@ object UISpec extends ZIOSpecDefault:
       test("AttrKey[V] applied to a Squawk[V] produces a ReactiveAttr that maps the codec on each emit") {
         for
           s <- sq("a")
-          key  = AttrKey[String]("id", Codec.StringAsIs)
+          key  = AttrKey[String, ascent.domtypes.tags.Element]("id", Codec.StringAsIs)
           attr = Attr.fromSquawk(key, s)
           init <- attr.value.get
           _    <- s.set("b")
