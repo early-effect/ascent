@@ -43,7 +43,7 @@ jobs:
           node-version: ""
           sbt-disk-cache: "false"
           cache-mode: restore
-          cache-epoch: b3004d6f01b67d35
+          cache-epoch: "0954d8580ecf699d"
       - name: Tag is on the default branch
         if: github.event_name == 'push'
         run: |

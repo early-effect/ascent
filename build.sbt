@@ -9,6 +9,9 @@ AscentZipx.settings
 
 ThisBuild / scalaVersion := (MyVersions.scala: String)
 
+// Library snapshots (heddle and its modules). `plugins.sbt` only covers the meta-build.
+resolvers += "central-snapshots" at "https://central.sonatype.com/repository/maven-snapshots/"
+
 val scala3Version: String = MyVersions.scala
 
 // sbt 2.x scopes bare build.sbt settings to ThisBuild, so these apply build-wide to every module.
