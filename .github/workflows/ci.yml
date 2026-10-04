@@ -77,6 +77,7 @@ jobs:
           node-version: ""
           sbt-disk-cache: "false"
           cache-mode: save
+          purge: ${{ github.event_name == 'pull_request' && contains(github.event.pull_request.labels.*.name, 'purge') }}
           cache-epoch: "0954d8580ecf699d"
       - name: cache-rehydrate
         run: sbt 'Test/compile'
@@ -104,6 +105,7 @@ jobs:
           node-version: ""
           sbt-disk-cache: "false"
           cache-mode: save
+          purge: ${{ github.event_name == 'pull_request' && contains(github.event.pull_request.labels.*.name, 'purge') }}
           cache-epoch: "0954d8580ecf699d"
       - name: Pinned snapshots
         run: echo "::warning title=zipx snapshots::pinned snapshots (rocks.earlyeffect:heddle:0.9.0-SNAPSHOT, rocks.earlyeffect:heddle-brotli:0.9.0-SNAPSHOT, rocks.earlyeffect:heddle-mcp-apps:0.9.0-SNAPSHOT, rocks.earlyeffect:heddle-mcp-apps-frame:0.9.0-SNAPSHOT, rocks.earlyeffect:sbt-zipx:0.17.0-SNAPSHOT)"
@@ -139,6 +141,7 @@ jobs:
           node-version: ""
           sbt-disk-cache: "false"
           cache-mode: restore
+          purge: ${{ github.event_name == 'pull_request' && contains(github.event.pull_request.labels.*.name, 'purge') }}
           cache-epoch: "0954d8580ecf699d"
       - name: fmt
         run: |
@@ -172,6 +175,7 @@ jobs:
           node-version: ""
           sbt-disk-cache: "false"
           cache-mode: restore
+          purge: ${{ github.event_name == 'pull_request' && contains(github.event.pull_request.labels.*.name, 'purge') }}
           cache-epoch: "0954d8580ecf699d"
       - name: workflow-check
         run: |
@@ -205,6 +209,7 @@ jobs:
           node-version: ""
           sbt-disk-cache: "false"
           cache-mode: restore
+          purge: ${{ github.event_name == 'pull_request' && contains(github.event.pull_request.labels.*.name, 'purge') }}
           cache-epoch: "0954d8580ecf699d"
       - name: advisories
         run: |
@@ -242,6 +247,7 @@ jobs:
           node-version: ""
           sbt-disk-cache: "false"
           cache-mode: restore
+          purge: ${{ github.event_name == 'pull_request' && contains(github.event.pull_request.labels.*.name, 'purge') }}
           cache-epoch: "0954d8580ecf699d"
       - name: Fetch PR base SHA
         run: git fetch --no-tags origin "$ZIPX_MODVER_BASE_SHA"
@@ -280,6 +286,7 @@ jobs:
           node-version: ""
           sbt-disk-cache: "false"
           cache-mode: restore
+          purge: ${{ github.event_name == 'pull_request' && contains(github.event.pull_request.labels.*.name, 'purge') }}
           cache-epoch: "0954d8580ecf699d"
       - name: Fetch PR base SHA
         run: git fetch --no-tags origin "$ZIPX_MODVER_BASE_SHA"
@@ -316,6 +323,7 @@ jobs:
           node-version: ""
           sbt-disk-cache: "false"
           cache-mode: restore
+          purge: ${{ github.event_name == 'pull_request' && contains(github.event.pull_request.labels.*.name, 'purge') }}
           cache-epoch: "0954d8580ecf699d"
       - name: Set up Node
         uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
@@ -359,6 +367,7 @@ jobs:
           node-version: ""
           sbt-disk-cache: "false"
           cache-mode: restore
+          purge: ${{ github.event_name == 'pull_request' && contains(github.event.pull_request.labels.*.name, 'purge') }}
           cache-epoch: "0954d8580ecf699d"
       - name: Install Scala Native build dependencies
         run: sudo apt-get update && sudo apt-get install -y clang libstdc++-12-dev libgc-dev libunwind-dev
@@ -394,6 +403,7 @@ jobs:
           node-version: "24"
           sbt-disk-cache: "false"
           cache-mode: restore
+          purge: ${{ github.event_name == 'pull_request' && contains(github.event.pull_request.labels.*.name, 'purge') }}
           cache-epoch: "0954d8580ecf699d"
       - name: e2e
         run: |
@@ -448,6 +458,7 @@ jobs:
           node-version: ""
           sbt-disk-cache: "false"
           cache-mode: restore
+          purge: ${{ github.event_name == 'pull_request' && contains(github.event.pull_request.labels.*.name, 'purge') }}
           cache-epoch: "0954d8580ecf699d"
       - name: snapshots
         run: sbt 'zipxSnapshotPublish'
@@ -477,6 +488,7 @@ jobs:
           node-version: ""
           sbt-disk-cache: "false"
           cache-mode: restore
+          purge: ${{ github.event_name == 'pull_request' && contains(github.event.pull_request.labels.*.name, 'purge') }}
           cache-epoch: "0954d8580ecf699d"
       - name: snapshots-pr
         run: sbt 'zipxSnapshotPublish pr'

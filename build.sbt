@@ -11,43 +11,6 @@ ThisBuild / scalaVersion := (MyVersions.scala: String)
 
 resolvers += "central-snapshots" at "https://central.sonatype.com/repository/maven-snapshots/"
 
-def repairCentralSnapshotMetadata(): Unit = {
-  val root = java.nio.file.Path.of(
-    sys.props("user.home"),
-    ".cache",
-    "coursier",
-    "v1",
-    "https",
-    "central.sonatype.com",
-    "repository",
-    "maven-snapshots",
-  )
-  if (java.nio.file.Files.isDirectory(root)) {
-    val walk = java.nio.file.Files.walk(root)
-    try {
-      val it = walk.iterator()
-      while (it.hasNext) {
-        val path    = it.next()
-        val name    = path.getFileName.toString
-        val sidecar =
-          name == "maven-metadata.xml.sha1" || name == "maven-metadata.xml.md5" || name.startsWith(
-            "maven-metadata.xml."
-          )
-        if (sidecar && !java.nio.file.Files.isRegularFile(path.getParent.resolve("maven-metadata.xml")))
-          if (java.nio.file.Files.deleteIfExists(path)) ()
-      }
-    } finally walk.close()
-  }
-}
-
-Global / onLoad := {
-  val previous = (Global / onLoad).value
-  state => {
-    repairCentralSnapshotMetadata()
-    previous(state)
-  }
-}
-
 val scala3Version: String = MyVersions.scala
 
 organization         := "rocks.earlyeffect"
