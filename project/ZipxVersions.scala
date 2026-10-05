@@ -1,11 +1,8 @@
-import sbt.{Def, Setting}
-import sbt.Keys.{dependencyOverrides, libraryDependencySchemes}
-import sbt.librarymanagement.syntax.*
 import zipx.*
 
 /** Typed catalog: every library and plugin this build may use, and the version each published module ships at.
   * `zipxDepUpdate` rewrites `Lib` / `Plugin` constructors; `zipxModverBump <row> [kind]` rewrites a `Ship` /
-  * `ShipGroup`. A row holds its next release: every build is `<row>-SNAPSHOT` until `zipx-release.yml` releases it.
+  * `ShipGroup`. A row holds its next release: every build compiles `<row>-ci` until `zipx-release.yml` releases it.
   *
   * sbt-zipx is not a row: generate emits it from the loaded plugin (`zipxSelfPlugins`). sbt-pgp is not a row: zipx
   * already brings it in. Action pins stay on jar defaults.
@@ -22,7 +19,7 @@ object MyVersions extends ZipxVersions:
   val zioTestSbt   = zio.mod("zio-test-sbt")
   val zioStreams   = zio.mod("zio-streams")
   val zioJson      = Lib("dev.zio", "zio-json", "1.1.0")
-  val heddle       = Lib("rocks.earlyeffect", "heddle", "0.9.0-SNAPSHOT")
+  val heddle       = Lib("rocks.earlyeffect", "heddle", "0.9.0-dedb55f4b1cc-SNAPSHOT")
   val heddleBrotli = heddle.mod("heddle-brotli")
   val heddleApps   = heddle.mod("heddle-mcp-apps")
   val heddleFrame  = heddle.mod("heddle-mcp-apps-frame")
@@ -40,7 +37,7 @@ object MyVersions extends ZipxVersions:
   val specularZioTest = specular.mod("specular-zio-test")
   val specularTheme   = specular.mod("early-effect-docs-theme")
 
-  val chekhovZioTest = Lib("rocks.earlyeffect", "chekhov-zio-test", "0.1.2")
+  val chekhovZioTest = Lib("rocks.earlyeffect", "chekhov-zio-test", "0.1.3")
   val chekhovDriver  = chekhovZioTest.mod("chekhov-driver")
   val chekhovCore    = chekhovZioTest.mod("chekhov-core")
   val chekhovDom     = chekhovZioTest.mod("chekhov-dom")
@@ -51,9 +48,9 @@ object MyVersions extends ZipxVersions:
   val scalafmt       = Plugin("org.scalameta", "sbt-scalafmt", "2.6.2")
   val scalafix       = Plugin("ch.epfl.scala", "sbt-scalafix", "0.14.9")
   val specularPlugin = Plugin("rocks.earlyeffect", "sbt-specular", "0.18.1")
-  val sbtSplice      = Plugin("rocks.earlyeffect", "sbt-splice", "0.3.1")
+  val sbtSplice      = Plugin("rocks.earlyeffect", "sbt-splice", "0.3.2-8464547dc109-SNAPSHOT")
   val sbtReload      = Plugin("com.jamesward", "sbt-reload", "0.0.8")
-  val sbtChekhov     = Plugin("rocks.earlyeffect", "sbt-chekhov", "0.1.2")
+  val sbtChekhov     = Plugin("rocks.earlyeffect", "sbt-chekhov", "0.1.3")
 
   // --- What ascent ships. One row per module a consumer can take alone; a group only where modules cannot move apart.
   //   Every row started at 0.9.0, ascent's last lockstep release. A JS-only module has no bare project, so its row
@@ -84,15 +81,6 @@ object MyVersions extends ZipxVersions:
   def zioLib   = library(zio)
   def javaTime = library(scalaJavaTime, scalaJavaTimeTzdb)
 
-  // Workaround until the next ZIO release: zio-test-sbt 2.1.26 still pins 0.5.10, which swallows
-  // Native test output. Alias the sbt-scala-native version onto the Native Maven coordinate.
-  def nativeTestInterface: Seq[Setting[?]] =
-    val testInterface = "org.scala-native" % "test-interface_native0.5_3" % (scalaNative.version: String)
-    Seq(
-      libraryDependencySchemes += "org.scala-native" % "test-interface_native0.5_3" % "early-semver",
-      dependencyOverrides += Def.uncached(testInterface),
-    )
-  def nativeJavaTime  = javaTime ++ nativeTestInterface
   def cssLib          = library(fastparse)
   def elementLib      = library(zioStreams)
   def conduitLib      = library(conduit)

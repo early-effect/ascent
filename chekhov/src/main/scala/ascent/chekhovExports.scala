@@ -14,9 +14,4 @@ export ascent.chekhov.{
   HtmlTag,
   TagHandle,
   Selectors,
-  testIdSelector,
-  taggedSelector,
-  taggedTestId,
-  placeholderSelector,
-  roleSelector,
 }
