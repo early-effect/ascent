@@ -108,7 +108,7 @@ jobs:
           purge: ${{ github.event_name == 'pull_request' && contains(github.event.pull_request.labels.*.name, 'purge') }}
           cache-epoch: "0954d8580ecf699d"
       - name: Pinned snapshots
-        run: echo "::warning title=zipx snapshots::pinned snapshots (rocks.earlyeffect:heddle:0.9.0-dedb55f4b1cc-SNAPSHOT, rocks.earlyeffect:heddle-brotli:0.9.0-dedb55f4b1cc-SNAPSHOT, rocks.earlyeffect:heddle-mcp-apps:0.9.0-dedb55f4b1cc-SNAPSHOT, rocks.earlyeffect:heddle-mcp-apps-frame:0.9.0-dedb55f4b1cc-SNAPSHOT, rocks.earlyeffect:sbt-splice:0.3.2-8464547dc109-SNAPSHOT, rocks.earlyeffect:sbt-zipx:0.18.0-82a69d636174-SNAPSHOT)"
+        run: echo "::warning title=zipx snapshots::pinned snapshots (rocks.earlyeffect:heddle:0.9.0-dedb55f4b1cc-SNAPSHOT, rocks.earlyeffect:heddle-brotli:0.9.0-dedb55f4b1cc-SNAPSHOT, rocks.earlyeffect:heddle-mcp-apps:0.9.0-dedb55f4b1cc-SNAPSHOT, rocks.earlyeffect:heddle-mcp-apps-frame:0.9.0-dedb55f4b1cc-SNAPSHOT, rocks.earlyeffect:sbt-splice:0.3.2-8464547dc109-SNAPSHOT)"
       - name: test
         run: |
           if [ "$ZIPX_VERIFY_CLEAN_FULL" = "true" ]; then
