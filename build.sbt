@@ -9,8 +9,6 @@ AscentZipx.settings
 
 ThisBuild / scalaVersion := (MyVersions.scala: String)
 
-resolvers += "central-snapshots" at "https://central.sonatype.com/repository/maven-snapshots/"
-
 val scala3Version: String = MyVersions.scala
 
 organization         := "rocks.earlyeffect"
@@ -37,7 +35,6 @@ developers := List(
 publishMavenStyle    := true
 pomIncludeRepository := { _ => false }
 usePgpKeyHex(sys.env.getOrElse("PGP_KEY_HEX", "MISSING_KEY_HEX"))
-libraryDependencySchemes += "dev.zio" %% "zio-json" % "always"
 
 val scalaVersions = Seq(scala3Version)
 
@@ -46,10 +43,9 @@ Global / concurrentRestrictions ++= Seq(
   Tags.limit(Tags.Compile, 4),
 )
 
-val javaTimePolyfill    = MyVersions.javaTime
-val nativeSerialTests   = Seq(Test / parallelExecution := false)
-val nativeTestInterface = MyVersions.nativeTestInterface ++ nativeSerialTests
-val nativeJavaTime      = MyVersions.nativeJavaTime ++ nativeSerialTests
+val javaTimePolyfill  = MyVersions.javaTime
+val nativeSerialTests = Seq(Test / parallelExecution := false)
+val nativeJavaTime    = MyVersions.javaTime ++ nativeSerialTests
 
 val commonScalacOptions = Seq(
   "-deprecation",
@@ -71,31 +67,6 @@ def examplePreviewSettings(autoServe: Boolean): Seq[Setting[?]] = Seq(
   ascentPreviewClasspath := Def.uncached((LocalProject("preview") / Compile / fullClasspath).value),
 )
 
-val ascentModules = Seq(
-  "ascent-core",
-  "ascent-css",
-  "ascent-html",
-  "ascent-js",
-  "ascent-mount-engine",
-  "ascent-dom-types",
-  "ascent-dom-core",
-  "ascent-dom-facade",
-  "ascent-conduit",
-  "ascent-history",
-  "ascent-datastar",
-  "ascent-datastar-http",
-  "ascent-preview",
-  "ascent-chekhov",
-)
-
-val docsDogfoodSettings = Def.settings(
-  libraryDependencySchemes ++= ascentModules.flatMap { m =>
-    Seq(
-      "rocks.earlyeffect" % s"${m}_3"      % "always",
-      "rocks.earlyeffect" % s"${m}_sjs1_3" % "always",
-    )
-  }
-)
 
 lazy val root = (project in file("."))
   .disablePlugins(chekhov.sbt.ChekhovPlugin)
@@ -130,7 +101,7 @@ lazy val domTypes = (projectMatrix in file("dom-types"))
   )
   .jvmPlatform(scalaVersions = scalaVersions)
   .jsPlatform(scalaVersions = scalaVersions)
-  .nativePlatform(scalaVersions = scalaVersions, nativeTestInterface)
+  .nativePlatform(scalaVersions = scalaVersions, nativeSerialTests)
 
 // --- ascent-domgen : pure-Scala generator, JVM tooling only (never a runtime dep) ---
 lazy val domgen = (projectMatrix in file("domgen"))
@@ -188,7 +159,7 @@ lazy val domCore = (projectMatrix in file("dom-core"))
     Nil,
     (p: Project) => p.dependsOn(domFacade.js(scala3Version)).settings(jsdomTestEnv),
   )
-  .nativePlatform(scalaVersions = scalaVersions, nativeTestInterface)
+  .nativePlatform(scalaVersions = scalaVersions, nativeSerialTests)
 
 // --- ascent-mount-engine : the cross-platform Mount/Slot/Cleanup binding engine ---
 lazy val mountEngine = (projectMatrix in file("mount-engine"))
@@ -201,7 +172,7 @@ lazy val mountEngine = (projectMatrix in file("mount-engine"))
   )
   .jvmPlatform(scalaVersions = scalaVersions)
   .jsPlatform(scalaVersions = scalaVersions, jsdomTestEnv)
-  .nativePlatform(scalaVersions = scalaVersions, nativeTestInterface)
+  .nativePlatform(scalaVersions = scalaVersions, nativeSerialTests)
 
 // --- ascent-js : DOM mount/binding engine + typed event DSL + DomStyleSink (js only) ---
 lazy val js = (projectMatrix in file("js"))
@@ -274,7 +245,7 @@ lazy val history = (projectMatrix in file("history"))
     Nil,
     (p: Project) => p.dependsOn(domFacade.js(scala3Version)).settings(jsdomTestEnv),
   )
-  .nativePlatform(scalaVersions = scalaVersions, nativeTestInterface)
+  .nativePlatform(scalaVersions = scalaVersions, nativeSerialTests)
 
 lazy val conduitBridge = (projectMatrix in file("conduit"))
   .disablePlugins(chekhov.sbt.ChekhovPlugin)
@@ -300,7 +271,7 @@ lazy val css = (projectMatrix in file("css"))
   )
   .jvmPlatform(scalaVersions = scalaVersions)
   .jsPlatform(scalaVersions = scalaVersions, jsdomTestEnv)
-  .nativePlatform(scalaVersions = scalaVersions, nativeTestInterface)
+  .nativePlatform(scalaVersions = scalaVersions, nativeSerialTests)
 
 lazy val html = (projectMatrix in file("html"))
   .disablePlugins(chekhov.sbt.ChekhovPlugin)
@@ -541,12 +512,7 @@ lazy val docs: ProjectMatrix = (projectMatrix in file("docs"))
       p.dependsOn(datastarHttp.jvm(scala3Version), preview.jvm(scala3Version))
         .enablePlugins(SpecularPlugin, AscentPreviewPlugin)
         .settings(
-          docsDogfoodSettings,
           MyVersions.docsJvm,
-          // specular-site (via the theme) may still declare an older zio-json; take catalog 1.1.0.
-          dependencyOverrides += MyVersions.moduleID(MyVersions.zioJson),
-          // Local only, until heddle 0.8.0 releases: specular-site 0.18.1 still names heddle 0.7.1.
-          dependencyOverrides += MyVersions.moduleID(MyVersions.heddle),
           zioTestSettings,
           Compile / mainClass             := Some("ascent.docs.ServeSite"),
           run / mainClass                 := Some("ascent.docs.ServeSite"),
@@ -584,7 +550,6 @@ lazy val docs: ProjectMatrix = (projectMatrix in file("docs"))
     (p: Project) =>
       p.dependsOn(js.js(scala3Version))
         .settings(
-          docsDogfoodSettings,
           javaTimePolyfill,
           MyVersions.docsJs,
           scalaJSUseMainModuleInitializer := true,
