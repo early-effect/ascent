@@ -14,9 +14,6 @@ export ascent.chekhov.{
   HtmlTag,
   TagHandle,
   Selectors,
-  testIdSelector,
-  taggedSelector,
-  taggedTestId,
-  placeholderSelector,
-  roleSelector,
 }
+// From the object itself: an export forwarder is not eligible for a second export.
+export ascent.chekhov.Selectors.{testIdSelector, taggedSelector, taggedTestId, placeholderSelector, roleSelector}
