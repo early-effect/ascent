@@ -10,38 +10,9 @@ import java.nio.file.{Files, Path, Paths, StandardCopyOption}
 object BuildSite extends ZIOAppDefault:
 
   def run =
-    val out  = SitePaths.outDir(repoRoot.resolve("target/site"))
-    val base = SitePaths.basePath(".")
-    val meta = ProjectMeta.fromSystemProperties
-      .map(m =>
-        m.copy(
-          name = "ascent",
-          title = Some("ascent"),
-          description = Some(
-            m.description.getOrElse(
-              "Effect-native reactive UI for Scala 3; direct DOM, Squawk boundaries, ZIO throughout."
-            )
-          ),
-          language = Some("Scala"),
-        )
-      )
-      .orElse(
-        Some(
-          ProjectMeta(
-            name = "ascent",
-            organization = "rocks.earlyeffect",
-            version = "0.3.0",
-            scalaVersion = "3.9.0",
-            title = Some("ascent"),
-            description = Some(
-              "Effect-native reactive UI for Scala 3; direct DOM, Squawk boundaries, ZIO throughout."
-            ),
-            language = Some("Scala"),
-          )
-        )
-      )
-    val version   = meta.map(_.version).getOrElse("0.3.0")
-    val org       = meta.map(_.organization).getOrElse("rocks.earlyeffect")
+    val out       = SitePaths.outDir(repoRoot.resolve("target/site"))
+    val base      = SitePaths.basePath(".")
+    val meta      = Some(DocsMeta.project)
     val unbranded = SiteModel(
       title = "ascent",
       basePath = base,
@@ -72,34 +43,7 @@ exact node, attribute, or child-list behind each reactive boundary. The substrat
 Docs pages are Specular `DocSpec`s: the same source asserts under zio-test and SSR-renders here.
 """
       ),
-      installSnippets = Vector(
-        CodeSnippet(
-          "Install (core + browser)",
-          s"""libraryDependencies ++= Seq(
-  "$org" %%% "ascent-core" % "$version",
-  "$org" %%% "ascent-js"   % "$version", // Scala.js mount engine
-  "$org" %%% "ascent-css"  % "$version", // optional typed CSS
-)""",
-        ),
-        CodeSnippet(
-          "Optional modules",
-          s"""libraryDependencies ++= Seq(
-  "$org" %%% "ascent-conduit"       % "$version", // Ctx[M] state bridge
-  "$org" %%% "ascent-history"       % "$version", // Location as a Squawk
-  "$org" %%  "ascent-html"          % "$version", // SSR
-  "$org" %%  "ascent-datastar-http" % "$version", // server datastar
-  "$org" %%% "ascent-datastar-js"   % "$version", // browser datastar
-  "$org" %%  "ascent-preview"       % "$version", // local static + SSE reload
-  "$org" %%% "ascent-chekhov"       % "$version" % Test, // typed Chekhov locators
-)""",
-        ),
-        CodeSnippet(
-          "Local preview plugin",
-          s"""addSbtPlugin("rocks.earlyeffect" % "sbt-ascent-preview" % "$version")
-// enablePlugins(AscentPreviewPlugin) on the module; then:
-// sbt todoConduitJS/ascentPreview   or   sbt docs/ascentPreview""",
-        ),
-      ),
+      installSnippets = Install.snippets(DocsMeta.project.organization, ModuleVersions.released),
     )
     val model = EarlyEffectTheme.brand(unbranded)
     ZIO

@@ -501,7 +501,8 @@ lazy val docs: ProjectMatrix = (projectMatrix in file("docs"))
     // the pages, so both generate it.
     Compile / sourceGenerators += Def.task {
       val out = (Compile / sourceManaged).value / "ascent" / "docs" / "Released.scala"
-      IO.write(out, ReleasedGen.source(zipxShips.value))
+      val rows = ReleasedLookup.versions(Project.extract(state.value), zipxShips.value)
+      IO.write(out, ReleasedGen.source(rows))
       Seq(out)
     }.taskValue,
   )
