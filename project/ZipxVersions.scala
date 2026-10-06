@@ -57,10 +57,10 @@ object MyVersions extends ZipxVersions:
   //   names the JS one.
 
   /** One generator and one webref snapshot produce all three, so they move together. */
-  val dom = ShipGroup("dom", "0.11.0")("domTypes", "domFacadeJS", "domCore")
+  val dom = ShipGroup("dom", "0.11.1")("domTypes", "domFacadeJS", "domCore")
 
-  val core          = Ship("core", "0.10.0")
-  val css           = Ship("css", "0.10.0")
+  val core          = Ship("core", "0.10.1")
+  val css           = Ship("css", "0.10.1")
   val mountEngine   = Ship("mountEngine", "0.11.0")
   val js            = Ship("jsJS", "0.11.0")
   val element       = Ship("elementJS", "0.10.0")
