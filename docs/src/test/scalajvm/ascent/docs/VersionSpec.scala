@@ -1,6 +1,7 @@
 package ascent.docs
 
 import specular.*
+import specular.site.SiteModel
 import zio.test.*
 
 /** Install fences name each artifact's own Central release, and the site does not invent one version. */
@@ -46,8 +47,11 @@ object VersionSpec extends ZIOSpecDefault:
       assertTrue(
         meta.version.isEmpty,
         meta.docsUrl.contains(DocsMeta.DocsUrl),
-        meta.homepage.contains(DocsMeta.DocsUrl),
+        meta.homepage.contains(DocsMeta.RepoUrl),
         meta.versionBadge.isEmpty,
+        SiteModel(title = "ascent", meta = Some(meta)).headerLinks.exists { link =>
+          link.label == "GitHub" && link.href == DocsMeta.RepoUrl
+        },
       )
     },
   )

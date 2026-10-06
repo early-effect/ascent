@@ -2,11 +2,12 @@ package ascent.docs
 
 import specular.site.ProjectMeta
 
-/** Site identity written into chrome and `metadata.json`. Ascent is not one artifact, so `version` stays empty and the
-  * hub card follows `docsUrl`.
+/** Site identity written into chrome and `metadata.json`. Ascent is not one artifact, so `version` stays empty. The hub
+  * card follows `docsUrl`. The header link follows `homepage`, which is the GitHub repo.
   */
 object DocsMeta:
   val DocsUrl: String     = "https://www.earlyeffect.rocks/ascent/"
+  val RepoUrl: String     = "https://github.com/early-effect/ascent"
   val Description: String =
     "Effect-native reactive UI for Scala 3; direct DOM, Squawk boundaries, ZIO throughout."
 
@@ -19,7 +20,7 @@ object DocsMeta:
       title = Some("ascent"),
       description = Some(Description),
       language = Some("Scala"),
-      homepage = Some(DocsUrl),
+      homepage = Some(prop("homepage").getOrElse(RepoUrl)),
       docsUrl = Some(DocsUrl),
     )
 
