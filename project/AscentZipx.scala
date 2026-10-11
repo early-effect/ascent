@@ -78,6 +78,36 @@ object AscentZipx:
   /** The site follows main: every push to it, and a manual dispatch. */
   private val docsFollowMain: Capability = ZipxDocs.pages().copy(condition = Some(JobCondition.onDefaultPush(List("main"))))
 
+  /** `git diff` exits 1 when the render differs. `|| true` keeps the step green so the check still judges the
+    * committed file. The copy is restored after the diff.
+    */
+  private val showWorkflowDiff: Steps = Steps.built("workflow-diff")(
+    Step
+      .run(
+        Script(
+          ZipxExec("cp", Word.lit(".github/workflows/ci.yml"), Word.lit("/tmp/ci.committed.yml")),
+          ZipxExec("sbt", Word.squote("zipxWorkflowGenerate")),
+          ZipxExec(
+            "git",
+            Word.lit("--no-pager"),
+            Word.lit("diff"),
+            Word.lit("--stat"),
+            Word.lit("--"),
+            Word.lit(".github/workflows/ci.yml"),
+          ) || ZipxExec("true"),
+          ZipxExec(
+            "git",
+            Word.lit("--no-pager"),
+            Word.lit("diff"),
+            Word.lit("--"),
+            Word.lit(".github/workflows/ci.yml"),
+          ) || ZipxExec("true"),
+          ZipxExec("cp", Word.lit("/tmp/ci.committed.yml"), Word.lit(".github/workflows/ci.yml")),
+        )
+      )
+      .named("Show workflow render diff")
+  )
+
   def settings: Seq[Setting[?]] = Seq(
     zipxJavaVersion      := JdkVersion("25"),
     zipxWorkflowDispatch := true,
@@ -86,6 +116,12 @@ object AscentZipx:
         EnvValue.typed(Expr.github("workspace") ++ Expr.lit("/target/ms-playwright"))
     ),
     zipxCapabilities ++= Seq(
+      // Replaces the builtin by name. The step prints the Linux render, then the check judges the committed file.
+      zipxTasks.once(
+        name = Capability.WorkflowCheckName,
+        command = zipxWorkflowCheck,
+        extraSteps = showWorkflowDiff,
+      ),
       // Replaces the builtin test by name, so it has to claim the LocalDir snapshot itself.
       Capability
         .once(
