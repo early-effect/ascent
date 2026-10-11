@@ -75,7 +75,7 @@ object MyVersions extends ZipxVersions:
   val ascentChekhov = Ship("ascentChekhov", "0.11.0")
 
   /** sbt-ascent-preview adds ascent-preview at its own version, so the two ship together. */
-  val preview = ShipGroup("preview", "0.10.1")("preview", "sbtAscentPreview")
+  val preview = ShipGroup("preview", "0.10.2")("preview", "sbtAscentPreview")
 
   def zioTests = library(zioTest.test, zioTestSbt.test)
   def zioLib   = library(zio)
