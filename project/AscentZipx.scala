@@ -86,6 +86,7 @@ object AscentZipx:
       .run(
         Script(
           ZipxExec("cp", Word.lit(".github/workflows/ci.yml"), Word.lit("/tmp/ci.committed.yml")),
+          ZipxExec("sbt", Word.squote("show zipxShips")),
           ZipxExec("sbt", Word.squote("zipxWorkflowGenerate")),
           ZipxExec(
             "git",

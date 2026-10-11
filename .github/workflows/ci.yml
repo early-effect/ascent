@@ -178,6 +178,7 @@ jobs:
       - name: Show workflow render diff
         run: |
           cp .github/workflows/ci.yml /tmp/ci.committed.yml
+          sbt 'show zipxShips'
           sbt 'zipxWorkflowGenerate'
           git --no-pager diff --stat -- .github/workflows/ci.yml || true
           git --no-pager diff -- .github/workflows/ci.yml || true
