@@ -177,9 +177,11 @@ jobs:
           cache-epoch: a58dd11b5168f3f5
       - name: workflow-check
         run: |
-          sbt 'cleanFull; zipxWorkflowGenerate'
-          git --no-pager diff -- .github/workflows/ci.yml | head -c 40000
-          exit 1
+          if [ "$ZIPX_VERIFY_CLEAN_FULL" = "true" ]; then
+            sbt 'cleanFull; zipxWorkflowCheck'
+          else
+            sbt 'zipxWorkflowCheck'
+          fi
         env:
           ZIPX_VERIFY_CLEAN_FULL: ${{ github.event_name == 'pull_request' && contains(github.event.pull_request.labels.*.name, 'clean') }}
   advisories:
