@@ -48,7 +48,7 @@ object Preview:
   private def staticAndReload(config: PreviewConfig): Routes[Any, Response] =
     val docRoot = config.root.toAbsolutePath.normalize.toFile
     Routes(
-      Method.GET / trailing -> { (path: Path, _: Request) =>
+      Method.GET / trailing -> { path =>
         if isReload(path, config.reloadPath) then
           ZIO.succeed(Sse.response(stampEvents(config.root.resolve(config.stamp))))
         else
