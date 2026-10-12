@@ -5,6 +5,7 @@ import ascent.datastar.http.AscentDatastar
 import ascent.dsl.*
 import heddle.*
 import heddle.datastar.{Datastar, events}
+import heddle.server.Port
 import specular.{DocSpec, exampleZIO, md, page, section}
 import zio.*
 import zio.test.*
@@ -91,7 +92,7 @@ wiring lives in `example/hybrid-chat`.
                 }
               }
             }
-            .provide(Server.defaultWith(_.port(0)))
+            .provide(Server.defaultWith(_.port(Port(0))))
         yield result
         end for
       }.assert(st => assertTrue(st == Status.Ok)),

@@ -3,6 +3,7 @@ package ascent.docs
 import ascent.datastar.http.AscentDatastar
 import heddle.*
 import heddle.datastar.{Datastar, events}
+import heddle.server.Port
 import specular.{DocSpec, exampleZIO, md, page, section}
 import zio.*
 import zio.json.JsonEncoder
@@ -71,7 +72,7 @@ succeeds while the server is live, then the Scope closes and the port is release
                 }
               }
             }
-            .provide(Server.defaultWith(_.port(0)))
+            .provide(Server.defaultWith(_.port(Port(0))))
         yield result
         end for
       }.assert(st => assertTrue(st == Status.Ok)),

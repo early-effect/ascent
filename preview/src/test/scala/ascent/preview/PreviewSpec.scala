@@ -1,6 +1,7 @@
 package ascent.preview
 
 import heddle.*
+import heddle.server.Port
 import zio.*
 import zio.test.*
 
@@ -163,6 +164,12 @@ object PreviewSpec extends ZIOSpecDefault:
         assertTrue(!c.openBrowser, c.port == 8765)
       },
     ),
+    suite("server config")(
+      test("a port outside 0 to 65535 does not build a config") {
+        for result <- ZIO.service[Server.Config].provide(Preview.server(70_000)).either
+        yield assertTrue(result == Left(PreviewError.Port("a port must be 0 to 65535, got 70000")))
+      }
+    ),
     suite("live server")(
       test("Client can fetch a page from an installed server") {
         for
@@ -178,7 +185,7 @@ object PreviewSpec extends ZIOSpecDefault:
                 }
               }
             }
-            .provide(Server.defaultWith(_.port(0)))
+            .provide(Server.defaultWith(_.port(Port(0))))
         yield result
       } @@ TestAspect.withLiveClock @@ TestAspect.timeout(10.seconds)
     ),
@@ -189,7 +196,7 @@ object PreviewSpec extends ZIOSpecDefault:
           port  <- freePort
           fiber <- Preview
             .serve(PreviewConfig(tmp, port = port), extraRoutes = ping)
-            .provideSome[Scope](Server.defaultWith(_.port(port)))
+            .provideSome[Scope](Preview.server(port))
             .fork
           pingR <- getUntilOk(s"http://127.0.0.1:$port/api/ping")
           pingB <- pingR.body.utf8
@@ -207,7 +214,7 @@ object PreviewSpec extends ZIOSpecDefault:
             .scoped(
               Preview.serve(PreviewConfig(tmp, port = port), sidecar = ZIO.addFinalizer(flag.set(true)))
             )
-            .provide(Server.defaultWith(_.port(port)))
+            .provide(Preview.server(port))
             .fork
           _ <- getUntilOk(s"http://127.0.0.1:$port/")
           _ <- fiber.interrupt
@@ -227,7 +234,7 @@ object PreviewSpec extends ZIOSpecDefault:
                 extraRoutes = ping,
               )
             )
-            .provide(Server.defaultWith(_.port(port)))
+            .provide(Preview.server(port))
             .fork
           pingR <- getUntilOk(s"http://127.0.0.1:$port/api/ping")
           body  <- pingR.body.utf8
@@ -241,7 +248,7 @@ object PreviewSpec extends ZIOSpecDefault:
           port  <- freePort
           fiber <- Preview
             .serve(PreviewConfig(tmp, port = port, cors = true), extraRoutes = ping)
-            .provideSome[Scope](Server.defaultWith(_.port(port)))
+            .provideSome[Scope](Preview.server(port))
             .fork
           _    <- getUntilOk(s"http://127.0.0.1:$port/api/ping")
           resp <- Client.request(
@@ -269,7 +276,7 @@ object PreviewSpec extends ZIOSpecDefault:
               extraRoutes = ping,
               restartSidecarOnStamp = true,
             )
-            .provideSome[Scope](Server.defaultWith(_.port(port)))
+            .provideSome[Scope](Preview.server(port))
             .fork
           _ <- getUntilOk(s"http://127.0.0.1:$port/api/ping")
           _ <- started.get.repeatUntil(_ >= 1)
@@ -301,7 +308,7 @@ object PreviewSpec extends ZIOSpecDefault:
               extraRoutes = ping,
               restartSidecarOnStamp = true,
             )
-            .provideSome[Scope](Server.defaultWith(_.port(port)))
+            .provideSome[Scope](Preview.server(port))
             .fork
           _ <- getUntilOk(s"http://127.0.0.1:$port/api/ping")
           _ <- count.get.repeatUntil(_ >= 1)
@@ -324,7 +331,7 @@ object PreviewSpec extends ZIOSpecDefault:
         port <- freePort
         exit <- Preview
           .serve(PreviewConfig(tmp, port = port), sidecar = ZIO.fail(RuntimeException("sidecar")))
-          .provideSome[Scope](Server.defaultWith(_.port(port)))
+          .provideSome[Scope](Preview.server(port))
           .exit
         free <- ZIO.attempt {
           val ss = java.net.ServerSocket(port)

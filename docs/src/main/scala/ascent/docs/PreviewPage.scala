@@ -98,19 +98,19 @@ extra routes. Supply neither, one, or both:
 ```scala
 // extra HTTP only (datastar / hybrid)
 Preview.serve(config, extraRoutes = apiRoutes(state))
-  .provideSome[Scope](Server.defaultWith(_.port(config.port)))
+  .provideSome[Scope](Preview.server(config.port))
 
 // background lifetime only
 Preview.serve(config, sidecar = spawnAgent)
-  .provideSome[Scope](Server.defaultWith(_.port(config.port)))
+  .provideSome[Scope](Preview.server(config.port))
 
 // routes that need a resource: acquire first, same Scope
 clients <- LiveClients.grok(log)
 _       <- Preview.serve(config, extraRoutes = apiRoutes(clients))
-             .provideSome[Scope](Server.defaultWith(_.port(config.port)))
+             .provideSome[Scope](Preview.server(config.port))
 ```
 
-Callers provide `Server` (`PreviewMain` uses `Server.defaultWith(_.port(config.port))`; examples add
+Callers provide `Server` (`PreviewMain` uses `Preview.server(config.port)`; examples add
 compression). Sidecar and HTTP run beside each other in the caller's `Scope`. Interrupt closes HTTP,
 then sidecar finalizers (child process, Hub, runtime). Extra routes are composed in front of the
 static trailing GET so `/sse` wins over a file lookup.
