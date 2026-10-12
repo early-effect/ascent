@@ -1,6 +1,7 @@
 package ascent.preview
 
 import heddle.*
+import heddle.server.Port
 import heddle.sse.{ServerSentEvent, Sse, SseField}
 import zio.*
 import zio.stream.*
@@ -10,6 +11,11 @@ import java.nio.charset.StandardCharsets
 import java.nio.file.{Files, Path as JPath}
 
 import scala.jdk.CollectionConverters.*
+
+/** Why [[Preview.server]] refused to build a [[Server.Config]]. */
+enum PreviewError:
+  /** `port` is outside `0` to `65535`. `detail` is the validator's message. */
+  case Port(detail: String)
 
 /** Serves a static directory with a path jail, plus an SSE reload endpoint that fires when a stamp file's **contents**
   * change.
@@ -24,9 +30,19 @@ object Preview:
   def routes(config: PreviewConfig): Routes[Any, Response] =
     withCors(config, staticAndReload(config))
 
+  /** `Server.Config` listening on `port`. A runtime int goes through `Port.make`. A literal uses `Port(n)`. */
+  def server(port: Int): ZLayer[Any, PreviewError, Server.Config] =
+    ZLayer.fromZIO:
+      ZIO
+        .fromEither(Port.make(port))
+        .mapBoth(
+          PreviewError.Port(_),
+          p => Server.Config.default.port(p),
+        )
+
   /** Serve `config.root` until interruption.
     *
-    * Provide `Server.Config` at the call site (`Server.defaultWith(_.port(config.port))`).
+    * Provide `Server.Config` at the call site (`Preview.server(config.port)`).
     */
   def serve(
       config: PreviewConfig,
@@ -41,9 +57,9 @@ object Preview:
     side.zipParRight(installAndHang(config, app))
   end serve
 
-  /** `serve` with `Server.defaultWith(_.port(config.port))`. For `ZIOAppDefault` entry points. */
-  def serveForever(config: PreviewConfig): ZIO[Scope, Throwable, Nothing] =
-    serve(config).provideSome[Scope](Server.defaultWith(_.port(config.port)))
+  /** `serve` with [[server]] on `config.port`. For `ZIOAppDefault` entry points. */
+  def serveForever(config: PreviewConfig): ZIO[Scope, Throwable | PreviewError, Nothing] =
+    serve(config).provideSome[Scope](server(config.port))
 
   private def staticAndReload(config: PreviewConfig): Routes[Any, Response] =
     val docRoot = config.root.toAbsolutePath.normalize.toFile

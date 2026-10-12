@@ -1,7 +1,6 @@
 package ascent.docs
 
 import ascent.preview.{Preview, PreviewConfig}
-import heddle.*
 import zio.*
 
 import java.nio.file.Paths
@@ -19,6 +18,6 @@ object ServeSite extends ZIOAppDefault:
         .getOrElse(Paths.get("target/site").toAbsolutePath)
       _ <- Preview
         .serve(PreviewConfig(root = root, port = port))
-        .provideSome[Scope](Server.defaultWith(_.port(port)))
+        .provideSome[Scope](Preview.server(port))
     yield ()
 end ServeSite
