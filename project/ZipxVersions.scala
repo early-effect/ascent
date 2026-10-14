@@ -11,7 +11,7 @@ import zipx.*
   * module already pulls them (specular-core / specular-site via the docs theme).
   */
 object MyVersions extends ZipxVersions:
-  val sbt: SbtVersion     = SbtVersion("2.1.0-M3")
+  val sbt: SbtVersion     = SbtVersion("2.1.0-RC1")
   val scala: ScalaVersion = ScalaVersion("3.9.0")
 
   val zio          = Lib("dev.zio", "zio", "2.1.26")
