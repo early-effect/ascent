@@ -11,7 +11,7 @@ import zipx.*
   * module already pulls them (specular-core / specular-site via the docs theme).
   */
 object MyVersions extends ZipxVersions:
-  val sbt: SbtVersion     = SbtVersion("2.1.0-M3")
+  val sbt: SbtVersion     = SbtVersion("2.1.0-RC1")
   val scala: ScalaVersion = ScalaVersion("3.9.0")
 
   val zio          = Lib("dev.zio", "zio", "2.1.26")
@@ -75,7 +75,7 @@ object MyVersions extends ZipxVersions:
   val ascentChekhov = Ship("ascentChekhov", "0.11.0")
 
   /** sbt-ascent-preview adds ascent-preview at its own version, so the two ship together. */
-  val preview = ShipGroup("preview", "0.11.0")("preview", "sbtAscentPreview")
+  val preview = ShipGroup("preview", "0.11.1")("preview", "sbtAscentPreview")
 
   def zioTests = library(zioTest.test, zioTestSbt.test)
   def zioLib   = library(zio)
