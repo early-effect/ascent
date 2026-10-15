@@ -12,9 +12,8 @@ object ExampleRegistry:
 
   private def collect(nodes: Vector[DocNode]): Vector[(String, URIO[Scope, UI[Any]])] =
     nodes.flatMap {
-      case ex: Example[?] if ex.isInteractive =>
-        val erased = ex.asInstanceOf[Example[Any]]
-        Vector(erased.id -> erased.body)
+      case ex: Example if ex.isInteractive =>
+        Vector(ex.id -> ex.body)
       case Section(_, kids) =>
         collect(kids)
       case _ =>

@@ -35,18 +35,18 @@ object DocsSourceSpec extends ZIOSpecDefault:
     },
   )
 
-  private def collectUi(nodes: Vector[DocNode]): Vector[Example[?]] =
+  private def collectUi(nodes: Vector[DocNode]): Vector[Example] =
     nodes.flatMap {
-      case ex: Example[?]   => Vector(ex)
+      case ex: Example      => Vector(ex)
       case Section(_, kids) => collectUi(kids)
       case _                => Vector.empty
     }
 
-  private def collectValues(nodes: Vector[DocNode]): Vector[ValueExample[?]] =
+  private def collectValues(nodes: Vector[DocNode]): Vector[ValueExample[?, ?]] =
     nodes.flatMap {
-      case ex: ValueExample[?] => Vector(ex)
-      case Section(_, kids)    => collectValues(kids)
-      case _                   => Vector.empty
+      case ex: ValueExample[?, ?] => Vector(ex)
+      case Section(_, kids)       => collectValues(kids)
+      case _                      => Vector.empty
     }
 
   private def collectMd(nodes: Vector[DocNode]): Vector[String] =
