@@ -5,6 +5,7 @@ import ascent.preview.{Preview, PreviewConfig}
 import heddle.*
 import heddle.brotli.Brotli
 import heddle.datastar.{Datastar, events}
+import heddle.server.Port
 import zio.*
 
 import java.nio.file.Path as JPath
@@ -63,7 +64,7 @@ object CounterServer extends ZIOAppDefault:
       _     <- Preview
         .serve(PreviewConfig(root = root, port = 8080), extraRoutes = apiRoutes(state))
         .provideSome[Scope](
-          Server.defaultWith(_.port(8080))
+          Server.defaultWith(_.port(Port(8080)))
         )
     yield ()
 end CounterServer
