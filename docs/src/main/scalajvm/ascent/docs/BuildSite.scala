@@ -10,8 +10,8 @@ import java.nio.file.{Files, Path, Paths, StandardCopyOption}
 object BuildSite extends ZIOAppDefault:
 
   def run =
-    val out       = SitePaths.outDir(repoRoot.resolve("target/site"))
-    val base      = SitePaths.basePath(".")
+    val out       = repoRoot.resolve("target/site")
+    val base      = "."
     val meta      = Some(DocsMeta.project)
     val unbranded = SiteModel(
       title = "ascent",
