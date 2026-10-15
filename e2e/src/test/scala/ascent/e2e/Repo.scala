@@ -1,6 +1,7 @@
 package ascent.e2e
 
 import heddle.*
+import heddle.server.Port
 import zio.*
 
 import java.nio.file.{Files, Path, Paths}
@@ -42,7 +43,7 @@ end Repo
 
 object PreviewServe:
   val serverLayer: ULayer[Server.Config] =
-    Server.defaultWith(_.port(0))
+    Server.defaultWith(_.port(Port(0)))
 
   def install(routes: Routes[Any, Response]): ZIO[Server.Config & Scope, Throwable, PreviewUrl] =
     Server

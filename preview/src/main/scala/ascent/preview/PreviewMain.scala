@@ -1,6 +1,5 @@
 package ascent.preview
 
-import heddle.*
 import zio.*
 
 import java.nio.file.Paths
@@ -15,7 +14,7 @@ object PreviewMain extends ZIOAppDefault:
       config = configFromArgs(args)
       _ <- Preview
         .serve(config)
-        .provideSome[Scope](Server.defaultWith(_.port(config.port)))
+        .provideSome[Scope](Preview.server(config.port))
     yield ()
 
   private[preview] def configFromArgs(args: Chunk[String]): PreviewConfig =
