@@ -593,6 +593,51 @@ def ascentPlatformTestCommand(find: ProjectMatrix => ProjectFinder): String =
     .sorted
     .mkString("; ")
 
+// One list with the alias: a matrix with no native platform contributes nothing. A module
+// added to only one of `dependsOn` or the source scope would drop tests or relink a second binary.
+lazy val nativeTestProjects: Seq[Project] =
+  ascentMatrices.flatMap(_.native.get)
+
+// Per-module `*Native/test` still links that module alone. `testNative` does not: each of
+// those binaries is a cold closed-world link.
+lazy val nativeTests = {
+  val refs  = nativeTestProjects.map(project => project: ProjectReference)
+  val scope = ScopeFilter(inProjects(refs *), inConfigurations(Test))
+  project
+    .in(file("native-tests"))
+    .enablePlugins(ScalaNativePlugin)
+    .disablePlugins(chekhov.sbt.ChekhovPlugin)
+    .dependsOn(nativeTestProjects.map(project => project: ClasspathDep[ProjectReference]) *)
+    .settings(
+      name := "ascent-native-tests",
+      scalacOptions ++= commonScalacOptions,
+      MyVersions.zioTests,
+      MyVersions.javaTime,
+      publish / skip           := true,
+      zipxPublish              := Some(false),
+      Test / parallelExecution := false,
+      Test / unmanagedSourceDirectories ++= Def.uncached {
+        (Test / unmanagedSourceDirectories)
+          .all(scope)
+          .value
+          .flatten
+          .filter(dir => nativeSuiteDir(dir, "/src/test/scala") || nativeSuiteDir(dir, "/src/test/scalanative"))
+          .distinct
+      },
+      Test / unmanagedResourceDirectories ++= Def.uncached {
+        (Test / unmanagedResourceDirectories)
+          .all(scope)
+          .value
+          .flatten
+          .filter(dir => nativeSuiteDir(dir, "/src/test/resources"))
+          .distinct
+      },
+    )
+}
+
+def nativeSuiteDir(dir: File, suffix: String): Boolean =
+  dir.toPath.normalize.toString.replace('\\', '/').endsWith(suffix)
+
 // ascentChekhov is not in ascentMatrices: the JVM row is browser-free selector tests and
 // joins testJVM. Live JSEnv tests live in chekhovJs (ChekhovJSEnv, not jsdom) so they stay
 // off testJS.
@@ -601,7 +646,8 @@ addCommandAlias(
   ascentPlatformTestCommand(_.jvm) + "; ascentChekhov/test; sbtAscentPreview/scripted",
 )
 addCommandAlias("testJS", ascentPlatformTestCommand(_.js))
-addCommandAlias("testNative", ascentPlatformTestCommand(_.native))
+// `testFull`, not testQuick: a restored analysis must not skip the suite.
+addCommandAlias("testNative", "nativeTests/testFull")
 
 lazy val e2eStage = taskKey[Unit]("Stage example preview trees for Chekhov e2e")
 

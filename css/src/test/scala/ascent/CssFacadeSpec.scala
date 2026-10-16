@@ -7,7 +7,7 @@ import zio.test.*
 /** Compile-anchored proof that `import ascent.*` exposes the css authoring types + the `S` alias for the `Styles`
   * property catalog (whose members are reached via `S.color(...)`, not enumerated in the facade).
   */
-object FacadeSpec extends ZIOSpecDefault:
+object CssFacadeSpec extends ZIOSpecDefault:
 
   val red: Declaration = S.color("red")
 
@@ -30,4 +30,4 @@ object FacadeSpec extends ZIOSpecDefault:
       assertTrue(Tooltip("hi").nonEmpty)
     },
   )
-end FacadeSpec
+end CssFacadeSpec
