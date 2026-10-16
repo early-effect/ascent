@@ -6,7 +6,7 @@ import zio.test.*
 /** Compile-anchored proof that a single `import ascent.*` (no `import ascent.domtypes.*`) resolves the dom-types
   * catalog and its short aliases; if any name below fails to resolve, the export facade is incomplete.
   */
-object FacadeSpec extends ZIOSpecDefault:
+object DomTypesFacadeSpec extends ZIOSpecDefault:
 
   val divK: ElementKey[?]        = Elements.div
   val classK: AttrKey[String, ?] = Attrs.className
@@ -42,4 +42,4 @@ object FacadeSpec extends ZIOSpecDefault:
       )
     },
   )
-end FacadeSpec
+end DomTypesFacadeSpec

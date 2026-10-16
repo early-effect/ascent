@@ -6,7 +6,7 @@ import ascent.*
 import zio.*
 import zio.test.*
 
-object FacadeSpec extends ZIOSpecDefault:
+object CoreFacadeSpec extends ZIOSpecDefault:
 
   val empty: UI[Any]  = UI.Empty
   val attr: Attr[Any] = Attr.StaticAttr("id", AttrValue.Str("x"))
@@ -34,4 +34,4 @@ object FacadeSpec extends ZIOSpecDefault:
       assertTrue(Elements.div.domName == "div", Attrs.className.domName == "class")
     },
   )
-end FacadeSpec
+end CoreFacadeSpec
