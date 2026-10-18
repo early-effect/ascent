@@ -24,7 +24,7 @@ object MyVersions extends ZipxVersions:
   val heddleApps   = heddle.mod("heddle-mcp-apps")
   val heddleFrame  = heddle.mod("heddle-mcp-apps-frame")
 
-  val scalaJavaTime     = Lib("io.github.cquiroz", "scala-java-time", "2.7.0")
+  val scalaJavaTime     = Lib("io.github.cquiroz", "scala-java-time", "2.8.0")
   val scalaJavaTimeTzdb = scalaJavaTime.mod("scala-java-time-tzdb")
 
   val fastparse = Lib("com.lihaoyi", "fastparse", "3.1.1")
