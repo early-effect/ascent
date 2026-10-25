@@ -11,4 +11,3 @@ trait HandleBackend[F[_]]:
   def press(selector: String, key: String)(using Trace): F[Unit]
   def innerText(selector: String)(using Trace): F[String]
   def textContent(selector: String)(using Trace): F[String]
-end HandleBackend

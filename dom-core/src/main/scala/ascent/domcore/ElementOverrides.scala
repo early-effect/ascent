@@ -144,5 +144,4 @@ object ElementOverrides:
       parent(e).map(p => children(p).takeWhile(_ ne e)).getOrElse(Nil)
     def nextSiblings(e: Element): Seq[Element] =
       parent(e).map(p => children(p).dropWhile(_ ne e).drop(1)).getOrElse(Nil)
-  end given
 end ElementOverrides

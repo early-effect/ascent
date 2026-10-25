@@ -96,7 +96,6 @@ object CssGenerator:
       byScalaName(scalaName) = toPropertyDef(p, valuesByName, propsByName, catalog).copy(scalaName = scalaName)
     }
     byScalaName.values.toList
-  end analyze
 
   /** Extract simple keyword literals from a property's `values:` listing. We surface every top-level entry with
     * `kind == "value"` whose `name` is a CSS-keyword-shaped identifier (no angle brackets, no parens, no spaces). These
@@ -160,7 +159,6 @@ object CssGenerator:
                 case Left(_) => Nil
             }
             direct ++ viaGrammar
-        end match
       case _ => Nil
     }
 
@@ -186,7 +184,6 @@ object CssGenerator:
                   PropertyAnalyzer.analyze(innerAst).traits
                 case Left(_) => Nil
             }.toSet
-        end match
       case _ => Set.empty
     }.toSet
 
@@ -233,7 +230,6 @@ object CssGenerator:
       case _ => ()
     walkForPropRefs(g)
     (keywords.toList, traits.toSet)
-  end resolvePropertyRefShape
 
   private def toPropertyDef(
       p: WebrefCss.Property,
@@ -289,8 +285,6 @@ object CssGenerator:
               if ownValueKeywords.isEmpty then PropertyShape(Nil, Nil)
               else PropertyAnalyzer.analyze(CssGrammar.Sequence(Nil), ownValueKeywords)
             PropertyDef(scalaName, p.name, shape, parseError = Some(err), doc = doc)
-    end match
-  end toPropertyDef
 
   /** Is this property a border-style shorthand — the `<line-width> || <line-style> || <color>` shape behind
     * `border`/`border-top`/…, the logical `border-block`/`-inline`(`-start`/`-end`), `outline`, and `column-rule`?
@@ -334,7 +328,6 @@ object CssGenerator:
     walk(g, 0)
     val hasStyle = typeRefs.exists(t => t == "line-style" || t.endsWith("line-style"))
     hasStyle && typeRefs.contains("color")
-  end isBorderShorthand
 
   /** Is this property a 1–4 value `<length-percentage>` box shorthand — `<top>{1,4}` (`inset`), `<length-percentage>
     * {1,4}` (`border-radius`), `<'border-top-width'>{1,4}` (`border-width`), `<'margin-top'>{1,2}` (`margin-block`),
@@ -386,7 +379,6 @@ object CssGenerator:
       case CssGrammar.Group(inner)         => check(inner)
       case _                               => false
     check(g)
-  end isLengthBox
 
   /** Which value-type traits (from the catalog) a property's grammar references — by scanning every `<type-ref>`
     * reachable through branch-like structures, plus one level into any `<'property'>` ref's own grammar. A type whose
@@ -422,7 +414,6 @@ object CssGenerator:
       case _ => ()
     walkPropRefs(g)
     out.toSet
-  end resolveValueTraits
 
   /** Synthesize a property object's scaladoc from its webref metadata. Properties carry no `prose` (verified across the
     * snapshot) — only their value children do — so the object doc is the dom name, the grammar, and the
@@ -435,7 +426,6 @@ object CssGenerator:
         val initial   = p.initial.map(i => s" Initial: `$i`.").getOrElse("")
         val inherited = p.inherited.map(h => s" Inherited: $h.").getOrElse("")
         Some(s"`${p.name}` — `$grammar`.$initial$inherited")
-  end synthDoc
 
   private def camelCase(s: String): String =
     val parts = s.split('-')

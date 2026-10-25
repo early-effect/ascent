@@ -111,7 +111,6 @@ object AriaQueryParserSpec extends ZIOSpecDefault:
             props.size >= 45, // aria-query 5.3.2 ships ~50; pinned loosely
           )
         case Left(err) => assertNever(s"parse failed: $err")
-      end match
     },
   )
 end AriaQueryParserSpec

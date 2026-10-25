@@ -70,7 +70,6 @@ object StateAttrSpec extends ZIOSpecDefault:
           css.contains(s"""[data-ascent="$rootAttr"][data-state='loading'] {"""),
           css.contains("opacity: 0.5;"),
         )
-      end for
     },
     test("a custom-named StateAttr targets a non-`data-state` attribute") {
       for

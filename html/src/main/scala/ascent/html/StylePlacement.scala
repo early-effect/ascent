@@ -13,3 +13,4 @@ enum StylePlacement:
 
   /** Leave `head` alone. The caller places [[Html.Page.css]]. */
   case Aside
+end StylePlacement

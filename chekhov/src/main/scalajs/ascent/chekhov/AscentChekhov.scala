@@ -84,6 +84,7 @@ object LiveHandles:
 
   def typed[K](root: AscentRoot, selector: String, h: TagHandle[K]): LiveOf[h.Handle] =
     h.wrap(selector, LiveBackend(root, Some(h.tagName)))
+end LiveHandles
 
 /** Live-node backend. `expectedTag` is the catalog tag we must see after `querySelector`. */
 final class LiveBackend(root: AscentRoot, expectedTag: Option[String]) extends HandleBackend[AscentChekhov.Effect]:

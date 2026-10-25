@@ -42,7 +42,6 @@ final case class RadialGeometry(
       position.map(p => s"at ${p.render}"),
     ).flatten
     parts.mkString(" ")
-end RadialGeometry
 
 object RadialGeometry:
   /** A circle centered at `position`: `circle at <x> <y>`. */
@@ -52,6 +51,7 @@ object RadialGeometry:
   /** An ellipse centered at `position`: `ellipse at <x> <y>`. */
   def ellipseAt(position: Position): RadialGeometry =
     RadialGeometry(shape = Some(RadialShape.Ellipse), position = Some(position))
+end RadialGeometry
 
 /** A composable CSS gradient — `linear-gradient(...)`, `radial-gradient(...)`, or a comma-joined stack of them for
   * layered backgrounds.

@@ -56,7 +56,6 @@ object Color:
       other.channels.fold[Color](this)(o => mixRgb(this, o, clampAlpha(w)))
     private[css] def channels: Option[Rgba] = Some(this)
     private[css] def toHsla: Hsla           = rgbToHsla(this)
-  end Rgba
 
   /** HSL with alpha. Opaque renders `hsl(h, s%, l%)`; sub-1 alpha renders `hsl(h s% l% / a)`. */
   final case class Hsla(h: Int, s: Double, l: Double, a: Double) extends Color:
@@ -69,7 +68,6 @@ object Color:
     def mix(other: Color, w: Double): Color = toRgba.mix(other, w)
     private[css] def channels: Option[Rgba] = Some(toRgba)
     private[css] def toRgba: Rgba           = hslaToRgba(this)
-  end Hsla
 
   /** A named color, system color, `currentColor`, or `transparent` — kept verbatim.
     *
@@ -83,7 +81,6 @@ object Color:
     def darken(amount: Double): Color       = this
     def mix(other: Color, w: Double): Color = this
     private[css] def channels: Option[Rgba] = scala.None
-  end Keyword
 
   def rgb(r: Int, g: Int, b: Int): Color             = Rgba(clampByte(r), clampByte(g), clampByte(b), 1.0)
   def rgba(r: Int, g: Int, b: Int, a: Double): Color = Rgba(clampByte(r), clampByte(g), clampByte(b), clampAlpha(a))
@@ -114,8 +111,6 @@ object Color:
       case 6 => Rgba(byte(0), byte(2), byte(4), 1.0)
       case 8 => Rgba(byte(0), byte(2), byte(4), aByte(byte(6)))
       case _ => throw IllegalArgumentException(s"Invalid hex color: '$s'")
-    end match
-  end hex
 
   private[css] def clampByte(n: Int): Int        = math.max(0, math.min(255, n))
   private[css] def clampAlpha(a: Double): Double = math.max(0.0, math.min(1.0, a))
@@ -152,7 +147,6 @@ object Color:
       val d = hRaw * 60.0
       if d < 0 then d + 360.0 else d
     Hsla(math.round(hDeg).toInt % 360, round1(s * 100.0), round1(l * 100.0), c.a)
-  end rgbToHsla
 
   /** HSL → sRGB (channels round to nearest byte). */
   private def hslaToRgba(c: Hsla): Rgba =
@@ -165,7 +159,6 @@ object Color:
       val f  = l - a * math.max(-1.0, math.min(math.min(kn - 3.0, 9.0 - kn), 1.0))
       math.round(f * 255.0).toInt
     Rgba(channel(0.0), channel(8.0), channel(4.0), c.a)
-  end hslaToRgba
 
   private def round1(d: Double): Double = math.round(d * 10.0) / 10.0
 end Color

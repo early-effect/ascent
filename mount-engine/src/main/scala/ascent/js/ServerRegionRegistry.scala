@@ -31,6 +31,7 @@ object ServerRegionRegistry:
 
     /** Never registered as a server region in this session. */
     case Unknown
+  end Status
 
   // id -> live container handle (opaque; only its identity matters). `Any` because the backend node type
   // isn't bounded to AnyRef; matched only via DomOps.sameNode in regionContaining. Removed on unmount.

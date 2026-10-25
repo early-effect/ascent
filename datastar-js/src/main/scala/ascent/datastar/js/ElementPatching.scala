@@ -50,7 +50,6 @@ object ElementPatching:
               case Some(target) => applyTo(target, patch)
               case None         =>
                 reportMissingTarget(sel, regionId.getOrElse(sel), ascent.js.ServerRegionRegistry.Status.Unknown)
-        end match
 
   /** Report a patch whose target didn't resolve, with the precise reason from the region registry. */
   private def reportMissingTarget(selector: String, id: String, status: ascent.js.ServerRegionRegistry.Status): Unit =
@@ -65,7 +64,6 @@ object ElementPatching:
       ascent.js.Diagnostics.Violation.PatchTargetMissing(id, status),
       msg,
     )
-  end reportMissingTarget
 
   private def applyTo(target: dom.Element, patch: RemoteEvent.PatchElements): Unit =
     val dyn = target.asInstanceOf[js.Dynamic]
@@ -80,6 +78,4 @@ object ElementPatching:
       case ElementPatchMode.Before  => target.insertAdjacentHTML(Beforebegin, patch.html)
       case ElementPatchMode.After   => target.insertAdjacentHTML(Afterend, patch.html)
       case ElementPatchMode.Remove  => target.remove()
-    end match
-  end applyTo
 end ElementPatching

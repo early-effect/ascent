@@ -66,6 +66,7 @@ object FontFaceDescriptors extends StylesValueTraits:
       * relevant.
       */
     def url(href: String): Declaration = apply("url(\"" + href + "\")")
+  end src
 
   /** `unicode-range: <range-token>#` — the range string is opaque (the spec grammar is too rich for top-level alts).
     * The bare `apply(String)` form takes a raw range literal: `FontFaceDescriptors.unicodeRange("U+0000-00FF")`.

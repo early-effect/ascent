@@ -38,7 +38,6 @@ object NullableAccessors:
     def usernameFragment: Option[String] = nullable(self.usernameFragmentOrNull)
     def relayProtocol: Option[String]    = nullable(self.relayProtocolOrNull)
     def url: Option[String]              = nullable(self.urlOrNull)
-  end extension
 
   extension (self: CloseWatcher)
     def oncancel: Option[scala.scalajs.js.Function1[Event, scala.scalajs.js.Any]] = nullable(self.oncancelOrNull)
@@ -65,7 +64,6 @@ object NullableAccessors:
     def onscrollend: Option[scala.scalajs.js.Function1[Event, scala.scalajs.js.Any]] = nullable(self.onscrollendOrNull)
     def onscrollend_=(value: Option[scala.scalajs.js.Function1[Event, scala.scalajs.js.Any]]): Unit =
       self.onscrollendOrNull = value.orNull
-  end extension
 
   extension (self: SourceBufferList)
     def onaddsourcebuffer: Option[scala.scalajs.js.Function1[Event, scala.scalajs.js.Any]] = nullable(
@@ -78,7 +76,6 @@ object NullableAccessors:
     )
     def onremovesourcebuffer_=(value: Option[scala.scalajs.js.Function1[Event, scala.scalajs.js.Any]]): Unit =
       self.onremovesourcebufferOrNull = value.orNull
-  end extension
 
   extension (self: LanguageModel)
     def oncontextoverflow: Option[scala.scalajs.js.Function1[Event, scala.scalajs.js.Any]] = nullable(
@@ -91,7 +88,6 @@ object NullableAccessors:
     )
     def onquotaoverflow_=(value: Option[scala.scalajs.js.Function1[Event, scala.scalajs.js.Any]]): Unit =
       self.onquotaoverflowOrNull = value.orNull
-  end extension
 
   extension (self: RTCDtlsTransport)
     def onstatechange: Option[scala.scalajs.js.Function1[Event, scala.scalajs.js.Any]] = nullable(
@@ -135,7 +131,6 @@ object NullableAccessors:
     def onclose_=(value: Option[scala.scalajs.js.Function1[Event, scala.scalajs.js.Any]]): Unit = self.oncloseOrNull =
       value.orNull
     def silent: Option[Boolean] = nullable(self.silentOrNull)
-  end extension
 
   extension (self: LayoutShiftAttribution) def node: Option[Node] = nullable(self.nodeOrNull)
 
@@ -179,7 +174,6 @@ object NullableAccessors:
     )
     def onunhandledrejection_=(value: Option[scala.scalajs.js.Function1[Event, scala.scalajs.js.Any]]): Unit =
       self.onunhandledrejectionOrNull = value.orNull
-  end extension
 
   extension (self: CanvasRenderingContext2D)
     def createPattern(
@@ -219,7 +213,6 @@ object NullableAccessors:
     def trigger: Option[AnimationTrigger]                            = nullable(self.triggerOrNull)
     def trigger_=(value: Option[AnimationTrigger]): Unit             = self.triggerOrNull = value.orNull
     def overallProgress: Option[Double]                              = nullable(self.overallProgressOrNull)
-  end extension
 
   extension (self: XRReferenceSpace)
     def onreset: Option[scala.scalajs.js.Function1[Event, scala.scalajs.js.Any]] = nullable(self.onresetOrNull)
@@ -242,7 +235,6 @@ object NullableAccessors:
     )
     def onendstreaming_=(value: Option[scala.scalajs.js.Function1[Event, scala.scalajs.js.Any]]): Unit =
       self.onendstreamingOrNull = value.orNull
-  end extension
 
   extension (self: ReadableStreamBYOBRequest) def view: Option[scala.scalajs.js.Any] = nullable(self.viewOrNull)
 
@@ -267,7 +259,6 @@ object NullableAccessors:
     def onerror: Option[scala.scalajs.js.Function1[Event, scala.scalajs.js.Any]] = nullable(self.onerrorOrNull)
     def onerror_=(value: Option[scala.scalajs.js.Function1[Event, scala.scalajs.js.Any]]): Unit = self.onerrorOrNull =
       value.orNull
-  end extension
 
   extension (self: HTMLScriptElement)
     def crossOrigin: Option[String]                = nullable(self.crossOriginOrNull)
@@ -294,7 +285,6 @@ object NullableAccessors:
     def onerror: Option[scala.scalajs.js.Function1[Event, scala.scalajs.js.Any]] = nullable(self.onerrorOrNull)
     def onerror_=(value: Option[scala.scalajs.js.Function1[Event, scala.scalajs.js.Any]]): Unit = self.onerrorOrNull =
       value.orNull
-  end extension
 
   extension (self: XRProjectionLayer)
     def fixedFoveation: Option[Double]                     = nullable(self.fixedFoveationOrNull)
@@ -338,7 +328,6 @@ object NullableAccessors:
     def getUniformLocation(program: WebGLProgram, name: String): Option[WebGLUniformLocation] = nullable(
       self.getUniformLocationOrNull(program, name)
     )
-  end extension
 
   extension (self: ProximitySensor)
     def distance: Option[Double] = nullable(self.distanceOrNull)
@@ -538,7 +527,6 @@ object NullableAccessors:
     )
     def getRegionFlowRanges(): Option[scala.scalajs.js.Array[Range]] = nullable(self.getRegionFlowRangesOrNull())
     def querySelector(selectors: String): Option[Element]            = nullable(self.querySelectorOrNull(selectors))
-  end extension
 
   extension (self: HTMLCollection)
     def item(index: Int): Option[Element]        = nullable(self.itemOrNull(index))
@@ -565,7 +553,6 @@ object NullableAccessors:
     def onremovetrack_=(value: Option[scala.scalajs.js.Function1[Event, scala.scalajs.js.Any]]): Unit =
       self.onremovetrackOrNull = value.orNull
     def getTrackById(id: String): Option[VideoTrack] = nullable(self.getTrackByIdOrNull(id))
-  end extension
 
   extension (self: CSSPropertyRule) def initialValue: Option[String] = nullable(self.initialValueOrNull)
 
@@ -1005,7 +992,6 @@ object NullableAccessors:
     )
     def onbeforexrselect_=(value: Option[scala.scalajs.js.Function1[Event, scala.scalajs.js.Any]]): Unit =
       self.onbeforexrselectOrNull = value.orNull
-  end extension
 
   extension (self: CSSRuleList) def item(index: Int): Option[CSSRule] = nullable(self.itemOrNull(index))
 
@@ -1109,7 +1095,6 @@ object NullableAccessors:
     def onportalactivate_=(value: Option[scala.scalajs.js.Function1[Event, scala.scalajs.js.Any]]): Unit =
       self.onportalactivateOrNull = value.orNull
     def getElementById(elementId: String): Option[Element] = nullable(self.getElementByIdOrNull(elementId))
-  end extension
 
   extension (self: XRCylinderLayer)
     def onredraw: Option[scala.scalajs.js.Function1[Event, scala.scalajs.js.Any]] = nullable(self.onredrawOrNull)
@@ -1326,7 +1311,6 @@ object NullableAccessors:
     )
     def onportalactivate_=(value: Option[scala.scalajs.js.Function1[Event, scala.scalajs.js.Any]]): Unit =
       self.onportalactivateOrNull = value.orNull
-  end extension
 
   extension (self: HTMLAllCollection)
     def namedItem(name: String): Option[HTMLCollection | Element]   = nullable(self.namedItemOrNull(name))
@@ -1357,7 +1341,6 @@ object NullableAccessors:
     )
     def onmessageerror_=(value: Option[scala.scalajs.js.Function1[Event, scala.scalajs.js.Any]]): Unit =
       self.onmessageerrorOrNull = value.orNull
-  end extension
 
   extension (self: ModelContext)
     def ontoolchange: Option[scala.scalajs.js.Function1[Event, scala.scalajs.js.Any]] = nullable(
@@ -1405,7 +1388,6 @@ object NullableAccessors:
     def textContent_=(value: Option[String]): Unit         = self.textContentOrNull = value.orNull
     def lookupPrefix(namespace: String): Option[String]    = nullable(self.lookupPrefixOrNull(namespace))
     def lookupNamespaceURI(prefix: String): Option[String] = nullable(self.lookupNamespaceURIOrNull(prefix))
-  end extension
 
   extension (self: NamedNodeMap)
     def item(index: Int): Option[Attr]                    = nullable(self.itemOrNull(index))
@@ -1431,7 +1413,6 @@ object NullableAccessors:
       self.getViewerPoseOrNull(referenceSpace)
     )
     def getPose(space: XRSpace, baseSpace: XRSpace): Option[XRPose] = nullable(self.getPoseOrNull(space, baseSpace))
-  end extension
 
   extension (self: AnimationTimeline)
     def currentTime: Option[Double | CSSNumericValue] = nullable(self.currentTimeOrNull)
@@ -1499,7 +1480,6 @@ object NullableAccessors:
     )
     def ondatachannel_=(value: Option[scala.scalajs.js.Function1[Event, scala.scalajs.js.Any]]): Unit =
       self.ondatachannelOrNull = value.orNull
-  end extension
 
   extension (self: SourceBuffer)
     def onupdatestart: Option[scala.scalajs.js.Function1[Event, scala.scalajs.js.Any]] = nullable(
@@ -1519,7 +1499,6 @@ object NullableAccessors:
     def onabort: Option[scala.scalajs.js.Function1[Event, scala.scalajs.js.Any]] = nullable(self.onabortOrNull)
     def onabort_=(value: Option[scala.scalajs.js.Function1[Event, scala.scalajs.js.Any]]): Unit = self.onabortOrNull =
       value.orNull
-  end extension
 
   extension (self: DOMStringList) def item(index: Int): Option[String] = nullable(self.itemOrNull(index))
 
@@ -1539,7 +1518,6 @@ object NullableAccessors:
     def getPropertyType(tagName: String, property: String, elementNs: String): Option[String] = nullable(
       self.getPropertyTypeOrNull(tagName, property, elementNs)
     )
-  end extension
 
   extension (self: BackgroundFetchRegistration)
     def onprogress: Option[scala.scalajs.js.Function1[Event, scala.scalajs.js.Any]] = nullable(self.onprogressOrNull)
@@ -1568,7 +1546,6 @@ object NullableAccessors:
     def onloadend: Option[scala.scalajs.js.Function1[Event, scala.scalajs.js.Any]] = nullable(self.onloadendOrNull)
     def onloadend_=(value: Option[scala.scalajs.js.Function1[Event, scala.scalajs.js.Any]]): Unit =
       self.onloadendOrNull = value.orNull
-  end extension
 
   extension (self: WorkletAnimationEffect)
     def localTime: Option[Double]                = nullable(self.localTimeOrNull)
@@ -1601,7 +1578,6 @@ object NullableAccessors:
     def onmessage: Option[scala.scalajs.js.Function1[Event, scala.scalajs.js.Any]] = nullable(self.onmessageOrNull)
     def onmessage_=(value: Option[scala.scalajs.js.Function1[Event, scala.scalajs.js.Any]]): Unit =
       self.onmessageOrNull = value.orNull
-  end extension
 
   extension (self: OffscreenCanvas)
     def oncontextlost: Option[scala.scalajs.js.Function1[Event, scala.scalajs.js.Any]] = nullable(
@@ -1617,7 +1593,6 @@ object NullableAccessors:
     def getContext[C, O](contextId: OffscreenContextId[C, O]): Option[C] = nullable(self.getContextOrNull(contextId))
     def getContext[C, O](contextId: OffscreenContextId[C, O], options: O): Option[C] =
       nullable(self.getContextOrNull(contextId, options))
-  end extension
 
   extension (self: WebTransportError) def streamErrorCode: Option[Int] = nullable(self.streamErrorCodeOrNull)
 
@@ -1638,7 +1613,6 @@ object NullableAccessors:
     def onremovetrack_=(value: Option[scala.scalajs.js.Function1[Event, scala.scalajs.js.Any]]): Unit =
       self.onremovetrackOrNull = value.orNull
     def getTrackById(id: String): Option[TextTrack] = nullable(self.getTrackByIdOrNull(id))
-  end extension
 
   extension (self: SerialPort)
     def onconnect: Option[scala.scalajs.js.Function1[Event, scala.scalajs.js.Any]] = nullable(self.onconnectOrNull)
@@ -1651,7 +1625,6 @@ object NullableAccessors:
       self.ondisconnectOrNull = value.orNull
     def readable: Option[ReadableStream] = nullable(self.readableOrNull)
     def writable: Option[WritableStream] = nullable(self.writableOrNull)
-  end extension
 
   extension (self: SVGAnimationElement)
     def targetElement: Option[SVGElement]                                        = nullable(self.targetElementOrNull)
@@ -1664,7 +1637,6 @@ object NullableAccessors:
     def onrepeat: Option[scala.scalajs.js.Function1[Event, scala.scalajs.js.Any]] = nullable(self.onrepeatOrNull)
     def onrepeat_=(value: Option[scala.scalajs.js.Function1[Event, scala.scalajs.js.Any]]): Unit = self.onrepeatOrNull =
       value.orNull
-  end extension
 
   extension (self: XRHitTestResult)
     def getPose(baseSpace: XRSpace): Option[XRPose] = nullable(self.getPoseOrNull(baseSpace))
@@ -1706,7 +1678,6 @@ object NullableAccessors:
     )
     def onsourceclose_=(value: Option[scala.scalajs.js.Function1[Event, scala.scalajs.js.Any]]): Unit =
       self.onsourcecloseOrNull = value.orNull
-  end extension
 
   extension (self: NDEFReader)
     def onreading: Option[scala.scalajs.js.Function1[Event, scala.scalajs.js.Any]] = nullable(self.onreadingOrNull)
@@ -1750,7 +1721,6 @@ object NullableAccessors:
     def activeElement: Option[Element]                       = nullable(self.activeElementOrNull)
     def pictureInPictureElement: Option[Element]             = nullable(self.pictureInPictureElementOrNull)
     def pointerLockElement: Option[Element]                  = nullable(self.pointerLockElementOrNull)
-  end extension
 
   extension (self: CreateMonitor)
     def ondownloadprogress: Option[scala.scalajs.js.Function1[Event, scala.scalajs.js.Any]] = nullable(
@@ -1794,7 +1764,6 @@ object NullableAccessors:
     def getActiveUniformBlockName(program: WebGLProgram, uniformBlockIndex: Int): Option[String] = nullable(
       self.getActiveUniformBlockNameOrNull(program, uniformBlockIndex)
     )
-  end extension
 
   extension (self: PictureInPictureWindow)
     def onresize: Option[scala.scalajs.js.Function1[Event, scala.scalajs.js.Any]] = nullable(self.onresizeOrNull)
@@ -1813,7 +1782,6 @@ object NullableAccessors:
     def onerror: Option[scala.scalajs.js.Function1[Event, scala.scalajs.js.Any]] = nullable(self.onerrorOrNull)
     def onerror_=(value: Option[scala.scalajs.js.Function1[Event, scala.scalajs.js.Any]]): Unit = self.onerrorOrNull =
       value.orNull
-  end extension
 
   extension (self: GeolocationCoordinates)
     def altitude: Option[Double]         = nullable(self.altitudeOrNull)
@@ -1859,7 +1827,6 @@ object NullableAccessors:
     )
     def onserviceremoved_=(value: Option[scala.scalajs.js.Function1[Event, scala.scalajs.js.Any]]): Unit =
       self.onserviceremovedOrNull = value.orNull
-  end extension
 
   extension (self: TaskSignal)
     def onprioritychange: Option[scala.scalajs.js.Function1[Event, scala.scalajs.js.Any]] = nullable(
@@ -1903,7 +1870,6 @@ object NullableAccessors:
     )
     def onzoomlevelchange_=(value: Option[scala.scalajs.js.Function1[Event, scala.scalajs.js.Any]]): Unit =
       self.onzoomlevelchangeOrNull = value.orNull
-  end extension
 
   extension (self: EditContext)
     def ontextupdate: Option[scala.scalajs.js.Function1[Event, scala.scalajs.js.Any]] = nullable(
@@ -1931,7 +1897,6 @@ object NullableAccessors:
     )
     def oncompositionend_=(value: Option[scala.scalajs.js.Function1[Event, scala.scalajs.js.Any]]): Unit =
       self.oncompositionendOrNull = value.orNull
-  end extension
 
   extension (self: HTMLGeolocationElement)
     def position: Option[GeolocationPosition]                                       = nullable(self.positionOrNull)
@@ -1954,7 +1919,6 @@ object NullableAccessors:
     )
     def onpromptdismiss_=(value: Option[scala.scalajs.js.Function1[Event, scala.scalajs.js.Any]]): Unit =
       self.onpromptdismissOrNull = value.orNull
-  end extension
 
   extension (self: SVGStyleElement) def sheet: Option[CSSStyleSheet] = nullable(self.sheetOrNull)
 
@@ -2015,7 +1979,6 @@ object NullableAccessors:
     def onmessage: Option[scala.scalajs.js.Function1[Event, scala.scalajs.js.Any]] = nullable(self.onmessageOrNull)
     def onmessage_=(value: Option[scala.scalajs.js.Function1[Event, scala.scalajs.js.Any]]): Unit =
       self.onmessageOrNull = value.orNull
-  end extension
 
   extension (self: PushSubscriptionOptions)
     def applicationServerKey: Option[scala.scalajs.js.Any] = nullable(self.applicationServerKeyOrNull)
@@ -2061,7 +2024,6 @@ object NullableAccessors:
     )
     def onversionchange_=(value: Option[scala.scalajs.js.Function1[Event, scala.scalajs.js.Any]]): Unit =
       self.onversionchangeOrNull = value.orNull
-  end extension
 
   extension (self: StyleSheetList) def item(index: Int): Option[CSSStyleSheet] = nullable(self.itemOrNull(index))
 
@@ -2146,7 +2108,6 @@ object NullableAccessors:
     )
     def onpayerdetailchange_=(value: Option[scala.scalajs.js.Function1[Event, scala.scalajs.js.Any]]): Unit =
       self.onpayerdetailchangeOrNull = value.orNull
-  end extension
 
   extension (self: HTMLMediaElement)
     def mediaKeys: Option[MediaKeys]                                                 = nullable(self.mediaKeysOrNull)
@@ -2163,7 +2124,6 @@ object NullableAccessors:
     def srcObject_=(value: Option[MediaStream | MediaSource | Blob]): Unit = self.srcObjectOrNull = value.orNull
     def crossOrigin: Option[String]                                        = nullable(self.crossOriginOrNull)
     def crossOrigin_=(value: Option[String]): Unit                         = self.crossOriginOrNull = value.orNull
-  end extension
 
   extension (self: BluetoothRemoteGATTCharacteristic)
     def value: Option[scala.scalajs.js.Any] = nullable(self.valueOrNull)
@@ -2204,7 +2164,6 @@ object NullableAccessors:
     def getSelectedCandidatePair(): Option[RTCIceCandidatePair] = nullable(self.getSelectedCandidatePairOrNull())
     def getLocalParameters(): Option[RTCIceParameters]          = nullable(self.getLocalParametersOrNull())
     def getRemoteParameters(): Option[RTCIceParameters]         = nullable(self.getRemoteParametersOrNull())
-  end extension
 
   extension (self: XRLightProbe)
     def onreflectionchange: Option[scala.scalajs.js.Function1[Event, scala.scalajs.js.Any]] = nullable(
@@ -2270,7 +2229,6 @@ object NullableAccessors:
     )
     def onframeratechange_=(value: Option[scala.scalajs.js.Function1[Event, scala.scalajs.js.Any]]): Unit =
       self.onframeratechangeOrNull = value.orNull
-  end extension
 
   extension (self: DeviceMotionEventAcceleration)
     def x: Option[Double] = nullable(self.xOrNull)
@@ -2292,7 +2250,6 @@ object NullableAccessors:
     def onerror: Option[scala.scalajs.js.Function1[Event, scala.scalajs.js.Any]] = nullable(self.onerrorOrNull)
     def onerror_=(value: Option[scala.scalajs.js.Function1[Event, scala.scalajs.js.Any]]): Unit = self.onerrorOrNull =
       value.orNull
-  end extension
 
   extension (self: CSSScopeRule)
     def start: Option[String] = nullable(self.startOrNull)
@@ -2424,7 +2381,6 @@ object NullableAccessors:
     def ariaValueNow_=(value: Option[String]): Unit        = self.ariaValueNowOrNull = value.orNull
     def ariaValueText: Option[String]                      = nullable(self.ariaValueTextOrNull)
     def ariaValueText_=(value: Option[String]): Unit       = self.ariaValueTextOrNull = value.orNull
-  end extension
 
   extension (self: WebTransport)
     def anticipatedConcurrentIncomingUnidirectionalStreams: Option[Int] = nullable(
@@ -2438,7 +2394,6 @@ object NullableAccessors:
     def anticipatedConcurrentIncomingBidirectionalStreams_=(value: Option[Int]): Unit =
       self.anticipatedConcurrentIncomingBidirectionalStreamsOrNull = value.orNull
     def responseHeaders: Option[Headers] = nullable(self.responseHeadersOrNull)
-  end extension
 
   extension (self: HTMLPortalElement)
     def onmessage: Option[scala.scalajs.js.Function1[Event, scala.scalajs.js.Any]] = nullable(self.onmessageOrNull)
@@ -2481,7 +2436,6 @@ object NullableAccessors:
     )
     def ondevicechange_=(value: Option[scala.scalajs.js.Function1[Event, scala.scalajs.js.Any]]): Unit =
       self.ondevicechangeOrNull = value.orNull
-  end extension
 
   extension (self: Text) def assignedSlot: Option[HTMLSlotElement] = nullable(self.assignedSlotOrNull)
 
@@ -2506,7 +2460,6 @@ object NullableAccessors:
     )
     def onlevelchange_=(value: Option[scala.scalajs.js.Function1[Event, scala.scalajs.js.Any]]): Unit =
       self.onlevelchangeOrNull = value.orNull
-  end extension
 
   extension (self: NodeIterator)
     def filter: Option[scala.scalajs.js.Function1[Node, Int]] = nullable(self.filterOrNull)
@@ -2555,7 +2508,6 @@ object NullableAccessors:
     def onremovetrack_=(value: Option[scala.scalajs.js.Function1[Event, scala.scalajs.js.Any]]): Unit =
       self.onremovetrackOrNull = value.orNull
     def getTrackById(trackId: String): Option[MediaStreamTrack] = nullable(self.getTrackByIdOrNull(trackId))
-  end extension
 
   extension (self: ServiceWorkerRegistration)
     def installing: Option[ServiceWorker]                                              = nullable(self.installingOrNull)
@@ -2583,7 +2535,6 @@ object NullableAccessors:
     def onerror: Option[scala.scalajs.js.Function1[Event, scala.scalajs.js.Any]] = nullable(self.onerrorOrNull)
     def onerror_=(value: Option[scala.scalajs.js.Function1[Event, scala.scalajs.js.Any]]): Unit = self.onerrorOrNull =
       value.orNull
-  end extension
 
   extension (self: USBConfiguration) def configurationName: Option[String] = nullable(self.configurationNameOrNull)
 
@@ -2598,7 +2549,6 @@ object NullableAccessors:
     )
     def oncurrentscreenchange_=(value: Option[scala.scalajs.js.Function1[Event, scala.scalajs.js.Any]]): Unit =
       self.oncurrentscreenchangeOrNull = value.orNull
-  end extension
 
   extension (self: PortalHost)
     def onmessage: Option[scala.scalajs.js.Function1[Event, scala.scalajs.js.Any]] = nullable(self.onmessageOrNull)
@@ -2624,7 +2574,6 @@ object NullableAccessors:
     )
     def ondisconnect_=(value: Option[scala.scalajs.js.Function1[Event, scala.scalajs.js.Any]]): Unit =
       self.ondisconnectOrNull = value.orNull
-  end extension
 
   extension (self: ServiceWorkerContainer)
     def controller: Option[ServiceWorker] = nullable(self.controllerOrNull)
@@ -2641,7 +2590,6 @@ object NullableAccessors:
     )
     def onmessageerror_=(value: Option[scala.scalajs.js.Function1[Event, scala.scalajs.js.Any]]): Unit =
       self.onmessageerrorOrNull = value.orNull
-  end extension
 
   extension (self: XRSystem)
     def ondevicechange: Option[scala.scalajs.js.Function1[Event, scala.scalajs.js.Any]] = nullable(
@@ -2668,7 +2616,6 @@ object NullableAccessors:
     def onremovetrack_=(value: Option[scala.scalajs.js.Function1[Event, scala.scalajs.js.Any]]): Unit =
       self.onremovetrackOrNull = value.orNull
     def getTrackById(id: String): Option[AudioTrack] = nullable(self.getTrackByIdOrNull(id))
-  end extension
 
   extension (self: XPathResult)
     def singleNodeValue: Option[Node]          = nullable(self.singleNodeValueOrNull)
@@ -2700,7 +2647,6 @@ object NullableAccessors:
     def onisolationchange_=(value: Option[scala.scalajs.js.Function1[Event, scala.scalajs.js.Any]]): Unit =
       self.onisolationchangeOrNull = value.orNull
     def getCaptureHandle(): Option[CaptureHandle] = nullable(self.getCaptureHandleOrNull())
-  end extension
 
   extension (self: XRWebGLLayer)
     def fixedFoveation: Option[Double]                = nullable(self.fixedFoveationOrNull)
@@ -2731,7 +2677,6 @@ object NullableAccessors:
     )
     def onleavepictureinpicture_=(value: Option[scala.scalajs.js.Function1[Event, scala.scalajs.js.Any]]): Unit =
       self.onleavepictureinpictureOrNull = value.orNull
-  end extension
 
   extension (self: Rewriter)
     def expectedInputLanguages: Option[scala.scalajs.js.Array[String]]   = nullable(self.expectedInputLanguagesOrNull)
@@ -2829,7 +2774,6 @@ object NullableAccessors:
     def selectionDirection_=(value: Option[String]): Unit        = self.selectionDirectionOrNull = value.orNull
     def popoverTargetElement: Option[Element]                    = nullable(self.popoverTargetElementOrNull)
     def popoverTargetElement_=(value: Option[Element]): Unit     = self.popoverTargetElementOrNull = value.orNull
-  end extension
 
   extension (self: HID)
     def onconnect: Option[scala.scalajs.js.Function1[Event, scala.scalajs.js.Any]] = nullable(self.onconnectOrNull)
@@ -2853,7 +2797,6 @@ object NullableAccessors:
     )
     def onmessageerror_=(value: Option[scala.scalajs.js.Function1[Event, scala.scalajs.js.Any]]): Unit =
       self.onmessageerrorOrNull = value.orNull
-  end extension
 
   extension (self: MathMLElement)
     def onanimationstart: Option[scala.scalajs.js.Function1[Event, scala.scalajs.js.Any]] = nullable(
@@ -3264,7 +3207,6 @@ object NullableAccessors:
     )
     def onbeforexrselect_=(value: Option[scala.scalajs.js.Function1[Event, scala.scalajs.js.Any]]): Unit =
       self.onbeforexrselectOrNull = value.orNull
-  end extension
 
   extension (self: USBIsochronousInTransferResult) def data: Option[scala.scalajs.js.Any] = nullable(self.dataOrNull)
 
@@ -3292,7 +3234,6 @@ object NullableAccessors:
     def onboundary: Option[scala.scalajs.js.Function1[Event, scala.scalajs.js.Any]] = nullable(self.onboundaryOrNull)
     def onboundary_=(value: Option[scala.scalajs.js.Function1[Event, scala.scalajs.js.Any]]): Unit =
       self.onboundaryOrNull = value.orNull
-  end extension
 
   extension (self: HIDDevice)
     def oninputreport: Option[scala.scalajs.js.Function1[Event, scala.scalajs.js.Any]] = nullable(
@@ -3322,7 +3263,6 @@ object NullableAccessors:
     def onloadend: Option[scala.scalajs.js.Function1[Event, scala.scalajs.js.Any]] = nullable(self.onloadendOrNull)
     def onloadend_=(value: Option[scala.scalajs.js.Function1[Event, scala.scalajs.js.Any]]): Unit =
       self.onloadendOrNull = value.orNull
-  end extension
 
   extension (self: VTTCue)
     def region: Option[VTTRegion]                = nullable(self.regionOrNull)
@@ -3371,7 +3311,6 @@ object NullableAccessors:
     def onmessage: Option[scala.scalajs.js.Function1[Event, scala.scalajs.js.Any]] = nullable(self.onmessageOrNull)
     def onmessage_=(value: Option[scala.scalajs.js.Function1[Event, scala.scalajs.js.Any]]): Unit =
       self.onmessageOrNull = value.orNull
-  end extension
 
   extension (self: Window)
     def onorientationchange: Option[scala.scalajs.js.Function1[Event, scala.scalajs.js.Any]] = nullable(
@@ -3913,7 +3852,6 @@ object NullableAccessors:
     def prompt(message: String): Option[String]                  = nullable(self.promptOrNull(message))
     def prompt(message: String, default: String): Option[String] = nullable(self.promptOrNull(message, default))
     def getSelection(): Option[Selection]                        = nullable(self.getSelectionOrNull())
-  end extension
 
   extension (self: HTMLTableElement)
     def caption: Option[HTMLTableCaptionElement]                = nullable(self.captionOrNull)
@@ -4007,7 +3945,6 @@ object NullableAccessors:
     )
     def onpaymentrequest_=(value: Option[scala.scalajs.js.Function1[Event, scala.scalajs.js.Any]]): Unit =
       self.onpaymentrequestOrNull = value.orNull
-  end extension
 
   extension (self: AudioContext)
     def onsinkchange: Option[scala.scalajs.js.Function1[Event, scala.scalajs.js.Any]] = nullable(
@@ -4175,7 +4112,6 @@ object NullableAccessors:
     )
     def onportalactivate_=(value: Option[scala.scalajs.js.Function1[Event, scala.scalajs.js.Any]]): Unit =
       self.onportalactivateOrNull = value.orNull
-  end extension
 
   extension (self: VideoTrack) def sourceBuffer: Option[SourceBuffer] = nullable(self.sourceBufferOrNull)
 
@@ -4216,7 +4152,6 @@ object NullableAccessors:
     )
     def onserviceremoved_=(value: Option[scala.scalajs.js.Function1[Event, scala.scalajs.js.Any]]): Unit =
       self.onserviceremovedOrNull = value.orNull
-  end extension
 
   extension (self: RTCRtpSFrameDecrypter)
     def onerror: Option[scala.scalajs.js.Function1[Event, scala.scalajs.js.Any]] = nullable(self.onerrorOrNull)
@@ -4328,7 +4263,6 @@ object NullableAccessors:
     def onend: Option[scala.scalajs.js.Function1[Event, scala.scalajs.js.Any]] = nullable(self.onendOrNull)
     def onend_=(value: Option[scala.scalajs.js.Function1[Event, scala.scalajs.js.Any]]): Unit = self.onendOrNull =
       value.orNull
-  end extension
 
   extension (self: MessagePort)
     def onclose: Option[scala.scalajs.js.Function1[Event, scala.scalajs.js.Any]] = nullable(self.oncloseOrNull)
@@ -4342,7 +4276,6 @@ object NullableAccessors:
     )
     def onmessageerror_=(value: Option[scala.scalajs.js.Function1[Event, scala.scalajs.js.Any]]): Unit =
       self.onmessageerrorOrNull = value.orNull
-  end extension
 
   extension (self: FontFaceSet)
     def onloading: Option[scala.scalajs.js.Function1[Event, scala.scalajs.js.Any]] = nullable(self.onloadingOrNull)
@@ -4358,7 +4291,6 @@ object NullableAccessors:
     )
     def onloadingerror_=(value: Option[scala.scalajs.js.Function1[Event, scala.scalajs.js.Any]]): Unit =
       self.onloadingerrorOrNull = value.orNull
-  end extension
 
   extension (self: CSSRule)
     def parentRule: Option[CSSRule]             = nullable(self.parentRuleOrNull)
@@ -4386,7 +4318,6 @@ object NullableAccessors:
     )
     def oncurrententrychange_=(value: Option[scala.scalajs.js.Function1[Event, scala.scalajs.js.Any]]): Unit =
       self.oncurrententrychangeOrNull = value.orNull
-  end extension
 
   extension (self: ServiceWorker)
     def onstatechange: Option[scala.scalajs.js.Function1[Event, scala.scalajs.js.Any]] = nullable(
@@ -4809,7 +4740,6 @@ object NullableAccessors:
     )
     def onbeforexrselect_=(value: Option[scala.scalajs.js.Function1[Event, scala.scalajs.js.Any]]): Unit =
       self.onbeforexrselectOrNull = value.orNull
-  end extension
 
   extension (self: HTMLCanvasElement)
     def getContext[C, O](contextId: CanvasContextId[C, O]): Option[C] = nullable(self.getContextOrNull(contextId))
@@ -5296,7 +5226,6 @@ object NullableAccessors:
     def getSelection(): Option[Selection]                  = nullable(self.getSelectionOrNull())
     def getElementById(elementId: String): Option[Element] = nullable(self.getElementByIdOrNull(elementId))
     def querySelector(selectors: String): Option[Element]  = nullable(self.querySelectorOrNull(selectors))
-  end extension
 
   extension (self: BluetoothRemoteGATTService)
     def oncharacteristicvaluechanged: Option[scala.scalajs.js.Function1[Event, scala.scalajs.js.Any]] = nullable(
@@ -5319,7 +5248,6 @@ object NullableAccessors:
     )
     def onserviceremoved_=(value: Option[scala.scalajs.js.Function1[Event, scala.scalajs.js.Any]]): Unit =
       self.onserviceremovedOrNull = value.orNull
-  end extension
 
   extension (self: PaymentRequest)
     def shippingAddress: Option[ContactAddress] = nullable(self.shippingAddressOrNull)
@@ -5340,7 +5268,6 @@ object NullableAccessors:
     )
     def onpaymentmethodchange_=(value: Option[scala.scalajs.js.Function1[Event, scala.scalajs.js.Any]]): Unit =
       self.onpaymentmethodchangeOrNull = value.orNull
-  end extension
 
   extension (self: DeviceOrientationEvent)
     def alpha: Option[Double] = nullable(self.alphaOrNull)

@@ -21,7 +21,6 @@ final case class Shadow(
     val core = (List(offsetX, offsetY, blur).map(_.render) ++ spread.map(_.render).toList :+ color.render)
       .mkString(" ")
     if inset then s"inset $core" else core
-end Shadow
 
 object Shadow:
 

@@ -72,5 +72,4 @@ object IdAssigner:
             idToAst = idToAst.updated(candidate, ui),
           )
           (candidate, nextRegistry)
-  end Registry
 end IdAssigner

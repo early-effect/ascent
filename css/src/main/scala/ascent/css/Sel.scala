@@ -106,7 +106,6 @@ object Sel:
           throw IllegalArgumentException(
             "Sel.matches requires a parsed selector — call Sel.parse(...), not the authoring DSL (.cls/.child/...)."
           )
-  end extension
 
   /** Escape hatch — wrap an arbitrary selector string the typed surface doesn't model. */
   def raw(selector: String): Sel = Compound(selector)
@@ -219,7 +218,6 @@ final case class Nth(a: Int, b: Int, keyword: Option[String] = scala.None):
         if b == 0 then coeff
         else if b > 0 then s"$coeff+$b"
         else s"$coeff-${-b}"
-end Nth
 
 object Nth:
   /** Every odd-indexed element (`odd` keyword == `2n+1`). */

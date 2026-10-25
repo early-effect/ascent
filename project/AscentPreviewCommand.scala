@@ -14,3 +14,4 @@ object AscentPreviewCommand:
   /** Latest State the command loop stored. Null before the first prompt. */
   def withCurrentState[A](f: State => A): A =
     StandardMain.exchange.withState(f)
+end AscentPreviewCommand

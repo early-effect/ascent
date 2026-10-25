@@ -215,5 +215,4 @@ object McpAppSpec extends ZIOSpecDefault:
         .forkScoped
         .unit
     }
-  end answering
 end McpAppSpec

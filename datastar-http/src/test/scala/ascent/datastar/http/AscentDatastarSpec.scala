@@ -31,7 +31,6 @@ object AscentDatastarSpec extends ZIOSpecDefault:
         body.contains("data: elements <div"),
         body.contains("hi</div>"),
       )
-      end for
     },
     test("patchRegion targets the region's #id with inner mode by default") {
       val sseHandler = events {

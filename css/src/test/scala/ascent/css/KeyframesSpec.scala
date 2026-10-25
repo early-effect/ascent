@@ -124,7 +124,6 @@ object KeyframesSpec extends ZIOSpecDefault:
           rules.head._2.contains("transform: translateY(0);"),
           rules.head._2.contains("transform: translateY(-8px);"),
         )
-        end for
       },
       test("installing twice replaces the previous entry (idempotent)") {
         object Spin extends Keyframes("spin", Frame.from(Declaration("opacity", "0.1")))

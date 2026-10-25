@@ -35,7 +35,6 @@ class SVGMarkerElementMemory extends SVGElementMemory with SVGMarkerElement:
   def preserveAspectRatio: ascent.domcore.PlatformOpaque           = ???
   def setOrientToAuto(): Unit                                      = ???
   def setOrientToAngle(angle: ascent.domcore.PlatformOpaque): Unit = ???
-end SVGMarkerElementMemory
 
 class SVGMetadataElementMemory extends SVGElementMemory with SVGMetadataElement
 
@@ -69,7 +68,6 @@ class HTMLFrameElementMemory extends HTMLElementMemory with HTMLFrameElement:
   def marginHeight_=(value: String): Unit          = attributeMap.set("marginheight", value)
   def marginWidth: String                          = attributeMap.getOrElse("marginwidth", "")
   def marginWidth_=(value: String): Unit           = attributeMap.set("marginwidth", value)
-end HTMLFrameElementMemory
 
 class SVGStopElementMemory extends SVGElementMemory with SVGStopElement:
   def offset: ascent.domcore.PlatformOpaque = ???
@@ -85,7 +83,6 @@ class HTMLMetaElementMemory extends HTMLElementMemory with HTMLMetaElement:
   def media_=(value: String): Unit     = attributeMap.set("media", value)
   def scheme: String                   = attributeMap.getOrElse("scheme", "")
   def scheme_=(value: String): Unit    = attributeMap.set("scheme", value)
-end HTMLMetaElementMemory
 
 class HTMLScriptElementMemory extends HTMLElementMemory with HTMLScriptElement:
   def `type`: String                        = attributeMap.getOrElse("type", "")
@@ -121,7 +118,6 @@ class HTMLScriptElementMemory extends HTMLElementMemory with HTMLScriptElement:
   def event_=(value: String): Unit          = attributeMap.set("event", value)
   def htmlFor: String                       = attributeMap.getOrElse("for", "")
   def htmlFor_=(value: String): Unit        = attributeMap.set("for", value)
-end HTMLScriptElementMemory
 
 class HTMLUnknownElementMemory extends HTMLElementMemory with HTMLUnknownElement
 
@@ -148,7 +144,6 @@ class HTMLOutputElementMemory extends HTMLElementMemory with HTMLOutputElement:
   def checkValidity(): Boolean                = ???
   def reportValidity(): Boolean               = ???
   def setCustomValidity(error: String): Unit  = ???
-end HTMLOutputElementMemory
 
 class HTMLSelectedContentElementMemory extends HTMLElementMemory with HTMLSelectedContentElement
 
@@ -384,7 +379,6 @@ class ElementMemory extends NodeMemory with Element with ElementOverrides:
       options: Double | ascent.domcore.PlatformOpaque,
   ): ascent.domcore.PlatformOpaque                                                               = ???
   def getAnimations(options: ascent.domcore.PlatformOpaque): List[ascent.domcore.PlatformOpaque] = ???
-end ElementMemory
 
 class SVGCircleElementMemory extends SVGGeometryElementMemory with SVGCircleElement:
   def cx: ascent.domcore.PlatformOpaque = ???
@@ -412,7 +406,6 @@ class HTMLTemplateElementMemory extends HTMLElementMemory with HTMLTemplateEleme
   def shadowRootCustomElementRegistry: String          = attributeMap.getOrElse("shadowrootcustomelementregistry", "")
   def shadowRootCustomElementRegistry_=(value: String): Unit =
     attributeMap.set("shadowrootcustomelementregistry", value)
-end HTMLTemplateElementMemory
 
 class HTMLParamElementMemory extends HTMLElementMemory with HTMLParamElement:
   def name: String                     = attributeMap.getOrElse("name", "")
@@ -719,7 +712,6 @@ class HTMLElementMemory extends ElementMemory with HTMLElement:
   def togglePopover(options: ascent.domcore.PlatformOpaque | Boolean): Boolean = ???
   def focus(options: ascent.domcore.PlatformOpaque): Unit                      = ???
   def blur(): Unit                                                             = ???
-end HTMLElementMemory
 
 class SVGSVGElementMemory extends SVGGraphicsElementMemory with SVGSVGElement:
   def x: ascent.domcore.PlatformOpaque                                    = ???
@@ -797,7 +789,6 @@ class SVGSVGElementMemory extends SVGGraphicsElementMemory with SVGSVGElement:
   def animationsPaused(): Boolean                                                                        = ???
   def getCurrentTime(): Double                                                                           = ???
   def setCurrentTime(seconds: Double): Unit                                                              = ???
-end SVGSVGElementMemory
 
 class EventMemory extends Event with EventOverrides:
   def srcElement: EventTarget                  = ???
@@ -812,7 +803,6 @@ class EventMemory extends Event with EventOverrides:
   def isTrusted: Boolean                       = false
   def timeStamp: ascent.domcore.PlatformOpaque = ???
   def composedPath(): List[EventTarget]        = ???
-end EventMemory
 
 class HTMLButtonElementMemory extends HTMLElementMemory with HTMLButtonElement:
   private var _command: String                     = ""
@@ -855,7 +845,6 @@ class HTMLButtonElementMemory extends HTMLElementMemory with HTMLButtonElement:
   def checkValidity(): Boolean                     = ???
   def reportValidity(): Boolean                    = ???
   def setCustomValidity(error: String): Unit       = ???
-end HTMLButtonElementMemory
 
 class HTMLTableSectionElementMemory extends HTMLElementMemory with HTMLTableSectionElement:
   def rows: HTMLCollection                       = ???
@@ -869,7 +858,6 @@ class HTMLTableSectionElementMemory extends HTMLElementMemory with HTMLTableSect
   def vAlign_=(value: String): Unit              = attributeMap.set("valign", value)
   def insertRow(index: Int): HTMLTableRowElement = ???
   def deleteRow(index: Int): Unit                = ???
-end HTMLTableSectionElementMemory
 
 class HTMLDataElementMemory extends HTMLElementMemory with HTMLDataElement:
   def value: String                = attributeMap.getOrElse("value", "")
@@ -892,7 +880,6 @@ class HTMLOptionElementMemory extends HTMLElementMemory with HTMLOptionElement w
   private var _text: String                   = ""
   def text: String                            = _text
   def text_=(value: String): Unit             = _text = value
-end HTMLOptionElementMemory
 
 class SVGAElementMemory extends SVGGraphicsElementMemory with SVGAElement:
   def target: ascent.domcore.PlatformOpaque = ???
@@ -939,7 +926,6 @@ class SVGAElementMemory extends SVGGraphicsElementMemory with SVGAElement:
   def hash: String                          = _hash
   def hash_=(value: String): Unit           = _hash = value
   def href: ascent.domcore.PlatformOpaque   = ???
-end SVGAElementMemory
 
 class SVGTextPositioningElementMemory extends SVGTextContentElementMemory with SVGTextPositioningElement:
   def x: ascent.domcore.PlatformOpaque      = ???
@@ -967,7 +953,6 @@ class HTMLStyleElementMemory extends HTMLElementMemory with HTMLStyleElement:
   def `type`: String                       = attributeMap.getOrElse("type", "")
   def type_=(value: String): Unit          = attributeMap.set("type", value)
   def sheet: ascent.domcore.PlatformOpaque = ???
-end HTMLStyleElementMemory
 
 class SVGDefsElementMemory extends SVGGraphicsElementMemory with SVGDefsElement
 
@@ -1024,7 +1009,6 @@ class HTMLFrameSetElementMemory extends HTMLElementMemory with HTMLFrameSetEleme
   def onunload_=(value: ascent.domcore.PlatformOpaque): Unit              = ???
   def onportalactivate: ascent.domcore.PlatformOpaque                     = ???
   def onportalactivate_=(value: ascent.domcore.PlatformOpaque): Unit      = ???
-end HTMLFrameSetElementMemory
 
 class HTMLAudioElementMemory extends HTMLMediaElementMemory with HTMLAudioElement
 
@@ -1075,7 +1059,6 @@ class HTMLObjectElementMemory extends HTMLElementMemory with HTMLObjectElement:
   def checkValidity(): Boolean                     = ???
   def reportValidity(): Boolean                    = ???
   def setCustomValidity(error: String): Unit       = ???
-end HTMLObjectElementMemory
 
 class HTMLDListElementMemory extends HTMLElementMemory with HTMLDListElement:
   def compact: Boolean                = attributeMap.getOrElse("compact", false)
@@ -1092,7 +1075,6 @@ class SVGPatternElementMemory extends SVGElementMemory with SVGPatternElement:
   def viewBox: ascent.domcore.PlatformOpaque             = ???
   def preserveAspectRatio: ascent.domcore.PlatformOpaque = ???
   def href: ascent.domcore.PlatformOpaque                = ???
-end SVGPatternElementMemory
 
 class HTMLDivElementMemory extends HTMLElementMemory with HTMLDivElement:
   def align: String                = attributeMap.getOrElse("align", "")
@@ -1114,7 +1096,6 @@ class HTMLTableColElementMemory extends HTMLElementMemory with HTMLTableColEleme
   def vAlign_=(value: String): Unit = attributeMap.set("valign", value)
   def width: String                 = attributeMap.getOrElse("width", "")
   def width_=(value: String): Unit  = attributeMap.set("width", value)
-end HTMLTableColElementMemory
 
 class SVGScriptElementMemory extends SVGElementMemory with SVGScriptElement:
   def `type`: String                      = attributeMap.getOrElse("type", "")
@@ -1147,7 +1128,6 @@ class SVGAnimationElementMemory extends SVGElementMemory with SVGAnimationElemen
   def beginElementAt(offset: Double): Unit                   = ???
   def endElement(): Unit                                     = ???
   def endElementAt(offset: Double): Unit                     = ???
-end SVGAnimationElementMemory
 
 class SVGTitleElementMemory extends SVGElementMemory with SVGTitleElement
 
@@ -1166,7 +1146,6 @@ class HTMLEmbedElementMemory extends HTMLElementMemory with HTMLEmbedElement:
   def name: String                  = attributeMap.getOrElse("name", "")
   def name_=(value: String): Unit   = attributeMap.set("name", value)
   def getSVGDocument(): Document    = ???
-end HTMLEmbedElementMemory
 
 class HTMLBaseElementMemory extends HTMLElementMemory with HTMLBaseElement:
   private var _href: String         = ""
@@ -1205,7 +1184,6 @@ class SVGStyleElementMemory extends SVGElementMemory with SVGStyleElement:
   def disabled: Boolean                    = _disabled
   def disabled_=(value: Boolean): Unit     = _disabled = value
   def sheet: ascent.domcore.PlatformOpaque = ???
-end SVGStyleElementMemory
 
 class HTMLLegendElementMemory extends HTMLElementMemory with HTMLLegendElement:
   def form: HTMLFormElement        = ???
@@ -1241,7 +1219,6 @@ class HTMLMeterElementMemory extends HTMLElementMemory with HTMLMeterElement:
   def optimum: Double                = _optimum
   def optimum_=(value: Double): Unit = _optimum = value
   def labels: NodeList               = ???
-end HTMLMeterElementMemory
 
 class HTMLSpanElementMemory extends HTMLElementMemory with HTMLSpanElement
 
@@ -1261,7 +1238,6 @@ class HTMLSourceElementMemory extends HTMLElementMemory with HTMLSourceElement:
   def width_=(value: Int): Unit     = attributeMap.set("width", value)
   def height: Int                   = attributeMap.getOrElse("height", 0)
   def height_=(value: Int): Unit    = attributeMap.set("height", value)
-end HTMLSourceElementMemory
 
 class SVGSymbolElementMemory extends SVGGraphicsElementMemory with SVGSymbolElement:
   def viewBox: ascent.domcore.PlatformOpaque             = ???
@@ -1298,7 +1274,6 @@ class HTMLTableCellElementMemory extends HTMLElementMemory with HTMLTableCellEle
   def vAlign_=(value: String): Unit  = attributeMap.set("valign", value)
   def bgColor: String                = attributeMap.getOrElse("bgcolor", "")
   def bgColor_=(value: String): Unit = attributeMap.set("bgcolor", value)
-end HTMLTableCellElementMemory
 
 class SVGImageElementMemory extends SVGGraphicsElementMemory with SVGImageElement:
   def x: ascent.domcore.PlatformOpaque                   = ???
@@ -1310,7 +1285,6 @@ class SVGImageElementMemory extends SVGGraphicsElementMemory with SVGImageElemen
   def crossOrigin: String                                = _crossOrigin
   def crossOrigin_=(value: String): Unit                 = _crossOrigin = value
   def href: ascent.domcore.PlatformOpaque                = ???
-end SVGImageElementMemory
 
 class HTMLTextAreaElementMemory extends HTMLElementMemory with HTMLTextAreaElement with HTMLTextAreaElementOverrides:
   private var _autocomplete: String             = ""
@@ -1368,7 +1342,6 @@ class HTMLTextAreaElementMemory extends HTMLElementMemory with HTMLTextAreaEleme
   def setRangeText(replacement: String): Unit   = ???
   def setRangeText(replacement: String, start: Int, end: Int, selectionMode: ascent.domtypes.SelectionMode): Unit = ???
   def setSelectionRange(start: Int, end: Int, direction: String): Unit                                            = ???
-end HTMLTextAreaElementMemory
 
 class SVGGraphicsElementMemory extends SVGElementMemory with SVGGraphicsElement:
   def transform: ascent.domcore.PlatformOpaque                                       = ???
@@ -1438,7 +1411,6 @@ class HTMLImageElementMemory extends HTMLElementMemory with HTMLImageElement:
   def border: String                          = attributeMap.getOrElse("border", "")
   def border_=(value: String): Unit           = attributeMap.set("border", value)
   def decode(): ascent.domcore.PlatformOpaque = ???
-end HTMLImageElementMemory
 
 class HTMLLinkElementMemory extends HTMLElementMemory with HTMLLinkElement:
   private var _href: String                 = ""
@@ -1482,7 +1454,6 @@ class HTMLLinkElementMemory extends HTMLElementMemory with HTMLLinkElement:
   def target: String                        = attributeMap.getOrElse("target", "")
   def target_=(value: String): Unit         = attributeMap.set("target", value)
   def sheet: ascent.domcore.PlatformOpaque  = ???
-end HTMLLinkElementMemory
 
 class HTMLSlotElementMemory extends HTMLElementMemory with HTMLSlotElement:
   def name: String                                                            = attributeMap.getOrElse("name", "")
@@ -1580,7 +1551,6 @@ class HTMLMediaElementMemory extends HTMLElementMemory with HTMLMediaElement:
       language: String,
   ): ascent.domcore.PlatformOpaque                   = ???
   def captureStream(): ascent.domcore.PlatformOpaque = ???
-end HTMLMediaElementMemory
 
 class SVGDescElementMemory extends SVGElementMemory with SVGDescElement
 
@@ -1624,7 +1594,6 @@ class HTMLFormElementMemory extends HTMLElementMemory with HTMLFormElement:
   def reset(): Unit                                                = ???
   def checkValidity(): Boolean                                     = ???
   def reportValidity(): Boolean                                    = ???
-end HTMLFormElementMemory
 
 class SVGTextContentElementMemory extends SVGGraphicsElementMemory with SVGTextContentElement:
   def textLength: ascent.domcore.PlatformOpaque                           = ???
@@ -1638,7 +1607,6 @@ class SVGTextContentElementMemory extends SVGGraphicsElementMemory with SVGTextC
   def getRotationOfChar(charnum: Int): Double                             = ???
   def getCharNumAtPosition(point: ascent.domcore.PlatformOpaque): Int     = ???
   def selectSubString(charnum: Int, nchars: Int): Unit                    = ???
-end SVGTextContentElementMemory
 
 class EventTargetMemory extends NodeMemoryBase with EventTarget with EventTargetOverrides:
   def when(`type`: String, options: ascent.domcore.PlatformOpaque): ascent.domcore.PlatformOpaque = ???
@@ -1662,7 +1630,6 @@ class HTMLDialogElementMemory extends HTMLElementMemory with HTMLDialogElement:
   def showModal(): Unit                       = ???
   def close(returnValue: String): Unit        = ???
   def requestClose(returnValue: String): Unit = ???
-end HTMLDialogElementMemory
 
 class HTMLFontElementMemory extends HTMLElementMemory with HTMLFontElement:
   def color: String                = attributeMap.getOrElse("color", "")
@@ -1694,7 +1661,6 @@ class HTMLTrackElementMemory extends HTMLElementMemory with HTMLTrackElement:
   def default_=(value: Boolean): Unit      = attributeMap.set("default", value)
   def readyState: Int                      = 0
   def track: ascent.domcore.PlatformOpaque = ???
-end HTMLTrackElementMemory
 
 class HTMLAreaElementMemory extends HTMLElementMemory with HTMLAreaElement:
   def alt: String                           = attributeMap.getOrElse("alt", "")
@@ -1752,7 +1718,6 @@ class HTMLAreaElementMemory extends HTMLElementMemory with HTMLAreaElement:
   def href_=(value: String): Unit           = _href = value
   def target: String                        = attributeMap.getOrElse("target", "")
   def target_=(value: String): Unit         = attributeMap.set("target", value)
-end HTMLAreaElementMemory
 
 class DocumentTypeMemory extends NodeMemory with DocumentType with DocumentTypeOverrides:
   def before(nodes: Node | String): Unit      = ???
@@ -1786,7 +1751,6 @@ class HTMLTableRowElementMemory extends HTMLElementMemory with HTMLTableRowEleme
   def bgColor_=(value: String): Unit               = attributeMap.set("bgcolor", value)
   def insertCell(index: Int): HTMLTableCellElement = ???
   def deleteCell(index: Int): Unit                 = ???
-end HTMLTableRowElementMemory
 
 class HTMLHeadElementMemory extends HTMLElementMemory with HTMLHeadElement
 
@@ -1810,7 +1774,6 @@ class TextMemory extends CharacterDataMemory with Text:
       from: ascent.domcore.PlatformOpaque,
       options: ascent.domcore.PlatformOpaque,
   ): ascent.domcore.PlatformOpaque = ???
-end TextMemory
 
 class SVGRadialGradientElementMemory extends SVGGradientElementMemory with SVGRadialGradientElement:
   def cx: ascent.domcore.PlatformOpaque = ???
@@ -1884,7 +1847,6 @@ class HTMLAnchorElementMemory extends HTMLElementMemory with HTMLAnchorElement:
   def href_=(value: String): Unit             = _href = value
   def target: String                          = attributeMap.getOrElse("target", "")
   def target_=(value: String): Unit           = attributeMap.set("target", value)
-end HTMLAnchorElementMemory
 
 class HTMLOptGroupElementMemory extends HTMLElementMemory with HTMLOptGroupElement:
   def disabled: Boolean                = attributeMap.getOrElse("disabled", false)
@@ -1921,7 +1883,6 @@ class HTMLMarqueeElementMemory extends HTMLElementMemory with HTMLMarqueeElement
   def width_=(value: String): Unit      = attributeMap.set("width", value)
   def start(): Unit                     = ???
   def stop(): Unit                      = ???
-end HTMLMarqueeElementMemory
 
 class HTMLMenuElementMemory extends HTMLElementMemory with HTMLMenuElement:
   def compact: Boolean                = attributeMap.getOrElse("compact", false)
@@ -1980,7 +1941,6 @@ class HTMLIFrameElementMemory extends HTMLElementMemory with HTMLIFrameElement:
   def privateToken: String                                          = _privateToken
   def privateToken_=(value: String): Unit                           = _privateToken = value
   def getSVGDocument(): Document                                    = ???
-end HTMLIFrameElementMemory
 
 class SVGMPathElementMemory extends SVGElementMemory with SVGMPathElement:
   def href: ascent.domcore.PlatformOpaque = ???
@@ -2023,7 +1983,6 @@ class HTMLVideoElementMemory extends HTMLMediaElementMemory with HTMLVideoElemen
   def requestVideoFrameCallback(callback: (ascent.domcore.PlatformOpaque, ascent.domcore.PlatformOpaque) => Unit): Int =
     ???
   def cancelVideoFrameCallback(handle: Int): Unit = ???
-end HTMLVideoElementMemory
 
 class HTMLSelectElementMemory extends HTMLElementMemory with HTMLSelectElement with HTMLSelectElementOverrides:
   private var _autocomplete: String              = ""
@@ -2057,7 +2016,6 @@ class HTMLSelectElementMemory extends HTMLElementMemory with HTMLSelectElement w
   def reportValidity(): Boolean                                                              = ???
   def setCustomValidity(error: String): Unit                                                 = ???
   def showPicker(): Unit                                                                     = ???
-end HTMLSelectElementMemory
 
 class HTMLInputElementMemory extends HTMLElementMemory with HTMLInputElement with HTMLInputElementOverrides:
   private var _webkitdirectory: Boolean                  = false
@@ -2171,7 +2129,6 @@ class HTMLInputElementMemory extends HTMLElementMemory with HTMLInputElement wit
   def setRangeText(replacement: String, start: Int, end: Int, selectionMode: ascent.domtypes.SelectionMode): Unit = ???
   def setSelectionRange(start: Int, end: Int, direction: String): Unit                                            = ???
   def showPicker(): Unit                                                                                          = ???
-end HTMLInputElementMemory
 
 class SVGAnimateMotionElementMemory extends SVGAnimationElementMemory with SVGAnimateMotionElement
 
@@ -2248,7 +2205,6 @@ class HTMLTableElementMemory extends HTMLElementMemory with HTMLTableElement:
   def createTBody(): HTMLTableSectionElement          = ???
   def insertRow(index: Int): HTMLTableRowElement      = ???
   def deleteRow(index: Int): Unit                     = ???
-end HTMLTableElementMemory
 
 class CommentMemory extends CharacterDataMemory with Comment
 
@@ -2266,7 +2222,6 @@ class HTMLFieldSetElementMemory extends HTMLElementMemory with HTMLFieldSetEleme
   def checkValidity(): Boolean                = ???
   def reportValidity(): Boolean               = ???
   def setCustomValidity(error: String): Unit  = ???
-end HTMLFieldSetElementMemory
 
 class HTMLPictureElementMemory extends HTMLElementMemory with HTMLPictureElement
 
@@ -2281,7 +2236,6 @@ class HTMLHRElementMemory extends HTMLElementMemory with HTMLHRElement:
   def size_=(value: String): Unit     = attributeMap.set("size", value)
   def width: String                   = attributeMap.getOrElse("width", "")
   def width_=(value: String): Unit    = attributeMap.set("width", value)
-end HTMLHRElementMemory
 
 class SVGSwitchElementMemory extends SVGGraphicsElementMemory with SVGSwitchElement
 
@@ -2342,7 +2296,6 @@ class HTMLBodyElementMemory extends HTMLElementMemory with HTMLBodyElement:
   def onunload_=(value: ascent.domcore.PlatformOpaque): Unit              = ???
   def onportalactivate: ascent.domcore.PlatformOpaque                     = ???
   def onportalactivate_=(value: ascent.domcore.PlatformOpaque): Unit      = ???
-end HTMLBodyElementMemory
 
 class HTMLDetailsElementMemory extends HTMLElementMemory with HTMLDetailsElement:
   def name: String                 = attributeMap.getOrElse("name", "")
@@ -2595,7 +2548,6 @@ class SVGElementMemory extends ElementMemory with SVGElement:
   def style: ascent.domcore.PlatformOpaque                = ???
   def focus(options: ascent.domcore.PlatformOpaque): Unit = ???
   def blur(): Unit                                        = ???
-end SVGElementMemory
 
 class HTMLCanvasElementMemory extends HTMLElementMemory with HTMLCanvasElement:
   private var _width: Int        = 0
@@ -2613,7 +2565,6 @@ class HTMLCanvasElementMemory extends HTMLElementMemory with HTMLCanvasElement:
   ): Unit                                                                    = ???
   def transferControlToOffscreen(): ascent.domcore.PlatformOpaque            = ???
   def captureStream(frameRequestRate: Double): ascent.domcore.PlatformOpaque = ???
-end HTMLCanvasElementMemory
 
 class DocumentMemory extends NodeMemory with Document with DocumentOverrides:
   def rootElement: SVGSVGElement                                               = ???
@@ -3011,4 +2962,3 @@ class DocumentMemory extends NodeMemory with Document with DocumentOverrides:
       result: ascent.domcore.PlatformOpaque,
   ): ascent.domcore.PlatformOpaque                                                   = ???
   def ariaNotify(announcement: String, options: ascent.domcore.PlatformOpaque): Unit = ???
-end DocumentMemory

@@ -33,6 +33,7 @@ enum SingleTransitionProperty(val render: String) extends CssValue:
   case All extends SingleTransitionProperty("all")
 
   override def toString: String = render
+end SingleTransitionProperty
 
 /** `<single-animation-iteration-count>` — `infinite | <number [0,∞]>` */
 enum SingleAnimationIterationCount(val render: String) extends CssValue:
@@ -95,6 +96,7 @@ enum SingleAnimationPlayState(val render: String) extends CssValue:
   case Paused  extends SingleAnimationPlayState("paused")
 
   override def toString: String = render
+end SingleAnimationPlayState
 
 /** `<line-width>` — `<length [0,∞]> | hairline | thin | medium | thick` */
 enum LineWidth(val render: String) extends CssValue:

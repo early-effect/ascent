@@ -88,7 +88,6 @@ object DomStyleSinkSpec extends ZIOSpecDefault:
           style.textContent.asInstanceOf[String].contains("background: yellow;"),
           style.textContent.asInstanceOf[String].contains(s".${Banner.className}"),
         )
-      end for
     },
     test("EventTarget.addCssClass injects the class's CSS into <head> AND adds the token; removeCssClass drops it") {
       import ascent.css.{CssClass, Declaration}
@@ -109,7 +108,6 @@ object DomStyleSinkSpec extends ZIOSpecDefault:
         // token removed; the <style> stays (harmless — likely re-added next toggle)
         !afterRemove.exists(_.split(" ").contains(Highlight.className)),
       )
-      end for
     },
     test("addCssClass twice injects exactly one <style> (idempotent by key)") {
       import ascent.css.{CssClass, Declaration}
@@ -127,7 +125,6 @@ object DomStyleSinkSpec extends ZIOSpecDefault:
           .length
           .asInstanceOf[Int]
       yield assertTrue(count == 1)
-      end for
     },
   )
 end DomStyleSinkSpec

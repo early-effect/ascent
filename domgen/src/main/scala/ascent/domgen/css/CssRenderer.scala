@@ -65,7 +65,6 @@ object CssRenderer:
     // member lands at the 4-space column scalafmt expects (matches renderValueTrait).
     val body = renderKeywordBody(resolved, "  ")
     if body.isEmpty then header else s"$header:\n$body"
-  end renderProperty
 
   /** Render the resolved keyword body: kept own defs, then any `override def`s for diamonds. */
   private def renderKeywordBody(r: KeywordResolution.Resolved, pad: String): String =
@@ -102,7 +101,6 @@ object CssRenderer:
           s"""${pad}def $sid: Declaration $gap= apply("${k.domName}")"""
         }
         .mkString("\n")
-  end renderKeywordDefsNonEmpty
 
   /** A one-line scaladoc block at the given indent: `/** … */`. Collapses newlines and truncates so the comment stays
     * tidy in the generated source.
@@ -132,7 +130,6 @@ object CssRenderer:
        |trait StylesGenerated$mixin:
        |$body
        |""".stripMargin
-  end renderTrait
 
   /** Render the value-type-trait catalog file: one `trait <Name> extends DS` per shared keyword-bearing CSS `<type>`,
     * carrying its keyword `def`s (with webref prose as scaladoc). Properties mix these in (`with LineWidth`) instead of
@@ -154,7 +151,6 @@ object CssRenderer:
        |trait StylesValueTraits:
        |$body
        |""".stripMargin
-  end renderValueTraits
 
   /** Render a single value-type trait. Composes the foundation keyword-traits it carries (`extends DS with None`)
     * rather than re-declaring `auto`/`none`/`normal`, so a property mixing both `with None` and this trait sees one
@@ -172,7 +168,6 @@ object CssRenderer:
     val body     = renderKeywordBody(resolved, "  ")
     if body.isEmpty then s"${docBlock}trait ${t.traitName} extends $extendsClause"
     else s"${docBlock}trait ${t.traitName} extends $extendsClause:\n$body"
-  end renderValueTrait
 
   /** Render the keyword-value-enum file: one top-level `enum <Name> extends CssValue` per shorthand-component keyword
     * `<type>`, whose cases render bare tokens (`both`, `alternate`, `infinite`). These are the COMPOSABLE value form
@@ -193,7 +188,6 @@ object CssRenderer:
        |  * `Declaration` there (`animationFillMode.both`). Attaches to a property via the universal `apply(CssValue)`.
        |  */
        |""".stripMargin + body + "\n"
-  end renderKeywordValues
 
   private def renderKeywordValueEnum(e: KeywordValueEnum): String =
     val doc = e.grammar match
@@ -214,7 +208,6 @@ object CssRenderer:
        |
        |  override def toString: String = render
        |end ${e.enumName}""".stripMargin
-  end renderKeywordValueEnum
 
   /** `alternate-reverse` → `AlternateReverse`, `both` → `Both`. Enum case names are PascalCase of the CSS keyword. */
   private def pascalCase(domName: String): String =

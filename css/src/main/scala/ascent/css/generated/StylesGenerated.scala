@@ -132,7 +132,6 @@ trait StylesGenerated extends StylesValueTraits:
     def fill: Declaration           = apply("fill")
     def stroke: Declaration         = apply("stroke")
     def all: Declaration            = apply("all")
-  end pointerEvents
 
   /** `stop-color` — `<'color'>`. */
   object stopColor extends DS("stop-color") with None with ColorLike:
@@ -162,7 +161,6 @@ trait StylesGenerated extends StylesValueTraits:
     def WindowFrame: Declaration         = apply("WindowFrame")
     def WindowText: Declaration          = apply("WindowText")
     def currentColor: Declaration        = apply("currentColor")
-  end stopColor
 
   /** `stop-opacity` — `<'opacity'>`. */
   object stopOpacity extends DS("stop-opacity") with Numeric
@@ -289,7 +287,6 @@ trait StylesGenerated extends StylesValueTraits:
     def WindowFrame: Declaration         = apply("WindowFrame")
     def WindowText: Declaration          = apply("WindowText")
     def currentColor: Declaration        = apply("currentColor")
-  end WebkitTextFillColor
 
   /** `-webkit-text-stroke-color` — `<color>`. Initial: `currentcolor`. Inherited: yes. */
   object WebkitTextStrokeColor extends DS("-webkit-text-stroke-color") with None with ColorLike:
@@ -319,7 +316,6 @@ trait StylesGenerated extends StylesValueTraits:
     def WindowFrame: Declaration         = apply("WindowFrame")
     def WindowText: Declaration          = apply("WindowText")
     def currentColor: Declaration        = apply("currentColor")
-  end WebkitTextStrokeColor
 
   /** `-webkit-text-stroke-width` — `<line-width>`. Initial: `0`. Inherited: yes. */
   object WebkitTextStrokeWidth extends DS("-webkit-text-stroke-width") with Length with LineWidth
@@ -352,7 +348,6 @@ trait StylesGenerated extends StylesValueTraits:
     def WindowFrame: Declaration         = apply("WindowFrame")
     def WindowText: Declaration          = apply("WindowText")
     def currentColor: Declaration        = apply("currentColor")
-  end WebkitTextStroke
 
   /** `touch-action` —
     * `auto | none | [ [ pan-x | pan-left | pan-right ] || [ pan-y | pan-up | pan-down ] || pinch-zoom ] | manipulation`.
@@ -571,7 +566,6 @@ trait StylesGenerated extends StylesValueTraits:
     def lvmax: Declaration = apply("lvmax")
     def dvmax: Declaration = apply("dvmax")
     def Q: Declaration     = apply("Q")
-  end WebkitMaskBoxImageOutset
 
   /** `-webkit-mask-box-image-repeat` — `<'border-image-repeat'>`. */
   object WebkitMaskBoxImageRepeat extends DS("-webkit-mask-box-image-repeat"):
@@ -655,7 +649,6 @@ trait StylesGenerated extends StylesValueTraits:
     def lvmax: Declaration = apply("lvmax")
     def dvmax: Declaration = apply("dvmax")
     def Q: Declaration     = apply("Q")
-  end WebkitPerspective
 
   /** `-webkit-perspective-origin` — `<position>`. */
   object WebkitPerspectiveOrigin extends DS("-webkit-perspective-origin") with Length with Percent with Positionish:
@@ -703,7 +696,6 @@ trait StylesGenerated extends StylesValueTraits:
     def lvmax: Declaration  = apply("lvmax")
     def dvmax: Declaration  = apply("dvmax")
     def Q: Declaration      = apply("Q")
-  end WebkitTransformOrigin
 
   /** `-webkit-transform-style` — `flat | preserve-3d`. */
   object WebkitTransformStyle extends DS("-webkit-transform-style"):
@@ -811,7 +803,6 @@ trait StylesGenerated extends StylesValueTraits:
     def left: Declaration    = apply("left")
     def right: Declaration   = apply("right")
     def stretch: Declaration = apply("stretch")
-  end justifySelf
 
   /** `align-self` — `auto | <overflow-position>? [ normal | <self-position> ]| stretch | <baseline-position>`. Initial:
     * `auto`. Inherited: no.
@@ -836,7 +827,6 @@ trait StylesGenerated extends StylesValueTraits:
     def stretch: Declaration = apply("stretch")
     def left: Declaration    = apply("left")
     def right: Declaration   = apply("right")
-  end placeSelf
 
   /** `justify-items` —
     * `normal | stretch | <baseline-position> | <overflow-position>? [ <self-position> | left | right ] | legacy | legacy && [ left | right | center ]`.
@@ -852,7 +842,6 @@ trait StylesGenerated extends StylesValueTraits:
     def left: Declaration    = apply("left")
     def right: Declaration   = apply("right")
     def legacy: Declaration  = apply("legacy")
-  end justifyItems
 
   /** `align-items` — `normal | stretch | <baseline-position> | <overflow-position>? <self-position>`. Initial:
     * `normal`. Inherited: no.
@@ -1050,7 +1039,6 @@ trait StylesGenerated extends StylesValueTraits:
     def WindowFrame: Declaration         = apply("WindowFrame")
     def WindowText: Declaration          = apply("WindowText")
     def currentColor: Declaration        = apply("currentColor")
-  end backgroundColor
 
   /** `background-image` — `<bg-image>#`. Initial: `none`. Inherited: no. */
   object backgroundImage extends DS("background-image") with None with Imageish
@@ -1160,7 +1148,6 @@ trait StylesGenerated extends StylesValueTraits:
     def WindowFrame: Declaration         = apply("WindowFrame")
     def WindowText: Declaration          = apply("WindowText")
     def currentColor: Declaration        = apply("currentColor")
-  end borderTopColor
 
   /** `border-right-color` — `<color> | <image-1D>`. Initial: `currentcolor`. Inherited: no. */
   object borderRightColor extends DS("border-right-color") with None with ColorLike:
@@ -1190,7 +1177,6 @@ trait StylesGenerated extends StylesValueTraits:
     def WindowFrame: Declaration         = apply("WindowFrame")
     def WindowText: Declaration          = apply("WindowText")
     def currentColor: Declaration        = apply("currentColor")
-  end borderRightColor
 
   /** `border-bottom-color` — `<color> | <image-1D>`. Initial: `currentcolor`. Inherited: no. */
   object borderBottomColor extends DS("border-bottom-color") with None with ColorLike:
@@ -1220,7 +1206,6 @@ trait StylesGenerated extends StylesValueTraits:
     def WindowFrame: Declaration         = apply("WindowFrame")
     def WindowText: Declaration          = apply("WindowText")
     def currentColor: Declaration        = apply("currentColor")
-  end borderBottomColor
 
   /** `border-left-color` — `<color> | <image-1D>`. Initial: `currentcolor`. Inherited: no. */
   object borderLeftColor extends DS("border-left-color") with None with ColorLike:
@@ -1250,7 +1235,6 @@ trait StylesGenerated extends StylesValueTraits:
     def WindowFrame: Declaration         = apply("WindowFrame")
     def WindowText: Declaration          = apply("WindowText")
     def currentColor: Declaration        = apply("currentColor")
-  end borderLeftColor
 
   /** `border-block-start-color` — `<color> | <image-1D>`. Initial: `currentcolor`. Inherited: no. */
   object borderBlockStartColor extends DS("border-block-start-color") with None with ColorLike:
@@ -1280,7 +1264,6 @@ trait StylesGenerated extends StylesValueTraits:
     def WindowFrame: Declaration         = apply("WindowFrame")
     def WindowText: Declaration          = apply("WindowText")
     def currentColor: Declaration        = apply("currentColor")
-  end borderBlockStartColor
 
   /** `border-block-end-color` — `<color> | <image-1D>`. Initial: `currentcolor`. Inherited: no. */
   object borderBlockEndColor extends DS("border-block-end-color") with None with ColorLike:
@@ -1310,7 +1293,6 @@ trait StylesGenerated extends StylesValueTraits:
     def WindowFrame: Declaration         = apply("WindowFrame")
     def WindowText: Declaration          = apply("WindowText")
     def currentColor: Declaration        = apply("currentColor")
-  end borderBlockEndColor
 
   /** `border-inline-start-color` — `<color> | <image-1D>`. Initial: `currentcolor`. Inherited: no. */
   object borderInlineStartColor extends DS("border-inline-start-color") with None with ColorLike:
@@ -1340,7 +1322,6 @@ trait StylesGenerated extends StylesValueTraits:
     def WindowFrame: Declaration         = apply("WindowFrame")
     def WindowText: Declaration          = apply("WindowText")
     def currentColor: Declaration        = apply("currentColor")
-  end borderInlineStartColor
 
   /** `border-inline-end-color` — `<color> | <image-1D>`. Initial: `currentcolor`. Inherited: no. */
   object borderInlineEndColor extends DS("border-inline-end-color") with None with ColorLike:
@@ -1370,7 +1351,6 @@ trait StylesGenerated extends StylesValueTraits:
     def WindowFrame: Declaration         = apply("WindowFrame")
     def WindowText: Declaration          = apply("WindowText")
     def currentColor: Declaration        = apply("currentColor")
-  end borderInlineEndColor
 
   /** `border-color` — `[ <color> | <image-1D> ]{1,4}`. Initial: `see individual properties`. Inherited: see individual
     * properties.
@@ -1402,7 +1382,6 @@ trait StylesGenerated extends StylesValueTraits:
     def WindowFrame: Declaration         = apply("WindowFrame")
     def WindowText: Declaration          = apply("WindowText")
     def currentColor: Declaration        = apply("currentColor")
-  end borderColor
 
   /** `border-block-color` — `<'border-top-color'>{1,2}`. Initial: `see individual properties`. Inherited: see
     * individual properties.
@@ -1434,7 +1413,6 @@ trait StylesGenerated extends StylesValueTraits:
     def WindowFrame: Declaration         = apply("WindowFrame")
     def WindowText: Declaration          = apply("WindowText")
     def currentColor: Declaration        = apply("currentColor")
-  end borderBlockColor
 
   /** `border-inline-color` — `<'border-top-color'>{1,2}`. Initial: `see individual properties`. Inherited: see
     * individual properties.
@@ -1466,7 +1444,6 @@ trait StylesGenerated extends StylesValueTraits:
     def WindowFrame: Declaration         = apply("WindowFrame")
     def WindowText: Declaration          = apply("WindowText")
     def currentColor: Declaration        = apply("currentColor")
-  end borderInlineColor
 
   /** `border-top-style` — `<line-style>`. Initial: `none`. Inherited: no. */
   object borderTopStyle extends DS("border-top-style") with None with LineStyle
@@ -1581,7 +1558,6 @@ trait StylesGenerated extends StylesValueTraits:
     def WindowFrame: Declaration         = apply("WindowFrame")
     def WindowText: Declaration          = apply("WindowText")
     def currentColor: Declaration        = apply("currentColor")
-  end borderTop
 
   /** `border-right` — `<line-width> || <line-style> || <color>`. Initial: `See individual properties`. Inherited: no.
     */
@@ -1619,7 +1595,6 @@ trait StylesGenerated extends StylesValueTraits:
     def WindowFrame: Declaration         = apply("WindowFrame")
     def WindowText: Declaration          = apply("WindowText")
     def currentColor: Declaration        = apply("currentColor")
-  end borderRight
 
   /** `border-bottom` — `<line-width> || <line-style> || <color>`. Initial: `See individual properties`. Inherited: no.
     */
@@ -1657,7 +1632,6 @@ trait StylesGenerated extends StylesValueTraits:
     def WindowFrame: Declaration         = apply("WindowFrame")
     def WindowText: Declaration          = apply("WindowText")
     def currentColor: Declaration        = apply("currentColor")
-  end borderBottom
 
   /** `border-left` — `<line-width> || <line-style> || <color>`. Initial: `See individual properties`. Inherited: no. */
   object borderLeft
@@ -1694,7 +1668,6 @@ trait StylesGenerated extends StylesValueTraits:
     def WindowFrame: Declaration         = apply("WindowFrame")
     def WindowText: Declaration          = apply("WindowText")
     def currentColor: Declaration        = apply("currentColor")
-  end borderLeft
 
   /** `border-block-start` — `<line-width> || <line-style> || <color>`. Initial: `See individual properties`. Inherited:
     * no.
@@ -1733,7 +1706,6 @@ trait StylesGenerated extends StylesValueTraits:
     def WindowFrame: Declaration         = apply("WindowFrame")
     def WindowText: Declaration          = apply("WindowText")
     def currentColor: Declaration        = apply("currentColor")
-  end borderBlockStart
 
   /** `border-block-end` — `<line-width> || <line-style> || <color>`. Initial: `See individual properties`. Inherited:
     * no.
@@ -1772,7 +1744,6 @@ trait StylesGenerated extends StylesValueTraits:
     def WindowFrame: Declaration         = apply("WindowFrame")
     def WindowText: Declaration          = apply("WindowText")
     def currentColor: Declaration        = apply("currentColor")
-  end borderBlockEnd
 
   /** `border-inline-start` — `<line-width> || <line-style> || <color>`. Initial: `See individual properties`.
     * Inherited: no.
@@ -1811,7 +1782,6 @@ trait StylesGenerated extends StylesValueTraits:
     def WindowFrame: Declaration         = apply("WindowFrame")
     def WindowText: Declaration          = apply("WindowText")
     def currentColor: Declaration        = apply("currentColor")
-  end borderInlineStart
 
   /** `border-inline-end` — `<line-width> || <line-style> || <color>`. Initial: `See individual properties`. Inherited:
     * no.
@@ -1850,7 +1820,6 @@ trait StylesGenerated extends StylesValueTraits:
     def WindowFrame: Declaration         = apply("WindowFrame")
     def WindowText: Declaration          = apply("WindowText")
     def currentColor: Declaration        = apply("currentColor")
-  end borderInlineEnd
 
   /** `border-block` — `<'border-block-start'>`. Initial: `see individual properties`. Inherited: see individual
     * properties.
@@ -1889,7 +1858,6 @@ trait StylesGenerated extends StylesValueTraits:
     def WindowFrame: Declaration         = apply("WindowFrame")
     def WindowText: Declaration          = apply("WindowText")
     def currentColor: Declaration        = apply("currentColor")
-  end borderBlock
 
   /** `border-inline` — `<'border-block-start'>`. Initial: `see individual properties`. Inherited: see individual
     * properties.
@@ -1928,7 +1896,6 @@ trait StylesGenerated extends StylesValueTraits:
     def WindowFrame: Declaration         = apply("WindowFrame")
     def WindowText: Declaration          = apply("WindowText")
     def currentColor: Declaration        = apply("currentColor")
-  end borderInline
 
   /** `border` — `<line-width> || <line-style> || <color>`. Initial: `see individual properties`. Inherited: see
     * individual properties.
@@ -1960,7 +1927,6 @@ trait StylesGenerated extends StylesValueTraits:
     def WindowFrame: Declaration         = apply("WindowFrame")
     def WindowText: Declaration          = apply("WindowText")
     def currentColor: Declaration        = apply("currentColor")
-  end border
 
   /** `border-top-left-radius` — `<border-radius>`. Initial: `0`. Inherited: no. */
   object borderTopLeftRadius extends DS("border-top-left-radius")
@@ -2203,7 +2169,6 @@ trait StylesGenerated extends StylesValueTraits:
     def lvmax: Declaration = apply("lvmax")
     def dvmax: Declaration = apply("dvmax")
     def Q: Declaration     = apply("Q")
-  end borderImageOutset
 
   /** `border-image-repeat` — `[ stretch | repeat | round | space ]{1,2}`. Initial: `stretch`. Inherited: no. */
   object borderImageRepeat extends DS("border-image-repeat"):
@@ -2251,7 +2216,6 @@ trait StylesGenerated extends StylesValueTraits:
     def repeat: Declaration  = apply("repeat")
     def round: Declaration   = apply("round")
     def space: Declaration   = apply("space")
-  end borderImage
 
   /** `border-limit` —
     * `all | [ sides | corners ] <length-percentage [0,∞]>? | [ top | right | bottom | left ] <length-percentage [0,∞]>`.
@@ -2343,7 +2307,6 @@ trait StylesGenerated extends StylesValueTraits:
     def WindowFrame: Declaration         = apply("WindowFrame")
     def WindowText: Declaration          = apply("WindowText")
     def currentColor: Declaration        = apply("currentColor")
-  end boxShadowColor
 
   /** `box-shadow-offset` — `[ none | <length>{1,2} ]#`. Initial: `none`. Inherited: no. */
   object boxShadowOffset extends DS("box-shadow-offset") with Length with None:
@@ -2376,7 +2339,6 @@ trait StylesGenerated extends StylesValueTraits:
     def lvmax: Declaration = apply("lvmax")
     def dvmax: Declaration = apply("dvmax")
     def Q: Declaration     = apply("Q")
-  end boxShadowOffset
 
   /** `box-shadow-blur` — `<length [0,∞]>#`. Initial: `0`. Inherited: no. */
   object boxShadowBlur extends DS("box-shadow-blur") with Length:
@@ -2409,7 +2371,6 @@ trait StylesGenerated extends StylesValueTraits:
     def lvmax: Declaration = apply("lvmax")
     def dvmax: Declaration = apply("dvmax")
     def Q: Declaration     = apply("Q")
-  end boxShadowBlur
 
   /** `box-shadow-spread` — `<length>#`. Initial: `0`. Inherited: no. */
   object boxShadowSpread extends DS("box-shadow-spread") with Length:
@@ -2442,7 +2403,6 @@ trait StylesGenerated extends StylesValueTraits:
     def lvmax: Declaration = apply("lvmax")
     def dvmax: Declaration = apply("dvmax")
     def Q: Declaration     = apply("Q")
-  end boxShadowSpread
 
   /** `box-shadow-position` — `[ outset | inset ]#`. Initial: `outset`. Inherited: no. */
   object boxShadowPosition extends DS("box-shadow-position"):
@@ -2499,7 +2459,6 @@ trait StylesGenerated extends StylesValueTraits:
     def column: Declaration      = apply("column")
     def avoidRegion: Declaration = apply("avoid-region")
     def region: Declaration      = apply("region")
-  end breakBefore
 
   /** `break-after` —
     * `auto | avoid | always | all | avoid-page | page | left | right | recto | verso | avoid-column | column | avoid-region | region`.
@@ -2519,7 +2478,6 @@ trait StylesGenerated extends StylesValueTraits:
     def column: Declaration      = apply("column")
     def avoidRegion: Declaration = apply("avoid-region")
     def region: Declaration      = apply("region")
-  end breakAfter
 
   /** `break-inside` — `auto | avoid | avoid-page | avoid-column | avoid-region`. Initial: `auto`. Inherited: no. */
   object breakInside extends DS("break-inside") with Auto:
@@ -2608,7 +2566,6 @@ trait StylesGenerated extends StylesValueTraits:
     def WindowFrame: Declaration         = apply("WindowFrame")
     def WindowText: Declaration          = apply("WindowText")
     def currentColor: Declaration        = apply("currentColor")
-  end color
 
   /** `opacity` — `<opacity-value>`. Initial: `1`. Inherited: no. */
   object opacity extends DS("opacity") with Numeric
@@ -2686,7 +2643,6 @@ trait StylesGenerated extends StylesValueTraits:
       with DisplayOutside:
     override def flow: Declaration     = apply("flow")
     override def flowRoot: Declaration = apply("flow-root")
-  end display
 
   /** `order` — `<integer>`. Initial: `0`. Inherited: no. */
   object order extends DS("order") with Numeric
@@ -2785,7 +2741,6 @@ trait StylesGenerated extends StylesValueTraits:
     def uiSansSerif: Declaration = apply("ui-sans-serif")
     def uiMonospace: Declaration = apply("ui-monospace")
     def uiRounded: Declaration   = apply("ui-rounded")
-  end fontFamily
 
   /** `font-width` —
     * `normal | <percentage [0,∞]> | ultra-condensed | extra-condensed | condensed | semi-condensed | semi-expanded | expanded | extra-expanded | ultra-expanded`.
@@ -2859,7 +2814,6 @@ trait StylesGenerated extends StylesValueTraits:
     def uiSansSerif: Declaration = apply("ui-sans-serif")
     def uiMonospace: Declaration = apply("ui-monospace")
     def uiRounded: Declaration   = apply("ui-rounded")
-  end font
 
   /** `font-synthesis-weight` — `auto | none`. Initial: `auto`. Inherited: yes. */
   object fontSynthesisWeight extends DS("font-synthesis-weight") with Auto with None
@@ -2978,7 +2932,6 @@ trait StylesGenerated extends StylesValueTraits:
     def text: Declaration            = apply("text")
     def emoji: Declaration           = apply("emoji")
     def unicode: Declaration         = apply("unicode")
-  end fontVariant
 
   /** `font-feature-settings` — `normal | <feature-tag-value>#`. Initial: `normal`. Inherited: yes. */
   object fontFeatureSettings extends DS("font-feature-settings") with Normal
@@ -3035,7 +2988,6 @@ trait StylesGenerated extends StylesValueTraits:
     def button: Declaration         = apply("button")
     def textfield: Declaration      = apply("textfield")
     def menulistButton: Declaration = apply("menulist-button")
-  end appearance
 
   /** `field-sizing` — `fixed | content`. Initial: `fixed`. Inherited: no. */
   object fieldSizing extends DS("field-sizing"):
@@ -3287,7 +3239,6 @@ trait StylesGenerated extends StylesValueTraits:
     def right: Declaration       = apply("right")
     def top: Declaration         = apply("top")
     def bottom: Declaration      = apply("bottom")
-  end float
 
   /** `footnote-display` — `block | inline | compact`. Initial: `block`. Inherited: no. */
   object footnoteDisplay extends DS("footnote-display"):
@@ -3437,7 +3388,6 @@ trait StylesGenerated extends StylesValueTraits:
     def baseline: Declaration       = apply("baseline")
     def textBeforeEdge: Declaration = apply("text-before-edge")
     def textAfterEdge: Declaration  = apply("text-after-edge")
-  end verticalAlign
 
   /** `baseline-source` — `auto | first | last`. Initial: `auto`. Inherited: no. */
   object baselineSource extends DS("baseline-source") with Auto:
@@ -3733,7 +3683,6 @@ trait StylesGenerated extends StylesValueTraits:
     def lvmax: Declaration = apply("lvmax")
     def dvmax: Declaration = apply("dvmax")
     def Q: Declaration     = apply("Q")
-  end maskBorderOutset
 
   /** `mask-border-repeat` — `<'border-image-repeat'>`. Initial: `stretch`. Inherited: no. */
   object maskBorderRepeat extends DS("mask-border-repeat"):
@@ -3790,7 +3739,6 @@ trait StylesGenerated extends StylesValueTraits:
     def lvmax: Declaration = apply("lvmax")
     def dvmax: Declaration = apply("dvmax")
     def Q: Declaration     = apply("Q")
-  end columnWidth
 
   /** `column-height` — `auto | <length [0,∞]>`. Initial: `auto`. Inherited: no. */
   object columnHeight extends DS("column-height") with Length with Auto:
@@ -3823,7 +3771,6 @@ trait StylesGenerated extends StylesValueTraits:
     def lvmax: Declaration = apply("lvmax")
     def dvmax: Declaration = apply("dvmax")
     def Q: Declaration     = apply("Q")
-  end columnHeight
 
   /** `column-count` — `auto | <integer [1,∞]>`. Initial: `auto`. Inherited: no. */
   object columnCount extends DS("column-count") with Auto with Numeric
@@ -3866,7 +3813,6 @@ trait StylesGenerated extends StylesValueTraits:
     def lvmax: Declaration = apply("lvmax")
     def dvmax: Declaration = apply("dvmax")
     def Q: Declaration     = apply("Q")
-  end columns
 
   /** `column-span` — `none | <integer [1,∞]> | all | auto`. Initial: `none`. Inherited: no. */
   object columnSpan extends DS("column-span") with Auto with None with Numeric:
@@ -3921,7 +3867,6 @@ trait StylesGenerated extends StylesValueTraits:
     def lvmax: Declaration = apply("lvmax")
     def dvmax: Declaration = apply("dvmax")
     def Q: Declaration     = apply("Q")
-  end overflowClipMarginTop
 
   /** `overflow-clip-margin-right` — `<visual-box> || <length>`. Initial: `0px`. Inherited: no. */
   object overflowClipMarginRight extends DS("overflow-clip-margin-right") with Length with VisualBox:
@@ -3954,7 +3899,6 @@ trait StylesGenerated extends StylesValueTraits:
     def lvmax: Declaration = apply("lvmax")
     def dvmax: Declaration = apply("dvmax")
     def Q: Declaration     = apply("Q")
-  end overflowClipMarginRight
 
   /** `overflow-clip-margin-bottom` — `<visual-box> || <length>`. Initial: `0px`. Inherited: no. */
   object overflowClipMarginBottom extends DS("overflow-clip-margin-bottom") with Length with VisualBox:
@@ -3987,7 +3931,6 @@ trait StylesGenerated extends StylesValueTraits:
     def lvmax: Declaration = apply("lvmax")
     def dvmax: Declaration = apply("dvmax")
     def Q: Declaration     = apply("Q")
-  end overflowClipMarginBottom
 
   /** `overflow-clip-margin-left` — `<visual-box> || <length>`. Initial: `0px`. Inherited: no. */
   object overflowClipMarginLeft extends DS("overflow-clip-margin-left") with Length with VisualBox:
@@ -4020,7 +3963,6 @@ trait StylesGenerated extends StylesValueTraits:
     def lvmax: Declaration = apply("lvmax")
     def dvmax: Declaration = apply("dvmax")
     def Q: Declaration     = apply("Q")
-  end overflowClipMarginLeft
 
   /** `overflow-clip-margin-block-start` — `<visual-box> || <length>`. Initial: `0px`. Inherited: no. */
   object overflowClipMarginBlockStart extends DS("overflow-clip-margin-block-start") with Length with VisualBox:
@@ -4053,7 +3995,6 @@ trait StylesGenerated extends StylesValueTraits:
     def lvmax: Declaration = apply("lvmax")
     def dvmax: Declaration = apply("dvmax")
     def Q: Declaration     = apply("Q")
-  end overflowClipMarginBlockStart
 
   /** `overflow-clip-margin-inline-start` — `<visual-box> || <length>`. Initial: `0px`. Inherited: no. */
   object overflowClipMarginInlineStart extends DS("overflow-clip-margin-inline-start") with Length with VisualBox:
@@ -4086,7 +4027,6 @@ trait StylesGenerated extends StylesValueTraits:
     def lvmax: Declaration = apply("lvmax")
     def dvmax: Declaration = apply("dvmax")
     def Q: Declaration     = apply("Q")
-  end overflowClipMarginInlineStart
 
   /** `overflow-clip-margin-block-end` — `<visual-box> || <length>`. Initial: `0px`. Inherited: no. */
   object overflowClipMarginBlockEnd extends DS("overflow-clip-margin-block-end") with Length with VisualBox:
@@ -4119,7 +4059,6 @@ trait StylesGenerated extends StylesValueTraits:
     def lvmax: Declaration = apply("lvmax")
     def dvmax: Declaration = apply("dvmax")
     def Q: Declaration     = apply("Q")
-  end overflowClipMarginBlockEnd
 
   /** `overflow-clip-margin-inline-end` — `<visual-box> || <length>`. Initial: `0px`. Inherited: no. */
   object overflowClipMarginInlineEnd extends DS("overflow-clip-margin-inline-end") with Length with VisualBox:
@@ -4152,7 +4091,6 @@ trait StylesGenerated extends StylesValueTraits:
     def lvmax: Declaration = apply("lvmax")
     def dvmax: Declaration = apply("dvmax")
     def Q: Declaration     = apply("Q")
-  end overflowClipMarginInlineEnd
 
   /** `overflow-clip-margin` — `<visual-box> || <length>`. Initial: `0px`. Inherited: no. */
   object overflowClipMargin extends DS("overflow-clip-margin") with Length with VisualBox:
@@ -4185,7 +4123,6 @@ trait StylesGenerated extends StylesValueTraits:
     def lvmax: Declaration = apply("lvmax")
     def dvmax: Declaration = apply("dvmax")
     def Q: Declaration     = apply("Q")
-  end overflowClipMargin
 
   /** `overflow-clip-margin-inline` — `<visual-box> || <length>`. Initial: `0px`. Inherited: no. */
   object overflowClipMarginInline extends DS("overflow-clip-margin-inline") with Length with VisualBox:
@@ -4218,7 +4155,6 @@ trait StylesGenerated extends StylesValueTraits:
     def lvmax: Declaration = apply("lvmax")
     def dvmax: Declaration = apply("dvmax")
     def Q: Declaration     = apply("Q")
-  end overflowClipMarginInline
 
   /** `overflow-clip-margin-block` — `<visual-box> || <length>`. Initial: `0px`. Inherited: no. */
   object overflowClipMarginBlock extends DS("overflow-clip-margin-block") with Length with VisualBox:
@@ -4251,7 +4187,6 @@ trait StylesGenerated extends StylesValueTraits:
     def lvmax: Declaration = apply("lvmax")
     def dvmax: Declaration = apply("dvmax")
     def Q: Declaration     = apply("Q")
-  end overflowClipMarginBlock
 
   /** `text-overflow` — `clip | ellipsis`. Initial: `clip`. Inherited: no. */
   object textOverflow extends DS("text-overflow"):
@@ -4388,7 +4323,6 @@ trait StylesGenerated extends StylesValueTraits:
     def bothBlock: Declaration   = apply("both-block")
     def both: Declaration        = apply("both")
     def all: Declaration         = apply("all")
-  end clear
 
   /** `float-defer` — `<integer> | last | none`. Initial: `none`. Inherited: no. */
   object floatDefer extends DS("float-defer") with None with Numeric:
@@ -4467,7 +4401,6 @@ trait StylesGenerated extends StylesValueTraits:
     def lvmax: Declaration = apply("lvmax")
     def dvmax: Declaration = apply("dvmax")
     def Q: Declaration     = apply("Q")
-  end blockStepSize
 
   /** `block-step-insert` — `margin-box | padding-box | content-box`. Initial: `margin-box`. Inherited: no. */
   object blockStepInsert extends DS("block-step-insert"):
@@ -4532,7 +4465,6 @@ trait StylesGenerated extends StylesValueTraits:
     def up: Declaration         = apply("up")
     def down: Declaration       = apply("down")
     def nearest: Declaration    = apply("nearest")
-  end blockStep
 
   /** `line-height-step` — `<length [0,∞]>`. Initial: `0`. Inherited: yes. */
   object lineHeightStep extends DS("line-height-step") with Length:
@@ -4565,7 +4497,6 @@ trait StylesGenerated extends StylesValueTraits:
     def lvmax: Declaration = apply("lvmax")
     def dvmax: Declaration = apply("dvmax")
     def Q: Declaration     = apply("Q")
-  end lineHeightStep
 
   /** `border-boundary` — `none | parent | display`. Initial: `none`. Inherited: yes. */
   object borderBoundary extends DS("border-boundary") with None:
@@ -4648,7 +4579,6 @@ trait StylesGenerated extends StylesValueTraits:
     def lvmax: Declaration = apply("lvmax")
     def dvmax: Declaration = apply("dvmax")
     def Q: Declaration     = apply("Q")
-  end scrollMargin
 
   /** `scroll-snap-align` — `[ none | start | end | center ]{1,2}`. Initial: `none`. Inherited: no. */
   object scrollSnapAlign extends DS("scroll-snap-align") with None:
@@ -4721,7 +4651,6 @@ trait StylesGenerated extends StylesValueTraits:
     def lvmax: Declaration = apply("lvmax")
     def dvmax: Declaration = apply("dvmax")
     def Q: Declaration     = apply("Q")
-  end scrollMarginTop
 
   /** `scroll-margin-right` — `<length>`. Initial: `0`. Inherited: no. */
   object scrollMarginRight extends DS("scroll-margin-right") with Length:
@@ -4754,7 +4683,6 @@ trait StylesGenerated extends StylesValueTraits:
     def lvmax: Declaration = apply("lvmax")
     def dvmax: Declaration = apply("dvmax")
     def Q: Declaration     = apply("Q")
-  end scrollMarginRight
 
   /** `scroll-margin-bottom` — `<length>`. Initial: `0`. Inherited: no. */
   object scrollMarginBottom extends DS("scroll-margin-bottom") with Length:
@@ -4787,7 +4715,6 @@ trait StylesGenerated extends StylesValueTraits:
     def lvmax: Declaration = apply("lvmax")
     def dvmax: Declaration = apply("dvmax")
     def Q: Declaration     = apply("Q")
-  end scrollMarginBottom
 
   /** `scroll-margin-left` — `<length>`. Initial: `0`. Inherited: no. */
   object scrollMarginLeft extends DS("scroll-margin-left") with Length:
@@ -4820,7 +4747,6 @@ trait StylesGenerated extends StylesValueTraits:
     def lvmax: Declaration = apply("lvmax")
     def dvmax: Declaration = apply("dvmax")
     def Q: Declaration     = apply("Q")
-  end scrollMarginLeft
 
   /** `scroll-margin-block-start` — `<length>`. Initial: `0`. Inherited: no. */
   object scrollMarginBlockStart extends DS("scroll-margin-block-start") with Length:
@@ -4853,7 +4779,6 @@ trait StylesGenerated extends StylesValueTraits:
     def lvmax: Declaration = apply("lvmax")
     def dvmax: Declaration = apply("dvmax")
     def Q: Declaration     = apply("Q")
-  end scrollMarginBlockStart
 
   /** `scroll-margin-inline-start` — `<length>`. Initial: `0`. Inherited: no. */
   object scrollMarginInlineStart extends DS("scroll-margin-inline-start") with Length:
@@ -4886,7 +4811,6 @@ trait StylesGenerated extends StylesValueTraits:
     def lvmax: Declaration = apply("lvmax")
     def dvmax: Declaration = apply("dvmax")
     def Q: Declaration     = apply("Q")
-  end scrollMarginInlineStart
 
   /** `scroll-margin-block-end` — `<length>`. Initial: `0`. Inherited: no. */
   object scrollMarginBlockEnd extends DS("scroll-margin-block-end") with Length:
@@ -4919,7 +4843,6 @@ trait StylesGenerated extends StylesValueTraits:
     def lvmax: Declaration = apply("lvmax")
     def dvmax: Declaration = apply("dvmax")
     def Q: Declaration     = apply("Q")
-  end scrollMarginBlockEnd
 
   /** `scroll-margin-inline-end` — `<length>`. Initial: `0`. Inherited: no. */
   object scrollMarginInlineEnd extends DS("scroll-margin-inline-end") with Length:
@@ -4952,7 +4875,6 @@ trait StylesGenerated extends StylesValueTraits:
     def lvmax: Declaration = apply("lvmax")
     def dvmax: Declaration = apply("dvmax")
     def Q: Declaration     = apply("Q")
-  end scrollMarginInlineEnd
 
   /** `scroll-margin-block` — `<length>{1,2}`. Initial: `0`. Inherited: no. */
   object scrollMarginBlock extends DS("scroll-margin-block") with Length with LengthBox:
@@ -4985,7 +4907,6 @@ trait StylesGenerated extends StylesValueTraits:
     def lvmax: Declaration = apply("lvmax")
     def dvmax: Declaration = apply("dvmax")
     def Q: Declaration     = apply("Q")
-  end scrollMarginBlock
 
   /** `scroll-margin-inline` — `<length>{1,2}`. Initial: `0`. Inherited: no. */
   object scrollMarginInline extends DS("scroll-margin-inline") with Length with LengthBox:
@@ -5018,7 +4939,6 @@ trait StylesGenerated extends StylesValueTraits:
     def lvmax: Declaration = apply("lvmax")
     def dvmax: Declaration = apply("dvmax")
     def Q: Declaration     = apply("Q")
-  end scrollMarginInline
 
   /** `scrollbar-color` — `auto | <color>{2}`. Initial: `auto`. Inherited: yes. */
   object scrollbarColor extends DS("scrollbar-color") with Auto with None with ColorLike:
@@ -5048,7 +4968,6 @@ trait StylesGenerated extends StylesValueTraits:
     def WindowFrame: Declaration         = apply("WindowFrame")
     def WindowText: Declaration          = apply("WindowText")
     def currentColor: Declaration        = apply("currentColor")
-  end scrollbarColor
 
   /** `scrollbar-width` — `auto | thin | none`. Initial: `auto`. Inherited: no. */
   object scrollbarWidth extends DS("scrollbar-width") with Auto with None:
@@ -5114,7 +5033,6 @@ trait StylesGenerated extends StylesValueTraits:
     def lvmax: Declaration = apply("lvmax")
     def dvmax: Declaration = apply("dvmax")
     def Q: Declaration     = apply("Q")
-  end containIntrinsicWidth
 
   /** `contain-intrinsic-height` — `auto? [ none | <length [0,∞]> ]`. Initial: `none`. Inherited: no. */
   object containIntrinsicHeight extends DS("contain-intrinsic-height") with Length with Auto with None:
@@ -5147,7 +5065,6 @@ trait StylesGenerated extends StylesValueTraits:
     def lvmax: Declaration = apply("lvmax")
     def dvmax: Declaration = apply("dvmax")
     def Q: Declaration     = apply("Q")
-  end containIntrinsicHeight
 
   /** `contain-intrinsic-block-size` — `auto? [ none | <length [0,∞]> ]`. Initial: `none`. Inherited: no. */
   object containIntrinsicBlockSize extends DS("contain-intrinsic-block-size") with Length with Auto with None:
@@ -5180,7 +5097,6 @@ trait StylesGenerated extends StylesValueTraits:
     def lvmax: Declaration = apply("lvmax")
     def dvmax: Declaration = apply("dvmax")
     def Q: Declaration     = apply("Q")
-  end containIntrinsicBlockSize
 
   /** `contain-intrinsic-inline-size` — `auto? [ none | <length [0,∞]> ]`. Initial: `none`. Inherited: no. */
   object containIntrinsicInlineSize extends DS("contain-intrinsic-inline-size") with Length with Auto with None:
@@ -5213,7 +5129,6 @@ trait StylesGenerated extends StylesValueTraits:
     def lvmax: Declaration = apply("lvmax")
     def dvmax: Declaration = apply("dvmax")
     def Q: Declaration     = apply("Q")
-  end containIntrinsicInlineSize
 
   /** `contain-intrinsic-size` — `[ auto? [ none | <length [0,∞]> ] ]{1,2}`. Initial: `see individual properties`.
     * Inherited: see individual properties.
@@ -5248,7 +5163,6 @@ trait StylesGenerated extends StylesValueTraits:
     def lvmax: Declaration = apply("lvmax")
     def dvmax: Declaration = apply("dvmax")
     def Q: Declaration     = apply("Q")
-  end containIntrinsicSize
 
   /** `frame-sizing` — `auto | content-width | content-height | content-block-size | content-inline-size`. Initial:
     * `auto`. Inherited: no.
@@ -5478,7 +5392,6 @@ trait StylesGenerated extends StylesValueTraits:
     def lvmax: Declaration = apply("lvmax")
     def dvmax: Declaration = apply("dvmax")
     def Q: Declaration     = apply("Q")
-  end borderSpacing
 
   /** `caption-side` — `top | bottom`. Initial: `top`. Inherited: yes. */
   object captionSide extends DS("caption-side"):
@@ -5564,7 +5477,6 @@ trait StylesGenerated extends StylesValueTraits:
     def lvmax: Declaration = apply("lvmax")
     def dvmax: Declaration = apply("dvmax")
     def Q: Declaration     = apply("Q")
-  end tabSize
 
   /** `text-wrap-mode` — `wrap | nowrap`. Initial: `wrap`. Inherited: yes. */
   object textWrapMode extends DS("text-wrap-mode"):
@@ -5750,7 +5662,6 @@ trait StylesGenerated extends StylesValueTraits:
     def lvmax: Declaration = apply("lvmax")
     def dvmax: Declaration = apply("dvmax")
     def Q: Declaration     = apply("Q")
-  end wordSpacing
 
   /** `letter-spacing` — `normal | <length>`. Initial: `normal`. Inherited: yes. */
   object letterSpacing extends DS("letter-spacing") with Length with Normal:
@@ -5783,7 +5694,6 @@ trait StylesGenerated extends StylesValueTraits:
     def lvmax: Declaration = apply("lvmax")
     def dvmax: Declaration = apply("dvmax")
     def Q: Declaration     = apply("Q")
-  end letterSpacing
 
   /** `line-padding` — `<length>`. Initial: `0`. Inherited: yes. */
   object linePadding extends DS("line-padding") with Length:
@@ -5816,7 +5726,6 @@ trait StylesGenerated extends StylesValueTraits:
     def lvmax: Declaration = apply("lvmax")
     def dvmax: Declaration = apply("dvmax")
     def Q: Declaration     = apply("Q")
-  end linePadding
 
   /** `text-autospace` — `normal | <autospace> | auto`. Initial: `normal`. Inherited: yes. */
   object textAutospace extends DS("text-autospace") with Auto with Normal with Autospace
@@ -5887,7 +5796,6 @@ trait StylesGenerated extends StylesValueTraits:
     def WindowFrame: Declaration         = apply("WindowFrame")
     def WindowText: Declaration          = apply("WindowText")
     def currentColor: Declaration        = apply("currentColor")
-  end textDecorationColor
 
   /** `text-decoration-thickness` — `auto | from-font | <length-percentage> | <line-width>`. Initial: `auto`. Inherited:
     * no.
@@ -5939,7 +5847,6 @@ trait StylesGenerated extends StylesValueTraits:
     def WindowFrame: Declaration         = apply("WindowFrame")
     def WindowText: Declaration          = apply("WindowText")
     def currentColor: Declaration        = apply("currentColor")
-  end textDecoration
 
   /** `text-underline-position` — `auto | [ under || [ left | right ] ]`. Initial: `auto`. Inherited: yes. */
   object textUnderlinePosition extends DS("text-underline-position") with Auto:
@@ -5981,7 +5888,6 @@ trait StylesGenerated extends StylesValueTraits:
     def lvmax: Declaration = apply("lvmax")
     def dvmax: Declaration = apply("dvmax")
     def Q: Declaration     = apply("Q")
-  end textDecorationInset
 
   /** `text-decoration-skip` — `none | auto`. Initial: `See individual properties`. Inherited: yes. */
   object textDecorationSkip extends DS("text-decoration-skip") with Auto with None
@@ -6052,7 +5958,6 @@ trait StylesGenerated extends StylesValueTraits:
     def WindowFrame: Declaration         = apply("WindowFrame")
     def WindowText: Declaration          = apply("WindowText")
     def currentColor: Declaration        = apply("currentColor")
-  end textEmphasisColor
 
   /** `text-emphasis` — `<'text-emphasis-style'> || <'text-emphasis-color'>`. Initial: `see individual properties`.
     * Inherited: see individual properties.
@@ -6091,7 +5996,6 @@ trait StylesGenerated extends StylesValueTraits:
     def WindowFrame: Declaration         = apply("WindowFrame")
     def WindowText: Declaration          = apply("WindowText")
     def currentColor: Declaration        = apply("currentColor")
-  end textEmphasis
 
   /** `text-emphasis-position` — `[ over | under ] && [ right | left ]?`. Initial: `over right`. Inherited: yes. */
   object textEmphasisPosition extends DS("text-emphasis-position"):
@@ -6166,7 +6070,6 @@ trait StylesGenerated extends StylesValueTraits:
     def lvmax: Declaration               = apply("lvmax")
     def dvmax: Declaration               = apply("dvmax")
     def Q: Declaration                   = apply("Q")
-  end textShadow
 
   /** `translate` — `none | <length-percentage> [ <length-percentage> <length>? ]?`. Initial: `none`. Inherited: no. */
   object translate extends DS("translate") with Length with Percent with None:
@@ -6199,7 +6102,6 @@ trait StylesGenerated extends StylesValueTraits:
     def lvmax: Declaration = apply("lvmax")
     def dvmax: Declaration = apply("dvmax")
     def Q: Declaration     = apply("Q")
-  end translate
 
   /** `rotate` — `none | <angle> | [ x | y | z | <number>{3} ] && <angle>`. Initial: `none`. Inherited: no. */
   object rotate extends DS("rotate") with None with Numeric with Angleish:
@@ -6250,7 +6152,6 @@ trait StylesGenerated extends StylesValueTraits:
     def lvmax: Declaration = apply("lvmax")
     def dvmax: Declaration = apply("dvmax")
     def Q: Declaration     = apply("Q")
-  end perspective
 
   /** `perspective-origin` — `<position>`. Initial: `50% 50%`. Inherited: no. */
   object perspectiveOrigin extends DS("perspective-origin") with Length with Percent with Positionish:
@@ -6306,7 +6207,6 @@ trait StylesGenerated extends StylesValueTraits:
     def lvmax: Declaration  = apply("lvmax")
     def dvmax: Declaration  = apply("dvmax")
     def Q: Declaration      = apply("Q")
-  end transformOrigin
 
   /** `transform-box` — `content-box | border-box | fill-box | stroke-box | view-box`. Initial: `view-box`. Inherited:
     * no.
@@ -6386,7 +6286,6 @@ trait StylesGenerated extends StylesValueTraits:
     def WindowFrame: Declaration         = apply("WindowFrame")
     def WindowText: Declaration          = apply("WindowText")
     def currentColor: Declaration        = apply("currentColor")
-  end outlineColor
 
   /** `outline-offset` — `<length>`. Initial: `0`. Inherited: no. */
   object outlineOffset extends DS("outline-offset") with Length:
@@ -6419,7 +6318,6 @@ trait StylesGenerated extends StylesValueTraits:
     def lvmax: Declaration = apply("lvmax")
     def dvmax: Declaration = apply("dvmax")
     def Q: Declaration     = apply("Q")
-  end outlineOffset
 
   /** `resize` — `none | both | horizontal | vertical | block | inline`. Initial: `none`. Inherited: no. */
   object resize extends DS("resize") with None:
@@ -6466,7 +6364,6 @@ trait StylesGenerated extends StylesValueTraits:
     def allScroll: Declaration    = apply("all-scroll")
     def zoomIn: Declaration       = apply("zoom-in")
     def zoomOut: Declaration      = apply("zoom-out")
-  end cursor
 
   /** `caret-color` — `auto | <color> [auto | <color>]?`. Initial: `auto`. Inherited: yes. */
   object caretColor extends DS("caret-color") with Auto with None with ColorLike:
@@ -6496,7 +6393,6 @@ trait StylesGenerated extends StylesValueTraits:
     def WindowFrame: Declaration         = apply("WindowFrame")
     def WindowText: Declaration          = apply("WindowText")
     def currentColor: Declaration        = apply("currentColor")
-  end caretColor
 
   /** `caret-animation` — `auto | manual`. Initial: `auto`. Inherited: yes. */
   object caretAnimation extends DS("caret-animation") with Auto:
@@ -6540,7 +6436,6 @@ trait StylesGenerated extends StylesValueTraits:
     def bar: Declaration                 = apply("bar")
     def block: Declaration               = apply("block")
     def underscore: Declaration          = apply("underscore")
-  end caret
 
   /** `nav-up` — `auto | <id> [ current | root | <target-name> ]?`. Initial: `auto`. Inherited: no. */
   object navUp extends DS("nav-up") with Auto:
@@ -6617,7 +6512,6 @@ trait StylesGenerated extends StylesValueTraits:
     def WindowFrame: Declaration         = apply("WindowFrame")
     def WindowText: Declaration          = apply("WindowText")
     def currentColor: Declaration        = apply("currentColor")
-  end accentColor
 
   /** `window-drag` — `none | move`. Initial: `none`. Inherited: yes. */
   object windowDrag extends DS("window-drag") with None:
@@ -6737,7 +6631,6 @@ trait StylesGenerated extends StylesValueTraits:
     def WindowFrame: Declaration         = apply("WindowFrame")
     def WindowText: Declaration          = apply("WindowText")
     def currentColor: Declaration        = apply("currentColor")
-  end fillColor
 
   /** `fill-image` — `<paint>#`. Initial: `none`. Inherited: yes. */
   object fillImage extends DS("fill-image") with None with Imageish
@@ -6841,7 +6734,6 @@ trait StylesGenerated extends StylesValueTraits:
     def lvmax: Declaration = apply("lvmax")
     def dvmax: Declaration = apply("dvmax")
     def Q: Declaration     = apply("Q")
-  end strokeDashCorner
 
   /** `stroke-dash-justify` — `none | [ stretch | compress ] || [ dashes || gaps ]`. Initial: `none`. Inherited: yes. */
   object strokeDashJustify extends DS("stroke-dash-justify") with None:
@@ -6878,7 +6770,6 @@ trait StylesGenerated extends StylesValueTraits:
     def WindowFrame: Declaration         = apply("WindowFrame")
     def WindowText: Declaration          = apply("WindowText")
     def currentColor: Declaration        = apply("currentColor")
-  end strokeColor
 
   /** `stroke-image` — `<paint>#`. Initial: `none`. Inherited: yes. */
   object strokeImage extends DS("stroke-image") with None with Imageish
@@ -6944,7 +6835,6 @@ trait StylesGenerated extends StylesValueTraits:
     def WindowFrame: Declaration         = apply("WindowFrame")
     def WindowText: Declaration          = apply("WindowText")
     def currentColor: Declaration        = apply("currentColor")
-  end floodColor
 
   /** `flood-opacity` — `<'opacity'>`. Initial: `1`. Inherited: no. */
   object floodOpacity extends DS("flood-opacity") with Numeric
@@ -6982,7 +6872,6 @@ trait StylesGenerated extends StylesValueTraits:
     def WindowFrame: Declaration         = apply("WindowFrame")
     def WindowText: Declaration          = apply("WindowText")
     def currentColor: Declaration        = apply("currentColor")
-  end lightingColor
 
   /** `math-style` — `normal | compact`. Initial: `normal`. Inherited: yes. */
   object mathStyle extends DS("math-style") with Normal:
@@ -7048,7 +6937,6 @@ trait StylesGenerated extends StylesValueTraits:
     def grad: Declaration    = apply("grad")
     def rad: Declaration     = apply("rad")
     def turn: Declaration    = apply("turn")
-  end offset
 
   /** `pointer-timeline-name` — `[ none | <dashed-ident> ]#`. Initial: `none`. Inherited: no. */
   object pointerTimelineName extends DS("pointer-timeline-name") with None
@@ -7195,7 +7083,6 @@ trait StylesGenerated extends StylesValueTraits:
     def lvmax: Declaration = apply("lvmax")
     def dvmax: Declaration = apply("dvmax")
     def Q: Declaration     = apply("Q")
-  end strokeDashcorner_stroke_dashcorner
 
   /** `stroke-dashadjust` — `none | [stretch | compress] [dashes | gaps]?`. Initial: `none`. Inherited: yes. */
   object strokeDashadjust extends DS("stroke-dashadjust") with None:

@@ -25,7 +25,6 @@ extension (self: RTCIceCandidate)
     self.tcpType.flatMap(ascent.domtypes.RTCIceTcpCandidateType.fromDom)
   def relayProtocolTyped: Option[ascent.domtypes.RTCIceServerTransportProtocol] =
     self.relayProtocol.flatMap(ascent.domtypes.RTCIceServerTransportProtocol.fromDom)
-end extension
 
 extension (self: RTCError)
   def errorDetailTyped: Option[ascent.domtypes.RTCErrorDetailType] =
@@ -55,7 +54,6 @@ extension (self: Request)
   def duplexTyped: Option[ascent.domtypes.RequestDuplex]     = ascent.domtypes.RequestDuplex.fromDom(self.duplex)
   def targetAddressSpaceTyped: Option[ascent.domtypes.IPAddressSpace] =
     ascent.domtypes.IPAddressSpace.fromDom(self.targetAddressSpace)
-end extension
 
 extension (self: Notification)
   def dirTyped: Option[ascent.domtypes.NotificationDirection] = ascent.domtypes.NotificationDirection.fromDom(self.dir)
@@ -77,7 +75,6 @@ extension (self: CanvasRenderingContext2D)
     ascent.domtypes.CanvasFontVariantCaps.fromDom(self.fontVariantCaps)
   def textRenderingTyped: Option[ascent.domtypes.CanvasTextRendering] =
     ascent.domtypes.CanvasTextRendering.fromDom(self.textRendering)
-end extension
 
 extension (self: Animation)
   def playStateTyped: Option[ascent.domtypes.AnimationPlayState] =
@@ -371,7 +368,6 @@ extension (self: XRSession)
     ascent.domtypes.XRReflectionFormat.fromDom(self.preferredReflectionFormat)
   def visibilityStateTyped: Option[ascent.domtypes.XRVisibilityState] =
     ascent.domtypes.XRVisibilityState.fromDom(self.visibilityState)
-end extension
 
 extension (self: WebTransport)
   def reliabilityTyped: Option[ascent.domtypes.WebTransportReliabilityMode] =
@@ -412,7 +408,6 @@ extension (self: OffscreenCanvasRenderingContext2D)
     ascent.domtypes.CanvasFontVariantCaps.fromDom(self.fontVariantCaps)
   def textRenderingTyped: Option[ascent.domtypes.CanvasTextRendering] =
     ascent.domtypes.CanvasTextRendering.fromDom(self.textRendering)
-end extension
 
 extension (self: EncodedVideoChunk)
   def typeTyped: Option[ascent.domtypes.EncodedVideoChunkType] =

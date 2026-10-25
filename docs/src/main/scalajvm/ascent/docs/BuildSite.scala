@@ -55,7 +55,6 @@ Docs pages are Specular `DocSpec`s: the same source asserts under zio-test and S
           Console.printLine(s"Wrote ${result.pages.mkString(", ")}")
       }
       .provideLayer(EarlyEffectTheme.layers)
-  end run
 
   private def copyClientBundle(out: Path): Task[Unit] =
     ZIO.attempt {
@@ -109,8 +108,6 @@ Docs pages are Specular `DocSpec`s: the same source asserts under zio-test and S
           .findFirst()
         if found.isPresent then Some(found.get.nn) else None
       finally stream.close()
-    end if
-  end walkTargetOut
 
   private def repoRoot: Path =
     Paths.get("").toAbsolutePath.nn

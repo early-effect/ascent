@@ -125,7 +125,6 @@ object DescriptorBlockGenerator:
             case (Some(_), Some(_))    => byName(d.name) = d // both have grammar: last wins
     })
     renderObject(analyze(byName.values.toList, spec, existing, valuesByName, valueTraits), spec, valueTraits)
-  end generateFromCatalog
 
   private def analyze(
       descriptors: List[WebrefCss.Property],
@@ -140,7 +139,6 @@ object DescriptorBlockGenerator:
     // transitive type-ref resolution, value-type-trait mixins (`<color>`→ColorLike, `<image>`→Imageish), scaladoc.
     // `propsByName` stays empty — descriptors don't use `<'property'>` refs.
     CssGenerator.analyze(filtered, valuesByName, Map.empty, valueTraits)
-  end analyze
 
   /** Custom renderer: [[CssRenderer]] emits a `trait StylesGenerated`; we want a top-level `object <Name>` instead.
     * Same per-property rendering otherwise; ergonomics overrides (the `appendix`) are spliced into the body verbatim —
@@ -166,7 +164,6 @@ object DescriptorBlockGenerator:
     // Concatenate body + appendix WITHOUT interpolating either — the appendix carries raw
     // Scala source containing `$` and `"""` that must reach the generated file as-is.
     header + body + appendixBlock + "\n"
-  end renderObject
 
   private def indent(text: String, pad: String): String =
     text

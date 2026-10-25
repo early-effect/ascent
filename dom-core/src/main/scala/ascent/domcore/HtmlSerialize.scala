@@ -26,7 +26,6 @@ object HtmlSerialize:
         case c   => sb.append(c)
       i += 1
     sb.toString
-  end escapeText
 
   /** Parents whose text is not HTML-escaped: `script`, `style`, and the historic raw-text elements. */
   private val rawTextTags: Set[String] =
@@ -57,7 +56,6 @@ object HtmlSerialize:
         sb.append(data.charAt(i))
         i += 1
     sb.toString
-  end escapeRawText
 
   private def closesRawTag(data: String, i: Int, needle: String): Boolean =
     val n = needle.length
@@ -93,5 +91,4 @@ object HtmlSerialize:
         case c    => sb.append(c)
       i += 1
     sb.toString
-  end escapeAttr
 end HtmlSerialize

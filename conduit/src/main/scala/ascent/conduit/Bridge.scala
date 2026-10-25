@@ -14,6 +14,7 @@ extension [M, E](c: Conduit[M, E])
   /** A read-only Squawk that mirrors the lens slice of the conduit model. */
   def squawk[S](lens: Lens[M, S])(using Eq[S]): UIO[Squawk[S]] =
     bridge(c, lens)
+end extension
 
 /** Wiring shared by the [[squawk]] extension and [[Ctx]]. Leaves the listener registered for the conduit's lifetime —
   * correct for component-lifetime slices that live as long as the whole view.

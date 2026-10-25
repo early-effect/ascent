@@ -91,7 +91,6 @@ extension (n: Double)
   def vmin: Length = Length.Unit(n, "vmin")
   def vmax: Length = Length.Unit(n, "vmax")
   def pct: Length  = Length.Unit(n, "%")
-end extension
 
 extension (n: Int)
   def px: Length   = Length.Unit(n.toDouble, "px")
@@ -109,4 +108,3 @@ extension (n: Int)
   def vmin: Length = Length.Unit(n.toDouble, "vmin")
   def vmax: Length = Length.Unit(n.toDouble, "vmax")
   def pct: Length  = Length.Unit(n.toDouble, "%")
-end extension

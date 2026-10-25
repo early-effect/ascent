@@ -28,7 +28,6 @@ object ActionSpec extends ZIOSpecDefault:
         original
       }
     )(original => ZIO.succeed { g.fetch = original })(_ => use)
-  end withStubbedFetch
 
   def spec = suite("Action")(
     test("post sends the Datastar-Request header and the snapshot JSON body") {

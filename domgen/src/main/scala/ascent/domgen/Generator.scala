@@ -43,6 +43,7 @@ object GeneratorError:
 
   /** Canonical declarations of one content attribute disagree on codec, and [[DefBuilder]] has no named choice. */
   final case class CodecDispute(attrs: List[String]) extends GeneratorError
+end GeneratorError
 
 object Generator:
 
@@ -317,7 +318,6 @@ object Generator:
                 case None    => d
                 case Some(p) => walk(p, d + 1, visited + name)
       walk(iface, 0, Set.empty)
-    end depth
 
     events
       .groupBy(_.`type`)

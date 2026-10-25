@@ -103,7 +103,6 @@ object AttrInspect extends ZIOAppDefault:
       }
     Console.printLine(s"-- HTML interfaces (${idl.interfaces.size} total) --").orDie
       *> ZIO.foreachDiscard(summarized)(s => Console.printLine(s).orDie)
-  end summary
 
   private def listAttrs(iface: String, idl: Webref.Idl): Task[Unit] =
     val attrs       = DefBuilder.attributesFor(iface, idl)
@@ -135,8 +134,6 @@ object AttrInspect extends ZIOAppDefault:
         Console.printLine(s"    ${m.scalaName.padTo(24, ' ')} (${args}) -> ${m.returnType}").orDie
       }
     yield ()
-    end for
-  end listAttrs
 
   private def showOne(iface: String, member: String, idl: Webref.Idl): Task[Unit] =
     // Look up `member` as an attribute first, then as an operation. Operations show full
@@ -175,7 +172,6 @@ object AttrInspect extends ZIOAppDefault:
                     case None    => List(s"$name (missing)")
                 ZIO.foreachDiscard(chain(iface))(c => Console.printLine(s"    -> $c").orDie)
             yield ()
-    end match
   end showOne
 
 end AttrInspect

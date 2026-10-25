@@ -584,4 +584,3 @@ object Attrs:
   val writingSuggestions: AttrKey[String, HTMLElement] = AttrKey("writingsuggestions", Codec.StringAsIs)
   val x: AttrKey[Int, HTMLImageElement]                = AttrKey("x", Codec.IntAsString)
   val y: AttrKey[Int, HTMLImageElement]                = AttrKey("y", Codec.IntAsString)
-end Attrs

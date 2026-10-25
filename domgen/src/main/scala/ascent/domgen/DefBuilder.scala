@@ -51,7 +51,6 @@ object DefBuilder:
         case Some(_)                       => ()
     }
     seen.values.map(_._1).toList
-  end attributesFor
 
   /** Own attributes plus included mixins. Does not walk parent interfaces. `ARIAMixin` stays out: `AriaAttrs` types
     * those content attributes.
@@ -151,7 +150,6 @@ object DefBuilder:
     visit("Element")
     wanted.foreach(visit)
     ordered.result().map(name => TagMarker(name, parentOf(name)))
-  end tagMarkers
 
   /** The global attribute catalog: one key per content-attribute name, typed at the interface (or union of interfaces)
     * that introduces it. A codec disagreement that [[disputedCodecs]] does not name fails the generator.
@@ -194,7 +192,6 @@ object DefBuilder:
     val bad = disputes.result()
     if bad.nonEmpty then Left(CodecDispute(bad))
     else Right(defs.sortBy(_.scalaName))
-  end htmlAttrDefs
 
   /** WebIDL's `ARIAMixin` reflects the `aria-*` content attributes as camelCase properties (`ariaLabel` for
     * `aria-label`), plus element-reference properties that are no content attribute at all. `AriaAttrs` types the real
@@ -282,7 +279,6 @@ object DefBuilder:
     roots.foreach(r => walk(r, Set.empty))
     closure ++= forcedCoreInterfaces
     closure.toSet
-  end elementInterfaceClosure
 
   /** Platform-neutral type mapper for the structural DOM catalog — the sibling of [[scalaFacadeType]] used by
     * [[Renderer.structuralTraits]] / [[Renderer.memoryImpls]]. Never emits `js.*`; anything that isn't a primitive, an
@@ -350,7 +346,6 @@ object DefBuilder:
                     case 1 => s"${if args.head.contains(" | ") then s"(${args.head})" else args.head} => $ret"
                     case _ => s"(${args.mkString(", ")}) => $ret"
                 case None => "ascent.domcore.PlatformOpaque"
-  end structuralType
 
   // --- generated stand-alone interfaces (Interfaces.scala) ---
 
@@ -473,7 +468,6 @@ object DefBuilder:
         }
     idl.interfaces.get(interface).flatMap(_.inheritance).foreach(p => walk(p, Set.empty))
     acc.toSet
-  end collectInheritedAttrNames
 
   /** Method (name, paramTypes) signatures reachable through the inheritance chain. Used to drop child operations that
     * exactly shadow a parent's — those WOULD need `override`, but child overloads with DIFFERENT signatures than the
@@ -499,7 +493,6 @@ object DefBuilder:
         }
     idl.interfaces.get(interface).flatMap(_.inheritance).foreach(p => walk(p, Set.empty))
     acc.toSet
-  end collectInheritedMethodSigs
 
   private def collectInheritedMixins(
       interface: String,
@@ -519,7 +512,6 @@ object DefBuilder:
           }
       idl.interfaces.get(interface).flatMap(_.inheritance).foreach(p => walk(p, Set.empty))
       acc.toSet
-  end collectInheritedMixins
 
   /** Own attributes for an interface (excluding inheritance) PLUS attributes from any mixin it includes. Mixin attrs
     * are folded in here because mixins aren't emitted as their own classes — their members must appear on every
@@ -543,7 +535,6 @@ object DefBuilder:
         nullable(a.nullable, a.idlType, idl),
       )
     )
-  end ownAttributesOf
 
   /** One attribute as [[ownAttributesOf]] sees it, before its IDL type is mapped to Scala. */
   private final case class OwnAttribute(
@@ -578,7 +569,6 @@ object DefBuilder:
       }
       .distinctBy(m => (m.scalaName, m.params.map(_.scalaType)))
       .filterNot(m => inherited.contains((m.scalaName, m.params.map(_.scalaType))))
-  end explicitArities
 
   /** Every signature `m` answers to: its name with each argument list that stops inside its optional tail. */
   private def arityPrefixes(m: MethodDef): List[(String, List[String])] =
@@ -612,7 +602,6 @@ object DefBuilder:
         returnsNullable = nullable(o.returnsNullable, o.returnType, idl),
       )
     }
-  end ownMethodsOf
 
   /** Own constructors only. Mixins and ancestors are not constructible under the child's name. */
   private def constructorsOf(
@@ -724,7 +713,6 @@ object DefBuilder:
       )
     }
     (attrs.result(), methods.result(), Nil)
-  end collectionExtras
 
   // --- dictionaries + enums ---
 
@@ -884,7 +872,6 @@ object DefBuilder:
         staticAttributes = staticAttributesOf(iface, idl, scalaFacadeType),
       )
     }
-  end facadeDefs
 
   /** Members for a facade, dropping any that would clash with an inherited member of a different scala type. WebIDL
     * allows a subinterface to redeclare an inherited attribute with a different type (`BeforeUnloadEvent.returnValue:
@@ -908,7 +895,6 @@ object DefBuilder:
           }
       iface.inheritance.foreach(p => walk(p, Set(iface.name)))
       acc.toMap
-    end inheritedTypes
     iface.attributes.flatMap { a =>
       val childType = scalaFacadeType(a.idlType, idl)
       inheritedTypes.get(a.name) match
@@ -922,9 +908,7 @@ object DefBuilder:
               nullable = nullable(a.nullable, a.idlType, idl),
             )
           )
-      end match
     }
-  end facadeMembers
 
   /** `Some(idlType)` when `idlType` names a known WebIDL `enum` block, else `None`. Used to populate
     * [[FacadeMember.enumType]] so [[Renderer.enumAccessors]] can emit an additive typed-enum accessor alongside the
@@ -994,8 +978,6 @@ object DefBuilder:
               case Some(named) if depth < 8 => resolveFacadeType(named, idl, depth + 1)
               case _                        => baseScalaType(idlType)
         }
-    end match
-  end resolveFacadeType
 
   /** Callback typedefs the spec invokes with `new`, which WebIDL's `callback X = R ();` cannot say: the HTML spec's
     * prose has `define` check `IsConstructor` and construct the element. A function value would pass the facade and
@@ -1032,8 +1014,6 @@ object DefBuilder:
       val args = inner("record").split(", ", 2)
       if args.length == 2 then Some(s"scala.scalajs.js.Dictionary[${rec(args(1))}]") else None
     else None
-    end if
-  end genericFacadeType
 
   // --- name mangling ---
 

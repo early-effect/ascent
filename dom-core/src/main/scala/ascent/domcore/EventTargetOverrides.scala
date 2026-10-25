@@ -73,7 +73,6 @@ trait EventTargetOverrides:
         snapshot(j)(event)
         j += 1
       i += 1
-    end while
 
     if eo != null then eo.currentTargetRef = null
     // Return "not canceled": false iff a cancelable event had preventDefault called.
@@ -95,5 +94,3 @@ object EventTargetOverrides:
           cur = nb.parentRef
         case _ => cur = null
     acc.toList
-  end selfAndAncestors
-end EventTargetOverrides

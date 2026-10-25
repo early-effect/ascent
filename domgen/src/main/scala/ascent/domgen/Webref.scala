@@ -472,7 +472,6 @@ object Webref:
           case (List(k, v), _, ps) => IdlIterable(v, Some(k), ps)
         }
         (attrs, ops, ctors, constants, staticOps, staticAttrs, iterable, maplike, setlike, asyncIterable)
-      end membersOf
 
       val interfaces = file.idlparsed.idlNames.collect {
         case (name, raw) if raw.`type`.contains("interface") || raw.`type`.contains("interface mixin") =>
@@ -668,7 +667,6 @@ object Webref:
       typedefs = idls.foldLeft(Map.empty[String, String])((acc, idl) => idl.typedefs ++ acc),
       nullableTypedefs = idls.flatMap(_.nullableTypedefs).toSet,
     )
-  end mergeIdl
 
 end Webref
 

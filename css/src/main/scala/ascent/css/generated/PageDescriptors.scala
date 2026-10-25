@@ -43,7 +43,6 @@ object PageDescriptors extends StylesValueTraits:
     def lvmax: Declaration     = apply("lvmax")
     def dvmax: Declaration     = apply("dvmax")
     def Q: Declaration         = apply("Q")
-  end size
 
   /** `page-orientation` — `upright | rotate-left | rotate-right`. Initial: `upright`. */
   object pageOrientation extends DS("page-orientation"):
@@ -87,7 +86,6 @@ object PageDescriptors extends StylesValueTraits:
     def lvmax: Declaration = apply("lvmax")
     def dvmax: Declaration = apply("dvmax")
     def Q: Declaration     = apply("Q")
-  end bleed
 
   /** `page-margin-safety` — `none | clamp | add`. Initial: `auto`. */
   object pageMarginSafety extends DS("page-margin-safety") with None:

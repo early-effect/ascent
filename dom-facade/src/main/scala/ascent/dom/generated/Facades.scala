@@ -23,7 +23,6 @@ class DeviceOrientationEvent extends Event:
   @JSName("gamma")
   def gammaOrNull: Double | Null = js.native
   def absolute: Boolean          = js.native
-end DeviceOrientationEvent
 
 @js.native
 @JSGlobal
@@ -55,7 +54,6 @@ class Event extends PlatformObject:
   def stopImmediatePropagation(): Unit                                                               = js.native
   def preventDefault(): Unit                                                                         = js.native
   def initEvent(`type`: String, bubbles: Boolean = js.native, cancelable: Boolean = js.native): Unit = js.native
-end Event
 
 @js.native
 @JSGlobal
@@ -140,7 +138,6 @@ class StorageEvent extends Event:
       url: String = js.native,
       storageArea: Storage = js.native,
   ): Unit = js.native
-end StorageEvent
 
 @js.native
 @JSGlobal
@@ -177,7 +174,6 @@ class BluetoothAdvertisingEvent extends Event:
   def rssiOrNull: scala.scalajs.js.Any | Null        = js.native
   def manufacturerData: BluetoothManufacturerDataMap = js.native
   def serviceData: BluetoothServiceDataMap           = js.native
-end BluetoothAdvertisingEvent
 
 @js.native
 @JSGlobal
@@ -191,7 +187,6 @@ class CompositionEvent extends UIEvent:
       viewArg: Window = js.native,
       dataArg: String = js.native,
   ): Unit = js.native
-end CompositionEvent
 
 @js.native
 @JSGlobal
@@ -210,7 +205,6 @@ class UIEvent extends Event:
       viewArg: Window = js.native,
       detailArg: Int = js.native,
   ): Unit = js.native
-end UIEvent
 
 @js.native
 @JSGlobal
@@ -279,7 +273,6 @@ class InputEvent extends UIEvent:
   def isComposing: Boolean                                   = js.native
   def inputType: String                                      = js.native
   def getTargetRanges(): scala.scalajs.js.Array[StaticRange] = js.native
-end InputEvent
 
 @js.native
 @JSGlobal
@@ -310,7 +303,6 @@ class MessageEvent extends Event:
       source: Window | MessagePort | ServiceWorker = js.native,
       ports: scala.scalajs.js.Array[MessagePort] = js.native,
   ): Unit = js.native
-end MessageEvent
 
 @js.native
 @JSGlobal
@@ -411,7 +403,6 @@ class CustomEvent extends Event:
       cancelable: Boolean = js.native,
       detail: scala.scalajs.js.Any = js.native,
   ): Unit = js.native
-end CustomEvent
 
 @js.native
 @JSGlobal
@@ -485,7 +476,6 @@ class KeyboardEvent extends UIEvent:
       shiftKey: Boolean = js.native,
       metaKey: Boolean = js.native,
   ): Unit = js.native
-end KeyboardEvent
 
 @js.native
 @JSGlobal
@@ -541,7 +531,6 @@ class TextEvent extends UIEvent:
       view: Window = js.native,
       data: String = js.native,
   ): Unit = js.native
-end TextEvent
 
 @js.native
 @JSGlobal
@@ -574,7 +563,6 @@ class FetchEvent extends ExtendableEvent:
   def replacesClientId: String                                        = js.native
   def handled: scala.scalajs.js.Promise[Unit]                         = js.native
   def respondWith(r: scala.scalajs.js.Promise[Response]): Unit        = js.native
-end FetchEvent
 
 @js.native
 @JSGlobal
@@ -588,7 +576,6 @@ class TouchEvent extends UIEvent:
   def ctrlKey: Boolean                          = js.native
   def shiftKey: Boolean                         = js.native
   def getModifierState(keyArg: String): Boolean = js.native
-end TouchEvent
 
 @js.native
 @JSGlobal
@@ -646,7 +633,6 @@ class MouseEvent extends UIEvent:
       buttonArg: Int = js.native,
       relatedTargetArg: EventTarget = js.native,
   ): Unit = js.native
-end MouseEvent
 
 @js.native
 @JSGlobal
@@ -715,7 +701,6 @@ class ExtendableMessageEvent extends ExtendableEvent:
   @JSName("source")
   def sourceOrNull: Client | ServiceWorker | MessagePort | Null = js.native
   def ports: scala.scalajs.js.Array[MessagePort]                = js.native
-end ExtendableMessageEvent
 
 @js.native
 @JSGlobal
@@ -868,7 +853,6 @@ class DeviceMotionEvent extends Event:
   @JSName("rotationRate")
   def rotationRateOrNull: DeviceMotionEventRotationRate | Null = js.native
   def interval: Double                                         = js.native
-end DeviceMotionEvent
 
 @js.native
 @JSGlobal
@@ -891,7 +875,6 @@ class SecurityPolicyViolationEvent extends Event:
   def statusCode: Int            = js.native
   def lineNumber: Int            = js.native
   def columnNumber: Int          = js.native
-end SecurityPolicyViolationEvent
 
 @js.native
 @JSGlobal
@@ -925,7 +908,6 @@ class NavigateEvent extends Event:
   def sourceElementOrNull: Element | Null                              = js.native
   def intercept(options: NavigationInterceptOptions = js.native): Unit = js.native
   def scroll(): Unit                                                   = js.native
-end NavigateEvent
 
 @js.native
 @JSGlobal
@@ -978,7 +960,6 @@ class PaymentRequestEvent extends ExtendableEvent:
   ): scala.scalajs.js.Promise[PaymentRequestDetailsUpdate]                                                = js.native
   def changeShippingOption(shippingOption: String): scala.scalajs.js.Promise[PaymentRequestDetailsUpdate] = js.native
   def respondWith(handlerResponsePromise: scala.scalajs.js.Promise[PaymentHandlerResponse]): Unit         = js.native
-end PaymentRequestEvent
 
 @js.native
 @JSGlobal
@@ -1066,7 +1047,6 @@ class PointerEvent extends MouseEvent:
   def persistentDeviceId: Int                                    = js.native
   def getCoalescedEvents(): scala.scalajs.js.Array[PointerEvent] = js.native
   def getPredictedEvents(): scala.scalajs.js.Array[PointerEvent] = js.native
-end PointerEvent
 
 @js.native
 @JSGlobal
@@ -1101,7 +1081,6 @@ class RTCPeerConnectionIceErrorEvent extends Event:
   def url: String            = js.native
   def errorCode: Int         = js.native
   def errorText: String      = js.native
-end RTCPeerConnectionIceErrorEvent
 
 @js.native
 @JSGlobal

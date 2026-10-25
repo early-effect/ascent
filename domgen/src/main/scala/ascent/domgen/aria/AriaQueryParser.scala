@@ -57,7 +57,6 @@ object AriaQueryParser:
       fastparse.parse(tail, propertiesArray(using _)) match
         case Parsed.Success(items, _) => Right(items)
         case f: Parsed.Failure        => Left(f.trace().longAggregateMsg)
-  end parseTopLevelArray
 
   // --- grammar ---
 

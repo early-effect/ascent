@@ -26,7 +26,6 @@ object BrowserHistorySpec extends ZIOSpecDefault:
       else js.Dynamic.newInstance(js.Dynamic.global.Event)(kind)
     dom.window.dispatchEvent(evt.asInstanceOf[dom.Event])
     ()
-  end dispatch
 
   def spec = suite("History (browser)")(
     test("History.browser seeds from window.location") {

@@ -86,5 +86,3 @@ object AscentEvent:
       def key: Option[String]         = k
       def targetTag: Option[String]   = tt
       def raw: Any                    = r
-  end simple
-end AscentEvent

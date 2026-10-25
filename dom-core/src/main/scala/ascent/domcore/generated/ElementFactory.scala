@@ -195,7 +195,6 @@ object ElementFactory:
     el.nodeNameRef = lower
     el.nodeTypeRef = 1
     el
-  end createByTag
 
   def createText(data: String): ascent.domcore.generated.Text =
     val t = ascent.domcore.generated.TextMemory()

@@ -86,7 +86,6 @@ object CssInspect extends ZIOAppDefault:
     valuesByName.values.foreach(v => v.value.foreach(scan(_, s"<${v.name.stripPrefix("<").stripSuffix(">")}>")))
     properties.foreach(p => p.value.foreach(scan(_, p.name)))
     out.map((k, v) => k -> v.toSet).toMap
-  end shorthandComponentUses
 
   /** Dump every distinct selector (pseudo-class / pseudo-element / combinator) across the snapshot, with its grammar;
     * nested sub-selectors are indented. Pass names (`:hover` `::before`) to filter.
@@ -158,7 +157,6 @@ object CssInspect extends ZIOAppDefault:
               _ <- ZIO.foreachDiscard(descriptors): d =>
                 Console.printLine(s"    - ${d.name}: ${d.value.getOrElse("(no grammar)")}").orDie
             yield ()
-        end match
     yield ()
 
   private def inspect(args: List[String]): Task[Unit] =

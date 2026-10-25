@@ -57,7 +57,6 @@ object KeywordValueCatalog:
         )
       }
       .toList
-  end build
 
   /** The set of keyword `<type>` bare-names referenced as a DIRECT any-order (`||`) / all-required (`&&`) component of
     * some value-def or property grammar.
@@ -83,7 +82,6 @@ object KeywordValueCatalog:
     valuesByName.values.foreach(_.value.foreach(scan))
     properties.foreach(_.value.foreach(scan))
     found.toSet
-  end shorthandComponentTypes
 
   /** Does this type's grammar have a `<number>` / `<integer>` branch (→ a numeric enum case alongside the keywords)? */
   private def grammarHasNumber(v: Option[WebrefCss.ValueDef]): Boolean =

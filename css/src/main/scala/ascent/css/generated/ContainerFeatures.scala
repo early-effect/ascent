@@ -55,7 +55,6 @@ trait ContainerFeatures:
     val inlineStart: ContainerCondition = ContainerCondition.Keyword("stuck", "inline-start")
     val blockEnd: ContainerCondition    = ContainerCondition.Keyword("stuck", "block-end")
     val inlineEnd: ContainerCondition   = ContainerCondition.Keyword("stuck", "inline-end")
-  end stuck
 
   object snapped extends CF("snapped"):
     val none: ContainerCondition   = ContainerCondition.Keyword("snapped", "none")
@@ -79,7 +78,6 @@ trait ContainerFeatures:
     val y: ContainerCondition           = ContainerCondition.Keyword("scrollable", "y")
     val block: ContainerCondition       = ContainerCondition.Keyword("scrollable", "block")
     val inline: ContainerCondition      = ContainerCondition.Keyword("scrollable", "inline")
-  end scrollable
 
   object scrolled extends CF("scrolled"):
     val none: ContainerCondition        = ContainerCondition.Keyword("scrolled", "none")
@@ -95,5 +93,4 @@ trait ContainerFeatures:
     val y: ContainerCondition           = ContainerCondition.Keyword("scrolled", "y")
     val block: ContainerCondition       = ContainerCondition.Keyword("scrolled", "block")
     val inline: ContainerCondition      = ContainerCondition.Keyword("scrolled", "inline")
-  end scrolled
 end ContainerFeatures

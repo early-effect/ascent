@@ -120,7 +120,6 @@ object AtRuleFeaturesGenerator:
             case (Some(_), Some(_))    => byName(d.name) = d // both have grammar: last wins
     })
     AtRuleFeaturesRenderer.renderTrait(analyze(byName.values.toList), spec)
-  end generateFromCatalog
 
   /** Walk the descriptor list, skip vendor-prefixed entries, parse + analyze each. The `min-`/`max-` siblings are
     * appended after each range descriptor in source order so the generated diff stays readable —
@@ -149,10 +148,8 @@ object AtRuleFeaturesGenerator:
             traits = base.traits,
             keywords = Nil,
           )
-        end if
     }
     out.toList
-  end analyze
 
   private def toFeatureDef(d: WebrefCss.Property): AtRuleFeatureDef =
     val scalaName = camelCase(d.name)
@@ -167,8 +164,6 @@ object AtRuleFeaturesGenerator:
             AtRuleFeatureDef(scalaName, d.name, traits, keywords)
           case Left(err) =>
             AtRuleFeatureDef(scalaName, d.name, Nil, Nil, parseError = Some(err))
-    end match
-  end toFeatureDef
 
   private def analyzeGrammar(g: CssGrammar.Grammar): (List[String], List[AtRuleKeywordConstant]) =
     val branches = topLevelAlternatives(g)
@@ -184,7 +179,6 @@ object AtRuleFeaturesGenerator:
       case _ => ()
     }
     (traits.toList, keywords.values.toList)
-  end analyzeGrammar
 
   private def topLevelAlternatives(g: CssGrammar.Grammar): List[CssGrammar.Grammar] =
     g match
@@ -239,8 +233,6 @@ object AtRuleFeaturesRenderer:
         .mkString("\n")
       s"""$headerLine:
          |$body""".stripMargin
-    end if
-  end renderFeature
 
   def renderTrait(defs: List[AtRuleFeatureDef], spec: AtRuleSpec): String =
     val body = defs.map(d => indent(renderFeature(d, spec), "  ")).mkString("\n\n")
@@ -256,7 +248,6 @@ object AtRuleFeaturesRenderer:
        |trait ${spec.featureTraitName}:
        |$body
        |""".stripMargin
-  end renderTrait
 
   private def indent(text: String, pad: String): String =
     text

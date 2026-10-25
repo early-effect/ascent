@@ -29,7 +29,6 @@ object DevReload:
         es.addEventListener("reload", onReload)
         es.addEventListener("error", (_: dom.Event) => es.close())
       catch case _: Throwable => ()
-  end install
 end DevReload
 
 @js.native

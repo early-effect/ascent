@@ -137,7 +137,6 @@ object WebrefCssSpec extends ZIOSpecDefault:
             v.children(1).name == "transparent",
             v.children(1).kind == "value",
           )
-        end for
       },
     ),
     suite("Catalog (multi-spec aggregation)")(

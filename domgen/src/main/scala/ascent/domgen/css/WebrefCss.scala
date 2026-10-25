@@ -118,8 +118,6 @@ object WebrefCss:
         values = specs.flatMap(_.values),
         selectors = selsByName.values.toList,
       )
-    end fromSpecs
-  end Catalog
 
   // ---------- raw JSON shapes (decoded then reduced) ----------
   //
