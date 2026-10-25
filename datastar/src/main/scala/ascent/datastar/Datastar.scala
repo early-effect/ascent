@@ -64,7 +64,6 @@ object Datastar extends RemoteDialect:
         case Right(obj: Json.Obj) => Right(RemoteEvent.PatchSignals(obj, onlyIfMissing))
         case Right(_)             => Left("patch-signals: `signals` must be a JSON object")
         case Left(err)            => Left(s"patch-signals: invalid JSON ($err)")
-  end parsePatchSignals
 
   private def parsePatchElements(data: String): Either[String, RemoteEvent] =
     val fs       = lines(data)
@@ -80,7 +79,6 @@ object Datastar extends RemoteDialect:
           case None       => Left(s"patch-elements: unknown mode `$tok`")
       case None =>
         Right(RemoteEvent.PatchElements(html, selector, ElementPatchMode.default, useVt))
-  end parsePatchElements
 
   /** Encode a signals object as the JSON body of a `@post`-style action. */
   def encodeSignalsBody(signals: Json.Obj): String =

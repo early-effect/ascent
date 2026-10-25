@@ -67,7 +67,6 @@ object ValueTraitCatalog:
           val extendsT     = (foundationT ++ nestedTraits).distinct
           if ownKws.nonEmpty then
             out(traitNameFor(bare)) = ValueTrait(traitNameFor(bare), bare, v.value, ownKws, extendsT)
-        end if
       }
     out.values.toList
   end build
@@ -104,7 +103,6 @@ object ValueTraitCatalog:
         }
     walk(root, 0, Set(rootBare))
     found.toSet
-  end nestedQualifyingTypes
 
   /** The trait name a given bare type resolves to (for wiring on properties). Only types that actually produce a trait
     * (non-empty keywords, not excluded) appear; callers should consult the built catalog, but this keeps naming in one
@@ -206,7 +204,6 @@ object ValueTraitCatalog:
         v.value.foreach { gStr =>
           CssGrammar.parse(gStr).foreach(ast => walkGrammar(ast, depth, visited))
         }
-    end walkType
 
     def walkGrammar(g: CssGrammar.Grammar, depth: Int, visited: Set[String]): Unit =
       surfaced(g).foreach {

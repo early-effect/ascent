@@ -55,7 +55,6 @@ object Tooltip:
     )
     if position == Position.Top then base
     else base :+ Attr.StaticAttr("data-tooltip-position", AttrValue.Str(position.render))
-  end apply
 
   // --- styling ---
 

@@ -51,9 +51,7 @@ private[sbt] object AscentPreviewWatch:
           try Thread.sleep(math.min(50L, remainingMs))
           catch case _: InterruptedException => return Event.Stop
         if snapshot(globs) != previous then return Event.Changed
-    end while
     throw new IllegalStateException("ascentPreview watch loop exited")
-  end await
 
   private def lastModified(path: Path): Long =
     try Files.getLastModifiedTime(path).toMillis

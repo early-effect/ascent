@@ -27,7 +27,6 @@ sealed trait SupportsCondition:
   infix def or(other: SupportsCondition): SupportsCondition =
     SupportsCondition.Combined(this, " or ", other)
   def not: SupportsCondition = SupportsCondition.Not(this)
-end SupportsCondition
 
 object SupportsCondition:
   /** `(prop: value)` — a property/value test. */

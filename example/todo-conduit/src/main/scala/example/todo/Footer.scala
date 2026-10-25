@@ -132,5 +132,4 @@ object Footer:
         label,
       )
     )
-  end filterLink
 end Footer

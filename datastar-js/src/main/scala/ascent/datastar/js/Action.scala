@@ -42,7 +42,6 @@ object Action:
     body.foreach(b => init.updateDynamic("body")(b))
     promiseToZio(dom.window.fetch(url, init.asInstanceOf[dom.RequestInit])).unit
       .catchAll(t => ZIO.logWarning(s"datastar action $method $url failed: ${t.getMessage}"))
-  end fetchJson
 
   /** Bridge a JS `Promise` (returned by `fetch`) to a ZIO effect. */
   private def promiseToZio(promise: js.Any): Task[Any] =

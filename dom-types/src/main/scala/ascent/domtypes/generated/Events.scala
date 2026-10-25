@@ -110,4 +110,3 @@ object Events:
   val onVolumeChange: EventKey       = EventKey("volumechange", "ascent.dom.Event")
   val onWaiting: EventKey            = EventKey("waiting", "ascent.dom.Event")
   val onWheel: EventKey              = EventKey("wheel", "ascent.dom.WheelEvent")
-end Events

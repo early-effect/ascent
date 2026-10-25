@@ -70,7 +70,6 @@ object MountStyleBootstrapSpec extends ZIOSpecDefault:
       if body.contains(fragment) then count += 1
       i += 1
     count
-  end styleCountContaining
 
   private def withParent[A](use: dom.Element => UIO[A]): UIO[A] =
     ZIO.acquireReleaseWith(
@@ -126,7 +125,6 @@ object MountStyleBootstrapSpec extends ZIOSpecDefault:
           styleCountForKey(done) == 1,
           el.getAttribute("class").asInstanceOf[String].contains(done),
         )
-        end for
       }
     },
     test("a reactive class SET injects CSS when a class first appears and diffs `class` tokens on toggle") {
@@ -150,7 +148,6 @@ object MountStyleBootstrapSpec extends ZIOSpecDefault:
           doneTokenGone = !el.getAttribute("class").asInstanceOf[String].split(" ").contains(done)
           baseStillOn   = el.getAttribute("class").asInstanceOf[String].contains(base)
         yield assertTrue(baseAtMount, doneAbsent, baseTokenOn, doneNowIn, doneTokenGone, baseStillOn)
-        end for
       }
     },
     test("a class applied only inside a when-thunk is absent until the condition goes true") {

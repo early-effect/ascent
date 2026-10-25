@@ -25,7 +25,6 @@ trait CSPViolationReportBody extends ReportBody:
   var statusCode: js.UndefOr[Int]            = js.undefined
   var lineNumber: js.UndefOr[Int]            = js.undefined
   var columnNumber: js.UndefOr[Int]          = js.undefined
-end CSPViolationReportBody
 
 trait SecurityPolicyViolationEventInit extends EventInit:
   var documentURI: js.UndefOr[String]        = js.undefined
@@ -40,7 +39,6 @@ trait SecurityPolicyViolationEventInit extends EventInit:
   var statusCode: js.UndefOr[Int]            = js.undefined
   var lineNumber: js.UndefOr[Int]            = js.undefined
   var columnNumber: js.UndefOr[Int]          = js.undefined
-end SecurityPolicyViolationEventInit
 
 trait BlobPropertyBag extends js.Object:
   var `type`: js.UndefOr[String]  = js.undefined
@@ -96,7 +94,6 @@ trait AttributionConversionOptions extends js.Object:
   var credit: js.UndefOr[scala.scalajs.js.Array[Double]]            = js.undefined
   var value: js.UndefOr[Int]                                        = js.undefined
   var maxValue: js.UndefOr[Int]                                     = js.undefined
-end AttributionConversionOptions
 
 trait AttributionImpressionOptions extends js.Object:
   var histogramIndex: js.UndefOr[Int]                               = js.undefined
@@ -292,7 +289,6 @@ trait FontFaceDescriptors extends js.Object:
   var ascentOverride: js.UndefOr[String]    = js.undefined
   var descentOverride: js.UndefOr[String]   = js.undefined
   var lineGapOverride: js.UndefOr[String]   = js.undefined
-end FontFaceDescriptors
 
 trait HighlightHitResult extends js.Object:
   var highlight: js.UndefOr[Highlight]                          = js.undefined
@@ -315,7 +311,6 @@ trait LayoutConstraintsOptions extends js.Object:
   var blockFragmentationOffset: js.UndefOr[Double] = js.undefined
   var blockFragmentationType: js.UndefOr[String]   = js.undefined
   var data: js.UndefOr[scala.scalajs.js.Any]       = js.undefined
-end LayoutConstraintsOptions
 
 trait BreakTokenOptions extends js.Object:
   var childBreakTokens: js.UndefOr[scala.scalajs.js.Array[ChildBreakToken]] = js.undefined
@@ -460,7 +455,6 @@ trait ItemDetails extends js.Object:
   var introductoryPrice: js.UndefOr[PaymentCurrencyAmount] = js.undefined
   var introductoryPricePeriod: js.UndefOr[String]          = js.undefined
   var introductoryPriceCycles: js.UndefOr[Int]             = js.undefined
-end ItemDetails
 
 trait PurchaseDetails extends js.Object:
   var itemId: js.UndefOr[String]        = js.undefined
@@ -634,7 +628,6 @@ trait IdentityProviderAccount extends js.Object:
   var login_hints: js.UndefOr[scala.scalajs.js.Array[String]]      = js.undefined
   var domain_hints: js.UndefOr[scala.scalajs.js.Array[String]]     = js.undefined
   var label_hints: js.UndefOr[scala.scalajs.js.Array[String]]      = js.undefined
-end IdentityProviderAccount
 
 trait IdentityAssertionResponse extends js.Object:
   var token: js.UndefOr[scala.scalajs.js.Any]        = js.undefined
@@ -711,7 +704,6 @@ trait RequestInit extends js.Object:
   var duplex: js.UndefOr[String]                = js.undefined
   var priority: js.UndefOr[String]              = js.undefined
   var window: js.UndefOr[scala.scalajs.js.Any]  = js.undefined
-end RequestInit
 
 trait ResponseInit extends js.Object:
   var status: js.UndefOr[Int]                   = js.undefined
@@ -825,7 +817,6 @@ trait DOMMatrixInit extends DOMMatrix2DInit:
   var m43: js.UndefOr[Double]   = js.undefined
   var m44: js.UndefOr[Double]   = js.undefined
   var is2D: js.UndefOr[Boolean] = js.undefined
-end DOMMatrixInit
 
 trait DOMMatrix2DInit extends js.Object:
   var a: js.UndefOr[Double]   = js.undefined
@@ -840,7 +831,6 @@ trait DOMMatrix2DInit extends js.Object:
   var m22: js.UndefOr[Double] = js.undefined
   var m41: js.UndefOr[Double] = js.undefined
   var m42: js.UndefOr[Double] = js.undefined
-end DOMMatrix2DInit
 
 trait DOMQuadInit extends js.Object:
   var p1: js.UndefOr[DOMPointInit] = js.undefined
@@ -919,7 +909,6 @@ trait NavigateEventInit extends EventInit:
   var info: js.UndefOr[scala.scalajs.js.Any]         = js.undefined
   var hasUAVisualTransition: js.UndefOr[Boolean]     = js.undefined
   var sourceElement: js.UndefOr[Element]             = js.undefined
-end NavigateEventInit
 
 trait CommandEventInit extends EventInit:
   var source: js.UndefOr[Element] = js.undefined
@@ -979,7 +968,6 @@ trait ValidityStateFlags extends js.Object:
   var stepMismatch: js.UndefOr[Boolean]    = js.undefined
   var badInput: js.UndefOr[Boolean]        = js.undefined
   var customError: js.UndefOr[Boolean]     = js.undefined
-end ValidityStateFlags
 
 trait ImageDataSettings extends js.Object:
   var colorSpace: js.UndefOr[String]  = js.undefined
@@ -1210,7 +1198,6 @@ trait JsonLdOptions extends js.Object:
   var rdfDirection: js.UndefOr[String]                                                      = js.undefined
   var useNativeTypes: js.UndefOr[Boolean]                                                   = js.undefined
   var useRdfType: js.UndefOr[Boolean]                                                       = js.undefined
-end JsonLdOptions
 
 trait LoadDocumentOptions extends js.Object:
   var extractAllScripts: js.UndefOr[Boolean]           = js.undefined
@@ -1277,7 +1264,6 @@ trait VideoConfiguration extends js.Object:
   var transferFunction: js.UndefOr[String]    = js.undefined
   var scalabilityMode: js.UndefOr[String]     = js.undefined
   var spatialScalability: js.UndefOr[Boolean] = js.undefined
-end VideoConfiguration
 
 trait MediaConfiguration extends js.Object:
   var video: js.UndefOr[VideoConfiguration] = js.undefined
@@ -1331,7 +1317,6 @@ trait MediaTrackConstraintSet extends js.Object:
   var deviceId: js.UndefOr[scala.scalajs.js.Any]                                             = js.undefined
   var groupId: js.UndefOr[scala.scalajs.js.Any]                                              = js.undefined
   var backgroundBlur: js.UndefOr[Boolean | ConstrainBooleanParameters]                       = js.undefined
-end MediaTrackConstraintSet
 
 trait MediaStreamConstraints extends js.Object:
   var video: js.UndefOr[Boolean | MediaTrackConstraints] = js.undefined
@@ -1354,7 +1339,6 @@ trait MediaTrackSupportedConstraints extends js.Object:
   var deviceId: js.UndefOr[Boolean]         = js.undefined
   var groupId: js.UndefOr[Boolean]          = js.undefined
   var backgroundBlur: js.UndefOr[Boolean]   = js.undefined
-end MediaTrackSupportedConstraints
 
 trait ConstrainULongRange extends ULongRange:
   var exact: js.UndefOr[Int] = js.undefined
@@ -1399,7 +1383,6 @@ trait MediaTrackSettings extends js.Object:
   var deviceId: js.UndefOr[String]                   = js.undefined
   var groupId: js.UndefOr[String]                    = js.undefined
   var backgroundBlur: js.UndefOr[Boolean]            = js.undefined
-end MediaTrackSettings
 
 trait MediaTrackConstraints extends MediaTrackConstraintSet:
   var advanced: js.UndefOr[scala.scalajs.js.Array[MediaTrackConstraintSet]] = js.undefined
@@ -1421,7 +1404,6 @@ trait MediaTrackCapabilities extends js.Object:
   var deviceId: js.UndefOr[String]                                  = js.undefined
   var groupId: js.UndefOr[String]                                   = js.undefined
   var backgroundBlur: js.UndefOr[scala.scalajs.js.Array[Boolean]]   = js.undefined
-end MediaTrackCapabilities
 
 trait ConstrainBooleanParameters extends js.Object:
   var exact: js.UndefOr[Boolean] = js.undefined
@@ -1502,7 +1484,6 @@ trait NotificationOptions extends js.Object:
   var requireInteraction: js.UndefOr[Boolean]                         = js.undefined
   var data: js.UndefOr[scala.scalajs.js.Any]                          = js.undefined
   var actions: js.UndefOr[scala.scalajs.js.Array[NotificationAction]] = js.undefined
-end NotificationOptions
 
 trait NotificationEventInit extends ExtendableEventInit:
   var notification: js.UndefOr[Notification] = js.undefined
@@ -1579,7 +1560,6 @@ trait AddressErrors extends js.Object:
   var recipient: js.UndefOr[String]         = js.undefined
   var region: js.UndefOr[String]            = js.undefined
   var sortingCode: js.UndefOr[String]       = js.undefined
-end AddressErrors
 
 trait PaymentShippingOption extends js.Object:
   var id: js.UndefOr[String]                    = js.undefined
@@ -1714,7 +1694,6 @@ trait PointerEventInit extends MouseEventInit:
   var persistentDeviceId: js.UndefOr[Int]                               = js.undefined
   var coalescedEvents: js.UndefOr[scala.scalajs.js.Array[PointerEvent]] = js.undefined
   var predictedEvents: js.UndefOr[scala.scalajs.js.Array[PointerEvent]] = js.undefined
-end PointerEventInit
 
 trait WheelEventInit extends MouseEventInit:
   var deltaX: js.UndefOr[Double] = js.undefined
@@ -1836,7 +1815,6 @@ trait StorageAccessTypes extends js.Object:
   var revokeObjectURL: js.UndefOr[Boolean]  = js.undefined
   var BroadcastChannel: js.UndefOr[Boolean] = js.undefined
   var SharedWorker: js.UndefOr[Boolean]     = js.undefined
-end StorageAccessTypes
 
 trait SanitizerElementNamespaceWithAttributes extends SanitizerElementNamespace:
   var attributes: js.UndefOr[scala.scalajs.js.Array[String | SanitizerAttributeNamespace]]       = js.undefined
@@ -1863,7 +1841,6 @@ trait SanitizerConfig extends js.Object:
   var removeAttributes: js.UndefOr[scala.scalajs.js.Array[String | SanitizerAttributeNamespace]] = js.undefined
   var comments: js.UndefOr[Boolean]                                                              = js.undefined
   var dataAttributes: js.UndefOr[Boolean]                                                        = js.undefined
-end SanitizerConfig
 
 trait SetHTMLOptions extends js.Object:
   var sanitizer: js.UndefOr[Sanitizer | SanitizerConfig | String] = js.undefined
@@ -1918,7 +1895,6 @@ trait SecurePaymentConfirmationRequest extends js.Object:
   var browserBoundPubKeyCredParams: js.UndefOr[scala.scalajs.js.Array[PublicKeyCredentialParameters]] = js.undefined
   var locale: js.UndefOr[scala.scalajs.js.Array[String]]                                              = js.undefined
   var showOptOut: js.UndefOr[Boolean]                                                                 = js.undefined
-end SecurePaymentConfirmationRequest
 
 trait CollectedClientAdditionalPaymentRegistrationData extends js.Object:
   var browserBoundPublicKey: js.UndefOr[String] = js.undefined
@@ -1953,7 +1929,6 @@ trait AuthenticationExtensionsPaymentInputs extends js.Object:
   var paymentEntitiesLogos: js.UndefOr[scala.scalajs.js.Array[PaymentEntityLogo]]                     = js.undefined
   var total: js.UndefOr[PaymentCurrencyAmount]                                                        = js.undefined
   var instrument: js.UndefOr[PaymentCredentialInstrument]                                             = js.undefined
-end AuthenticationExtensionsPaymentInputs
 
 trait CollectedClientAdditionalPaymentData extends js.Object:
   var rpId: js.UndefOr[String]                                                    = js.undefined
@@ -2145,7 +2120,6 @@ trait UnderlyingSource extends js.Object:
     js.undefined
   var `type`: js.UndefOr[String]             = js.undefined
   var autoAllocateChunkSize: js.UndefOr[Int] = js.undefined
-end UnderlyingSource
 
 trait ReadableWritablePair extends js.Object:
   var readable: js.UndefOr[ReadableStream] = js.undefined
@@ -2163,7 +2137,6 @@ trait Transformer extends js.Object:
     js.undefined
   var readableType: js.UndefOr[scala.scalajs.js.Any] = js.undefined
   var writableType: js.UndefOr[scala.scalajs.js.Any] = js.undefined
-end Transformer
 
 trait QueuingStrategyInit extends js.Object:
   var highWaterMark: js.UndefOr[Double] = js.undefined
@@ -2218,7 +2191,6 @@ trait TouchInit extends js.Object:
   var altitudeAngle: js.UndefOr[Double] = js.undefined
   var azimuthAngle: js.UndefOr[Double]  = js.undefined
   var touchType: js.UndefOr[String]     = js.undefined
-end TouchInit
 
 trait LanguageDetectorCreateCoreOptions extends js.Object:
   var expectedInputLanguages: js.UndefOr[scala.scalajs.js.Array[String]] = js.undefined
@@ -2268,7 +2240,6 @@ trait UADataValues extends js.Object:
   var platformVersion: js.UndefOr[String]                                          = js.undefined
   var uaFullVersion: js.UndefOr[String]                                            = js.undefined
   var wow64: js.UndefOr[Boolean]                                                   = js.undefined
-end UADataValues
 
 trait NavigatorUABrandVersion extends js.Object:
   var brand: js.UndefOr[String]   = js.undefined
@@ -2301,7 +2272,6 @@ trait EventModifierInit extends UIEventInit:
   var modifierSuper: js.UndefOr[Boolean]      = js.undefined
   var modifierSymbol: js.UndefOr[Boolean]     = js.undefined
   var modifierSymbolLock: js.UndefOr[Boolean] = js.undefined
-end EventModifierInit
 
 trait InputEventInit extends UIEventInit:
   var data: js.UndefOr[String]         = js.undefined
@@ -2328,7 +2298,6 @@ trait URLPatternResult extends js.Object:
   var pathname: js.UndefOr[URLPatternComponentResult]                     = js.undefined
   var search: js.UndefOr[URLPatternComponentResult]                       = js.undefined
   var hash: js.UndefOr[URLPatternComponentResult]                         = js.undefined
-end URLPatternResult
 
 trait URLPatternOptions extends js.Object:
   var ignoreCase: js.UndefOr[Boolean] = js.undefined
@@ -2347,7 +2316,6 @@ trait URLPatternInit extends js.Object:
   var search: js.UndefOr[String]   = js.undefined
   var hash: js.UndefOr[String]     = js.undefined
   var baseURL: js.UndefOr[String]  = js.undefined
-end URLPatternInit
 
 trait PerformanceMarkOptions extends js.Object:
   var detail: js.UndefOr[scala.scalajs.js.Any] = js.undefined
@@ -2370,7 +2338,6 @@ trait VideoFrameCallbackMetadata extends js.Object:
   var captureTime: js.UndefOr[Double]         = js.undefined
   var receiveTime: js.UndefOr[Double]         = js.undefined
   var rtpTimestamp: js.UndefOr[Int]           = js.undefined
-end VideoFrameCallbackMetadata
 
 trait AriaNotificationOptions extends js.Object:
   var priority: js.UndefOr[String] = js.undefined
@@ -2511,7 +2478,6 @@ trait AddressInit extends js.Object:
   var organization: js.UndefOr[String]                        = js.undefined
   var recipient: js.UndefOr[String]                           = js.undefined
   var phone: js.UndefOr[String]                               = js.undefined
-end AddressInit
 
 trait PaymentRequestDetailsUpdate extends js.Object:
   var error: js.UndefOr[String]                                                  = js.undefined
@@ -2725,7 +2691,6 @@ trait PannerOptions extends AudioNodeOptions:
   var coneInnerAngle: js.UndefOr[Double] = js.undefined
   var coneOuterAngle: js.UndefOr[Double] = js.undefined
   var coneOuterGain: js.UndefOr[Double]  = js.undefined
-end PannerOptions
 
 trait BiquadFilterOptions extends AudioNodeOptions:
   var `type`: js.UndefOr[String]    = js.undefined
@@ -2883,7 +2848,6 @@ trait PublicKeyCredentialCreationOptionsJSON extends js.Object:
   var attestation: js.UndefOr[String]                                                           = js.undefined
   var attestationFormats: js.UndefOr[scala.scalajs.js.Array[String]]                            = js.undefined
   var extensions: js.UndefOr[AuthenticationExtensionsClientInputsJSON]                          = js.undefined
-end PublicKeyCredentialCreationOptionsJSON
 
 trait AuthenticatorSelectionCriteria extends js.Object:
   var authenticatorAttachment: js.UndefOr[String] = js.undefined
@@ -2908,7 +2872,6 @@ trait PublicKeyCredentialCreationOptions extends js.Object:
   var attestation: js.UndefOr[String]                                                       = js.undefined
   var attestationFormats: js.UndefOr[scala.scalajs.js.Array[String]]                        = js.undefined
   var extensions: js.UndefOr[AuthenticationExtensionsClientInputs]                          = js.undefined
-end PublicKeyCredentialCreationOptions
 
 trait PublicKeyCredentialRequestOptionsJSON extends js.Object:
   var challenge: js.UndefOr[String]                                                           = js.undefined
@@ -3071,7 +3034,6 @@ trait VideoFrameBufferInit extends js.Object:
   var colorSpace: js.UndefOr[VideoColorSpaceInit]                        = js.undefined
   var transfer: js.UndefOr[scala.scalajs.js.Array[scala.scalajs.js.Any]] = js.undefined
   var metadata: js.UndefOr[VideoFrameMetadata]                           = js.undefined
-end VideoFrameBufferInit
 
 trait EncodedVideoChunkInit extends js.Object:
   var `type`: js.UndefOr[String]                                         = js.undefined
@@ -3090,7 +3052,6 @@ trait VideoFrameInit extends js.Object:
   var displayWidth: js.UndefOr[Int]            = js.undefined
   var displayHeight: js.UndefOr[Int]           = js.undefined
   var metadata: js.UndefOr[VideoFrameMetadata] = js.undefined
-end VideoFrameInit
 
 trait EncodedAudioChunkMetadata extends js.Object:
   var decoderConfig: js.UndefOr[AudioDecoderConfig] = js.undefined
@@ -3160,7 +3121,6 @@ trait VideoDecoderConfig extends js.Object:
   var optimizeForLatency: js.UndefOr[Boolean]       = js.undefined
   var rotation: js.UndefOr[Double]                  = js.undefined
   var flip: js.UndefOr[Boolean]                     = js.undefined
-end VideoDecoderConfig
 
 trait AudioDecoderConfig extends js.Object:
   var codec: js.UndefOr[String]                     = js.undefined
@@ -3186,7 +3146,6 @@ trait VideoEncoderConfig extends js.Object:
   var bitrateMode: js.UndefOr[String]          = js.undefined
   var latencyMode: js.UndefOr[String]          = js.undefined
   var contentHint: js.UndefOr[String]          = js.undefined
-end VideoEncoderConfig
 
 trait VideoFrameMetadata extends js.Object
 
@@ -3273,7 +3232,6 @@ trait JsonWebKey extends js.Object:
   var qi: js.UndefOr[String]                                      = js.undefined
   var oth: js.UndefOr[scala.scalajs.js.Array[RsaOtherPrimesInfo]] = js.undefined
   var k: js.UndefOr[String]                                       = js.undefined
-end JsonWebKey
 
 trait RsaHashedKeyGenParams extends RsaKeyGenParams:
   var hash: js.UndefOr[scala.scalajs.js.Any] = js.undefined
@@ -3375,7 +3333,6 @@ trait WebGLContextAttributes extends js.Object:
   var powerPreference: js.UndefOr[String]               = js.undefined
   var failIfMajorPerformanceCaveat: js.UndefOr[Boolean] = js.undefined
   var desynchronized: js.UndefOr[Boolean]               = js.undefined
-end WebGLContextAttributes
 
 trait WebGLContextEventInit extends EventInit:
   var statusMessage: js.UndefOr[String] = js.undefined
@@ -3510,7 +3467,6 @@ trait GPUTextureViewDescriptor extends GPUObjectDescriptorBase:
   var baseArrayLayer: js.UndefOr[Int]  = js.undefined
   var arrayLayerCount: js.UndefOr[Int] = js.undefined
   var swizzle: js.UndefOr[String]      = js.undefined
-end GPUTextureViewDescriptor
 
 trait GPUPipelineDescriptorBase extends GPUObjectDescriptorBase:
   var layout: js.UndefOr[GPUPipelineLayout | String] = js.undefined
@@ -3526,7 +3482,6 @@ trait GPUDepthStencilState extends js.Object:
   var depthBias: js.UndefOr[Int]                    = js.undefined
   var depthBiasSlopeScale: js.UndefOr[Double]       = js.undefined
   var depthBiasClamp: js.UndefOr[Double]            = js.undefined
-end GPUDepthStencilState
 
 trait GPUExternalTextureDescriptor extends GPUObjectDescriptorBase:
   var source: js.UndefOr[HTMLVideoElement | VideoFrame] = js.undefined
@@ -3581,7 +3536,6 @@ trait GPUSamplerDescriptor extends GPUObjectDescriptorBase:
   var lodMaxClamp: js.UndefOr[Double]  = js.undefined
   var compare: js.UndefOr[String]      = js.undefined
   var maxAnisotropy: js.UndefOr[Int]   = js.undefined
-end GPUSamplerDescriptor
 
 trait GPUProgrammableStage extends js.Object:
   var module: js.UndefOr[GPUShaderModule]                        = js.undefined
@@ -3598,7 +3552,6 @@ trait GPURenderPassDepthStencilAttachment extends js.Object:
   var stencilLoadOp: js.UndefOr[String]             = js.undefined
   var stencilStoreOp: js.UndefOr[String]            = js.undefined
   var stencilReadOnly: js.UndefOr[Boolean]          = js.undefined
-end GPURenderPassDepthStencilAttachment
 
 trait GPUDeviceDescriptor extends GPUObjectDescriptorBase:
   var requiredFeatures: js.UndefOr[scala.scalajs.js.Array[String]] = js.undefined
@@ -3760,7 +3713,6 @@ trait HIDReportItem extends js.Object:
   var physicalMinimum: js.UndefOr[Int]                                      = js.undefined
   var physicalMaximum: js.UndefOr[Int]                                      = js.undefined
   var strings: js.UndefOr[scala.scalajs.js.Array[String]]                   = js.undefined
-end HIDReportItem
 
 trait QuotaExceededErrorOptions extends js.Object:
   var quota: js.UndefOr[Double]     = js.undefined
@@ -3824,7 +3776,6 @@ trait MLLstmSupportLimits extends js.Object:
   var output0: js.UndefOr[MLTensorLimits]            = js.undefined
   var output1: js.UndefOr[MLTensorLimits]            = js.undefined
   var output2: js.UndefOr[MLTensorLimits]            = js.undefined
-end MLLstmSupportLimits
 
 trait MLLayerNormalizationOptions extends MLOperatorOptions:
   var scale: js.UndefOr[MLOperand]                  = js.undefined
@@ -3897,7 +3848,6 @@ trait MLLstmOptions extends MLOperatorOptions:
   var direction: js.UndefOr[String]                           = js.undefined
   var layout: js.UndefOr[String]                              = js.undefined
   var activations: js.UndefOr[scala.scalajs.js.Array[String]] = js.undefined
-end MLLstmOptions
 
 trait MLEluOptions extends MLOperatorOptions:
   var alpha: js.UndefOr[Double] = js.undefined
@@ -3972,7 +3922,6 @@ trait MLConvTranspose2dOptions extends MLOperatorOptions:
   var inputLayout: js.UndefOr[String]                        = js.undefined
   var filterLayout: js.UndefOr[String]                       = js.undefined
   var bias: js.UndefOr[MLOperand]                            = js.undefined
-end MLConvTranspose2dOptions
 
 trait MLSplitOptions extends MLOperatorOptions:
   var axis: js.UndefOr[Int] = js.undefined
@@ -4043,7 +3992,6 @@ trait MLLstmCellSupportLimits extends js.Object:
   var peepholeWeight: js.UndefOr[MLTensorLimits]  = js.undefined
   var output0: js.UndefOr[MLTensorLimits]         = js.undefined
   var output1: js.UndefOr[MLTensorLimits]         = js.undefined
-end MLLstmCellSupportLimits
 
 trait MLOpSupportLimits extends js.Object:
   var preferredInputLayout: js.UndefOr[String] = js.undefined
@@ -4200,7 +4148,6 @@ trait RTCIceCandidateStats extends RTCStats:
   var relatedPort: js.UndefOr[Int]         = js.undefined
   var usernameFragment: js.UndefOr[String] = js.undefined
   var tcpType: js.UndefOr[String]          = js.undefined
-end RTCIceCandidateStats
 
 trait RTCVideoSourceStats extends RTCMediaSourceStats:
   var width: js.UndefOr[Int]              = js.undefined
@@ -4264,7 +4211,6 @@ trait RTCOutboundRtpStreamStats extends RTCSentRtpStreamStats:
   var active: js.UndefOr[Boolean]                                                 = js.undefined
   var scalabilityMode: js.UndefOr[String]                                         = js.undefined
   var packetsSentWithEct1: js.UndefOr[Int]                                        = js.undefined
-end RTCOutboundRtpStreamStats
 
 trait RTCRemoteOutboundRtpStreamStats extends RTCSentRtpStreamStats:
   var localId: js.UndefOr[String]                = js.undefined
@@ -4323,7 +4269,6 @@ trait RTCTransportStats extends RTCStats:
   var selectedCandidatePairChanges: js.UndefOr[Int] = js.undefined
   var ccfbMessagesSent: js.UndefOr[Int]             = js.undefined
   var ccfbMessagesReceived: js.UndefOr[Int]         = js.undefined
-end RTCTransportStats
 
 trait RTCInboundRtpStreamStats extends RTCReceivedRtpStreamStats:
   var trackIdentifier: js.UndefOr[String]                   = js.undefined
@@ -4382,7 +4327,6 @@ trait RTCInboundRtpStreamStats extends RTCReceivedRtpStreamStats:
   var totalCorruptionProbability: js.UndefOr[Double]        = js.undefined
   var totalSquaredCorruptionProbability: js.UndefOr[Double] = js.undefined
   var corruptionMeasurements: js.UndefOr[Int]               = js.undefined
-end RTCInboundRtpStreamStats
 
 trait RTCIceCandidatePairStats extends RTCStats:
   var transportId: js.UndefOr[String]                 = js.undefined
@@ -4407,7 +4351,6 @@ trait RTCIceCandidatePairStats extends RTCStats:
   var consentRequestsSent: js.UndefOr[Int]            = js.undefined
   var packetsDiscardedOnSend: js.UndefOr[Int]         = js.undefined
   var bytesDiscardedOnSend: js.UndefOr[Int]           = js.undefined
-end RTCIceCandidatePairStats
 
 trait RTCAudioPlayoutStats extends RTCStats:
   var kind: js.UndefOr[String]                       = js.undefined
@@ -4620,7 +4563,6 @@ trait WebTransportOptions extends js.Object:
   var anticipatedConcurrentIncomingBidirectionalStreams: js.UndefOr[Int]            = js.undefined
   var protocols: js.UndefOr[scala.scalajs.js.Array[String]]                         = js.undefined
   var datagramsReadableType: js.UndefOr[String]                                     = js.undefined
-end WebTransportOptions
 
 trait WebTransportCloseInfo extends js.Object:
   var closeCode: js.UndefOr[Int] = js.undefined
@@ -4641,7 +4583,6 @@ trait WebTransportConnectionStats extends js.Object:
   var datagrams: js.UndefOr[WebTransportDatagramStats] = js.undefined
   var estimatedSendRate: js.UndefOr[Int]               = js.undefined
   var atSendCapacity: js.UndefOr[Boolean]              = js.undefined
-end WebTransportConnectionStats
 
 trait WebTransportSendStreamStats extends js.Object:
   var bytesWritten: js.UndefOr[Int]      = js.undefined
@@ -4802,7 +4743,6 @@ trait XRLayerInit extends js.Object:
   var layout: js.UndefOr[String]         = js.undefined
   var isStatic: js.UndefOr[Boolean]      = js.undefined
   var clearOnAccess: js.UndefOr[Boolean] = js.undefined
-end XRLayerInit
 
 trait XRQuadLayerInit extends XRLayerInit:
   var transform: js.UndefOr[XRRigidTransform] = js.undefined

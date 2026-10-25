@@ -200,7 +200,6 @@ object PropertyAnalyzer:
       traits = orderTraits(traits),
       keywords = keywords.values.filterNot(km => traitOwnedKeywords.contains(km.scalaName)).toList,
     )
-  end analyze
 
   private def addKeyword(
       name: String,

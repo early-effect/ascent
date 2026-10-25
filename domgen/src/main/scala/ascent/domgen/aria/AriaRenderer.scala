@@ -48,7 +48,6 @@ object AriaRenderer:
        |
        |$ariaLines
        |""".stripMargin
-  end render
 
   /** Render one ARIA property as an `AttrKey[T, Element]` line. ARIA is global, so the marker is `Element`. */
   private def renderOne(p: AriaProperty): String =

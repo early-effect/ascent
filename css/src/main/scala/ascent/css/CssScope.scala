@@ -66,3 +66,4 @@ object CssScope:
     */
   given cssScopeToArg: Conversion[CssScope, VoidArg[Any, ascent.domtypes.tags.Element]] =
     scope => Arg.AttrArg(Attr.Style(scope.contributionBlocks))
+end CssScope

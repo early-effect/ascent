@@ -151,4 +151,3 @@ object HtmlTag:
   val nobr: HtmlTag[HTMLElement]                           = "nobr"
   val spacer: HtmlTag[HTMLUnknownElement]                  = "spacer"
   val tt: HtmlTag[HTMLElement]                             = "tt"
-end HtmlTag

@@ -15,7 +15,6 @@ sealed trait ContainerCondition:
   infix def or(other: ContainerCondition): ContainerCondition =
     ContainerCondition.Combined(this, ", ", other)
   def not: ContainerCondition = ContainerCondition.Not(this)
-end ContainerCondition
 
 object ContainerCondition:
   final case class Keyword(name: String, value: String) extends ContainerCondition:
@@ -29,7 +28,6 @@ object ContainerCondition:
     def render: String = "not " + inner.render
   final case class Raw(query: String) extends ContainerCondition:
     def render: String = query
-end ContainerCondition
 
 /** Foundation: the `CF` (container-feature) base class and value-grammar traits each GENERATED feature object mixes in.
   * Parallel to [[MediaFoundation]] — same trait set, but produces [[ContainerCondition]] values instead of
@@ -58,7 +56,6 @@ object ContainerFoundation:
     val vw: Double => ContainerCondition   = suffixed("vw")
     val vmin: Double => ContainerCondition = suffixed("vmin")
     val vmax: Double => ContainerCondition = suffixed("vmax")
-  end Length
 
   trait Numeric extends CF:
     def apply(n: Int): ContainerCondition = ContainerCondition.Valued(feature, n.toString)

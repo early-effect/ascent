@@ -109,8 +109,6 @@ trait NodeOverrides:
         case n: Node =>
           n.normalize()
           i += 1
-    end while
-  end normalize
 
   /** Shallow clone by concrete kind, then recurse into children if `subtree`. Each kind has exactly one way to
     * construct an equivalent empty node — dispatch on the real Scala type rather than inventing a generic "clone
@@ -139,7 +137,6 @@ trait NodeOverrides:
       case _                  => ()
     if subtree then self.childList.foreach(child => clone.appendChild(child.cloneNode(true)))
     clone
-  end cloneNode
 
   def isEqualNode(otherNode: Node): Boolean =
     if otherNode == null then false
@@ -277,5 +274,3 @@ object NodeOverrides:
       case nb: NodeMemoryBase => nb.childList.foreach(walk)
       case _                  => ()
     sb.toString
-  end descendantText
-end NodeOverrides

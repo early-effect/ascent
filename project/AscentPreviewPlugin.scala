@@ -88,7 +88,6 @@ object AscentPreviewPlugin extends AutoPlugin:
       taskKey[StateTransform](
         "Rebuild, start Preview, and watch sources. Foreground until interrupt when it is the last command; otherwise return to the prompt"
       )
-  end autoImport
 
   import autoImport.*
 
@@ -218,7 +217,6 @@ object AscentPreviewPlugin extends AutoPlugin:
     finally
       stopPreviewJobs(service, scope)
       log.info("ascentPreview: stopped")
-  end awaitWatch
 
   /** sbt Cancel calls `DefaultBackgroundJobService.stop()`, which only interrupts auto-cancel jobs. */
   private def enableAutoCancel(job: JobHandle): Unit =
@@ -227,7 +225,6 @@ object AscentPreviewPlugin extends AutoPlugin:
       f.setAccessible(true)
       f.setBoolean(job, true)
     catch case NonFatal(_) => ()
-  end enableAutoCancel
 
   private def previewOnce: Def.Initialize[Task[Unit]] = Def.task {
     val enabled = ascentPreviewEnable.value
@@ -250,7 +247,6 @@ object AscentPreviewPlugin extends AutoPlugin:
         base = base,
       )
       logPreviewUrl(log, readBoundPort(base))
-    end if
   }
 
   private def startWatchIfNeeded: Def.Initialize[Task[Unit]] = Def.task {
@@ -271,7 +267,6 @@ object AscentPreviewPlugin extends AutoPlugin:
         watchUntilStopped(globs, cmd, scopedFire, flag, logger)
       }
       ()
-    end if
   }
 
   private def watchUntilStopped(
@@ -300,8 +295,6 @@ object AscentPreviewPlugin extends AutoPlugin:
             queueRebuild(globs, cmd, scopedFire, flag, logger) match
               case Some(queued) => queuedSnap = Some(queued)
               case None         => ()
-    end while
-  end watchUntilStopped
 
   /** Interactive sessions: append to CommandExchange so rebuilds serialize with the prompt. Scripted IPC never drains
     * that queue between `>` lines (`-Dsbt.scripted=true`); run the task from the watch thread against the live State
@@ -325,7 +318,6 @@ object AscentPreviewPlugin extends AutoPlugin:
         flag.set(false)
         logger.error(s"ascentPreview: failed to queue $cmd")
         None
-  end queueRebuild
 
   private def runFire(scopedFire: TaskKey[Unit], logger: Logger): Boolean =
     try
@@ -344,7 +336,6 @@ object AscentPreviewPlugin extends AutoPlugin:
       case e: Exception =>
         logger.error(s"ascentPreview: rebuild failed: ${e.getMessage}")
         false
-  end runFire
 
   /** Rebuild automatically when the served tree is missing (`docs/ascentPreviewServe` alone, first clone, …). */
   private def ensureTreeThenServe: Def.Initialize[Task[Unit]] = Def.taskDyn {
@@ -427,8 +418,6 @@ object AscentPreviewPlugin extends AutoPlugin:
         if code != 0 then sys.error(s"$main exited $code")
       }
       ()
-    end if
-  end startPreviewIfNeeded
 
   /** OSC 8 hyperlink so Cursor / VS Code / iTerm can Cmd-click the URL. */
   private def logPreviewUrl(log: Logger, port: Int): Unit =
@@ -479,7 +468,6 @@ object AscentPreviewPlugin extends AutoPlugin:
         service.waitForTry(h)
         ()
       }
-  end stopPreviewJobs
 
   private def projectId(scope: Scope): String =
     scope.project match

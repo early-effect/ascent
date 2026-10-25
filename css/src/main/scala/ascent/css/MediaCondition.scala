@@ -92,7 +92,6 @@ object MediaFoundation:
     val vw: Double => MediaCondition   = suffixed("vw")
     val vmin: Double => MediaCondition = suffixed("vmin")
     val vmax: Double => MediaCondition = suffixed("vmax")
-  end Length
 
   /** Mixin: numeric value (Int) — for descriptors typed as `<integer>`. */
   trait Numeric extends MF:

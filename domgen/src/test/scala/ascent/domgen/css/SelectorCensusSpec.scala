@@ -26,7 +26,6 @@ object SelectorCensusSpec extends ZIOSpecDefault:
       }
       .flatMap(texts => ZIO.foreach(texts.toVector)(t => WebrefCss.parseSpec(t).orDie))
       .map(specs => WebrefCss.Catalog.fromSpecs(specs.toList))
-  end loadCatalog
 
   /** The same camelCase the generator uses, so we can predict the emitted val names. */
   private def camelCase(s: String): String =

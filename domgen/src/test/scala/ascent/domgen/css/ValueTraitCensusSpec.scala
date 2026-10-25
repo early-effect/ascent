@@ -32,7 +32,6 @@ object ValueTraitCensusSpec extends ZIOSpecDefault:
           (cat, valuesByName)
         }
       }
-  end loadCatalog
 
   def spec = suite("CSS value-trait census (real webref)")(
     test("the headline duplication is gone: no property inlines a <line-width> keyword") {

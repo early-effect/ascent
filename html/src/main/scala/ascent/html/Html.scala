@@ -50,6 +50,7 @@ object Html:
 
     /** [[StylePlacement.InlineInHead]] needs a `head` to receive the stylesheet. */
     case NoHead
+  end Error
 
   /** Render `ui` to an HTML string snapshot. Requires the environment `R` only because [[UI.Scoped]] builders may need
     * it; a fully-static `UI[Any]` renders as a plain `UIO[String]`. Compact `innerHTML` (no incidental whitespace): the
@@ -125,7 +126,6 @@ object Html:
       _ <- Mount.mount(ui, parent, idMode).provideSomeLayer[R](ZLayer.succeed(registry))
       _ <- ZIO.succeed(reflectFormState(parent))
     yield serialize(root)
-  end mountFragment
 
   private def renderDocumentWith[R](
       ui: UI[R],
@@ -218,5 +218,4 @@ object Html:
     (0 until kids.length).foreach { idx =>
       Option(kids.item(idx)).foreach(reflectFormState)
     }
-  end reflectFormState
 end Html

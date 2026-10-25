@@ -39,6 +39,7 @@ final case class Declaration(name: String, value: String, bang: Boolean = false,
 
   /** This declaration marked `!important`. */
   def important: Declaration = copy(bang = true)
+end Declaration
 
 /** A selector with its own declarations / nested members. Nested selectors render as separate rules with the parent
   * prepended — `Selector(".foo")(Selector(" .bar")(d))` produces `.foo .bar { d }`.
@@ -230,5 +231,3 @@ object CssMember:
       case s: Selector    => s.renderTo(builder, parent, indent)
       case b: AtRuleBlock => b.renderTo(builder, parent, indent)
     }
-  end renderBody
-end CssMember

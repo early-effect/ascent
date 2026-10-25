@@ -51,7 +51,6 @@ final class McpApp[In, Err, Out, N <: Tuple, V <: Tuple] private (
       _    <- mounted.succeed(subs)
       _    <- ZIO.addFinalizer(unmount)
     yield Mounted(run, context, done.await)
-end McpApp
 
 object McpApp:
   /** Pins the shed's launch types through its launch grant; `view` then takes the render function. */
@@ -153,6 +152,7 @@ private[mcpapp] final class Supervised private (live: Ref[Map[FiberId, Fiber[Any
     }
 
   val interruptAll: UIO[Unit] = live.get.flatMap(fs => ZIO.foreachParDiscard(fs.values)(_.interrupt))
+end Supervised
 
 private[mcpapp] object Supervised:
   val make: UIO[Supervised] = Ref.make(Map.empty[FiberId, Fiber[Any, Any]]).map(Supervised(_))

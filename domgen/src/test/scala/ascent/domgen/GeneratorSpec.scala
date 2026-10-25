@@ -158,7 +158,6 @@ object GeneratorSpec extends ZIOSpecDefault:
           !src.contains("""onAbort"""),
           !src.contains("""onInput"""),
         )
-      end for
     },
     test("Facades.scala emits the transitive ancestor chain even if no event names them directly") {
       // click is a PointerEvent (extends MouseEvent → UIEvent → Event); all four must appear as facades.
@@ -177,7 +176,6 @@ object GeneratorSpec extends ZIOSpecDefault:
           src.contains("object Event extends js.Object"),
           src.contains("val CAPTURING_PHASE: Int = js.native"),
         )
-      end for
     },
     test("collapses duplicate event-type entries to the most-specific interface in the IDL chain") {
       // webref's events.json lists the same event type under multiple interfaces (e.g. `abort` on both
@@ -204,7 +202,6 @@ object GeneratorSpec extends ZIOSpecDefault:
           abortLines.head.contains("ascent.dom.MouseEvent"), // the deeper interface won
           !abortLines.head.contains("ascent.dom.Event\""),
         )
-      end for
     },
     test("an unknown event interface fails generation loudly with a typed error") {
       val withMissing = inputZ.map { i =>

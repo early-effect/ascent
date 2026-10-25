@@ -66,6 +66,7 @@ enum ElementLifecycle:
   case Disconnected(element: dom.HTMLElement)
 
   def element: dom.HTMLElement
+end ElementLifecycle
 
 /** A custom element this page defined. `lifecycle` follows every instance as the document gains and loses it. */
 final class CustomElement private (val name: ElementName, hub: Hub[ElementLifecycle]):

@@ -94,7 +94,6 @@ wiring lives in `example/hybrid-chat`.
             }
             .provide(Server.defaultWith(_.port(Port(0))))
         yield result
-        end for
       }.assert(st => assertTrue(st == Status.Ok)),
     ),
   )

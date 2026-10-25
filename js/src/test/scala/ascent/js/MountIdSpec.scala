@@ -36,7 +36,6 @@ object MountIdSpec extends ZIOSpecDefault:
       else count += commentDescendants(child.asInstanceOf[dom.Node])
       i += 1
     count
-  end commentDescendants
 
   def spec = suite("Mount (post-refactor: structural ids, no comment anchors)")(
     suite("data-ascent on elements")(
@@ -59,7 +58,6 @@ object MountIdSpec extends ZIOSpecDefault:
               spans.item(0).getAttribute("data-ascent").asInstanceOf[String] != null,
               spans.item(1).getAttribute("data-ascent").asInstanceOf[String] != null,
             )
-          end for
         }
       },
       test("the data-ascent value matches AstId.renderAttr(AstId.compute(astNode))") {

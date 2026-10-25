@@ -278,6 +278,4 @@ object App:
         ),
       ),
     )
-    end for
-  end component
 end App

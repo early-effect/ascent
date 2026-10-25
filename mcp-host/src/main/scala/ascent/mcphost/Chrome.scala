@@ -69,7 +69,6 @@ private[mcphost] object Chrome:
       when(asking.map(_.isDefined))(question(asking, prompt)),
       E.div(Slot, Lifecycle.onMount[dom.HTMLDivElement](slot.succeed(_).unit)),
     )
-  end apply
 
   private def question(asking: Squawk[Option[ConsentRequest]], prompt: Prompt): UI[Any] =
     E.div(
@@ -103,7 +102,6 @@ private[mcphost] object Chrome:
       case ViewState.Ended(ending) => s"$name: ended, ${ended(ending)}"
       case ViewState.Removed       => s"$name: closed"
       case ViewState.Failed(e)     => s"$name: did not start, ${e.message}"
-  end status
 
   private def ended(ending: Ending): String = ending match
     case Ending.PortClosed       => "its connection closed"

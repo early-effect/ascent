@@ -56,8 +56,6 @@ object DomStyleSink extends StyleSink:
         target match
           case StyleTarget.Head         => dom.document.head.foreach(_.appendChild(style))
           case StyleTarget.Shadow(root) => val _ = root.appendChild(style)
-    end match
-  end appendSync
 
   private def selectorFor(key: String): String =
     s"""style[$markerAttr="${escapeAttrValue(key)}"]"""

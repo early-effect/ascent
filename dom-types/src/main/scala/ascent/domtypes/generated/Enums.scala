@@ -199,7 +199,6 @@ enum XRBodyJoint(val domValue: String):
   case RightFootSubtalar                  extends XRBodyJoint("right-foot-subtalar")
   case RightFootTransverse                extends XRBodyJoint("right-foot-transverse")
   case RightFootBall                      extends XRBodyJoint("right-foot-ball")
-end XRBodyJoint
 object XRBodyJoint:
   def fromDom(domValue: String): Option[XRBodyJoint] = XRBodyJoint.values.find(_.domValue == domValue)
 
@@ -578,7 +577,6 @@ enum RequestDestination(val domValue: String):
   case Video        extends RequestDestination("video")
   case Worker       extends RequestDestination("worker")
   case Xslt         extends RequestDestination("xslt")
-end RequestDestination
 object RequestDestination:
   def fromDom(domValue: String): Option[RequestDestination] = RequestDestination.values.find(_.domValue == domValue)
 
@@ -701,7 +699,6 @@ enum ActivationBlockersMixinBlockerReason(val domValue: String):
       extends ActivationBlockersMixinBlockerReason("intersection_occluded_or_distorted")
   case Style_invalid extends ActivationBlockersMixinBlockerReason("style_invalid")
   case Type_invalid  extends ActivationBlockersMixinBlockerReason("type_invalid")
-end ActivationBlockersMixinBlockerReason
 object ActivationBlockersMixinBlockerReason:
   def fromDom(domValue: String): Option[ActivationBlockersMixinBlockerReason] =
     ActivationBlockersMixinBlockerReason.values.find(_.domValue == domValue)
@@ -764,7 +761,6 @@ enum CanvasFontStretch(val domValue: String):
   case Expanded       extends CanvasFontStretch("expanded")
   case ExtraExpanded  extends CanvasFontStretch("extra-expanded")
   case UltraExpanded  extends CanvasFontStretch("ultra-expanded")
-end CanvasFontStretch
 object CanvasFontStretch:
   def fromDom(domValue: String): Option[CanvasFontStretch] = CanvasFontStretch.values.find(_.domValue == domValue)
 
@@ -1059,7 +1055,6 @@ enum JsonLdErrorCode(val domValue: String):
   case MultipleContextLinkHeaders  extends JsonLdErrorCode("multiple context link headers")
   case ProcessingModeConflict      extends JsonLdErrorCode("processing mode conflict")
   case ProtectedTermRedefinition   extends JsonLdErrorCode("protected term redefinition")
-end JsonLdErrorCode
 object JsonLdErrorCode:
   def fromDom(domValue: String): Option[JsonLdErrorCode] = JsonLdErrorCode.values.find(_.domValue == domValue)
 
@@ -1245,7 +1240,6 @@ enum MediaSessionAction(val domValue: String):
   case Nextslide             extends MediaSessionAction("nextslide")
   case Enterpictureinpicture extends MediaSessionAction("enterpictureinpicture")
   case Voiceactivity         extends MediaSessionAction("voiceactivity")
-end MediaSessionAction
 object MediaSessionAction:
   def fromDom(domValue: String): Option[MediaSessionAction] = MediaSessionAction.values.find(_.domValue == domValue)
 
@@ -1320,7 +1314,6 @@ enum ConnectionType(val domValue: String):
   case Unknown   extends ConnectionType("unknown")
   case Wifi      extends ConnectionType("wifi")
   case Wimax     extends ConnectionType("wimax")
-end ConnectionType
 object ConnectionType:
   def fromDom(domValue: String): Option[ConnectionType] = ConnectionType.values.find(_.domValue == domValue)
 
@@ -1434,7 +1427,6 @@ enum ReferrerPolicy(val domValue: String):
   case OriginWhenCrossOrigin       extends ReferrerPolicy("origin-when-cross-origin")
   case StrictOriginWhenCrossOrigin extends ReferrerPolicy("strict-origin-when-cross-origin")
   case UnsafeUrl                   extends ReferrerPolicy("unsafe-url")
-end ReferrerPolicy
 object ReferrerPolicy:
   def fromDom(domValue: String): Option[ReferrerPolicy] = ReferrerPolicy.values.find(_.domValue == domValue)
 
@@ -1664,7 +1656,6 @@ enum BarcodeFormat(val domValue: String):
   case Unknown     extends BarcodeFormat("unknown")
   case Upc_a       extends BarcodeFormat("upc_a")
   case Upc_e       extends BarcodeFormat("upc_e")
-end BarcodeFormat
 object BarcodeFormat:
   def fromDom(domValue: String): Option[BarcodeFormat] = BarcodeFormat.values.find(_.domValue == domValue)
 
@@ -1696,7 +1687,6 @@ enum SpeechSynthesisErrorCode(val domValue: String):
   case TextTooLong          extends SpeechSynthesisErrorCode("text-too-long")
   case InvalidArgument      extends SpeechSynthesisErrorCode("invalid-argument")
   case NotAllowed           extends SpeechSynthesisErrorCode("not-allowed")
-end SpeechSynthesisErrorCode
 object SpeechSynthesisErrorCode:
   def fromDom(domValue: String): Option[SpeechSynthesisErrorCode] =
     SpeechSynthesisErrorCode.values.find(_.domValue == domValue)
@@ -1985,7 +1975,6 @@ enum ClientCapability(val domValue: String):
   case SignalAllAcceptedCredentials       extends ClientCapability("signalAllAcceptedCredentials")
   case SignalCurrentUserDetails           extends ClientCapability("signalCurrentUserDetails")
   case SignalUnknownCredential            extends ClientCapability("signalUnknownCredential")
-end ClientCapability
 object ClientCapability:
   def fromDom(domValue: String): Option[ClientCapability] = ClientCapability.values.find(_.domValue == domValue)
 
@@ -2137,7 +2126,6 @@ enum VideoPixelFormat(val domValue: String):
   case RGBX     extends VideoPixelFormat("RGBX")
   case BGRA     extends VideoPixelFormat("BGRA")
   case BGRX     extends VideoPixelFormat("BGRX")
-end VideoPixelFormat
 object VideoPixelFormat:
   def fromDom(domValue: String): Option[VideoPixelFormat] = VideoPixelFormat.values.find(_.domValue == domValue)
 
@@ -2240,7 +2228,6 @@ enum KeyUsage(val domValue: String):
   case EncapsulateBits extends KeyUsage("encapsulateBits")
   case DecapsulateKey  extends KeyUsage("decapsulateKey")
   case DecapsulateBits extends KeyUsage("decapsulateBits")
-end KeyUsage
 object KeyUsage:
   def fromDom(domValue: String): Option[KeyUsage] = KeyUsage.values.find(_.domValue == domValue)
 
@@ -2313,7 +2300,6 @@ enum GPUVertexFormat(val domValue: String):
   case Sint32x4     extends GPUVertexFormat("sint32x4")
   case Unorm1010102 extends GPUVertexFormat("unorm10-10-10-2")
   case Unorm8x4Bgra extends GPUVertexFormat("unorm8x4-bgra")
-end GPUVertexFormat
 object GPUVertexFormat:
   def fromDom(domValue: String): Option[GPUVertexFormat] = GPUVertexFormat.values.find(_.domValue == domValue)
 
@@ -2422,7 +2408,6 @@ enum GPUBlendFactor(val domValue: String):
   case OneMinusSrc1      extends GPUBlendFactor("one-minus-src1")
   case Src1Alpha         extends GPUBlendFactor("src1-alpha")
   case OneMinusSrc1Alpha extends GPUBlendFactor("one-minus-src1-alpha")
-end GPUBlendFactor
 object GPUBlendFactor:
   def fromDom(domValue: String): Option[GPUBlendFactor] = GPUBlendFactor.values.find(_.domValue == domValue)
 
@@ -2610,7 +2595,6 @@ enum GPUTextureFormat(val domValue: String):
   case Astc12x10UnormSrgb   extends GPUTextureFormat("astc-12x10-unorm-srgb")
   case Astc12x12Unorm       extends GPUTextureFormat("astc-12x12-unorm")
   case Astc12x12UnormSrgb   extends GPUTextureFormat("astc-12x12-unorm-srgb")
-end GPUTextureFormat
 object GPUTextureFormat:
   def fromDom(domValue: String): Option[GPUTextureFormat] = GPUTextureFormat.values.find(_.domValue == domValue)
 
@@ -2659,7 +2643,6 @@ enum GPUFeatureName(val domValue: String):
   case TextureFormatsTier2            extends GPUFeatureName("texture-formats-tier2")
   case PrimitiveIndex                 extends GPUFeatureName("primitive-index")
   case TextureComponentSwizzle        extends GPUFeatureName("texture-component-swizzle")
-end GPUFeatureName
 object GPUFeatureName:
   def fromDom(domValue: String): Option[GPUFeatureName] = GPUFeatureName.values.find(_.domValue == domValue)
 
@@ -2873,7 +2856,6 @@ enum RTCStatsType(val domValue: String):
   case LocalCandidate    extends RTCStatsType("local-candidate")
   case RemoteCandidate   extends RTCStatsType("remote-candidate")
   case Certificate       extends RTCStatsType("certificate")
-end RTCStatsType
 object RTCStatsType:
   def fromDom(domValue: String): Option[RTCStatsType] = RTCStatsType.values.find(_.domValue == domValue)
 
@@ -3250,7 +3232,6 @@ enum XRHandJoint(val domValue: String):
   case PinkyFingerPhalanxIntermediate  extends XRHandJoint("pinky-finger-phalanx-intermediate")
   case PinkyFingerPhalanxDistal        extends XRHandJoint("pinky-finger-phalanx-distal")
   case PinkyFingerTip                  extends XRHandJoint("pinky-finger-tip")
-end XRHandJoint
 object XRHandJoint:
   def fromDom(domValue: String): Option[XRHandJoint] = XRHandJoint.values.find(_.domValue == domValue)
 

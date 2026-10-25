@@ -38,7 +38,6 @@ object Document:
       val headUi = E.head(charset, viewport, E.title(title), UI.Fragment[Any](head.toVector))
       val bodyUi = E.body(UI.Fragment[R](body.toVector))
       E.html(A.lang(lang), headUi, bodyUi)
-  end BodyBuilder
 
   private val ViewportContent = "width=device-width, initial-scale=1"
 end Document

@@ -26,7 +26,6 @@ final class HTMLCollectionView(snapshot: () => Seq[Element]) extends HTMLCollect
     snapshot()
       .find(e => Option(e.getAttribute("id")).contains(name) || Option(e.getAttribute("name")).contains(name))
       .getOrElse(null)
-end HTMLCollectionView
 
 /** Backed directly by an [[AttributeMap]]'s class-token attribute (`"class"`), read/written as a space-separated token
   * list — the SAME storage `Element.getAttribute("class")`/`setAttribute("class", ...)` read/write, so

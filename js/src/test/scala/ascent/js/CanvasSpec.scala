@@ -67,9 +67,9 @@ object CanvasSpec extends ZIOSpecDefault:
             (origRaf, origCancel, rafCalls, cancelCalls)
           }
           .flatMap { case (origRaf, origCancel, rafCalls, cancelCalls) =>
-            val win  = dom.window.asInstanceOf[scala.scalajs.js.Dynamic]
-            val ui   = Canvas.animated(64, 32)((_, _) => ())
-            val test = for
+            val win = dom.window.asInstanceOf[scala.scalajs.js.Dynamic]
+            val ui  = Canvas.animated(64, 32)((_, _) => ())
+            (for
               cleanup <- AscentApp.mount(ui, parent)
               mountedRafCount    = rafCalls.size
               mountedCancelCount = cancelCalls.size
@@ -83,12 +83,12 @@ object CanvasSpec extends ZIOSpecDefault:
               mountedCancelCount == 0,
               unmountedCancelCount == 1,
               cancelledIds == firstRafId.toList,
-            )
-            // Restore originals so other tests aren't affected.
-            test.ensuring(ZIO.succeed {
-              win.requestAnimationFrame = origRaf
-              win.cancelAnimationFrame = origCancel
-            })
+            ))
+              // Restore originals so other tests aren't affected.
+              .ensuring(ZIO.succeed {
+                win.requestAnimationFrame = origRaf
+                win.cancelAnimationFrame = origCancel
+              })
           }
       }
     },

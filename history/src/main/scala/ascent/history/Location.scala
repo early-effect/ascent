@@ -65,7 +65,6 @@ object Location:
         if pathQuery.startsWith("?") then ("", pathQuery.tail)
         else splitOnce(pathQuery, '?')
       Location(path, search, hash)
-  end parse
 
   private def normalizePath(p: String): String =
     if p.isEmpty then "/"

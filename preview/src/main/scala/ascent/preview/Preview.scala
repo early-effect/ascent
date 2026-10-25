@@ -55,7 +55,6 @@ object Preview:
       if restartSidecarOnStamp then restartSidecar(config, sidecar)
       else sidecar
     side.zipParRight(installAndHang(config, app))
-  end serve
 
   /** `serve` with [[server]] on `config.port`. For `ZIOAppDefault` entry points. */
   def serveForever(config: PreviewConfig): ZIO[Scope, Throwable | PreviewError, Nothing] =
@@ -80,7 +79,6 @@ object Preview:
             case None => ZIO.succeed(Response.notFound())
       }
     )
-  end staticAndReload
 
   private def withCors(config: PreviewConfig, app: Routes[Any, Response]): Routes[Any, Response] =
     if config.cors then app @@ Middleware.cors() else app
@@ -102,7 +100,6 @@ object Preview:
             ZIO.never
         }
       }
-  end installAndHang
 
   /** Child-scope sidecar, interrupted and re-acquired on each stamp change. */
   private def restartSidecar(
@@ -121,7 +118,6 @@ object Preview:
         failed.raceFirst(stampEvents(stamp).take(1).runDrain)
       }
     }.forever
-  end restartSidecar
 
   private[preview] def browseCommand(osName: String, url: String): Seq[String] =
     val os = osName.toLowerCase(java.util.Locale.ROOT)
@@ -141,7 +137,6 @@ object Preview:
       }
       .tapError(e => Console.printLineError(s"Could not open $url: ${e.getMessage}"))
       .ignore
-  end openBrowser
 
   private[preview] def isUnderRoot(root: File, candidate: File): Boolean =
     val rootPath = root.getCanonicalFile.toPath.normalize
@@ -186,5 +181,4 @@ object Preview:
         if canonical.isDirectory then new File(canonical, "index.html")
         else canonical
       Option.when(file.isFile && file.canRead && isUnderRoot(rootCanon, file))(file)
-  end resolveFile
 end Preview

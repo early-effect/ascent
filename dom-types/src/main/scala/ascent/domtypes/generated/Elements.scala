@@ -148,4 +148,3 @@ object Elements:
   val nobr: ElementKey[HTMLElement]                           = ElementKey("nobr")
   val spacer: ElementKey[HTMLUnknownElement]                  = ElementKey("spacer")
   val tt: ElementKey[HTMLElement]                             = ElementKey("tt")
-end Elements

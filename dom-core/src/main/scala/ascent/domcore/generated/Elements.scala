@@ -28,7 +28,6 @@ trait SVGMarkerElement extends SVGElement:
   def preserveAspectRatio: ascent.domcore.PlatformOpaque
   def setOrientToAuto(): Unit
   def setOrientToAngle(angle: ascent.domcore.PlatformOpaque): Unit
-end SVGMarkerElement
 
 trait SVGMetadataElement extends SVGElement
 
@@ -60,7 +59,6 @@ trait HTMLFrameElement extends HTMLElement:
   def marginHeight_=(value: String): Unit
   def marginWidth: String
   def marginWidth_=(value: String): Unit
-end HTMLFrameElement
 
 trait SVGStopElement extends SVGElement:
   def offset: ascent.domcore.PlatformOpaque
@@ -76,7 +74,6 @@ trait HTMLMetaElement extends HTMLElement:
   def media_=(value: String): Unit
   def scheme: String
   def scheme_=(value: String): Unit
-end HTMLMetaElement
 
 trait HTMLScriptElement extends HTMLElement:
   def `type`: String
@@ -106,7 +103,6 @@ trait HTMLScriptElement extends HTMLElement:
   def event_=(value: String): Unit
   def htmlFor: String
   def htmlFor_=(value: String): Unit
-end HTMLScriptElement
 
 trait HTMLUnknownElement extends HTMLElement
 
@@ -131,7 +127,6 @@ trait HTMLOutputElement extends HTMLElement:
   def checkValidity(): Boolean
   def reportValidity(): Boolean
   def setCustomValidity(error: String): Unit
-end HTMLOutputElement
 
 trait HTMLSelectedContentElement extends HTMLElement
 
@@ -391,7 +386,6 @@ trait Element extends Node:
       options: Double | ascent.domcore.PlatformOpaque,
   ): ascent.domcore.PlatformOpaque
   def getAnimations(options: ascent.domcore.PlatformOpaque): List[ascent.domcore.PlatformOpaque]
-end Element
 
 trait SVGCircleElement extends SVGGeometryElement:
   def cx: ascent.domcore.PlatformOpaque
@@ -421,7 +415,6 @@ trait HTMLTemplateElement extends HTMLElement:
   def shadowRootSerializable_=(value: Boolean): Unit
   def shadowRootCustomElementRegistry: String
   def shadowRootCustomElementRegistry_=(value: String): Unit
-end HTMLTemplateElement
 
 trait HTMLParamElement extends HTMLElement:
   def name: String
@@ -712,7 +705,6 @@ trait HTMLElement extends Element:
   def togglePopover(options: ascent.domcore.PlatformOpaque | Boolean): Boolean
   def focus(options: ascent.domcore.PlatformOpaque): Unit
   def blur(): Unit
-end HTMLElement
 
 trait SVGSVGElement extends SVGGraphicsElement:
   def x: ascent.domcore.PlatformOpaque
@@ -789,7 +781,6 @@ trait SVGSVGElement extends SVGGraphicsElement:
   def animationsPaused(): Boolean
   def getCurrentTime(): Double
   def setCurrentTime(seconds: Double): Unit
-end SVGSVGElement
 
 trait Event:
   def `type`: String
@@ -812,7 +803,6 @@ trait Event:
   def stopImmediatePropagation(): Unit
   def preventDefault(): Unit
   def initEvent(`type`: String, bubbles: Boolean, cancelable: Boolean): Unit
-end Event
 
 trait HTMLButtonElement extends HTMLElement:
   def command: String
@@ -849,7 +839,6 @@ trait HTMLButtonElement extends HTMLElement:
   def checkValidity(): Boolean
   def reportValidity(): Boolean
   def setCustomValidity(error: String): Unit
-end HTMLButtonElement
 
 trait HTMLTableSectionElement extends HTMLElement:
   def rows: HTMLCollection
@@ -863,7 +852,6 @@ trait HTMLTableSectionElement extends HTMLElement:
   def vAlign_=(value: String): Unit
   def insertRow(index: Int): HTMLTableRowElement
   def deleteRow(index: Int): Unit
-end HTMLTableSectionElement
 
 trait HTMLDataElement extends HTMLElement:
   def value: String
@@ -890,7 +878,6 @@ trait HTMLOptionElement extends HTMLElement:
   def text: String
   def text_=(value: String): Unit
   def index: Int
-end HTMLOptionElement
 
 trait SVGAElement extends SVGGraphicsElement:
   def target: ascent.domcore.PlatformOpaque
@@ -927,7 +914,6 @@ trait SVGAElement extends SVGGraphicsElement:
   def hash: String
   def hash_=(value: String): Unit
   def href: ascent.domcore.PlatformOpaque
-end SVGAElement
 
 trait SVGTextPositioningElement extends SVGTextContentElement:
   def x: ascent.domcore.PlatformOpaque
@@ -1010,7 +996,6 @@ trait HTMLFrameSetElement extends HTMLElement:
   def onunload_=(value: ascent.domcore.PlatformOpaque): Unit
   def onportalactivate: ascent.domcore.PlatformOpaque
   def onportalactivate_=(value: ascent.domcore.PlatformOpaque): Unit
-end HTMLFrameSetElement
 
 trait HTMLAudioElement extends HTMLMediaElement
 
@@ -1059,7 +1044,6 @@ trait HTMLObjectElement extends HTMLElement:
   def checkValidity(): Boolean
   def reportValidity(): Boolean
   def setCustomValidity(error: String): Unit
-end HTMLObjectElement
 
 trait HTMLDListElement extends HTMLElement:
   def compact: Boolean
@@ -1076,7 +1060,6 @@ trait SVGPatternElement extends SVGElement:
   def viewBox: ascent.domcore.PlatformOpaque
   def preserveAspectRatio: ascent.domcore.PlatformOpaque
   def href: ascent.domcore.PlatformOpaque
-end SVGPatternElement
 
 trait HTMLDivElement extends HTMLElement:
   def align: String
@@ -1114,7 +1097,6 @@ trait Node extends EventTarget:
   def appendChild(node: Node): Node
   def replaceChild(node: Node, child: Node): Node
   def removeChild(child: Node): Node
-end Node
 
 trait HTMLTableColElement extends HTMLElement:
   def span: Int
@@ -1129,7 +1111,6 @@ trait HTMLTableColElement extends HTMLElement:
   def vAlign_=(value: String): Unit
   def width: String
   def width_=(value: String): Unit
-end HTMLTableColElement
 
 trait NamedNodeMap:
   def length: Int
@@ -1171,7 +1152,6 @@ trait SVGAnimationElement extends SVGElement:
   def beginElementAt(offset: Double): Unit
   def endElement(): Unit
   def endElementAt(offset: Double): Unit
-end SVGAnimationElement
 
 trait SVGTitleElement extends SVGElement
 
@@ -1189,7 +1169,6 @@ trait HTMLEmbedElement extends HTMLElement:
   def name: String
   def name_=(value: String): Unit
   def getSVGDocument(): Document
-end HTMLEmbedElement
 
 trait HTMLBaseElement extends HTMLElement:
   def href: String
@@ -1226,7 +1205,6 @@ trait SVGStyleElement extends SVGElement:
   def disabled: Boolean
   def disabled_=(value: Boolean): Unit
   def sheet: ascent.domcore.PlatformOpaque
-end SVGStyleElement
 
 trait HTMLLegendElement extends HTMLElement:
   def form: HTMLFormElement
@@ -1255,7 +1233,6 @@ trait HTMLMeterElement extends HTMLElement:
   def optimum: Double
   def optimum_=(value: Double): Unit
   def labels: NodeList
-end HTMLMeterElement
 
 trait HTMLSpanElement extends HTMLElement
 
@@ -1274,7 +1251,6 @@ trait HTMLSourceElement extends HTMLElement:
   def width_=(value: Int): Unit
   def height: Int
   def height_=(value: Int): Unit
-end HTMLSourceElement
 
 trait SVGSymbolElement extends SVGGraphicsElement:
   def viewBox: ascent.domcore.PlatformOpaque
@@ -1310,7 +1286,6 @@ trait HTMLTableCellElement extends HTMLElement:
   def vAlign_=(value: String): Unit
   def bgColor: String
   def bgColor_=(value: String): Unit
-end HTMLTableCellElement
 
 trait SVGImageElement extends SVGGraphicsElement:
   def x: ascent.domcore.PlatformOpaque
@@ -1371,7 +1346,6 @@ trait HTMLTextAreaElement extends HTMLElement:
   def setRangeText(replacement: String): Unit
   def setRangeText(replacement: String, start: Int, end: Int, selectionMode: ascent.domtypes.SelectionMode): Unit
   def setSelectionRange(start: Int, end: Int, direction: String): Unit
-end HTMLTextAreaElement
 
 trait SVGGraphicsElement extends SVGElement:
   def transform: ascent.domcore.PlatformOpaque
@@ -1431,7 +1405,6 @@ trait HTMLImageElement extends HTMLElement:
   def border: String
   def border_=(value: String): Unit
   def decode(): ascent.domcore.PlatformOpaque
-end HTMLImageElement
 
 trait HTMLLinkElement extends HTMLElement:
   def href: String
@@ -1470,7 +1443,6 @@ trait HTMLLinkElement extends HTMLElement:
   def target: String
   def target_=(value: String): Unit
   def sheet: ascent.domcore.PlatformOpaque
-end HTMLLinkElement
 
 trait HTMLSlotElement extends HTMLElement:
   def name: String
@@ -1553,7 +1525,6 @@ trait HTMLMediaElement extends HTMLElement:
   def pause(): Unit
   def addTextTrack(kind: ascent.domtypes.TextTrackKind, label: String, language: String): ascent.domcore.PlatformOpaque
   def captureStream(): ascent.domcore.PlatformOpaque
-end HTMLMediaElement
 
 trait SVGDescElement extends SVGElement
 
@@ -1568,7 +1539,6 @@ trait DOMTokenList:
   def toggle(token: String, force: Boolean): Boolean
   def replace(token: String, newToken: String): Boolean
   def supports(token: String): Boolean
-end DOMTokenList
 
 trait SVGViewElement extends SVGElement:
   def viewBox: ascent.domcore.PlatformOpaque
@@ -1605,7 +1575,6 @@ trait HTMLFormElement extends HTMLElement:
   def reset(): Unit
   def checkValidity(): Boolean
   def reportValidity(): Boolean
-end HTMLFormElement
 
 trait SVGTextContentElement extends SVGGraphicsElement:
   def textLength: ascent.domcore.PlatformOpaque
@@ -1619,7 +1588,6 @@ trait SVGTextContentElement extends SVGGraphicsElement:
   def getRotationOfChar(charnum: Int): Double
   def getCharNumAtPosition(point: ascent.domcore.PlatformOpaque): Int
   def selectSubString(charnum: Int, nchars: Int): Unit
-end SVGTextContentElement
 
 trait EventTarget:
   def addEventListener(`type`: String, callback: Event => Unit, options: ascent.domcore.PlatformOpaque | Boolean): Unit
@@ -1648,7 +1616,6 @@ trait HTMLDialogElement extends HTMLElement:
   def showModal(): Unit
   def close(returnValue: String): Unit
   def requestClose(returnValue: String): Unit
-end HTMLDialogElement
 
 trait HTMLFontElement extends HTMLElement:
   def color: String
@@ -1678,7 +1645,6 @@ trait HTMLTrackElement extends HTMLElement:
   def default_=(value: Boolean): Unit
   def readyState: Int
   def track: ascent.domcore.PlatformOpaque
-end HTMLTrackElement
 
 trait HTMLAreaElement extends HTMLElement:
   def alt: String
@@ -1725,7 +1691,6 @@ trait HTMLAreaElement extends HTMLElement:
   def href_=(value: String): Unit
   def target: String
   def target_=(value: String): Unit
-end HTMLAreaElement
 
 trait DocumentType extends Node:
   def name: String
@@ -1751,7 +1716,6 @@ trait CharacterData extends Node:
   def after(nodes: Node | String): Unit
   def replaceWith(nodes: Node | String): Unit
   def remove(): Unit
-end CharacterData
 
 trait HTMLTableRowElement extends HTMLElement:
   def rowIndex: Int
@@ -1769,7 +1733,6 @@ trait HTMLTableRowElement extends HTMLElement:
   def bgColor_=(value: String): Unit
   def insertCell(index: Int): HTMLTableCellElement
   def deleteCell(index: Int): Unit
-end HTMLTableRowElement
 
 trait HTMLHeadElement extends HTMLElement
 
@@ -1793,7 +1756,6 @@ trait Text extends CharacterData:
       from: ascent.domcore.PlatformOpaque,
       options: ascent.domcore.PlatformOpaque,
   ): ascent.domcore.PlatformOpaque
-end Text
 
 trait SVGRadialGradientElement extends SVGGradientElement:
   def cx: ascent.domcore.PlatformOpaque
@@ -1854,7 +1816,6 @@ trait HTMLAnchorElement extends HTMLElement:
   def href_=(value: String): Unit
   def target: String
   def target_=(value: String): Unit
-end HTMLAnchorElement
 
 trait HTMLOptGroupElement extends HTMLElement:
   def disabled: Boolean
@@ -1890,7 +1851,6 @@ trait HTMLMarqueeElement extends HTMLElement:
   def width_=(value: String): Unit
   def start(): Unit
   def stop(): Unit
-end HTMLMarqueeElement
 
 trait HTMLMenuElement extends HTMLElement:
   def compact: Boolean
@@ -1942,7 +1902,6 @@ trait HTMLIFrameElement extends HTMLElement:
   def privateToken: String
   def privateToken_=(value: String): Unit
   def getSVGDocument(): Document
-end HTMLIFrameElement
 
 trait SVGMPathElement extends SVGElement:
   def href: ascent.domcore.PlatformOpaque
@@ -1982,7 +1941,6 @@ trait HTMLVideoElement extends HTMLMediaElement:
   def requestPictureInPicture(): ascent.domcore.PlatformOpaque
   def requestVideoFrameCallback(callback: (ascent.domcore.PlatformOpaque, ascent.domcore.PlatformOpaque) => Unit): Int
   def cancelVideoFrameCallback(handle: Int): Unit
-end HTMLVideoElement
 
 trait HTMLSelectElement extends HTMLElement:
   def autocomplete: String
@@ -2020,7 +1978,6 @@ trait HTMLSelectElement extends HTMLElement:
   def reportValidity(): Boolean
   def setCustomValidity(error: String): Unit
   def showPicker(): Unit
-end HTMLSelectElement
 
 trait HTMLInputElement extends HTMLElement:
   def webkitdirectory: Boolean
@@ -2130,7 +2087,6 @@ trait HTMLInputElement extends HTMLElement:
   def setRangeText(replacement: String, start: Int, end: Int, selectionMode: ascent.domtypes.SelectionMode): Unit
   def setSelectionRange(start: Int, end: Int, direction: String): Unit
   def showPicker(): Unit
-end HTMLInputElement
 
 trait SVGAnimateMotionElement extends SVGAnimationElement
 
@@ -2206,7 +2162,6 @@ trait HTMLTableElement extends HTMLElement:
   def createTBody(): HTMLTableSectionElement
   def insertRow(index: Int): HTMLTableRowElement
   def deleteRow(index: Int): Unit
-end HTMLTableElement
 
 trait Comment extends CharacterData
 
@@ -2224,7 +2179,6 @@ trait HTMLFieldSetElement extends HTMLElement:
   def checkValidity(): Boolean
   def reportValidity(): Boolean
   def setCustomValidity(error: String): Unit
-end HTMLFieldSetElement
 
 trait HTMLPictureElement extends HTMLElement
 
@@ -2239,7 +2193,6 @@ trait HTMLHRElement extends HTMLElement:
   def size_=(value: String): Unit
   def width: String
   def width_=(value: String): Unit
-end HTMLHRElement
 
 trait SVGSwitchElement extends SVGGraphicsElement
 
@@ -2300,7 +2253,6 @@ trait HTMLBodyElement extends HTMLElement:
   def onunload_=(value: ascent.domcore.PlatformOpaque): Unit
   def onportalactivate: ascent.domcore.PlatformOpaque
   def onportalactivate_=(value: ascent.domcore.PlatformOpaque): Unit
-end HTMLBodyElement
 
 trait HTMLDetailsElement extends HTMLElement:
   def name: String
@@ -2548,7 +2500,6 @@ trait SVGElement extends Element:
   def style: ascent.domcore.PlatformOpaque
   def focus(options: ascent.domcore.PlatformOpaque): Unit
   def blur(): Unit
-end SVGElement
 
 trait HTMLCanvasElement extends HTMLElement:
   def width: Int
@@ -2564,7 +2515,6 @@ trait HTMLCanvasElement extends HTMLElement:
   ): Unit
   def transferControlToOffscreen(): ascent.domcore.PlatformOpaque
   def captureStream(frameRequestRate: Double): ascent.domcore.PlatformOpaque
-end HTMLCanvasElement
 
 trait Document extends Node:
   def rootElement: SVGSVGElement
@@ -2964,4 +2914,3 @@ trait Document extends Node:
       result: ascent.domcore.PlatformOpaque,
   ): ascent.domcore.PlatformOpaque
   def ariaNotify(announcement: String, options: ascent.domcore.PlatformOpaque): Unit
-end Document

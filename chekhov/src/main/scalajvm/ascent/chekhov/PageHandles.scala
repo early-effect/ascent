@@ -26,7 +26,6 @@ object PageHandles:
       locatorOf(selector).innerText
     def textContent(selector: String)(using Trace): Effect[String] =
       locatorOf(selector).textContent
-  end LocatorBackend
 
   def backend(page: Page): LocatorBackend = LocatorBackend(page.locator)
 
@@ -57,4 +56,3 @@ extension (page: Page)
   def textarea(testId: String): TextAreaHandle[PageHandles.Effect] =
     PageHandles.textarea(page, testId)
   def select(testId: String): SelectHandle[PageHandles.Effect] = PageHandles.select(page, testId)
-end extension

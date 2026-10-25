@@ -163,7 +163,6 @@ object Mount:
           // OnMountScoped likewise fires post-insertion, each in its own lifetime-scoped Scope registered into cleanup.
           _ <- ZIO.foreachDiscard(attrs.collect { case Attr.OnMountScoped(h) => h })(fireOnMountScoped(el, _, cleanup))
         yield ()
-        end for
 
       case UI.ReactiveText(src) =>
         for
@@ -391,7 +390,6 @@ object Mount:
         )
         _ <- outerCleanup.add(finalize)
       yield ()
-      end for
     }
 
   /** Build the reconciled list, placing each entry's DOM range in target order. Existing entries' nodes are MOVED
@@ -523,7 +521,6 @@ object Mount:
         )
         _ <- outerCleanup.add(finalize)
       yield ()
-      end for
     }
   end mountForEachSignal
 
@@ -661,7 +658,6 @@ object Mount:
             (incomingTokens -- prevTokens).foreach(t => ops.classAdd(el, t))
             prevTokens.clear()
             prevTokens ++= incomingTokens
-          end writeReactive
           for
             initial <- src.get
             _       <- ZIO.succeed(writeReactive(initial))

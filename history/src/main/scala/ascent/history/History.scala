@@ -49,3 +49,4 @@ object History extends HistoryCompanion:
   /** In-memory stack. Tests, Chekhov / JSEnv, VS Code webviews, and SSR seed from a request URL. */
   def memory(initial: Location = Location.root): URIO[Scope, History] =
     MemoryHistory.make(initial)
+end History

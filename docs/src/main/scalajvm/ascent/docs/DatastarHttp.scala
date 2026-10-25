@@ -74,7 +74,6 @@ succeeds while the server is live, then the Scope closes and the port is release
             }
             .provide(Server.defaultWith(_.port(Port(0))))
         yield result
-        end for
       }.assert(st => assertTrue(st == Status.Ok)),
     ),
   )

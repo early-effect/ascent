@@ -43,7 +43,6 @@ trait StylesOverrides:
         left: ascent.css.Length,
     ): Declaration =
       apply(s"${top.render} ${right.render} ${bottom.render} ${left.render}")
-  end margin
 
   object padding extends DS("padding") with Length with Percent:
     def apply(vertical: ascent.css.Length, horizontal: ascent.css.Length): Declaration =
@@ -55,7 +54,6 @@ trait StylesOverrides:
         left: ascent.css.Length,
     ): Declaration =
       apply(s"${top.render} ${right.render} ${bottom.render} ${left.render}")
-  end padding
 
   // CSS spec: `<font-weight-absolute> | bolder | lighter`, but font-weight also accepts
   // numeric weights (`100..900`) per the spec's <number> sub-grammar. The keyword set is
@@ -236,7 +234,6 @@ object StylesFoundation:
       apply(ascent.css.TimingFunction.cubicBezier(x1, y1, x2, y2): CssValue)
     def steps(n: Int): Declaration               = apply(ascent.css.TimingFunction.steps(n): CssValue)
     def steps(n: Int, jump: String): Declaration = apply(ascent.css.TimingFunction.steps(n, jump): CssValue)
-  end TimingFunctionish
 
   /** Mixin: a `font-family` stack. Build the stack with [[ascent.css.FontFamily]] (`FontFamily.of("Inter",
     * FontFamily.sansSerif)`) and attach via `apply(FontFamily)` or the `of(...)` shortcut. (No `apply(String*)`

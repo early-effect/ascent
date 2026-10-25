@@ -104,8 +104,6 @@ object Dom:
             true
           case None => false
       case _ => false
-    end match
-  end guardServerRegion
 
   /** Add a class token to an event target — for transient, purely-presentational state toggled straight on a node (a
     * drag-over highlight) that's deliberately kept out of the model. Takes the [[ascent.dom.EventTarget]] a typed event

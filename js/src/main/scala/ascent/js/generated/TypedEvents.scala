@@ -721,5 +721,4 @@ object TypedEvents:
       Attr.EventHandler("waiting", e => zio.ZIO.attempt(handler(e.raw.asInstanceOf[ascent.dom.Event])).orDie)
     def onWheel(handler: ascent.dom.WheelEvent => Unit): Attr[Any] =
       Attr.EventHandler("wheel", e => zio.ZIO.attempt(handler(e.raw.asInstanceOf[ascent.dom.WheelEvent])).orDie)
-  end sync
 end TypedEvents

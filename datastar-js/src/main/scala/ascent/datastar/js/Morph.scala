@@ -54,7 +54,6 @@ object Morph:
       out.push(nodes.item(i).asInstanceOf[js.Dynamic])
       i += 1
     NodeArray(out)
-  end parseChildren
 
   /** Reconcile `parent`'s existing children against the `incoming` nodes, reusing matches. */
   private def morphChildren(parent: dom.Element, incoming: NodeArray): Unit =
@@ -77,11 +76,8 @@ object Morph:
           case None =>
             if sameNodeName(existing, newNode) then morphNode(existing, newNode)
             else p.replaceChild(cloneInto(newNode), existing)
-      end if
       i += 1
-    end while
     while p.childNodes.length.asInstanceOf[Int] > incoming.length do p.removeChild(p.lastChild)
-  end morphChildren
 
   /** Morph one node toward another of compatible kind. */
   private def morphNode(existing: js.Dynamic, incoming: js.Dynamic): Unit =
@@ -125,7 +121,6 @@ object Morph:
       if !hasAttr(incoming, name) then toRemove.push(name)
       j += 1
     toRemove.foreach(n => existing.removeAttribute(n))
-  end syncAttributes
 
   // --- small helpers over the dynamic node surface ---
 

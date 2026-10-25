@@ -115,7 +115,6 @@ object AstId:
     }.sorted
     val h = MurmurHash3.orderedHash(names.map(MurmurHash3.stringHash))
     h.toLong
-  end hashAttrs
 
   /** Mix several Longs into one with good avalanche. Implementation: xor + splitmix64 step per input. Order-sensitive
     * (different argument order → different result), which we want because position matters in everything except
@@ -134,7 +133,6 @@ object AstId:
       z = z ^ (z >>> 31)
       i += 1
     z
-  end mix
 
   /** Render an id as a compact lowercase base36 string for use as an HTML attribute value. (`data-ascent="abc123"`).
     * Negative Longs produce a leading `-` from `toString`; we strip it so attribute values are pure alphanumerics.

@@ -40,4 +40,3 @@ object ModuleVersions:
       dom = Released.dom,
       mountEngine = Released.mountEngine,
     )
-end ModuleVersions

@@ -11,3 +11,4 @@ trait AttrOverrides:
   self: NodeMemoryBase & Attr =>
 
   def name: String = self.nodeNameRef
+end AttrOverrides

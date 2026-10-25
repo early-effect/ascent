@@ -120,5 +120,4 @@ object KeywordResolution:
     // Diamonds get one override def each (deterministic order by Scala name).
     val overrides = diamonds.toList.sortBy(_._1).map { case (name, r) => KeywordMethod(name, r.domName, scala.None) }
     Resolved(kept, overrides)
-  end resolve
 end KeywordResolution

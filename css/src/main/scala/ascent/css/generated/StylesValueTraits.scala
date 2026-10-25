@@ -90,7 +90,6 @@ trait StylesValueTraits:
     def rec2020: Declaration         = apply("rec2020")
     def lab: Declaration             = apply("lab")
     def oklab: Declaration           = apply("oklab")
-  end RectangularColorSpace
 
   /** `<isolation-mode>` — `auto | isolate` */
   trait IsolationMode extends DS with Auto:
@@ -569,7 +568,6 @@ trait StylesValueTraits:
     def blockEnd: Declaration    = apply("block-end")
     def inlineStart: Declaration = apply("inline-start")
     def inlineEnd: Declaration   = apply("inline-end")
-  end PositionOne
 
   /** `<container-query>` —
     * `not <query-in-parens> | <query-in-parens> [ [ and <query-in-parens> ]* | [ or <query-in-parens> ]* ]`
@@ -650,7 +648,6 @@ trait StylesValueTraits:
     def inlineEnd: Declaration   = apply("inline-end")
     def start: Declaration       = apply("start")
     def end: Declaration         = apply("end")
-  end PositionFour
 
   /** `<radial-extent>` — `closest-corner | closest-side | farthest-corner | farthest-side` */
   trait RadialExtent extends DS:
@@ -744,6 +741,7 @@ trait StylesValueTraits:
 
     /** KiloHertz. A kiloHertz is 1000 Hertz. */
     def kHz: Declaration = apply("kHz")
+  end Frequency
 
   /** `<anchored-query>` —
     * `not <anchored-in-parens> | <anchored-in-parens> [ [ and <anchored-in-parens> ]* | [ or <anchored-in-parens> ]* ] | <anchored-feature>`
@@ -884,6 +882,7 @@ trait StylesValueTraits:
 
     /** Refers to the border box or border edge. (In an SVG context, treated as stroke-box.) */
     def borderBox: Declaration = apply("border-box")
+  end VisualBox
 
   /** `<coord-box>` — `<paint-box> | view-box` */
   trait CoordBox extends DS with PaintBox:
@@ -907,7 +906,6 @@ trait StylesValueTraits:
     def rec2100Pq: Declaration       = apply("rec2100-pq")
     def rec2100Hlg: Declaration      = apply("rec2100-hlg")
     def rec2100Linear: Declaration   = apply("rec2100-linear")
-  end PredefinedRgb
 
   /** `<animateable-feature>` — `scroll-position | contents | <custom-ident>` */
   trait AnimateableFeature extends DS:
@@ -1046,6 +1044,7 @@ trait StylesValueTraits:
 
     /** Refers to the stroke bounding box or its edges. (In a CSS box context, treated as border-box.) */
     def strokeBox: Declaration = apply("stroke-box")
+  end PaintBox
 
   /** `<display-internal>` —
     * `table-row-group | table-header-group | table-footer-group | table-row | table-cell | table-column-group | table-column | table-caption | ruby-base | ruby-text | ruby-base-container | ruby-text-container`
@@ -1266,7 +1265,6 @@ trait StylesValueTraits:
     def yellow: Declaration               = apply("yellow")
     def yellowgreen: Declaration          = apply("yellowgreen")
     def transparent: Declaration          = apply("transparent")
-  end NamedColor
 
   /** `<composite-mode>` —
     * `clear | copy | source-over | destination-over | source-in | destination-in | source-out | destination-out | source-atop | destination-atop | xor | lighter | plus-darker | plus-lighter`
@@ -1286,7 +1284,6 @@ trait StylesValueTraits:
     def lighter: Declaration         = apply("lighter")
     def plusDarker: Declaration      = apply("plus-darker")
     def plusLighter: Declaration     = apply("plus-lighter")
-  end CompositeMode
 
   /** `<navigation-phase-keyword>` — `loading | ready | committed` */
   trait NavigationPhaseKeyword extends DS:
@@ -1517,6 +1514,7 @@ trait StylesValueTraits:
 
     /** The element to which the animation is applied. */
     def target: Declaration = apply("target")
+  end TimelineRangeCenterSubject
 
   /** `<self-position>` — `center | start | end | self-start | self-end | flex-start | flex-end` */
   trait SelfPosition extends DS:
@@ -1624,7 +1622,6 @@ trait StylesValueTraits:
     def saturation: Declaration = apply("saturation")
     def color: Declaration      = apply("color")
     def luminosity: Declaration = apply("luminosity")
-  end BlendMode
 
   /** `<relative-size>` — `[ larger | smaller ]` */
   trait RelativeSize extends DS:
@@ -1747,7 +1744,6 @@ trait StylesValueTraits:
     def time: Declaration              = apply("time")
     def url: Declaration               = apply("url")
     def transformFunction: Declaration = apply("transform-function")
-  end SyntaxTypeName
 
   /** `<navigation-location-keyword>` — `at | with | from | to` */
   trait NavigationLocationKeyword extends DS:
@@ -2119,7 +2115,6 @@ trait StylesValueTraits:
     def inlineEnd: Declaration   = apply("inline-end")
     def start: Declaration       = apply("start")
     def end: Declaration         = apply("end")
-  end PositionTwo
 
   /** `<display-outside>` — `block | inline | run-in` */
   trait DisplayOutside extends DS:
@@ -2150,7 +2145,6 @@ trait StylesValueTraits:
     def selfStart: Declaration = apply("self-start")
     def selfEnd: Declaration   = apply("self-end")
     def center: Declaration    = apply("center")
-  end AnchorSide
 
   /** `<anchor-size>` — `width | height | block | inline | self-block | self-inline` */
   trait AnchorSize extends DS:
@@ -2237,7 +2231,6 @@ trait StylesValueTraits:
     override def borderBox: Declaration  = apply("border-box")
     override def contentBox: Declaration = apply("content-box")
     override def paddingBox: Declaration = apply("padding-box")
-  end MaskLayer
 
   /** `<cubic-bezier-easing-function>` — `ease | ease-in | ease-out | ease-in-out | <cubic-bezier()>` */
   trait CubicBezierEasingFunction extends DS:
@@ -2301,7 +2294,6 @@ trait StylesValueTraits:
     def allScroll: Declaration    = apply("all-scroll")
     def zoomIn: Declaration       = apply("zoom-in")
     def zoomOut: Declaration      = apply("zoom-out")
-  end CursorPredefined
 
   /** `<symbols-type>` — `cyclic | numeric | alphabetic | symbolic | fixed` */
   trait SymbolsType extends DS:

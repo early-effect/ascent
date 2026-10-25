@@ -97,7 +97,6 @@ object Renderer:
        |object Elements:
        |$vals
        |""".stripMargin
-  end elements
 
   /** Phantom markers. One trait per HTML element interface, rooted at `Element`. */
   def tagMarkers(markers: List[DefBuilder.TagMarker]): String =
@@ -118,7 +117,6 @@ object Renderer:
        |  */
        |$body
        |""".stripMargin
-  end tagMarkers
 
   // --- dom-types/.../generated/Attrs.scala ---
 
@@ -158,7 +156,6 @@ object Renderer:
        |object Attrs:
        |$vals
        |""".stripMargin
-  end attrs
 
   // --- dom-types/.../generated/Events.scala ---
 
@@ -180,7 +177,6 @@ object Renderer:
        |object Events:
        |$vals
        |""".stripMargin
-  end events
 
   // --- js/.../generated/TypedEvents.scala ---
 
@@ -248,7 +244,6 @@ object Renderer:
        |  object sync:
        |$syncFactories
        |""".stripMargin
-  end typedEvents
 
   // --- dom-facade/.../generated/Facades.scala ---
 
@@ -282,7 +277,6 @@ object Renderer:
        |
        |$classes
        |""".stripMargin
-  end facades
 
   // --- dom-facade/.../generated/HtmlTag.scala ---
 
@@ -306,7 +300,6 @@ object Renderer:
        |$vals
        |end HtmlTag
        |""".stripMargin
-  end htmlTags
 
   // --- dom-facade/.../generated/Interfaces.scala ---
 
@@ -348,7 +341,6 @@ object Renderer:
        |
        |$classes
        |""".stripMargin
-  end interfaces
 
   /** Method names that would clash with `java.lang.Object` members and CANNOT be resolved by back-ticking — the binding
     * still collides. Drop these from a generated class so the inherited `Object` member supplies them. (`notify` etc.
@@ -391,7 +383,6 @@ object Renderer:
        |
        |$classes
        |""".stripMargin
-  end dictionaries
 
   private def renderDictionary(d: DictionaryDef): String =
     val parent     = d.parent.getOrElse("js.Object")
@@ -437,7 +428,6 @@ object Renderer:
        |
        |$types
        |""".stripMargin
-  end enumTypes
 
   private def renderEnumType(d: EnumDef): String =
     val cases = dedupeEnumValues(d.values)
@@ -455,8 +445,6 @@ object Renderer:
          |object ${d.name}:
          |  def fromDom(domValue: String): Option[${d.name}] = ${d.name}.values.find(_.domValue == domValue)
          |""".stripMargin
-    end if
-  end renderEnumType
 
   /** Dedup enum values by their mangled Scala identifier — two distinct dom values can mangle to the same identifier
     * (e.g. `"top start"` and `"top-start"` both → `topStart`); LinkedHashMap preserves first-seen order for stable
@@ -522,7 +510,6 @@ object Renderer:
       Option.when(attrLines.nonEmpty || opLines.nonEmpty || specLines.nonEmpty)(
         (s"extension (self: $owner)" :: attrLines ++ opLines ++ specLines).mkString("\n")
       )
-    end block
     val blocks = interfaces.flatMap { d =>
       val methods = interfaceMethods(d)
       block(d.name, d.attributes, methods, interfaceDefaults(d.inheritedMethodNames, methods))
@@ -544,7 +531,6 @@ object Renderer:
        |${blocks.map(_.linesIterator.map(l => if l.isEmpty then l else s"  $l").mkString("\n")).mkString("\n\n")}
        |end NullableAccessors
        |""".stripMargin
-  end nullableAccessors
 
   /** The argument lists a raw method accepts: every prefix that stops inside its optional tail when the method keeps
     * `= js.native` defaults, otherwise the full list alone.
@@ -581,7 +567,6 @@ object Renderer:
        |
        |$blocks
        |""".stripMargin
-  end enumAccessors
 
   /** One `extension` block per interface that has at least one enum-typed member — interfaces with none emit nothing at
     * all (`Nil`), so [[enumAccessors]]'s output stays free of empty/dead extension blocks.
@@ -605,8 +590,6 @@ object Renderer:
         .mkString("\n")
       List(s"""extension (self: $interfaceName)
            |$lines""".stripMargin)
-    end if
-  end renderAccessorBlock
 
   private def renderInterface(d: InterfaceDef): String =
     val parent      = d.parent.getOrElse(rootType)
@@ -617,7 +600,6 @@ object Renderer:
     val methodLines = methods.map(m => renderNativeMethod(m, defaults(m))) ++ SpecTypedOp.of(d.name).map(_.raw)
     renderJsNativeClass(d.name, parent, d.constructors, attrLines ++ methodLines, d.jsMixins) +
       renderCompanion(d.name, d.constants, d.staticAttributes, d.staticMethods)
-  end renderInterface
 
   /** The hand-written native trait every generated interface and event facade extends; see `PlatformObject.scala`. */
   private val rootType = "PlatformObject"
@@ -675,7 +657,6 @@ object Renderer:
     s"""@js.native
        |@JSGlobal
        |$header$rest""".stripMargin
-  end renderJsNativeClass
 
   private def renderNativeMethod(m: MethodDef, allowDefaults: Boolean): String =
     val annots = List(
@@ -688,7 +669,6 @@ object Renderer:
       if nullableName.isDefined then (rawName(m.scalaName), s"${m.returnType} | Null") else (m.scalaName, m.returnType)
     val defLine = s"  def ${safeId(name)}(${renderParams(m.params, allowDefaults)}): $tpe = js.native"
     ((annots ++ nullableName) :+ defLine).mkString("\n")
-  end renderNativeMethod
 
   /** A writable IDL attribute (`attribute T name`) is a `var`, a readonly one a `def`, matching WebIDL, so callers
     * assign live properties (`text.data = "..."`) without dropping to js.Dynamic. A nullable one (WebIDL's `T?`) is the
@@ -740,7 +720,6 @@ object Renderer:
          |object $name extends js.Object:
          |$body
          |""".stripMargin
-  end renderCompanion
 
   // --- dom-core/.../generated/Elements.scala (platform-neutral structural traits) ---
 
@@ -770,7 +749,6 @@ object Renderer:
        |
        |$traits
        |""".stripMargin
-  end structuralTraits
 
   private def renderStructuralTrait(d: InterfaceDef): String =
     val parentClause = d.parent.map(p => s" extends $p").getOrElse("")
@@ -791,7 +769,6 @@ object Renderer:
     val body      = (attrLines ++ methodLines).mkString("\n")
     val bodyBlock = if body.isEmpty then "" else s":\n$body"
     s"trait ${d.name}$parentClause$bodyBlock"
-  end renderStructuralTrait
 
   // --- dom-core/.../generated (non-js) : in-memory reflection-backed implementation ---
 
@@ -865,7 +842,6 @@ object Renderer:
        |
        |$classes
        |""".stripMargin
-  end memoryImpls
 
   /** `EventTarget` is the TRUE root of the DOM tree (`Node extends EventTarget`, and everything else chains up from
     * `Node`) — the only parentless interface that should extend the hand-written `NodeMemoryBase` kernel. Every other
@@ -925,7 +901,6 @@ object Renderer:
     val body         = if members.isEmpty then "" else s":\n$members"
     val parentClause = parent.map(p => s"$p with ").getOrElse("")
     s"class ${d.name}Memory extends $parentClause${d.name}$overrideMixin$body"
-  end renderMemoryImpl
 
   // --- dom-core/.../generated/ElementFactory.scala (tag-name -> Memory-class dispatch table) ---
 
@@ -988,6 +963,5 @@ object Renderer:
        |    c.nodeTypeRef = 8
        |    c
        |""".stripMargin
-  end elementFactory
 
 end Renderer

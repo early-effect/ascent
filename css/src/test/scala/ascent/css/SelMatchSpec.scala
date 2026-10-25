@@ -41,7 +41,6 @@ object SelMatchSpec extends ZIOSpecDefault:
       parent(e).map(p => p.children.takeWhile(!_.eq(e))).getOrElse(Nil)
     def nextSiblings(e: Elem): Seq[Elem] =
       parent(e).map(p => p.children.dropWhile(!_.eq(e)).drop(1)).getOrElse(Nil)
-  end given
 
   private def matches(selector: String, e: Elem): Boolean =
     Sel.parse(selector).fold(err => throw new RuntimeException(err), _.matches(e))

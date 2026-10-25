@@ -58,7 +58,6 @@ object HtmlDocumentSpec extends ZIOSpecDefault:
             !page.html.startsWith("<div"),
             !frag.contains("<!DOCTYPE"),
           )
-        end for
       },
       test("a title containing < is escaped") {
         val ui = Document("a < b")()(E.p("x"))
@@ -88,7 +87,6 @@ object HtmlDocumentSpec extends ZIOSpecDefault:
             desc < bodyAt,
             host > bodyAt,
           )
-        end for
       },
       test("lang overrides the html lang attribute") {
         val ui = Document("Todos host", lang = "fr")()(E.script(A.src("/host.js")))
@@ -109,7 +107,6 @@ object HtmlDocumentSpec extends ZIOSpecDefault:
             html.contains("""src="/host.js""""),
             stripIds(pretty.html) != stripIds(compact.html),
           )
-        end for
       },
       test("Html.render of a div is a fragment with no doctype") {
         for html <- Html.render(E.div("hi"))
@@ -154,7 +151,6 @@ object HtmlDocumentSpec extends ZIOSpecDefault:
             !inHead.contains("<style data-ascent"),
             !aside.html.contains("<style"),
           )
-        end for
       }
     ),
   )

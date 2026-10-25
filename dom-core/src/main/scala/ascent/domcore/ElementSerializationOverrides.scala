@@ -98,7 +98,6 @@ object ElementSerializationOverrides:
       case _ => ()
     sb.append('>')
     sb.toString
-  end openTag
 
   private def childrenOf(node: ascent.domcore.generated.Node): Seq[ascent.domcore.generated.Node] =
     node match
@@ -137,8 +136,6 @@ object ElementSerializationOverrides:
               val body = kids.map(k => pretty(k, indent + 1, Some(tag))).mkString("\n")
               s"$open\n$body\n$pad</$tag>"
       case _ => ""
-    end match
-  end pretty
 end ElementSerializationOverrides
 
 /** Public serialization entry points over the in-memory DOM. `compact` is the canonical machine form (identical to

@@ -117,7 +117,6 @@ abstract class Keyframes(nameOverride: Option[String], frames: Frame*):
       fill.map(_.render),
     ).flatten
     Declaration("animation", (name :: parts).mkString(" "), keyframe = Some(this))
-  end use
 
   /** Escape-hatch `animation:` shorthand from a raw string — `Pulse.use("0.6s ease infinite")` → `animation: pulse 0.6s
     * ease infinite;`. Prefer the typed [[use(duration:ascent\.css\.Time*]] overload; this stays for shorthand grammar
@@ -145,4 +144,3 @@ object Keyframes:
     */
   given keyframesToArg: Conversion[Keyframes, VoidArg[Any, ascent.domtypes.tags.Element]] =
     kf => Arg.AttrArg(Attr.Style(kf.contributionBlocks))
-end Keyframes

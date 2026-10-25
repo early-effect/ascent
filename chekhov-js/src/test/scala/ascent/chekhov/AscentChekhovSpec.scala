@@ -98,7 +98,6 @@ object AscentChekhovSpec extends ZIOSpecDefault:
           a.forall(!_.isConnected),
           b.forall(!_.isConnected),
         )
-        end for
       },
       test("InputHandle.fill updates a Squawk bound to onInput") {
         for

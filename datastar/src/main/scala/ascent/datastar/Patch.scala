@@ -39,4 +39,3 @@ object SignalPatch:
       case (name, Json.Null) => SignalPatch.Delete(name)
       case (name, value)     => SignalPatch.Put(name, value, onlyIfMissing)
     }.toVector
-end SignalPatch

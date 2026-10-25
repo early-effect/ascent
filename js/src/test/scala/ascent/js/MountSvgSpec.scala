@@ -72,7 +72,6 @@ object MountSvgSpec extends ZIOSpecDefault:
             nsOf(rect) == SvgNs,
             nsOf(text) == SvgNs,
           )
-        end for
       }
     },
     test("style nested under svg is SVG-namespace (not HTML style)") {
@@ -159,7 +158,6 @@ object MountSvgSpec extends ZIOSpecDefault:
           // Without createElementNS, remounted <text> is HTML-unknown and textContent concatenates
           // across siblings with no geometry — namespaceURI is the precise failure mode.
           assertTrue(nsOf(svg) == SvgNs, nsOf(text) == SvgNs)
-        end for
       }
     },
   )
