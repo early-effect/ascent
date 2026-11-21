@@ -262,7 +262,7 @@ sbt testJVM                    # JVM suites (use testFull per module on sbt 2)
 sbt todoConduitJS/ascentPreviewStage # splice + stage the example without a browser
 sbt e2e/chekhovInstall && sbt e2e/testFull   # Firefox suites against splice+preview
 sbt "e2e/chekhovInstall; chekhovJs/testFull"  # JSEnv typed handles (ascent-chekhov)
-./scripts/install-git-hooks    # once per clone: pre-commit runs scalafmtCheckAll
+./scripts/install-git-hooks    # once per clone: pre-commit runs scalafmtCheckAll, commit-msg rejects agent attribution
 ```
 
 Component tests (JSEnv) mount a `UI` and talk to nodes as `InputHandle` / `ButtonHandle`:
