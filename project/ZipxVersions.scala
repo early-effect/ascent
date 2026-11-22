@@ -18,13 +18,13 @@ object MyVersions extends ZipxVersions:
   val zioTest      = zio.mod("zio-test")
   val zioTestSbt   = zio.mod("zio-test-sbt")
   val zioStreams   = zio.mod("zio-streams")
-  val zioJson      = Lib("dev.zio", "zio-json", "1.1.0")
-  val heddle       = Lib("rocks.earlyeffect", "heddle", "0.12.0")
+  val zioJson      = Lib("dev.zio", "zio-json", "1.1.3")
+  val heddle       = Lib("rocks.earlyeffect", "heddle", "0.15.2")
   val heddleBrotli = heddle.mod("heddle-brotli")
   val heddleApps   = heddle.mod("heddle-mcp-apps")
   val heddleFrame  = heddle.mod("heddle-mcp-apps-frame")
 
-  val scalaJavaTime     = Lib("io.github.cquiroz", "scala-java-time", "2.7.0")
+  val scalaJavaTime     = Lib("io.github.cquiroz", "scala-java-time", "2.11.0")
   val scalaJavaTimeTzdb = scalaJavaTime.mod("scala-java-time-tzdb")
 
   val fastparse = Lib("com.lihaoyi", "fastparse", "3.1.1")
@@ -33,7 +33,7 @@ object MyVersions extends ZipxVersions:
   val scalafmtDynamic = Lib("org.scalameta", "scalafmt-dynamic", "3.11.5")
     .excluding(ZipxExclude.org("org.scala-lang.modules", "scala-collection-compat_2.13"))
 
-  val specular        = Lib("rocks.earlyeffect", "specular-core", "0.21.1")
+  val specular        = Lib("rocks.earlyeffect", "specular-core", "0.21.5")
   val specularZioTest = specular.mod("specular-zio-test")
   val specularTheme   = specular.mod("early-effect-docs-theme")
 
@@ -43,11 +43,11 @@ object MyVersions extends ZipxVersions:
   val chekhovDom     = chekhovZioTest.mod("chekhov-dom")
   val neotype        = Lib("io.github.kitlangton", "neotype", "0.7.2")
 
-  val scalajs        = Plugin("org.scala-js", "sbt-scalajs", "1.22.0")
+  val scalajs        = Plugin("org.scala-js", "sbt-scalajs", "1.23.0")
   val scalaNative    = Plugin("org.scala-native", "sbt-scala-native", "0.5.12")
   val scalafmt       = Plugin("org.scalameta", "sbt-scalafmt", "2.6.2")
-  val scalafix       = Plugin("ch.epfl.scala", "sbt-scalafix", "0.14.9")
-  val specularPlugin = Plugin("rocks.earlyeffect", "sbt-specular", "0.21.1")
+  val scalafix       = Plugin("ch.epfl.scala", "sbt-scalafix", "0.14.10")
+  val specularPlugin = Plugin("rocks.earlyeffect", "sbt-specular", "0.21.5")
   val sbtSplice      = Plugin("rocks.earlyeffect", "sbt-splice", "0.3.2")
   val sbtReload      = Plugin("com.jamesward", "sbt-reload", "0.0.8")
   val sbtChekhov     = Plugin("rocks.earlyeffect", "sbt-chekhov", "0.1.3")
